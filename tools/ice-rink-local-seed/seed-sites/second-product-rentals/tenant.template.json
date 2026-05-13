@@ -1,0 +1,40 @@
+{
+  "id": "second-product-rentals",
+  "tenantId": "second-product-rentals",
+  "name": "Second Product Rentals",
+  "plan": "local-dev",
+  "status": "inactive-placeholder",
+  "apiKey": "",
+  "apiKeyHash": "__SECOND_PRODUCT_API_HASH__",
+  "apiKeyMeta": {
+    "createdAt": "2026-05-13T00:00:00Z",
+    "isActive": false
+  },
+  "createdAt": "2026-05-13T00:00:00Z",
+  "updatedAt": "2026-05-13T00:00:00Z",
+  "settings": {
+    "theme": "second-product-rentals-placeholder",
+    "language": "en-us",
+    "maxUsers": 5,
+    "features": {
+      "forms": true,
+      "pages": true,
+      "analytics": false,
+      "canCreateTenants": false,
+      "canDeleteTenants": false,
+      "canManageAllContent": false,
+      "canViewAllTenants": false
+    },
+    "allowedOrigins": [
+      "http://second.localhost:3002"
+    ]
+  },
+  "contact": {
+    "email": "",
+    "phone": ""
+  },
+  "billing": {
+    "cycle": "none",
+    "nextInvoice": null
+  }
+}

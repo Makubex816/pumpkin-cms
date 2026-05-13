@@ -1,14 +1,34 @@
-import { readdir, readFile } from 'node:fs/promises';
+import { access, readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const toolRoot = path.resolve(__dirname, '..');
-const seedRoot = path.join(toolRoot, 'seed');
-const expectedSlugs = ['home', 'ice-rink-rentals', 'events-holiday-activations', 'contact'];
-const tenantId = 'ice-rink-rentals';
+const defaultSiteKey = 'ice-rink-rentals';
+const siteKey = process.env.SITE_KEY?.trim() || defaultSiteKey;
+const seedSitesRoot = path.join(toolRoot, 'seed-sites');
+const siteSeedRoot = path.join(seedSitesRoot, siteKey);
 const errors = [];
 const warnings = [];
+
+const siteConfigs = {
+  'ice-rink-rentals': {
+    tenantId: 'ice-rink-rentals',
+    hashPlaceholder: '__ICE_RINK_RENTALS_API_HASH__',
+    expectedSlugs: ['home', 'ice-rink-rentals', 'events-holiday-activations', 'contact'],
+    themeFile: 'theme.json',
+    placeholderOnly: false,
+  },
+  'second-product-rentals': {
+    tenantId: 'second-product-rentals',
+    hashPlaceholder: '__SECOND_PRODUCT_API_HASH__',
+    expectedSlugs: [],
+    themeFile: 'theme.placeholder.json',
+    placeholderOnly: true,
+  },
+};
+
+const siteConfig = siteConfigs[siteKey];
 
 const forbiddenPatterns = [
   { label: 'CMS LIVE marker', pattern: /CMS LIVE:/i },
@@ -27,8 +47,17 @@ function warn(message) {
   warnings.push(message);
 }
 
+async function pathExists(absolutePath) {
+  try {
+    await access(absolutePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function readJson(relativePath) {
-  const absolutePath = path.join(toolRoot, relativePath);
+  const absolutePath = path.join(siteSeedRoot, relativePath);
   const raw = await readFile(absolutePath, 'utf8');
   return {
     absolutePath,
@@ -40,7 +69,7 @@ async function readJson(relativePath) {
 function scanRaw(relativePath, raw) {
   for (const { label, pattern } of forbiddenPatterns) {
     if (pattern.test(raw)) {
-      fail(`${relativePath} contains forbidden ${label}.`);
+      fail(`seed-sites/${siteKey}/${relativePath} contains forbidden ${label}.`);
     }
   }
 }
@@ -57,11 +86,11 @@ function validatePage(page, relativePath) {
   requireString(page, 'tenantId', relativePath);
   requireString(page, 'pageSlug', relativePath);
 
-  if (page.tenantId !== tenantId) {
-    fail(`${relativePath} tenantId must be ${tenantId}.`);
+  if (page.tenantId !== siteConfig.tenantId) {
+    fail(`${relativePath} tenantId must be ${siteConfig.tenantId}.`);
   }
 
-  if (!expectedSlugs.includes(page.pageSlug)) {
+  if (!siteConfig.expectedSlugs.includes(page.pageSlug)) {
     fail(`${relativePath} has unexpected pageSlug ${page.pageSlug}.`);
   }
 
@@ -87,37 +116,87 @@ function validatePage(page, relativePath) {
   }
 }
 
-async function main() {
-  const tenant = await readJson('seed/tenant.template.json');
-  scanRaw('seed/tenant.template.json', tenant.raw.replace('__ICE_RINK_RENTALS_API_HASH__', ''));
+async function collectFiles(rootPath) {
+  const entries = await readdir(rootPath, { withFileTypes: true });
+  const files = [];
 
-  if (tenant.data.apiKeyHash !== '__ICE_RINK_RENTALS_API_HASH__') {
-    fail('tenant.template.json apiKeyHash must remain __ICE_RINK_RENTALS_API_HASH__.');
+  for (const entry of entries) {
+    const absolutePath = path.join(rootPath, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await collectFiles(absolutePath)));
+    } else {
+      files.push(absolutePath);
+    }
+  }
+
+  return files;
+}
+
+async function validatePlaceholderSite() {
+  const files = await collectFiles(siteSeedRoot);
+
+  for (const absolutePath of files) {
+    const relativePath = path.relative(siteSeedRoot, absolutePath).replaceAll(path.sep, '/');
+    const raw = await readFile(absolutePath, 'utf8');
+    scanRaw(relativePath, raw.replace(siteConfig.hashPlaceholder, ''));
+  }
+
+  const tenant = await readJson('tenant.template.json');
+  if (tenant.data.apiKeyHash !== siteConfig.hashPlaceholder) {
+    fail(`tenant.template.json apiKeyHash must remain ${siteConfig.hashPlaceholder}.`);
   }
 
   if (tenant.data.apiKey && tenant.data.apiKey.trim()) {
     fail('tenant.template.json apiKey must remain empty.');
   }
 
-  if (tenant.data.tenantId !== tenantId || tenant.data.id !== tenantId) {
-    fail(`tenant.template.json must use id and tenantId ${tenantId}.`);
+  if (tenant.data.tenantId !== siteConfig.tenantId || tenant.data.id !== siteConfig.tenantId) {
+    fail(`tenant.template.json must use id and tenantId ${siteConfig.tenantId}.`);
   }
 
-  const theme = await readJson('seed/theme.json');
-  scanRaw('seed/theme.json', theme.raw);
-  if (theme.data.tenantId !== tenantId) {
-    fail(`theme.json tenantId must be ${tenantId}.`);
+  const theme = await readJson(siteConfig.themeFile);
+  if (theme.data.tenantId !== siteConfig.tenantId) {
+    fail(`${siteConfig.themeFile} tenantId must be ${siteConfig.tenantId}.`);
+  }
+
+  const pagesDir = path.join(siteSeedRoot, 'pages');
+  const pageFiles = (await readdir(pagesDir)).filter((file) => file.endsWith('.json'));
+  if (pageFiles.length > 0) {
+    fail('second-product-rentals is placeholder-only and must not contain page JSON yet.');
+  }
+}
+
+async function validateSeedableSite() {
+  const tenant = await readJson('tenant.template.json');
+  scanRaw('tenant.template.json', tenant.raw.replace(siteConfig.hashPlaceholder, ''));
+
+  if (tenant.data.apiKeyHash !== siteConfig.hashPlaceholder) {
+    fail(`tenant.template.json apiKeyHash must remain ${siteConfig.hashPlaceholder}.`);
+  }
+
+  if (tenant.data.apiKey && tenant.data.apiKey.trim()) {
+    fail('tenant.template.json apiKey must remain empty.');
+  }
+
+  if (tenant.data.tenantId !== siteConfig.tenantId || tenant.data.id !== siteConfig.tenantId) {
+    fail(`tenant.template.json must use id and tenantId ${siteConfig.tenantId}.`);
+  }
+
+  const theme = await readJson(siteConfig.themeFile);
+  scanRaw(siteConfig.themeFile, theme.raw);
+  if (theme.data.tenantId !== siteConfig.tenantId) {
+    fail(`${siteConfig.themeFile} tenantId must be ${siteConfig.tenantId}.`);
   }
   if (theme.data.isActive !== true) {
-    fail('theme.json must have isActive: true.');
+    fail(`${siteConfig.themeFile} must have isActive: true.`);
   }
 
-  const pagesDir = path.join(seedRoot, 'pages');
+  const pagesDir = path.join(siteSeedRoot, 'pages');
   const pageFiles = (await readdir(pagesDir)).filter((file) => file.endsWith('.json')).sort();
   const seenSlugs = new Set();
 
   for (const pageFile of pageFiles) {
-    const relativePath = `seed/pages/${pageFile}`;
+    const relativePath = `pages/${pageFile}`;
     const page = await readJson(relativePath);
     scanRaw(relativePath, page.raw);
     validatePage(page.data, relativePath);
@@ -126,16 +205,32 @@ async function main() {
     }
   }
 
-  for (const slug of expectedSlugs) {
+  for (const slug of siteConfig.expectedSlugs) {
     if (!seenSlugs.has(slug)) {
       fail(`Missing expected page slug ${slug}.`);
     }
   }
 
   for (const slug of seenSlugs) {
-    if (!expectedSlugs.includes(slug)) {
+    if (!siteConfig.expectedSlugs.includes(slug)) {
       fail(`Unexpected page slug ${slug}.`);
     }
+  }
+
+  return pageFiles.length;
+}
+
+async function main() {
+  let pageCount = 0;
+
+  if (!siteConfig) {
+    fail(`Unsupported SITE_KEY ${siteKey}. Add a site config before validating this seed set.`);
+  } else if (!(await pathExists(siteSeedRoot))) {
+    fail(`Missing seed folder for SITE_KEY ${siteKey}: ${siteSeedRoot}`);
+  } else if (siteConfig.placeholderOnly) {
+    await validatePlaceholderSite();
+  } else {
+    pageCount = await validateSeedableSite();
   }
 
   if (warnings.length > 0) {
@@ -149,8 +244,12 @@ async function main() {
     process.exit(1);
   }
 
-  console.log('Seed validation passed.');
-  console.log(`Validated tenant template, theme, and ${pageFiles.length} page documents.`);
+  console.log(`Seed validation passed for SITE_KEY=${siteKey}.`);
+  if (siteConfig?.placeholderOnly) {
+    console.log('Validated placeholder-safe tenant/theme structure. No page JSON is present for this placeholder site yet.');
+  } else {
+    console.log(`Validated tenant template, theme, and ${pageCount} page documents.`);
+  }
 }
 
 main().catch((error) => {

@@ -2,13 +2,45 @@
 
 Local-only seed/import tool for recreating the IceSkatingRinkRentals.com Pumpkin CMS MVP in Cosmos DB.
 
-This package upserts:
+The tool now uses a multi-site-ready seed layout under `seed-sites/`. The current default and only seedable site is:
+
+```text
+SITE_KEY=ice-rink-rentals
+```
+
+If `SITE_KEY` is omitted, scripts automatically use `ice-rink-rentals`, preserving the existing workflow.
+
+## Current Seeded Content
+
+For `ice-rink-rentals`, this package upserts:
 
 - `Tenant`: `ice-rink-rentals`
 - `Theme`: active local Ice Skating Rink Rentals theme
 - `Page`: `home`, `ice-rink-rentals`, `events-holiday-activations`, `contact`
 
-It does not store API keys, API hashes, passwords, Cosmos keys, connection strings, or other secrets in committed files.
+It does not seed `User` or `FormEntry`.
+
+## Seed Structure
+
+```text
+seed-sites/
+  ice-rink-rentals/
+    tenant.template.json
+    theme.json
+    pages/
+      home.json
+      ice-rink-rentals.json
+      events-holiday-activations.json
+      contact.json
+  second-product-rentals/
+    README.md
+    tenant.template.json
+    theme.placeholder.json
+    pages/
+      README.md
+```
+
+`second-product-rentals` is placeholder-safe only. It intentionally does not contain real page content, secrets, API hashes, or seedable production data yet.
 
 ## Install
 
@@ -20,7 +52,16 @@ npm install
 
 ## Validate Seed Files
 
+Default validation:
+
 ```powershell
+npm run validate
+```
+
+Explicit Ice Rink validation:
+
+```powershell
+$env:SITE_KEY = "ice-rink-rentals"
 npm run validate
 ```
 
@@ -28,8 +69,8 @@ The validator checks that:
 
 - No `CMS LIVE:` markers remain.
 - No connection strings or obvious secrets are present in seed JSON.
-- `tenant.template.json` still uses `__ICE_RINK_RENTALS_API_HASH__`.
-- All expected page slugs are present.
+- `tenant.template.json` still uses the expected placeholder API hash.
+- All expected page slugs are present for the selected seedable site.
 - Each page has required Pumpkin CMS fields.
 
 ## Set Local Environment Variables
@@ -37,12 +78,13 @@ The validator checks that:
 Set these only in your local PowerShell session. Do not commit them.
 
 ```powershell
+$env:SITE_KEY = "ice-rink-rentals"
 $env:COSMOS_CONNECTION_STRING = "<local-cosmos-emulator-connection-string>"
 $env:COSMOS_DATABASE_NAME = "PumpkinCMS"
 $env:ICE_RINK_RENTALS_API_HASH = "<bcrypt-api-key-hash-for-local-tenant>"
 ```
 
-`COSMOS_DATABASE_NAME` is optional. If omitted, the script uses `PumpkinCMS`.
+`SITE_KEY` is optional for the current Ice Rink flow. `COSMOS_DATABASE_NAME` is also optional; if omitted, the script uses `PumpkinCMS`.
 
 If the Cosmos Emulator TLS certificate is not trusted by Node, use this only for the current local shell:
 
@@ -57,6 +99,8 @@ npm run seed
 ```
 
 The seed command is safe to run more than once. It uses Cosmos `upsert` for the tenant, active theme, and page documents.
+
+`SITE_KEY=second-product-rentals` is not seedable yet and will fail clearly until real second-site content and a local hash workflow are added.
 
 ## Test Pumpkin API
 
@@ -139,6 +183,6 @@ Expected result:
 
 ## Notes
 
-- This tool intentionally does not seed `User` or `FormEntry`.
+- This tool intentionally does not store API keys, API hashes, passwords, Cosmos keys, connection strings, or other secrets in committed files.
 - Generate local API hashes with the existing `apps/pumpkin-api.Tests` utility.
 - Keep `apps/ice-rink-web/.env.local` and `apps/pumpkin-api/appsettings.Development.json` local-only.
