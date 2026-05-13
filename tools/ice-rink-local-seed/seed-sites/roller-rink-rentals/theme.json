@@ -1,40 +1,40 @@
 {
-  "id": "second-product-rentals-default",
-  "themeId": "second-product-rentals-default",
-  "tenantId": "second-product-rentals",
-  "name": "Second Product Rentals Default Theme",
-  "description": "Local proof theme for a second product rental site.",
+  "id": "roller-rink-rentals-default",
+  "themeId": "roller-rink-rentals-default",
+  "tenantId": "roller-rink-rentals",
+  "name": "Roller Rink Rentals Default Theme",
+  "description": "Local proof theme for Roller Rink Rentals.",
   "isActive": true,
   "header": {
     "logoUrl": "",
-    "logoAlt": "Second Product Rentals",
+    "logoAlt": "Roller Rink Rentals",
     "sticky": true,
     "ctaText": "Get a Quote",
     "ctaUrl": "/contact",
     "ctaTarget": "_self",
     "classNames": {
-      "root": "sticky top-0 z-50 w-full border-b border-emerald-100 bg-white/90 backdrop-blur-md",
+      "root": "sticky top-0 z-50 w-full border-b border-fuchsia-100 bg-white/90 backdrop-blur-md",
       "container": "max-w-6xl mx-auto px-6 md:px-8 flex items-center justify-between h-16",
       "logoWrapper": "flex items-center gap-2.5 group",
       "logoIcon": "hidden",
-      "logoText": "text-lg font-extrabold text-slate-950 tracking-tight group-hover:text-emerald-700 transition-colors",
+      "logoText": "text-lg font-extrabold text-slate-950 tracking-tight group-hover:text-fuchsia-700 transition-colors",
       "nav": "hidden md:flex items-center gap-7 text-sm font-medium text-slate-600",
-      "navLink": "hover:text-emerald-700 transition-colors",
-      "ctaButton": "hidden md:inline-flex items-center gap-2 px-5 py-2 bg-emerald-700 text-white text-sm font-bold rounded-full hover:bg-emerald-800 transition-all shadow-sm"
+      "navLink": "hover:text-fuchsia-700 transition-colors",
+      "ctaButton": "hidden md:inline-flex items-center gap-2 px-5 py-2 bg-fuchsia-700 text-white text-sm font-bold rounded-full hover:bg-fuchsia-800 transition-all shadow-sm"
     }
   },
   "footer": {
-    "copyright": "Copyright {year} Second Product Rentals. All rights reserved.",
-    "description": "Generic rental planning support for a second local proof site.",
+    "copyright": "Copyright {year} Roller Rink Rentals. All rights reserved.",
+    "description": "Portable Roller Rink Rentals for events, schools, corporate gatherings, parties, and community programs.",
     "classNames": {
-      "root": "w-full border-t border-emerald-100 bg-slate-950 text-white",
+      "root": "w-full border-t border-fuchsia-100 bg-slate-950 text-white",
       "container": "max-w-6xl mx-auto px-6 md:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8",
       "brandSection": "md:col-span-2",
       "brandLogoWrapper": "flex items-center gap-2",
       "brandLogoIcon": "hidden",
       "brandLogoText": "text-lg font-extrabold text-white",
       "brandDescription": "text-sm text-slate-300 mt-2 max-w-sm",
-      "columnTitle": "text-xs font-bold uppercase tracking-widest text-emerald-200 mb-3",
+      "columnTitle": "text-xs font-bold uppercase tracking-widest text-fuchsia-200 mb-3",
       "columnList": "space-y-2 text-sm text-slate-300",
       "columnLink": "hover:text-white transition-colors",
       "bottomBar": "border-t border-white/10",
@@ -44,13 +44,13 @@
   },
   "blockStyles": {
     "Hero": {
-      "root": "relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_#d1fae5,_transparent_34%),linear-gradient(135deg,_#f8fafc_0%,_#ecfdf5_42%,_#ccfbf1_100%)]",
+      "root": "relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_#fae8ff,_transparent_34%),linear-gradient(135deg,_#f8fafc_0%,_#fdf4ff_42%,_#fce7f3_100%)]",
       "headline": "max-w-3xl text-4xl font-extrabold leading-tight text-slate-950 md:text-5xl lg:text-6xl",
       "subheadline": "mt-5 max-w-2xl text-base leading-8 text-slate-700 md:text-lg",
-      "button": "inline-flex min-h-12 items-center justify-center rounded-full bg-emerald-700 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-900/15 transition-colors hover:bg-emerald-800"
+      "button": "inline-flex min-h-12 items-center justify-center rounded-full bg-fuchsia-700 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-fuchsia-900/15 transition-colors hover:bg-fuchsia-800"
     },
     "TrustBar": {
-      "root": "w-full border-y border-emerald-100 bg-white py-8",
+      "root": "w-full border-y border-fuchsia-100 bg-white py-8",
       "container": "mx-auto max-w-6xl px-6 md:px-8",
       "grid": "grid grid-cols-2 gap-6 md:grid-cols-4",
       "itemTitle": "text-sm font-extrabold text-slate-950",
@@ -64,6 +64,13 @@
       "grid": "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3",
       "card": "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
     },
+    "HowItWorks": {
+      "root": "w-full bg-white py-14 md:py-20",
+      "container": "mx-auto max-w-6xl px-6 md:px-8",
+      "title": "mb-10 text-3xl font-extrabold leading-tight text-slate-950 md:text-4xl",
+      "steps": "grid grid-cols-1 gap-5 md:grid-cols-4",
+      "step": "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+    },
     "FAQ": {
       "root": "w-full bg-slate-50 py-14 md:py-20",
       "container": "mx-auto max-w-4xl px-6 md:px-8",
@@ -71,14 +78,14 @@
       "subtitle": "mt-3 text-base leading-7 text-slate-600"
     },
     "PrimaryCTA": {
-      "root": "relative w-full overflow-hidden bg-emerald-800",
+      "root": "relative w-full overflow-hidden bg-fuchsia-800",
       "title": "text-3xl font-extrabold leading-tight text-white md:text-4xl",
-      "description": "mt-4 text-base leading-7 text-emerald-50 md:text-lg",
-      "button": "inline-flex min-h-12 items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-emerald-800 shadow-lg transition-colors hover:bg-emerald-50"
+      "description": "mt-4 text-base leading-7 text-fuchsia-50 md:text-lg",
+      "button": "inline-flex min-h-12 items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-fuchsia-800 shadow-lg transition-colors hover:bg-fuchsia-50"
     }
   },
   "menu": [
-    { "label": "Rentals", "url": "/second-product-rentals", "target": "_self", "icon": "", "order": 1, "isVisible": true, "children": [] },
+    { "label": "Rentals", "url": "/roller-rink-rentals", "target": "_self", "icon": "", "order": 1, "isVisible": true, "children": [] },
     { "label": "Contact", "url": "/contact", "target": "_self", "icon": "", "order": 2, "isVisible": true, "children": [] }
   ],
   "createdAt": "2026-05-13T00:00:00Z",

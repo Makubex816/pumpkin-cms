@@ -1,11 +1,11 @@
 {
-  "id": "second-product-rentals",
-  "tenantId": "second-product-rentals",
-  "name": "Second Product Rentals",
+  "id": "roller-rink-rentals",
+  "tenantId": "roller-rink-rentals",
+  "name": "Roller Rink Rentals",
   "plan": "local-dev",
   "status": "active",
   "apiKey": "",
-  "apiKeyHash": "__SECOND_PRODUCT_API_HASH__",
+  "apiKeyHash": "__ROLLER_RINK_RENTALS_API_HASH__",
   "apiKeyMeta": {
     "createdAt": "2026-05-13T00:00:00Z",
     "isActive": true
@@ -13,7 +13,7 @@
   "createdAt": "2026-05-13T00:00:00Z",
   "updatedAt": "2026-05-13T00:00:00Z",
   "settings": {
-    "theme": "second-product-rentals-default",
+    "theme": "roller-rink-rentals-default",
     "language": "en-us",
     "maxUsers": 5,
     "features": {
@@ -26,13 +26,13 @@
       "canViewAllTenants": false
     },
     "allowedOrigins": [
-      "http://second.localhost:3002",
+      "http://roller.localhost:3002",
       "http://localhost:3002",
       "http://127.0.0.1:3002"
     ]
   },
   "contact": {
-    "email": "",
+    "email": "hello@rollerrinkrentals.com",
     "phone": ""
   },
   "billing": {

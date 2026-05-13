@@ -7,7 +7,7 @@ Reusable multi-site rental frontend powered by Pumpkin CMS.
 This app resolves the current site from the request host on the server:
 
 - `iceskatingrinkrentals.com`, `localhost:3002`, `127.0.0.1:3002`
-- `second-domain-placeholder.com`, `second.localhost:3002`
+- `rollerrinkrentals.com`, `roller.localhost:3002`
 
 Unknown hosts fall back to the Ice Skating Rink Rentals site.
 
@@ -33,9 +33,9 @@ ICE_RINK_RENTALS_TENANT_ID=ice-rink-rentals
 ICE_RINK_RENTALS_API_KEY=your-api-key
 ICE_RINK_RENTALS_CANONICAL_URL=https://iceskatingrinkrentals.com
 
-SECOND_PRODUCT_TENANT_ID=second-product-rentals
-SECOND_PRODUCT_API_KEY=your-api-key
-SECOND_PRODUCT_CANONICAL_URL=https://second-domain-placeholder.com
+ROLLER_RINK_RENTALS_TENANT_ID=roller-rink-rentals
+ROLLER_RINK_RENTALS_API_KEY=your-api-key
+ROLLER_RINK_RENTALS_CANONICAL_URL=https://rollerrinkrentals.com
 ```
 
 API keys are server-only and are not exposed with `NEXT_PUBLIC_`.

@@ -19,10 +19,10 @@ const siteConfigs = {
     themeFile: 'theme.json',
     placeholderOnly: false,
   },
-  'second-product-rentals': {
-    tenantId: 'second-product-rentals',
-    hashPlaceholder: '__SECOND_PRODUCT_API_HASH__',
-    expectedSlugs: ['home', 'second-product-rentals', 'contact'],
+  'roller-rink-rentals': {
+    tenantId: 'roller-rink-rentals',
+    hashPlaceholder: '__ROLLER_RINK_RENTALS_API_HASH__',
+    expectedSlugs: ['home', 'roller-rink-rentals', 'contact'],
     themeFile: 'theme.json',
     placeholderOnly: false,
   },
@@ -162,7 +162,7 @@ async function validatePlaceholderSite() {
   const pagesDir = path.join(siteSeedRoot, 'pages');
   const pageFiles = (await readdir(pagesDir)).filter((file) => file.endsWith('.json'));
   if (pageFiles.length > 0) {
-    fail('second-product-rentals is placeholder-only and must not contain page JSON yet.');
+    fail(`${siteKey} is placeholder-only and must not contain page JSON yet.`);
   }
 }
 

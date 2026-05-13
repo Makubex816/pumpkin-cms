@@ -22,13 +22,13 @@ seed-sites/
       ice-rink-rentals.json
       events-holiday-activations.json
       contact.json
-  second-product-rentals/
+  roller-rink-rentals/
     README.md
     tenant.template.json
     theme.json
     pages/
       home.json
-      second-product-rentals.json
+      roller-rink-rentals.json
       contact.json
 ```
 
@@ -58,10 +58,10 @@ npm run validate
 Remove-Item Env:SITE_KEY
 ```
 
-Validate the second-site local proof seed:
+Validate the Roller Rink local proof seed:
 
 ```powershell
-$env:SITE_KEY = "second-product-rentals"
+$env:SITE_KEY = "roller-rink-rentals"
 npm run validate
 Remove-Item Env:SITE_KEY
 ```
@@ -94,9 +94,9 @@ Remove-Item Env:SITE_KEY
 
 `COSMOS_DATABASE_NAME` is optional. If omitted, the script uses `PumpkinCMS`.
 
-## Second-site Local Proof Seed
+## Roller Rink Local Proof Seed
 
-Generate a second local API key and hash with the existing utility project:
+Generate a new Roller Rink local API key and hash with the existing utility project:
 
 ```powershell
 cd "$HOME\Desktop\PumpkinCMS\pumpkin-cms"
@@ -106,21 +106,21 @@ dotnet run --project apps/pumpkin-api.Tests
 Copy the generated API hash into the current PowerShell session only:
 
 ```powershell
-$env:SITE_KEY = "second-product-rentals"
+$env:SITE_KEY = "roller-rink-rentals"
 $env:COSMOS_CONNECTION_STRING = "<local-cosmos-emulator-connection-string>"
 $env:COSMOS_DATABASE_NAME = "PumpkinCMS"
-$env:SECOND_PRODUCT_API_HASH = "<generated-bcrypt-api-key-hash>"
+$env:ROLLER_RINK_RENTALS_API_HASH = "<generated-bcrypt-api-key-hash>"
 ```
 
 Manually add the matching plain API key and tenant values to `apps/ice-rink-web/.env.local`. Do not commit that file.
 
 ```text
-SECOND_PRODUCT_TENANT_ID=second-product-rentals
-SECOND_PRODUCT_API_KEY=<generated-plain-api-key>
-SECOND_PRODUCT_CANONICAL_URL=https://second-domain-placeholder.com
+ROLLER_RINK_RENTALS_TENANT_ID=roller-rink-rentals
+ROLLER_RINK_RENTALS_API_KEY=<generated-plain-api-key>
+ROLLER_RINK_RENTALS_CANONICAL_URL=https://rollerrinkrentals.com
 ```
 
-Seed the second tenant:
+Seed the roller tenant:
 
 ```powershell
 cd "$HOME\Desktop\PumpkinCMS\pumpkin-cms\tools\ice-rink-local-seed"
@@ -153,15 +153,15 @@ $apiKey = "<plain-local-api-key>"
 $headers = @{ Authorization = "Bearer $apiKey"; Accept = "application/json" }
 ```
 
-For the second-site proof, use:
+For the Roller Rink proof, use:
 
 ```powershell
-$tenantId = "second-product-rentals"
-$apiKey = "<generated-second-product-plain-api-key>"
+$tenantId = "roller-rink-rentals"
+$apiKey = "<generated-roller-rink-plain-api-key>"
 $headers = @{ Authorization = "Bearer $apiKey"; Accept = "application/json" }
 ```
 
-Test pages:
+Test shared pages:
 
 ```powershell
 Invoke-RestMethod -Uri "$api/api/pages/$tenantId/home" -Headers $headers |
@@ -185,10 +185,10 @@ Invoke-RestMethod -Uri "$api/api/pages/$tenantId/events-holiday-activations" -He
   ConvertTo-Json -Depth 80
 ```
 
-For the second-site proof, also test:
+For Roller Rink, also test:
 
 ```powershell
-Invoke-RestMethod -Uri "$api/api/pages/$tenantId/second-product-rentals" -Headers $headers |
+Invoke-RestMethod -Uri "$api/api/pages/$tenantId/roller-rink-rentals" -Headers $headers |
   ConvertTo-Json -Depth 80
 ```
 
@@ -225,19 +225,19 @@ http://localhost:3002/contact
 http://localhost:3002/sitemap.xml
 ```
 
-Second-site proof URLs:
+Roller Rink URLs:
 
 ```text
-http://second.localhost:3002/
-http://second.localhost:3002/second-product-rentals
-http://second.localhost:3002/contact
-http://second.localhost:3002/sitemap.xml
+http://roller.localhost:3002/
+http://roller.localhost:3002/roller-rink-rentals
+http://roller.localhost:3002/contact
+http://roller.localhost:3002/sitemap.xml
 ```
 
-If `second.localhost` does not resolve on your Windows machine, add a local hosts entry or use a browser/runtime setup that maps `*.localhost` to `127.0.0.1`.
+If `roller.localhost` does not resolve on your Windows machine, add a local hosts entry or use a browser/runtime setup that maps `*.localhost` to `127.0.0.1`.
 
 ## Notes
 
 - This tool intentionally does not store API keys, API hashes, passwords, Cosmos keys, connection strings, or other secrets in committed files.
-- The second-site proof content is generic and marked `noindex, nofollow`; replace it before any production use.
+- The Roller Rink proof content is realistic enough for local testing but still needs final production review.
 - Keep `apps/ice-rink-web/.env.local` and `apps/pumpkin-api/appsettings.Development.json` local-only.

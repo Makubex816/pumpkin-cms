@@ -1,4 +1,4 @@
-export type SiteKey = 'ice-rink-rentals' | 'second-product-rentals';
+export type SiteKey = 'ice-rink-rentals' | 'roller-rink-rentals';
 
 export interface ProductTokens {
   singular: string;
@@ -13,8 +13,16 @@ export interface SiteDefinition {
   apiKeyEnv: string;
   canonicalEnv: string;
   brand: string;
+  shortBrand: string;
+  legalName: string;
   service: string;
+  serviceKeyword: string;
   product: ProductTokens;
+  featureFlags: {
+    pages: boolean;
+    forms: boolean;
+    sitemap: boolean;
+  };
 }
 
 export interface ResolvedSite extends SiteDefinition {
@@ -34,24 +42,40 @@ export const sites: SiteDefinition[] = [
     apiKeyEnv: 'ICE_RINK_RENTALS_API_KEY',
     canonicalEnv: 'ICE_RINK_RENTALS_CANONICAL_URL',
     brand: 'Ice Skating Rink Rentals',
+    shortBrand: 'Ice Skating Rink Rentals',
+    legalName: 'Ice Skating Rink Rentals',
     service: 'Portable Ice Rink Rentals',
+    serviceKeyword: 'portable ice rink rentals',
     product: {
       singular: 'portable ice rink',
       plural: 'portable ice rinks',
     },
+    featureFlags: {
+      pages: true,
+      forms: true,
+      sitemap: true,
+    },
   },
   {
-    key: 'second-product-rentals',
-    domain: 'second-domain-placeholder.com',
-    localHosts: ['second.localhost:3002'],
-    tenantEnv: 'SECOND_PRODUCT_TENANT_ID',
-    apiKeyEnv: 'SECOND_PRODUCT_API_KEY',
-    canonicalEnv: 'SECOND_PRODUCT_CANONICAL_URL',
-    brand: 'Second Product Rentals',
-    service: 'Second Product Rentals',
+    key: 'roller-rink-rentals',
+    domain: 'rollerrinkrentals.com',
+    localHosts: ['roller.localhost:3002'],
+    tenantEnv: 'ROLLER_RINK_RENTALS_TENANT_ID',
+    apiKeyEnv: 'ROLLER_RINK_RENTALS_API_KEY',
+    canonicalEnv: 'ROLLER_RINK_RENTALS_CANONICAL_URL',
+    brand: 'Roller Rink Rentals',
+    shortBrand: 'Roller Rink Rentals',
+    legalName: 'Roller Rink Rentals',
+    service: 'Portable Roller Rink Rentals',
+    serviceKeyword: 'roller rink rentals',
     product: {
-      singular: 'second product',
-      plural: 'second products',
+      singular: 'portable roller rink',
+      plural: 'portable roller rinks',
+    },
+    featureFlags: {
+      pages: true,
+      forms: true,
+      sitemap: true,
     },
   },
 ];

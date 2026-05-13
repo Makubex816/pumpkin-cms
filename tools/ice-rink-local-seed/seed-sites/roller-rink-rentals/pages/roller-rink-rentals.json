@@ -1,0 +1,192 @@
+{
+  "id": "roller-rink-rentals-roller-rink-rentals",
+  "PageId": "roller-rink-rentals-roller-rink-rentals",
+  "tenantId": "roller-rink-rentals",
+  "pageSlug": "roller-rink-rentals",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "category": "rentals",
+    "product": "portable roller rink",
+    "keyword": "roller rink rentals",
+    "pageType": "landing",
+    "title": "Roller Rink Rentals",
+    "description": "Explore portable roller rink rentals for events, parties, schools, corporate programs, venues, and community activations.",
+    "createdAt": "2026-05-13T00:00:00Z",
+    "updatedAt": "2026-05-13T00:00:00Z",
+    "author": "Roller Rink Rentals Team",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "roller rink rentals",
+    "tags": ["roller rink rentals", "portable roller rink rental", "event rink planning"],
+    "contentSummary": "Roller Rink Rentals local proof content for portable roller rink planning, venue fit, event formats, and quote requests.",
+    "blockTypes": ["Hero", "CardGrid", "HowItWorks", "FAQ", "PrimaryCTA"]
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Roller Rink Rentals for Events and Venues",
+          "subheadline": "Plan a portable roller rink experience for school events, private parties, corporate gatherings, community programs, and destination venues with clear setup and quote details.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "Roller rink rentals for events and venues",
+          "buttonText": "Request Quote",
+          "buttonLink": "/contact"
+        }
+      },
+      {
+        "type": "CardGrid",
+        "content": {
+          "title": "Portable roller rink rental use cases",
+          "subtitle": "This local proof page keeps the content general while still exercising the CMS block renderer for the roller tenant.",
+          "layout": "grid-3",
+          "cards": [
+            {
+              "title": "School events",
+              "description": "Create a movement-friendly activity for campus events, fundraisers, student programs, and family nights.",
+              "image": "",
+              "image-alt": "",
+              "icon": "School",
+              "link": "/contact",
+              "alt": "School events"
+            },
+            {
+              "title": "Corporate gatherings",
+              "description": "Add a memorable activity to company celebrations, brand activations, employee events, and client programs.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Briefcase",
+              "link": "/contact",
+              "alt": "Corporate gatherings"
+            },
+            {
+              "title": "Private parties",
+              "description": "Plan a standout experience for birthdays, milestone events, neighborhood gatherings, and private celebrations.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Gift",
+              "link": "/contact",
+              "alt": "Private parties"
+            },
+            {
+              "title": "Community programs",
+              "description": "Support public events, recreation programs, local gatherings, and family-friendly activity zones.",
+              "image": "",
+              "image-alt": "",
+              "icon": "MapPinned",
+              "link": "/contact",
+              "alt": "Community programs"
+            },
+            {
+              "title": "Venue activations",
+              "description": "Test destination, retail, hospitality, and mixed-use venue copy without tying the proof to final production claims.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Store",
+              "link": "/contact",
+              "alt": "Venue activations"
+            },
+            {
+              "title": "Quote planning",
+              "description": "Capture timing, location, guest count, surface details, and goals through the tenant-specific contact form.",
+              "image": "",
+              "image-alt": "",
+              "icon": "ClipboardList",
+              "link": "/contact",
+              "alt": "Quote planning"
+            }
+          ]
+        }
+      },
+      {
+        "type": "HowItWorks",
+        "content": {
+          "title": "How a roller rink rental is planned",
+          "steps": [
+            { "title": "Share event basics", "text": "Send the date, location, venue type, guest count, and goals for the roller rink rental.", "image": "", "alt": "Share event basics" },
+            { "title": "Review venue fit", "text": "Check available space, access, surface details, activity layout, and guest circulation.", "image": "", "alt": "Review venue fit" },
+            { "title": "Plan support needs", "text": "Discuss setup timing, staffing, equipment support, music, lighting, seating, and branding options.", "image": "", "alt": "Plan support needs" },
+            { "title": "Confirm quote details", "text": "Use the final scope to align timing, logistics, guest flow, and follow-up needs.", "image": "", "alt": "Confirm quote details" }
+          ]
+        }
+      },
+      {
+        "type": "FAQ",
+        "content": {
+          "title": "Roller rink rental questions",
+          "subtitle": "These local-proof answers help validate page rendering before final production content is written.",
+          "layout": "accordion",
+          "items": [
+            { "question": "What details help with a roller rink rental quote?", "answer": "Helpful details include event date, venue address, available space, surface type, guest count, rental duration, access notes, and add-on needs." },
+            { "question": "Can portable roller rinks support different event types?", "answer": "Yes. The same planning flow can support schools, corporate gatherings, private parties, community events, and venue activations." },
+            { "question": "Is this copy final?", "answer": "No. This seed is designed for a local proof and should be rewritten with final brand, service, imagery, and conversion content before launch." }
+          ]
+        }
+      },
+      {
+        "type": "PrimaryCTA",
+        "content": {
+          "title": "Ready to test a roller rink quote request?",
+          "description": "Open the contact page through roller.localhost:3002 and verify the submission is stored for the roller tenant.",
+          "buttonText": "Go to Contact",
+          "buttonLink": "/contact",
+          "secondaryText": "Back to home",
+          "secondaryLinkText": "View home",
+          "secondaryLink": "/",
+          "backgroundImage": "",
+          "mainImage": "",
+          "alt": "Roller rink rental quote request"
+        }
+      }
+    ]
+  },
+  "contentRelationships": {
+    "isHub": false,
+    "hubPageSlug": "home",
+    "topicCluster": "roller-rink-rentals",
+    "relatedHubs": [],
+    "spokePriority": 1
+  },
+  "seo": {
+    "metaTitle": "Roller Rink Rentals | Portable Roller Rink Rentals",
+    "metaDescription": "Explore portable roller rink rentals for events, parties, schools, corporate programs, venues, and community activations.",
+    "keywords": ["roller rink rentals", "portable roller rink rental", "event rink planning"],
+    "robots": "noindex, nofollow",
+    "canonicalUrl": "https://rollerrinkrentals.com/roller-rink-rentals",
+    "alternateUrls": [],
+    "structuredData": [
+      "{\"@context\":\"https://schema.org\",\"@type\":\"WebPage\",\"name\":\"Roller Rink Rentals\",\"url\":\"https://rollerrinkrentals.com/roller-rink-rentals\",\"description\":\"Explore portable roller rink rentals for events, parties, schools, corporate programs, venues, and community activations.\"}"
+    ],
+    "openGraph": {
+      "og:title": "Roller Rink Rentals | Portable Roller Rink Rentals",
+      "og:description": "Explore portable roller rink rentals for events, parties, schools, corporate programs, venues, and community activations.",
+      "og:type": "website",
+      "og:url": "https://rollerrinkrentals.com/roller-rink-rentals",
+      "og:image": "",
+      "og:image:alt": "Roller Rink Rentals",
+      "og:site_name": "Roller Rink Rentals",
+      "og:locale": "en_US"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Roller Rink Rentals | Portable Roller Rink Rentals",
+      "twitter:description": "Explore portable roller rink rentals for events, parties, schools, corporate programs, venues, and community activations.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "isPublished": true,
+  "publishedAt": "2026-05-13T00:00:00Z",
+  "includeInSitemap": true
+}

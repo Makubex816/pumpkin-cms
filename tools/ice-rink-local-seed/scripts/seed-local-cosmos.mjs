@@ -16,10 +16,10 @@ const siteConfigs = {
     hashPlaceholder: '__ICE_RINK_RENTALS_API_HASH__',
     seedable: true,
   },
-  'second-product-rentals': {
-    tenantId: 'second-product-rentals',
-    apiHashEnv: 'SECOND_PRODUCT_API_HASH',
-    hashPlaceholder: '__SECOND_PRODUCT_API_HASH__',
+  'roller-rink-rentals': {
+    tenantId: 'roller-rink-rentals',
+    apiHashEnv: 'ROLLER_RINK_RENTALS_API_HASH',
+    hashPlaceholder: '__ROLLER_RINK_RENTALS_API_HASH__',
     seedable: true,
   },
 };
