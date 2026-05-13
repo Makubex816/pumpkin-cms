@@ -1,0 +1,42 @@
+{
+  "id": "ice-rink-rentals",
+  "tenantId": "ice-rink-rentals",
+  "name": "Ice Skating Rink Rentals",
+  "plan": "local-dev",
+  "status": "active",
+  "apiKey": "",
+  "apiKeyHash": "__ICE_RINK_RENTALS_API_HASH__",
+  "apiKeyMeta": {
+    "createdAt": "2026-05-13T00:00:00Z",
+    "isActive": true
+  },
+  "createdAt": "2026-05-13T00:00:00Z",
+  "updatedAt": "2026-05-13T00:00:00Z",
+  "settings": {
+    "theme": "ice-rink-rentals-default",
+    "language": "en-us",
+    "maxUsers": 5,
+    "features": {
+      "forms": true,
+      "pages": true,
+      "analytics": false,
+      "canCreateTenants": false,
+      "canDeleteTenants": false,
+      "canManageAllContent": false,
+      "canViewAllTenants": false
+    },
+    "allowedOrigins": [
+      "http://localhost:3002",
+      "http://127.0.0.1:3002",
+      "http://localhost:3000"
+    ]
+  },
+  "contact": {
+    "email": "hello@iceskatingrinkrentals.com",
+    "phone": ""
+  },
+  "billing": {
+    "cycle": "none",
+    "nextInvoice": null
+  }
+}

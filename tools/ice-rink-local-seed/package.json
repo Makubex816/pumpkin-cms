@@ -1,0 +1,14 @@
+{
+  "name": "ice-rink-local-seed",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-only Cosmos seed/import tool for the Ice Skating Rink Rentals Pumpkin CMS MVP.",
+  "scripts": {
+    "validate": "node scripts/validate-seed.mjs",
+    "seed": "node scripts/seed-local-cosmos.mjs"
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.2.0"
+  }
+}

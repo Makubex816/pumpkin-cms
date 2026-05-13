@@ -1,0 +1,206 @@
+{
+  "id": "ice-rink-rentals-contact",
+  "PageId": "ice-rink-rentals-contact",
+  "tenantId": "ice-rink-rentals",
+  "pageSlug": "contact",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "category": "rentals",
+    "product": "portable ice rink",
+    "keyword": "ice rink rental quote",
+    "pageType": "landing",
+    "title": "Request an Ice Rink Rental Quote",
+    "description": "Request an ice rink rental quote with your event date, location, venue type, guest count, surface details, and rental goals.",
+    "createdAt": "2026-05-13T00:00:00Z",
+    "updatedAt": "2026-05-13T00:00:00Z",
+    "author": "Ice Skating Rink Rentals Team",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "ice rink rental quote",
+    "tags": ["Portable Ice Rink Rentals", "portable ice rink rental", "ice rink rental quote", "event rentals"],
+    "contentSummary": "Request a Portable Ice Rink Rentals quote by sharing event date, location, venue type, guest count, surface details, rental goals, and add-ons.",
+    "blockTypes": ["Hero", "Contact", "CardGrid", "FAQ", "PrimaryCTA"]
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Request an Ice Rink Rental Quote",
+          "subheadline": "Share your event date, location, venue type, guest count, surface details, rental goals, and add-on needs so the rental planning conversation starts clearly.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "Request an ice rink rental quote",
+          "buttonText": "Start Quote Request",
+          "buttonLink": "#contact"
+        }
+      },
+      {
+        "type": "Contact",
+        "content": {
+          "id": "contact",
+          "title": "Start your quote request",
+          "subtitle": "Share the basics below and the rental conversation can start with the details that matter most.",
+          "address": "",
+          "phone": "",
+          "email": "hello@iceskatingrinkrentals.com",
+          "hours": "Responses are prioritized by event date, season, and venue readiness.",
+          "formFields": [
+            { "label": "Name", "type": "text", "required": true, "placeholder": "Your name" },
+            { "label": "Email", "type": "email", "required": true, "placeholder": "you@example.com" },
+            { "label": "Phone", "type": "tel", "required": false, "placeholder": "Best callback number" },
+            { "label": "Event Date", "type": "text", "required": true, "placeholder": "Preferred date or date range" },
+            { "label": "Event Location", "type": "text", "required": true, "placeholder": "City, state, and venue" },
+            { "label": "Venue Type", "type": "text", "required": false, "placeholder": "School, town center, mall, venue, private property" },
+            { "label": "Estimated Attendance", "type": "text", "required": false, "placeholder": "Expected guest count" },
+            { "label": "Surface Details", "type": "textarea", "required": false, "placeholder": "Indoor/outdoor, surface type, available space, access notes" },
+            { "label": "Rental Goals", "type": "textarea", "required": true, "placeholder": "Tell us about timing, add-ons, and the experience you want to create" }
+          ],
+          "submitButtonText": "Send Quote Request",
+          "socialLinks": []
+        }
+      },
+      {
+        "type": "CardGrid",
+        "content": {
+          "title": "Helpful details for a quote",
+          "subtitle": "The more context you can share, the easier it is to understand availability, setup needs, and rental fit.",
+          "layout": "grid-3",
+          "cards": [
+            {
+              "title": "Event date",
+              "description": "Include your preferred date, backup dates, setup window, operating hours, and teardown expectations.",
+              "image": "",
+              "image-alt": "",
+              "icon": "CalendarCheck",
+              "link": "",
+              "alt": "Event date"
+            },
+            {
+              "title": "Location",
+              "description": "Share the venue address, city, access notes, loading area, and whether the event is public or private.",
+              "image": "",
+              "image-alt": "",
+              "icon": "MapPin",
+              "link": "",
+              "alt": "Location"
+            },
+            {
+              "title": "Indoor or outdoor",
+              "description": "Tell us whether the rink would be inside, outside, covered, or exposed to weather.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Tent",
+              "link": "",
+              "alt": "Indoor or outdoor"
+            },
+            {
+              "title": "Surface type",
+              "description": "Describe the surface, available footprint, slope concerns, power access, and nearby constraints.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Warehouse",
+              "link": "",
+              "alt": "Surface type"
+            },
+            {
+              "title": "Expected attendance",
+              "description": "Estimate guest count, participant volume, event flow, age range, and whether skating is the main attraction.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Users",
+              "link": "",
+              "alt": "Expected attendance"
+            },
+            {
+              "title": "Add-ons",
+              "description": "Mention skate support, attendants, lighting, music, decor, branding, seating, or hospitality needs.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Sparkles",
+              "link": "",
+              "alt": "Add-ons"
+            }
+          ]
+        }
+      },
+      {
+        "type": "FAQ",
+        "content": {
+          "title": "Quote request questions",
+          "subtitle": "These answers help set expectations before the rental team follows up.",
+          "layout": "accordion",
+          "items": [
+            { "question": "What should I include in a quote request?", "answer": "Include date, location, indoor or outdoor placement, available space, surface type, guest count, rental duration, and add-ons." },
+            { "question": "Can I request pricing before all details are final?", "answer": "Yes. Early details can start the conversation, and the rental scope can be refined as the venue, timing, and event goals become clearer." },
+            { "question": "Do you need venue photos or layout details?", "answer": "Photos, site maps, measurements, and access notes are helpful because they clarify footprint, surface, loading, and guest-flow needs." },
+            { "question": "What happens after I submit the form?", "answer": "The next step is to review availability, venue fit, setup considerations, add-ons, and any details needed to shape quote options." }
+          ]
+        }
+      },
+      {
+        "type": "PrimaryCTA",
+        "content": {
+          "title": "Have the basics ready?",
+          "description": "Send the event date, location, and venue details so the rental quote process can start with useful context.",
+          "buttonText": "Start Quote Request",
+          "buttonLink": "#contact",
+          "secondaryText": "Still comparing options?",
+          "secondaryLinkText": "Review rental planning",
+          "secondaryLink": "/ice-rink-rentals",
+          "backgroundImage": "",
+          "mainImage": "",
+          "alt": "Request an ice rink rental quote"
+        }
+      }
+    ]
+  },
+  "contentRelationships": {
+    "isHub": false,
+    "hubPageSlug": "ice-rink-rentals",
+    "topicCluster": "ice-rink-rentals",
+    "relatedHubs": [],
+    "spokePriority": 2
+  },
+  "seo": {
+    "metaTitle": "Request an Ice Rink Rental Quote | Ice Skating Rink Rentals",
+    "metaDescription": "Request an ice rink rental quote with your event date, location, venue type, guest count, surface details, and rental goals.",
+    "keywords": ["ice rink rental quote", "portable ice rink rental quote", "ice rink rentals", "portable rink rentals"],
+    "robots": "index, follow",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/contact",
+    "alternateUrls": [],
+    "structuredData": [
+      "{\"@context\":\"https://schema.org\",\"@type\":\"ContactPage\",\"name\":\"Request an Ice Rink Rental Quote\",\"url\":\"https://iceskatingrinkrentals.com/contact\",\"description\":\"Request an ice rink rental quote with your event date, location, venue type, guest count, surface details, and rental goals.\"}"
+    ],
+    "openGraph": {
+      "og:title": "Request an Ice Rink Rental Quote | Ice Skating Rink Rentals",
+      "og:description": "Request an ice rink rental quote with your event date, location, venue type, guest count, surface details, and rental goals.",
+      "og:type": "website",
+      "og:url": "https://iceskatingrinkrentals.com/contact",
+      "og:image": "",
+      "og:image:alt": "Ice Skating Rink Rentals",
+      "og:site_name": "Ice Skating Rink Rentals",
+      "og:locale": "en_US"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Request an Ice Rink Rental Quote | Ice Skating Rink Rentals",
+      "twitter:description": "Request an ice rink rental quote with your event date, location, venue type, guest count, surface details, and rental goals.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "isPublished": true,
+  "publishedAt": "2026-05-13T00:00:00Z",
+  "includeInSitemap": true
+}

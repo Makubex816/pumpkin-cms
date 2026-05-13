@@ -1,0 +1,175 @@
+{
+  "id": "ice-rink-rentals-home",
+  "PageId": "ice-rink-rentals-home",
+  "tenantId": "ice-rink-rentals",
+  "pageSlug": "home",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "category": "rentals",
+    "product": "portable ice rink",
+    "keyword": "portable ice rink rentals",
+    "pageType": "landing",
+    "title": "Portable Ice Rink Rentals for Events",
+    "description": "Portable ice rink rentals for events, schools, towns, corporate parties, and holiday activations.",
+    "createdAt": "2026-05-13T00:00:00Z",
+    "updatedAt": "2026-05-13T00:00:00Z",
+    "author": "Ice Skating Rink Rentals Team",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "portable ice rink rentals",
+    "tags": ["portable ice rink rentals", "ice rink rentals", "holiday activations"],
+    "contentSummary": "Ice Skating Rink Rentals helps event planners and venues book portable rink rentals with clear requirements, package guidance, and quote intake.",
+    "blockTypes": ["Hero", "TrustBar", "CardGrid", "HowItWorks", "FAQ", "PrimaryCTA"]
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Portable Ice Rink Rentals for Events",
+          "subheadline": "Plan portable rink rentals for events, schools, towns, corporate parties, and holiday activations with setup guidance, venue planning, and quote support.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "Portable ice rink rental event setup",
+          "buttonText": "Get a Quote",
+          "buttonLink": "/contact"
+        }
+      },
+      {
+        "type": "TrustBar",
+        "content": {
+          "items": [
+            { "icon": "CalendarCheck", "title": "Event Ready", "text": "Private, public, and seasonal rentals", "alt": "Event ready" },
+            { "icon": "MapPin", "title": "Venue Planning", "text": "Space, access, and setup guidance", "alt": "Venue planning" },
+            { "icon": "ShieldCheck", "title": "Requirements First", "text": "Clear safety and logistics review", "alt": "Requirements first" },
+            { "icon": "Clock", "title": "Fast Quotes", "text": "Tell us the date, place, and scope", "alt": "Fast quotes" }
+          ]
+        }
+      },
+      {
+        "type": "CardGrid",
+        "content": {
+          "title": "Rental solutions for every event format",
+          "subtitle": "Plan portable rink rentals around venue requirements, event goals, setup windows, and guest flow.",
+          "layout": "grid-3",
+          "cards": [
+            {
+              "title": "Holiday activations",
+              "description": "Create a seasonal attraction for towns, malls, shopping districts, hotels, and brand activations.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Sparkles",
+              "link": "/events-holiday-activations",
+              "alt": "Holiday activations"
+            },
+            {
+              "title": "Private celebrations",
+              "description": "Give weddings, milestone birthdays, school events, and community gatherings a standout winter experience.",
+              "image": "",
+              "image-alt": "",
+              "icon": "PartyPopper",
+              "link": "/ice-rink-rentals",
+              "alt": "Private celebrations"
+            },
+            {
+              "title": "Commercial venues",
+              "description": "Add a bookable attraction for venues with enough space, access, and operational support.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Building2",
+              "link": "/contact",
+              "alt": "Commercial venues"
+            }
+          ]
+        }
+      },
+      {
+        "type": "HowItWorks",
+        "content": {
+          "title": "How rentals are planned",
+          "steps": [
+            { "title": "Share your event", "text": "Send the date, location, expected attendance, surface type, and event goals.", "image": "", "alt": "Share your event" },
+            { "title": "Review requirements", "text": "Confirm space, access, power, timing, staffing, permits, and weather considerations.", "image": "", "alt": "Review requirements" },
+            { "title": "Finalize a package", "text": "Choose the rental size, add-ons, schedule, and support level that fit the event.", "image": "", "alt": "Finalize a package" }
+          ]
+        }
+      },
+      {
+        "type": "FAQ",
+        "content": {
+          "title": "Common rental questions",
+          "subtitle": "Start with the basics so the quote conversation is faster and more useful.",
+          "layout": "accordion",
+          "items": [
+            { "question": "How far ahead should we request a quote?", "answer": "Earlier is better, especially for holiday and winter-season events. Share your event date, location, and site details first." },
+            { "question": "What information is needed for pricing?", "answer": "The team needs event dates, venue address, setup surface, available space, rental duration, guest count, and any add-ons." },
+            { "question": "Can portable rinks work indoors or outdoors?", "answer": "Both may be possible depending on surface, access, weather exposure, power, staffing, permits, and event duration." }
+          ]
+        }
+      },
+      {
+        "type": "PrimaryCTA",
+        "content": {
+          "title": "Ready to plan portable ice rink rentals?",
+          "description": "Send the basics and the team can help identify the right rental path for your event.",
+          "buttonText": "Request a Quote",
+          "buttonLink": "/contact",
+          "secondaryText": "Need package details first?",
+          "secondaryLinkText": "View rental options",
+          "secondaryLink": "/ice-rink-rentals",
+          "backgroundImage": "",
+          "mainImage": "",
+          "alt": "Portable Ice Rink Rentals quote request"
+        }
+      }
+    ]
+  },
+  "contentRelationships": {
+    "isHub": true,
+    "hubPageSlug": "",
+    "topicCluster": "ice-rink-rentals",
+    "relatedHubs": [],
+    "spokePriority": 0
+  },
+  "seo": {
+    "metaTitle": "Portable Ice Rink Rentals for Events | Ice Skating Rink Rentals",
+    "metaDescription": "Book portable ice rink rentals for events, holiday activations, private parties, schools, and venues.",
+    "keywords": ["portable ice rink rentals", "ice rink rentals", "portable ice rinks for events"],
+    "robots": "index, follow",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/",
+    "alternateUrls": [],
+    "structuredData": [
+      "{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"Ice Skating Rink Rentals\",\"url\":\"https://iceskatingrinkrentals.com/\",\"description\":\"Portable Ice Rink Rentals for events and venues.\"}"
+    ],
+    "openGraph": {
+      "og:title": "Portable Ice Rink Rentals for Events | Ice Skating Rink Rentals",
+      "og:description": "Plan portable ice rink rentals for events, venues, and seasonal activations.",
+      "og:type": "website",
+      "og:url": "https://iceskatingrinkrentals.com/",
+      "og:image": "",
+      "og:image:alt": "Ice Skating Rink Rentals",
+      "og:site_name": "Ice Skating Rink Rentals",
+      "og:locale": "en_US"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Portable Ice Rink Rentals for Events | Ice Skating Rink Rentals",
+      "twitter:description": "Plan portable ice rink rentals for events, venues, and seasonal activations.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "isPublished": true,
+  "publishedAt": "2026-05-13T00:00:00Z",
+  "includeInSitemap": true
+}
