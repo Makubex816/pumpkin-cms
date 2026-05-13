@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import {
   ArrowRight,
@@ -39,12 +41,19 @@ type CmsBlock = IHtmlBlock & {
   content: CmsContent;
 };
 
+export interface ContactSubmitPayload {
+  formId: string;
+  pageSlug: string;
+  formData: Record<string, string>;
+}
+
 interface SubmitHandler {
-  (formData: Record<string, string>): void;
+  (payload: ContactSubmitPayload): Promise<void> | void;
 }
 
 interface PolishedBlockProps {
   block: CmsBlock;
+  pageSlug?: string;
   onContactSubmit?: SubmitHandler;
 }
 
@@ -116,6 +125,7 @@ function getFieldName(label: string, index: number): string {
 
 export function renderPolishedBlock({
   block,
+  pageSlug,
   onContactSubmit,
 }: PolishedBlockProps): React.ReactNode | null {
   switch (block.type) {
@@ -132,7 +142,7 @@ export function renderPolishedBlock({
     case 'PrimaryCTA':
       return <PolishedPrimaryCTABlock block={block} />;
     case 'Contact':
-      return <PolishedContactBlock block={block} onSubmit={onContactSubmit} />;
+      return <PolishedContactBlock block={block} pageSlug={pageSlug} onSubmit={onContactSubmit} />;
     default:
       return null;
   }
@@ -438,24 +448,66 @@ export function PolishedPrimaryCTABlock({ block }: { block: CmsBlock }) {
 
 export function PolishedContactBlock({
   block,
+  pageSlug,
   onSubmit,
 }: {
   block: CmsBlock;
+  pageSlug?: string;
   onSubmit?: SubmitHandler;
 }) {
   const content = getBlockContent(block);
   const fields = getArray<CmsContent>(content.formFields);
+  const formId = getString(content.id, block.id ?? 'contact');
+  const resolvedPageSlug = pageSlug || 'contact';
+  const [status, setStatus] = React.useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [message, setMessage] = React.useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  async function submitContactForm(payload: ContactSubmitPayload) {
+    if (onSubmit) {
+      await onSubmit(payload);
+      return;
+    }
+
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    const result = (await response.json().catch(() => ({}))) as { error?: string };
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Unable to submit the contact form. Please try again.');
+    }
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const values: Record<string, string> = {};
 
     formData.forEach((value, key) => {
       values[key] = String(value);
     });
 
-    onSubmit?.(values);
+    setStatus('submitting');
+    setMessage('');
+
+    try {
+      await submitContactForm({
+        formId,
+        pageSlug: resolvedPageSlug,
+        formData: values,
+      });
+      form.reset();
+      setStatus('success');
+      setMessage('Thanks — your quote request was submitted.');
+    } catch (error) {
+      setStatus('error');
+      setMessage(error instanceof Error ? error.message : 'Unable to send your quote request. Please try again.');
+    }
   };
 
   return (
@@ -526,6 +578,7 @@ export function PolishedContactBlock({
                     <textarea
                       name={name}
                       required={required}
+                      disabled={status === 'submitting'}
                       placeholder={placeholder}
                       className="min-h-[130px] w-full resize-y rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-600 focus:bg-white focus:ring-2 focus:ring-sky-200"
                     />
@@ -534,6 +587,7 @@ export function PolishedContactBlock({
                       name={name}
                       type={type}
                       required={required}
+                      disabled={status === 'submitting'}
                       placeholder={placeholder}
                       className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-600 focus:bg-white focus:ring-2 focus:ring-sky-200"
                     />
@@ -545,11 +599,25 @@ export function PolishedContactBlock({
 
           <button
             type="submit"
-            className="mt-6 inline-flex min-h-12 w-fit items-center justify-center rounded-full bg-sky-700 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-sky-900/15 transition hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+            disabled={status === 'submitting'}
+            className="mt-6 inline-flex min-h-12 w-fit items-center justify-center rounded-full bg-sky-700 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-sky-900/15 transition hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
           >
-            {getString(content.submitButtonText, 'Send Request')}
+            {status === 'submitting' ? 'Sending...' : getString(content.submitButtonText, 'Send Request')}
             <Send className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
+          {message && (
+            <p
+              className={`mt-4 rounded-2xl px-4 py-3 text-sm font-semibold ${
+                status === 'success'
+                  ? 'border border-emerald-200 bg-emerald-50 text-emerald-800'
+                  : 'border border-red-200 bg-red-50 text-red-800'
+              }`}
+              role={status === 'error' ? 'alert' : 'status'}
+              aria-live="polite"
+            >
+              {message}
+            </p>
+          )}
         </form>
       </div>
     </div>

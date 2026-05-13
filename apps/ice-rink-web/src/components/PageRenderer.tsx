@@ -4,7 +4,7 @@ import React from 'react';
 import type { BlockStyleMap, IHtmlBlock, Page } from 'pumpkin-ts-models';
 import type { BlockClassNamesMap } from 'pumpkin-block-views';
 import { BlockViewRenderer } from 'pumpkin-block-views';
-import { renderPolishedBlock } from '@/components/blocks/PolishedBlocks';
+import { renderPolishedBlock, type ContactSubmitPayload } from '@/components/blocks/PolishedBlocks';
 
 interface CmsBlock extends IHtmlBlock {
   id?: string;
@@ -23,9 +23,19 @@ export function PageRenderer({ page, blockStyles }: PageRendererProps) {
   );
   const classNames = (blockStyles ?? {}) as BlockClassNamesMap;
 
-  const handleContactSubmit = (formData: Record<string, string>) => {
-    console.log('[ice-rink-web] Contact form submitted:', formData);
-    alert('Thanks for reaching out. The form handler is ready to connect to Pumpkin forms.');
+  const handleContactSubmit = async (payload: ContactSubmitPayload) => {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    const result = (await response.json().catch(() => ({}))) as { error?: string };
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Unable to submit the contact form. Please try again.');
+    }
   };
 
   const renderBlogBody = (body: string) => {
@@ -37,7 +47,7 @@ export function PageRenderer({ page, blockStyles }: PageRendererProps) {
       {blocks.map((block, index) => {
         const polishedBlock = renderPolishedBlock({
           block,
-          onContactSubmit: handleContactSubmit,
+          pageSlug: page.pageSlug,
         });
 
         return (
@@ -47,7 +57,14 @@ export function PageRenderer({ page, blockStyles }: PageRendererProps) {
                 block={block}
                 classNames={classNames}
                 overrides={{
-                  Contact: { onSubmit: handleContactSubmit },
+                  Contact: {
+                    onSubmit: (formData: Record<string, string>) =>
+                      handleContactSubmit({
+                        formId: 'contact',
+                        pageSlug: page.pageSlug,
+                        formData,
+                      }),
+                  },
                   Blog: { renderBody: renderBlogBody },
                 }}
                 fallback={
