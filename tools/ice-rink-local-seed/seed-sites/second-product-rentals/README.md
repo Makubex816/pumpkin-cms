@@ -1,12 +1,12 @@
-# Second Product Rentals Placeholder Seed
+# Second Product Rentals Local Proof Seed
 
-This folder is reserved for a future second-site seed set.
+This folder contains safe generic seed data for a future second-site local proof.
 
-It is intentionally placeholder-only:
+It is intentionally non-production:
 
 - No real API key hash is committed.
-- No real page content is committed.
 - No connection strings or secrets are committed.
-- The current seed script will not seed this site yet.
+- Page content is generic proof copy only.
+- SEO metadata is marked `noindex, nofollow`.
 
-When this site becomes ready, add original second-site content, a real local-only API hash through environment variables, and update the seed scripts to mark `second-product-rentals` as seedable.
+Use `SITE_KEY=second-product-rentals` with a local-only `SECOND_PRODUCT_API_HASH` value to seed this proof tenant.

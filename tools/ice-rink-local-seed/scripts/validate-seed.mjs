@@ -22,9 +22,9 @@ const siteConfigs = {
   'second-product-rentals': {
     tenantId: 'second-product-rentals',
     hashPlaceholder: '__SECOND_PRODUCT_API_HASH__',
-    expectedSlugs: [],
-    themeFile: 'theme.placeholder.json',
-    placeholderOnly: true,
+    expectedSlugs: ['home', 'second-product-rentals', 'contact'],
+    themeFile: 'theme.json',
+    placeholderOnly: false,
   },
 };
 

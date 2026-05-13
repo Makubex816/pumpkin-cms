@@ -1,24 +1,14 @@
 # Ice Rink Local Seed
 
-Local-only seed/import tool for recreating the IceSkatingRinkRentals.com Pumpkin CMS MVP in Cosmos DB.
+Local-only seed/import tool for recreating rental-site Pumpkin CMS tenants in Cosmos DB.
 
-The tool now uses a multi-site-ready seed layout under `seed-sites/`. The current default and only seedable site is:
+The default site remains:
 
 ```text
 SITE_KEY=ice-rink-rentals
 ```
 
-If `SITE_KEY` is omitted, scripts automatically use `ice-rink-rentals`, preserving the existing workflow.
-
-## Current Seeded Content
-
-For `ice-rink-rentals`, this package upserts:
-
-- `Tenant`: `ice-rink-rentals`
-- `Theme`: active local Ice Skating Rink Rentals theme
-- `Page`: `home`, `ice-rink-rentals`, `events-holiday-activations`, `contact`
-
-It does not seed `User` or `FormEntry`.
+If `SITE_KEY` is omitted, scripts use `ice-rink-rentals`, preserving the existing IceSkatingRinkRentals.com workflow.
 
 ## Seed Structure
 
@@ -35,12 +25,14 @@ seed-sites/
   second-product-rentals/
     README.md
     tenant.template.json
-    theme.placeholder.json
+    theme.json
     pages/
-      README.md
+      home.json
+      second-product-rentals.json
+      contact.json
 ```
 
-`second-product-rentals` is placeholder-safe only. It intentionally does not contain real page content, secrets, API hashes, or seedable production data yet.
+Both site folders use placeholder API hashes in committed JSON. Real hashes are supplied only through local environment variables at seed time.
 
 ## Install
 
@@ -52,17 +44,26 @@ npm install
 
 ## Validate Seed Files
 
-Default validation:
+Validate the default Ice Rink seed:
 
 ```powershell
 npm run validate
 ```
 
-Explicit Ice Rink validation:
+Validate explicitly:
 
 ```powershell
 $env:SITE_KEY = "ice-rink-rentals"
 npm run validate
+Remove-Item Env:SITE_KEY
+```
+
+Validate the second-site local proof seed:
+
+```powershell
+$env:SITE_KEY = "second-product-rentals"
+npm run validate
+Remove-Item Env:SITE_KEY
 ```
 
 The validator checks that:
@@ -70,10 +71,10 @@ The validator checks that:
 - No `CMS LIVE:` markers remain.
 - No connection strings or obvious secrets are present in seed JSON.
 - `tenant.template.json` still uses the expected placeholder API hash.
-- All expected page slugs are present for the selected seedable site.
+- All expected page slugs are present for the selected site.
 - Each page has required Pumpkin CMS fields.
 
-## Set Local Environment Variables
+## Ice Rink Seed
 
 Set these only in your local PowerShell session. Do not commit them.
 
@@ -84,23 +85,55 @@ $env:COSMOS_DATABASE_NAME = "PumpkinCMS"
 $env:ICE_RINK_RENTALS_API_HASH = "<bcrypt-api-key-hash-for-local-tenant>"
 ```
 
-`SITE_KEY` is optional for the current Ice Rink flow. `COSMOS_DATABASE_NAME` is also optional; if omitted, the script uses `PumpkinCMS`.
+Then run:
+
+```powershell
+npm run seed
+Remove-Item Env:SITE_KEY
+```
+
+`COSMOS_DATABASE_NAME` is optional. If omitted, the script uses `PumpkinCMS`.
+
+## Second-site Local Proof Seed
+
+Generate a second local API key and hash with the existing utility project:
+
+```powershell
+cd "$HOME\Desktop\PumpkinCMS\pumpkin-cms"
+dotnet run --project apps/pumpkin-api.Tests
+```
+
+Copy the generated API hash into the current PowerShell session only:
+
+```powershell
+$env:SITE_KEY = "second-product-rentals"
+$env:COSMOS_CONNECTION_STRING = "<local-cosmos-emulator-connection-string>"
+$env:COSMOS_DATABASE_NAME = "PumpkinCMS"
+$env:SECOND_PRODUCT_API_HASH = "<generated-bcrypt-api-key-hash>"
+```
+
+Manually add the matching plain API key and tenant values to `apps/ice-rink-web/.env.local`. Do not commit that file.
+
+```text
+SECOND_PRODUCT_TENANT_ID=second-product-rentals
+SECOND_PRODUCT_API_KEY=<generated-plain-api-key>
+SECOND_PRODUCT_CANONICAL_URL=https://second-domain-placeholder.com
+```
+
+Seed the second tenant:
+
+```powershell
+cd "$HOME\Desktop\PumpkinCMS\pumpkin-cms\tools\ice-rink-local-seed"
+npm run validate
+npm run seed
+Remove-Item Env:SITE_KEY
+```
 
 If the Cosmos Emulator TLS certificate is not trusted by Node, use this only for the current local shell:
 
 ```powershell
 $env:NODE_TLS_REJECT_UNAUTHORIZED = "0"
 ```
-
-## Run Seed
-
-```powershell
-npm run seed
-```
-
-The seed command is safe to run more than once. It uses Cosmos `upsert` for the tenant, active theme, and page documents.
-
-`SITE_KEY=second-product-rentals` is not seedable yet and will fail clearly until real second-site content and a local hash workflow are added.
 
 ## Test Pumpkin API
 
@@ -111,12 +144,20 @@ cd "$HOME\Desktop\PumpkinCMS\pumpkin-cms\apps\pumpkin-api"
 dotnet run
 ```
 
-Set local request variables. Use the plain local API key that matches the hash used in the tenant seed.
+Set local request variables. Use the plain local API key that matches the seeded tenant hash.
 
 ```powershell
 $api = "http://localhost:5064"
 $tenantId = "ice-rink-rentals"
 $apiKey = "<plain-local-api-key>"
+$headers = @{ Authorization = "Bearer $apiKey"; Accept = "application/json" }
+```
+
+For the second-site proof, use:
+
+```powershell
+$tenantId = "second-product-rentals"
+$apiKey = "<generated-second-product-plain-api-key>"
 $headers = @{ Authorization = "Bearer $apiKey"; Accept = "application/json" }
 ```
 
@@ -128,6 +169,13 @@ Invoke-RestMethod -Uri "$api/api/pages/$tenantId/home" -Headers $headers |
 ```
 
 ```powershell
+Invoke-RestMethod -Uri "$api/api/pages/$tenantId/contact" -Headers $headers |
+  ConvertTo-Json -Depth 80
+```
+
+For Ice Rink, also test:
+
+```powershell
 Invoke-RestMethod -Uri "$api/api/pages/$tenantId/ice-rink-rentals" -Headers $headers |
   ConvertTo-Json -Depth 80
 ```
@@ -137,8 +185,10 @@ Invoke-RestMethod -Uri "$api/api/pages/$tenantId/events-holiday-activations" -He
   ConvertTo-Json -Depth 80
 ```
 
+For the second-site proof, also test:
+
 ```powershell
-Invoke-RestMethod -Uri "$api/api/pages/$tenantId/contact" -Headers $headers |
+Invoke-RestMethod -Uri "$api/api/pages/$tenantId/second-product-rentals" -Headers $headers |
   ConvertTo-Json -Depth 80
 ```
 
@@ -165,7 +215,7 @@ cd "$HOME\Desktop\PumpkinCMS\pumpkin-cms\apps\ice-rink-web"
 npm run dev
 ```
 
-Open:
+Ice Rink URLs:
 
 ```text
 http://localhost:3002/
@@ -175,14 +225,19 @@ http://localhost:3002/contact
 http://localhost:3002/sitemap.xml
 ```
 
-Expected result:
+Second-site proof URLs:
 
-- All four pages render from Pumpkin CMS.
-- No `CMS LIVE:` markers are visible.
-- `sitemap.xml` includes `/`, `/ice-rink-rentals`, `/events-holiday-activations`, and `/contact`.
+```text
+http://second.localhost:3002/
+http://second.localhost:3002/second-product-rentals
+http://second.localhost:3002/contact
+http://second.localhost:3002/sitemap.xml
+```
+
+If `second.localhost` does not resolve on your Windows machine, add a local hosts entry or use a browser/runtime setup that maps `*.localhost` to `127.0.0.1`.
 
 ## Notes
 
 - This tool intentionally does not store API keys, API hashes, passwords, Cosmos keys, connection strings, or other secrets in committed files.
-- Generate local API hashes with the existing `apps/pumpkin-api.Tests` utility.
+- The second-site proof content is generic and marked `noindex, nofollow`; replace it before any production use.
 - Keep `apps/ice-rink-web/.env.local` and `apps/pumpkin-api/appsettings.Development.json` local-only.

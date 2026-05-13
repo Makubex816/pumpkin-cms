@@ -20,7 +20,7 @@ const siteConfigs = {
     tenantId: 'second-product-rentals',
     apiHashEnv: 'SECOND_PRODUCT_API_HASH',
     hashPlaceholder: '__SECOND_PRODUCT_API_HASH__',
-    seedable: false,
+    seedable: true,
   },
 };
 

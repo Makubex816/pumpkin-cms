@@ -1,0 +1,165 @@
+{
+  "id": "second-product-rentals-second-product-rentals",
+  "PageId": "second-product-rentals-second-product-rentals",
+  "tenantId": "second-product-rentals",
+  "pageSlug": "second-product-rentals",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "category": "rentals",
+    "product": "second product",
+    "keyword": "second product rentals",
+    "pageType": "landing",
+    "title": "Second Product Rental Proof",
+    "description": "Generic rental planning content for validating a second product rental tenant in Pumpkin CMS.",
+    "createdAt": "2026-05-13T00:00:00Z",
+    "updatedAt": "2026-05-13T00:00:00Z",
+    "author": "Second Product Rentals Team",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "second product rentals",
+    "tags": ["second product rentals", "rental proof page", "multi site CMS proof"],
+    "contentSummary": "Generic second product rental content used to prove that a second Pumpkin CMS tenant can power the same frontend.",
+    "blockTypes": ["Hero", "CardGrid", "HowItWorks", "FAQ", "PrimaryCTA"]
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Second Product Rental Proof",
+          "subheadline": "Use this placeholder-safe page to verify separate tenant content, routing, navigation, metadata, and conversion paths for a second rental domain.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "Second product rental proof",
+          "buttonText": "Request Proof Quote",
+          "buttonLink": "/contact"
+        }
+      },
+      {
+        "type": "CardGrid",
+        "content": {
+          "title": "Second tenant proof areas",
+          "subtitle": "Each section is generic by design and can be replaced with production-specific content later.",
+          "layout": "grid-3",
+          "cards": [
+            {
+              "title": "Rental overview",
+              "description": "Confirm that a second product page renders from the second tenant instead of the default tenant.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Layers",
+              "link": "/second-product-rentals",
+              "alt": "Rental overview"
+            },
+            {
+              "title": "Planning details",
+              "description": "Use neutral planning copy to test cards, links, layout, and metadata without production claims.",
+              "image": "",
+              "image-alt": "",
+              "icon": "ClipboardList",
+              "link": "/contact",
+              "alt": "Planning details"
+            },
+            {
+              "title": "Quote flow",
+              "description": "Submit a local proof request and verify that the FormEntry belongs to the second tenant.",
+              "image": "",
+              "image-alt": "",
+              "icon": "MessageSquareText",
+              "link": "/contact",
+              "alt": "Quote flow"
+            }
+          ]
+        }
+      },
+      {
+        "type": "HowItWorks",
+        "content": {
+          "title": "How the second-site proof should work",
+          "steps": [
+            { "title": "Seed tenant", "text": "Run the seed tool with SITE_KEY set to second-product-rentals and a local-only API hash.", "image": "", "alt": "Seed tenant" },
+            { "title": "Set app env", "text": "Add the matching tenant id and plain local API key to the frontend's local environment file.", "image": "", "alt": "Set app env" },
+            { "title": "Open host", "text": "Browse through second.localhost:3002 so the app resolves the second site definition.", "image": "", "alt": "Open host" },
+            { "title": "Verify entries", "text": "Check pages, sitemap, and contact form submissions against the second tenant.", "image": "", "alt": "Verify entries" }
+          ]
+        }
+      },
+      {
+        "type": "FAQ",
+        "content": {
+          "title": "Rental proof FAQ",
+          "subtitle": "This proof keeps the data generic until a real second domain is selected.",
+          "layout": "accordion",
+          "items": [
+            { "question": "Why use generic content?", "answer": "Generic content avoids duplicate production copy while still proving tenant isolation, rendering, sitemap, and form behavior." },
+            { "question": "Can this page be indexed?", "answer": "No. The seed uses noindex metadata because this is a local proof and not final production content." },
+            { "question": "What should change before launch?", "answer": "Replace the product details, page copy, theme, metadata, structured data, contact details, and canonical URLs." }
+          ]
+        }
+      },
+      {
+        "type": "PrimaryCTA",
+        "content": {
+          "title": "Test the second-site quote path",
+          "description": "Use the contact page to verify that submissions are stored for the second tenant.",
+          "buttonText": "Go to Contact",
+          "buttonLink": "/contact",
+          "secondaryText": "Back to home",
+          "secondaryLinkText": "View proof home",
+          "secondaryLink": "/",
+          "backgroundImage": "",
+          "mainImage": "",
+          "alt": "Second product rental proof"
+        }
+      }
+    ]
+  },
+  "contentRelationships": {
+    "isHub": false,
+    "hubPageSlug": "home",
+    "topicCluster": "second-product-rentals",
+    "relatedHubs": [],
+    "spokePriority": 1
+  },
+  "seo": {
+    "metaTitle": "Second Product Rental Proof | Second Product Rentals",
+    "metaDescription": "Generic rental planning content for validating a second product rental tenant in Pumpkin CMS.",
+    "keywords": ["second product rentals", "rental proof page", "multi site CMS proof"],
+    "robots": "noindex, nofollow",
+    "canonicalUrl": "https://second-domain-placeholder.com/second-product-rentals",
+    "alternateUrls": [],
+    "structuredData": [
+      "{\"@context\":\"https://schema.org\",\"@type\":\"WebPage\",\"name\":\"Second Product Rental Proof\",\"url\":\"https://second-domain-placeholder.com/second-product-rentals\",\"description\":\"Generic rental planning content for validating a second product rental tenant in Pumpkin CMS.\"}"
+    ],
+    "openGraph": {
+      "og:title": "Second Product Rental Proof | Second Product Rentals",
+      "og:description": "Generic rental planning content for validating a second product rental tenant in Pumpkin CMS.",
+      "og:type": "website",
+      "og:url": "https://second-domain-placeholder.com/second-product-rentals",
+      "og:image": "",
+      "og:image:alt": "Second Product Rentals",
+      "og:site_name": "Second Product Rentals",
+      "og:locale": "en_US"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Second Product Rental Proof | Second Product Rentals",
+      "twitter:description": "Generic rental planning content for validating a second product rental tenant in Pumpkin CMS.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "isPublished": true,
+  "publishedAt": "2026-05-13T00:00:00Z",
+  "includeInSitemap": true
+}

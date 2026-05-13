@@ -1,0 +1,164 @@
+{
+  "id": "second-product-rentals-home",
+  "PageId": "second-product-rentals-home",
+  "tenantId": "second-product-rentals",
+  "pageSlug": "home",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "category": "rentals",
+    "product": "second product",
+    "keyword": "Second Product Rentals",
+    "pageType": "landing",
+    "title": "Second Product Rentals",
+    "description": "A local proof page for a second product rental website powered by the same Pumpkin CMS frontend.",
+    "createdAt": "2026-05-13T00:00:00Z",
+    "updatedAt": "2026-05-13T00:00:00Z",
+    "author": "Second Product Rentals Team",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "Second Product Rentals",
+    "tags": ["Second Product Rentals", "second product rental", "local proof site"],
+    "contentSummary": "Second Product Rentals is a generic local proof tenant for validating a reusable Pumpkin CMS rental website engine.",
+    "blockTypes": ["Hero", "TrustBar", "CardGrid", "FAQ", "PrimaryCTA"]
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Second Product Rentals",
+          "subheadline": "A safe local proof site showing that one frontend can serve a separate rental brand, tenant, theme, sitemap, and contact workflow from Pumpkin CMS.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "Second Product Rentals local proof",
+          "buttonText": "View Rental Proof",
+          "buttonLink": "/second-product-rentals"
+        }
+      },
+      {
+        "type": "TrustBar",
+        "content": {
+          "items": [
+            { "icon": "PanelsTopLeft", "title": "Shared Frontend", "text": "One app resolves the site from the request host", "alt": "Shared Frontend" },
+            { "icon": "Database", "title": "Separate Tenant", "text": "CMS content is partitioned by tenantId", "alt": "Separate Tenant" },
+            { "icon": "Palette", "title": "Separate Theme", "text": "Brand styling can differ per tenant", "alt": "Separate Theme" },
+            { "icon": "FileCheck", "title": "Repeatable Seed", "text": "Local proof data can be recreated safely", "alt": "Repeatable Seed" }
+          ]
+        }
+      },
+      {
+        "type": "CardGrid",
+        "content": {
+          "title": "What this proof validates",
+          "subtitle": "The content is intentionally generic so the second-site mechanics can be tested before production copy is written.",
+          "layout": "grid-3",
+          "cards": [
+            {
+              "title": "Tenant routing",
+              "description": "The second host should resolve to the second tenant and fetch its own CMS pages.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Route",
+              "link": "/second-product-rentals",
+              "alt": "Tenant routing"
+            },
+            {
+              "title": "Independent sitemap",
+              "description": "Published second-site pages should appear with the second site's canonical domain.",
+              "image": "",
+              "image-alt": "",
+              "icon": "ListTree",
+              "link": "/sitemap.xml",
+              "alt": "Independent sitemap"
+            },
+            {
+              "title": "Contact capture",
+              "description": "The same contact flow can submit entries for the resolved tenant.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Send",
+              "link": "/contact",
+              "alt": "Contact capture"
+            }
+          ]
+        }
+      },
+      {
+        "type": "FAQ",
+        "content": {
+          "title": "Second-site proof questions",
+          "subtitle": "These notes keep the local proof clear and safe.",
+          "layout": "accordion",
+          "items": [
+            { "question": "Is this production content?", "answer": "No. This is generic local proof content for validating multi-site routing, CMS loading, sitemap output, and contact form behavior." },
+            { "question": "Does this include real secrets?", "answer": "No. The tenant template keeps a placeholder API hash and relies on local environment variables at seed time." },
+            { "question": "Can the final second site use different copy and styling?", "answer": "Yes. The tenant, theme, page copy, SEO metadata, structured data, and contact details should be replaced before production." }
+          ]
+        }
+      },
+      {
+        "type": "PrimaryCTA",
+        "content": {
+          "title": "Ready to test the second tenant?",
+          "description": "Seed the second local tenant with a local-only API hash, then open the app through the second local hostname.",
+          "buttonText": "Open Contact Page",
+          "buttonLink": "/contact",
+          "secondaryText": "Review the proof page",
+          "secondaryLinkText": "View rentals",
+          "secondaryLink": "/second-product-rentals",
+          "backgroundImage": "",
+          "mainImage": "",
+          "alt": "Second Product Rentals proof"
+        }
+      }
+    ]
+  },
+  "contentRelationships": {
+    "isHub": true,
+    "hubPageSlug": "",
+    "topicCluster": "second-product-rentals",
+    "relatedHubs": [],
+    "spokePriority": 0
+  },
+  "seo": {
+    "metaTitle": "Second Product Rentals | Local Proof Site",
+    "metaDescription": "A local proof page for a second product rental website powered by the same Pumpkin CMS frontend.",
+    "keywords": ["Second Product Rentals", "second product rental", "local proof site"],
+    "robots": "noindex, nofollow",
+    "canonicalUrl": "https://second-domain-placeholder.com",
+    "alternateUrls": [],
+    "structuredData": [
+      "{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"name\":\"Second Product Rentals\",\"url\":\"https://second-domain-placeholder.com\",\"description\":\"A local proof page for a second product rental website powered by the same Pumpkin CMS frontend.\"}"
+    ],
+    "openGraph": {
+      "og:title": "Second Product Rentals | Local Proof Site",
+      "og:description": "A local proof page for a second product rental website powered by the same Pumpkin CMS frontend.",
+      "og:type": "website",
+      "og:url": "https://second-domain-placeholder.com",
+      "og:image": "",
+      "og:image:alt": "Second Product Rentals",
+      "og:site_name": "Second Product Rentals",
+      "og:locale": "en_US"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Second Product Rentals | Local Proof Site",
+      "twitter:description": "A local proof page for a second product rental website powered by the same Pumpkin CMS frontend.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "isPublished": true,
+  "publishedAt": "2026-05-13T00:00:00Z",
+  "includeInSitemap": true
+}
