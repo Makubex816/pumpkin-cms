@@ -80,12 +80,12 @@ export async function fetchTheme(site: ResolvedSite): Promise<Theme | null> {
   return fetchJson<Theme>(url, site, 300);
 }
 
-export async function fetchSitemapData(site: ResolvedSite): Promise<SitemapEntry[]> {
-  if (!hasContentApiCredentials(site)) return [];
+export async function fetchSitemapData(site: ResolvedSite): Promise<SitemapEntry[] | null> {
+  if (!hasContentApiCredentials(site)) return null;
 
   const encodedTenantId = encodeURIComponent(site.tenantId);
   const url = `${API_URL}/api/tenant/${encodedTenantId}/sitemap`;
   const response = await fetchJson<SitemapResponse>(url, site, 86400);
 
-  return response?.pages ?? [];
+  return response?.pages ?? null;
 }

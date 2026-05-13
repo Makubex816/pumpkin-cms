@@ -1,3 +1,4 @@
+import { getFallbackSitemapEntries } from '@/data';
 import { buildPageUrl } from '@/lib/metadata';
 import { fetchSitemapData } from '@/lib/pumpkin-api';
 import { resolveSite } from '@/lib/resolve-site';
@@ -8,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     const site = resolveSite();
-    const entries = await fetchSitemapData(site);
+    const entries = (await fetchSitemapData(site)) ?? getFallbackSitemapEntries();
     const xml = generateSitemapXml(entries, site);
 
     return new Response(xml, {

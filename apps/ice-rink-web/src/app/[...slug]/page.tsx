@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { PageRenderer } from '@/components/PageRenderer';
 import { StructuredData } from '@/components/StructuredData';
-import { getFallbackTheme } from '@/data';
+import { getFallbackPage, getFallbackTheme } from '@/data';
 import { buildMetadata, buildNotFoundMetadata } from '@/lib/metadata';
 import { fetchPage, fetchTheme } from '@/lib/pumpkin-api';
 import { resolveSite } from '@/lib/resolve-site';
@@ -15,7 +15,7 @@ interface SlugPageProps {
 export async function generateMetadata({ params }: SlugPageProps): Promise<Metadata> {
   const site = resolveSite();
   const slug = params.slug.join('/');
-  const page = await fetchPage(site, slug);
+  const page = (await fetchPage(site, slug)) ?? getFallbackPage(site, slug);
 
   if (!page) return buildNotFoundMetadata(site);
 
@@ -30,11 +30,12 @@ export default async function SlugPage({ params }: SlugPageProps) {
     fetchTheme(site),
   ]);
 
-  if (!cmsPage) {
+  const page = replaceSiteTokens(cmsPage ?? getFallbackPage(site, slug), site);
+
+  if (!page) {
     notFound();
   }
 
-  const page = replaceSiteTokens(cmsPage, site);
   const theme = replaceSiteTokens(cmsTheme ?? getFallbackTheme(site), site);
 
   return (
