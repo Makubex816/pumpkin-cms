@@ -4,7 +4,7 @@ import React from 'react';
 import type { BlockStyleMap, IHtmlBlock, Page } from 'pumpkin-ts-models';
 import type { BlockClassNamesMap } from 'pumpkin-block-views';
 import { BlockViewRenderer } from 'pumpkin-block-views';
-import { EnhancedHeroBlock } from '@/components/blocks/EnhancedHeroBlock';
+import { renderPolishedBlock } from '@/components/blocks/PolishedBlocks';
 
 interface CmsBlock extends IHtmlBlock {
   id?: string;
@@ -35,19 +35,14 @@ export function PageRenderer({ page, blockStyles }: PageRendererProps) {
   return (
     <>
       {blocks.map((block, index) => {
-        const heroStyles = classNames.Hero as Record<string, string> | undefined;
-        const isEnhancedHero =
-          block.type === 'Hero' &&
-          ('secondaryButtonText' in block.content ||
-            'trustLine' in block.content ||
-            'eyebrow' in block.content ||
-            Boolean(heroStyles?.actions));
+        const polishedBlock = renderPolishedBlock({
+          block,
+          onContactSubmit: handleContactSubmit,
+        });
 
         return (
           <section key={block.id ?? `block-${index}`} id={getSectionId(block)}>
-            {isEnhancedHero ? (
-              <EnhancedHeroBlock block={block as CmsBlock & { type: 'Hero' }} classNames={classNames.Hero} />
-            ) : (
+            {polishedBlock ?? (
               <BlockViewRenderer
                 block={block}
                 classNames={classNames}
