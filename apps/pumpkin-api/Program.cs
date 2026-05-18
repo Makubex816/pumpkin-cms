@@ -389,6 +389,71 @@ app.MapPost("/api/auth/login",
     .WithDescription("Authenticates a user with email and password, returns JWT token for subsequent requests")
     .AllowAnonymous();
 
+// Verify current JWT and return current user info
+app.MapGet("/api/auth/verify",
+    async (IDatabaseService databaseService, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var tenantId = context.User.FindFirst("tenantId")?.Value;
+        var username = context.User.FindFirst(ClaimTypes.Name)?.Value;
+        var role = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrWhiteSpace(email) ||
+            string.IsNullOrWhiteSpace(userId) ||
+            string.IsNullOrWhiteSpace(tenantId) ||
+            string.IsNullOrWhiteSpace(username) ||
+            string.IsNullOrWhiteSpace(role))
+        {
+            return Results.Unauthorized();
+        }
+
+        var user = await databaseService.GetUserByEmailAsync(email);
+        if (user == null || !user.IsActive || user.Id != userId || user.TenantId != tenantId)
+        {
+            return Results.Unauthorized();
+        }
+
+        return Results.Ok(new UserInfo
+        {
+            Id = user.Id,
+            TenantId = user.TenantId,
+            Email = user.Email,
+            Username = user.Username,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Role = user.Role.ToString(),
+            Permissions = user.Permissions
+        });
+    })
+    .RequireAuthorization()
+    .WithTags("Authentication")
+    .WithName("VerifyToken")
+    .WithSummary("Verify current JWT")
+    .WithDescription("Validates the current JWT and returns the authenticated user's current tenant, role, and permissions.");
+
+// Stateless JWT logout acknowledgement. The admin clears local token state client-side.
+app.MapPost("/api/auth/logout",
+    (HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        return Results.Ok(new { message = "Logged out" });
+    })
+    .RequireAuthorization()
+    .WithTags("Authentication")
+    .WithName("Logout")
+    .WithSummary("Acknowledge logout")
+    .WithDescription("Acknowledges logout for stateless JWT auth. Clients should clear local token state.");
+
 // ===== ADMIN ENDPOINTS =====
 
 // Admin: Get specific tenant
