@@ -1,4 +1,4 @@
-import { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -15,7 +15,6 @@ export interface ActivityItem {
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5064'
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || ''
 
 interface ApiError {
   message: string
@@ -25,11 +24,9 @@ interface ApiError {
 
 class ApiClient {
   private baseUrl: string
-  private apiKey: string
 
-  constructor(baseUrl: string, apiKey: string) {
+  constructor(baseUrl: string) {
     this.baseUrl = baseUrl
-    this.apiKey = apiKey
   }
 
   private async request<T>(
@@ -40,7 +37,6 @@ class ApiClient {
     
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
-      'X-API-Key': this.apiKey,
       ...options.headers,
     }
 
@@ -52,8 +48,7 @@ class ApiClient {
     console.log('[API Client] Request:', {
       url,
       method: config.method || 'GET',
-      hasApiKey: !!this.apiKey,
-      apiKeyPreview: this.apiKey ? `${this.apiKey.substring(0, 8)}...` : 'none'
+      hasAuthorization: typeof headers === 'object' && headers !== null && 'Authorization' in headers,
     })
 
     try {
@@ -222,7 +217,7 @@ class ApiClient {
   // Get all pages for a tenant (requires authentication)
   async getPages(token: string, tenantId: string): Promise<Page[]> {
     const response = await this.request<{ pages: Page[], count: number, tenantId: string }>(
-      `/api/admin/pages?tenantId=${tenantId}`, 
+      `/api/admin/pages?tenantId=${encodeURIComponent(tenantId)}`,
       {
         method: 'GET',
         headers: {
@@ -233,21 +228,18 @@ class ApiClient {
     return response.pages
   }
 
-  // Get a single page by slug (uses admin pages list endpoint and filters)
+  // Get a single page by slug (admin read endpoint, JWT auth)
   async getPage(token: string, tenantId: string, pageSlug: string): Promise<Page> {
     console.log('[API Client] getPage called:', { tenantId, pageSlug })
-    const pages = await this.getPages(token, tenantId)
-    const normalizedSlug = pageSlug.toLowerCase()
-    const page = pages.find(p => p.pageSlug?.toLowerCase() === normalizedSlug)
-    if (!page) {
-      console.error('[API Client] Page not found in list:', { pageSlug, normalizedSlug, availableSlugs: pages.map(p => p.pageSlug) })
-      throw {
-        message: `Page not found: ${pageSlug}`,
-        status: 404,
-        details: { pageSlug, tenantId }
-      } as ApiError
-    }
-    return page
+    return this.request<Page>(
+      `/api/admin/pages/${encodeURIComponent(tenantId)}/${encodeURIComponent(pageSlug)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
   }
 
   // Create a new page (admin, JWT auth)
@@ -453,7 +445,7 @@ class ApiClient {
 
   // Helper method to create an authenticated client
   withAuth(token: string): ApiClient {
-    const client = new ApiClient(this.baseUrl, this.apiKey)
+    const client = new ApiClient(this.baseUrl)
     client.setAuthToken(token)
     return client
   }
@@ -479,5 +471,5 @@ class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient(API_URL, API_KEY)
+export const apiClient = new ApiClient(API_URL)
 export type { ApiError }
