@@ -343,6 +343,53 @@ public class MongoDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
+    {
+        var formEntryCollection = _database.GetCollection<FormEntry>("FormEntry");
+        var filter = Builders<FormEntry>.Filter.Eq(entry => entry.TenantId, tenantId);
+
+        return await formEntryCollection
+            .Find(filter)
+            .SortByDescending(entry => entry.SubmittedAt)
+            .ToListAsync();
+    }
+
+    public async Task<FormEntry?> GetFormEntryAsync(string tenantId, string id)
+    {
+        var formEntryCollection = _database.GetCollection<FormEntry>("FormEntry");
+        var filter = Builders<FormEntry>.Filter.And(
+            Builders<FormEntry>.Filter.Eq(entry => entry.TenantId, tenantId),
+            Builders<FormEntry>.Filter.Eq(entry => entry.Id, id)
+        );
+
+        return await formEntryCollection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate)
+    {
+        var formEntryCollection = _database.GetCollection<FormEntry>("FormEntry");
+        var filter = Builders<FormEntry>.Filter.And(
+            Builders<FormEntry>.Filter.Eq(entry => entry.TenantId, tenantId),
+            Builders<FormEntry>.Filter.Eq(entry => entry.Id, id)
+        );
+
+        var formEntry = await formEntryCollection.Find(filter).FirstOrDefaultAsync();
+        if (formEntry == null)
+        {
+            throw new KeyNotFoundException($"Form entry '{id}' not found");
+        }
+
+        formEntry.Metadata ??= new FormEntryMetadata();
+        formEntry.Metadata.Status = statusUpdate.Status;
+        if (statusUpdate.Tags != null)
+        {
+            formEntry.Metadata.Tags = statusUpdate.Tags;
+        }
+
+        await formEntryCollection.ReplaceOneAsync(filter, formEntry);
+        return formEntry;
+    }
+
     public async Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
     {
         try
@@ -973,6 +1020,21 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<FormEntry?> GetFormEntryAsync(string tenantId, string id)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

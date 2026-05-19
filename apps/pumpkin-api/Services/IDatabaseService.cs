@@ -13,6 +13,9 @@ public interface IDatabaseService
     Task<Page> UpdatePageAsync(string apiKey, string tenantId, string pageSlug, Page page);
     Task<bool> DeletePageAsync(string apiKey, string tenantId, string pageSlug);
     Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry);
+    Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId);
+    Task<FormEntry?> GetFormEntryAsync(string tenantId, string id);
+    Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate);
     Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId);
     
     

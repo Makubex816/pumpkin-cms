@@ -456,6 +456,18 @@ app.MapPost("/api/auth/logout",
 
 // ===== ADMIN ENDPOINTS =====
 
+var allowedFormEntryStatuses = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+{
+    "new",
+    "reviewed",
+    "contacted",
+    "quoted",
+    "won",
+    "lost",
+    "spam",
+    "archived"
+};
+
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",
     async (IDatabaseService databaseService, string tenantId, HttpContext context) =>
@@ -1102,6 +1114,125 @@ app.MapPost("/api/admin/pages/{tenantId}/{pageSlug}/rollback",
     .WithName("AdminRollbackPage")
     .WithSummary("Roll back a page to its latest revision snapshot (admin)")
     .WithDescription("Restores a page to the latest stored pre-update snapshot. Requires JWT authentication.");
+
+// Admin: List form entries for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/{tenantId}/form-entries",
+    async (IDatabaseService databaseService, string tenantId, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var formEntries = await databaseService.GetFormEntriesByTenantAsync(tenantId);
+            return Results.Ok(new { formEntries, count = formEntries.Count, tenantId });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving form entries: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Form Entries")
+    .WithName("GetFormEntries")
+    .WithSummary("Get form entries for a tenant")
+    .WithDescription("Lists tenant-scoped form submissions newest first. Requires JWT authentication.");
+
+// Admin: Get one form entry for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/{tenantId}/form-entries/{id}",
+    async (IDatabaseService databaseService, string tenantId, string id, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var formEntry = await databaseService.GetFormEntryAsync(tenantId, id);
+            return formEntry == null ? Results.NotFound("Form entry not found") : Results.Ok(formEntry);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving form entry: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Form Entries")
+    .WithName("GetFormEntry")
+    .WithSummary("Get one form entry")
+    .WithDescription("Reads one tenant-scoped form submission. Requires JWT authentication.");
+
+// Admin: Update form entry status/tags only (JWT auth, no API key)
+app.MapPatch("/api/admin/{tenantId}/form-entries/{id}",
+    async (IDatabaseService databaseService, string tenantId, string id, FormEntryStatusUpdate statusUpdate, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        if (statusUpdate == null)
+            return Results.BadRequest("Status update data is required");
+
+        var normalizedStatus = (statusUpdate.Status ?? string.Empty).Trim().ToLowerInvariant();
+        if (!allowedFormEntryStatuses.Contains(normalizedStatus))
+            return Results.BadRequest($"Status must be one of: {string.Join(", ", allowedFormEntryStatuses)}");
+
+        statusUpdate.Status = normalizedStatus;
+        statusUpdate.Tags = statusUpdate.Tags?
+            .Where(tag => !string.IsNullOrWhiteSpace(tag))
+            .Select(tag => tag.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Take(20)
+            .ToList();
+
+        try
+        {
+            var updatedFormEntry = await databaseService.UpdateFormEntryStatusAsync(tenantId, id, statusUpdate);
+            return Results.Ok(updatedFormEntry);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Results.Forbid();
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error updating form entry: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Form Entries")
+    .WithName("UpdateFormEntryStatus")
+    .WithSummary("Update form entry status/tags")
+    .WithDescription("Updates lead workflow metadata only. Does not delete or alter submitted formData.");
 
 // Admin: List publish/build runs for a tenant (JWT auth, no API key)
 app.MapGet("/api/admin/{tenantId}/publish-runs",

@@ -58,6 +58,21 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.SaveFormEntryAsync(apiKey, tenantId, formEntry);
     }
 
+    public Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
+    {
+        return _dataConnection.GetFormEntriesByTenantAsync(tenantId);
+    }
+
+    public Task<FormEntry?> GetFormEntryAsync(string tenantId, string id)
+    {
+        return _dataConnection.GetFormEntryAsync(tenantId, id);
+    }
+
+    public Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate)
+    {
+        return _dataConnection.UpdateFormEntryStatusAsync(tenantId, id, statusUpdate);
+    }
+
     public Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
     {
         return _dataConnection.GetSitemapPagesAsync(apiKey, tenantId);

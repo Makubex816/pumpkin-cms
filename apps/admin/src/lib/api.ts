@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, FormEntry } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -355,6 +355,46 @@ class ApiClient {
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(publishRun),
+      }
+    )
+  }
+
+  async getFormEntries(token: string, tenantId: string): Promise<FormEntry[]> {
+    const response = await this.request<{ formEntries: FormEntry[]; count: number; tenantId: string }>(
+      `/api/admin/${encodeURIComponent(tenantId)}/form-entries`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+    return response.formEntries
+  }
+
+  async getFormEntry(token: string, tenantId: string, id: string): Promise<FormEntry> {
+    return this.request<FormEntry>(
+      `/api/admin/${encodeURIComponent(tenantId)}/form-entries/${encodeURIComponent(id)}`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  async updateFormEntryStatus(token: string, tenantId: string, id: string, status: string, tags?: string[]): Promise<FormEntry> {
+    return this.request<FormEntry>(
+      `/api/admin/${encodeURIComponent(tenantId)}/form-entries/${encodeURIComponent(id)}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status, tags }),
       }
     )
   }

@@ -476,6 +476,101 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
+    {
+        try
+        {
+            var formEntryContainer = _database.GetContainer("FormEntry");
+            var query = "SELECT * FROM c WHERE c.tenantId = @tenantId ORDER BY c.submittedAt DESC";
+            var queryDefinition = new QueryDefinition(query)
+                .WithParameter("@tenantId", tenantId);
+
+            var formEntries = new List<FormEntry>();
+            using var iterator = formEntryContainer.GetItemQueryIterator<FormEntry>(queryDefinition, requestOptions: new QueryRequestOptions
+            {
+                PartitionKey = new PartitionKey(tenantId)
+            });
+
+            while (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync();
+                formEntries.AddRange(response);
+                _logger.LogInformation("GetFormEntriesByTenantAsync - TenantId: {TenantId}, BatchCount: {Count}, RU: {RU}",
+                    tenantId, response.Count, response.RequestCharge);
+            }
+
+            return formEntries;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetFormEntriesByTenantAsync error - TenantId: {TenantId}", tenantId);
+            throw;
+        }
+    }
+
+    public async Task<FormEntry?> GetFormEntryAsync(string tenantId, string id)
+    {
+        try
+        {
+            var formEntryContainer = _database.GetContainer("FormEntry");
+            var response = await formEntryContainer.ReadItemAsync<FormEntry>(id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("GetFormEntryAsync - TenantId: {TenantId}, Id: {Id}, RU: {RU}",
+                tenantId, id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation("GetFormEntryAsync - Form entry not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            return null;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetFormEntryAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
+    public async Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate)
+    {
+        try
+        {
+            var formEntryContainer = _database.GetContainer("FormEntry");
+            var existingResponse = await formEntryContainer.ReadItemAsync<FormEntry>(id, new PartitionKey(tenantId));
+            var formEntry = existingResponse.Resource;
+
+            if (!string.Equals(formEntry.TenantId, tenantId, StringComparison.Ordinal))
+            {
+                throw new UnauthorizedAccessException("Form entry tenant does not match requested tenant");
+            }
+
+            formEntry.Metadata ??= new FormEntryMetadata();
+            formEntry.Metadata.Status = statusUpdate.Status;
+            if (statusUpdate.Tags != null)
+            {
+                formEntry.Metadata.Tags = statusUpdate.Tags;
+            }
+
+            var response = await formEntryContainer.ReplaceItemAsync(formEntry, formEntry.Id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("UpdateFormEntryStatusAsync - Form entry updated - TenantId: {TenantId}, Id: {Id}, Status: {Status}, RU: {RU}",
+                tenantId, id, formEntry.Metadata.Status, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogWarning("UpdateFormEntryStatusAsync - Form entry not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw new KeyNotFoundException($"Form entry '{id}' not found", ex);
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "UpdateFormEntryStatusAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
     public async Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
     {
         try

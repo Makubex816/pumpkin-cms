@@ -49,3 +49,12 @@ public class FormEntryMetadata
     [JsonPropertyName("tags")]
     public List<string> Tags { get; set; } = new();
 }
+
+public class FormEntryStatusUpdate
+{
+    [JsonPropertyName("status")]
+    public string Status { get; set; } = string.Empty;
+
+    [JsonPropertyName("tags")]
+    public List<string>? Tags { get; set; }
+}
