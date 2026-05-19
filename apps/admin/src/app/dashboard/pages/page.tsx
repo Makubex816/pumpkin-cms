@@ -226,6 +226,56 @@ function createSeo(title: string, isPublished: boolean) {
   }
 }
 
+function createProductionReadinessDefaults() {
+  const image = {
+    url: '',
+    alt: '',
+    title: '',
+    caption: '',
+    decorative: false,
+  }
+
+  return {
+    previousSlugs: [],
+    sitemapPriority: null,
+    sitemapChangeFrequency: '',
+    media: {
+      featuredImage: { ...image },
+      heroImage: { ...image },
+      localImage: { ...image },
+      closingImage: { ...image },
+      openGraphImage: {
+        url: '',
+        alt: '',
+      },
+    },
+    fulfillment: {
+      fulfillmentStatus: '',
+      primaryPartnerAvailable: false,
+      manualReviewRequired: true,
+      providerResearchCompleted: false,
+      topProviderCount: 0,
+      leadRoutingMode: '',
+      publicDisclosureRequired: false,
+      confirmedServiceStates: [],
+      extendedStatesPossible: [],
+    },
+    googleAds: {
+      eligible: false,
+      finalUrl: '',
+      landingPageType: '',
+      campaignTheme: '',
+      conversionGoals: [],
+      notes: '',
+    },
+    pageQuality: {
+      buyerIntent: '',
+      landingPageType: '',
+      launchNotes: '',
+    },
+  }
+}
+
 function createPageFromForm(
   form: CreatePageFormState,
   tenantId: string,
@@ -282,6 +332,7 @@ function createPageFromForm(
     isPublished,
     publishedAt: isPublished ? now : null,
     includeInSitemap: isPublished ? form.includeInSitemap : false,
+    ...createProductionReadinessDefaults(),
   }
 
   return page

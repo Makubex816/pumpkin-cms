@@ -107,6 +107,18 @@ const PAGE_FLAT_HEADERS = [
   'MetaData.author',
   'MetaData.language',
   'MetaData.market',
+  'targetKeyword',
+  'secondaryKeywords',
+  'pageType',
+  'state',
+  'city',
+  'region',
+  'metro',
+  'county',
+  'primaryService',
+  'buyerIntent',
+  'landingPageType',
+  'previousSlugs',
   'seo.metaTitle',
   'seo.metaDescription',
   'seo.robots',
@@ -118,7 +130,26 @@ const PAGE_FLAT_HEADERS = [
   'seo.twitterCard',
   'isPublished',
   'includeInSitemap',
+  'sitemapPriority',
+  'sitemapChangeFrequency',
   'publishedAt',
+  'fulfillmentStatus',
+  'primaryPartnerAvailable',
+  'leadRoutingMode',
+  'publicDisclosureRequired',
+  'fulfillment',
+  'googleAds.eligible',
+  'googleAds.finalUrl',
+  'googleAds',
+  'featuredImage.url',
+  'featuredImage.alt',
+  'heroImage.url',
+  'heroImage.alt',
+  'localImage.url',
+  'localImage.alt',
+  'closingImage.url',
+  'closingImage.alt',
+  'media',
   'contentRelationships.isHub',
   'contentRelationships.hubPageSlug',
   'contentRelationships.topicCluster',
@@ -126,6 +157,7 @@ const PAGE_FLAT_HEADERS = [
   'contentRelationships.spokePriority',
   'ContentData.ContentBlocks',
   'searchData',
+  'pageQuality',
   'layoutPositions',
 ] as const
 
@@ -135,9 +167,14 @@ const JSON_COLUMN_HEADERS = new Set<string>([
   'seo.structuredData',
   'seo.openGraph',
   'seo.twitterCard',
+  'previousSlugs',
+  'fulfillment',
+  'googleAds',
+  'media',
   'contentRelationships.relatedHubs',
   'ContentData.ContentBlocks',
   'searchData',
+  'pageQuality',
   'layoutPositions',
 ])
 
@@ -169,6 +206,30 @@ function numberValue(value: unknown, fallback: number) {
 
 function booleanOrNull(value: unknown) {
   return typeof value === 'boolean' ? value : null
+}
+
+function stringListValue(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.map((item) => stringValue(item).trim()).filter(Boolean)
+  }
+
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    if (!trimmed) return []
+
+    try {
+      const parsed = JSON.parse(trimmed)
+      if (Array.isArray(parsed)) {
+        return parsed.map((item) => stringValue(item).trim()).filter(Boolean)
+      }
+    } catch {
+      // Fall back to comma-separated values.
+    }
+
+    return trimmed.split(',').map((item) => item.trim()).filter(Boolean)
+  }
+
+  return []
 }
 
 function normalizeSlug(value: string) {
@@ -291,6 +352,108 @@ function createDefaultRelationships() {
   }
 }
 
+function createDefaultMedia() {
+  const image = {
+    url: '',
+    alt: '',
+    title: '',
+    caption: '',
+    decorative: false,
+  }
+
+  return {
+    featuredImage: { ...image },
+    heroImage: { ...image },
+    localImage: { ...image },
+    closingImage: { ...image },
+    openGraphImage: {
+      url: '',
+      alt: '',
+    },
+  }
+}
+
+function createDefaultFulfillment() {
+  return {
+    fulfillmentStatus: '',
+    primaryPartnerAvailable: false,
+    manualReviewRequired: true,
+    providerResearchCompleted: false,
+    topProviderCount: 0,
+    leadRoutingMode: '',
+    publicDisclosureRequired: false,
+    confirmedServiceStates: [],
+    extendedStatesPossible: [],
+  }
+}
+
+function createDefaultGoogleAds() {
+  return {
+    eligible: false,
+    finalUrl: '',
+    landingPageType: '',
+    campaignTheme: '',
+    conversionGoals: [],
+    notes: '',
+  }
+}
+
+function createDefaultPageQuality() {
+  return {
+    buyerIntent: '',
+    landingPageType: '',
+    launchNotes: '',
+  }
+}
+
+function getPageMedia(page: Partial<Page>) {
+  return {
+    ...createDefaultMedia(),
+    ...(isRecord(page.media) ? page.media : {}),
+    featuredImage: {
+      ...createDefaultMedia().featuredImage,
+      ...(isRecord(page.media?.featuredImage) ? page.media.featuredImage : {}),
+    },
+    heroImage: {
+      ...createDefaultMedia().heroImage,
+      ...(isRecord(page.media?.heroImage) ? page.media.heroImage : {}),
+    },
+    localImage: {
+      ...createDefaultMedia().localImage,
+      ...(isRecord(page.media?.localImage) ? page.media.localImage : {}),
+    },
+    closingImage: {
+      ...createDefaultMedia().closingImage,
+      ...(isRecord(page.media?.closingImage) ? page.media.closingImage : {}),
+    },
+    openGraphImage: {
+      ...createDefaultMedia().openGraphImage,
+      ...(isRecord(page.media?.openGraphImage) ? page.media.openGraphImage : {}),
+    },
+  }
+}
+
+function getPageFulfillment(page: Partial<Page>) {
+  return {
+    ...createDefaultFulfillment(),
+    ...(isRecord(page.fulfillment) ? page.fulfillment : {}),
+  }
+}
+
+function getPageGoogleAds(page: Partial<Page>) {
+  return {
+    ...createDefaultGoogleAds(),
+    ...(isRecord(page.googleAds) ? page.googleAds : {}),
+  }
+}
+
+function getPageQuality(page: Partial<Page>) {
+  return {
+    ...createDefaultPageQuality(),
+    ...(isRecord(page.pageQuality) ? page.pageQuality : {}),
+  }
+}
+
 function createTemplatePage(tenantId: string) {
   const now = new Date().toISOString()
   const slug = 'example-page'
@@ -333,6 +496,13 @@ function createTemplatePage(tenantId: string) {
     isPublished: false,
     publishedAt: null,
     includeInSitemap: false,
+    previousSlugs: [],
+    sitemapPriority: null,
+    sitemapChangeFrequency: '',
+    media: createDefaultMedia(),
+    fulfillment: createDefaultFulfillment(),
+    googleAds: createDefaultGoogleAds(),
+    pageQuality: createDefaultPageQuality(),
   } satisfies Page
 }
 
@@ -531,6 +701,13 @@ function parseBooleanCell(value: string, fieldName: string, sourceRow: number, e
   return null
 }
 
+function parseOptionalBooleanCell(value: string, fallback: boolean, fieldName: string, sourceRow: number, errors: string[]) {
+  if (!value.trim()) return fallback
+
+  const parsed = parseBooleanCell(value, fieldName, sourceRow, errors)
+  return parsed === null ? fallback : parsed
+}
+
 function parseNumberCell(value: string, fallback: number, fieldName: string, sourceRow: number, warnings: string[]) {
   if (!value.trim()) return fallback
 
@@ -572,6 +749,13 @@ function parseJsonCell(
 }
 
 function flattenPage(page: Page): FlatPageRow {
+  const media = getPageMedia(page)
+  const fulfillment = getPageFulfillment(page)
+  const googleAds = getPageGoogleAds(page)
+  const pageQuality = getPageQuality(page)
+  const targetKeyword = page.MetaData?.keyword || page.searchData?.keyword || ''
+  const secondaryKeywords = page.seo?.keywords || []
+
   return {
     id: page.id || '',
     PageId: page.PageId || '',
@@ -590,6 +774,18 @@ function flattenPage(page: Page): FlatPageRow {
     'MetaData.author': page.MetaData?.author || '',
     'MetaData.language': page.MetaData?.language || '',
     'MetaData.market': page.MetaData?.market || '',
+    targetKeyword,
+    secondaryKeywords: secondaryKeywords.join(', '),
+    pageType: page.MetaData?.pageType || '',
+    state: page.searchData?.state || '',
+    city: page.searchData?.city || '',
+    region: page.searchData?.metro || '',
+    metro: page.searchData?.metro || '',
+    county: page.searchData?.county || '',
+    primaryService: page.MetaData?.product || '',
+    buyerIntent: pageQuality.buyerIntent,
+    landingPageType: pageQuality.landingPageType || googleAds.landingPageType,
+    previousSlugs: toJsonCell(page.previousSlugs || []),
     'seo.metaTitle': page.seo?.metaTitle || '',
     'seo.metaDescription': page.seo?.metaDescription || '',
     'seo.robots': page.seo?.robots || '',
@@ -601,7 +797,26 @@ function flattenPage(page: Page): FlatPageRow {
     'seo.twitterCard': toJsonCell(page.seo?.twitterCard || {}),
     isPublished: stringValue(page.isPublished),
     includeInSitemap: stringValue(page.includeInSitemap),
+    sitemapPriority: page.sitemapPriority === null || page.sitemapPriority === undefined ? '' : stringValue(page.sitemapPriority),
+    sitemapChangeFrequency: page.sitemapChangeFrequency || '',
     publishedAt: page.publishedAt || '',
+    fulfillmentStatus: stringValue(fulfillment.fulfillmentStatus),
+    primaryPartnerAvailable: stringValue(fulfillment.primaryPartnerAvailable),
+    leadRoutingMode: stringValue(fulfillment.leadRoutingMode),
+    publicDisclosureRequired: stringValue(fulfillment.publicDisclosureRequired),
+    fulfillment: toJsonCell(fulfillment),
+    'googleAds.eligible': stringValue(googleAds.eligible),
+    'googleAds.finalUrl': stringValue(googleAds.finalUrl),
+    googleAds: toJsonCell(googleAds),
+    'featuredImage.url': stringValue(media.featuredImage.url),
+    'featuredImage.alt': stringValue(media.featuredImage.alt),
+    'heroImage.url': stringValue(media.heroImage.url),
+    'heroImage.alt': stringValue(media.heroImage.alt),
+    'localImage.url': stringValue(media.localImage.url),
+    'localImage.alt': stringValue(media.localImage.alt),
+    'closingImage.url': stringValue(media.closingImage.url),
+    'closingImage.alt': stringValue(media.closingImage.alt),
+    media: toJsonCell(media),
     'contentRelationships.isHub': stringValue(page.contentRelationships?.isHub || false),
     'contentRelationships.hubPageSlug': page.contentRelationships?.hubPageSlug || '',
     'contentRelationships.topicCluster': page.contentRelationships?.topicCluster || '',
@@ -609,6 +824,7 @@ function flattenPage(page: Page): FlatPageRow {
     'contentRelationships.spokePriority': stringValue(page.contentRelationships?.spokePriority || 0),
     'ContentData.ContentBlocks': toJsonCell(page.ContentData?.ContentBlocks || []),
     searchData: toJsonCell(page.searchData || createDefaultSearchData(getPageTitle(page), [])),
+    pageQuality: toJsonCell(pageQuality),
     layoutPositions: toJsonCell(page.layoutPositions || {}),
   }
 }
@@ -634,6 +850,11 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
   const structuredData = parseJsonCell(row['seo.structuredData'] || '', 'seo.structuredData', sourceRow, 'array', [], errors)
   const openGraph = parseJsonCell(row['seo.openGraph'] || '', 'seo.openGraph', sourceRow, 'object', {}, errors)
   const twitterCard = parseJsonCell(row['seo.twitterCard'] || '', 'seo.twitterCard', sourceRow, 'object', {}, errors)
+  const mediaJson = parseJsonCell(row.media || '', 'media', sourceRow, 'object', {}, errors)
+  const fulfillmentJson = parseJsonCell(row.fulfillment || '', 'fulfillment', sourceRow, 'object', {}, errors)
+  const googleAdsJson = parseJsonCell(row.googleAds || '', 'googleAds', sourceRow, 'object', {}, errors)
+  const pageQualityJson = parseJsonCell(row.pageQuality || '', 'pageQuality', sourceRow, 'object', {}, errors)
+  const previousSlugs = stringListValue(row.previousSlugs || '')
   const relatedHubs = parseJsonCell(
     row['contentRelationships.relatedHubs'] || '',
     'contentRelationships.relatedHubs',
@@ -646,7 +867,13 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
   const isPublished = parseBooleanCell(row.isPublished || '', 'isPublished', sourceRow, errors)
   const includeInSitemap = parseBooleanCell(row.includeInSitemap || '', 'includeInSitemap', sourceRow, errors)
   const isHub = parseBooleanCell(row['contentRelationships.isHub'] || 'false', 'contentRelationships.isHub', sourceRow, errors)
+  const primaryPartnerAvailable = parseOptionalBooleanCell(row.primaryPartnerAvailable || '', false, 'primaryPartnerAvailable', sourceRow, errors)
+  const publicDisclosureRequired = parseOptionalBooleanCell(row.publicDisclosureRequired || '', false, 'publicDisclosureRequired', sourceRow, errors)
+  const googleAdsEligible = parseOptionalBooleanCell(row['googleAds.eligible'] || '', false, 'googleAds.eligible', sourceRow, errors)
   const version = parseNumberCell(row.PageVersion || '1', 1, 'PageVersion', sourceRow, warnings)
+  const sitemapPriority = row.sitemapPriority?.trim()
+    ? parseNumberCell(row.sitemapPriority, 0.5, 'sitemapPriority', sourceRow, warnings)
+    : null
   const spokePriority = parseNumberCell(
     row['contentRelationships.spokePriority'] || '0',
     0,
@@ -659,6 +886,71 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     warnings.push(`Row ${sourceRow}: MetaData.title is empty.`)
   }
 
+  const targetKeyword = row.targetKeyword || row['MetaData.keyword'] || title
+  const pageType = row.pageType || row['MetaData.pageType'] || 'page'
+  const primaryService = row.primaryService || row['MetaData.product'] || ''
+  const landingPageType = row.landingPageType || stringValue((pageQualityJson as Record<string, unknown>).landingPageType)
+  const mediaRecord = isRecord(mediaJson) ? mediaJson : {}
+  const featuredImage = isRecord(mediaRecord.featuredImage) ? mediaRecord.featuredImage : {}
+  const heroImage = isRecord(mediaRecord.heroImage) ? mediaRecord.heroImage : {}
+  const localImage = isRecord(mediaRecord.localImage) ? mediaRecord.localImage : {}
+  const closingImage = isRecord(mediaRecord.closingImage) ? mediaRecord.closingImage : {}
+  const openGraphImage = isRecord(mediaRecord.openGraphImage) ? mediaRecord.openGraphImage : {}
+  const media = {
+    ...createDefaultMedia(),
+    ...mediaRecord,
+    featuredImage: {
+      ...createDefaultMedia().featuredImage,
+      ...featuredImage,
+      url: row['featuredImage.url'] || stringValue(featuredImage.url),
+      alt: row['featuredImage.alt'] || stringValue(featuredImage.alt),
+    },
+    heroImage: {
+      ...createDefaultMedia().heroImage,
+      ...heroImage,
+      url: row['heroImage.url'] || stringValue(heroImage.url),
+      alt: row['heroImage.alt'] || stringValue(heroImage.alt),
+    },
+    localImage: {
+      ...createDefaultMedia().localImage,
+      ...localImage,
+      url: row['localImage.url'] || stringValue(localImage.url),
+      alt: row['localImage.alt'] || stringValue(localImage.alt),
+    },
+    closingImage: {
+      ...createDefaultMedia().closingImage,
+      ...closingImage,
+      url: row['closingImage.url'] || stringValue(closingImage.url),
+      alt: row['closingImage.alt'] || stringValue(closingImage.alt),
+    },
+    openGraphImage: {
+      ...createDefaultMedia().openGraphImage,
+      ...openGraphImage,
+    },
+  }
+  const fulfillment = {
+    ...createDefaultFulfillment(),
+    ...(isRecord(fulfillmentJson) ? fulfillmentJson : {}),
+    fulfillmentStatus: row.fulfillmentStatus || stringValue((fulfillmentJson as Record<string, unknown>).fulfillmentStatus),
+    primaryPartnerAvailable,
+    leadRoutingMode: row.leadRoutingMode || stringValue((fulfillmentJson as Record<string, unknown>).leadRoutingMode),
+    publicDisclosureRequired,
+  }
+  const googleAds = {
+    ...createDefaultGoogleAds(),
+    ...(isRecord(googleAdsJson) ? googleAdsJson : {}),
+    eligible: googleAdsEligible,
+    finalUrl: row['googleAds.finalUrl'] || stringValue((googleAdsJson as Record<string, unknown>).finalUrl),
+    landingPageType,
+    conversionGoals: stringListValue((googleAdsJson as Record<string, unknown>).conversionGoals),
+  }
+  const pageQuality = {
+    ...createDefaultPageQuality(),
+    ...(isRecord(pageQualityJson) ? pageQualityJson : {}),
+    buyerIntent: row.buyerIntent || stringValue((pageQualityJson as Record<string, unknown>).buyerIntent),
+    landingPageType,
+  }
+
   const page: Record<string, unknown> = {
     id: row.id || '',
     PageId: row.PageId || '',
@@ -668,9 +960,9 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     Layout: row.Layout || 'default',
     MetaData: {
       category: row['MetaData.category'] || '',
-      product: row['MetaData.product'] || '',
-      keyword: row['MetaData.keyword'] || title,
-      pageType: row['MetaData.pageType'] || 'page',
+      product: primaryService,
+      keyword: targetKeyword,
+      pageType,
       title,
       description: row['MetaData.description'] || '',
       createdAt: row['MetaData.createdAt'] || now,
@@ -682,6 +974,11 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     searchData: {
       ...createDefaultSearchData(title, blockTypes),
       ...searchData,
+      state: row.state || stringValue(searchData.state),
+      city: row.city || stringValue(searchData.city),
+      metro: row.metro || row.region || stringValue(searchData.metro),
+      county: row.county || stringValue(searchData.county),
+      keyword: targetKeyword,
       blockTypes: Array.isArray(searchData.blockTypes) ? searchData.blockTypes : blockTypes,
     },
     ContentData: {
@@ -700,7 +997,7 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
       metaDescription: row['seo.metaDescription'] || '',
       robots: row['seo.robots'] || 'noindex, nofollow',
       canonicalUrl: row['seo.canonicalUrl'] || '',
-      keywords,
+      keywords: row.secondaryKeywords ? stringListValue(row.secondaryKeywords) : keywords,
       alternateUrls,
       structuredData,
       openGraph: {
@@ -715,6 +1012,13 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     isPublished,
     publishedAt: row.publishedAt || null,
     includeInSitemap,
+    previousSlugs,
+    sitemapPriority,
+    sitemapChangeFrequency: row.sitemapChangeFrequency || '',
+    media,
+    fulfillment,
+    googleAds,
+    pageQuality,
   }
 
   if (isRecord(layoutPositions) && Object.keys(layoutPositions).length > 0) {
@@ -954,6 +1258,48 @@ function validateParsedImport(
       warnings.push('MetaData.title is empty.')
     }
 
+    if (!stringValue(metaData?.keyword) && !stringValue(isRecord(page.searchData) ? page.searchData.keyword : '')) {
+      warnings.push('Target keyword is missing.')
+    }
+
+    if (!stringValue(seo?.metaTitle)) {
+      warnings.push('seo.metaTitle is empty.')
+    }
+
+    if (!stringValue(seo?.metaDescription)) {
+      warnings.push('seo.metaDescription is empty.')
+    }
+
+    if (!stringValue(seo?.canonicalUrl)) {
+      warnings.push('seo.canonicalUrl is empty.')
+    }
+
+    if (!stringValue(seo?.robots)) {
+      warnings.push('seo.robots is empty.')
+    }
+
+    if (page.isPublished === true && page.includeInSitemap !== true) {
+      warnings.push('Published page is not included in sitemap.')
+    }
+
+    if (page.includeInSitemap === true && !stringValue(seo?.canonicalUrl)) {
+      warnings.push('Sitemap page has no canonical URL.')
+    }
+
+    const fulfillment = isRecord(page.fulfillment) ? page.fulfillment : null
+    if (!stringValue(fulfillment?.fulfillmentStatus)) {
+      warnings.push('Fulfillment status is missing.')
+    }
+
+    if (
+      fulfillment &&
+      stringValue(fulfillment.fulfillmentStatus) &&
+      stringValue(fulfillment.fulfillmentStatus) !== 'direct_partner_available' &&
+      fulfillment.publicDisclosureRequired !== true
+    ) {
+      warnings.push('Non-direct fulfillment should mark publicDisclosureRequired before launch.')
+    }
+
     if (blocks.some((block) => !isRecord(block) || !stringValue(block.type))) {
       warnings.push('One or more content blocks has no block type; unknown block content will still be preserved.')
     }
@@ -1077,6 +1423,10 @@ function coercePageForWrite(page: Record<string, unknown>, tenantId: string, rew
   const seo = isRecord(page.seo) ? page.seo : createDefaultSeo(title)
   const searchData = isRecord(page.searchData) ? page.searchData : createDefaultSearchData(title, blocks.map((block) => block.type))
   const contentRelationships = isRecord(page.contentRelationships) ? page.contentRelationships : createDefaultRelationships()
+  const media = isRecord(page.media) ? page.media : createDefaultMedia()
+  const fulfillment = isRecord(page.fulfillment) ? page.fulfillment : createDefaultFulfillment()
+  const googleAds = isRecord(page.googleAds) ? page.googleAds : createDefaultGoogleAds()
+  const pageQuality = isRecord(page.pageQuality) ? page.pageQuality : createDefaultPageQuality()
   const finalTenantId = rewriteTenantId || !incomingTenantId ? tenantId : incomingTenantId
 
   const coerced: Page = {
@@ -1112,6 +1462,30 @@ function coercePageForWrite(page: Record<string, unknown>, tenantId: string, rew
     isPublished: page.isPublished as boolean,
     publishedAt: stringValue(page.publishedAt) || null,
     includeInSitemap: page.includeInSitemap as boolean,
+    previousSlugs: stringListValue(page.previousSlugs),
+    sitemapPriority: page.sitemapPriority === null || page.sitemapPriority === undefined
+      ? null
+      : numberValue(page.sitemapPriority, 0.5),
+    sitemapChangeFrequency: stringValue(page.sitemapChangeFrequency),
+    media: {
+      ...createDefaultMedia(),
+      ...media,
+    },
+    fulfillment: {
+      ...createDefaultFulfillment(),
+      ...fulfillment,
+      confirmedServiceStates: stringListValue(fulfillment.confirmedServiceStates),
+      extendedStatesPossible: stringListValue(fulfillment.extendedStatesPossible),
+    },
+    googleAds: {
+      ...createDefaultGoogleAds(),
+      ...googleAds,
+      conversionGoals: stringListValue(googleAds.conversionGoals),
+    },
+    pageQuality: {
+      ...createDefaultPageQuality(),
+      ...pageQuality,
+    },
   }
 
   return coerced

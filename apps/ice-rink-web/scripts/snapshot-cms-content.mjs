@@ -139,6 +139,98 @@ function getCanonicalUrl(page) {
   return page?.seo?.canonicalUrl ?? page?.Seo?.CanonicalUrl ?? '';
 }
 
+function getTargetKeyword(page) {
+  return page?.MetaData?.keyword || page?.metaData?.keyword || page?.searchData?.keyword || page?.SearchData?.Keyword || '';
+}
+
+function getFulfillment(page) {
+  return page?.fulfillment && typeof page.fulfillment === 'object' ? page.fulfillment : {};
+}
+
+function getGoogleAds(page) {
+  return page?.googleAds && typeof page.googleAds === 'object' ? page.googleAds : {};
+}
+
+function getMedia(page) {
+  return page?.media && typeof page.media === 'object' ? page.media : {};
+}
+
+function hasFormOrCta(page) {
+  const blocks = Array.isArray(getContentBlocks(page)) ? getContentBlocks(page) : [];
+  return blocks.some((block) => block?.type === 'Contact' || block?.type === 'PrimaryCTA');
+}
+
+function addImageAltWarnings(page, label, warnings) {
+  const media = getMedia(page);
+  for (const [slot, asset] of Object.entries(media)) {
+    if (!asset || typeof asset !== 'object') continue;
+    if (asset.url && !asset.alt && asset.decorative !== true) {
+      warnings.push(`${label}: media.${slot}.alt is missing while media.${slot}.url is set.`);
+    }
+  }
+
+  const blocks = Array.isArray(getContentBlocks(page)) ? getContentBlocks(page) : [];
+  blocks.forEach((block, blockIndex) => {
+    const content = block?.content && typeof block.content === 'object' ? block.content : {};
+    for (const [key, value] of Object.entries(content)) {
+      if (!key.toLowerCase().includes('image') || typeof value !== 'string' || !value.trim()) continue;
+
+      const altCandidates = [
+        `${key}Alt`,
+        `${key}AltText`,
+        key.replace(/Image$/i, 'ImageAlt'),
+        key.replace(/Image$/i, 'ImageAltText'),
+        'alt',
+        'image-alt',
+      ];
+      const hasAlt = altCandidates.some((candidate) => typeof content[candidate] === 'string' && content[candidate].trim());
+      if (!hasAlt) {
+        warnings.push(`${label}: block ${blockIndex + 1} ${block.type}.${key} has an image URL but no nearby alt text.`);
+      }
+    }
+  });
+}
+
+function addProductionReadinessWarnings(page, label, warnings) {
+  const seo = page?.seo || {};
+  const fulfillment = getFulfillment(page);
+  const googleAds = getGoogleAds(page);
+
+  if (!getTargetKeyword(page)) warnings.push(`${label}: target keyword is missing.`);
+  if (!seo.metaTitle) warnings.push(`${label}: seo.metaTitle is missing.`);
+  if (!seo.metaDescription) warnings.push(`${label}: seo.metaDescription is missing.`);
+  if (!seo.canonicalUrl) warnings.push(`${label}: seo.canonicalUrl is missing.`);
+  if (!seo.robots) warnings.push(`${label}: seo.robots is missing.`);
+  if (page?.isPublished && !page?.includeInSitemap) warnings.push(`${label}: published page is not included in sitemap.`);
+  if (page?.includeInSitemap && !seo.canonicalUrl) warnings.push(`${label}: sitemap page has no canonical URL.`);
+  if (page?.sitemapPriority !== undefined && page?.sitemapPriority !== null && (typeof page.sitemapPriority !== 'number' || page.sitemapPriority < 0 || page.sitemapPriority > 1)) {
+    warnings.push(`${label}: sitemapPriority should be a number between 0 and 1.`);
+  }
+  if (!fulfillment.fulfillmentStatus) warnings.push(`${label}: fulfillment.fulfillmentStatus is missing.`);
+
+  if (
+    fulfillment.fulfillmentStatus &&
+    fulfillment.fulfillmentStatus !== 'direct_partner_available' &&
+    fulfillment.publicDisclosureRequired !== true
+  ) {
+    warnings.push(`${label}: non-direct fulfillment should set publicDisclosureRequired before launch.`);
+  }
+
+  if (googleAds.eligible === true && !seo.metaDescription) {
+    warnings.push(`${label}: Google Ads eligible page is missing meta description.`);
+  }
+
+  if (googleAds.eligible === true && !hasFormOrCta(page)) {
+    warnings.push(`${label}: Google Ads eligible page should include a form or CTA.`);
+  }
+
+  if (googleAds.eligible === true && fulfillment.fulfillmentStatus === 'research_only_until_provider_confirmed') {
+    warnings.push(`${label}: Google Ads eligible page uses research-only fulfillment; review before launch.`);
+  }
+
+  addImageAltWarnings(page, label, warnings);
+}
+
 function pageFileName(page) {
   return `${getPageSlug(page).replace(/[\\/:*?"<>|]/g, '-')}.json`;
 }
@@ -402,6 +494,8 @@ function validateSnapshot(site, { allowUnpublished = false } = {}) {
     if (canonical && !canonical.startsWith(`https://${site.domain}`)) {
       errors.push(`${label}: canonicalUrl must use https://${site.domain}.`);
     }
+
+    addProductionReadinessWarnings(page, label, warnings);
   }
 
   if (pages.length === 0 && errors.length === 0) {

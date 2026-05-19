@@ -96,9 +96,11 @@ function generateSitemapXml(site, pages) {
     .filter(({ page }) => page.isPublished && page.includeInSitemap)
     .map(({ page }) => {
       const lastModified = page.MetaData?.updatedAt || page.publishedAt || new Date().toISOString();
+      const changeFrequency = page.sitemapChangeFrequency ? `\n    <changefreq>${escapeXml(page.sitemapChangeFrequency)}</changefreq>` : '';
+      const priority = typeof page.sitemapPriority === 'number' ? `\n    <priority>${page.sitemapPriority.toFixed(1)}</priority>` : '';
       return `  <url>
     <loc>${escapeXml(buildPageUrl(site, page.pageSlug))}</loc>
-    <lastmod>${new Date(lastModified).toISOString().split('T')[0]}</lastmod>
+    <lastmod>${new Date(lastModified).toISOString().split('T')[0]}</lastmod>${changeFrequency}${priority}
   </url>`;
     })
     .join('\n');
@@ -117,6 +119,102 @@ function generateRobotsTxt(site) {
     `Sitemap: https://${site.domain}/sitemap.xml`,
     '',
   ].join('\n');
+}
+
+function stringValue(value) {
+  return typeof value === 'string' ? value : '';
+}
+
+function getTargetKeyword(page) {
+  return stringValue(page.MetaData?.keyword) || stringValue(page.searchData?.keyword);
+}
+
+function getFulfillment(page) {
+  return page.fulfillment && typeof page.fulfillment === 'object' ? page.fulfillment : {};
+}
+
+function getGoogleAds(page) {
+  return page.googleAds && typeof page.googleAds === 'object' ? page.googleAds : {};
+}
+
+function getMedia(page) {
+  return page.media && typeof page.media === 'object' ? page.media : {};
+}
+
+function hasFormOrCta(page) {
+  const blocks = Array.isArray(page.ContentData?.ContentBlocks) ? page.ContentData.ContentBlocks : [];
+  return blocks.some((block) => block.type === 'Contact' || block.type === 'PrimaryCTA');
+}
+
+function addImageAltWarnings(page, label, warnings) {
+  const media = getMedia(page);
+  for (const [slot, asset] of Object.entries(media)) {
+    if (!asset || typeof asset !== 'object') continue;
+    if (stringValue(asset.url) && !stringValue(asset.alt) && asset.decorative !== true) {
+      warnings.push(`${label}: media.${slot}.alt is missing while media.${slot}.url is set.`);
+    }
+  }
+
+  const blocks = Array.isArray(page.ContentData?.ContentBlocks) ? page.ContentData.ContentBlocks : [];
+  blocks.forEach((block, blockIndex) => {
+    const content = block.content && typeof block.content === 'object' ? block.content : {};
+    for (const [key, value] of Object.entries(content)) {
+      if (!key.toLowerCase().includes('image') || typeof value !== 'string' || !value.trim()) continue;
+
+      const altCandidates = [
+        `${key}Alt`,
+        `${key}AltText`,
+        key.replace(/Image$/i, 'ImageAlt'),
+        key.replace(/Image$/i, 'ImageAltText'),
+        'alt',
+        'image-alt',
+      ];
+      const hasAlt = altCandidates.some((candidate) => stringValue(content[candidate]).trim());
+      if (!hasAlt) {
+        warnings.push(`${label}: block ${blockIndex + 1} ${block.type}.${key} has an image URL but no nearby alt text.`);
+      }
+    }
+  });
+}
+
+function addProductionReadinessWarnings(page, label, warnings) {
+  const seo = page.seo || {};
+  const fulfillment = getFulfillment(page);
+  const googleAds = getGoogleAds(page);
+
+  if (!getTargetKeyword(page)) warnings.push(`${label}: target keyword is missing.`);
+  if (!stringValue(seo.metaTitle)) warnings.push(`${label}: seo.metaTitle is missing.`);
+  if (!stringValue(seo.metaDescription)) warnings.push(`${label}: seo.metaDescription is missing.`);
+  if (!stringValue(seo.canonicalUrl)) warnings.push(`${label}: seo.canonicalUrl is missing.`);
+  if (!stringValue(seo.robots)) warnings.push(`${label}: seo.robots is missing.`);
+  if (page.isPublished && !page.includeInSitemap) warnings.push(`${label}: published page is not included in sitemap.`);
+  if (page.includeInSitemap && !stringValue(seo.canonicalUrl)) warnings.push(`${label}: sitemap page has no canonical URL.`);
+  if (page.sitemapPriority !== undefined && page.sitemapPriority !== null && (typeof page.sitemapPriority !== 'number' || page.sitemapPriority < 0 || page.sitemapPriority > 1)) {
+    warnings.push(`${label}: sitemapPriority should be a number between 0 and 1.`);
+  }
+  if (!stringValue(fulfillment.fulfillmentStatus)) warnings.push(`${label}: fulfillment.fulfillmentStatus is missing.`);
+
+  if (
+    stringValue(fulfillment.fulfillmentStatus) &&
+    fulfillment.fulfillmentStatus !== 'direct_partner_available' &&
+    fulfillment.publicDisclosureRequired !== true
+  ) {
+    warnings.push(`${label}: non-direct fulfillment should set publicDisclosureRequired before launch.`);
+  }
+
+  if (googleAds.eligible === true && !stringValue(seo.metaDescription)) {
+    warnings.push(`${label}: Google Ads eligible page is missing meta description.`);
+  }
+
+  if (googleAds.eligible === true && !hasFormOrCta(page)) {
+    warnings.push(`${label}: Google Ads eligible page should include a form or CTA.`);
+  }
+
+  if (googleAds.eligible === true && fulfillment.fulfillmentStatus === 'research_only_until_provider_confirmed') {
+    warnings.push(`${label}: Google Ads eligible page uses research-only fulfillment; review before launch.`);
+  }
+
+  addImageAltWarnings(page, label, warnings);
 }
 
 function validatePageShape(site, pages) {
@@ -152,6 +250,8 @@ function validatePageShape(site, pages) {
     if (JSON.stringify(page).includes('CMS LIVE')) {
       errors.push(`${label}: contains CMS LIVE marker.`);
     }
+
+    addProductionReadinessWarnings(page, label, warnings);
   }
 
   for (const slug of site.expectedSlugs) {
@@ -161,7 +261,7 @@ function validatePageShape(site, pages) {
   return { errors, warnings };
 }
 
-function writeStaticArtifacts(site, pages, targetDir) {
+function writeStaticArtifacts(site, pages, targetDir, qualityWarnings = []) {
   mkdirSync(targetDir, { recursive: true });
   writeFileSync(path.join(targetDir, 'sitemap.xml'), generateSitemapXml(site, pages), 'utf8');
   writeFileSync(path.join(targetDir, 'robots.txt'), generateRobotsTxt(site), 'utf8');
@@ -173,6 +273,7 @@ function writeStaticArtifacts(site, pages, targetDir) {
       generatedAt: new Date().toISOString(),
       contentSource,
       pageCount: pages.length,
+      qualityWarnings,
       pages: pages.map(({ page }) => ({
         pageSlug: page.pageSlug,
         isPublished: page.isPublished,
@@ -220,13 +321,13 @@ function run() {
   }
 
   const artifactDir = path.join(appRoot, '.static-artifacts', siteKey);
-  writeStaticArtifacts(site, pages, artifactDir);
+  writeStaticArtifacts(site, pages, artifactDir, warnings);
   let outputSnapshot = false;
 
   if (command === 'generate') {
     const outDir = path.join(appRoot, 'out');
     if (existsSync(outDir)) {
-      writeStaticArtifacts(site, pages, outDir);
+      writeStaticArtifacts(site, pages, outDir, warnings);
     }
     outputSnapshot = copyStaticOutput(artifactDir);
   } else if (command !== 'validate') {
@@ -243,6 +344,7 @@ function run() {
     pageCount: pages.length,
     publishedCount,
     sitemapCount,
+    warningCount: warnings.length,
     artifactDir,
     outputSnapshot,
   }, null, 2));

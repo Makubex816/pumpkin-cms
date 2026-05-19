@@ -30,8 +30,32 @@ const BLOCK_ARRAY_FIELDS: Record<string, string[]> = {
   Contact: ['formFields'],
 }
 
+const FULFILLMENT_STATUSES = [
+  '',
+  'direct_partner_available',
+  'partner_network_or_researched_provider',
+  'research_only_until_provider_confirmed',
+] as const
+
+const LEAD_ROUTING_MODES = [
+  '',
+  'send_to_primary_partner',
+  'manual_review_then_provider_match',
+  'researched_provider_match',
+  'unmet_demand_followup',
+] as const
+
+const SITEMAP_CHANGE_FREQUENCIES = ['', 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'] as const
+
 type SeoStringField = 'metaTitle' | 'metaDescription' | 'robots' | 'canonicalUrl'
-type PageMetaStringField = 'title' | 'description'
+type PageMetaStringField = 'title' | 'description' | 'category' | 'product' | 'keyword' | 'pageType'
+type SearchStringField = 'state' | 'city' | 'metro' | 'county' | 'keyword' | 'contentSummary'
+type PageQualityStringField = 'buyerIntent' | 'landingPageType' | 'launchNotes'
+type FulfillmentStringField = 'fulfillmentStatus' | 'leadRoutingMode'
+type FulfillmentBooleanField = 'primaryPartnerAvailable' | 'manualReviewRequired' | 'providerResearchCompleted' | 'publicDisclosureRequired'
+type GoogleAdsStringField = 'finalUrl' | 'landingPageType' | 'campaignTheme' | 'notes'
+type MediaSlot = 'featuredImage' | 'heroImage' | 'localImage' | 'closingImage'
+type MediaStringField = 'url' | 'alt' | 'title' | 'caption'
 type EditableContent = Record<string, unknown>
 
 interface ValidationResult {
@@ -86,6 +110,34 @@ function booleanValue(value: unknown) {
   return typeof value === 'boolean' ? value : false
 }
 
+function numberValue(value: unknown, fallback = 0) {
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (typeof value === 'string' && value.trim()) {
+    const parsed = Number(value)
+    return Number.isFinite(parsed) ? parsed : fallback
+  }
+
+  return fallback
+}
+
+function nullableNumberValue(value: unknown) {
+  if (value === null || value === undefined || value === '') return ''
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? String(parsed) : ''
+}
+
+function stringListValue(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.map((item) => stringValue(item).trim()).filter(Boolean)
+  }
+
+  if (typeof value === 'string') {
+    return value.split(',').map((item) => item.trim()).filter(Boolean)
+  }
+
+  return []
+}
+
 function normalizeSlug(value: string) {
   return value
     .trim()
@@ -123,6 +175,62 @@ function formatJson(value: unknown) {
   }
 }
 
+function emptyImageAsset() {
+  return {
+    url: '',
+    alt: '',
+    title: '',
+    caption: '',
+    decorative: false,
+  }
+}
+
+function getPageMedia(page: Page) {
+  return {
+    featuredImage: { ...emptyImageAsset(), ...page.media?.featuredImage },
+    heroImage: { ...emptyImageAsset(), ...page.media?.heroImage },
+    localImage: { ...emptyImageAsset(), ...page.media?.localImage },
+    closingImage: { ...emptyImageAsset(), ...page.media?.closingImage },
+    openGraphImage: {
+      url: page.media?.openGraphImage?.url || page.seo?.openGraph?.['og:image'] || '',
+      alt: page.media?.openGraphImage?.alt || page.seo?.openGraph?.['og:image:alt'] || '',
+    },
+  }
+}
+
+function getPageFulfillment(page: Page) {
+  return {
+    fulfillmentStatus: page.fulfillment?.fulfillmentStatus || '',
+    primaryPartnerAvailable: Boolean(page.fulfillment?.primaryPartnerAvailable),
+    manualReviewRequired: page.fulfillment?.manualReviewRequired ?? true,
+    providerResearchCompleted: Boolean(page.fulfillment?.providerResearchCompleted),
+    topProviderCount: numberValue(page.fulfillment?.topProviderCount, 0),
+    leadRoutingMode: page.fulfillment?.leadRoutingMode || '',
+    publicDisclosureRequired: Boolean(page.fulfillment?.publicDisclosureRequired),
+    confirmedServiceStates: stringListValue(page.fulfillment?.confirmedServiceStates),
+    extendedStatesPossible: stringListValue(page.fulfillment?.extendedStatesPossible),
+  }
+}
+
+function getPageGoogleAds(page: Page) {
+  return {
+    eligible: Boolean(page.googleAds?.eligible),
+    finalUrl: page.googleAds?.finalUrl || '',
+    landingPageType: page.googleAds?.landingPageType || page.pageQuality?.landingPageType || '',
+    campaignTheme: page.googleAds?.campaignTheme || '',
+    conversionGoals: stringListValue(page.googleAds?.conversionGoals),
+    notes: page.googleAds?.notes || '',
+  }
+}
+
+function getPageQuality(page: Page) {
+  return {
+    buyerIntent: page.pageQuality?.buyerIntent || '',
+    landingPageType: page.pageQuality?.landingPageType || page.googleAds?.landingPageType || '',
+    launchNotes: page.pageQuality?.launchNotes || '',
+  }
+}
+
 function getPreviewUrl(page: Page) {
   const baseUrl = LOCAL_PREVIEW_HOSTS[page.tenantId] || 'http://localhost:3002'
   return page.pageSlug === 'home' ? `${baseUrl}/` : `${baseUrl}/${page.pageSlug}`
@@ -157,6 +265,41 @@ function updateBlockTypes(page: Page) {
       ...page.searchData,
       blockTypes: blocks.map((block) => block.type).filter(Boolean),
     },
+  }
+}
+
+function normalizeProductionFields(page: Page): Page {
+  const media = getPageMedia(page)
+  const fulfillment = getPageFulfillment(page)
+  const googleAds = getPageGoogleAds(page)
+  const pageQuality = getPageQuality(page)
+  const targetKeyword = page.MetaData?.keyword || page.searchData?.keyword || ''
+
+  return {
+    ...page,
+    previousSlugs: stringListValue(page.previousSlugs),
+    sitemapPriority: page.sitemapPriority ?? null,
+    sitemapChangeFrequency: page.sitemapChangeFrequency || '',
+    MetaData: {
+      ...page.MetaData,
+      keyword: targetKeyword,
+    },
+    searchData: {
+      ...page.searchData,
+      keyword: targetKeyword,
+    },
+    seo: {
+      ...page.seo,
+      openGraph: {
+        ...page.seo?.openGraph,
+        'og:image': media.openGraphImage.url || page.seo?.openGraph?.['og:image'] || '',
+        'og:image:alt': media.openGraphImage.alt || page.seo?.openGraph?.['og:image:alt'] || '',
+      },
+    },
+    media,
+    fulfillment,
+    googleAds,
+    pageQuality,
   }
 }
 
@@ -283,7 +426,7 @@ function preparePageForSave(page: Page) {
     ? page.ContentData.ContentBlocks.map(sanitizeSupportedBlockForSave)
     : []
 
-  return updateBlockTypes(withUpdatedAt({
+  return normalizeProductionFields(updateBlockTypes(withUpdatedAt({
     ...page,
     pageSlug: normalizeSlug(page.pageSlug),
     publishedAt: page.isPublished && !page.publishedAt ? now : page.publishedAt,
@@ -291,7 +434,58 @@ function preparePageForSave(page: Page) {
       ...page.ContentData,
       ContentBlocks: blocks,
     },
-  }))
+  })))
+}
+
+function hasFormOrCta(page: Page) {
+  const blocks = Array.isArray(page.ContentData?.ContentBlocks)
+    ? page.ContentData.ContentBlocks
+    : []
+
+  return blocks.some((block) => {
+    const content = toRecord(block.content)
+    if (block.type === 'Contact') return true
+    if (block.type === 'PrimaryCTA') return Boolean(stringValue(content.buttonText) || stringValue(content.buttonLink))
+    return false
+  })
+}
+
+function collectPageImageWarnings(page: Page) {
+  const warnings: string[] = []
+  const media = getPageMedia(page)
+
+  Object.entries(media).forEach(([slot, asset]) => {
+    if ('url' in asset && asset.url && !asset.alt && !('decorative' in asset && asset.decorative)) {
+      warnings.push(`${slot}.alt is missing while ${slot}.url is set.`)
+    }
+  })
+
+  const blocks = Array.isArray(page.ContentData?.ContentBlocks)
+    ? page.ContentData.ContentBlocks
+    : []
+
+  blocks.forEach((block, blockIndex) => {
+    const content = toRecord(block.content)
+    Object.entries(content).forEach(([key, value]) => {
+      if (!key.toLowerCase().includes('image') || typeof value !== 'string' || !value.trim()) return
+
+      const altCandidates = [
+        `${key}Alt`,
+        `${key}AltText`,
+        key.replace(/Image$/i, 'ImageAlt'),
+        key.replace(/Image$/i, 'ImageAltText'),
+        'alt',
+        'image-alt',
+      ]
+
+      const hasAlt = altCandidates.some((candidate) => stringValue(content[candidate]).trim())
+      if (!hasAlt) {
+        warnings.push(`Block ${blockIndex + 1} ${block.type}.${key} has an image URL but no nearby alt text.`)
+      }
+    })
+  })
+
+  return warnings
 }
 
 function validatePage(page: Page | null, tenantId: string): ValidationResult {
@@ -326,6 +520,67 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
   if (!page.seo?.metaTitle?.trim()) {
     warnings.push('seo.metaTitle is empty.')
   }
+
+  if (!page.seo?.metaDescription?.trim()) {
+    warnings.push('seo.metaDescription is empty.')
+  }
+
+  if (!page.seo?.canonicalUrl?.trim()) {
+    warnings.push('seo.canonicalUrl is empty.')
+  }
+
+  if (!page.seo?.robots?.trim()) {
+    warnings.push('seo.robots is empty.')
+  }
+
+  if (page.seo?.metaTitle && page.seo.metaTitle.length > 65) {
+    warnings.push('seo.metaTitle is longer than 65 characters.')
+  }
+
+  if (page.seo?.metaDescription && page.seo.metaDescription.length > 165) {
+    warnings.push('seo.metaDescription is longer than 165 characters.')
+  }
+
+  const targetKeyword = page.MetaData?.keyword || page.searchData?.keyword || ''
+  if (!targetKeyword.trim()) {
+    warnings.push('Target keyword is missing.')
+  }
+
+  if (page.isPublished && !page.includeInSitemap) {
+    warnings.push('Published page is not included in sitemap.')
+  }
+
+  if (page.includeInSitemap && !page.seo?.canonicalUrl?.trim()) {
+    warnings.push('Sitemap page has no canonical URL.')
+  }
+
+  if (page.sitemapPriority !== undefined && page.sitemapPriority !== null && (page.sitemapPriority < 0 || page.sitemapPriority > 1)) {
+    warnings.push('sitemapPriority should be between 0 and 1.')
+  }
+
+  const fulfillment = getPageFulfillment(page)
+  if (!fulfillment.fulfillmentStatus) {
+    warnings.push('Fulfillment status is missing.')
+  }
+
+  if (fulfillment.fulfillmentStatus && fulfillment.fulfillmentStatus !== 'direct_partner_available' && !fulfillment.publicDisclosureRequired) {
+    warnings.push('Non-direct fulfillment should mark public disclosure required before launch.')
+  }
+
+  const googleAds = getPageGoogleAds(page)
+  if (googleAds.eligible && !page.seo?.metaDescription?.trim()) {
+    warnings.push('Google Ads eligible page is missing a meta description.')
+  }
+
+  if (googleAds.eligible && !hasFormOrCta(page)) {
+    warnings.push('Google Ads eligible page should include a form or CTA.')
+  }
+
+  if (googleAds.eligible && fulfillment.fulfillmentStatus === 'research_only_until_provider_confirmed') {
+    warnings.push('Google Ads eligible page uses research-only fulfillment; review before launch.')
+  }
+
+  warnings.push(...collectPageImageWarnings(page))
 
   const blocks = Array.isArray(page.ContentData?.ContentBlocks)
     ? page.ContentData.ContentBlocks
@@ -584,6 +839,10 @@ export default function PageStructuredEditor() {
   const validation = useMemo(() => validatePage(page, tenantId), [page, tenantId])
   const imageSignals = useMemo(() => (page ? collectImageSignals(page) : []), [page])
   const contentBlocks = page?.ContentData?.ContentBlocks || []
+  const pageMedia = page ? getPageMedia(page) : null
+  const pageFulfillment = page ? getPageFulfillment(page) : null
+  const pageGoogleAds = page ? getPageGoogleAds(page) : null
+  const pageQuality = page ? getPageQuality(page) : null
 
   const updatePageState = (updater: (current: Page) => Page) => {
     setPage((current) => (current ? withUpdatedAt(updater(current)) : current))
@@ -606,6 +865,220 @@ export default function PageStructuredEditor() {
       seo: {
         ...current.seo,
         [field]: value,
+      },
+    }))
+  }
+
+  const updateSeoKeywords = (value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      seo: {
+        ...current.seo,
+        keywords: stringListValue(value),
+      },
+    }))
+  }
+
+  const updateOpenGraphField = (field: 'og:title' | 'og:description' | 'og:image' | 'og:image:alt', value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      seo: {
+        ...current.seo,
+        openGraph: {
+          ...current.seo.openGraph,
+          [field]: value,
+        },
+      },
+    }))
+  }
+
+  const updateTwitterField = (field: 'twitter:title' | 'twitter:description' | 'twitter:image', value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      seo: {
+        ...current.seo,
+        twitterCard: {
+          ...current.seo.twitterCard,
+          [field]: value,
+        },
+      },
+    }))
+  }
+
+  const updateSearchField = (field: SearchStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      searchData: {
+        ...current.searchData,
+        [field]: value,
+      },
+      MetaData: field === 'keyword'
+        ? {
+            ...current.MetaData,
+            keyword: value,
+          }
+        : current.MetaData,
+    }))
+  }
+
+  const updatePreviousSlugs = (value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      previousSlugs: stringListValue(value),
+    }))
+  }
+
+  const updateSitemapPriority = (value: string) => {
+    updatePageState((current) => {
+      const parsed = value.trim() ? Number(value) : null
+      return {
+        ...current,
+        sitemapPriority: parsed !== null && Number.isFinite(parsed) ? parsed : null,
+      }
+    })
+  }
+
+  const updateSitemapChangeFrequency = (value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      sitemapChangeFrequency: value,
+    }))
+  }
+
+  const updatePageQualityField = (field: PageQualityStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      pageQuality: {
+        ...getPageQuality(current),
+        [field]: value,
+      },
+      googleAds: field === 'landingPageType'
+        ? {
+            ...getPageGoogleAds(current),
+            landingPageType: value,
+          }
+        : current.googleAds,
+    }))
+  }
+
+  const updateMediaField = (slot: MediaSlot, field: MediaStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      media: {
+        ...getPageMedia(current),
+        [slot]: {
+          ...getPageMedia(current)[slot],
+          [field]: value,
+        },
+      },
+    }))
+  }
+
+  const updateMediaDecorative = (slot: MediaSlot, value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      media: {
+        ...getPageMedia(current),
+        [slot]: {
+          ...getPageMedia(current)[slot],
+          decorative: value,
+        },
+      },
+    }))
+  }
+
+  const updateOpenGraphImageField = (field: 'url' | 'alt', value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      media: {
+        ...getPageMedia(current),
+        openGraphImage: {
+          ...getPageMedia(current).openGraphImage,
+          [field]: value,
+        },
+      },
+      seo: {
+        ...current.seo,
+        openGraph: {
+          ...current.seo.openGraph,
+          [field === 'url' ? 'og:image' : 'og:image:alt']: value,
+        },
+      },
+    }))
+  }
+
+  const updateFulfillmentField = (field: FulfillmentStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      fulfillment: {
+        ...getPageFulfillment(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateFulfillmentBoolean = (field: FulfillmentBooleanField, value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      fulfillment: {
+        ...getPageFulfillment(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateFulfillmentNumber = (field: 'topProviderCount', value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      fulfillment: {
+        ...getPageFulfillment(current),
+        [field]: numberValue(value, 0),
+      },
+    }))
+  }
+
+  const updateFulfillmentList = (field: 'confirmedServiceStates' | 'extendedStatesPossible', value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      fulfillment: {
+        ...getPageFulfillment(current),
+        [field]: stringListValue(value),
+      },
+    }))
+  }
+
+  const updateGoogleAdsField = (field: GoogleAdsStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      googleAds: {
+        ...getPageGoogleAds(current),
+        [field]: value,
+      },
+      pageQuality: field === 'landingPageType'
+        ? {
+            ...getPageQuality(current),
+            landingPageType: value,
+          }
+        : current.pageQuality,
+    }))
+  }
+
+  const updateGoogleAdsEligible = (value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      googleAds: {
+        ...getPageGoogleAds(current),
+        eligible: value,
+      },
+    }))
+  }
+
+  const updateGoogleAdsGoals = (value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      googleAds: {
+        ...getPageGoogleAds(current),
+        conversionGoals: stringListValue(value),
       },
     }))
   }
@@ -796,7 +1269,7 @@ export default function PageStructuredEditor() {
       </div>
 
       <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
-        Phase 2 edits existing page fields only. Tenant ID, Page ID, create, duplicate, archive, import, export, and hard delete are not available here.
+        Phase 6A edits existing page content, SEO, media, fulfillment, Ads, and quality fields. Tenant ID, Page ID, archive, import, export, and hard delete are not available here.
       </div>
 
       {error && (
@@ -840,10 +1313,10 @@ export default function PageStructuredEditor() {
         </div>
       </Section>
 
-      <Section title="General Page Fields" description="Basic visible metadata and publishing flags for the selected tenant page.">
+      <Section title="Basics" description="Visible page title, slug, targeting, geography, and production page classification.">
         <div className="grid gap-4 lg:grid-cols-2">
           <TextField
-            label="MetaData.title"
+            label="Page title / H1 (MetaData.title)"
             value={page.MetaData?.title || ''}
             onChange={(value) => updateMetaField('title', value)}
             testId="metadata-title"
@@ -863,22 +1336,66 @@ export default function PageStructuredEditor() {
             rows={4}
             testId="metadata-description"
           />
-          <div className="space-y-3">
-            <CheckboxField
-              label="Published"
-              checked={Boolean(page.isPublished)}
-              onChange={(value) => updateBooleanField('isPublished', value)}
-            />
-            <CheckboxField
-              label="Include in sitemap"
-              checked={Boolean(page.includeInSitemap)}
-              onChange={(value) => updateBooleanField('includeInSitemap', value)}
-            />
-          </div>
+          <TextField
+            label="pageType"
+            value={page.MetaData?.pageType || ''}
+            onChange={(value) => updateMetaField('pageType', value)}
+            placeholder="service, state, city, lead-routing"
+          />
+          <TextField
+            label="primaryService (MetaData.product)"
+            value={page.MetaData?.product || ''}
+            onChange={(value) => updateMetaField('product', value)}
+            placeholder="Portable Ice Rink Rentals"
+          />
+          <TextField
+            label="targetKeyword (MetaData.keyword / searchData.keyword)"
+            value={page.MetaData?.keyword || page.searchData?.keyword || ''}
+            onChange={(value) => updateSearchField('keyword', value)}
+            placeholder="portable ice rink rentals"
+          />
+          <TextField
+            label="secondaryKeywords (seo.keywords)"
+            value={(page.seo?.keywords || []).join(', ')}
+            onChange={updateSeoKeywords}
+            placeholder="keyword one, keyword two"
+          />
+          <TextField
+            label="state"
+            value={page.searchData?.state || ''}
+            onChange={(value) => updateSearchField('state', value)}
+          />
+          <TextField
+            label="city"
+            value={page.searchData?.city || ''}
+            onChange={(value) => updateSearchField('city', value)}
+          />
+          <TextField
+            label="region/metro"
+            value={page.searchData?.metro || ''}
+            onChange={(value) => updateSearchField('metro', value)}
+          />
+          <TextField
+            label="county"
+            value={page.searchData?.county || ''}
+            onChange={(value) => updateSearchField('county', value)}
+          />
+          <TextField
+            label="buyerIntent"
+            value={pageQuality?.buyerIntent || ''}
+            onChange={(value) => updatePageQualityField('buyerIntent', value)}
+            placeholder="high, medium, informational, lead-routing"
+          />
+          <TextField
+            label="landingPageType"
+            value={pageQuality?.landingPageType || ''}
+            onChange={(value) => updatePageQualityField('landingPageType', value)}
+            placeholder="service, state, event, quote"
+          />
         </div>
       </Section>
 
-      <Section title="SEO" description="Editable search title, description, robots, and canonical fields. Other SEO structures remain preserved.">
+      <Section title="SEO" description="Search title, meta description, canonical, robots, sitemap, Open Graph, and Twitter Card fields.">
         <div className="grid gap-4 lg:grid-cols-2">
           <TextField
             label="seo.metaTitle"
@@ -908,10 +1425,80 @@ export default function PageStructuredEditor() {
             placeholder="https://example.com/page"
             testId="seo-canonical-url"
           />
+          <TextField
+            label="Open Graph title"
+            value={page.seo?.openGraph?.['og:title'] || ''}
+            onChange={(value) => updateOpenGraphField('og:title', value)}
+          />
+          <TextField
+            label="Open Graph description"
+            value={page.seo?.openGraph?.['og:description'] || ''}
+            onChange={(value) => updateOpenGraphField('og:description', value)}
+            multiline
+            rows={3}
+          />
+          <TextField
+            label="Open Graph image"
+            value={page.seo?.openGraph?.['og:image'] || ''}
+            onChange={(value) => updateOpenGraphImageField('url', value)}
+          />
+          <TextField
+            label="Open Graph image alt"
+            value={page.seo?.openGraph?.['og:image:alt'] || ''}
+            onChange={(value) => updateOpenGraphImageField('alt', value)}
+          />
+          <TextField
+            label="Twitter title"
+            value={page.seo?.twitterCard?.['twitter:title'] || ''}
+            onChange={(value) => updateTwitterField('twitter:title', value)}
+          />
+          <TextField
+            label="Twitter description"
+            value={page.seo?.twitterCard?.['twitter:description'] || ''}
+            onChange={(value) => updateTwitterField('twitter:description', value)}
+            multiline
+            rows={3}
+          />
+          <TextField
+            label="Twitter image"
+            value={page.seo?.twitterCard?.['twitter:image'] || ''}
+            onChange={(value) => updateTwitterField('twitter:image', value)}
+          />
         </div>
       </Section>
 
-      <Section title="Image Field Awareness" description="Three-slot publishing target is shown using existing block fields. Dedicated page-level image slots are not modeled yet.">
+      <Section title="Media" description="Page-level image slots for production readiness plus detected per-block image fields.">
+        <div className="grid gap-4 xl:grid-cols-2">
+          {([
+            ['featuredImage', 'Featured image'],
+            ['heroImage', 'Hero image'],
+            ['localImage', 'Dynamic/local rink image'],
+            ['closingImage', 'Closing image'],
+          ] as Array<[MediaSlot, string]>).map(([slot, label]) => {
+            const asset = pageMedia?.[slot]
+
+            return (
+              <div key={slot} className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
+                <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</div>
+                <div className="grid gap-3 lg:grid-cols-2">
+                  <TextField label="url" value={asset?.url || ''} onChange={(value) => updateMediaField(slot, 'url', value)} />
+                  <TextField label="alt" value={asset?.alt || ''} onChange={(value) => updateMediaField(slot, 'alt', value)} />
+                  <TextField label="title" value={asset?.title || ''} onChange={(value) => updateMediaField(slot, 'title', value)} />
+                  <TextField label="caption" value={asset?.caption || ''} onChange={(value) => updateMediaField(slot, 'caption', value)} />
+                  <CheckboxField label="Decorative image" checked={Boolean(asset?.decorative)} onChange={(value) => updateMediaDecorative(slot, value)} />
+                </div>
+              </div>
+            )
+          })}
+          <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
+            <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">Open Graph image mirror</div>
+            <div className="grid gap-3 lg:grid-cols-2">
+              <TextField label="url" value={pageMedia?.openGraphImage.url || ''} onChange={(value) => updateOpenGraphImageField('url', value)} />
+              <TextField label="alt" value={pageMedia?.openGraphImage.alt || ''} onChange={(value) => updateOpenGraphImageField('alt', value)} />
+            </div>
+          </div>
+        </div>
+
         {imageSignals.length === 0 ? (
           <div className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-600">
             No existing image or alt-text fields were detected on this page.
@@ -942,6 +1529,60 @@ export default function PageStructuredEditor() {
             })}
           </div>
         )}
+      </Section>
+
+      <Section title="Fulfillment" description="Partner availability, routing, and disclosure fields for production transparency.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <SelectField label="fulfillmentStatus" value={pageFulfillment?.fulfillmentStatus || ''} onChange={(value) => updateFulfillmentField('fulfillmentStatus', value)}>
+            {FULFILLMENT_STATUSES.map((status) => <option key={status || 'blank'} value={status}>{status || 'Select status'}</option>)}
+          </SelectField>
+          <SelectField label="leadRoutingMode" value={pageFulfillment?.leadRoutingMode || ''} onChange={(value) => updateFulfillmentField('leadRoutingMode', value)}>
+            {LEAD_ROUTING_MODES.map((mode) => <option key={mode || 'blank'} value={mode}>{mode || 'Select routing mode'}</option>)}
+          </SelectField>
+          <TextField label="topProviderCount" value={String(pageFulfillment?.topProviderCount ?? 0)} onChange={(value) => updateFulfillmentNumber('topProviderCount', value)} />
+          <TextField label="confirmedServiceStates" value={(pageFulfillment?.confirmedServiceStates || []).join(', ')} onChange={(value) => updateFulfillmentList('confirmedServiceStates', value)} />
+          <TextField label="extendedStatesPossible" value={(pageFulfillment?.extendedStatesPossible || []).join(', ')} onChange={(value) => updateFulfillmentList('extendedStatesPossible', value)} />
+          <div className="space-y-3">
+            <CheckboxField label="Primary partner available" checked={Boolean(pageFulfillment?.primaryPartnerAvailable)} onChange={(value) => updateFulfillmentBoolean('primaryPartnerAvailable', value)} />
+            <CheckboxField label="Manual review required" checked={Boolean(pageFulfillment?.manualReviewRequired)} onChange={(value) => updateFulfillmentBoolean('manualReviewRequired', value)} />
+            <CheckboxField label="Provider research completed" checked={Boolean(pageFulfillment?.providerResearchCompleted)} onChange={(value) => updateFulfillmentBoolean('providerResearchCompleted', value)} />
+            <CheckboxField label="Public disclosure required" checked={Boolean(pageFulfillment?.publicDisclosureRequired)} onChange={(value) => updateFulfillmentBoolean('publicDisclosureRequired', value)} />
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Ads" description="Google Ads eligibility and campaign readiness metadata.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <CheckboxField label="Google Ads eligible" checked={Boolean(pageGoogleAds?.eligible)} onChange={updateGoogleAdsEligible} />
+          <TextField label="googleAds.finalUrl" value={pageGoogleAds?.finalUrl || ''} onChange={(value) => updateGoogleAdsField('finalUrl', value)} />
+          <TextField label="googleAds.landingPageType" value={pageGoogleAds?.landingPageType || ''} onChange={(value) => updateGoogleAdsField('landingPageType', value)} />
+          <TextField label="googleAds.campaignTheme" value={pageGoogleAds?.campaignTheme || ''} onChange={(value) => updateGoogleAdsField('campaignTheme', value)} />
+          <TextField label="googleAds.conversionGoals" value={(pageGoogleAds?.conversionGoals || []).join(', ')} onChange={updateGoogleAdsGoals} />
+          <TextField label="googleAds.notes" value={pageGoogleAds?.notes || ''} onChange={(value) => updateGoogleAdsField('notes', value)} multiline rows={4} />
+        </div>
+      </Section>
+
+      <Section title="Publishing/Quality" description="Launch checks, sitemap settings, previous slugs, and editorial readiness notes.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="space-y-3">
+            <CheckboxField
+              label="Published"
+              checked={Boolean(page.isPublished)}
+              onChange={(value) => updateBooleanField('isPublished', value)}
+            />
+            <CheckboxField
+              label="Include in sitemap"
+              checked={Boolean(page.includeInSitemap)}
+              onChange={(value) => updateBooleanField('includeInSitemap', value)}
+            />
+          </div>
+          <TextField label="previousSlugs" value={(page.previousSlugs || []).join(', ')} onChange={updatePreviousSlugs} />
+          <TextField label="sitemapPriority" value={nullableNumberValue(page.sitemapPriority)} onChange={updateSitemapPriority} placeholder="0.7" />
+          <SelectField label="sitemapChangeFrequency" value={page.sitemapChangeFrequency || ''} onChange={updateSitemapChangeFrequency}>
+            {SITEMAP_CHANGE_FREQUENCIES.map((frequency) => <option key={frequency || 'blank'} value={frequency}>{frequency || 'Select frequency'}</option>)}
+          </SelectField>
+          <TextField label="pageQuality.launchNotes" value={pageQuality?.launchNotes || ''} onChange={(value) => updatePageQualityField('launchNotes', value)} multiline rows={4} />
+        </div>
       </Section>
 
       <Section title="Content Blocks" description="Structured editors are available for known text, SEO-adjacent, link, form, and image fields. Unsupported blocks are read-only JSON and preserved.">

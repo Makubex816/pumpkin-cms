@@ -267,11 +267,26 @@ function validateWithExistingValidator(siteKey, outDir) {
   ]);
 }
 
+function readStaticPublishManifest(outDir) {
+  const manifestPath = path.join(outDir, 'static-publish-manifest.json');
+  if (!existsSync(manifestPath)) return null;
+
+  try {
+    return JSON.parse(readFileSync(manifestPath, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
 function buildSiteSummary(site, releaseSiteDir, sourceValidation, releaseValidation) {
   const stats = getFileStats(releaseSiteDir);
   const routeChecks = validateRequiredRoutes(releaseSiteDir, site);
   const canonical = validateCanonicalUrls(releaseSiteDir, site.domain);
   const scan = scanOutput(releaseSiteDir);
+  const staticPublishManifest = readStaticPublishManifest(releaseSiteDir);
+  const pageQualityWarnings = Array.isArray(staticPublishManifest?.qualityWarnings)
+    ? staticPublishManifest.qualityWarnings
+    : [];
   const rootFiles = ['index.html', 'sitemap.xml', 'robots.txt'].map((fileName) => {
     const filePath = path.join(releaseSiteDir, fileName);
     return {
@@ -292,6 +307,8 @@ function buildSiteSummary(site, releaseSiteDir, sourceValidation, releaseValidat
     rootFiles,
     fileCount: stats.fileCount,
     totalBytes: stats.totalBytes,
+    pageQualityWarnings,
+    pageQualityWarningCount: pageQualityWarnings.length,
     sourceValidation,
     releaseValidation,
     secretScan: {
@@ -334,6 +351,7 @@ function writeSummaryMarkdown(runDir, manifest) {
     lines.push(`- Source validator: \`${site.sourceValidation.ok ? 'passed' : 'failed'}\``);
     lines.push(`- Release validator: \`${site.releaseValidation.ok ? 'passed' : 'failed'}\``);
     lines.push(`- Canonical sitemap check: \`${site.canonical.ok ? 'passed' : 'failed'}\``);
+    lines.push(`- Page quality warnings: \`${site.pageQualityWarningCount}\``);
     lines.push(`- Secret scan: \`${site.secretScan.ok ? 'passed' : 'failed'}\``);
     lines.push(`- Ready for manual upload: \`${site.readyForManualUpload ? 'yes' : 'no'}\``);
     lines.push('');
@@ -349,6 +367,15 @@ function writeSummaryMarkdown(runDir, manifest) {
       lines.push('Content warnings:');
       lines.push('');
       for (const warning of site.secretScan.warnings) {
+        lines.push(`- ${warning}`);
+      }
+    }
+
+    if (site.pageQualityWarnings.length > 0) {
+      lines.push('');
+      lines.push('Page quality warnings:');
+      lines.push('');
+      for (const warning of site.pageQualityWarnings) {
         lines.push(`- ${warning}`);
       }
     }
@@ -421,6 +448,7 @@ function main() {
       uploadRoot: site.uploadRoot,
       fileCount: site.fileCount,
       readyForManualUpload: site.readyForManualUpload,
+      pageQualityWarningCount: site.pageQualityWarningCount,
       contentWarningCount: site.secretScan.warnings.length,
     })),
     manifest: toPosix(path.relative(repoRoot, path.join(runDir, 'static-publish-dry-run-manifest.json'))),

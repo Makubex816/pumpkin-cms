@@ -30,9 +30,103 @@ export interface Page {
   publishedAt: string | null;
   includeInSitemap: boolean;
   /**
+   * Previous public slugs retained for future redirect planning.
+   */
+  previousSlugs?: string[];
+  /**
+   * Optional sitemap priority for static publishing and XML sitemap generation.
+   */
+  sitemapPriority?: number | null;
+  /**
+   * Optional sitemap change frequency for static publishing and XML sitemap generation.
+   */
+  sitemapChangeFrequency?: string;
+  /**
+   * Page-level media slots used by production SEO and publishing workflows.
+   */
+  media?: PageMedia;
+  /**
+   * Fulfillment and partner routing state for launch transparency.
+   */
+  fulfillment?: PageFulfillment;
+  /**
+   * Google Ads and paid landing-page readiness metadata.
+   */
+  googleAds?: PageGoogleAds;
+  /**
+   * Editorial launch-quality metadata that does not affect rendering directly.
+   */
+  pageQuality?: PageQuality;
+  /**
    * Saved XYFlow node positions for page relationship visualization
    */
   layoutPositions?: Record<string, NodePosition>;
+}
+
+/**
+ * Reusable image asset metadata for page-level media slots
+ */
+export interface PageImageAsset {
+  url: string;
+  alt: string;
+  title: string;
+  caption: string;
+  decorative: boolean;
+}
+
+/**
+ * Compact Open Graph image metadata for exports and quality checks
+ */
+export interface PageOpenGraphImage {
+  url: string;
+  alt: string;
+}
+
+/**
+ * Page-level media slots for production pages
+ */
+export interface PageMedia {
+  featuredImage: PageImageAsset;
+  heroImage: PageImageAsset;
+  localImage: PageImageAsset;
+  closingImage: PageImageAsset;
+  openGraphImage: PageOpenGraphImage;
+}
+
+/**
+ * Fulfillment and partner routing metadata
+ */
+export interface PageFulfillment {
+  fulfillmentStatus: string;
+  primaryPartnerAvailable: boolean;
+  manualReviewRequired: boolean;
+  providerResearchCompleted: boolean;
+  topProviderCount: number;
+  leadRoutingMode: string;
+  publicDisclosureRequired: boolean;
+  confirmedServiceStates: string[];
+  extendedStatesPossible: string[];
+}
+
+/**
+ * Google Ads readiness metadata
+ */
+export interface PageGoogleAds {
+  eligible: boolean;
+  finalUrl: string;
+  landingPageType: string;
+  campaignTheme: string;
+  conversionGoals: string[];
+  notes: string;
+}
+
+/**
+ * Editorial page quality metadata
+ */
+export interface PageQuality {
+  buyerIntent: string;
+  landingPageType: string;
+  launchNotes: string;
 }
 
 /**

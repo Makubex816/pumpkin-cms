@@ -80,8 +80,137 @@ public class Page
     [JsonPropertyName("includeInSitemap")]
     public bool IncludeInSitemap { get; set; } = true;
 
+    [JsonPropertyName("previousSlugs")]
+    public List<string> PreviousSlugs { get; set; } = new();
+
+    [JsonPropertyName("sitemapPriority")]
+    public double? SitemapPriority { get; set; }
+
+    [JsonPropertyName("sitemapChangeFrequency")]
+    public string SitemapChangeFrequency { get; set; } = string.Empty;
+
+    [JsonPropertyName("media")]
+    public PageMedia Media { get; set; } = new();
+
+    [JsonPropertyName("fulfillment")]
+    public PageFulfillment Fulfillment { get; set; } = new();
+
+    [JsonPropertyName("googleAds")]
+    public PageGoogleAds GoogleAds { get; set; } = new();
+
+    [JsonPropertyName("pageQuality")]
+    public PageQuality PageQuality { get; set; } = new();
+
     [JsonPropertyName("layoutPositions")]
     public Dictionary<string, NodePosition>? LayoutPositions { get; set; }
+}
+
+public class PageImageAsset
+{
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = string.Empty;
+
+    [JsonPropertyName("alt")]
+    public string Alt { get; set; } = string.Empty;
+
+    [JsonPropertyName("title")]
+    public string Title { get; set; } = string.Empty;
+
+    [JsonPropertyName("caption")]
+    public string Caption { get; set; } = string.Empty;
+
+    [JsonPropertyName("decorative")]
+    public bool Decorative { get; set; } = false;
+}
+
+public class PageOpenGraphImage
+{
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = string.Empty;
+
+    [JsonPropertyName("alt")]
+    public string Alt { get; set; } = string.Empty;
+}
+
+public class PageMedia
+{
+    [JsonPropertyName("featuredImage")]
+    public PageImageAsset FeaturedImage { get; set; } = new();
+
+    [JsonPropertyName("heroImage")]
+    public PageImageAsset HeroImage { get; set; } = new();
+
+    [JsonPropertyName("localImage")]
+    public PageImageAsset LocalImage { get; set; } = new();
+
+    [JsonPropertyName("closingImage")]
+    public PageImageAsset ClosingImage { get; set; } = new();
+
+    [JsonPropertyName("openGraphImage")]
+    public PageOpenGraphImage OpenGraphImage { get; set; } = new();
+}
+
+public class PageFulfillment
+{
+    [JsonPropertyName("fulfillmentStatus")]
+    public string FulfillmentStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("primaryPartnerAvailable")]
+    public bool PrimaryPartnerAvailable { get; set; } = false;
+
+    [JsonPropertyName("manualReviewRequired")]
+    public bool ManualReviewRequired { get; set; } = true;
+
+    [JsonPropertyName("providerResearchCompleted")]
+    public bool ProviderResearchCompleted { get; set; } = false;
+
+    [JsonPropertyName("topProviderCount")]
+    public int TopProviderCount { get; set; } = 0;
+
+    [JsonPropertyName("leadRoutingMode")]
+    public string LeadRoutingMode { get; set; } = string.Empty;
+
+    [JsonPropertyName("publicDisclosureRequired")]
+    public bool PublicDisclosureRequired { get; set; } = false;
+
+    [JsonPropertyName("confirmedServiceStates")]
+    public List<string> ConfirmedServiceStates { get; set; } = new();
+
+    [JsonPropertyName("extendedStatesPossible")]
+    public List<string> ExtendedStatesPossible { get; set; } = new();
+}
+
+public class PageGoogleAds
+{
+    [JsonPropertyName("eligible")]
+    public bool Eligible { get; set; } = false;
+
+    [JsonPropertyName("finalUrl")]
+    public string FinalUrl { get; set; } = string.Empty;
+
+    [JsonPropertyName("landingPageType")]
+    public string LandingPageType { get; set; } = string.Empty;
+
+    [JsonPropertyName("campaignTheme")]
+    public string CampaignTheme { get; set; } = string.Empty;
+
+    [JsonPropertyName("conversionGoals")]
+    public List<string> ConversionGoals { get; set; } = new();
+
+    [JsonPropertyName("notes")]
+    public string Notes { get; set; } = string.Empty;
+}
+
+public class PageQuality
+{
+    [JsonPropertyName("buyerIntent")]
+    public string BuyerIntent { get; set; } = string.Empty;
+
+    [JsonPropertyName("landingPageType")]
+    public string LandingPageType { get; set; } = string.Empty;
+
+    [JsonPropertyName("launchNotes")]
+    public string LaunchNotes { get; set; } = string.Empty;
 }
 
 public class NodePosition
