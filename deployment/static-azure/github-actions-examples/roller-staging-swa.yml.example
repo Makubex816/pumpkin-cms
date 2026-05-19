@@ -1,0 +1,63 @@
+name: Example Roller Staging Static Web Apps Deploy
+
+# EXAMPLE TEMPLATE ONLY.
+# This file is intentionally outside .github/workflows and uses .yml.example
+# so GitHub Actions will not treat it as an active workflow.
+# Timothy must verify app_location, output_location, skip_app_build, and the
+# selected dry-run folder before copying this into .github/workflows.
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_staging_template:
+        description: Type DEPLOY_ROLLER_STAGING to run after this template is activated.
+        required: true
+        default: DO_NOT_RUN
+
+jobs:
+  build-and-deploy-roller-staging:
+    if: ${{ github.event.inputs.confirm_staging_template == 'DEPLOY_ROLLER_STAGING' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: apps/ice-rink-web/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: apps/ice-rink-web
+        run: npm ci
+
+      - name: Build Roller static dry run
+        working-directory: apps/ice-rink-web
+        env:
+          PUMPKIN_RENDER_MODE: static
+          SITE_KEY: roller-rink-rentals
+          STATIC_CONTENT_SOURCE: seed-sites
+        run: npm run publish:dry-run
+
+      - name: Locate Roller dry-run output
+        id: dryrun
+        shell: bash
+        run: |
+          RUN_DIR="$(ls -td .static-release-dry-runs/* | head -n 1)"
+          echo "run_dir=${RUN_DIR}" >> "${GITHUB_OUTPUT}"
+          test -f "${RUN_DIR}/roller-rink-rentals/index.html"
+
+      - name: Validate Roller static output
+        run: node deployment/static-azure/validate-static-output.mjs --site roller-rink-rentals --out "${{ steps.dryrun.outputs.run_dir }}/roller-rink-rentals"
+
+      - name: Deploy Roller staging to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ROLLER_STAGING }}
+          action: upload
+          app_location: ${{ steps.dryrun.outputs.run_dir }}/roller-rink-rentals
+          output_location: ''
+          skip_app_build: true
