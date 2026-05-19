@@ -75,6 +75,14 @@ The viewer displays:
 
 The summary markdown can be pasted or uploaded separately and is shown as plain preformatted text.
 
+## Saving CMS History
+
+Phase 6H adds `Save To CMS History`.
+
+This action sends sanitized manifest summary metadata to Pumpkin API and stores it as a tenant-scoped `PublishRun` record. It does not store full static output files and does not deploy anything.
+
+The Action Center shows CMS history separately from local browser history.
+
 ## Readiness Correlation
 
 The action center compares the pasted manifest with the currently selected tenant.
@@ -117,3 +125,5 @@ It does not replace the staging DNS checklist, Azure runbooks, Cloudflare checkl
 - No local dry-run folder is read automatically.
 - Local browser history is not a server-side audit trail.
 - A future phase should add a tenant-level publish/build history collection and deployment status records.
+
+See `publish-run-registry.md` for the persistent CMS history data model and Cosmos container requirement.

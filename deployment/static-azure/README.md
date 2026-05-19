@@ -188,6 +188,8 @@ It shows tenant-scoped CMS snapshot and dry-run commands, parses a pasted or upl
 
 See `publish-action-center.md` for the admin workflow and limitations.
 
+Phase 6H adds persistent CMS publish-run history records through Pumpkin API. See `publish-run-registry.md` for the `PublishRun` data model, API endpoints, and Cosmos `PublishRun` container setup.
+
 ## GitHub Actions Examples
 
 Copy/paste-ready workflow templates live outside `.github/workflows` so they cannot run accidentally:

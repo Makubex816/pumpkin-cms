@@ -754,6 +754,42 @@ public class MongoDataConnection : IDataConnection, IDisposable
         };
     }
 
+    public async Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId)
+    {
+        var publishRunCollection = _database.GetCollection<PublishRun>("PublishRun");
+        var filter = Builders<PublishRun>.Filter.Eq(run => run.TenantId, tenantId);
+
+        return await publishRunCollection
+            .Find(filter)
+            .SortByDescending(run => run.ImportedAt)
+            .ToListAsync();
+    }
+
+    public async Task<PublishRun?> GetPublishRunAsync(string tenantId, string id)
+    {
+        var publishRunCollection = _database.GetCollection<PublishRun>("PublishRun");
+        var filter = Builders<PublishRun>.Filter.And(
+            Builders<PublishRun>.Filter.Eq(run => run.TenantId, tenantId),
+            Builders<PublishRun>.Filter.Eq(run => run.Id, id)
+        );
+
+        return await publishRunCollection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun)
+    {
+        var publishRunCollection = _database.GetCollection<PublishRun>("PublishRun");
+        publishRun.TenantId = tenantId;
+
+        var filter = Builders<PublishRun>.Filter.And(
+            Builders<PublishRun>.Filter.Eq(run => run.TenantId, tenantId),
+            Builders<PublishRun>.Filter.Eq(run => run.Id, publishRun.Id)
+        );
+
+        await publishRunCollection.ReplaceOneAsync(filter, publishRun, new ReplaceOptions { IsUpsert = true });
+        return publishRun;
+    }
+
     public void Dispose()
     {
         if (!_disposed)
@@ -997,6 +1033,21 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<PublishRun?> GetPublishRunAsync(string tenantId, string id)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

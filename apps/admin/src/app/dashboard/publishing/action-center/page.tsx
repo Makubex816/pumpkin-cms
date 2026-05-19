@@ -12,7 +12,7 @@ import {
   getTenantPublishCommands,
   type TenantPublishingSummary,
 } from '@/lib/publishing-readiness'
-import type { Page } from 'pumpkin-ts-models'
+import type { Page, PublishRun, PublishRunSource, PublishRunStatus } from 'pumpkin-ts-models'
 
 const HISTORY_STORAGE_KEY = 'pumpkin:publish-action-center:dry-run-history:v1'
 const HISTORY_LIMIT = 12
@@ -70,6 +70,11 @@ export default function PublishActionCenterPage() {
   const [history, setHistory] = useState<DryRunHistoryEntry[]>([])
   const [historyNotice, setHistoryNotice] = useState<string | null>(null)
   const [storeFeedback, setStoreFeedback] = useState<{ tone: 'success' | 'error'; message: string } | null>(null)
+  const [cmsHistory, setCmsHistory] = useState<PublishRun[]>([])
+  const [cmsHistoryLoading, setCmsHistoryLoading] = useState(false)
+  const [cmsHistoryError, setCmsHistoryError] = useState<string | null>(null)
+  const [cmsHistoryFeedback, setCmsHistoryFeedback] = useState<{ tone: 'success' | 'error'; message: string } | null>(null)
+  const [savingCmsHistory, setSavingCmsHistory] = useState(false)
 
   const loadPages = useCallback(async () => {
     if (!token || !currentTenant) {
@@ -94,6 +99,30 @@ export default function PublishActionCenterPage() {
   useEffect(() => {
     loadPages()
   }, [loadPages])
+
+  const loadCmsHistory = useCallback(async () => {
+    if (!token || !currentTenant) {
+      setCmsHistory([])
+      setCmsHistoryLoading(false)
+      return
+    }
+
+    try {
+      setCmsHistoryLoading(true)
+      setCmsHistoryError(null)
+      const publishRuns = await apiClient.getPublishRuns(token, currentTenant.tenantId)
+      setCmsHistory(publishRuns)
+    } catch (historyError) {
+      console.error('[Publish Action Center] Failed to load CMS publish history:', historyError)
+      setCmsHistoryError(getErrorMessage(historyError, 'Failed to load CMS publish run history.'))
+    } finally {
+      setCmsHistoryLoading(false)
+    }
+  }, [token, currentTenant])
+
+  useEffect(() => {
+    loadCmsHistory()
+  }, [loadCmsHistory])
 
   useEffect(() => {
     setHistory(loadHistory())
@@ -197,6 +226,35 @@ export default function PublishActionCenterPage() {
     setStoreFeedback({ tone: 'success', message })
   }
 
+  const saveManifestToCmsHistory = async () => {
+    if (!token || !currentTenant) {
+      setCmsHistoryFeedback({ tone: 'error', message: 'Log in and select a tenant before saving CMS history.' })
+      return
+    }
+
+    if (!manifest) {
+      setCmsHistoryFeedback({ tone: 'error', message: 'Parse a valid dry-run manifest before saving CMS history.' })
+      return
+    }
+
+    try {
+      setSavingCmsHistory(true)
+      setCmsHistoryFeedback(null)
+      setCmsHistoryError(null)
+      const publishRun = buildPublishRunFromManifest(manifest, currentTenant.tenantId, expectedDomain, correlationWarnings)
+      const savedRun = await apiClient.createPublishRun(token, currentTenant.tenantId, publishRun)
+      setCmsHistory((currentHistory) => [
+        savedRun,
+        ...currentHistory.filter((item) => item.id !== savedRun.id && item.runId !== savedRun.runId),
+      ])
+      setCmsHistoryFeedback({ tone: 'success', message: `Saved run ${savedRun.runId} to CMS history.` })
+    } catch (saveError) {
+      setCmsHistoryFeedback({ tone: 'error', message: getErrorMessage(saveError, 'Failed to save CMS publish history.') })
+    } finally {
+      setSavingCmsHistory(false)
+    }
+  }
+
   const clearHistory = () => {
     saveHistory([])
     setHistory([])
@@ -263,10 +321,13 @@ export default function PublishActionCenterPage() {
             manifest={manifest}
             manifestError={manifestError}
             storeFeedback={storeFeedback}
+            cmsFeedback={cmsHistoryFeedback}
+            savingCmsHistory={savingCmsHistory}
             onManifestTextChange={handleManifestTextChange}
             onParseManifest={() => parseManifest(manifestText)}
             onManifestFile={handleManifestFile}
             onStoreHistory={storeManifestHistory}
+            onSaveCmsHistory={saveManifestToCmsHistory}
           />
           <SummaryViewer
             summaryText={summaryText}
@@ -280,6 +341,12 @@ export default function PublishActionCenterPage() {
             manifest={manifest}
             matchingSite={matchingDryRunSite}
             warnings={correlationWarnings}
+          />
+          <CmsHistoryTable
+            history={cmsHistory}
+            loading={cmsHistoryLoading}
+            error={cmsHistoryError}
+            onRefresh={loadCmsHistory}
           />
           <HistoryTable history={history} notice={historyNotice} onClear={clearHistory} />
           <SafetyPanel />
@@ -379,19 +446,25 @@ function ManifestViewer({
   manifest,
   manifestError,
   storeFeedback,
+  cmsFeedback,
+  savingCmsHistory,
   onManifestTextChange,
   onParseManifest,
   onManifestFile,
   onStoreHistory,
+  onSaveCmsHistory,
 }: {
   manifestText: string
   manifest: DryRunManifest | null
   manifestError: string | null
   storeFeedback: { tone: 'success' | 'error'; message: string } | null
+  cmsFeedback: { tone: 'success' | 'error'; message: string } | null
+  savingCmsHistory: boolean
   onManifestTextChange: (value: string) => void
   onParseManifest: () => void
   onManifestFile: (event: ChangeEvent<HTMLInputElement>) => void
   onStoreHistory: () => void
+  onSaveCmsHistory: () => void
 }) {
   return (
     <section className="card">
@@ -428,6 +501,9 @@ function ManifestViewer({
             <button type="button" onClick={onStoreHistory} disabled={!manifest} className="btn btn-secondary disabled:cursor-not-allowed disabled:opacity-50">
               {storeFeedback?.tone === 'success' ? 'Stored' : 'Store In Local History'}
             </button>
+            <button type="button" onClick={onSaveCmsHistory} disabled={!manifest || savingCmsHistory} className="btn btn-secondary disabled:cursor-not-allowed disabled:opacity-50">
+              {savingCmsHistory ? 'Saving...' : 'Save To CMS History'}
+            </button>
           </div>
           {manifestError && <div className="mt-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{manifestError}</div>}
           {storeFeedback && (
@@ -437,6 +513,15 @@ function ManifestViewer({
                 : 'border-red-200 bg-red-50 text-red-800'
             }`}>
               {storeFeedback.message}
+            </div>
+          )}
+          {cmsFeedback && (
+            <div className={`mt-3 rounded-lg border px-4 py-3 text-sm ${
+              cmsFeedback.tone === 'success'
+                ? 'border-green-200 bg-green-50 text-green-800'
+                : 'border-red-200 bg-red-50 text-red-800'
+            }`}>
+              {cmsFeedback.message}
             </div>
           )}
         </div>
@@ -664,6 +749,82 @@ function HistoryTable({
   )
 }
 
+function CmsHistoryTable({
+  history,
+  loading,
+  error,
+  onRefresh,
+}: {
+  history: PublishRun[]
+  loading: boolean
+  error: string | null
+  onRefresh: () => void
+}) {
+  return (
+    <section className="card">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-neutral-900">CMS Publish Run History</h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            Tenant-scoped publish/build records stored through Pumpkin API. These are dry-run metadata records only, not deployment actions.
+          </p>
+        </div>
+        <button type="button" onClick={onRefresh} className="btn btn-secondary" disabled={loading}>
+          {loading ? 'Refreshing...' : 'Refresh CMS History'}
+        </button>
+      </div>
+
+      {error && (
+        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          {error}
+        </div>
+      )}
+
+      {loading && <p className="mt-5 text-sm text-neutral-600">Loading CMS publish run history...</p>}
+
+      {!loading && !error && history.length === 0 && (
+        <p className="mt-5 text-sm text-neutral-600">No CMS publish run history has been saved for this tenant yet.</p>
+      )}
+
+      {!loading && history.length > 0 && (
+        <div className="mt-5 overflow-x-auto">
+          <table className="min-w-full divide-y divide-neutral-200 text-sm">
+            <thead className="bg-neutral-50">
+              <tr>
+                <Th>Run ID</Th>
+                <Th>Imported</Th>
+                <Th>Status</Th>
+                <Th>Source</Th>
+                <Th>Files</Th>
+                <Th>Redirects</Th>
+                <Th>Warnings</Th>
+                <Th>Deployment</Th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-neutral-100 bg-white">
+              {history.map((item) => (
+                <tr key={item.id}>
+                  <Td>
+                    <div className="font-medium text-neutral-900">{item.runId}</div>
+                    <div className="text-xs text-neutral-500">{item.releaseFolder || item.id}</div>
+                  </Td>
+                  <Td>{formatDateTime(item.importedAt)}</Td>
+                  <Td>{formatRunStatus(item.status)}</Td>
+                  <Td>{item.source}</Td>
+                  <Td>{item.fileCount}</Td>
+                  <Td>{item.redirectCount}</Td>
+                  <Td>{getPublishRunWarningCount(item)}</Td>
+                  <Td>{item.deploymentStatus || 'not_deployed'}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  )
+}
+
 function SafetyPanel() {
   return (
     <section className="card border-blue-200 bg-blue-50">
@@ -870,6 +1031,82 @@ function createHistoryEntry(manifest: DryRunManifest): DryRunHistoryEntry {
   }
 }
 
+function buildPublishRunFromManifest(
+  manifest: DryRunManifest,
+  tenantId: string,
+  expectedDomain: string,
+  correlationWarnings: string[],
+): PublishRun {
+  const matchingSite = manifest.sites.find((site) => site.siteKey === tenantId)
+  if (!matchingSite) {
+    throw new Error(`Manifest does not include selected tenant ${tenantId}.`)
+  }
+
+  if (expectedDomain && matchingSite.domain !== expectedDomain) {
+    throw new Error(`Manifest domain ${matchingSite.domain || 'missing'} does not match expected ${expectedDomain}.`)
+  }
+
+  const source = normalizePublishRunSource(manifest.contentSource)
+  const warningCount = getSiteWarningCount(matchingSite) + correlationWarnings.length
+  const status = derivePublishRunStatus(matchingSite, warningCount)
+
+  return {
+    id: `${tenantId}-${sanitizeId(manifest.runId)}`,
+    tenantId,
+    siteKey: tenantId,
+    domain: matchingSite.domain,
+    runId: manifest.runId,
+    source,
+    runType: 'static_dry_run',
+    status,
+    releaseFolder: sanitizeRelativePath(manifest.releaseFolder),
+    manifestPath: sanitizeRelativePath(manifest.manifestPath),
+    summaryPath: sanitizeRelativePath(manifest.summaryPath),
+    createdAt: manifest.generatedAt,
+    importedAt: new Date().toISOString(),
+    createdBy: 'Pumpkin CMS Admin',
+    notes: 'Imported from Publish Action Center dry-run manifest viewer.',
+    sites: manifest.sites.map((site) => ({
+      siteKey: site.siteKey,
+      displayName: site.displayName,
+      domain: site.domain,
+      uploadRoot: sanitizeRelativePath(site.uploadRoot),
+      fileCount: site.fileCount || 0,
+      redirectCount: site.redirectCount || 0,
+      pageQualityWarningCount: site.pageQualityWarningCount || 0,
+      contentWarningCount: site.contentWarningCount || 0,
+      readyForManualUpload: site.readyForManualUpload === true,
+      sourceValidationOk: site.sourceValidationOk,
+      releaseValidationOk: site.releaseValidationOk,
+      canonicalOk: site.canonicalOk,
+      secretScanOk: site.secretScanOk,
+      warnings: [],
+      errors: [],
+    })),
+    pageCount: 0,
+    fileCount: matchingSite.fileCount || 0,
+    redirectCount: matchingSite.redirectCount || 0,
+    pageQualityWarningCount: matchingSite.pageQualityWarningCount || 0,
+    contentWarningCount: matchingSite.contentWarningCount || 0,
+    readyForManualUpload: matchingSite.readyForManualUpload === true,
+    errors: [],
+    warnings: correlationWarnings.slice(0, 20),
+    manifestSummary: {
+      runId: manifest.runId,
+      generatedAt: manifest.generatedAt,
+      releaseFolder: sanitizeRelativePath(manifest.releaseFolder),
+      contentSource: source,
+      deploymentAttempted: manifest.deploymentAttempted,
+      cloudflareModified: manifest.cloudflareModified,
+      siteCount: manifest.sites.length,
+      ok: manifest.ok,
+    },
+    deploymentTarget: 'none',
+    deployedAt: '',
+    deploymentStatus: 'not_deployed',
+  }
+}
+
 function loadHistory() {
   try {
     const raw = window.localStorage.getItem(HISTORY_STORAGE_KEY)
@@ -905,6 +1142,65 @@ function normalizeHistoryEntry(raw: unknown): DryRunHistoryEntry | null {
     warningCount: numberValue(record.warningCount) ?? 0,
     releaseFolder: stringValue(record.releaseFolder),
   }
+}
+
+function normalizePublishRunSource(value: string): PublishRunSource {
+  if (value === 'cms-snapshot' || value === 'seed-sites' || value === 'manual') {
+    return value
+  }
+
+  return 'unknown'
+}
+
+function derivePublishRunStatus(site: DryRunSite, warningCount: number): PublishRunStatus {
+  if (
+    site.secretScanOk === false ||
+    site.sourceValidationOk === false ||
+    site.releaseValidationOk === false ||
+    site.canonicalOk === false
+  ) {
+    return 'failed'
+  }
+
+  if (site.readyForManualUpload === true && warningCount === 0) {
+    return 'ready_for_manual_upload'
+  }
+
+  if (site.readyForManualUpload === true) {
+    return 'completed_with_warnings'
+  }
+
+  return 'imported'
+}
+
+function getPublishRunWarningCount(run: PublishRun) {
+  return run.contentWarningCount +
+    run.pageQualityWarningCount +
+    run.warnings.length +
+    run.sites.reduce((count, site) => count + site.warnings.length + site.contentWarningCount + site.pageQualityWarningCount, 0)
+}
+
+function formatRunStatus(status: string) {
+  return status.replace(/_/g, ' ')
+}
+
+function sanitizeId(value: string) {
+  const sanitized = value
+    .trim()
+    .replace(/[^a-zA-Z0-9_-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+
+  return sanitized || `run-${Date.now()}`
+}
+
+function sanitizeRelativePath(value: string) {
+  const clean = value.replace(/\\/g, '/').trim()
+  const lower = clean.toLowerCase()
+  if (!clean || clean.startsWith('/') || clean.startsWith('~') || clean.startsWith('//')) return ''
+  if (clean.length > 1 && clean[1] === ':') return ''
+  if (lower.includes('.env') || lower.includes('appsettings')) return ''
+  return clean
 }
 
 function getLatestPageChangeAt(pages: Page[]) {

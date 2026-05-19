@@ -33,6 +33,11 @@ public interface IDataConnection
     Task<List<Tenant>> GetTenantsForUserAsync(string userTenantId, bool isSuperAdmin);
     Task<Page> SavePageAdminAsync(string tenantId, Page page);
     Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null);
+
+    // Publish run registry methods (JWT authentication required at endpoint level)
+    Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId);
+    Task<PublishRun?> GetPublishRunAsync(string tenantId, string id);
+    Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun);
     
     // Theme methods (content serving - API key required)
     Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId);

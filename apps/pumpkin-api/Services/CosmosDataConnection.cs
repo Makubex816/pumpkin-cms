@@ -1090,6 +1090,82 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId)
+    {
+        try
+        {
+            var publishRunContainer = _database.GetContainer("PublishRun");
+            var query = "SELECT * FROM c WHERE c.tenantId = @tenantId ORDER BY c.importedAt DESC";
+            var queryDefinition = new QueryDefinition(query).WithParameter("@tenantId", tenantId);
+
+            var publishRuns = new List<PublishRun>();
+            using var iterator = publishRunContainer.GetItemQueryIterator<PublishRun>(queryDefinition, requestOptions: new QueryRequestOptions
+            {
+                PartitionKey = new PartitionKey(tenantId)
+            });
+
+            while (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync();
+                publishRuns.AddRange(response);
+                _logger.LogInformation("GetPublishRunsByTenantAsync - TenantId: {TenantId}, BatchCount: {Count}, RU: {RU}",
+                    tenantId, response.Count, response.RequestCharge);
+            }
+
+            return publishRuns;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetPublishRunsByTenantAsync error - TenantId: {TenantId}", tenantId);
+            throw;
+        }
+    }
+
+    public async Task<PublishRun?> GetPublishRunAsync(string tenantId, string id)
+    {
+        try
+        {
+            var publishRunContainer = _database.GetContainer("PublishRun");
+            var response = await publishRunContainer.ReadItemAsync<PublishRun>(id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("GetPublishRunAsync - TenantId: {TenantId}, Id: {Id}, RU: {RU}",
+                tenantId, id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation("GetPublishRunAsync - Publish run not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            return null;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetPublishRunAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
+    public async Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun)
+    {
+        try
+        {
+            var publishRunContainer = _database.GetContainer("PublishRun");
+            publishRun.TenantId = tenantId;
+
+            var response = await publishRunContainer.UpsertItemAsync(publishRun, new PartitionKey(tenantId));
+
+            _logger.LogInformation("SavePublishRunAsync - Publish run saved - TenantId: {TenantId}, RunId: {RunId}, Id: {Id}, RU: {RU}",
+                tenantId, publishRun.RunId, publishRun.Id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "SavePublishRunAsync error - TenantId: {TenantId}, RunId: {RunId}", tenantId, publishRun.RunId);
+            throw;
+        }
+    }
+
     // Admin: Get hub pages for a tenant (JWT authentication required at endpoint level)
     public async Task<List<Page>> GetHubPagesAsync(string tenantId)
     {

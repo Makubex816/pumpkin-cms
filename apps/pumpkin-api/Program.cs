@@ -1103,6 +1103,112 @@ app.MapPost("/api/admin/pages/{tenantId}/{pageSlug}/rollback",
     .WithSummary("Roll back a page to its latest revision snapshot (admin)")
     .WithDescription("Restores a page to the latest stored pre-update snapshot. Requires JWT authentication.");
 
+// Admin: List publish/build runs for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/{tenantId}/publish-runs",
+    async (IDatabaseService databaseService, string tenantId, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var publishRuns = await databaseService.GetPublishRunsByTenantAsync(tenantId);
+            return Results.Ok(new { publishRuns, count = publishRuns.Count, tenantId });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving publish runs: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Publish Runs")
+    .WithName("GetPublishRuns")
+    .WithSummary("Get publish/build run history for a tenant")
+    .WithDescription("Lists tenant-scoped static dry-run/build history records. Requires JWT authentication.");
+
+// Admin: Get one publish/build run for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/{tenantId}/publish-runs/{id}",
+    async (IDatabaseService databaseService, string tenantId, string id, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var publishRun = await databaseService.GetPublishRunAsync(tenantId, id);
+            return publishRun == null ? Results.NotFound("Publish run not found") : Results.Ok(publishRun);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving publish run: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Publish Runs")
+    .WithName("GetPublishRun")
+    .WithSummary("Get one publish/build run")
+    .WithDescription("Reads one tenant-scoped static dry-run/build history record. Requires JWT authentication.");
+
+// Admin: Save/import a dry-run manifest summary as a publish/build run (JWT auth, no API key)
+app.MapPost("/api/admin/{tenantId}/publish-runs",
+    async (IDatabaseService databaseService, string tenantId, PublishRun publishRun, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var createdBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+
+            var preparedPublishRun = PublishRunSanitizer.PrepareForSave(publishRun, tenantId, createdBy);
+            var savedPublishRun = await databaseService.SavePublishRunAsync(tenantId, preparedPublishRun);
+            return Results.Created($"/api/admin/{tenantId}/publish-runs/{savedPublishRun.Id}", savedPublishRun);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error saving publish run: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Publish Runs")
+    .WithName("CreatePublishRun")
+    .WithSummary("Create/import a publish/build run")
+    .WithDescription("Stores sanitized dry-run/build metadata only. Does not deploy, upload, purge, or execute shell commands.");
+
 // Admin: Get hub pages for a tenant
 app.MapGet("/api/admin/tenants/{tenantId}/hubs",
     async (IDatabaseService databaseService, string tenantId, HttpContext context) =>

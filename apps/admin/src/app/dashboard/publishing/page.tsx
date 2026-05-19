@@ -18,7 +18,7 @@ import {
   type PublishingWarningGroup,
   type TenantPublishingSummary,
 } from '@/lib/publishing-readiness'
-import type { Page } from 'pumpkin-ts-models'
+import type { Page, PublishRun } from 'pumpkin-ts-models'
 
 const STATUS_STYLES: Record<PublishingReadinessStatus, string> = {
   ready_for_snapshot: 'border-green-200 bg-green-50 text-green-800',
@@ -39,6 +39,7 @@ const STATUS_DOT_STYLES: Record<PublishingReadinessStatus, string> = {
 export default function PublishingDashboardPage() {
   const { token, currentTenant, isLoading, isLoadingTenants, tenantLoadError } = useAuth()
   const [pages, setPages] = useState<Page[]>([])
+  const [publishRuns, setPublishRuns] = useState<PublishRun[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -48,6 +49,7 @@ export default function PublishingDashboardPage() {
     async function loadPages() {
       if (!token || !currentTenant) {
         setPages([])
+        setPublishRuns([])
         setLoading(false)
         return
       }
@@ -55,9 +57,16 @@ export default function PublishingDashboardPage() {
       try {
         setLoading(true)
         setError(null)
-        const tenantPages = await apiClient.getPages(token, currentTenant.tenantId)
+        const [tenantPages, tenantPublishRuns] = await Promise.all([
+          apiClient.getPages(token, currentTenant.tenantId),
+          apiClient.getPublishRuns(token, currentTenant.tenantId).catch((historyError) => {
+            console.warn('[Publishing Dashboard] Publish run history unavailable:', historyError)
+            return [] as PublishRun[]
+          }),
+        ])
         if (isCurrent) {
           setPages(tenantPages)
+          setPublishRuns(tenantPublishRuns)
         }
       } catch (err) {
         console.error('[Publishing Dashboard] Failed to load pages:', err)
@@ -83,6 +92,7 @@ export default function PublishingDashboardPage() {
   const tenantProfile = tenantId ? TENANT_PUBLISHING_PROFILES[tenantId] : null
   const tenantDomain = tenantId ? getTenantDomain(tenantId, pages) : ''
   const commands = tenantId ? getTenantPublishCommands(tenantId) : []
+  const latestPublishRun = publishRuns[0] || null
 
   if (isLoading) {
     return (
@@ -182,12 +192,48 @@ export default function PublishingDashboardPage() {
         <>
           <SummaryGrid summary={summary} />
           <BuildFields summary={summary} />
+          <LatestPublishRun publishRun={latestPublishRun} />
           <WarningGroups groups={summary.warningGroups} />
           <PublishCommands tenantId={tenantId} commands={commands} />
           <PageReadinessTable rows={summary.pageReadiness} />
         </>
       )}
     </div>
+  )
+}
+
+function LatestPublishRun({ publishRun }: { publishRun: PublishRun | null }) {
+  return (
+    <section className="card">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-neutral-900">Latest CMS Publish Run</h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            Most recent tenant-scoped dry-run/build metadata saved through the Publish Action Center.
+          </p>
+        </div>
+        <Link href="/dashboard/publishing/action-center" className="btn btn-secondary">
+          Open Action Center
+        </Link>
+      </div>
+
+      {publishRun ? (
+        <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <ReadOnlyDetail label="Run ID" value={publishRun.runId} />
+          <ReadOnlyDetail label="Status" value={publishRun.status?.replace(/_/g, ' ') || 'unknown'} />
+          <ReadOnlyDetail label="File Count" value={String(publishRun.fileCount ?? 0)} />
+          <ReadOnlyDetail label="Warnings" value={String(getPublishRunWarningCount(publishRun))} />
+          <ReadOnlyDetail label="Redirects" value={String(publishRun.redirectCount ?? 0)} />
+          <ReadOnlyDetail label="Imported" value={formatDateTime(publishRun.importedAt)} />
+          <ReadOnlyDetail label="Content Source" value={publishRun.source || 'unknown'} />
+          <ReadOnlyDetail label="Deployment" value={publishRun.deploymentStatus || 'not_deployed'} />
+        </div>
+      ) : (
+        <p className="mt-5 text-sm text-neutral-600">
+          No CMS publish run history has been saved for this tenant yet.
+        </p>
+      )}
+    </section>
   )
 }
 
@@ -410,6 +456,13 @@ function Th({ children }: { children: ReactNode }) {
 
 function Td({ children }: { children: ReactNode }) {
   return <td className="max-w-xs px-4 py-3 text-neutral-700">{children}</td>
+}
+
+function getPublishRunWarningCount(run: PublishRun) {
+  return run.contentWarningCount +
+    run.pageQualityWarningCount +
+    run.warnings.length +
+    run.sites.reduce((count, site) => count + site.warnings.length + site.contentWarningCount + site.pageQualityWarningCount, 0)
 }
 
 function summarizeWarnings(group: PublishingWarningGroup) {

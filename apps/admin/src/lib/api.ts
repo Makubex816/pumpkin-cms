@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -317,6 +317,46 @@ class ApiClient {
       }
     )
     return response.page
+  }
+
+  async getPublishRuns(token: string, tenantId: string): Promise<PublishRun[]> {
+    const response = await this.request<{ publishRuns: PublishRun[]; count: number; tenantId: string }>(
+      `/api/admin/${encodeURIComponent(tenantId)}/publish-runs`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+    return response.publishRuns
+  }
+
+  async getPublishRun(token: string, tenantId: string, id: string): Promise<PublishRun> {
+    return this.request<PublishRun>(
+      `/api/admin/${encodeURIComponent(tenantId)}/publish-runs/${encodeURIComponent(id)}`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  async createPublishRun(token: string, tenantId: string, publishRun: PublishRun): Promise<PublishRun> {
+    return this.request<PublishRun>(
+      `/api/admin/${encodeURIComponent(tenantId)}/publish-runs`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(publishRun),
+      }
+    )
   }
 
   // ===== THEME METHODS =====

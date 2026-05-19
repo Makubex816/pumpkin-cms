@@ -157,6 +157,18 @@ export type {
   MenuItem
 } from './models/Theme';
 
+// Publish run models
+export type {
+  PublishRun,
+  PublishRunSiteSummary,
+  PublishRunManifestSummary,
+  PublishRunSource,
+  PublishRunType,
+  PublishRunStatus,
+  PublishRunDeploymentTarget,
+  PublishRunDeploymentStatus
+} from './models/PublishRun';
+
 // JSON converter
 export { PageJsonConverter } from './PageJsonConverter';
 export type { JsonConverterOptions } from './PageJsonConverter';

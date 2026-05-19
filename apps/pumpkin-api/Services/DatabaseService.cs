@@ -135,6 +135,21 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.UpdatePageAdminAsync(tenantId, pageSlug, page, changeContext);
     }
 
+    public Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId)
+    {
+        return _dataConnection.GetPublishRunsByTenantAsync(tenantId);
+    }
+
+    public Task<PublishRun?> GetPublishRunAsync(string tenantId, string id)
+    {
+        return _dataConnection.GetPublishRunAsync(tenantId, id);
+    }
+
+    public Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun)
+    {
+        return _dataConnection.SavePublishRunAsync(tenantId, publishRun);
+    }
+
     // Theme methods (content serving - API key required)
     public Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId)
     {
