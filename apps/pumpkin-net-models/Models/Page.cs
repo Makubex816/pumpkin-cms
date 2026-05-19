@@ -277,10 +277,37 @@ public class PageGoogleAds
 
     [JsonPropertyName("notes")]
     public string Notes { get; set; } = string.Empty;
+
+    [JsonPropertyName("policyRisk")]
+    public string PolicyRisk { get; set; } = "unknown";
+
+    [JsonPropertyName("bridgePageRisk")]
+    public string BridgePageRisk { get; set; } = "unknown";
+
+    [JsonPropertyName("requiresDisclosure")]
+    public bool RequiresDisclosure { get; set; } = false;
 }
 
 public class PageQuality
 {
+    [JsonPropertyName("status")]
+    public string Status { get; set; } = "needs_review";
+
+    [JsonPropertyName("score")]
+    public double? Score { get; set; } = null;
+
+    [JsonPropertyName("warnings")]
+    public List<string> Warnings { get; set; } = new();
+
+    [JsonPropertyName("blockingIssues")]
+    public List<string> BlockingIssues { get; set; } = new();
+
+    [JsonPropertyName("lastCheckedAt")]
+    public string LastCheckedAt { get; set; } = string.Empty;
+
+    [JsonPropertyName("uniqueValueReason")]
+    public string UniqueValueReason { get; set; } = string.Empty;
+
     [JsonPropertyName("buyerIntent")]
     public string BuyerIntent { get; set; } = string.Empty;
 
@@ -295,6 +322,9 @@ public class PageWorkflow
 {
     [JsonPropertyName("status")]
     public string Status { get; set; } = "draft";
+
+    [JsonPropertyName("reviewStatus")]
+    public string ReviewStatus { get; set; } = "needs_review";
 
     [JsonPropertyName("approvedForPublish")]
     public bool ApprovedForPublish { get; set; } = false;
@@ -482,11 +512,17 @@ public class PageStructuredDataControls
 
 public class PageFormConfig
 {
+    [JsonPropertyName("formId")]
+    public string FormId { get; set; } = string.Empty;
+
     [JsonPropertyName("formType")]
     public string FormType { get; set; } = string.Empty;
 
     [JsonPropertyName("conversionGoal")]
     public string ConversionGoal { get; set; } = string.Empty;
+
+    [JsonPropertyName("routingMode")]
+    public string RoutingMode { get; set; } = string.Empty;
 
     [JsonPropertyName("thankYouUrl")]
     public string ThankYouUrl { get; set; } = string.Empty;
@@ -500,8 +536,14 @@ public class PageFormConfig
     [JsonPropertyName("staticFormEndpointKey")]
     public string StaticFormEndpointKey { get; set; } = string.Empty;
 
+    [JsonPropertyName("requiresConsent")]
+    public bool RequiresConsent { get; set; } = true;
+
     [JsonPropertyName("consentRequired")]
     public bool ConsentRequired { get; set; } = true;
+
+    [JsonPropertyName("spamProtectionRequired")]
+    public bool SpamProtectionRequired { get; set; } = true;
 
     [JsonPropertyName("spamProtectionEnabled")]
     public bool SpamProtectionEnabled { get; set; } = false;

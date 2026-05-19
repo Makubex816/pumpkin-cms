@@ -139,7 +139,12 @@ export default function PublishingDashboardPage() {
               Tenant-scoped CMS-to-static readiness for {currentTenant.name || tenantProfile?.displayName || tenantId}.
             </p>
           </div>
-          <StatusBadge status={summary.status} label={summary.statusLabel} />
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/dashboard/publishing/repairs" className="btn btn-secondary">
+              Repair Metadata
+            </Link>
+            <StatusBadge status={summary.status} label={summary.statusLabel} />
+          </div>
         </div>
 
         <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">

@@ -23,6 +23,7 @@ public static class PageRevisionHelper
         "lifecycle_action",
         "rollback",
         "cms_snapshot",
+        "metadata_repair",
         "manual_unknown"
     };
 
@@ -389,6 +390,7 @@ public static class PageRevisionHelper
             "lifecycle_action" => "Lifecycle publish-state update",
             "rollback" => "Rollback restore",
             "cms_snapshot" => "CMS snapshot update",
+            "metadata_repair" => "Metadata repair update",
             _ => "Page update"
         };
     }
