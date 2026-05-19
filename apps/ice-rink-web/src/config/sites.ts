@@ -82,6 +82,10 @@ export const sites: SiteDefinition[] = [
 
 export const defaultSite = sites[0];
 
+export function findSiteByKey(siteKey: SiteKey): SiteDefinition {
+  return sites.find((site) => site.key === siteKey) ?? defaultSite;
+}
+
 export function normalizeHost(rawHost?: string | null): string {
   if (!rawHost) return '';
 
@@ -120,18 +124,31 @@ export function getSiteCanonicalUrl(site: SiteDefinition): string {
 
 export function resolveSiteDefinition(rawHost?: string | null): ResolvedSite {
   const site = findSiteByHost(rawHost);
+  return resolveSiteEnvironment(site, rawHost);
+}
+
+export function resolveStaticSiteDefinition(siteKey: SiteKey): ResolvedSite {
+  const site = findSiteByKey(siteKey);
+  return resolveSiteEnvironment(site, site.domain, site.key);
+}
+
+function resolveSiteEnvironment(
+  site: SiteDefinition,
+  rawHost?: string | null,
+  tenantFallback = ''
+): ResolvedSite {
   const tenantId = process.env[site.tenantEnv] || '';
   const apiKey = process.env[site.apiKeyEnv] || '';
   const canonicalUrl = getSiteCanonicalUrl(site);
   const missingEnv = [
-    tenantId ? '' : site.tenantEnv,
+    tenantId || tenantFallback ? '' : site.tenantEnv,
     apiKey ? '' : site.apiKeyEnv,
   ].filter(Boolean);
 
   return {
     ...site,
     host: normalizeHost(rawHost),
-    tenantId,
+    tenantId: tenantId || tenantFallback,
     apiKey,
     canonicalUrl,
     missingEnv,

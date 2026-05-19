@@ -10,7 +10,7 @@ export function buildPageUrl(site: ResolvedSite, slug?: string | null): string {
 
 export function buildMetadata(page: Page, site: ResolvedSite): Metadata {
   const { seo, MetaData: meta } = page;
-  const canonicalUrl = buildPageUrl(site, page.pageSlug);
+  const canonicalUrl = seo.canonicalUrl || buildPageUrl(site, page.pageSlug);
   const title = seo.metaTitle || meta.title || site.brand;
   const description =
     seo.metaDescription ||

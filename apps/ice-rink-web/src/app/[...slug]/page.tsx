@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation';
 import { PageRenderer } from '@/components/PageRenderer';
 import { StructuredData } from '@/components/StructuredData';
 import { getFallbackPage, getFallbackTheme } from '@/data';
+import { getPageForRender, getStaticSlugsForBuild, getThemeForRender } from '@/lib/content-source';
 import { buildMetadata, buildNotFoundMetadata } from '@/lib/metadata';
-import { fetchPage, fetchTheme } from '@/lib/pumpkin-api';
+import { getRenderMode, getStaticFormAction, isStaticRenderMode } from '@/lib/render-mode';
 import { resolveSite } from '@/lib/resolve-site';
 import { replaceSiteTokens } from '@/lib/token-replace';
 
@@ -12,10 +13,21 @@ interface SlugPageProps {
   params: { slug: string[] };
 }
 
+export async function generateStaticParams() {
+  if (!isStaticRenderMode()) {
+    return [];
+  }
+
+  const site = resolveSite();
+  return getStaticSlugsForBuild(site).map((slug) => ({
+    slug: slug.split('/').filter(Boolean),
+  }));
+}
+
 export async function generateMetadata({ params }: SlugPageProps): Promise<Metadata> {
   const site = resolveSite();
   const slug = params.slug.join('/');
-  const page = (await fetchPage(site, slug)) ?? getFallbackPage(site, slug);
+  const page = (await getPageForRender(site, slug)) ?? getFallbackPage(site, slug);
 
   if (!page) return buildNotFoundMetadata(site);
 
@@ -26,8 +38,8 @@ export default async function SlugPage({ params }: SlugPageProps) {
   const site = resolveSite();
   const slug = params.slug.join('/');
   const [cmsPage, cmsTheme] = await Promise.all([
-    fetchPage(site, slug),
-    fetchTheme(site),
+    getPageForRender(site, slug),
+    getThemeForRender(site),
   ]);
 
   const page = replaceSiteTokens(cmsPage ?? getFallbackPage(site, slug), site);
@@ -41,7 +53,12 @@ export default async function SlugPage({ params }: SlugPageProps) {
   return (
     <>
       <StructuredData page={page} />
-      <PageRenderer page={page} blockStyles={theme.blockStyles} />
+      <PageRenderer
+        page={page}
+        blockStyles={theme.blockStyles}
+        renderMode={getRenderMode()}
+        staticFormAction={getStaticFormAction()}
+      />
     </>
   );
 }

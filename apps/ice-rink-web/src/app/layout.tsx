@@ -5,7 +5,7 @@ import type { FooterClassNames, HeaderClassNames } from 'pumpkin-block-views';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { getFallbackTheme } from '@/data';
-import { fetchTheme } from '@/lib/pumpkin-api';
+import { getThemeForRender } from '@/lib/content-source';
 import { resolveSite } from '@/lib/resolve-site';
 import { replaceSiteTokens } from '@/lib/token-replace';
 import { buildDefaultMetadata } from '@/lib/metadata';
@@ -27,7 +27,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const site = resolveSite();
-  const theme = replaceSiteTokens((await fetchTheme(site)) ?? getFallbackTheme(site), site);
+  const theme = replaceSiteTokens((await getThemeForRender(site)) ?? getFallbackTheme(site), site);
 
   return (
     <html lang="en" className={inter.variable}>

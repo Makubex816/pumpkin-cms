@@ -15,16 +15,29 @@ interface CmsBlock extends IHtmlBlock {
 interface PageRendererProps {
   page: Page;
   blockStyles?: BlockStyleMap;
+  renderMode?: 'runtime' | 'static';
+  staticFormAction?: string;
 }
 
-export function PageRenderer({ page, blockStyles }: PageRendererProps) {
+export function PageRenderer({
+  page,
+  blockStyles,
+  renderMode = 'runtime',
+  staticFormAction = '',
+}: PageRendererProps) {
   const blocks = (page.ContentData.ContentBlocks as CmsBlock[]).filter(
     (block) => block.enabled !== false
   );
   const classNames = (blockStyles ?? {}) as BlockClassNamesMap;
 
   const handleContactSubmit = async (payload: ContactSubmitPayload) => {
-    const response = await fetch('/api/contact', {
+    const endpoint = renderMode === 'static' ? staticFormAction : '/api/contact';
+
+    if (!endpoint) {
+      throw new Error('Static contact submissions are not configured yet. Please contact us directly.');
+    }
+
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,6 +61,7 @@ export function PageRenderer({ page, blockStyles }: PageRendererProps) {
         const polishedBlock = renderPolishedBlock({
           block,
           pageSlug: page.pageSlug,
+          onContactSubmit: handleContactSubmit,
         });
 
         return (
