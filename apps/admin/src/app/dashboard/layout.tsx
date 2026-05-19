@@ -33,6 +33,15 @@ const navigation: NavItem[] = [
     ),
   },
   {
+    name: 'Publishing',
+    href: '/dashboard/publishing',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 17l6-6 4 4 7-7m0 0v5m0-5h-5" />
+      </svg>
+    ),
+  },
+  {
     name: 'Page Map',
     href: '/dashboard/page-map',
     icon: (

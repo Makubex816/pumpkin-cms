@@ -1,14 +1,12 @@
 'use client'
 
-import { Fragment } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import type { TenantInfo } from 'pumpkin-ts-models'
 
 export default function TenantSelector() {
-  const { currentTenant, availableTenants, setCurrentTenant, user, isLoading } = useAuth()
+  const { currentTenant, availableTenants, setCurrentTenant, isLoading, isLoadingTenants, tenantLoadError } = useAuth()
 
   // Show loading state
-  if (isLoading || (!currentTenant && availableTenants.length === 0)) {
+  if (isLoading || (isLoadingTenants && !currentTenant)) {
     return (
       <div className="hidden sm:flex items-center px-3 py-1.5 bg-neutral-100 rounded-lg">
         <div className="w-4 h-4 animate-spin rounded-full border-2 border-neutral-300 border-t-primary-500 mr-2"></div>
@@ -17,14 +15,42 @@ export default function TenantSelector() {
     )
   }
 
-  // If only one tenant, don't show selector
-  if (availableTenants.length <= 1) {
+  if (!currentTenant && tenantLoadError) {
+    return (
+      <div className="hidden sm:flex items-center px-3 py-1.5 bg-red-50 text-red-700 rounded-lg" title={tenantLoadError}>
+        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+        </svg>
+        <span className="text-sm font-medium">Tenant load failed</span>
+      </div>
+    )
+  }
+
+  if (!currentTenant && availableTenants.length === 0) {
     return (
       <div className="hidden sm:flex items-center px-3 py-1.5 bg-neutral-100 rounded-lg">
         <svg className="w-4 h-4 text-neutral-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
         </svg>
-        <span className="text-sm font-medium text-neutral-700">{currentTenant?.name || 'No tenant'}</span>
+        <span className="text-sm font-medium text-neutral-700">No tenant</span>
+      </div>
+    )
+  }
+
+  // If only one tenant, don't show selector
+  if (availableTenants.length <= 1) {
+    const hasTenantLoadWarning = Boolean(tenantLoadError)
+    const tenantLabel = currentTenant?.name || 'No tenant'
+
+    return (
+      <div
+        className={`hidden sm:flex items-center px-3 py-1.5 rounded-lg ${hasTenantLoadWarning ? 'bg-amber-50 text-amber-800' : 'bg-neutral-100 text-neutral-700'}`}
+        title={hasTenantLoadWarning ? tenantLoadError || 'Tenant list failed to load' : tenantLabel}
+      >
+        <svg className={`w-4 h-4 mr-2 ${hasTenantLoadWarning ? 'text-amber-600' : 'text-neutral-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+        <span className="text-sm font-medium">{tenantLabel}{hasTenantLoadWarning ? ' (tenant list issue)' : ''}</span>
       </div>
     )
   }
