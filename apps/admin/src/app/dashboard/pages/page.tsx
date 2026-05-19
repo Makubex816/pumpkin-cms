@@ -621,6 +621,13 @@ export default function PagesPage() {
           >
             Create Page
           </button>
+          <button
+            type="button"
+            onClick={() => router.push('/dashboard/pages/import-export')}
+            className="btn btn-secondary"
+          >
+            JSON Import/Export
+          </button>
         </div>
       </div>
 
