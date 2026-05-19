@@ -626,7 +626,7 @@ export default function PagesPage() {
             onClick={() => router.push('/dashboard/pages/import-export')}
             className="btn btn-secondary"
           >
-            JSON Import/Export
+            Import/Export
           </button>
         </div>
       </div>
