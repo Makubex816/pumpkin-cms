@@ -5,7 +5,7 @@ import type { FormEvent, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { IHtmlBlock, Page } from 'pumpkin-ts-models'
+import type { IHtmlBlock, Page, PageChangeSource } from 'pumpkin-ts-models'
 
 const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
   'ice-rink-rentals': 'http://localhost:3002',
@@ -291,12 +291,19 @@ function createProductionReadinessDefaults() {
       lastEditedAt: now,
     },
     revision: {
+      currentRevisionId: '',
       revisionNumber: 1,
       revisionLabel: '',
+      lastSnapshotAt: '',
       lastRevisionAt: '',
       lastRevisionBy: '',
       rollbackAvailable: false,
-      rollbackNotes: 'PageRevision storage is not implemented yet.',
+      rollbackNotes: 'No rollback snapshot has been created yet.',
+      lastChangeSummary: '',
+      lastChangedBy: '',
+      lastChangeSource: 'manual_unknown' as PageChangeSource,
+      lastChangeAt: '',
+      latestSnapshot: null,
     },
     staticPublishing: {
       staticEligible: false,
@@ -769,7 +776,10 @@ export default function PagesPage() {
         deploymentStatus: 'pending_rebuild',
       }
 
-      const updatedPage = await apiClient.updatePage(token, currentTenant.tenantId, page.pageSlug, nextPage)
+      const updatedPage = await apiClient.updatePage(token, currentTenant.tenantId, page.pageSlug, nextPage, {
+        changeSource: 'lifecycle_action',
+        changeSummary: `${nextIsPublished ? 'Published' : 'Unpublished'} page from admin page list`,
+      })
       setPages((currentPages) => currentPages.map((item) => (
         getPageKey(item) === getPageKey(page) ? updatedPage : item
       )))

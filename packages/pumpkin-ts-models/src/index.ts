@@ -53,6 +53,8 @@ export type {
   PageQuality,
   PageWorkflow,
   PageRevisionMetadata,
+  PageChangeSource,
+  PageRevisionSnapshot,
   PageStaticPublishing,
   PageTemplateIdentity,
   PageLinking,

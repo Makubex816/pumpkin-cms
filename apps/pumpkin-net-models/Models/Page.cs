@@ -287,11 +287,17 @@ public class PageWorkflow
 
 public class PageRevisionMetadata
 {
+    [JsonPropertyName("currentRevisionId")]
+    public string CurrentRevisionId { get; set; } = string.Empty;
+
     [JsonPropertyName("revisionNumber")]
     public int RevisionNumber { get; set; } = 1;
 
     [JsonPropertyName("revisionLabel")]
     public string RevisionLabel { get; set; } = string.Empty;
+
+    [JsonPropertyName("lastSnapshotAt")]
+    public string LastSnapshotAt { get; set; } = string.Empty;
 
     [JsonPropertyName("lastRevisionAt")]
     public string LastRevisionAt { get; set; } = string.Empty;
@@ -303,7 +309,70 @@ public class PageRevisionMetadata
     public bool RollbackAvailable { get; set; } = false;
 
     [JsonPropertyName("rollbackNotes")]
-    public string RollbackNotes { get; set; } = "PageRevision storage is not implemented yet.";
+    public string RollbackNotes { get; set; } = "No rollback snapshot has been created yet.";
+
+    [JsonPropertyName("lastChangeSummary")]
+    public string LastChangeSummary { get; set; } = string.Empty;
+
+    [JsonPropertyName("lastChangedBy")]
+    public string LastChangedBy { get; set; } = string.Empty;
+
+    [JsonPropertyName("lastChangeSource")]
+    public string LastChangeSource { get; set; } = "manual_unknown";
+
+    [JsonPropertyName("lastChangeAt")]
+    public string LastChangeAt { get; set; } = string.Empty;
+
+    [JsonPropertyName("latestSnapshot")]
+    public PageRevisionSnapshot? LatestSnapshot { get; set; }
+}
+
+public class PageRevisionSnapshot
+{
+    [JsonPropertyName("revisionId")]
+    public string RevisionId { get; set; } = string.Empty;
+
+    [JsonPropertyName("tenantId")]
+    public string TenantId { get; set; } = string.Empty;
+
+    [JsonPropertyName("pageId")]
+    public string PageId { get; set; } = string.Empty;
+
+    [JsonPropertyName("pageSlug")]
+    public string PageSlug { get; set; } = string.Empty;
+
+    [JsonPropertyName("pageVersion")]
+    public int PageVersion { get; set; } = 1;
+
+    [JsonPropertyName("revisionNumber")]
+    public int RevisionNumber { get; set; } = 1;
+
+    [JsonPropertyName("snapshotAt")]
+    public string SnapshotAt { get; set; } = string.Empty;
+
+    [JsonPropertyName("changeSource")]
+    public string ChangeSource { get; set; } = "manual_unknown";
+
+    [JsonPropertyName("changeSummary")]
+    public string ChangeSummary { get; set; } = string.Empty;
+
+    [JsonPropertyName("changedBy")]
+    public string ChangedBy { get; set; } = string.Empty;
+
+    [JsonPropertyName("page")]
+    public Page? Page { get; set; }
+}
+
+public class PageChangeContext
+{
+    [JsonPropertyName("changeSource")]
+    public string ChangeSource { get; set; } = "manual_unknown";
+
+    [JsonPropertyName("changeSummary")]
+    public string ChangeSummary { get; set; } = string.Empty;
+
+    [JsonPropertyName("changedBy")]
+    public string ChangedBy { get; set; } = string.Empty;
 }
 
 public class PageStaticPublishing

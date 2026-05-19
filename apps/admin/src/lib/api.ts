@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -22,6 +22,11 @@ interface ApiError {
   details?: any
 }
 
+interface PageUpdateOptions {
+  changeSource?: PageChangeSource
+  changeSummary?: string
+}
+
 class ApiClient {
   private baseUrl: string
 
@@ -43,6 +48,10 @@ class ApiClient {
     const config: RequestInit = {
       ...options,
       headers,
+    }
+
+    if ((config.method || 'GET').toUpperCase() === 'GET' && !config.cache) {
+      config.cache = 'no-store'
     }
 
     console.log('[API Client] Request:', {
@@ -216,10 +225,15 @@ class ApiClient {
 
   // Get all pages for a tenant (requires authentication)
   async getPages(token: string, tenantId: string): Promise<Page[]> {
+    const query = new URLSearchParams({
+      tenantId,
+      _: String(Date.now()),
+    })
     const response = await this.request<{ pages: Page[], count: number, tenantId: string }>(
-      `/api/admin/pages?tenantId=${encodeURIComponent(tenantId)}`,
+      `/api/admin/pages?${query.toString()}`,
       {
         method: 'GET',
+        cache: 'no-store',
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -231,10 +245,14 @@ class ApiClient {
   // Get a single page by slug (admin read endpoint, JWT auth)
   async getPage(token: string, tenantId: string, pageSlug: string): Promise<Page> {
     console.log('[API Client] getPage called:', { tenantId, pageSlug })
+    const query = new URLSearchParams({
+      _: String(Date.now()),
+    })
     return this.request<Page>(
-      `/api/admin/pages/${encodeURIComponent(tenantId)}/${encodeURIComponent(pageSlug)}`,
+      `/api/admin/pages/${encodeURIComponent(tenantId)}/${encodeURIComponent(pageSlug)}?${query.toString()}`,
       {
         method: 'GET',
+        cache: 'no-store',
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -258,10 +276,19 @@ class ApiClient {
   }
 
   // Update an existing page (admin, JWT auth)
-  async updatePage(token: string, tenantId: string, pageSlug: string, page: Page): Promise<Page> {
+  async updatePage(token: string, tenantId: string, pageSlug: string, page: Page, options: PageUpdateOptions = {}): Promise<Page> {
     console.log('[API Client] Updating page:', { tenantId, pageSlug })
+    const query = new URLSearchParams()
+    if (options.changeSource) {
+      query.set('changeSource', options.changeSource)
+    }
+    if (options.changeSummary) {
+      query.set('changeSummary', options.changeSummary)
+    }
+    const queryString = query.toString()
+
     return this.request<Page>(
-      `/api/admin/pages/${encodeURIComponent(tenantId)}/${encodeURIComponent(pageSlug)}`,
+      `/api/admin/pages/${encodeURIComponent(tenantId)}/${encodeURIComponent(pageSlug)}${queryString ? `?${queryString}` : ''}`,
       {
         method: 'PUT',
         headers: {
@@ -270,6 +297,26 @@ class ApiClient {
         body: JSON.stringify(page),
       }
     )
+  }
+
+  async rollbackPage(token: string, tenantId: string, pageSlug: string, changeSummary?: string): Promise<Page> {
+    console.log('[API Client] Rolling back page:', { tenantId, pageSlug })
+    const query = new URLSearchParams()
+    if (changeSummary) {
+      query.set('changeSummary', changeSummary)
+    }
+    const queryString = query.toString()
+
+    const response = await this.request<{ page: Page }>(
+      `/api/admin/pages/${encodeURIComponent(tenantId)}/${encodeURIComponent(pageSlug)}/rollback${queryString ? `?${queryString}` : ''}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+    return response.page
   }
 
   // ===== THEME METHODS =====

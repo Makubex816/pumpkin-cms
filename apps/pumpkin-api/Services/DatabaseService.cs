@@ -130,9 +130,9 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.SavePageAdminAsync(tenantId, page);
     }
 
-    public Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page)
+    public Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null)
     {
-        return _dataConnection.UpdatePageAdminAsync(tenantId, pageSlug, page);
+        return _dataConnection.UpdatePageAdminAsync(tenantId, pageSlug, page, changeContext);
     }
 
     // Theme methods (content serving - API key required)

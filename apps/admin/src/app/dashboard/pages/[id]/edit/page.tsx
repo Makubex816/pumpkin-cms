@@ -273,12 +273,19 @@ function getPageWorkflow(page: Page) {
 
 function getPageRevision(page: Page) {
   return {
+    currentRevisionId: page.revision?.currentRevisionId || '',
     revisionNumber: numberValue(page.revision?.revisionNumber, page.PageVersion || 1),
     revisionLabel: page.revision?.revisionLabel || '',
+    lastSnapshotAt: page.revision?.lastSnapshotAt || '',
     lastRevisionAt: page.revision?.lastRevisionAt || '',
     lastRevisionBy: page.revision?.lastRevisionBy || '',
     rollbackAvailable: Boolean(page.revision?.rollbackAvailable),
-    rollbackNotes: page.revision?.rollbackNotes || 'PageRevision storage is not implemented yet.',
+    rollbackNotes: page.revision?.rollbackNotes || 'No rollback snapshot has been created yet.',
+    lastChangeSummary: page.revision?.lastChangeSummary || '',
+    lastChangedBy: page.revision?.lastChangedBy || '',
+    lastChangeSource: page.revision?.lastChangeSource || 'manual_unknown',
+    lastChangeAt: page.revision?.lastChangeAt || '',
+    latestSnapshot: page.revision?.latestSnapshot || null,
   }
 }
 
@@ -362,12 +369,16 @@ function getPreviewUrl(page: Page) {
   return page.pageSlug === 'home' ? `${baseUrl}/` : `${baseUrl}/${page.pageSlug}`
 }
 
-function getViewUrl(page: Page) {
-  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/view?tenantId=${encodeURIComponent(page.tenantId)}`
+function getViewUrl(page: Page, refreshKey?: string | number) {
+  const query = new URLSearchParams({ tenantId: page.tenantId })
+  if (refreshKey) query.set('fresh', String(refreshKey))
+  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/view?${query.toString()}`
 }
 
-function getEditUrl(page: Page) {
-  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/edit?tenantId=${encodeURIComponent(page.tenantId)}`
+function getEditUrl(page: Page, refreshKey?: string | number) {
+  const query = new URLSearchParams({ tenantId: page.tenantId })
+  if (refreshKey) query.set('fresh', String(refreshKey))
+  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/edit?${query.toString()}`
 }
 
 function withUpdatedAt(page: Page) {
@@ -746,7 +757,7 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
 
   const revision = getPageRevision(page)
   if (!revision.rollbackAvailable) {
-    warnings.push('Rollback is not implemented for this page yet; use exports/snapshots for manual recovery.')
+    warnings.push('No latest rollback snapshot exists yet; the next successful update will create one.')
   }
 
   const staticPublishing = getPageStaticPublishing(page)
@@ -1015,6 +1026,7 @@ export default function PageStructuredEditor() {
   const encodedPageSlug = Array.isArray(routeId) ? routeId[0] : routeId
   const routePageSlug = encodedPageSlug ? decodeURIComponent(encodedPageSlug) : ''
   const tenantId = searchParams.get('tenantId') || currentTenant?.tenantId || user?.tenantId || ''
+  const freshnessToken = searchParams.get('fresh') || ''
 
   const [page, setPage] = useState<Page | null>(null)
   const [originalSlug, setOriginalSlug] = useState(routePageSlug)
@@ -1022,6 +1034,7 @@ export default function PageStructuredEditor() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [changeSummary, setChangeSummary] = useState('')
 
   useEffect(() => {
     let isActive = true
@@ -1064,7 +1077,7 @@ export default function PageStructuredEditor() {
     return () => {
       isActive = false
     }
-  }, [token, user, tenantId, routePageSlug])
+  }, [token, user, tenantId, routePageSlug, freshnessToken])
 
   const validation = useMemo(() => validatePage(page, tenantId), [page, tenantId])
   const imageSignals = useMemo(() => (page ? collectImageSignals(page) : []), [page])
@@ -1505,14 +1518,18 @@ export default function PageStructuredEditor() {
       setSuccess(null)
 
       const pageToSave = preparePageForSave(page, getEditorName(user))
-      const savedPage = await apiClient.updatePage(token, tenantId, originalSlug, pageToSave)
+      const savedPage = await apiClient.updatePage(token, tenantId, originalSlug, pageToSave, {
+        changeSource: 'admin_editor',
+        changeSummary,
+      })
 
       setPage(savedPage)
       setOriginalSlug(savedPage.pageSlug)
-      setSuccess('Page saved successfully.')
+      setChangeSummary('')
+      setSuccess(`Page saved successfully. Detail view will refresh from revision ${savedPage.revision?.currentRevisionId || 'latest'}.`)
 
       if (savedPage.pageSlug !== routePageSlug) {
-        router.replace(getEditUrl(savedPage))
+        router.replace(getEditUrl(savedPage, Date.now()))
       }
     } catch (saveError) {
       setError(getErrorMessage(saveError, 'Failed to save page.'))
@@ -1578,7 +1595,7 @@ export default function PageStructuredEditor() {
         <div>
           <button
             type="button"
-            onClick={() => router.push(getViewUrl(page))}
+            onClick={() => router.push(getViewUrl(page, Date.now()))}
             className="mb-3 text-sm font-medium text-neutral-600 hover:text-neutral-900"
           >
             Back to page detail
@@ -1594,7 +1611,7 @@ export default function PageStructuredEditor() {
           </a>
           <button
             type="button"
-            onClick={() => router.push(getViewUrl(page))}
+            onClick={() => router.push(getViewUrl(page, Date.now()))}
             className="btn btn-secondary"
           >
             Cancel
@@ -1611,7 +1628,7 @@ export default function PageStructuredEditor() {
       </div>
 
       <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
-        Phase 6B hardens page contract fields for review, redirects, static publishing, linking, forms, imports, and deployment hooks. Tenant ID, Page ID, hard delete, live deployment, and rollback restore are not available here.
+        Phase 6C creates a latest pre-update revision snapshot before admin saves. Tenant ID, Page ID, hard delete, and live deployment are still locked.
       </div>
 
       {error && (
@@ -1948,11 +1965,19 @@ export default function PageStructuredEditor() {
         </div>
       </Section>
 
-      <Section title="Revision And Static Publishing" description="Rollback is advisory until a PageRevision collection or file snapshots are implemented. Static fields guide snapshot/build/deploy workflows.">
+      <Section title="Revision And Static Publishing" description="Admin saves create one latest pre-update snapshot for rollback readiness. Static fields guide snapshot/build/deploy workflows.">
         <div className="grid gap-4 lg:grid-cols-2">
+          <TextField label="Change summary for next save" value={changeSummary} onChange={setChangeSummary} placeholder="Briefly describe this update" />
+          <ReadOnlyPill label="currentRevisionId" value={pageRevision?.currentRevisionId || ''} />
           <ReadOnlyPill label="revisionNumber" value={String(pageRevision?.revisionNumber ?? 1)} />
+          <ReadOnlyPill label="lastSnapshotAt" value={pageRevision?.lastSnapshotAt || ''} />
+          <ReadOnlyPill label="lastChangeSource" value={pageRevision?.lastChangeSource || 'manual_unknown'} />
+          <ReadOnlyPill label="lastChangeSummary" value={pageRevision?.lastChangeSummary || ''} />
+          <ReadOnlyPill label="lastChangedBy" value={pageRevision?.lastChangedBy || pageRevision?.lastRevisionBy || ''} />
+          <ReadOnlyPill label="lastChangeAt" value={pageRevision?.lastChangeAt || pageRevision?.lastRevisionAt || ''} />
           <ReadOnlyPill label="rollbackAvailable" value={pageRevision?.rollbackAvailable ? 'Yes' : 'No'} />
-          <ReadOnlyPill label="rollbackNotes" value={pageRevision?.rollbackNotes || 'PageRevision storage is not implemented yet.'} />
+          <ReadOnlyPill label="latestSnapshot" value={pageRevision?.latestSnapshot?.revisionId || 'No snapshot stored yet'} />
+          <ReadOnlyPill label="rollbackNotes" value={pageRevision?.rollbackNotes || 'No server-side snapshot has been created yet.'} />
           <CheckboxField label="staticEligible" checked={Boolean(pageStaticPublishing?.staticEligible)} onChange={(value) => updateStaticPublishingBoolean('staticEligible', value)} />
           <CheckboxField label="needsRebuild" checked={Boolean(pageStaticPublishing?.needsRebuild)} onChange={(value) => updateStaticPublishingBoolean('needsRebuild', value)} />
           <ReadOnlyPill label="deploymentStatus" value={pageStaticPublishing?.deploymentStatus || 'not_deployed'} />

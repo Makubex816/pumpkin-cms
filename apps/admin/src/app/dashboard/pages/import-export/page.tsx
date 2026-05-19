@@ -5,7 +5,7 @@ import type { ChangeEvent, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { IHtmlBlock, Page } from 'pumpkin-ts-models'
+import type { IHtmlBlock, Page, PageChangeSource } from 'pumpkin-ts-models'
 
 type ExportScope = 'all' | 'published' | 'single'
 type ExportFormat = 'json' | 'csv' | 'xlsx'
@@ -37,6 +37,7 @@ interface ImportResult {
   errors: string[]
   warnings: string[]
   wrote?: boolean
+  revisionCreated?: boolean
   writeError?: string
 }
 
@@ -166,6 +167,12 @@ const PAGE_FLAT_HEADERS = [
   'workflow.lastEditedAt',
   'workflow',
   'revision.revisionNumber',
+  'revision.currentRevisionId',
+  'revision.lastSnapshotAt',
+  'revision.lastChangeSource',
+  'revision.lastChangeSummary',
+  'revision.lastChangedBy',
+  'revision.lastChangeAt',
   'revision.rollbackAvailable',
   'revision.rollbackNotes',
   'revision',
@@ -499,12 +506,19 @@ function createDefaultWorkflow() {
 
 function createDefaultRevision() {
   return {
+    currentRevisionId: '',
     revisionNumber: 1,
     revisionLabel: '',
+    lastSnapshotAt: '',
     lastRevisionAt: '',
     lastRevisionBy: '',
     rollbackAvailable: false,
-    rollbackNotes: 'PageRevision storage is not implemented yet.',
+    rollbackNotes: 'No rollback snapshot has been created yet.',
+    lastChangeSummary: '',
+    lastChangedBy: '',
+    lastChangeSource: 'manual_unknown' as PageChangeSource,
+    lastChangeAt: '',
+    latestSnapshot: null,
   }
 }
 
@@ -1091,6 +1105,12 @@ function flattenPage(page: Page): FlatPageRow {
     'workflow.lastEditedAt': stringValue(workflow.lastEditedAt),
     workflow: toJsonCell(workflow),
     'revision.revisionNumber': stringValue(revision.revisionNumber),
+    'revision.currentRevisionId': stringValue(revision.currentRevisionId),
+    'revision.lastSnapshotAt': stringValue(revision.lastSnapshotAt),
+    'revision.lastChangeSource': stringValue(revision.lastChangeSource),
+    'revision.lastChangeSummary': stringValue(revision.lastChangeSummary),
+    'revision.lastChangedBy': stringValue(revision.lastChangedBy),
+    'revision.lastChangeAt': stringValue(revision.lastChangeAt),
     'revision.rollbackAvailable': stringValue(revision.rollbackAvailable),
     'revision.rollbackNotes': stringValue(revision.rollbackNotes),
     revision: toJsonCell(revision),
@@ -1299,8 +1319,14 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     ...createDefaultRevision(),
     ...(isRecord(revisionJson) ? revisionJson : {}),
     revisionNumber: parseNumberCell(row['revision.revisionNumber'] || stringValue((revisionJson as Record<string, unknown>).revisionNumber) || '1', 1, 'revision.revisionNumber', sourceRow, warnings),
+    currentRevisionId: row['revision.currentRevisionId'] || stringValue((revisionJson as Record<string, unknown>).currentRevisionId),
+    lastSnapshotAt: row['revision.lastSnapshotAt'] || stringValue((revisionJson as Record<string, unknown>).lastSnapshotAt),
+    lastChangeSource: (row['revision.lastChangeSource'] || stringValue((revisionJson as Record<string, unknown>).lastChangeSource) || 'manual_unknown') as PageChangeSource,
+    lastChangeSummary: row['revision.lastChangeSummary'] || stringValue((revisionJson as Record<string, unknown>).lastChangeSummary),
+    lastChangedBy: row['revision.lastChangedBy'] || stringValue((revisionJson as Record<string, unknown>).lastChangedBy),
+    lastChangeAt: row['revision.lastChangeAt'] || stringValue((revisionJson as Record<string, unknown>).lastChangeAt),
     rollbackAvailable,
-    rollbackNotes: row['revision.rollbackNotes'] || stringValue((revisionJson as Record<string, unknown>).rollbackNotes) || 'PageRevision storage is not implemented yet.',
+    rollbackNotes: row['revision.rollbackNotes'] || stringValue((revisionJson as Record<string, unknown>).rollbackNotes) || 'No rollback snapshot has been created yet.',
   }
   const staticPublishing = {
     ...createDefaultStaticPublishing(),
@@ -1782,6 +1808,7 @@ function validateParsedImport(
         warnings.push(`Page "${normalizedSlug}" does not exist and update-only mode will skip it.`)
       } else if (exists) {
         action = 'update'
+        warnings.push('Write mode will create a server-side revision snapshot before updating this existing page.')
       } else {
         action = 'create'
       }
@@ -1874,6 +1901,12 @@ function buildReport(
     warningCount,
     results,
   }
+}
+
+function getImportChangeSource(sourceType: ImportSourceType): PageChangeSource {
+  if (sourceType === 'csv') return 'csv_import'
+  if (sourceType === 'xlsx') return 'xlsx_import'
+  return 'json_import'
 }
 
 function coercePageForWrite(page: Record<string, unknown>, tenantId: string, rewriteTenantId: boolean) {
@@ -2287,12 +2320,25 @@ export default function PageImportExportPage() {
         try {
           if (planned.action === 'create') {
             await apiClient.createPage(token, currentTenant.tenantId, pageToWrite)
+            writeResults.push({ ...planned, wrote: true, revisionCreated: false })
           } else {
             const existingPage = pages.find((item) => normalizeSlug(item.pageSlug) === planned.normalizedSlug)
-            await apiClient.updatePage(token, currentTenant.tenantId, existingPage?.pageSlug || planned.normalizedSlug, pageToWrite)
+            const updatedPage = await apiClient.updatePage(
+              token,
+              currentTenant.tenantId,
+              existingPage?.pageSlug || planned.normalizedSlug,
+              pageToWrite,
+              {
+                changeSource: getImportChangeSource(parsed.sourceType),
+                changeSummary: `${parsed.sourceType.toUpperCase()} import ${planned.action} for ${planned.normalizedSlug}`,
+              },
+            )
+            writeResults.push({
+              ...planned,
+              wrote: true,
+              revisionCreated: Boolean(updatedPage.revision?.latestSnapshot),
+            })
           }
-
-          writeResults.push({ ...planned, wrote: true })
         } catch (writeError) {
           writeResults.push({
             ...planned,
@@ -2597,6 +2643,10 @@ export default function PageImportExportPage() {
                           <div key={`warning-${message}`} className="text-amber-700">{message}</div>
                         ))}
                         {result.wrote && <div className="text-green-700">Write completed.</div>}
+                        {result.revisionCreated && <div className="text-green-700">Revision snapshot created.</div>}
+                        {result.wrote && result.action === 'update' && !result.revisionCreated && (
+                          <div className="text-amber-700">Revision snapshot was not reported by the API response.</div>
+                        )}
                         {result.writeError && <div className="text-red-700">{result.writeError}</div>}
                         {result.errors.length === 0 && result.warnings.length === 0 && !result.wrote && (
                           <div className="text-neutral-500">No messages.</div>

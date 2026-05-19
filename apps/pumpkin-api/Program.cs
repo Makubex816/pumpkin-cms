@@ -908,7 +908,7 @@ app.MapPost("/api/admin/pages/{tenantId}",
 
 // Admin: Update an existing page (JWT auth, no API key)
 app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
-    async (IDatabaseService databaseService, string tenantId, string pageSlug, pumpkin_net_models.Models.Page page, HttpContext context) =>
+    async (IDatabaseService databaseService, string tenantId, string pageSlug, pumpkin_net_models.Models.Page page, HttpContext context, string? changeSource, string? changeSummary) =>
     {
         if (context.User?.Identity?.IsAuthenticated != true)
         {
@@ -948,7 +948,19 @@ app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
                     return Results.Conflict($"Page with slug '{page.PageSlug}' already exists");
             }
 
-            var updatedPage = await databaseService.UpdatePageAdminAsync(tenantId, decodedSlug, page);
+            var changedBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+
+            var changeContext = new PageChangeContext
+            {
+                ChangeSource = string.IsNullOrWhiteSpace(changeSource) ? "manual_unknown" : changeSource,
+                ChangeSummary = changeSummary ?? string.Empty,
+                ChangedBy = changedBy
+            };
+
+            var updatedPage = await databaseService.UpdatePageAdminAsync(tenantId, decodedSlug, page, changeContext);
             return Results.Ok(updatedPage);
         }
         catch (KeyNotFoundException ex)
@@ -969,6 +981,104 @@ app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
     .WithName("AdminUpdatePage")
     .WithSummary("Update an existing page (admin)")
     .WithDescription("Updates a page by slug for a specific tenant. Requires JWT authentication.");
+
+// Admin: Roll back a page to its latest stored pre-update snapshot (JWT auth, no API key)
+app.MapPost("/api/admin/pages/{tenantId}/{pageSlug}/rollback",
+    async (IDatabaseService databaseService, string tenantId, string pageSlug, HttpContext context, string? changeSummary) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+        {
+            return Results.BadRequest("User tenant ID not found in token");
+        }
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+        {
+            return Results.Forbid();
+        }
+
+        try
+        {
+            var decodedSlug = Uri.UnescapeDataString(pageSlug);
+            var currentPage = await databaseService.GetPageBySlugAsync(tenantId, decodedSlug);
+            if (currentPage == null)
+            {
+                return Results.NotFound($"Page with slug '{decodedSlug}' not found");
+            }
+
+            var snapshot = currentPage.Revision?.LatestSnapshot;
+            var snapshotPage = snapshot?.Page;
+            if (snapshotPage == null)
+            {
+                return Results.BadRequest("Rollback is unavailable because no latest page snapshot exists");
+            }
+
+            var rollbackSlug = snapshotPage.PageSlug.ToLowerInvariant();
+            if (!string.Equals(rollbackSlug, currentPage.PageSlug.ToLowerInvariant(), StringComparison.Ordinal))
+            {
+                var pageWithRollbackSlug = await databaseService.GetPageBySlugAsync(tenantId, rollbackSlug);
+                if (pageWithRollbackSlug != null && pageWithRollbackSlug.PageId != currentPage.PageId)
+                {
+                    return Results.Conflict($"Rollback target slug '{snapshotPage.PageSlug}' is already used by another page");
+                }
+            }
+
+            snapshotPage.PageId = currentPage.PageId;
+            snapshotPage.TenantId = tenantId;
+            snapshotPage.Id = currentPage.PageId;
+
+            var changedBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+
+            var rollbackSummary = string.IsNullOrWhiteSpace(changeSummary)
+                ? $"Rollback to {snapshot.RevisionId}"
+                : changeSummary;
+
+            var rolledBackPage = await databaseService.UpdatePageAdminAsync(
+                tenantId,
+                decodedSlug,
+                snapshotPage,
+                new PageChangeContext
+                {
+                    ChangeSource = "rollback",
+                    ChangeSummary = rollbackSummary,
+                    ChangedBy = changedBy
+                });
+
+            return Results.Ok(new
+            {
+                page = rolledBackPage,
+                rolledBackToRevisionId = snapshot.RevisionId,
+                message = "Rollback completed"
+            });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error rolling back page: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin")
+    .WithName("AdminRollbackPage")
+    .WithSummary("Roll back a page to its latest revision snapshot (admin)")
+    .WithDescription("Restores a page to the latest stored pre-update snapshot. Requires JWT authentication.");
 
 // Admin: Get hub pages for a tenant
 app.MapGet("/api/admin/tenants/{tenantId}/hubs",

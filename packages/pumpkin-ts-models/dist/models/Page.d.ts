@@ -179,12 +179,36 @@ export interface PageWorkflow {
  * Minimal revision metadata until PageRevision storage exists
  */
 export interface PageRevisionMetadata {
+    currentRevisionId: string;
     revisionNumber: number;
     revisionLabel: string;
+    lastSnapshotAt: string;
     lastRevisionAt: string;
     lastRevisionBy: string;
     rollbackAvailable: boolean;
     rollbackNotes: string;
+    lastChangeSummary: string;
+    lastChangedBy: string;
+    lastChangeSource: PageChangeSource;
+    lastChangeAt: string;
+    latestSnapshot?: PageRevisionSnapshot | null;
+}
+export type PageChangeSource = 'admin_editor' | 'json_import' | 'csv_import' | 'xlsx_import' | 'lifecycle_action' | 'rollback' | 'cms_snapshot' | 'manual_unknown';
+/**
+ * Single latest pre-update page snapshot stored in the Page document.
+ */
+export interface PageRevisionSnapshot {
+    revisionId: string;
+    tenantId: string;
+    pageId: string;
+    pageSlug: string;
+    pageVersion: number;
+    revisionNumber: number;
+    snapshotAt: string;
+    changeSource: PageChangeSource;
+    changeSummary: string;
+    changedBy: string;
+    page: Page | null;
 }
 /**
  * Static publishing metadata for Option C publishing

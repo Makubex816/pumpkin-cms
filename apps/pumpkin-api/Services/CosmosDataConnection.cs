@@ -940,7 +940,7 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     }
 
     // JWT-authenticated admin method: Update page (no API key validation)
-    public async Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page)
+    public async Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null)
     {
         try
         {
@@ -971,21 +971,13 @@ public class CosmosDataConnection : IDataConnection, IDisposable
                 throw new KeyNotFoundException($"Page with slug '{pageSlug}' not found");
             }
 
-            // Preserve the PageId from the existing page
-            page.PageId = existingPage.PageId;
-            page.TenantId = tenantId;
-
-            // Update timestamp
-            page.MetaData.UpdatedAt = DateTime.UtcNow;
-
-            // Increment version
-            page.PageVersion++;
+            var pageToSave = PageRevisionHelper.PrepareUpdate(existingPage, page, tenantId, changeContext);
 
             // Replace the page
-            var updateResponse = await pagesContainer.ReplaceItemAsync(page, existingPage.PageId, new PartitionKey(tenantId));
+            var updateResponse = await pagesContainer.ReplaceItemAsync(pageToSave, existingPage.PageId, new PartitionKey(tenantId));
 
             _logger.LogInformation("UpdatePageAdminAsync - Page updated - Slug: {Slug}, PageId: {PageId}, TenantId: {TenantId}, Version: {Version}, RU: {RU}",
-                normalizedSlug, existingPage.PageId, tenantId, page.PageVersion, updateResponse.RequestCharge);
+                normalizedSlug, existingPage.PageId, tenantId, pageToSave.PageVersion, updateResponse.RequestCharge);
 
             return updateResponse.Resource;
         }

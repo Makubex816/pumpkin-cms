@@ -32,7 +32,7 @@ public interface IDataConnection
     Task<List<Page>> GetPagesByTenantAsync(string tenantId);
     Task<List<Tenant>> GetTenantsForUserAsync(string userTenantId, bool isSuperAdmin);
     Task<Page> SavePageAdminAsync(string tenantId, Page page);
-    Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page);
+    Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null);
     
     // Theme methods (content serving - API key required)
     Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId);

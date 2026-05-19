@@ -83,8 +83,16 @@ function getPreviewUrl(page: Page) {
   return page.pageSlug === 'home' ? `${baseUrl}/` : `${baseUrl}/${page.pageSlug}`
 }
 
-function getEditUrl(page: Page) {
-  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/edit?tenantId=${encodeURIComponent(page.tenantId)}`
+function getEditUrl(page: Page, refreshKey?: string | number) {
+  const query = new URLSearchParams({ tenantId: page.tenantId })
+  if (refreshKey) query.set('fresh', String(refreshKey))
+  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/edit?${query.toString()}`
+}
+
+function getViewUrl(page: Page, refreshKey?: string | number) {
+  const query = new URLSearchParams({ tenantId: page.tenantId })
+  if (refreshKey) query.set('fresh', String(refreshKey))
+  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/view?${query.toString()}`
 }
 
 function collectImageFields(value: unknown, source: string, path: string[] = []): ImageFieldSignal[] {
@@ -263,10 +271,14 @@ export default function PageReadOnlyView() {
   const encodedPageSlug = Array.isArray(routeId) ? routeId[0] : routeId
   const pageSlug = encodedPageSlug ? decodeURIComponent(encodedPageSlug) : ''
   const tenantId = searchParams.get('tenantId') || currentTenant?.tenantId || user?.tenantId || ''
+  const freshnessToken = searchParams.get('fresh') || ''
 
   const [page, setPage] = useState<Page | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [actionError, setActionError] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
+  const [rollingBack, setRollingBack] = useState(false)
 
   useEffect(() => {
     let isActive = true
@@ -304,11 +316,51 @@ export default function PageReadOnlyView() {
     return () => {
       isActive = false
     }
-  }, [token, user, tenantId, pageSlug])
+  }, [token, user, tenantId, pageSlug, freshnessToken])
 
   const imageFields = useMemo(() => (page ? getImageFields(page) : []), [page])
   const imageSlots = useMemo(() => (page ? getImageSlotSummary(page) : null), [page])
   const contentBlocks = page?.ContentData?.ContentBlocks || []
+  const latestSnapshotId = page?.revision?.latestSnapshot?.revisionId || ''
+  const canRollback = Boolean(page?.revision?.rollbackAvailable && page.revision.latestSnapshot?.page)
+
+  const handleRollback = async () => {
+    if (!page || !token || rollingBack || !canRollback) return
+
+    const confirmed = window.confirm(
+      `Roll back "${page.MetaData?.title || page.pageSlug}" to snapshot ${latestSnapshotId || 'latest'}? This creates a new revision before restoring.`,
+    )
+
+    if (!confirmed) return
+
+    try {
+      setRollingBack(true)
+      setActionError(null)
+      setNotice(null)
+
+      const rolledBackPage = await apiClient.rollbackPage(
+        token,
+        page.tenantId,
+        page.pageSlug,
+        `Rollback from page detail view to ${latestSnapshotId || 'latest snapshot'}`,
+      )
+
+      setPage(rolledBackPage)
+      setNotice(`Rollback completed to ${latestSnapshotId || 'latest snapshot'}. Static publishing is marked for rebuild.`)
+
+      if (rolledBackPage.pageSlug !== pageSlug) {
+        router.replace(getViewUrl(rolledBackPage, Date.now()))
+      }
+    } catch (rollbackError) {
+      const message = rollbackError && typeof rollbackError === 'object' && 'message' in rollbackError
+        ? String((rollbackError as { message?: unknown }).message)
+        : 'Rollback failed'
+
+      setActionError(message)
+    } finally {
+      setRollingBack(false)
+    }
+  }
 
   if (!user || !token) {
     return (
@@ -371,7 +423,7 @@ export default function PageReadOnlyView() {
           <StatusBadge active={page.includeInSitemap} activeLabel="In sitemap" inactiveLabel="Sitemap hidden" />
           <button
             type="button"
-            onClick={() => router.push(getEditUrl(page))}
+            onClick={() => router.push(getEditUrl(page, Date.now()))}
             className="btn btn-primary"
           >
             Edit
@@ -388,10 +440,25 @@ export default function PageReadOnlyView() {
       </div>
 
       <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
-        This page detail view is read-only. Use Edit for structured content and production-readiness fields; rollback restore, live deployment, and hard delete are not available.
+        This page detail view is read-only. Use Edit for structured content and production-readiness fields; rollback uses the latest stored snapshot when available. Live deployment and hard delete are not available.
       </div>
 
+      {notice && (
+        <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+          {notice}
+        </div>
+      )}
+
+      {actionError && (
+        <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          {actionError}
+        </div>
+      )}
+
       <Section title="Page Summary">
+        <FieldRow label="Page Title / H1">{page.MetaData?.title || <MissingValue />}</FieldRow>
+        <FieldRow label="Page Slug">{page.pageSlug || <MissingValue />}</FieldRow>
+        <FieldRow label="MetaData.description">{page.MetaData?.description || <MissingValue />}</FieldRow>
         <FieldRow label="Tenant ID">{page.tenantId || <MissingValue />}</FieldRow>
         <FieldRow label="Page ID">{page.PageId || page.id || <MissingValue />}</FieldRow>
         <FieldRow label="Page Version">{page.PageVersion ?? <MissingValue />}</FieldRow>
@@ -492,8 +559,30 @@ export default function PageReadOnlyView() {
       </Section>
 
       <Section title="Workflow And Publishing Contract">
+        <FieldRow label="Revision ID">{page.revision?.currentRevisionId || <MissingValue text="No revision saved yet" />}</FieldRow>
+        <FieldRow label="Revision Number">{page.revision?.revisionNumber ?? <MissingValue />}</FieldRow>
+        <FieldRow label="Last Change Source">{page.revision?.lastChangeSource || <MissingValue />}</FieldRow>
+        <FieldRow label="Last Change Summary">{page.revision?.lastChangeSummary || <MissingValue />}</FieldRow>
+        <FieldRow label="Rollback Available">{formatBoolean(page.revision?.rollbackAvailable)}</FieldRow>
+        <FieldRow label="Latest Snapshot">{page.revision?.latestSnapshot?.revisionId || <MissingValue text="No snapshot stored yet" />}</FieldRow>
+        <FieldRow label="Static Needs Rebuild">{formatBoolean(page.staticPublishing?.needsRebuild)}</FieldRow>
         <FieldRow label="Workflow"><ReadOnlyValue value={page.workflow} /></FieldRow>
-        <FieldRow label="Revision"><ReadOnlyValue value={page.revision} /></FieldRow>
+        <FieldRow label="Revision">
+          <div className="space-y-3">
+            <ReadOnlyValue value={page.revision} />
+            <button
+              type="button"
+              onClick={handleRollback}
+              disabled={!canRollback || rollingBack}
+              className="btn btn-secondary disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {rollingBack ? 'Rolling back...' : 'Rollback to latest snapshot'}
+            </button>
+            {!canRollback && (
+              <div className="text-sm text-neutral-500">Rollback unavailable until an update creates a latest snapshot.</div>
+            )}
+          </div>
+        </FieldRow>
         <FieldRow label="Static Publishing"><ReadOnlyValue value={page.staticPublishing} /></FieldRow>
         <FieldRow label="Template Identity"><ReadOnlyValue value={page.template} /></FieldRow>
         <FieldRow label="Structured Data Controls"><ReadOnlyValue value={page.schemaControls} /></FieldRow>

@@ -159,6 +159,10 @@ function getWorkflow(page) {
   return page?.workflow && typeof page.workflow === 'object' ? page.workflow : {};
 }
 
+function getRevision(page) {
+  return page?.revision && typeof page.revision === 'object' ? page.revision : {};
+}
+
 function getStaticPublishing(page) {
   return page?.staticPublishing && typeof page.staticPublishing === 'object' ? page.staticPublishing : {};
 }
@@ -229,6 +233,7 @@ function addProductionReadinessWarnings(page, label, warnings) {
   const fulfillment = getFulfillment(page);
   const googleAds = getGoogleAds(page);
   const workflow = getWorkflow(page);
+  const revision = getRevision(page);
   const staticPublishing = getStaticPublishing(page);
   const template = getTemplateIdentity(page);
   const linking = getLinking(page);
@@ -254,6 +259,12 @@ function addProductionReadinessWarnings(page, label, warnings) {
   }
   if (page?.isPublished && !['approved', 'published'].includes(String(workflow.status || ''))) {
     warnings.push(`${label}: published page should use workflow.status approved or published.`);
+  }
+  if (page?.isPublished && !String(revision.currentRevisionId || '')) {
+    warnings.push(`${label}: published page has no revision.currentRevisionId yet.`);
+  }
+  if (page?.isPublished && revision.rollbackAvailable !== true) {
+    warnings.push(`${label}: published page has no rollback snapshot available yet.`);
   }
   if (page?.isPublished && staticPublishing.staticEligible !== true) {
     warnings.push(`${label}: published page is not marked staticPublishing.staticEligible.`);

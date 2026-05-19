@@ -649,7 +649,7 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     // JWT-authenticated admin method: Update page (no API key validation)
-    public async Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page)
+    public async Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null)
     {
         var pagesCollection = _database.GetCollection<Page>("Page");
         var normalizedSlug = pageSlug.ToLowerInvariant();
@@ -666,26 +666,23 @@ public class MongoDataConnection : IDataConnection, IDisposable
             throw new KeyNotFoundException($"Page with slug '{pageSlug}' not found");
         }
 
-        page.PageId = existingPage.PageId;
-        page.TenantId = tenantId;
-        page.MetaData.UpdatedAt = DateTime.UtcNow;
-        page.PageVersion++;
+        var pageToSave = PageRevisionHelper.PrepareUpdate(existingPage, page, tenantId, changeContext);
 
         var replaceFilter = Builders<Page>.Filter.And(
             Builders<Page>.Filter.Eq(p => p.PageId, existingPage.PageId),
             Builders<Page>.Filter.Eq(p => p.TenantId, tenantId)
         );
 
-        var result = await pagesCollection.ReplaceOneAsync(replaceFilter, page);
+        var result = await pagesCollection.ReplaceOneAsync(replaceFilter, pageToSave);
         if (result.ModifiedCount == 0)
         {
             throw new InvalidOperationException("Page update failed");
         }
 
         _logger.LogInformation("UpdatePageAdminAsync - Page updated - Slug: {Slug}, TenantId: {TenantId}, Version: {Version}",
-            normalizedSlug, tenantId, page.PageVersion);
+            normalizedSlug, tenantId, pageToSave.PageVersion);
 
-        return page;
+        return pageToSave;
     }
 
     public async Task<List<Page>> GetHubPagesAsync(string tenantId)
@@ -999,7 +996,7 @@ public class MongoDataConnection : IDataConnection, IDisposable
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }
 
-    public Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page)
+    public Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }
