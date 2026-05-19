@@ -5,7 +5,7 @@ import type { ChangeEvent, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { IHtmlBlock, Page, PageChangeSource } from 'pumpkin-ts-models'
+import type { IHtmlBlock, Page, PageChangeSource, PageRedirect } from 'pumpkin-ts-models'
 
 type ExportScope = 'all' | 'published' | 'single'
 type ExportFormat = 'json' | 'csv' | 'xlsx'
@@ -120,6 +120,9 @@ const PAGE_FLAT_HEADERS = [
   'buyerIntent',
   'landingPageType',
   'previousSlugs',
+  'redirects',
+  'redirectCount',
+  'hasActiveRedirects',
   'seo.metaTitle',
   'seo.metaDescription',
   'seo.robots',
@@ -233,6 +236,7 @@ const JSON_COLUMN_HEADERS = new Set<string>([
   'seo.openGraph',
   'seo.twitterCard',
   'previousSlugs',
+  'redirects',
   'fulfillment',
   'googleAds',
   'media',
@@ -319,6 +323,31 @@ function normalizeSlug(value: string) {
     .replace(/[^a-z0-9-]/g, '')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
+}
+
+function normalizeRedirectSlug(value: string) {
+  try {
+    const url = new URL(value)
+    return normalizeSlug(url.pathname) || 'home'
+  } catch {
+    return normalizeSlug(value) || (value.trim() === '/' ? 'home' : '')
+  }
+}
+
+function getPageRedirects(page: Partial<Page> | null | undefined): PageRedirect[] {
+  if (!Array.isArray(page?.redirects)) return []
+
+  return page.redirects
+    .map((redirect) => ({
+      from: normalizeRedirectSlug(redirect.from),
+      to: normalizeRedirectSlug(redirect.to),
+      type: 301 as const,
+      reason: redirect.reason || 'slug_changed',
+      createdAt: redirect.createdAt || '',
+      createdBy: redirect.createdBy || '',
+      active: redirect.active !== false,
+    }))
+    .filter((redirect) => redirect.from && redirect.to && redirect.from !== redirect.to)
 }
 
 function buildPageId(tenantId: string, slug: string) {
@@ -751,6 +780,7 @@ function createTemplatePage(tenantId: string) {
     publishedAt: null,
     includeInSitemap: false,
     previousSlugs: [],
+    redirects: [],
     sitemapPriority: null,
     sitemapChangeFrequency: '',
     media: createDefaultMedia(),
@@ -1027,6 +1057,8 @@ function flattenPage(page: Page): FlatPageRow {
   const deploymentHooks = getPageDeploymentHooks(page)
   const targetKeyword = page.MetaData?.keyword || page.searchData?.keyword || ''
   const secondaryKeywords = page.seo?.keywords || []
+  const redirects = getPageRedirects(page)
+  const activeRedirectCount = redirects.filter((redirect) => redirect.active).length
 
   return {
     id: page.id || '',
@@ -1058,6 +1090,9 @@ function flattenPage(page: Page): FlatPageRow {
     buyerIntent: pageQuality.buyerIntent,
     landingPageType: pageQuality.landingPageType || googleAds.landingPageType,
     previousSlugs: toJsonCell(page.previousSlugs || []),
+    redirects: toJsonCell(redirects),
+    redirectCount: stringValue(redirects.length),
+    hasActiveRedirects: stringValue(activeRedirectCount > 0),
     'seo.metaTitle': page.seo?.metaTitle || '',
     'seo.metaDescription': page.seo?.metaDescription || '',
     'seo.robots': page.seo?.robots || '',
@@ -1200,6 +1235,8 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
   const importProvenanceJson = parseJsonCell(row.importProvenance || '', 'importProvenance', sourceRow, 'object', {}, errors)
   const deploymentHooksJson = parseJsonCell(row.deploymentHooks || '', 'deploymentHooks', sourceRow, 'object', {}, errors)
   const previousSlugs = stringListValue(row.previousSlugs || '')
+  const redirectsJson = parseJsonCell(row.redirects || '', 'redirects', sourceRow, 'array', [], errors)
+  const redirects = getPageRedirects({ redirects: Array.isArray(redirectsJson) ? redirectsJson as PageRedirect[] : [] })
   const relatedHubs = parseJsonCell(
     row['contentRelationships.relatedHubs'] || '',
     'contentRelationships.relatedHubs',
@@ -1459,6 +1496,7 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     publishedAt: row.publishedAt || null,
     includeInSitemap,
     previousSlugs,
+    redirects,
     sitemapPriority,
     sitemapChangeFrequency: row.sitemapChangeFrequency || '',
     media,
@@ -1741,8 +1779,36 @@ function validateParsedImport(
       warnings.push('Sitemap page has no canonical URL.')
     }
 
+    const redirects = getPageRedirects(page as Partial<Page>)
+    const activeRedirects = redirects.filter((redirect) => redirect.active)
+    const redirectFroms = new Set<string>()
+    activeRedirects.forEach((redirect) => {
+      if (!redirect.from || !redirect.to) {
+        errors.push('Active redirects require from and to slugs.')
+      }
+      if (redirect.from === redirect.to) {
+        errors.push(`Redirect from "${redirect.from}" cannot point to itself.`)
+      }
+      if (redirectFroms.has(redirect.from)) {
+        errors.push(`Duplicate active redirect from "${redirect.from}" is not allowed.`)
+      }
+      redirectFroms.add(redirect.from)
+    })
+
+    if (Array.isArray(page.redirects) && page.redirects.length !== redirects.length) {
+      warnings.push('Malformed or same-slug redirects will be normalized or skipped before write.')
+    }
+
     if (Array.isArray(page.previousSlugs) && page.previousSlugs.length > 0) {
-      warnings.push('previousSlugs are preserved, but static redirect generation is not implemented yet.')
+      const currentSlug = normalizeRedirectSlug(normalizedSlug)
+      const missingCoverage = page.previousSlugs
+        .map((slug) => normalizeRedirectSlug(stringValue(slug)))
+        .filter(Boolean)
+        .filter((previousSlug) => !activeRedirects.some((redirect) => redirect.from === previousSlug && redirect.to === currentSlug))
+
+      if (missingCoverage.length > 0) {
+        warnings.push(`previousSlugs missing active redirect coverage: ${missingCoverage.join(', ')}.`)
+      }
     }
 
     const workflow = isRecord(page.workflow) ? page.workflow : null
@@ -1973,6 +2039,7 @@ function coercePageForWrite(page: Record<string, unknown>, tenantId: string, rew
     publishedAt: stringValue(page.publishedAt) || null,
     includeInSitemap: page.includeInSitemap as boolean,
     previousSlugs: stringListValue(page.previousSlugs),
+    redirects: getPageRedirects(page as Partial<Page>),
     sitemapPriority: page.sitemapPriority === null || page.sitemapPriority === undefined
       ? null
       : numberValue(page.sitemapPriority, 0.5),

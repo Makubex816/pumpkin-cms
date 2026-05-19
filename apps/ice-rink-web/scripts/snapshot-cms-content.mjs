@@ -115,6 +115,31 @@ function normalizeSlug(slug) {
   return value || 'home';
 }
 
+function normalizeRedirectSlug(value) {
+  if (typeof value !== 'string') return '';
+
+  try {
+    const url = new URL(value);
+    return normalizeSlug(url.pathname);
+  } catch {
+    return normalizeSlug(value);
+  }
+}
+
+function getPageRedirects(page) {
+  if (!Array.isArray(page?.redirects)) return [];
+
+  return page.redirects
+    .map((redirect) => ({
+      from: normalizeRedirectSlug(redirect.from),
+      to: normalizeRedirectSlug(redirect.to),
+      type: redirect.type || 301,
+      reason: String(redirect.reason || 'slug_changed'),
+      active: redirect.active !== false,
+    }))
+    .filter((redirect) => redirect.from && redirect.to);
+}
+
 function getRawPageSlug(page) {
   return String(page?.pageSlug || page?.PageSlug || page?.slug || page?.Slug || '').trim().replace(/^\/+|\/+$/g, '');
 }
@@ -251,8 +276,25 @@ function addProductionReadinessWarnings(page, label, warnings) {
   if (page?.sitemapPriority !== undefined && page?.sitemapPriority !== null && (typeof page.sitemapPriority !== 'number' || page.sitemapPriority < 0 || page.sitemapPriority > 1)) {
     warnings.push(`${label}: sitemapPriority should be a number between 0 and 1.`);
   }
+  const activeRedirects = getPageRedirects(page).filter((redirect) => redirect.active);
   if (Array.isArray(page?.previousSlugs) && page.previousSlugs.length > 0) {
-    warnings.push(`${label}: previousSlugs are present; static redirect generation is not implemented yet.`);
+    const currentSlug = normalizeRedirectSlug(getPageSlug(page));
+    const missingCoverage = page.previousSlugs
+      .map(normalizeRedirectSlug)
+      .filter((previousSlug) => !activeRedirects.some((redirect) => redirect.from === previousSlug && redirect.to === currentSlug));
+    if (missingCoverage.length > 0) {
+      warnings.push(`${label}: previousSlugs missing active redirect coverage: ${missingCoverage.join(', ')}.`);
+    }
+  }
+  if (seo.canonicalUrl) {
+    try {
+      const canonicalUrl = new URL(seo.canonicalUrl);
+      if (normalizeRedirectSlug(canonicalUrl.pathname) !== normalizeRedirectSlug(getPageSlug(page))) {
+        warnings.push(`${label}: canonical URL path does not match current pageSlug.`);
+      }
+    } catch {
+      warnings.push(`${label}: canonical URL could not be parsed for redirect validation.`);
+    }
   }
   if (page?.isPublished && workflow.approvedForPublish !== true) {
     warnings.push(`${label}: published page is not marked workflow.approvedForPublish.`);

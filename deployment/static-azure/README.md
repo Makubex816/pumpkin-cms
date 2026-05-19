@@ -76,6 +76,19 @@ node deployment/static-azure/validate-static-output.mjs --site roller-rink-renta
 
 The validator checks required files, expected routes, sitemap/robots, canonical domains, static assets, missing env/config leaks, and obvious sensitive-value patterns.
 
+## Static Redirects
+
+Static export now writes a redirect manifest next to each site artifact:
+
+```text
+apps/ice-rink-web/.static-artifacts/{SITE_KEY}/redirects.json
+apps/ice-rink-web/.static-artifacts/{SITE_KEY}/out/redirects.json
+```
+
+The manifest is generated from page-level `previousSlugs` and active `redirects` records. It is a deployment artifact for future Azure Static Web Apps or Cloudflare redirect configuration; it is not applied to Cloudflare automatically.
+
+See `static-redirects.md` for the redirect data shape, validation rules, and deployment cautions.
+
 ## Production Publish Dry Run
 
 Phase 5E adds a local dry run that builds, validates, and packages both public sites without deploying anything.

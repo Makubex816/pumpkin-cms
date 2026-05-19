@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { PageRenderer } from '@/components/PageRenderer';
 import { StructuredData } from '@/components/StructuredData';
 import { getFallbackPage, getFallbackTheme } from '@/data';
@@ -11,6 +11,21 @@ import { replaceSiteTokens } from '@/lib/token-replace';
 
 interface SlugPageProps {
   params: { slug: string[] };
+}
+
+function normalizeSlug(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[\\/\s]+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function getPagePath(slug: string) {
+  const normalizedSlug = normalizeSlug(slug);
+  return !normalizedSlug || normalizedSlug === 'home' ? '/' : `/${normalizedSlug}`;
 }
 
 export async function generateStaticParams() {
@@ -41,6 +56,10 @@ export default async function SlugPage({ params }: SlugPageProps) {
     getPageForRender(site, slug),
     getThemeForRender(site),
   ]);
+
+  if (!isStaticRenderMode() && cmsPage && normalizeSlug(cmsPage.pageSlug) !== normalizeSlug(slug)) {
+    permanentRedirect(getPagePath(cmsPage.pageSlug));
+  }
 
   const page = replaceSiteTokens(cmsPage ?? getFallbackPage(site, slug), site);
 

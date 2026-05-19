@@ -287,6 +287,9 @@ function buildSiteSummary(site, releaseSiteDir, sourceValidation, releaseValidat
   const pageQualityWarnings = Array.isArray(staticPublishManifest?.qualityWarnings)
     ? staticPublishManifest.qualityWarnings
     : [];
+  const redirectCount = Number.isFinite(Number(staticPublishManifest?.redirectCount))
+    ? Number(staticPublishManifest.redirectCount)
+    : 0;
   const rootFiles = ['index.html', 'sitemap.xml', 'robots.txt'].map((fileName) => {
     const filePath = path.join(releaseSiteDir, fileName);
     return {
@@ -309,6 +312,7 @@ function buildSiteSummary(site, releaseSiteDir, sourceValidation, releaseValidat
     totalBytes: stats.totalBytes,
     pageQualityWarnings,
     pageQualityWarningCount: pageQualityWarnings.length,
+    redirectCount,
     sourceValidation,
     releaseValidation,
     secretScan: {
@@ -351,6 +355,7 @@ function writeSummaryMarkdown(runDir, manifest) {
     lines.push(`- Source validator: \`${site.sourceValidation.ok ? 'passed' : 'failed'}\``);
     lines.push(`- Release validator: \`${site.releaseValidation.ok ? 'passed' : 'failed'}\``);
     lines.push(`- Canonical sitemap check: \`${site.canonical.ok ? 'passed' : 'failed'}\``);
+    lines.push(`- Redirect manifest records: \`${site.redirectCount}\``);
     lines.push(`- Page quality warnings: \`${site.pageQualityWarningCount}\``);
     lines.push(`- Secret scan: \`${site.secretScan.ok ? 'passed' : 'failed'}\``);
     lines.push(`- Ready for manual upload: \`${site.readyForManualUpload ? 'yes' : 'no'}\``);
@@ -448,6 +453,7 @@ function main() {
       uploadRoot: site.uploadRoot,
       fileCount: site.fileCount,
       readyForManualUpload: site.readyForManualUpload,
+      redirectCount: site.redirectCount,
       pageQualityWarningCount: site.pageQualityWarningCount,
       contentWarningCount: site.secretScan.warnings.length,
     })),

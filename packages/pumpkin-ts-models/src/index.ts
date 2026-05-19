@@ -52,6 +52,8 @@ export type {
   PageGoogleAds,
   PageQuality,
   PageWorkflow,
+  PageRedirect,
+  PageRedirectReason,
   PageRevisionMetadata,
   PageChangeSource,
   PageRevisionSnapshot,

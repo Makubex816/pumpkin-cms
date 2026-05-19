@@ -5,7 +5,7 @@ import type { FormEvent, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { IHtmlBlock, Page, PageChangeSource } from 'pumpkin-ts-models'
+import type { IHtmlBlock, Page, PageChangeSource, PageRedirect } from 'pumpkin-ts-models'
 
 const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
   'ice-rink-rentals': 'http://localhost:3002',
@@ -67,6 +67,43 @@ function normalizeSlug(value: string) {
     .replace(/[^a-z0-9-]/g, '')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
+}
+
+function normalizeRedirectSlug(value: string) {
+  try {
+    const url = new URL(value)
+    return normalizeSlug(url.pathname) || 'home'
+  } catch {
+    return normalizeSlug(value) || (value.trim() === '/' ? 'home' : '')
+  }
+}
+
+function getPageRedirects(page: Page): PageRedirect[] {
+  if (!Array.isArray(page.redirects)) return []
+
+  return page.redirects
+    .map((redirect) => ({
+      from: normalizeRedirectSlug(redirect.from),
+      to: normalizeRedirectSlug(redirect.to),
+      type: 301 as const,
+      reason: redirect.reason || 'slug_changed',
+      createdAt: redirect.createdAt || '',
+      createdBy: redirect.createdBy || '',
+      active: redirect.active !== false,
+    }))
+    .filter((redirect) => redirect.from && redirect.to && redirect.from !== redirect.to)
+}
+
+function hasCanonicalSlugMismatch(page: Page) {
+  const canonicalUrl = page.seo?.canonicalUrl || ''
+  if (!canonicalUrl.trim()) return false
+
+  try {
+    const canonical = new URL(canonicalUrl)
+    return (normalizeRedirectSlug(canonical.pathname) || 'home') !== normalizeRedirectSlug(page.pageSlug)
+  } catch {
+    return true
+  }
 }
 
 function buildPageId(tenantId: string, slug: string) {
@@ -246,6 +283,7 @@ function createProductionReadinessDefaults() {
 
   return {
     previousSlugs: [],
+    redirects: [],
     sitemapPriority: null,
     sitemapChangeFrequency: '',
     media: {
@@ -508,6 +546,7 @@ function duplicatePageFromForm(sourcePage: Page, form: DuplicatePageFormState, t
     publishedAt: null,
     includeInSitemap: false,
     previousSlugs: [],
+    redirects: [],
     workflow: {
       ...(duplicated.workflow || createProductionReadinessDefaults().workflow),
       status: 'draft',
@@ -909,6 +948,9 @@ export default function PagesPage() {
               <tbody className="bg-white divide-y divide-neutral-200">
                 {pagesByUpdatedDate.map((page) => {
                   const isActionRunning = actionPageKey === getPageKey(page)
+                  const previousSlugCount = Array.isArray(page.previousSlugs) ? page.previousSlugs.length : 0
+                  const activeRedirectCount = getPageRedirects(page).filter((redirect) => redirect.active).length
+                  const canonicalMismatch = hasCanonicalSlugMismatch(page)
 
                   return (
                     <tr
@@ -930,6 +972,25 @@ export default function PagesPage() {
                         </div>
                         {!page.isPublished && (
                           <div className="mt-1 text-xs text-neutral-500">Public route may return 404 while draft.</div>
+                        )}
+                        {(previousSlugCount > 0 || activeRedirectCount > 0 || canonicalMismatch) && (
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {previousSlugCount > 0 && (
+                              <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800">
+                                {previousSlugCount} previous
+                              </span>
+                            )}
+                            {activeRedirectCount > 0 && (
+                              <span className="rounded bg-green-100 px-1.5 py-0.5 text-xs text-green-800">
+                                {activeRedirectCount} redirect{activeRedirectCount === 1 ? '' : 's'}
+                              </span>
+                            )}
+                            {canonicalMismatch && (
+                              <span className="rounded bg-red-100 px-1.5 py-0.5 text-xs text-red-800">
+                                canonical review
+                              </span>
+                            )}
+                          </div>
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

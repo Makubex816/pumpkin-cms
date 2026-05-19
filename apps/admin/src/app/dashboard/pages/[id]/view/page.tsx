@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { IHtmlBlock, Page } from 'pumpkin-ts-models'
+import type { IHtmlBlock, Page, PageRedirect } from 'pumpkin-ts-models'
 
 const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
   'ice-rink-rentals': 'http://localhost:3002',
@@ -72,6 +72,70 @@ function formatDateTime(dateString: string | null | undefined) {
 function formatBoolean(value: boolean | null | undefined) {
   if (typeof value !== 'boolean') return 'Not set'
   return value ? 'Yes' : 'No'
+}
+
+function normalizeSlug(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[\\/\s]+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+function normalizeRedirectSlug(value: string) {
+  try {
+    const url = new URL(value)
+    return normalizeSlug(url.pathname) || 'home'
+  } catch {
+    return normalizeSlug(value) || (value.trim() === '/' ? 'home' : '')
+  }
+}
+
+function getPageRedirects(page: Page | null | undefined): PageRedirect[] {
+  if (!Array.isArray(page?.redirects)) return []
+
+  return page.redirects
+    .map((redirect) => ({
+      from: normalizeRedirectSlug(redirect.from),
+      to: normalizeRedirectSlug(redirect.to),
+      type: 301 as const,
+      reason: redirect.reason || 'slug_changed',
+      createdAt: redirect.createdAt || '',
+      createdBy: redirect.createdBy || '',
+      active: redirect.active !== false,
+    }))
+    .filter((redirect) => redirect.from && redirect.to && redirect.from !== redirect.to)
+}
+
+function getActiveRedirects(page: Page | null | undefined) {
+  return getPageRedirects(page).filter((redirect) => redirect.active)
+}
+
+function getMissingRedirectCoverage(page: Page | null | undefined) {
+  if (!page) return []
+  const currentSlug = normalizeRedirectSlug(page.pageSlug)
+  const activeRedirects = getActiveRedirects(page)
+
+  return (page.previousSlugs || [])
+    .map(normalizeRedirectSlug)
+    .filter(Boolean)
+    .filter((previousSlug) => !activeRedirects.some((redirect) => redirect.from === previousSlug && redirect.to === currentSlug))
+}
+
+function getCanonicalSlugStatus(page: Page) {
+  const canonicalUrl = page.seo?.canonicalUrl || ''
+  if (!canonicalUrl.trim()) return 'Missing canonical URL'
+
+  try {
+    const canonical = new URL(canonicalUrl)
+    return (normalizeRedirectSlug(canonical.pathname) || 'home') === normalizeRedirectSlug(page.pageSlug)
+      ? 'Matches current slug'
+      : 'Review canonical path'
+  } catch {
+    return 'Invalid canonical URL'
+  }
 }
 
 function formatPath(parts: string[]) {
@@ -323,6 +387,8 @@ export default function PageReadOnlyView() {
   const contentBlocks = page?.ContentData?.ContentBlocks || []
   const latestSnapshotId = page?.revision?.latestSnapshot?.revisionId || ''
   const canRollback = Boolean(page?.revision?.rollbackAvailable && page.revision.latestSnapshot?.page)
+  const activeRedirects = useMemo(() => getActiveRedirects(page), [page])
+  const missingRedirectCoverage = useMemo(() => getMissingRedirectCoverage(page), [page])
 
   const handleRollback = async () => {
     if (!page || !token || rollingBack || !canRollback) return
@@ -473,6 +539,19 @@ export default function PageReadOnlyView() {
         <FieldRow label="Include In Sitemap">{formatBoolean(page.includeInSitemap)}</FieldRow>
         <FieldRow label="Created At">{formatDateTime(page.MetaData?.createdAt)}</FieldRow>
         <FieldRow label="Updated At">{formatDateTime(page.MetaData?.updatedAt)}</FieldRow>
+      </Section>
+
+      <Section title="Slug And Redirects" description="Previous slugs and active redirects protect SEO, Google Ads final URLs, internal links, static deployments, and backlinks after slug changes.">
+        <FieldRow label="Current Slug">/{normalizeRedirectSlug(page.pageSlug) || 'missing-slug'}</FieldRow>
+        <FieldRow label="Previous Slugs">
+          {(page.previousSlugs || []).length > 0 ? (page.previousSlugs || []).join(', ') : <MissingValue text="No previous slugs recorded" />}
+        </FieldRow>
+        <FieldRow label="Active Redirect Count">{activeRedirects.length}</FieldRow>
+        <FieldRow label="Redirect Coverage">
+          {missingRedirectCoverage.length === 0 ? 'Covered or not needed' : `Missing coverage for ${missingRedirectCoverage.join(', ')}`}
+        </FieldRow>
+        <FieldRow label="Canonical Slug Status">{getCanonicalSlugStatus(page)}</FieldRow>
+        <FieldRow label="Redirect Records"><ReadOnlyValue value={page.redirects || []} /></FieldRow>
       </Section>
 
       <Section title="SEO" description="Search, canonical, robots, Open Graph, Twitter Card, and structured data values.">

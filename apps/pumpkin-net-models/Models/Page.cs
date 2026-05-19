@@ -83,6 +83,9 @@ public class Page
     [JsonPropertyName("previousSlugs")]
     public List<string> PreviousSlugs { get; set; } = new();
 
+    [JsonPropertyName("redirects")]
+    public List<PageRedirect> Redirects { get; set; } = new();
+
     [JsonPropertyName("sitemapPriority")]
     public double? SitemapPriority { get; set; }
 
@@ -130,6 +133,30 @@ public class Page
 
     [JsonPropertyName("layoutPositions")]
     public Dictionary<string, NodePosition>? LayoutPositions { get; set; }
+}
+
+public class PageRedirect
+{
+    [JsonPropertyName("from")]
+    public string From { get; set; } = string.Empty;
+
+    [JsonPropertyName("to")]
+    public string To { get; set; } = string.Empty;
+
+    [JsonPropertyName("type")]
+    public int Type { get; set; } = 301;
+
+    [JsonPropertyName("reason")]
+    public string Reason { get; set; } = "slug_changed";
+
+    [JsonPropertyName("createdAt")]
+    public string CreatedAt { get; set; } = string.Empty;
+
+    [JsonPropertyName("createdBy")]
+    public string CreatedBy { get; set; } = string.Empty;
+
+    [JsonPropertyName("active")]
+    public bool Active { get; set; } = true;
 }
 
 public class PageImageAsset

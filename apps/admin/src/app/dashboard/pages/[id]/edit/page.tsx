@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { IHtmlBlock, Page } from 'pumpkin-ts-models'
+import type { IHtmlBlock, Page, PageRedirect } from 'pumpkin-ts-models'
 
 const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
   'ice-rink-rentals': 'http://localhost:3002',
@@ -167,6 +167,60 @@ function normalizeSlug(value: string) {
     .replace(/[^a-z0-9-]/g, '')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
+}
+
+function normalizeRedirectSlug(value: string) {
+  try {
+    const url = new URL(value)
+    return normalizeSlug(url.pathname) || 'home'
+  } catch {
+    return normalizeSlug(value) || (value.trim() === '/' ? 'home' : '')
+  }
+}
+
+function getPageRedirects(page: Page | null | undefined): PageRedirect[] {
+  if (!Array.isArray(page?.redirects)) return []
+
+  return page.redirects
+    .map((redirect) => ({
+      from: normalizeRedirectSlug(redirect.from),
+      to: normalizeRedirectSlug(redirect.to),
+      type: 301 as const,
+      reason: redirect.reason || 'slug_changed',
+      createdAt: redirect.createdAt || '',
+      createdBy: redirect.createdBy || '',
+      active: redirect.active !== false,
+    }))
+    .filter((redirect) => redirect.from && redirect.to && redirect.from !== redirect.to)
+}
+
+function getActiveRedirects(page: Page | null | undefined) {
+  return getPageRedirects(page).filter((redirect) => redirect.active)
+}
+
+function getMissingRedirectCoverage(page: Page | null | undefined) {
+  if (!page) return []
+  const currentSlug = normalizeRedirectSlug(page.pageSlug)
+  const activeRedirects = getActiveRedirects(page)
+
+  return stringListValue(page.previousSlugs)
+    .map(normalizeRedirectSlug)
+    .filter(Boolean)
+    .filter((previousSlug) => !activeRedirects.some((redirect) => (
+      redirect.from === previousSlug && normalizeRedirectSlug(redirect.to) === currentSlug
+    )))
+}
+
+function getCanonicalSlugMismatch(page: Page | null | undefined) {
+  const canonicalUrl = page?.seo?.canonicalUrl || ''
+  if (!page || !canonicalUrl.trim()) return false
+
+  try {
+    const canonical = new URL(canonicalUrl)
+    return (normalizeRedirectSlug(canonical.pathname) || 'home') !== normalizeRedirectSlug(page.pageSlug)
+  } catch {
+    return false
+  }
 }
 
 function isUrlLike(value: string) {
@@ -426,6 +480,7 @@ function normalizeProductionFields(page: Page, editorName = 'Pumpkin CMS Admin')
   return {
     ...page,
     previousSlugs: stringListValue(page.previousSlugs),
+    redirects: getPageRedirects(page),
     sitemapPriority: page.sitemapPriority ?? null,
     sitemapChangeFrequency: page.sitemapChangeFrequency || '',
     MetaData: {
@@ -742,8 +797,28 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
     warnings.push('sitemapPriority should be between 0 and 1.')
   }
 
-  if (page.previousSlugs && page.previousSlugs.length > 0) {
-    warnings.push('previousSlugs are stored for redirect planning, but static redirect generation is not implemented yet.')
+  const activeRedirects = getActiveRedirects(page)
+  const redirectFroms = new Set<string>()
+  activeRedirects.forEach((redirect) => {
+    if (!redirect.from || !redirect.to) {
+      errors.push('Active redirects require both from and to slugs.')
+    }
+    if (redirect.from === redirect.to) {
+      errors.push(`Redirect from "${redirect.from}" cannot point to itself.`)
+    }
+    if (redirectFroms.has(redirect.from)) {
+      errors.push(`Duplicate active redirect from "${redirect.from}" is not allowed.`)
+    }
+    redirectFroms.add(redirect.from)
+  })
+
+  const missingCoverage = getMissingRedirectCoverage(page)
+  if (missingCoverage.length > 0) {
+    warnings.push(`Previous slug redirect coverage is missing for: ${missingCoverage.join(', ')}.`)
+  }
+
+  if (getCanonicalSlugMismatch(page)) {
+    warnings.push('Canonical URL path does not appear to match the current page slug.')
   }
 
   const workflow = getPageWorkflow(page)
@@ -1095,6 +1170,10 @@ export default function PageStructuredEditor() {
   const pageFormConfig = page ? getPageFormConfig(page) : null
   const pageImportProvenance = page ? getPageImportProvenance(page) : null
   const pageDeploymentHooks = page ? getPageDeploymentHooks(page) : null
+  const slugChanged = page ? normalizeRedirectSlug(page.pageSlug) !== normalizeRedirectSlug(originalSlug) : false
+  const activeRedirects = page ? getActiveRedirects(page) : []
+  const missingRedirectCoverage = page ? getMissingRedirectCoverage(page) : []
+  const canonicalSlugMismatch = page ? getCanonicalSlugMismatch(page) : false
 
   const updatePageState = (updater: (current: Page) => Page) => {
     setPage((current) => (current ? withUpdatedAt(updater(current)) : current))
@@ -1512,6 +1591,22 @@ export default function PageStructuredEditor() {
       return
     }
 
+    if (page.isPublished && slugChanged) {
+      const confirmed = window.confirm(
+        [
+          'This published page slug is changing.',
+          '',
+          `Old slug: /${normalizeRedirectSlug(originalSlug)}`,
+          `New slug: /${normalizeRedirectSlug(page.pageSlug)}`,
+          '',
+          'Saving will create a 301 redirect, mark static publishing as needing rebuild, and may affect SEO, Google Ads final URLs, internal links, and existing backlinks.',
+          'Continue?',
+        ].join('\n'),
+      )
+
+      if (!confirmed) return
+    }
+
     try {
       setSaving(true)
       setError(null)
@@ -1672,20 +1767,40 @@ export default function PageStructuredEditor() {
         </div>
       </Section>
 
-      <Section title="Basics" description="Visible page title, slug, targeting, geography, and production page classification.">
+      <Section title="Slug / Redirects" description="Slug changes on published pages can affect SEO, Google Ads final URLs, internal links, static deployment, and backlinks. Saving a changed slug creates a 301 redirect from the old slug to the new slug.">
         <div className="grid gap-4 lg:grid-cols-2">
-          <TextField
-            label="Page title / H1 (MetaData.title)"
-            value={page.MetaData?.title || ''}
-            onChange={(value) => updateMetaField('title', value)}
-            testId="metadata-title"
-          />
           <TextField
             label="pageSlug"
             value={page.pageSlug || ''}
             onChange={updateSlug}
             placeholder="page-slug"
             testId="page-slug"
+          />
+          <TextField label="previousSlugs" value={(page.previousSlugs || []).join(', ')} onChange={updatePreviousSlugs} />
+          <ReadOnlyPill label="Current slug" value={`/${normalizeRedirectSlug(page.pageSlug) || 'missing-slug'}`} />
+          <ReadOnlyPill label="Redirect coverage" value={missingRedirectCoverage.length === 0 ? 'Covered or not needed' : `Missing: ${missingRedirectCoverage.join(', ')}`} />
+          <ReadOnlyPill label="Canonical path status" value={canonicalSlugMismatch ? 'Review canonical URL' : 'Matches current slug or empty'} />
+          <ReadOnlyPill label="Active redirects" value={String(activeRedirects.length)} />
+        </div>
+        {slugChanged && page.isPublished && (
+          <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+            Published slug change pending: saving will create a 301 redirect from /{normalizeRedirectSlug(originalSlug)} to /{normalizeRedirectSlug(page.pageSlug)} and mark static publishing as needing rebuild.
+          </div>
+        )}
+        {activeRedirects.length > 0 && (
+          <pre className="mt-4 max-h-64 overflow-auto rounded-md bg-neutral-950 p-3 text-xs text-neutral-50">
+            {JSON.stringify(activeRedirects, null, 2)}
+          </pre>
+        )}
+      </Section>
+
+      <Section title="Basics" description="Visible page title, targeting, geography, and production page classification.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <TextField
+            label="Page title / H1 (MetaData.title)"
+            value={page.MetaData?.title || ''}
+            onChange={(value) => updateMetaField('title', value)}
+            testId="metadata-title"
           />
           <TextField
             label="MetaData.description"
@@ -1929,7 +2044,7 @@ export default function PageStructuredEditor() {
         </div>
       </Section>
 
-      <Section title="Publishing/Quality" description="Launch checks, sitemap settings, previous slugs, and editorial readiness notes.">
+      <Section title="Publishing/Quality" description="Launch checks, sitemap settings, and editorial readiness notes.">
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="space-y-3">
             <CheckboxField
@@ -1943,7 +2058,6 @@ export default function PageStructuredEditor() {
               onChange={(value) => updateBooleanField('includeInSitemap', value)}
             />
           </div>
-          <TextField label="previousSlugs" value={(page.previousSlugs || []).join(', ')} onChange={updatePreviousSlugs} />
           <TextField label="sitemapPriority" value={nullableNumberValue(page.sitemapPriority)} onChange={updateSitemapPriority} placeholder="0.7" />
           <SelectField label="sitemapChangeFrequency" value={page.sitemapChangeFrequency || ''} onChange={updateSitemapChangeFrequency}>
             {SITEMAP_CHANGE_FREQUENCIES.map((frequency) => <option key={frequency || 'blank'} value={frequency}>{frequency || 'Select frequency'}</option>)}

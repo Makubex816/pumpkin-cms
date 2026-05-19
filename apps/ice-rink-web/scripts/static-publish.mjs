@@ -82,6 +82,49 @@ function buildPageUrl(site, slug) {
   return `https://${site.domain}/${slug}`;
 }
 
+function normalizeSlug(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[\\/\s]+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function normalizeRedirectSlug(value) {
+  if (typeof value !== 'string') return '';
+
+  try {
+    const url = new URL(value);
+    return normalizeSlug(url.pathname) || 'home';
+  } catch {
+    return normalizeSlug(value) || (value.trim() === '/' ? 'home' : '');
+  }
+}
+
+function pathForSlug(slug) {
+  const normalized = normalizeRedirectSlug(slug);
+  return !normalized || normalized === 'home' ? '/' : `/${normalized}`;
+}
+
+function getPageRedirects(page) {
+  if (!Array.isArray(page.redirects)) return [];
+
+  return page.redirects
+    .map((redirect) => ({
+      from: normalizeRedirectSlug(redirect.from),
+      to: normalizeRedirectSlug(redirect.to),
+      type: redirect.type || 301,
+      reason: stringValue(redirect.reason) || 'slug_changed',
+      createdAt: stringValue(redirect.createdAt),
+      createdBy: stringValue(redirect.createdBy),
+      active: redirect.active !== false,
+    }))
+    .filter((redirect) => redirect.from && redirect.to);
+}
+
 function escapeXml(value) {
   return value
     .replace(/&/g, '&amp;')
@@ -237,9 +280,6 @@ function addProductionReadinessWarnings(page, label, warnings) {
   if (page.sitemapPriority !== undefined && page.sitemapPriority !== null && (typeof page.sitemapPriority !== 'number' || page.sitemapPriority < 0 || page.sitemapPriority > 1)) {
     warnings.push(`${label}: sitemapPriority should be a number between 0 and 1.`);
   }
-  if (Array.isArray(page.previousSlugs) && page.previousSlugs.length > 0) {
-    warnings.push(`${label}: previousSlugs are present; static redirect generation is not implemented yet.`);
-  }
   if (page.isPublished && workflow.approvedForPublish !== true) {
     warnings.push(`${label}: published page is not marked workflow.approvedForPublish.`);
   }
@@ -311,6 +351,110 @@ function addProductionReadinessWarnings(page, label, warnings) {
   addImageAltWarnings(page, label, warnings);
 }
 
+function addCanonicalRedirectWarnings(site, page, label, warnings) {
+  const canonical = stringValue(page.seo?.canonicalUrl);
+  if (!canonical) return;
+
+  try {
+    const canonicalUrl = new URL(canonical);
+    const canonicalSlug = normalizeRedirectSlug(canonicalUrl.pathname);
+    const pageSlug = normalizeRedirectSlug(page.pageSlug);
+    if (canonicalUrl.hostname !== site.domain) {
+      warnings.push(`${label}: canonical URL host does not match ${site.domain}.`);
+    }
+    if (canonicalSlug !== pageSlug) {
+      warnings.push(`${label}: canonical URL path does not match current pageSlug.`);
+    }
+  } catch {
+    warnings.push(`${label}: canonical URL could not be parsed for redirect validation.`);
+  }
+}
+
+function buildRedirectManifest(site, pages, warnings) {
+  const pagesBySlug = new Map();
+  const sitemapSlugs = new Set();
+  const redirectFroms = new Set();
+  const redirects = [];
+
+  for (const { page } of pages) {
+    const slug = normalizeRedirectSlug(page.pageSlug);
+    if (slug) pagesBySlug.set(slug, page);
+    if (page.isPublished && page.includeInSitemap && slug) sitemapSlugs.add(slug);
+  }
+
+  for (const { fileName, page } of pages) {
+    const label = page.pageSlug || fileName;
+    const currentSlug = normalizeRedirectSlug(page.pageSlug);
+    const activeRedirects = getPageRedirects(page).filter((redirect) => redirect.active);
+
+    addCanonicalRedirectWarnings(site, page, label, warnings);
+
+    for (const rawRedirect of Array.isArray(page.redirects) ? page.redirects : []) {
+      for (const field of ['from', 'to']) {
+        const value = rawRedirect?.[field];
+        if (typeof value !== 'string') continue;
+        try {
+          const redirectUrl = new URL(value);
+          if (redirectUrl.hostname !== site.domain) {
+            warnings.push(`${label}: redirect ${field} URL crosses outside ${site.domain}.`);
+          }
+        } catch {
+          // Relative slug/path redirects are expected.
+        }
+      }
+    }
+
+    const previousSlugs = Array.isArray(page.previousSlugs)
+      ? page.previousSlugs.map(normalizeRedirectSlug).filter(Boolean)
+      : [];
+
+    for (const previousSlug of previousSlugs) {
+      const hasCoverage = activeRedirects.some((redirect) => (
+        redirect.from === previousSlug && redirect.to === currentSlug
+      ));
+      if (!hasCoverage) {
+        warnings.push(`${label}: previousSlug "${previousSlug}" has no active redirect to current pageSlug.`);
+      }
+    }
+
+    for (const redirect of activeRedirects) {
+      if (redirect.from === redirect.to) {
+        warnings.push(`${label}: redirect from "${redirect.from}" points to itself.`);
+        continue;
+      }
+
+      if (redirectFroms.has(redirect.from)) {
+        warnings.push(`${label}: duplicate active redirect from "${redirect.from}" across this site.`);
+        continue;
+      }
+      redirectFroms.add(redirect.from);
+
+      if (sitemapSlugs.has(redirect.from)) {
+        warnings.push(`${label}: redirect source "${redirect.from}" is still present in sitemap pages.`);
+      }
+
+      const targetPage = pagesBySlug.get(redirect.to);
+      if (!targetPage) {
+        warnings.push(`${label}: redirect target "${redirect.to}" does not match a page in this static build.`);
+      } else if (targetPage.isPublished !== true) {
+        warnings.push(`${label}: redirect target "${redirect.to}" is not published.`);
+      }
+
+      redirects.push({
+        from: pathForSlug(redirect.from),
+        to: pathForSlug(redirect.to),
+        type: redirect.type,
+        sourcePageId: page.PageId || page.id || '',
+        sourcePageSlug: currentSlug,
+        reason: redirect.reason,
+        active: redirect.active,
+      });
+    }
+  }
+
+  return redirects;
+}
+
 function validatePageShape(site, pages) {
   const errors = [];
   const warnings = [];
@@ -352,13 +496,23 @@ function validatePageShape(site, pages) {
     if (!slugs.has(slug)) errors.push(`Missing expected slug: ${slug}.`);
   }
 
-  return { errors, warnings };
+  const redirects = buildRedirectManifest(site, pages, warnings);
+
+  return { errors, warnings, redirects };
 }
 
-function writeStaticArtifacts(site, pages, targetDir, qualityWarnings = []) {
+function writeStaticArtifacts(site, pages, targetDir, qualityWarnings = [], redirects = []) {
   mkdirSync(targetDir, { recursive: true });
   writeFileSync(path.join(targetDir, 'sitemap.xml'), generateSitemapXml(site, pages), 'utf8');
   writeFileSync(path.join(targetDir, 'robots.txt'), generateRobotsTxt(site), 'utf8');
+  writeFileSync(path.join(targetDir, 'redirects.json'), JSON.stringify({
+    siteKey,
+    domain: site.domain,
+    generatedAt: new Date().toISOString(),
+    contentSource,
+    redirectCount: redirects.length,
+    redirects,
+  }, null, 2), 'utf8');
   writeFileSync(
     path.join(targetDir, 'static-publish-manifest.json'),
     JSON.stringify({
@@ -367,6 +521,7 @@ function writeStaticArtifacts(site, pages, targetDir, qualityWarnings = []) {
       generatedAt: new Date().toISOString(),
       contentSource,
       pageCount: pages.length,
+      redirectCount: redirects.length,
       qualityWarnings,
       pages: pages.map(({ page }) => ({
         pageSlug: page.pageSlug,
@@ -397,7 +552,7 @@ function run() {
   if (!site) return;
 
   const pages = loadPages();
-  const { errors, warnings } = validatePageShape(site, pages);
+  const { errors, warnings, redirects } = validatePageShape(site, pages);
   const publishedCount = pages.filter(({ page }) => page.isPublished).length;
   const sitemapCount = pages.filter(({ page }) => page.isPublished && page.includeInSitemap).length;
 
@@ -415,13 +570,13 @@ function run() {
   }
 
   const artifactDir = path.join(appRoot, '.static-artifacts', siteKey);
-  writeStaticArtifacts(site, pages, artifactDir, warnings);
+  writeStaticArtifacts(site, pages, artifactDir, warnings, redirects);
   let outputSnapshot = false;
 
   if (command === 'generate') {
     const outDir = path.join(appRoot, 'out');
     if (existsSync(outDir)) {
-      writeStaticArtifacts(site, pages, outDir, warnings);
+      writeStaticArtifacts(site, pages, outDir, warnings, redirects);
     }
     outputSnapshot = copyStaticOutput(artifactDir);
   } else if (command !== 'validate') {
@@ -438,6 +593,7 @@ function run() {
     pageCount: pages.length,
     publishedCount,
     sitemapCount,
+    redirectCount: redirects.length,
     warningCount: warnings.length,
     artifactDir,
     outputSnapshot,

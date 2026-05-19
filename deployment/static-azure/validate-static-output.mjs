@@ -216,6 +216,45 @@ function validateDomainReferences(outDir, files, site, errors) {
   }
 }
 
+function validateRedirectManifest(outDir, warnings) {
+  const redirectPath = path.join(outDir, 'redirects.json');
+  if (!existsSync(redirectPath)) {
+    warnings.push('redirects.json was not found. Static redirects may need separate deployment configuration.');
+    return;
+  }
+
+  try {
+    const manifest = JSON.parse(readText(redirectPath));
+    const redirects = Array.isArray(manifest.redirects) ? manifest.redirects : [];
+    const fromPaths = new Set();
+
+    for (const redirect of redirects) {
+      const from = typeof redirect.from === 'string' ? redirect.from : '';
+      const to = typeof redirect.to === 'string' ? redirect.to : '';
+
+      if (!from || !to) {
+        warnings.push('redirects.json contains a redirect without from/to paths.');
+        continue;
+      }
+
+      if (from === to) {
+        warnings.push(`redirects.json contains a loop: ${from} -> ${to}.`);
+      }
+
+      if (fromPaths.has(from)) {
+        warnings.push(`redirects.json contains duplicate from path: ${from}.`);
+      }
+      fromPaths.add(from);
+
+      if (redirect.type !== 301) {
+        warnings.push(`redirects.json redirect ${from} should use type 301.`);
+      }
+    }
+  } catch (error) {
+    warnings.push(`redirects.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}.`);
+  }
+}
+
 function main() {
   const args = parseArgs(process.argv);
   const siteKey = String(args.site || '');
@@ -245,6 +284,7 @@ function main() {
     validateNoForbiddenFiles(outDir, files, errors);
     validateSensitiveContent(outDir, files, errors);
     validateDomainReferences(outDir, files, site, errors);
+    validateRedirectManifest(outDir, warnings);
   }
 
   const summary = {

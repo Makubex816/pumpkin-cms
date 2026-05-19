@@ -32,6 +32,10 @@ export interface Page {
      */
     previousSlugs?: string[];
     /**
+     * Page-level redirect records used when slugs change before static publishing.
+     */
+    redirects?: PageRedirect[];
+    /**
      * Optional sitemap priority for static publishing and XML sitemap generation.
      */
     sitemapPriority?: number | null;
@@ -95,6 +99,20 @@ export interface Page {
      * Saved XYFlow node positions for page relationship visualization
      */
     layoutPositions?: Record<string, NodePosition>;
+}
+export type PageRedirectReason = 'slug_changed' | 'manual' | 'imported' | 'canonical_cleanup';
+/**
+ * Page-level redirect record. Static publishing consumes active records to build
+ * redirect manifests for Azure Static Web Apps or Cloudflare planning.
+ */
+export interface PageRedirect {
+    from: string;
+    to: string;
+    type: 301;
+    reason: PageRedirectReason;
+    createdAt: string;
+    createdBy?: string;
+    active: boolean;
 }
 /**
  * Reusable image asset metadata for page-level media slots

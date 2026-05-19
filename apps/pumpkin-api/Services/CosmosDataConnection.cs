@@ -61,8 +61,8 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             // If tenant is valid, proceed to get the page
             var pagesContainer = _database.GetContainer("Page");
             
-            // Normalize slug to lowercase to match stored value
-            var normalizedSlug = pageSlug.ToLowerInvariant();
+            // Normalize slug to match the stored slug and redirect shape.
+            var normalizedSlug = PageRedirectGuard.NormalizeSlug(pageSlug);
             _logger.LogInformation("Querying with normalized slug: '{NormalizedSlug}'", normalizedSlug);
             
             // Query for page by pageSlug and tenantId (partition key)
@@ -96,6 +96,18 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             }
             
             _logger.LogInformation("No results from iterator - Slug: '{Slug}', TenantId: {TenantId}", normalizedSlug, tenantId);
+            var redirectPage = await ResolvePublishedRedirectAsync(pagesContainer, tenantId, normalizedSlug);
+            if (redirectPage != null)
+            {
+                _logger.LogInformation(
+                    "Resolved page redirect - OldSlug: {OldSlug}, NewSlug: {NewSlug}, PageId: {PageId}, TenantId: {TenantId}",
+                    normalizedSlug,
+                    redirectPage.PageSlug,
+                    redirectPage.PageId,
+                    tenantId);
+                return redirectPage;
+            }
+
             return null;
         }
         catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
@@ -114,6 +126,91 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             _logger.LogError(ex, "Unexpected error retrieving page - Slug: {Slug}, TenantId: {TenantId}", pageSlug, tenantId);
             throw;
         }
+    }
+
+    private async Task<Page?> ResolvePublishedRedirectAsync(Container pagesContainer, string tenantId, string normalizedSlug)
+    {
+        var redirectQuery = "SELECT * FROM c WHERE c.tenantId = @tenantId AND c.isPublished = true";
+
+        var redirectDefinition = new QueryDefinition(redirectQuery)
+            .WithParameter("@tenantId", tenantId);
+
+        using var redirectIterator = pagesContainer.GetItemQueryIterator<Page>(redirectDefinition, requestOptions: new QueryRequestOptions
+        {
+            PartitionKey = new PartitionKey(tenantId)
+        });
+
+        while (redirectIterator.HasMoreResults)
+        {
+            var response = await redirectIterator.ReadNextAsync();
+            foreach (var candidatePage in response)
+            {
+                var redirect = candidatePage.Redirects?.FirstOrDefault(item =>
+                    item.Active &&
+                    PageRedirectGuard.NormalizeSlug(item.From) == normalizedSlug);
+
+                if (redirect == null)
+                {
+                    continue;
+                }
+
+                var targetSlug = PageRedirectGuard.NormalizeSlug(redirect.To);
+                var candidateSlug = PageRedirectGuard.NormalizeSlug(candidatePage.PageSlug);
+
+                if (string.IsNullOrWhiteSpace(targetSlug) ||
+                    targetSlug == normalizedSlug ||
+                    candidateSlug == normalizedSlug)
+                {
+                    _logger.LogWarning(
+                        "Ignoring redirect loop or invalid target - TenantId: {TenantId}, From: {From}, To: {To}, PageSlug: {PageSlug}",
+                        tenantId,
+                        normalizedSlug,
+                        targetSlug,
+                        candidateSlug);
+                    continue;
+                }
+
+                if (targetSlug == candidateSlug)
+                {
+                    return candidatePage;
+                }
+
+                var targetPage = await QueryPublishedPageBySlugAsync(pagesContainer, tenantId, targetSlug);
+                if (targetPage != null)
+                {
+                    return targetPage;
+                }
+
+                _logger.LogWarning(
+                    "Redirect target page was not found or unpublished - TenantId: {TenantId}, From: {From}, To: {To}",
+                    tenantId,
+                    normalizedSlug,
+                    targetSlug);
+            }
+        }
+
+        return null;
+    }
+
+    private async Task<Page?> QueryPublishedPageBySlugAsync(Container pagesContainer, string tenantId, string normalizedSlug)
+    {
+        var query = "SELECT * FROM c WHERE c.tenantId = @tenantId AND c.pageSlug = @slug AND c.isPublished = true";
+        var queryDefinition = new QueryDefinition(query)
+            .WithParameter("@slug", normalizedSlug)
+            .WithParameter("@tenantId", tenantId);
+
+        using var iterator = pagesContainer.GetItemQueryIterator<Page>(queryDefinition, requestOptions: new QueryRequestOptions
+        {
+            PartitionKey = new PartitionKey(tenantId)
+        });
+
+        if (!iterator.HasMoreResults)
+        {
+            return null;
+        }
+
+        var response = await iterator.ReadNextAsync();
+        return response.FirstOrDefault();
     }
 
     public async Task<Page> SavePageAsync(string apiKey, string tenantId, Page page)

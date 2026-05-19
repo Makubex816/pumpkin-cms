@@ -938,14 +938,36 @@ app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
                 return Results.BadRequest("Page tenant ID must match the route tenant ID");
 
             var decodedSlug = Uri.UnescapeDataString(pageSlug);
-            var normalizedRouteSlug = decodedSlug.ToLowerInvariant();
-            var normalizedBodySlug = page.PageSlug.ToLowerInvariant();
+            var normalizedRouteSlug = PageRedirectGuard.NormalizeSlug(decodedSlug);
+            var normalizedBodySlug = PageRedirectGuard.NormalizeSlug(page.PageSlug);
+            page.PageSlug = normalizedBodySlug;
+            if (string.IsNullOrWhiteSpace(normalizedBodySlug))
+                return Results.BadRequest("Page slug must contain valid slug characters");
+
+            var existingPage = await databaseService.GetPageBySlugAsync(tenantId, normalizedRouteSlug);
+            if (existingPage == null)
+            {
+                return Results.NotFound($"Page with slug '{decodedSlug}' not found");
+            }
 
             if (normalizedBodySlug != normalizedRouteSlug)
             {
                 var pageWithTargetSlug = await databaseService.GetPageBySlugAsync(tenantId, normalizedBodySlug);
-                if (pageWithTargetSlug != null)
+                if (pageWithTargetSlug != null && pageWithTargetSlug.PageId != existingPage.PageId)
                     return Results.Conflict($"Page with slug '{page.PageSlug}' already exists");
+            }
+
+            var redirectValidationError = PageRedirectGuard.ValidatePageRedirects(page);
+            if (!string.IsNullOrWhiteSpace(redirectValidationError))
+            {
+                return Results.BadRequest(redirectValidationError);
+            }
+
+            var tenantPages = await databaseService.GetPagesByTenantAsync(tenantId);
+            var redirectCollisionError = PageRedirectGuard.ValidateTenantRedirectCollisions(page, existingPage, tenantPages, normalizedRouteSlug);
+            if (!string.IsNullOrWhiteSpace(redirectCollisionError))
+            {
+                return Results.Conflict(redirectCollisionError);
             }
 
             var changedBy = context.User.FindFirst(ClaimTypes.Email)?.Value
@@ -960,7 +982,7 @@ app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
                 ChangedBy = changedBy
             };
 
-            var updatedPage = await databaseService.UpdatePageAdminAsync(tenantId, decodedSlug, page, changeContext);
+            var updatedPage = await databaseService.UpdatePageAdminAsync(tenantId, normalizedRouteSlug, page, changeContext);
             return Results.Ok(updatedPage);
         }
         catch (KeyNotFoundException ex)
@@ -1015,6 +1037,7 @@ app.MapPost("/api/admin/pages/{tenantId}/{pageSlug}/rollback",
 
             var snapshot = currentPage.Revision?.LatestSnapshot;
             var snapshotPage = snapshot?.Page;
+            var snapshotRevisionId = snapshot?.RevisionId ?? "latest snapshot";
             if (snapshotPage == null)
             {
                 return Results.BadRequest("Rollback is unavailable because no latest page snapshot exists");
@@ -1040,7 +1063,7 @@ app.MapPost("/api/admin/pages/{tenantId}/{pageSlug}/rollback",
                 ?? "Pumpkin CMS Admin";
 
             var rollbackSummary = string.IsNullOrWhiteSpace(changeSummary)
-                ? $"Rollback to {snapshot.RevisionId}"
+                ? $"Rollback to {snapshotRevisionId}"
                 : changeSummary;
 
             var rolledBackPage = await databaseService.UpdatePageAdminAsync(
@@ -1057,7 +1080,7 @@ app.MapPost("/api/admin/pages/{tenantId}/{pageSlug}/rollback",
             return Results.Ok(new
             {
                 page = rolledBackPage,
-                rolledBackToRevisionId = snapshot.RevisionId,
+                rolledBackToRevisionId = snapshotRevisionId,
                 message = "Rollback completed"
             });
         }
