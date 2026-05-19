@@ -76,6 +76,64 @@ node deployment/static-azure/validate-static-output.mjs --site roller-rink-renta
 
 The validator checks required files, expected routes, sitemap/robots, canonical domains, static assets, missing env/config leaks, and obvious sensitive-value patterns.
 
+## Production Publish Dry Run
+
+Phase 5E adds a local dry run that builds, validates, and packages both public sites without deploying anything.
+
+From `apps/ice-rink-web`:
+
+```powershell
+npm run publish:dry-run
+```
+
+Equivalent repo-root command:
+
+```powershell
+node deployment/static-azure/scripts/static-publish-dry-run.mjs
+```
+
+The dry run:
+
+- runs `npm run export:static:ice`
+- runs `npm run export:static:roller`
+- validates both generated outputs
+- copies upload-ready site folders into a timestamped ignored release folder
+- validates the copied release folders
+- scans for forbidden env/config files and high-confidence secret-looking values
+- writes a machine-readable manifest
+- writes a human-readable summary
+
+Generated dry-run artifacts are created under:
+
+```text
+.static-release-dry-runs/YYYY-MM-DD-HHMM/
+```
+
+Per-site upload roots:
+
+```text
+.static-release-dry-runs/YYYY-MM-DD-HHMM/ice-rink-rentals/
+.static-release-dry-runs/YYYY-MM-DD-HHMM/roller-rink-rentals/
+```
+
+Generated metadata:
+
+```text
+.static-release-dry-runs/YYYY-MM-DD-HHMM/static-publish-dry-run-manifest.json
+.static-release-dry-runs/YYYY-MM-DD-HHMM/STATIC_PUBLISH_DRY_RUN_SUMMARY.md
+```
+
+The dry-run folder is ignored by git and should not be committed.
+
+The dry run does not:
+
+- deploy to Azure
+- modify Cloudflare
+- use production credentials
+- create active GitHub Actions workflows
+
+Before any real deployment, inspect the manifest and summary, then follow `static-release-checklist.md`.
+
 ## GitHub Actions Examples
 
 Copy/paste-ready workflow templates live outside `.github/workflows` so they cannot run accidentally:
@@ -91,7 +149,7 @@ To activate one later, copy the relevant `.yml.example` file into `.github/workf
 
 Azure Static Web Apps is the simplest first hosting option:
 
-- upload the static `out` folder
+- upload the dry-run site folder for the matching tenant/domain
 - attach a custom domain
 - use the managed global edge and TLS support
 - keep deployment credentials in GitHub secrets
@@ -115,6 +173,8 @@ Important HTTPS note:
 
 - Storage static website endpoints can host static files.
 - Custom-domain HTTPS typically needs Azure CDN/Front Door or Cloudflare/public HTTPS strategy in front of it.
+
+For a dry-run package, upload the contents of the matching per-site folder into the matching `$web` container during a future real deployment.
 
 ## Cloudflare DNS And Cache Notes
 

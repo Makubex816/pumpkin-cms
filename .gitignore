@@ -71,3 +71,7 @@ apps/**/package-lock.json
 appsettings.Development.json
 appsettings.*.json
 !appsettings.json
+
+# Static publish dry-run artifacts
+.static-release-dry-runs/
+*.static-release.zip

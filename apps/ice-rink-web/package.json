@@ -15,7 +15,8 @@
     "build:static:ice": "cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=ice-rink-rentals STATIC_CONTENT_SOURCE=seed-sites next build",
     "build:static:roller": "cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=roller-rink-rentals STATIC_CONTENT_SOURCE=seed-sites next build",
     "export:static:ice": "npm run validate:static:ice && npm run build:static:ice && cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=ice-rink-rentals STATIC_CONTENT_SOURCE=seed-sites node scripts/static-publish.mjs generate",
-    "export:static:roller": "npm run validate:static:roller && npm run build:static:roller && cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=roller-rink-rentals STATIC_CONTENT_SOURCE=seed-sites node scripts/static-publish.mjs generate"
+    "export:static:roller": "npm run validate:static:roller && npm run build:static:roller && cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=roller-rink-rentals STATIC_CONTENT_SOURCE=seed-sites node scripts/static-publish.mjs generate",
+    "publish:dry-run": "node ../../deployment/static-azure/scripts/static-publish-dry-run.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
