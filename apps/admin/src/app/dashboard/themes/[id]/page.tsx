@@ -114,15 +114,15 @@ export default function ThemeEditorPage() {
   }, [token, user, currentTenant, themeId, isNew])
 
   const updateTheme = useCallback((updates: Partial<Theme>) => {
-    setTheme(prev => prev ? { ...prev, ...updates } : prev)
+    setTheme((prev: Theme | null) => prev ? { ...prev, ...updates } : prev)
   }, [])
 
   const updateHeader = useCallback((updates: Partial<ThemeHeader>) => {
-    setTheme(prev => prev ? { ...prev, header: { ...prev.header, ...updates } } : prev)
+    setTheme((prev: Theme | null) => prev ? { ...prev, header: { ...prev.header, ...updates } } : prev)
   }, [])
 
   const updateFooter = useCallback((updates: Partial<ThemeFooter>) => {
-    setTheme(prev => prev ? { ...prev, footer: { ...prev.footer, ...updates } } : prev)
+    setTheme((prev: Theme | null) => prev ? { ...prev, footer: { ...prev.footer, ...updates } } : prev)
   }, [])
 
   const handleSave = async () => {
@@ -797,7 +797,7 @@ function MenuTab({
   const removeChildItem = (parentIndex: number, childIndex: number) => {
     const updated = [...menu]
     const parent = updated[parentIndex]
-    parent.children = (parent.children || []).filter((_, i) => i !== childIndex)
+    parent.children = (parent.children || []).filter((_child: MenuItem, i: number) => i !== childIndex)
     setMenu(updated)
   }
 
@@ -957,7 +957,7 @@ function MenuTab({
                   <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider">
                     Sub-items ({item.children.length})
                   </p>
-                  {item.children.map((child, childIndex) => (
+                  {item.children.map((child: MenuItem, childIndex: number) => (
                     <div key={childIndex} className="flex items-start gap-3">
                       <div className="text-neutral-300 pt-2">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
