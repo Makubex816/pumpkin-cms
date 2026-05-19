@@ -83,6 +83,10 @@ function getPreviewUrl(page: Page) {
   return page.pageSlug === 'home' ? `${baseUrl}/` : `${baseUrl}/${page.pageSlug}`
 }
 
+function getEditUrl(page: Page) {
+  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/edit?tenantId=${encodeURIComponent(page.tenantId)}`
+}
+
 function collectImageFields(value: unknown, source: string, path: string[] = []): ImageFieldSignal[] {
   if (Array.isArray(value)) {
     return value.flatMap((item, index) => collectImageFields(item, source, [...path, String(index)]))
@@ -365,6 +369,13 @@ export default function PageReadOnlyView() {
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge active={page.isPublished} activeLabel="Published" inactiveLabel="Draft" />
           <StatusBadge active={page.includeInSitemap} activeLabel="In sitemap" inactiveLabel="Sitemap hidden" />
+          <button
+            type="button"
+            onClick={() => router.push(getEditUrl(page))}
+            className="btn btn-primary"
+          >
+            Edit
+          </button>
           <a
             href={getPreviewUrl(page)}
             target="_blank"
@@ -376,8 +387,8 @@ export default function PageReadOnlyView() {
         </div>
       </div>
 
-      <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-        This is a read-only Phase 1 view. No save, publish, archive, import, export, or delete actions are available.
+      <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+        This page detail view is read-only. Use Edit for the Phase 2 structured editor; archive, import, export, and hard delete are not available.
       </div>
 
       <Section title="Page Summary">

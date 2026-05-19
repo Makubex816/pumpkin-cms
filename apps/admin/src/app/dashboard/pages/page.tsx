@@ -20,6 +20,10 @@ function getDetailUrl(page: Page) {
   return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/view?tenantId=${encodeURIComponent(page.tenantId)}`
 }
 
+function getEditUrl(page: Page) {
+  return `/dashboard/pages/${encodeURIComponent(page.pageSlug)}/edit?tenantId=${encodeURIComponent(page.tenantId)}`
+}
+
 function formatDate(dateString: string | null | undefined) {
   if (!dateString) return 'Not set'
 
@@ -102,8 +106,8 @@ export default function PagesPage() {
         </div>
       </div>
 
-      <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-        Phase 1 is read-only. Create, update, publish, archive, import, export, and delete actions are intentionally unavailable here.
+      <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+        Phase 2 supports structured editing for existing pages. Create, duplicate, archive, import, export, and hard delete actions are intentionally unavailable here.
       </div>
 
       {error && (
@@ -208,6 +212,16 @@ export default function PagesPage() {
                         className="text-primary-700 hover:text-primary-900 mr-4"
                       >
                         View
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          router.push(getEditUrl(page))
+                        }}
+                        className="text-primary-700 hover:text-primary-900 mr-4"
+                      >
+                        Edit
                       </button>
                       <a
                         href={getPreviewUrl(page)}
