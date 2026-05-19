@@ -228,12 +228,21 @@ function createSeo(title: string, isPublished: boolean) {
 
 function createProductionReadinessDefaults() {
   const image = {
+    assetId: '',
     url: '',
     alt: '',
     title: '',
     caption: '',
+    source: '',
+    licenseStatus: '',
+    usageStatus: '',
+    width: null,
+    height: null,
+    focalPointX: null,
+    focalPointY: null,
     decorative: false,
   }
+  const now = new Date().toISOString()
 
   return {
     previousSlugs: [],
@@ -272,6 +281,76 @@ function createProductionReadinessDefaults() {
       buyerIntent: '',
       landingPageType: '',
       launchNotes: '',
+    },
+    workflow: {
+      status: 'draft',
+      approvedForPublish: false,
+      approvedBy: '',
+      approvedAt: '',
+      lastEditedBy: '',
+      lastEditedAt: now,
+    },
+    revision: {
+      revisionNumber: 1,
+      revisionLabel: '',
+      lastRevisionAt: '',
+      lastRevisionBy: '',
+      rollbackAvailable: false,
+      rollbackNotes: 'PageRevision storage is not implemented yet.',
+    },
+    staticPublishing: {
+      staticEligible: false,
+      needsRebuild: true,
+      lastSnapshotAt: '',
+      lastStaticBuildAt: '',
+      lastDeployedAt: '',
+      contentHash: '',
+      lastPublishedContentHash: '',
+      deploymentStatus: 'not_deployed',
+    },
+    template: {
+      templateKey: '',
+      templateVersion: '',
+      layoutVariant: '',
+      contentModelVersion: '1',
+    },
+    linking: {
+      hubPage: '',
+      parentPage: '',
+      relatedPages: [],
+      requiredLinks: [],
+      breadcrumbTrail: [],
+    },
+    schemaControls: {
+      enableWebPageSchema: true,
+      enableBreadcrumbSchema: true,
+      enableFAQSchema: true,
+      enableServiceSchema: true,
+      schemaWarnings: [],
+    },
+    formConfig: {
+      formType: '',
+      conversionGoal: '',
+      thankYouUrl: '',
+      thankYouMessage: '',
+      recipientGroup: '',
+      staticFormEndpointKey: '',
+      consentRequired: true,
+      spamProtectionEnabled: false,
+    },
+    importProvenance: {
+      lastImportBatchId: '',
+      sourceFile: '',
+      sourceRow: '',
+      externalId: '',
+      lockedFields: [],
+      overwriteBehavior: 'warn',
+    },
+    deploymentHooks: {
+      deploymentId: '',
+      buildId: '',
+      buildWarningCount: 0,
+      publishSource: '',
     },
   }
 }
@@ -333,6 +412,30 @@ function createPageFromForm(
     publishedAt: isPublished ? now : null,
     includeInSitemap: isPublished ? form.includeInSitemap : false,
     ...createProductionReadinessDefaults(),
+  }
+
+  page.workflow = {
+    ...page.workflow,
+    status: isPublished ? 'published' : 'draft',
+    approvedForPublish: isPublished,
+    approvedBy: isPublished ? author : '',
+    approvedAt: isPublished ? now : '',
+    lastEditedBy: author,
+    lastEditedAt: now,
+  }
+  page.staticPublishing = {
+    ...createProductionReadinessDefaults().staticPublishing,
+    ...page.staticPublishing,
+    staticEligible: isPublished,
+    needsRebuild: true,
+  }
+  page.template = {
+    ...createProductionReadinessDefaults().template,
+    ...page.template,
+    templateKey: form.template,
+    templateVersion: '1',
+    layoutVariant: 'default',
+    contentModelVersion: '1',
   }
 
   return page
@@ -397,6 +500,40 @@ function duplicatePageFromForm(sourcePage: Page, form: DuplicatePageFormState, t
     isPublished: false,
     publishedAt: null,
     includeInSitemap: false,
+    previousSlugs: [],
+    workflow: {
+      ...(duplicated.workflow || createProductionReadinessDefaults().workflow),
+      status: 'draft',
+      approvedForPublish: false,
+      approvedBy: '',
+      approvedAt: '',
+      lastEditedBy: '',
+      lastEditedAt: now,
+    },
+    staticPublishing: {
+      ...(duplicated.staticPublishing || createProductionReadinessDefaults().staticPublishing),
+      staticEligible: false,
+      needsRebuild: true,
+      lastSnapshotAt: '',
+      lastStaticBuildAt: '',
+      lastDeployedAt: '',
+      contentHash: '',
+      lastPublishedContentHash: '',
+      deploymentStatus: 'not_deployed',
+    },
+    importProvenance: {
+      ...(duplicated.importProvenance || createProductionReadinessDefaults().importProvenance),
+      lastImportBatchId: '',
+      sourceFile: '',
+      sourceRow: '',
+    },
+    deploymentHooks: {
+      ...(duplicated.deploymentHooks || createProductionReadinessDefaults().deploymentHooks),
+      deploymentId: '',
+      buildId: '',
+      buildWarningCount: 0,
+      publishSource: '',
+    },
   } satisfies Page
 }
 
@@ -618,6 +755,19 @@ export default function PagesPage() {
         ? nextPage.publishedAt || new Date().toISOString()
         : nextPage.publishedAt
       nextPage.MetaData.updatedAt = new Date().toISOString()
+      nextPage.workflow = {
+        ...(nextPage.workflow || createProductionReadinessDefaults().workflow),
+        status: nextIsPublished ? 'published' : 'unpublished',
+        approvedForPublish: nextIsPublished ? Boolean(nextPage.workflow?.approvedForPublish) : false,
+        lastEditedBy: getAuthor(user),
+        lastEditedAt: new Date().toISOString(),
+      }
+      nextPage.staticPublishing = {
+        ...(nextPage.staticPublishing || createProductionReadinessDefaults().staticPublishing),
+        staticEligible: nextIsPublished,
+        needsRebuild: true,
+        deploymentStatus: 'pending_rebuild',
+      }
 
       const updatedPage = await apiClient.updatePage(token, currentTenant.tenantId, page.pageSlug, nextPage)
       setPages((currentPages) => currentPages.map((item) => (

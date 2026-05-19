@@ -141,6 +141,30 @@ function getMedia(page) {
   return page.media && typeof page.media === 'object' ? page.media : {};
 }
 
+function getWorkflow(page) {
+  return page.workflow && typeof page.workflow === 'object' ? page.workflow : {};
+}
+
+function getStaticPublishing(page) {
+  return page.staticPublishing && typeof page.staticPublishing === 'object' ? page.staticPublishing : {};
+}
+
+function getTemplateIdentity(page) {
+  return page.template && typeof page.template === 'object' ? page.template : {};
+}
+
+function getLinking(page) {
+  return page.linking && typeof page.linking === 'object' ? page.linking : {};
+}
+
+function getSchemaControls(page) {
+  return page.schemaControls && typeof page.schemaControls === 'object' ? page.schemaControls : {};
+}
+
+function getFormConfig(page) {
+  return page.formConfig && typeof page.formConfig === 'object' ? page.formConfig : {};
+}
+
 function hasFormOrCta(page) {
   const blocks = Array.isArray(page.ContentData?.ContentBlocks) ? page.ContentData.ContentBlocks : [];
   return blocks.some((block) => block.type === 'Contact' || block.type === 'PrimaryCTA');
@@ -152,6 +176,15 @@ function addImageAltWarnings(page, label, warnings) {
     if (!asset || typeof asset !== 'object') continue;
     if (stringValue(asset.url) && !stringValue(asset.alt) && asset.decorative !== true) {
       warnings.push(`${label}: media.${slot}.alt is missing while media.${slot}.url is set.`);
+    }
+    if (stringValue(asset.url) && !stringValue(asset.source)) {
+      warnings.push(`${label}: media.${slot}.source is missing while media.${slot}.url is set.`);
+    }
+    if (stringValue(asset.url) && !stringValue(asset.licenseStatus)) {
+      warnings.push(`${label}: media.${slot}.licenseStatus is missing while media.${slot}.url is set.`);
+    }
+    if (stringValue(asset.url) && !stringValue(asset.usageStatus)) {
+      warnings.push(`${label}: media.${slot}.usageStatus is missing while media.${slot}.url is set.`);
     }
   }
 
@@ -181,6 +214,13 @@ function addProductionReadinessWarnings(page, label, warnings) {
   const seo = page.seo || {};
   const fulfillment = getFulfillment(page);
   const googleAds = getGoogleAds(page);
+  const workflow = getWorkflow(page);
+  const staticPublishing = getStaticPublishing(page);
+  const template = getTemplateIdentity(page);
+  const linking = getLinking(page);
+  const schemaControls = getSchemaControls(page);
+  const formConfig = getFormConfig(page);
+  const blocks = Array.isArray(page.ContentData?.ContentBlocks) ? page.ContentData.ContentBlocks : [];
 
   if (!getTargetKeyword(page)) warnings.push(`${label}: target keyword is missing.`);
   if (!stringValue(seo.metaTitle)) warnings.push(`${label}: seo.metaTitle is missing.`);
@@ -191,6 +231,27 @@ function addProductionReadinessWarnings(page, label, warnings) {
   if (page.includeInSitemap && !stringValue(seo.canonicalUrl)) warnings.push(`${label}: sitemap page has no canonical URL.`);
   if (page.sitemapPriority !== undefined && page.sitemapPriority !== null && (typeof page.sitemapPriority !== 'number' || page.sitemapPriority < 0 || page.sitemapPriority > 1)) {
     warnings.push(`${label}: sitemapPriority should be a number between 0 and 1.`);
+  }
+  if (Array.isArray(page.previousSlugs) && page.previousSlugs.length > 0) {
+    warnings.push(`${label}: previousSlugs are present; static redirect generation is not implemented yet.`);
+  }
+  if (page.isPublished && workflow.approvedForPublish !== true) {
+    warnings.push(`${label}: published page is not marked workflow.approvedForPublish.`);
+  }
+  if (page.isPublished && !['approved', 'published'].includes(stringValue(workflow.status))) {
+    warnings.push(`${label}: published page should use workflow.status approved or published.`);
+  }
+  if (page.isPublished && staticPublishing.staticEligible !== true) {
+    warnings.push(`${label}: published page is not marked staticPublishing.staticEligible.`);
+  }
+  if (staticPublishing.needsRebuild === true) {
+    warnings.push(`${label}: staticPublishing.needsRebuild is true.`);
+  }
+  if (!stringValue(template.templateKey)) {
+    warnings.push(`${label}: template.templateKey is missing.`);
+  }
+  if (!stringValue(template.contentModelVersion)) {
+    warnings.push(`${label}: template.contentModelVersion is missing.`);
   }
   if (!stringValue(fulfillment.fulfillmentStatus)) warnings.push(`${label}: fulfillment.fulfillmentStatus is missing.`);
 
@@ -212,6 +273,28 @@ function addProductionReadinessWarnings(page, label, warnings) {
 
   if (googleAds.eligible === true && fulfillment.fulfillmentStatus === 'research_only_until_provider_confirmed') {
     warnings.push(`${label}: Google Ads eligible page uses research-only fulfillment; review before launch.`);
+  }
+
+  const requiredLinks = Array.isArray(linking.requiredLinks) ? linking.requiredLinks : [];
+  if (requiredLinks.length > 0) {
+    const contentText = JSON.stringify(page.ContentData || {});
+    for (const requiredLink of requiredLinks) {
+      if (stringValue(requiredLink) && !contentText.includes(requiredLink)) {
+        warnings.push(`${label}: required link "${requiredLink}" was not found in ContentData.`);
+      }
+    }
+  }
+
+  if (blocks.some((block) => block.type === 'FAQ') && schemaControls.enableFAQSchema === false) {
+    warnings.push(`${label}: FAQ block exists but schemaControls.enableFAQSchema is false.`);
+  }
+
+  if (blocks.some((block) => block.type === 'Contact') && !stringValue(formConfig.formType)) {
+    warnings.push(`${label}: Contact block exists but formConfig.formType is missing.`);
+  }
+
+  if (hasFormOrCta(page) && !stringValue(formConfig.conversionGoal)) {
+    warnings.push(`${label}: form/CTA exists but formConfig.conversionGoal is missing.`);
   }
 
   addImageAltWarnings(page, label, warnings);

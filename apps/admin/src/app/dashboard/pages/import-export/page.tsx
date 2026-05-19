@@ -158,6 +158,64 @@ const PAGE_FLAT_HEADERS = [
   'ContentData.ContentBlocks',
   'searchData',
   'pageQuality',
+  'workflow.status',
+  'workflow.approvedForPublish',
+  'workflow.approvedBy',
+  'workflow.approvedAt',
+  'workflow.lastEditedBy',
+  'workflow.lastEditedAt',
+  'workflow',
+  'revision.revisionNumber',
+  'revision.rollbackAvailable',
+  'revision.rollbackNotes',
+  'revision',
+  'staticPublishing.staticEligible',
+  'staticPublishing.needsRebuild',
+  'staticPublishing.deploymentStatus',
+  'staticPublishing.lastSnapshotAt',
+  'staticPublishing.lastStaticBuildAt',
+  'staticPublishing.lastDeployedAt',
+  'staticPublishing.contentHash',
+  'staticPublishing.lastPublishedContentHash',
+  'staticPublishing',
+  'template.templateKey',
+  'template.templateVersion',
+  'template.layoutVariant',
+  'template.contentModelVersion',
+  'template',
+  'linking.hubPage',
+  'linking.parentPage',
+  'linking.relatedPages',
+  'linking.requiredLinks',
+  'linking.breadcrumbTrail',
+  'linking',
+  'schemaControls.enableWebPageSchema',
+  'schemaControls.enableBreadcrumbSchema',
+  'schemaControls.enableFAQSchema',
+  'schemaControls.enableServiceSchema',
+  'schemaControls.schemaWarnings',
+  'schemaControls',
+  'formConfig.formType',
+  'formConfig.conversionGoal',
+  'formConfig.thankYouUrl',
+  'formConfig.thankYouMessage',
+  'formConfig.recipientGroup',
+  'formConfig.staticFormEndpointKey',
+  'formConfig.consentRequired',
+  'formConfig.spamProtectionEnabled',
+  'formConfig',
+  'importProvenance.lastImportBatchId',
+  'importProvenance.sourceFile',
+  'importProvenance.sourceRow',
+  'importProvenance.externalId',
+  'importProvenance.lockedFields',
+  'importProvenance.overwriteBehavior',
+  'importProvenance',
+  'deploymentHooks.deploymentId',
+  'deploymentHooks.buildId',
+  'deploymentHooks.buildWarningCount',
+  'deploymentHooks.publishSource',
+  'deploymentHooks',
   'layoutPositions',
 ] as const
 
@@ -175,6 +233,20 @@ const JSON_COLUMN_HEADERS = new Set<string>([
   'ContentData.ContentBlocks',
   'searchData',
   'pageQuality',
+  'workflow',
+  'revision',
+  'staticPublishing',
+  'template',
+  'linking.relatedPages',
+  'linking.requiredLinks',
+  'linking.breadcrumbTrail',
+  'linking',
+  'schemaControls.schemaWarnings',
+  'schemaControls',
+  'formConfig',
+  'importProvenance.lockedFields',
+  'importProvenance',
+  'deploymentHooks',
   'layoutPositions',
 ])
 
@@ -354,10 +426,18 @@ function createDefaultRelationships() {
 
 function createDefaultMedia() {
   const image = {
+    assetId: '',
     url: '',
     alt: '',
     title: '',
     caption: '',
+    source: '',
+    licenseStatus: '',
+    usageStatus: '',
+    width: null,
+    height: null,
+    focalPointX: null,
+    focalPointY: null,
     decorative: false,
   }
 
@@ -406,6 +486,103 @@ function createDefaultPageQuality() {
   }
 }
 
+function createDefaultWorkflow() {
+  return {
+    status: 'draft',
+    approvedForPublish: false,
+    approvedBy: '',
+    approvedAt: '',
+    lastEditedBy: '',
+    lastEditedAt: '',
+  }
+}
+
+function createDefaultRevision() {
+  return {
+    revisionNumber: 1,
+    revisionLabel: '',
+    lastRevisionAt: '',
+    lastRevisionBy: '',
+    rollbackAvailable: false,
+    rollbackNotes: 'PageRevision storage is not implemented yet.',
+  }
+}
+
+function createDefaultStaticPublishing() {
+  return {
+    staticEligible: false,
+    needsRebuild: true,
+    lastSnapshotAt: '',
+    lastStaticBuildAt: '',
+    lastDeployedAt: '',
+    contentHash: '',
+    lastPublishedContentHash: '',
+    deploymentStatus: 'not_deployed',
+  }
+}
+
+function createDefaultTemplateIdentity() {
+  return {
+    templateKey: '',
+    templateVersion: '',
+    layoutVariant: '',
+    contentModelVersion: '1',
+  }
+}
+
+function createDefaultLinking() {
+  return {
+    hubPage: '',
+    parentPage: '',
+    relatedPages: [],
+    requiredLinks: [],
+    breadcrumbTrail: [],
+  }
+}
+
+function createDefaultSchemaControls() {
+  return {
+    enableWebPageSchema: true,
+    enableBreadcrumbSchema: true,
+    enableFAQSchema: true,
+    enableServiceSchema: true,
+    schemaWarnings: [],
+  }
+}
+
+function createDefaultFormConfig() {
+  return {
+    formType: '',
+    conversionGoal: '',
+    thankYouUrl: '',
+    thankYouMessage: '',
+    recipientGroup: '',
+    staticFormEndpointKey: '',
+    consentRequired: true,
+    spamProtectionEnabled: false,
+  }
+}
+
+function createDefaultImportProvenance() {
+  return {
+    lastImportBatchId: '',
+    sourceFile: '',
+    sourceRow: '',
+    externalId: '',
+    lockedFields: [],
+    overwriteBehavior: 'warn',
+  }
+}
+
+function createDefaultDeploymentHooks() {
+  return {
+    deploymentId: '',
+    buildId: '',
+    buildWarningCount: 0,
+    publishSource: '',
+  }
+}
+
 function getPageMedia(page: Partial<Page>) {
   return {
     ...createDefaultMedia(),
@@ -451,6 +628,69 @@ function getPageQuality(page: Partial<Page>) {
   return {
     ...createDefaultPageQuality(),
     ...(isRecord(page.pageQuality) ? page.pageQuality : {}),
+  }
+}
+
+function getPageWorkflow(page: Partial<Page>) {
+  return {
+    ...createDefaultWorkflow(),
+    ...(isRecord(page.workflow) ? page.workflow : {}),
+  }
+}
+
+function getPageRevision(page: Partial<Page>) {
+  return {
+    ...createDefaultRevision(),
+    ...(isRecord(page.revision) ? page.revision : {}),
+  }
+}
+
+function getPageStaticPublishing(page: Partial<Page>) {
+  return {
+    ...createDefaultStaticPublishing(),
+    ...(isRecord(page.staticPublishing) ? page.staticPublishing : {}),
+  }
+}
+
+function getPageTemplate(page: Partial<Page>) {
+  return {
+    ...createDefaultTemplateIdentity(),
+    ...(isRecord(page.template) ? page.template : {}),
+  }
+}
+
+function getPageLinking(page: Partial<Page>) {
+  return {
+    ...createDefaultLinking(),
+    ...(isRecord(page.linking) ? page.linking : {}),
+  }
+}
+
+function getPageSchemaControls(page: Partial<Page>) {
+  return {
+    ...createDefaultSchemaControls(),
+    ...(isRecord(page.schemaControls) ? page.schemaControls : {}),
+  }
+}
+
+function getPageFormConfig(page: Partial<Page>) {
+  return {
+    ...createDefaultFormConfig(),
+    ...(isRecord(page.formConfig) ? page.formConfig : {}),
+  }
+}
+
+function getPageImportProvenance(page: Partial<Page>) {
+  return {
+    ...createDefaultImportProvenance(),
+    ...(isRecord(page.importProvenance) ? page.importProvenance : {}),
+  }
+}
+
+function getPageDeploymentHooks(page: Partial<Page>) {
+  return {
+    ...createDefaultDeploymentHooks(),
+    ...(isRecord(page.deploymentHooks) ? page.deploymentHooks : {}),
   }
 }
 
@@ -503,6 +743,15 @@ function createTemplatePage(tenantId: string) {
     fulfillment: createDefaultFulfillment(),
     googleAds: createDefaultGoogleAds(),
     pageQuality: createDefaultPageQuality(),
+    workflow: createDefaultWorkflow(),
+    revision: createDefaultRevision(),
+    staticPublishing: createDefaultStaticPublishing(),
+    template: createDefaultTemplateIdentity(),
+    linking: createDefaultLinking(),
+    schemaControls: createDefaultSchemaControls(),
+    formConfig: createDefaultFormConfig(),
+    importProvenance: createDefaultImportProvenance(),
+    deploymentHooks: createDefaultDeploymentHooks(),
   } satisfies Page
 }
 
@@ -753,6 +1002,15 @@ function flattenPage(page: Page): FlatPageRow {
   const fulfillment = getPageFulfillment(page)
   const googleAds = getPageGoogleAds(page)
   const pageQuality = getPageQuality(page)
+  const workflow = getPageWorkflow(page)
+  const revision = getPageRevision(page)
+  const staticPublishing = getPageStaticPublishing(page)
+  const template = getPageTemplate(page)
+  const linking = getPageLinking(page)
+  const schemaControls = getPageSchemaControls(page)
+  const formConfig = getPageFormConfig(page)
+  const importProvenance = getPageImportProvenance(page)
+  const deploymentHooks = getPageDeploymentHooks(page)
   const targetKeyword = page.MetaData?.keyword || page.searchData?.keyword || ''
   const secondaryKeywords = page.seo?.keywords || []
 
@@ -825,6 +1083,64 @@ function flattenPage(page: Page): FlatPageRow {
     'ContentData.ContentBlocks': toJsonCell(page.ContentData?.ContentBlocks || []),
     searchData: toJsonCell(page.searchData || createDefaultSearchData(getPageTitle(page), [])),
     pageQuality: toJsonCell(pageQuality),
+    'workflow.status': stringValue(workflow.status),
+    'workflow.approvedForPublish': stringValue(workflow.approvedForPublish),
+    'workflow.approvedBy': stringValue(workflow.approvedBy),
+    'workflow.approvedAt': stringValue(workflow.approvedAt),
+    'workflow.lastEditedBy': stringValue(workflow.lastEditedBy),
+    'workflow.lastEditedAt': stringValue(workflow.lastEditedAt),
+    workflow: toJsonCell(workflow),
+    'revision.revisionNumber': stringValue(revision.revisionNumber),
+    'revision.rollbackAvailable': stringValue(revision.rollbackAvailable),
+    'revision.rollbackNotes': stringValue(revision.rollbackNotes),
+    revision: toJsonCell(revision),
+    'staticPublishing.staticEligible': stringValue(staticPublishing.staticEligible),
+    'staticPublishing.needsRebuild': stringValue(staticPublishing.needsRebuild),
+    'staticPublishing.deploymentStatus': stringValue(staticPublishing.deploymentStatus),
+    'staticPublishing.lastSnapshotAt': stringValue(staticPublishing.lastSnapshotAt),
+    'staticPublishing.lastStaticBuildAt': stringValue(staticPublishing.lastStaticBuildAt),
+    'staticPublishing.lastDeployedAt': stringValue(staticPublishing.lastDeployedAt),
+    'staticPublishing.contentHash': stringValue(staticPublishing.contentHash),
+    'staticPublishing.lastPublishedContentHash': stringValue(staticPublishing.lastPublishedContentHash),
+    staticPublishing: toJsonCell(staticPublishing),
+    'template.templateKey': stringValue(template.templateKey),
+    'template.templateVersion': stringValue(template.templateVersion),
+    'template.layoutVariant': stringValue(template.layoutVariant),
+    'template.contentModelVersion': stringValue(template.contentModelVersion),
+    template: toJsonCell(template),
+    'linking.hubPage': stringValue(linking.hubPage),
+    'linking.parentPage': stringValue(linking.parentPage),
+    'linking.relatedPages': toJsonCell(linking.relatedPages),
+    'linking.requiredLinks': toJsonCell(linking.requiredLinks),
+    'linking.breadcrumbTrail': toJsonCell(linking.breadcrumbTrail),
+    linking: toJsonCell(linking),
+    'schemaControls.enableWebPageSchema': stringValue(schemaControls.enableWebPageSchema),
+    'schemaControls.enableBreadcrumbSchema': stringValue(schemaControls.enableBreadcrumbSchema),
+    'schemaControls.enableFAQSchema': stringValue(schemaControls.enableFAQSchema),
+    'schemaControls.enableServiceSchema': stringValue(schemaControls.enableServiceSchema),
+    'schemaControls.schemaWarnings': toJsonCell(schemaControls.schemaWarnings),
+    schemaControls: toJsonCell(schemaControls),
+    'formConfig.formType': stringValue(formConfig.formType),
+    'formConfig.conversionGoal': stringValue(formConfig.conversionGoal),
+    'formConfig.thankYouUrl': stringValue(formConfig.thankYouUrl),
+    'formConfig.thankYouMessage': stringValue(formConfig.thankYouMessage),
+    'formConfig.recipientGroup': stringValue(formConfig.recipientGroup),
+    'formConfig.staticFormEndpointKey': stringValue(formConfig.staticFormEndpointKey),
+    'formConfig.consentRequired': stringValue(formConfig.consentRequired),
+    'formConfig.spamProtectionEnabled': stringValue(formConfig.spamProtectionEnabled),
+    formConfig: toJsonCell(formConfig),
+    'importProvenance.lastImportBatchId': stringValue(importProvenance.lastImportBatchId),
+    'importProvenance.sourceFile': stringValue(importProvenance.sourceFile),
+    'importProvenance.sourceRow': stringValue(importProvenance.sourceRow),
+    'importProvenance.externalId': stringValue(importProvenance.externalId),
+    'importProvenance.lockedFields': toJsonCell(importProvenance.lockedFields),
+    'importProvenance.overwriteBehavior': stringValue(importProvenance.overwriteBehavior),
+    importProvenance: toJsonCell(importProvenance),
+    'deploymentHooks.deploymentId': stringValue(deploymentHooks.deploymentId),
+    'deploymentHooks.buildId': stringValue(deploymentHooks.buildId),
+    'deploymentHooks.buildWarningCount': stringValue(deploymentHooks.buildWarningCount),
+    'deploymentHooks.publishSource': stringValue(deploymentHooks.publishSource),
+    deploymentHooks: toJsonCell(deploymentHooks),
     layoutPositions: toJsonCell(page.layoutPositions || {}),
   }
 }
@@ -854,6 +1170,15 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
   const fulfillmentJson = parseJsonCell(row.fulfillment || '', 'fulfillment', sourceRow, 'object', {}, errors)
   const googleAdsJson = parseJsonCell(row.googleAds || '', 'googleAds', sourceRow, 'object', {}, errors)
   const pageQualityJson = parseJsonCell(row.pageQuality || '', 'pageQuality', sourceRow, 'object', {}, errors)
+  const workflowJson = parseJsonCell(row.workflow || '', 'workflow', sourceRow, 'object', {}, errors)
+  const revisionJson = parseJsonCell(row.revision || '', 'revision', sourceRow, 'object', {}, errors)
+  const staticPublishingJson = parseJsonCell(row.staticPublishing || '', 'staticPublishing', sourceRow, 'object', {}, errors)
+  const templateJson = parseJsonCell(row.template || '', 'template', sourceRow, 'object', {}, errors)
+  const linkingJson = parseJsonCell(row.linking || '', 'linking', sourceRow, 'object', {}, errors)
+  const schemaControlsJson = parseJsonCell(row.schemaControls || '', 'schemaControls', sourceRow, 'object', {}, errors)
+  const formConfigJson = parseJsonCell(row.formConfig || '', 'formConfig', sourceRow, 'object', {}, errors)
+  const importProvenanceJson = parseJsonCell(row.importProvenance || '', 'importProvenance', sourceRow, 'object', {}, errors)
+  const deploymentHooksJson = parseJsonCell(row.deploymentHooks || '', 'deploymentHooks', sourceRow, 'object', {}, errors)
   const previousSlugs = stringListValue(row.previousSlugs || '')
   const relatedHubs = parseJsonCell(
     row['contentRelationships.relatedHubs'] || '',
@@ -870,6 +1195,16 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
   const primaryPartnerAvailable = parseOptionalBooleanCell(row.primaryPartnerAvailable || '', false, 'primaryPartnerAvailable', sourceRow, errors)
   const publicDisclosureRequired = parseOptionalBooleanCell(row.publicDisclosureRequired || '', false, 'publicDisclosureRequired', sourceRow, errors)
   const googleAdsEligible = parseOptionalBooleanCell(row['googleAds.eligible'] || '', false, 'googleAds.eligible', sourceRow, errors)
+  const workflowApprovedForPublish = parseOptionalBooleanCell(row['workflow.approvedForPublish'] || '', false, 'workflow.approvedForPublish', sourceRow, errors)
+  const rollbackAvailable = parseOptionalBooleanCell(row['revision.rollbackAvailable'] || '', false, 'revision.rollbackAvailable', sourceRow, errors)
+  const staticEligible = parseOptionalBooleanCell(row['staticPublishing.staticEligible'] || '', false, 'staticPublishing.staticEligible', sourceRow, errors)
+  const staticNeedsRebuild = parseOptionalBooleanCell(row['staticPublishing.needsRebuild'] || '', true, 'staticPublishing.needsRebuild', sourceRow, errors)
+  const enableWebPageSchema = parseOptionalBooleanCell(row['schemaControls.enableWebPageSchema'] || '', true, 'schemaControls.enableWebPageSchema', sourceRow, errors)
+  const enableBreadcrumbSchema = parseOptionalBooleanCell(row['schemaControls.enableBreadcrumbSchema'] || '', true, 'schemaControls.enableBreadcrumbSchema', sourceRow, errors)
+  const enableFAQSchema = parseOptionalBooleanCell(row['schemaControls.enableFAQSchema'] || '', true, 'schemaControls.enableFAQSchema', sourceRow, errors)
+  const enableServiceSchema = parseOptionalBooleanCell(row['schemaControls.enableServiceSchema'] || '', true, 'schemaControls.enableServiceSchema', sourceRow, errors)
+  const consentRequired = parseOptionalBooleanCell(row['formConfig.consentRequired'] || '', true, 'formConfig.consentRequired', sourceRow, errors)
+  const spamProtectionEnabled = parseOptionalBooleanCell(row['formConfig.spamProtectionEnabled'] || '', false, 'formConfig.spamProtectionEnabled', sourceRow, errors)
   const version = parseNumberCell(row.PageVersion || '1', 1, 'PageVersion', sourceRow, warnings)
   const sitemapPriority = row.sitemapPriority?.trim()
     ? parseNumberCell(row.sitemapPriority, 0.5, 'sitemapPriority', sourceRow, warnings)
@@ -950,6 +1285,91 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     buyerIntent: row.buyerIntent || stringValue((pageQualityJson as Record<string, unknown>).buyerIntent),
     landingPageType,
   }
+  const workflow = {
+    ...createDefaultWorkflow(),
+    ...(isRecord(workflowJson) ? workflowJson : {}),
+    status: row['workflow.status'] || stringValue((workflowJson as Record<string, unknown>).status) || (isPublished ? 'published' : 'draft'),
+    approvedForPublish: workflowApprovedForPublish,
+    approvedBy: row['workflow.approvedBy'] || stringValue((workflowJson as Record<string, unknown>).approvedBy),
+    approvedAt: row['workflow.approvedAt'] || stringValue((workflowJson as Record<string, unknown>).approvedAt),
+    lastEditedBy: row['workflow.lastEditedBy'] || stringValue((workflowJson as Record<string, unknown>).lastEditedBy),
+    lastEditedAt: row['workflow.lastEditedAt'] || stringValue((workflowJson as Record<string, unknown>).lastEditedAt),
+  }
+  const revision = {
+    ...createDefaultRevision(),
+    ...(isRecord(revisionJson) ? revisionJson : {}),
+    revisionNumber: parseNumberCell(row['revision.revisionNumber'] || stringValue((revisionJson as Record<string, unknown>).revisionNumber) || '1', 1, 'revision.revisionNumber', sourceRow, warnings),
+    rollbackAvailable,
+    rollbackNotes: row['revision.rollbackNotes'] || stringValue((revisionJson as Record<string, unknown>).rollbackNotes) || 'PageRevision storage is not implemented yet.',
+  }
+  const staticPublishing = {
+    ...createDefaultStaticPublishing(),
+    ...(isRecord(staticPublishingJson) ? staticPublishingJson : {}),
+    staticEligible,
+    needsRebuild: staticNeedsRebuild,
+    deploymentStatus: row['staticPublishing.deploymentStatus'] || stringValue((staticPublishingJson as Record<string, unknown>).deploymentStatus) || 'not_deployed',
+    lastSnapshotAt: row['staticPublishing.lastSnapshotAt'] || stringValue((staticPublishingJson as Record<string, unknown>).lastSnapshotAt),
+    lastStaticBuildAt: row['staticPublishing.lastStaticBuildAt'] || stringValue((staticPublishingJson as Record<string, unknown>).lastStaticBuildAt),
+    lastDeployedAt: row['staticPublishing.lastDeployedAt'] || stringValue((staticPublishingJson as Record<string, unknown>).lastDeployedAt),
+    contentHash: row['staticPublishing.contentHash'] || stringValue((staticPublishingJson as Record<string, unknown>).contentHash),
+    lastPublishedContentHash: row['staticPublishing.lastPublishedContentHash'] || stringValue((staticPublishingJson as Record<string, unknown>).lastPublishedContentHash),
+  }
+  const template = {
+    ...createDefaultTemplateIdentity(),
+    ...(isRecord(templateJson) ? templateJson : {}),
+    templateKey: row['template.templateKey'] || stringValue((templateJson as Record<string, unknown>).templateKey),
+    templateVersion: row['template.templateVersion'] || stringValue((templateJson as Record<string, unknown>).templateVersion),
+    layoutVariant: row['template.layoutVariant'] || stringValue((templateJson as Record<string, unknown>).layoutVariant),
+    contentModelVersion: row['template.contentModelVersion'] || stringValue((templateJson as Record<string, unknown>).contentModelVersion) || '1',
+  }
+  const linking = {
+    ...createDefaultLinking(),
+    ...(isRecord(linkingJson) ? linkingJson : {}),
+    hubPage: row['linking.hubPage'] || stringValue((linkingJson as Record<string, unknown>).hubPage),
+    parentPage: row['linking.parentPage'] || stringValue((linkingJson as Record<string, unknown>).parentPage),
+    relatedPages: row['linking.relatedPages'] ? stringListValue(row['linking.relatedPages']) : stringListValue((linkingJson as Record<string, unknown>).relatedPages),
+    requiredLinks: row['linking.requiredLinks'] ? stringListValue(row['linking.requiredLinks']) : stringListValue((linkingJson as Record<string, unknown>).requiredLinks),
+    breadcrumbTrail: row['linking.breadcrumbTrail'] ? stringListValue(row['linking.breadcrumbTrail']) : stringListValue((linkingJson as Record<string, unknown>).breadcrumbTrail),
+  }
+  const schemaControls = {
+    ...createDefaultSchemaControls(),
+    ...(isRecord(schemaControlsJson) ? schemaControlsJson : {}),
+    enableWebPageSchema,
+    enableBreadcrumbSchema,
+    enableFAQSchema,
+    enableServiceSchema,
+    schemaWarnings: row['schemaControls.schemaWarnings'] ? stringListValue(row['schemaControls.schemaWarnings']) : stringListValue((schemaControlsJson as Record<string, unknown>).schemaWarnings),
+  }
+  const formConfig = {
+    ...createDefaultFormConfig(),
+    ...(isRecord(formConfigJson) ? formConfigJson : {}),
+    formType: row['formConfig.formType'] || stringValue((formConfigJson as Record<string, unknown>).formType),
+    conversionGoal: row['formConfig.conversionGoal'] || stringValue((formConfigJson as Record<string, unknown>).conversionGoal),
+    thankYouUrl: row['formConfig.thankYouUrl'] || stringValue((formConfigJson as Record<string, unknown>).thankYouUrl),
+    thankYouMessage: row['formConfig.thankYouMessage'] || stringValue((formConfigJson as Record<string, unknown>).thankYouMessage),
+    recipientGroup: row['formConfig.recipientGroup'] || stringValue((formConfigJson as Record<string, unknown>).recipientGroup),
+    staticFormEndpointKey: row['formConfig.staticFormEndpointKey'] || stringValue((formConfigJson as Record<string, unknown>).staticFormEndpointKey),
+    consentRequired,
+    spamProtectionEnabled,
+  }
+  const importProvenance = {
+    ...createDefaultImportProvenance(),
+    ...(isRecord(importProvenanceJson) ? importProvenanceJson : {}),
+    lastImportBatchId: row['importProvenance.lastImportBatchId'] || stringValue((importProvenanceJson as Record<string, unknown>).lastImportBatchId),
+    sourceFile: row['importProvenance.sourceFile'] || stringValue((importProvenanceJson as Record<string, unknown>).sourceFile),
+    sourceRow: row['importProvenance.sourceRow'] || stringValue((importProvenanceJson as Record<string, unknown>).sourceRow),
+    externalId: row['importProvenance.externalId'] || stringValue((importProvenanceJson as Record<string, unknown>).externalId),
+    lockedFields: row['importProvenance.lockedFields'] ? stringListValue(row['importProvenance.lockedFields']) : stringListValue((importProvenanceJson as Record<string, unknown>).lockedFields),
+    overwriteBehavior: row['importProvenance.overwriteBehavior'] || stringValue((importProvenanceJson as Record<string, unknown>).overwriteBehavior) || 'warn',
+  }
+  const deploymentHooks = {
+    ...createDefaultDeploymentHooks(),
+    ...(isRecord(deploymentHooksJson) ? deploymentHooksJson : {}),
+    deploymentId: row['deploymentHooks.deploymentId'] || stringValue((deploymentHooksJson as Record<string, unknown>).deploymentId),
+    buildId: row['deploymentHooks.buildId'] || stringValue((deploymentHooksJson as Record<string, unknown>).buildId),
+    buildWarningCount: parseNumberCell(row['deploymentHooks.buildWarningCount'] || stringValue((deploymentHooksJson as Record<string, unknown>).buildWarningCount) || '0', 0, 'deploymentHooks.buildWarningCount', sourceRow, warnings),
+    publishSource: row['deploymentHooks.publishSource'] || stringValue((deploymentHooksJson as Record<string, unknown>).publishSource),
+  }
 
   const page: Record<string, unknown> = {
     id: row.id || '',
@@ -1019,6 +1439,15 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     fulfillment,
     googleAds,
     pageQuality,
+    workflow,
+    revision,
+    staticPublishing,
+    template,
+    linking,
+    schemaControls,
+    formConfig,
+    importProvenance,
+    deploymentHooks,
   }
 
   if (isRecord(layoutPositions) && Object.keys(layoutPositions).length > 0) {
@@ -1286,6 +1715,45 @@ function validateParsedImport(
       warnings.push('Sitemap page has no canonical URL.')
     }
 
+    if (Array.isArray(page.previousSlugs) && page.previousSlugs.length > 0) {
+      warnings.push('previousSlugs are preserved, but static redirect generation is not implemented yet.')
+    }
+
+    const workflow = isRecord(page.workflow) ? page.workflow : null
+    if (page.isPublished === true && workflow?.approvedForPublish !== true) {
+      warnings.push('Published page is not marked workflow.approvedForPublish.')
+    }
+
+    if (
+      page.isPublished === true &&
+      !['approved', 'published'].includes(stringValue(workflow?.status))
+    ) {
+      warnings.push('Published page should use workflow.status approved or published.')
+    }
+
+    const staticPublishing = isRecord(page.staticPublishing) ? page.staticPublishing : null
+    if (page.isPublished === true && staticPublishing?.staticEligible !== true) {
+      warnings.push('Published page is not marked staticPublishing.staticEligible.')
+    }
+
+    if (staticPublishing?.needsRebuild === true) {
+      warnings.push('Page is marked staticPublishing.needsRebuild.')
+    }
+
+    const template = isRecord(page.template) ? page.template : null
+    if (!stringValue(template?.templateKey)) {
+      warnings.push('template.templateKey is missing.')
+    }
+
+    if (!stringValue(template?.contentModelVersion)) {
+      warnings.push('template.contentModelVersion is missing.')
+    }
+
+    const importProvenance = isRecord(page.importProvenance) ? page.importProvenance : null
+    if (stringListValue(importProvenance?.lockedFields).length > 0) {
+      warnings.push('lockedFields are preserved as provenance, but CSV/XLSX import does not enforce field-level locks yet.')
+    }
+
     const fulfillment = isRecord(page.fulfillment) ? page.fulfillment : null
     if (!stringValue(fulfillment?.fulfillmentStatus)) {
       warnings.push('Fulfillment status is missing.')
@@ -1427,6 +1895,15 @@ function coercePageForWrite(page: Record<string, unknown>, tenantId: string, rew
   const fulfillment = isRecord(page.fulfillment) ? page.fulfillment : createDefaultFulfillment()
   const googleAds = isRecord(page.googleAds) ? page.googleAds : createDefaultGoogleAds()
   const pageQuality = isRecord(page.pageQuality) ? page.pageQuality : createDefaultPageQuality()
+  const workflow = isRecord(page.workflow) ? page.workflow : createDefaultWorkflow()
+  const revision = isRecord(page.revision) ? page.revision : createDefaultRevision()
+  const staticPublishing = isRecord(page.staticPublishing) ? page.staticPublishing : createDefaultStaticPublishing()
+  const template = isRecord(page.template) ? page.template : createDefaultTemplateIdentity()
+  const linking = isRecord(page.linking) ? page.linking : createDefaultLinking()
+  const schemaControls = isRecord(page.schemaControls) ? page.schemaControls : createDefaultSchemaControls()
+  const formConfig = isRecord(page.formConfig) ? page.formConfig : createDefaultFormConfig()
+  const importProvenance = isRecord(page.importProvenance) ? page.importProvenance : createDefaultImportProvenance()
+  const deploymentHooks = isRecord(page.deploymentHooks) ? page.deploymentHooks : createDefaultDeploymentHooks()
   const finalTenantId = rewriteTenantId || !incomingTenantId ? tenantId : incomingTenantId
 
   const coerced: Page = {
@@ -1485,6 +1962,50 @@ function coercePageForWrite(page: Record<string, unknown>, tenantId: string, rew
     pageQuality: {
       ...createDefaultPageQuality(),
       ...pageQuality,
+    },
+    workflow: {
+      ...createDefaultWorkflow(),
+      ...workflow,
+    },
+    revision: {
+      ...createDefaultRevision(),
+      ...revision,
+      revisionNumber: numberValue(revision.revisionNumber, 1),
+      rollbackAvailable: Boolean(revision.rollbackAvailable),
+    },
+    staticPublishing: {
+      ...createDefaultStaticPublishing(),
+      ...staticPublishing,
+    },
+    template: {
+      ...createDefaultTemplateIdentity(),
+      ...template,
+    },
+    linking: {
+      ...createDefaultLinking(),
+      ...linking,
+      relatedPages: stringListValue(linking.relatedPages),
+      requiredLinks: stringListValue(linking.requiredLinks),
+      breadcrumbTrail: stringListValue(linking.breadcrumbTrail),
+    },
+    schemaControls: {
+      ...createDefaultSchemaControls(),
+      ...schemaControls,
+      schemaWarnings: stringListValue(schemaControls.schemaWarnings),
+    },
+    formConfig: {
+      ...createDefaultFormConfig(),
+      ...formConfig,
+    },
+    importProvenance: {
+      ...createDefaultImportProvenance(),
+      ...importProvenance,
+      lockedFields: stringListValue(importProvenance.lockedFields),
+    },
+    deploymentHooks: {
+      ...createDefaultDeploymentHooks(),
+      ...deploymentHooks,
+      buildWarningCount: numberValue(deploymentHooks.buildWarningCount, 0),
     },
   }
 

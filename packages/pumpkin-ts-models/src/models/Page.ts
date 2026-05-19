@@ -58,6 +58,42 @@ export interface Page {
    */
   pageQuality?: PageQuality;
   /**
+   * Editorial workflow/review state for production publishing approval.
+   */
+  workflow?: PageWorkflow;
+  /**
+   * Revision and rollback metadata. Full revision storage is future work.
+   */
+  revision?: PageRevisionMetadata;
+  /**
+   * Static publishing state used by CMS-to-static snapshot and deployment dry runs.
+   */
+  staticPublishing?: PageStaticPublishing;
+  /**
+   * Template and content-model identity for generated or structured pages.
+   */
+  template?: PageTemplateIdentity;
+  /**
+   * Internal linking and breadcrumb planning metadata.
+   */
+  linking?: PageLinking;
+  /**
+   * Structured data controls for static/public rendering decisions.
+   */
+  schemaControls?: PageStructuredDataControls;
+  /**
+   * Lead capture and form configuration metadata.
+   */
+  formConfig?: PageFormConfig;
+  /**
+   * Import/export provenance and field-locking metadata.
+   */
+  importProvenance?: PageImportProvenance;
+  /**
+   * Deployment/build history hook fields for static publishing reports.
+   */
+  deploymentHooks?: PageDeploymentHooks;
+  /**
    * Saved XYFlow node positions for page relationship visualization
    */
   layoutPositions?: Record<string, NodePosition>;
@@ -67,10 +103,18 @@ export interface Page {
  * Reusable image asset metadata for page-level media slots
  */
 export interface PageImageAsset {
+  assetId: string;
   url: string;
   alt: string;
   title: string;
   caption: string;
+  source: string;
+  licenseStatus: string;
+  usageStatus: string;
+  width: number | null;
+  height: number | null;
+  focalPointX: number | null;
+  focalPointY: number | null;
   decorative: boolean;
 }
 
@@ -127,6 +171,112 @@ export interface PageQuality {
   buyerIntent: string;
   landingPageType: string;
   launchNotes: string;
+}
+
+/**
+ * Editorial workflow and review metadata
+ */
+export interface PageWorkflow {
+  status: string;
+  approvedForPublish: boolean;
+  approvedBy: string;
+  approvedAt: string;
+  lastEditedBy: string;
+  lastEditedAt: string;
+}
+
+/**
+ * Minimal revision metadata until PageRevision storage exists
+ */
+export interface PageRevisionMetadata {
+  revisionNumber: number;
+  revisionLabel: string;
+  lastRevisionAt: string;
+  lastRevisionBy: string;
+  rollbackAvailable: boolean;
+  rollbackNotes: string;
+}
+
+/**
+ * Static publishing metadata for Option C publishing
+ */
+export interface PageStaticPublishing {
+  staticEligible: boolean;
+  needsRebuild: boolean;
+  lastSnapshotAt: string;
+  lastStaticBuildAt: string;
+  lastDeployedAt: string;
+  contentHash: string;
+  lastPublishedContentHash: string;
+  deploymentStatus: string;
+}
+
+/**
+ * Template and content model identity
+ */
+export interface PageTemplateIdentity {
+  templateKey: string;
+  templateVersion: string;
+  layoutVariant: string;
+  contentModelVersion: string;
+}
+
+/**
+ * Internal linking and breadcrumb metadata
+ */
+export interface PageLinking {
+  hubPage: string;
+  parentPage: string;
+  relatedPages: string[];
+  requiredLinks: string[];
+  breadcrumbTrail: string[];
+}
+
+/**
+ * Structured data enablement controls
+ */
+export interface PageStructuredDataControls {
+  enableWebPageSchema: boolean;
+  enableBreadcrumbSchema: boolean;
+  enableFAQSchema: boolean;
+  enableServiceSchema: boolean;
+  schemaWarnings: string[];
+}
+
+/**
+ * Lead capture and form configuration
+ */
+export interface PageFormConfig {
+  formType: string;
+  conversionGoal: string;
+  thankYouUrl: string;
+  thankYouMessage: string;
+  recipientGroup: string;
+  staticFormEndpointKey: string;
+  consentRequired: boolean;
+  spamProtectionEnabled: boolean;
+}
+
+/**
+ * Import/export provenance and field locking
+ */
+export interface PageImportProvenance {
+  lastImportBatchId: string;
+  sourceFile: string;
+  sourceRow: string;
+  externalId: string;
+  lockedFields: string[];
+  overwriteBehavior: string;
+}
+
+/**
+ * Static deployment/build hooks
+ */
+export interface PageDeploymentHooks {
+  deploymentId: string;
+  buildId: string;
+  buildWarningCount: number;
+  publishSource: string;
 }
 
 /**

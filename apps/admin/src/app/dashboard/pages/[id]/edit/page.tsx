@@ -46,6 +46,7 @@ const LEAD_ROUTING_MODES = [
 ] as const
 
 const SITEMAP_CHANGE_FREQUENCIES = ['', 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'] as const
+const WORKFLOW_STATUSES = ['', 'draft', 'review', 'approved', 'published', 'unpublished', 'archived', 'deprecated'] as const
 
 type SeoStringField = 'metaTitle' | 'metaDescription' | 'robots' | 'canonicalUrl'
 type PageMetaStringField = 'title' | 'description' | 'category' | 'product' | 'keyword' | 'pageType'
@@ -55,7 +56,17 @@ type FulfillmentStringField = 'fulfillmentStatus' | 'leadRoutingMode'
 type FulfillmentBooleanField = 'primaryPartnerAvailable' | 'manualReviewRequired' | 'providerResearchCompleted' | 'publicDisclosureRequired'
 type GoogleAdsStringField = 'finalUrl' | 'landingPageType' | 'campaignTheme' | 'notes'
 type MediaSlot = 'featuredImage' | 'heroImage' | 'localImage' | 'closingImage'
-type MediaStringField = 'url' | 'alt' | 'title' | 'caption'
+type MediaStringField = 'assetId' | 'url' | 'alt' | 'title' | 'caption' | 'source' | 'licenseStatus' | 'usageStatus'
+type MediaNumberField = 'width' | 'height' | 'focalPointX' | 'focalPointY'
+type WorkflowStringField = 'status'
+type WorkflowBooleanField = 'approvedForPublish'
+type StaticPublishingBooleanField = 'staticEligible' | 'needsRebuild'
+type TemplateStringField = 'templateKey' | 'templateVersion' | 'layoutVariant' | 'contentModelVersion'
+type LinkingStringField = 'hubPage' | 'parentPage'
+type LinkingListField = 'relatedPages' | 'requiredLinks' | 'breadcrumbTrail'
+type SchemaControlBooleanField = 'enableWebPageSchema' | 'enableBreadcrumbSchema' | 'enableFAQSchema' | 'enableServiceSchema'
+type FormConfigStringField = 'formType' | 'conversionGoal' | 'thankYouUrl' | 'thankYouMessage' | 'recipientGroup' | 'staticFormEndpointKey'
+type FormConfigBooleanField = 'consentRequired' | 'spamProtectionEnabled'
 type EditableContent = Record<string, unknown>
 
 interface ValidationResult {
@@ -126,6 +137,16 @@ function nullableNumberValue(value: unknown) {
   return Number.isFinite(parsed) ? String(parsed) : ''
 }
 
+function nullableParsedNumber(value: unknown) {
+  if (value === null || value === undefined || value === '') return null
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : null
+}
+
+function getEditorName(user: { username?: string; email?: string } | null | undefined) {
+  return user?.username || user?.email || 'Pumpkin CMS Admin'
+}
+
 function stringListValue(value: unknown): string[] {
   if (Array.isArray(value)) {
     return value.map((item) => stringValue(item).trim()).filter(Boolean)
@@ -177,10 +198,18 @@ function formatJson(value: unknown) {
 
 function emptyImageAsset() {
   return {
+    assetId: '',
     url: '',
     alt: '',
     title: '',
     caption: '',
+    source: '',
+    licenseStatus: '',
+    usageStatus: '',
+    width: null as number | null,
+    height: null as number | null,
+    focalPointX: null as number | null,
+    focalPointY: null as number | null,
     decorative: false,
   }
 }
@@ -231,6 +260,103 @@ function getPageQuality(page: Page) {
   }
 }
 
+function getPageWorkflow(page: Page) {
+  return {
+    status: page.workflow?.status || (page.isPublished ? 'published' : 'draft'),
+    approvedForPublish: Boolean(page.workflow?.approvedForPublish),
+    approvedBy: page.workflow?.approvedBy || '',
+    approvedAt: page.workflow?.approvedAt || '',
+    lastEditedBy: page.workflow?.lastEditedBy || '',
+    lastEditedAt: page.workflow?.lastEditedAt || '',
+  }
+}
+
+function getPageRevision(page: Page) {
+  return {
+    revisionNumber: numberValue(page.revision?.revisionNumber, page.PageVersion || 1),
+    revisionLabel: page.revision?.revisionLabel || '',
+    lastRevisionAt: page.revision?.lastRevisionAt || '',
+    lastRevisionBy: page.revision?.lastRevisionBy || '',
+    rollbackAvailable: Boolean(page.revision?.rollbackAvailable),
+    rollbackNotes: page.revision?.rollbackNotes || 'PageRevision storage is not implemented yet.',
+  }
+}
+
+function getPageStaticPublishing(page: Page) {
+  return {
+    staticEligible: Boolean(page.staticPublishing?.staticEligible),
+    needsRebuild: page.staticPublishing?.needsRebuild ?? true,
+    lastSnapshotAt: page.staticPublishing?.lastSnapshotAt || '',
+    lastStaticBuildAt: page.staticPublishing?.lastStaticBuildAt || '',
+    lastDeployedAt: page.staticPublishing?.lastDeployedAt || '',
+    contentHash: page.staticPublishing?.contentHash || '',
+    lastPublishedContentHash: page.staticPublishing?.lastPublishedContentHash || '',
+    deploymentStatus: page.staticPublishing?.deploymentStatus || 'not_deployed',
+  }
+}
+
+function getPageTemplateIdentity(page: Page) {
+  return {
+    templateKey: page.template?.templateKey || '',
+    templateVersion: page.template?.templateVersion || '',
+    layoutVariant: page.template?.layoutVariant || page.Layout || '',
+    contentModelVersion: page.template?.contentModelVersion || '1',
+  }
+}
+
+function getPageLinking(page: Page) {
+  return {
+    hubPage: page.linking?.hubPage || page.contentRelationships?.hubPageSlug || '',
+    parentPage: page.linking?.parentPage || '',
+    relatedPages: stringListValue(page.linking?.relatedPages),
+    requiredLinks: stringListValue(page.linking?.requiredLinks),
+    breadcrumbTrail: stringListValue(page.linking?.breadcrumbTrail),
+  }
+}
+
+function getPageSchemaControls(page: Page) {
+  return {
+    enableWebPageSchema: page.schemaControls?.enableWebPageSchema ?? true,
+    enableBreadcrumbSchema: page.schemaControls?.enableBreadcrumbSchema ?? true,
+    enableFAQSchema: page.schemaControls?.enableFAQSchema ?? true,
+    enableServiceSchema: page.schemaControls?.enableServiceSchema ?? true,
+    schemaWarnings: stringListValue(page.schemaControls?.schemaWarnings),
+  }
+}
+
+function getPageFormConfig(page: Page) {
+  return {
+    formType: page.formConfig?.formType || '',
+    conversionGoal: page.formConfig?.conversionGoal || '',
+    thankYouUrl: page.formConfig?.thankYouUrl || '',
+    thankYouMessage: page.formConfig?.thankYouMessage || '',
+    recipientGroup: page.formConfig?.recipientGroup || '',
+    staticFormEndpointKey: page.formConfig?.staticFormEndpointKey || '',
+    consentRequired: page.formConfig?.consentRequired ?? true,
+    spamProtectionEnabled: Boolean(page.formConfig?.spamProtectionEnabled),
+  }
+}
+
+function getPageImportProvenance(page: Page) {
+  return {
+    lastImportBatchId: page.importProvenance?.lastImportBatchId || '',
+    sourceFile: page.importProvenance?.sourceFile || '',
+    sourceRow: page.importProvenance?.sourceRow || '',
+    externalId: page.importProvenance?.externalId || '',
+    lockedFields: stringListValue(page.importProvenance?.lockedFields),
+    overwriteBehavior: page.importProvenance?.overwriteBehavior || 'warn',
+  }
+}
+
+function getPageDeploymentHooks(page: Page) {
+  return {
+    deploymentId: page.deploymentHooks?.deploymentId || '',
+    buildId: page.deploymentHooks?.buildId || '',
+    buildWarningCount: numberValue(page.deploymentHooks?.buildWarningCount, 0),
+    publishSource: page.deploymentHooks?.publishSource || '',
+  }
+}
+
 function getPreviewUrl(page: Page) {
   const baseUrl = LOCAL_PREVIEW_HOSTS[page.tenantId] || 'http://localhost:3002'
   return page.pageSlug === 'home' ? `${baseUrl}/` : `${baseUrl}/${page.pageSlug}`
@@ -268,12 +394,23 @@ function updateBlockTypes(page: Page) {
   }
 }
 
-function normalizeProductionFields(page: Page): Page {
+function normalizeProductionFields(page: Page, editorName = 'Pumpkin CMS Admin'): Page {
   const media = getPageMedia(page)
   const fulfillment = getPageFulfillment(page)
   const googleAds = getPageGoogleAds(page)
   const pageQuality = getPageQuality(page)
+  const workflow = getPageWorkflow(page)
+  const revision = getPageRevision(page)
+  const staticPublishing = getPageStaticPublishing(page)
+  const template = getPageTemplateIdentity(page)
+  const linking = getPageLinking(page)
+  const schemaControls = getPageSchemaControls(page)
+  const formConfig = getPageFormConfig(page)
+  const importProvenance = getPageImportProvenance(page)
+  const deploymentHooks = getPageDeploymentHooks(page)
   const targetKeyword = page.MetaData?.keyword || page.searchData?.keyword || ''
+  const now = new Date().toISOString()
+  const approvedForPublish = workflow.approvedForPublish || workflow.status === 'approved' || workflow.status === 'published'
 
   return {
     ...page,
@@ -300,6 +437,26 @@ function normalizeProductionFields(page: Page): Page {
     fulfillment,
     googleAds,
     pageQuality,
+    workflow: {
+      ...workflow,
+      approvedForPublish,
+      approvedBy: approvedForPublish ? workflow.approvedBy || editorName : workflow.approvedBy,
+      approvedAt: approvedForPublish ? workflow.approvedAt || now : workflow.approvedAt,
+      lastEditedBy: editorName,
+      lastEditedAt: now,
+    },
+    revision,
+    staticPublishing: {
+      ...staticPublishing,
+      needsRebuild: true,
+      deploymentStatus: staticPublishing.deploymentStatus || 'pending_rebuild',
+    },
+    template,
+    linking,
+    schemaControls,
+    formConfig,
+    importProvenance,
+    deploymentHooks,
   }
 }
 
@@ -420,7 +577,7 @@ function sanitizeSupportedBlockForSave(block: IHtmlBlock): IHtmlBlock {
   }
 }
 
-function preparePageForSave(page: Page) {
+function preparePageForSave(page: Page, editorName = 'Pumpkin CMS Admin') {
   const now = new Date().toISOString()
   const blocks = Array.isArray(page.ContentData?.ContentBlocks)
     ? page.ContentData.ContentBlocks.map(sanitizeSupportedBlockForSave)
@@ -434,7 +591,7 @@ function preparePageForSave(page: Page) {
       ...page.ContentData,
       ContentBlocks: blocks,
     },
-  })))
+  })), editorName)
 }
 
 function hasFormOrCta(page: Page) {
@@ -457,6 +614,18 @@ function collectPageImageWarnings(page: Page) {
   Object.entries(media).forEach(([slot, asset]) => {
     if ('url' in asset && asset.url && !asset.alt && !('decorative' in asset && asset.decorative)) {
       warnings.push(`${slot}.alt is missing while ${slot}.url is set.`)
+    }
+
+    if ('url' in asset && asset.url && 'source' in asset && !asset.source) {
+      warnings.push(`${slot}.source is missing while ${slot}.url is set.`)
+    }
+
+    if ('url' in asset && asset.url && 'licenseStatus' in asset && !asset.licenseStatus) {
+      warnings.push(`${slot}.licenseStatus is missing while ${slot}.url is set.`)
+    }
+
+    if ('url' in asset && asset.url && 'usageStatus' in asset && !asset.usageStatus) {
+      warnings.push(`${slot}.usageStatus is missing while ${slot}.url is set.`)
     }
   })
 
@@ -513,6 +682,10 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
     errors.push('ContentData.ContentBlocks must remain an array.')
   }
 
+  const blocks = Array.isArray(page.ContentData?.ContentBlocks)
+    ? page.ContentData.ContentBlocks
+    : []
+
   if (!page.MetaData?.title?.trim()) {
     warnings.push('MetaData.title is empty.')
   }
@@ -558,6 +731,42 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
     warnings.push('sitemapPriority should be between 0 and 1.')
   }
 
+  if (page.previousSlugs && page.previousSlugs.length > 0) {
+    warnings.push('previousSlugs are stored for redirect planning, but static redirect generation is not implemented yet.')
+  }
+
+  const workflow = getPageWorkflow(page)
+  if (page.isPublished && !workflow.approvedForPublish) {
+    warnings.push('Published page is not marked approvedForPublish.')
+  }
+
+  if (page.isPublished && !['approved', 'published'].includes(workflow.status)) {
+    warnings.push('Published page should use workflow.status approved or published.')
+  }
+
+  const revision = getPageRevision(page)
+  if (!revision.rollbackAvailable) {
+    warnings.push('Rollback is not implemented for this page yet; use exports/snapshots for manual recovery.')
+  }
+
+  const staticPublishing = getPageStaticPublishing(page)
+  if (page.isPublished && !staticPublishing.staticEligible) {
+    warnings.push('Published page is not marked staticEligible.')
+  }
+
+  if (staticPublishing.needsRebuild) {
+    warnings.push('Page is marked needsRebuild; static output should be regenerated before deployment.')
+  }
+
+  const template = getPageTemplateIdentity(page)
+  if (!template.templateKey) {
+    warnings.push('template.templateKey is missing.')
+  }
+
+  if (!template.contentModelVersion) {
+    warnings.push('template.contentModelVersion is missing.')
+  }
+
   const fulfillment = getPageFulfillment(page)
   if (!fulfillment.fulfillmentStatus) {
     warnings.push('Fulfillment status is missing.')
@@ -582,9 +791,30 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
 
   warnings.push(...collectPageImageWarnings(page))
 
-  const blocks = Array.isArray(page.ContentData?.ContentBlocks)
-    ? page.ContentData.ContentBlocks
-    : []
+  const linking = getPageLinking(page)
+  if (linking.requiredLinks.length > 0) {
+    const pageText = JSON.stringify(page.ContentData || {})
+    linking.requiredLinks.forEach((requiredLink) => {
+      if (requiredLink && !pageText.includes(requiredLink)) {
+        warnings.push(`Required link "${requiredLink}" was not found in ContentData.`)
+      }
+    })
+  }
+
+  const schemaControls = getPageSchemaControls(page)
+  const hasFaqBlock = blocks.some((block) => block.type === 'FAQ')
+  if (hasFaqBlock && !schemaControls.enableFAQSchema) {
+    warnings.push('Page has FAQ content but FAQ schema is disabled.')
+  }
+
+  const formConfig = getPageFormConfig(page)
+  if (hasFormOrCta(page) && !formConfig.conversionGoal) {
+    warnings.push('Page has a form or CTA but formConfig.conversionGoal is missing.')
+  }
+
+  if (blocks.some((block) => block.type === 'Contact') && !formConfig.formType) {
+    warnings.push('Contact block exists but formConfig.formType is missing.')
+  }
 
   blocks.forEach((block, index) => {
     const content = toRecord(block.content)
@@ -843,6 +1073,15 @@ export default function PageStructuredEditor() {
   const pageFulfillment = page ? getPageFulfillment(page) : null
   const pageGoogleAds = page ? getPageGoogleAds(page) : null
   const pageQuality = page ? getPageQuality(page) : null
+  const pageWorkflow = page ? getPageWorkflow(page) : null
+  const pageRevision = page ? getPageRevision(page) : null
+  const pageStaticPublishing = page ? getPageStaticPublishing(page) : null
+  const pageTemplate = page ? getPageTemplateIdentity(page) : null
+  const pageLinking = page ? getPageLinking(page) : null
+  const pageSchemaControls = page ? getPageSchemaControls(page) : null
+  const pageFormConfig = page ? getPageFormConfig(page) : null
+  const pageImportProvenance = page ? getPageImportProvenance(page) : null
+  const pageDeploymentHooks = page ? getPageDeploymentHooks(page) : null
 
   const updatePageState = (updater: (current: Page) => Page) => {
     setPage((current) => (current ? withUpdatedAt(updater(current)) : current))
@@ -974,6 +1213,19 @@ export default function PageStructuredEditor() {
     }))
   }
 
+  const updateMediaNumberField = (slot: MediaSlot, field: MediaNumberField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      media: {
+        ...getPageMedia(current),
+        [slot]: {
+          ...getPageMedia(current)[slot],
+          [field]: nullableParsedNumber(value),
+        },
+      },
+    }))
+  }
+
   const updateMediaDecorative = (slot: MediaSlot, value: boolean) => {
     updatePageState((current) => ({
       ...current,
@@ -983,6 +1235,96 @@ export default function PageStructuredEditor() {
           ...getPageMedia(current)[slot],
           decorative: value,
         },
+      },
+    }))
+  }
+
+  const updateWorkflowField = (field: WorkflowStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      workflow: {
+        ...getPageWorkflow(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateWorkflowBoolean = (field: WorkflowBooleanField, value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      workflow: {
+        ...getPageWorkflow(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateStaticPublishingBoolean = (field: StaticPublishingBooleanField, value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      staticPublishing: {
+        ...getPageStaticPublishing(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateTemplateField = (field: TemplateStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      template: {
+        ...getPageTemplateIdentity(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateLinkingField = (field: LinkingStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      linking: {
+        ...getPageLinking(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateLinkingList = (field: LinkingListField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      linking: {
+        ...getPageLinking(current),
+        [field]: stringListValue(value),
+      },
+    }))
+  }
+
+  const updateSchemaControlBoolean = (field: SchemaControlBooleanField, value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      schemaControls: {
+        ...getPageSchemaControls(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateFormConfigField = (field: FormConfigStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      formConfig: {
+        ...getPageFormConfig(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateFormConfigBoolean = (field: FormConfigBooleanField, value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      formConfig: {
+        ...getPageFormConfig(current),
+        [field]: value,
       },
     }))
   }
@@ -1162,7 +1504,7 @@ export default function PageStructuredEditor() {
       setError(null)
       setSuccess(null)
 
-      const pageToSave = preparePageForSave(page)
+      const pageToSave = preparePageForSave(page, getEditorName(user))
       const savedPage = await apiClient.updatePage(token, tenantId, originalSlug, pageToSave)
 
       setPage(savedPage)
@@ -1269,7 +1611,7 @@ export default function PageStructuredEditor() {
       </div>
 
       <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
-        Phase 6A edits existing page content, SEO, media, fulfillment, Ads, and quality fields. Tenant ID, Page ID, archive, import, export, and hard delete are not available here.
+        Phase 6B hardens page contract fields for review, redirects, static publishing, linking, forms, imports, and deployment hooks. Tenant ID, Page ID, hard delete, live deployment, and rollback restore are not available here.
       </div>
 
       {error && (
@@ -1481,10 +1823,18 @@ export default function PageStructuredEditor() {
               <div key={slot} className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
                 <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</div>
                 <div className="grid gap-3 lg:grid-cols-2">
+                  <TextField label="assetId" value={asset?.assetId || ''} onChange={(value) => updateMediaField(slot, 'assetId', value)} />
                   <TextField label="url" value={asset?.url || ''} onChange={(value) => updateMediaField(slot, 'url', value)} />
                   <TextField label="alt" value={asset?.alt || ''} onChange={(value) => updateMediaField(slot, 'alt', value)} />
                   <TextField label="title" value={asset?.title || ''} onChange={(value) => updateMediaField(slot, 'title', value)} />
                   <TextField label="caption" value={asset?.caption || ''} onChange={(value) => updateMediaField(slot, 'caption', value)} />
+                  <TextField label="source" value={asset?.source || ''} onChange={(value) => updateMediaField(slot, 'source', value)} />
+                  <TextField label="licenseStatus" value={asset?.licenseStatus || ''} onChange={(value) => updateMediaField(slot, 'licenseStatus', value)} />
+                  <TextField label="usageStatus" value={asset?.usageStatus || ''} onChange={(value) => updateMediaField(slot, 'usageStatus', value)} />
+                  <TextField label="width" value={nullableNumberValue(asset?.width)} onChange={(value) => updateMediaNumberField(slot, 'width', value)} />
+                  <TextField label="height" value={nullableNumberValue(asset?.height)} onChange={(value) => updateMediaNumberField(slot, 'height', value)} />
+                  <TextField label="focalPointX" value={nullableNumberValue(asset?.focalPointX)} onChange={(value) => updateMediaNumberField(slot, 'focalPointX', value)} />
+                  <TextField label="focalPointY" value={nullableNumberValue(asset?.focalPointY)} onChange={(value) => updateMediaNumberField(slot, 'focalPointY', value)} />
                   <CheckboxField label="Decorative image" checked={Boolean(asset?.decorative)} onChange={(value) => updateMediaDecorative(slot, value)} />
                 </div>
               </div>
@@ -1582,6 +1932,86 @@ export default function PageStructuredEditor() {
             {SITEMAP_CHANGE_FREQUENCIES.map((frequency) => <option key={frequency || 'blank'} value={frequency}>{frequency || 'Select frequency'}</option>)}
           </SelectField>
           <TextField label="pageQuality.launchNotes" value={pageQuality?.launchNotes || ''} onChange={(value) => updatePageQualityField('launchNotes', value)} multiline rows={4} />
+        </div>
+      </Section>
+
+      <Section title="Workflow And Review" description="Editorial status and approval gates. Last-edited and approval stamps are updated on save when applicable.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <SelectField label="workflow.status" value={pageWorkflow?.status || ''} onChange={(value) => updateWorkflowField('status', value)}>
+            {WORKFLOW_STATUSES.map((status) => <option key={status || 'blank'} value={status}>{status || 'Select status'}</option>)}
+          </SelectField>
+          <CheckboxField label="Approved for publish" checked={Boolean(pageWorkflow?.approvedForPublish)} onChange={(value) => updateWorkflowBoolean('approvedForPublish', value)} />
+          <ReadOnlyPill label="approvedBy" value={pageWorkflow?.approvedBy || ''} />
+          <ReadOnlyPill label="approvedAt" value={pageWorkflow?.approvedAt || ''} />
+          <ReadOnlyPill label="lastEditedBy" value={pageWorkflow?.lastEditedBy || ''} />
+          <ReadOnlyPill label="lastEditedAt" value={pageWorkflow?.lastEditedAt || ''} />
+        </div>
+      </Section>
+
+      <Section title="Revision And Static Publishing" description="Rollback is advisory until a PageRevision collection or file snapshots are implemented. Static fields guide snapshot/build/deploy workflows.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ReadOnlyPill label="revisionNumber" value={String(pageRevision?.revisionNumber ?? 1)} />
+          <ReadOnlyPill label="rollbackAvailable" value={pageRevision?.rollbackAvailable ? 'Yes' : 'No'} />
+          <ReadOnlyPill label="rollbackNotes" value={pageRevision?.rollbackNotes || 'PageRevision storage is not implemented yet.'} />
+          <CheckboxField label="staticEligible" checked={Boolean(pageStaticPublishing?.staticEligible)} onChange={(value) => updateStaticPublishingBoolean('staticEligible', value)} />
+          <CheckboxField label="needsRebuild" checked={Boolean(pageStaticPublishing?.needsRebuild)} onChange={(value) => updateStaticPublishingBoolean('needsRebuild', value)} />
+          <ReadOnlyPill label="deploymentStatus" value={pageStaticPublishing?.deploymentStatus || 'not_deployed'} />
+          <ReadOnlyPill label="lastSnapshotAt" value={pageStaticPublishing?.lastSnapshotAt || ''} />
+          <ReadOnlyPill label="lastStaticBuildAt" value={pageStaticPublishing?.lastStaticBuildAt || ''} />
+          <ReadOnlyPill label="lastDeployedAt" value={pageStaticPublishing?.lastDeployedAt || ''} />
+          <ReadOnlyPill label="contentHash" value={pageStaticPublishing?.contentHash || ''} />
+          <ReadOnlyPill label="lastPublishedContentHash" value={pageStaticPublishing?.lastPublishedContentHash || ''} />
+        </div>
+      </Section>
+
+      <Section title="Template And Linking" description="Template identity plus internal link and breadcrumb requirements for future page generation and review.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <TextField label="template.templateKey" value={pageTemplate?.templateKey || ''} onChange={(value) => updateTemplateField('templateKey', value)} />
+          <TextField label="template.templateVersion" value={pageTemplate?.templateVersion || ''} onChange={(value) => updateTemplateField('templateVersion', value)} />
+          <TextField label="template.layoutVariant" value={pageTemplate?.layoutVariant || ''} onChange={(value) => updateTemplateField('layoutVariant', value)} />
+          <TextField label="template.contentModelVersion" value={pageTemplate?.contentModelVersion || ''} onChange={(value) => updateTemplateField('contentModelVersion', value)} />
+          <TextField label="linking.hubPage" value={pageLinking?.hubPage || ''} onChange={(value) => updateLinkingField('hubPage', value)} />
+          <TextField label="linking.parentPage" value={pageLinking?.parentPage || ''} onChange={(value) => updateLinkingField('parentPage', value)} />
+          <TextField label="linking.relatedPages" value={(pageLinking?.relatedPages || []).join(', ')} onChange={(value) => updateLinkingList('relatedPages', value)} />
+          <TextField label="linking.requiredLinks" value={(pageLinking?.requiredLinks || []).join(', ')} onChange={(value) => updateLinkingList('requiredLinks', value)} />
+          <TextField label="linking.breadcrumbTrail" value={(pageLinking?.breadcrumbTrail || []).join(', ')} onChange={(value) => updateLinkingList('breadcrumbTrail', value)} />
+        </div>
+      </Section>
+
+      <Section title="Structured Data And Forms" description="Schema switches and lead capture metadata for static publishing readiness.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="space-y-3">
+            <CheckboxField label="Enable WebPage schema" checked={Boolean(pageSchemaControls?.enableWebPageSchema)} onChange={(value) => updateSchemaControlBoolean('enableWebPageSchema', value)} />
+            <CheckboxField label="Enable Breadcrumb schema" checked={Boolean(pageSchemaControls?.enableBreadcrumbSchema)} onChange={(value) => updateSchemaControlBoolean('enableBreadcrumbSchema', value)} />
+            <CheckboxField label="Enable FAQ schema" checked={Boolean(pageSchemaControls?.enableFAQSchema)} onChange={(value) => updateSchemaControlBoolean('enableFAQSchema', value)} />
+            <CheckboxField label="Enable Service schema" checked={Boolean(pageSchemaControls?.enableServiceSchema)} onChange={(value) => updateSchemaControlBoolean('enableServiceSchema', value)} />
+          </div>
+          <ReadOnlyPill label="schemaWarnings" value={(pageSchemaControls?.schemaWarnings || []).join(', ')} />
+          <TextField label="formConfig.formType" value={pageFormConfig?.formType || ''} onChange={(value) => updateFormConfigField('formType', value)} />
+          <TextField label="formConfig.conversionGoal" value={pageFormConfig?.conversionGoal || ''} onChange={(value) => updateFormConfigField('conversionGoal', value)} />
+          <TextField label="formConfig.thankYouUrl" value={pageFormConfig?.thankYouUrl || ''} onChange={(value) => updateFormConfigField('thankYouUrl', value)} />
+          <TextField label="formConfig.thankYouMessage" value={pageFormConfig?.thankYouMessage || ''} onChange={(value) => updateFormConfigField('thankYouMessage', value)} />
+          <TextField label="formConfig.recipientGroup" value={pageFormConfig?.recipientGroup || ''} onChange={(value) => updateFormConfigField('recipientGroup', value)} />
+          <TextField label="formConfig.staticFormEndpointKey" value={pageFormConfig?.staticFormEndpointKey || ''} onChange={(value) => updateFormConfigField('staticFormEndpointKey', value)} />
+          <div className="space-y-3">
+            <CheckboxField label="Consent required" checked={Boolean(pageFormConfig?.consentRequired)} onChange={(value) => updateFormConfigBoolean('consentRequired', value)} />
+            <CheckboxField label="Spam protection enabled" checked={Boolean(pageFormConfig?.spamProtectionEnabled)} onChange={(value) => updateFormConfigBoolean('spamProtectionEnabled', value)} />
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Import And Deployment Hooks" description="Read-only provenance/build hooks. Imports and publish dry-runs may populate these later; editor saves preserve them.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ReadOnlyPill label="lastImportBatchId" value={pageImportProvenance?.lastImportBatchId || ''} />
+          <ReadOnlyPill label="sourceFile" value={pageImportProvenance?.sourceFile || ''} />
+          <ReadOnlyPill label="sourceRow" value={pageImportProvenance?.sourceRow || ''} />
+          <ReadOnlyPill label="externalId" value={pageImportProvenance?.externalId || ''} />
+          <ReadOnlyPill label="lockedFields" value={(pageImportProvenance?.lockedFields || []).join(', ')} />
+          <ReadOnlyPill label="overwriteBehavior" value={pageImportProvenance?.overwriteBehavior || 'warn'} />
+          <ReadOnlyPill label="deploymentId" value={pageDeploymentHooks?.deploymentId || ''} />
+          <ReadOnlyPill label="buildId" value={pageDeploymentHooks?.buildId || ''} />
+          <ReadOnlyPill label="buildWarningCount" value={String(pageDeploymentHooks?.buildWarningCount ?? 0)} />
+          <ReadOnlyPill label="publishSource" value={pageDeploymentHooks?.publishSource || ''} />
         </div>
       </Section>
 

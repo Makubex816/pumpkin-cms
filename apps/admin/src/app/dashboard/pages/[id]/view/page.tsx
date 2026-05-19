@@ -388,7 +388,7 @@ export default function PageReadOnlyView() {
       </div>
 
       <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
-        This page detail view is read-only. Use Edit for the Phase 2 structured editor; archive, import, export, and hard delete are not available.
+        This page detail view is read-only. Use Edit for structured content and production-readiness fields; rollback restore, live deployment, and hard delete are not available.
       </div>
 
       <Section title="Page Summary">
@@ -425,7 +425,7 @@ export default function PageReadOnlyView() {
         <FieldRow label="Dynamic/Local Image Slot">{imageSlots?.local || <MissingValue text="Not set or not detected" />}</FieldRow>
         <FieldRow label="Closing Image Slot">{imageSlots?.closing || <MissingValue text="Not set or not detected" />}</FieldRow>
         <FieldRow label="First-Class Page Image Slots">
-          <MissingValue text="Not modeled as dedicated Page fields yet" />
+          <ReadOnlyValue value={page.media} />
         </FieldRow>
         <FieldRow label="Detected Fields">
           {imageFields.length === 0 ? (
@@ -488,6 +488,18 @@ export default function PageReadOnlyView() {
       <Section title="Search And Relationships">
         <FieldRow label="Search Data"><ReadOnlyValue value={page.searchData} /></FieldRow>
         <FieldRow label="Content Relationships"><ReadOnlyValue value={page.contentRelationships} /></FieldRow>
+        <FieldRow label="Linking"><ReadOnlyValue value={page.linking} /></FieldRow>
+      </Section>
+
+      <Section title="Workflow And Publishing Contract">
+        <FieldRow label="Workflow"><ReadOnlyValue value={page.workflow} /></FieldRow>
+        <FieldRow label="Revision"><ReadOnlyValue value={page.revision} /></FieldRow>
+        <FieldRow label="Static Publishing"><ReadOnlyValue value={page.staticPublishing} /></FieldRow>
+        <FieldRow label="Template Identity"><ReadOnlyValue value={page.template} /></FieldRow>
+        <FieldRow label="Structured Data Controls"><ReadOnlyValue value={page.schemaControls} /></FieldRow>
+        <FieldRow label="Form Config"><ReadOnlyValue value={page.formConfig} /></FieldRow>
+        <FieldRow label="Import Provenance"><ReadOnlyValue value={page.importProvenance} /></FieldRow>
+        <FieldRow label="Deployment Hooks"><ReadOnlyValue value={page.deploymentHooks} /></FieldRow>
       </Section>
     </div>
   )
