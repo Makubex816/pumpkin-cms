@@ -180,6 +180,14 @@ Source-of-truth guidance:
 
 See `cms-to-static-publish-bridge.md` for the full workflow and safety rules.
 
+## Publish Action Center
+
+Phase 6G adds an admin Publish Action Center at `/dashboard/publishing/action-center`.
+
+It shows tenant-scoped CMS snapshot and dry-run commands, parses a pasted or uploaded dry-run manifest, compares the manifest against the selected tenant/domain, and stores optional local browser history. It does not deploy, run shell commands, read local folders automatically, or purge Cloudflare.
+
+See `publish-action-center.md` for the admin workflow and limitations.
+
 ## GitHub Actions Examples
 
 Copy/paste-ready workflow templates live outside `.github/workflows` so they cannot run accidentally:

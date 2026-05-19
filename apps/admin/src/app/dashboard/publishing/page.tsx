@@ -11,6 +11,7 @@ import {
   getDetailUrl,
   getEditUrl,
   getPreviewUrl,
+  getTenantPublishCommands,
   getTenantDomain,
   type PagePublishingReadiness,
   type PublishingReadinessStatus,
@@ -81,7 +82,7 @@ export default function PublishingDashboardPage() {
   const tenantId = currentTenant?.tenantId || ''
   const tenantProfile = tenantId ? TENANT_PUBLISHING_PROFILES[tenantId] : null
   const tenantDomain = tenantId ? getTenantDomain(tenantId, pages) : ''
-  const commands = tenantId ? getPublishCommands(tenantId) : []
+  const commands = tenantId ? getTenantPublishCommands(tenantId) : []
 
   if (isLoading) {
     return (
@@ -140,6 +141,9 @@ export default function PublishingDashboardPage() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
+            <Link href="/dashboard/publishing/action-center" className="btn btn-secondary">
+              Action Center
+            </Link>
             <Link href="/dashboard/publishing/repairs" className="btn btn-secondary">
               Repair Metadata
             </Link>
@@ -406,30 +410,6 @@ function Th({ children }: { children: ReactNode }) {
 
 function Td({ children }: { children: ReactNode }) {
   return <td className="max-w-xs px-4 py-3 text-neutral-700">{children}</td>
-}
-
-function getPublishCommands(tenantId: string) {
-  if (tenantId === 'ice-rink-rentals') {
-    return [
-      'cd apps/ice-rink-web',
-      'npm run snapshot:cms:ice',
-      'npm run validate:snapshot:ice',
-      'npm run export:static:ice:cms',
-      'npm run publish:dry-run:cms',
-    ]
-  }
-
-  if (tenantId === 'roller-rink-rentals') {
-    return [
-      'cd apps/ice-rink-web',
-      'npm run snapshot:cms:roller',
-      'npm run validate:snapshot:roller',
-      'npm run export:static:roller:cms',
-      'npm run publish:dry-run:cms',
-    ]
-  }
-
-  return []
 }
 
 function summarizeWarnings(group: PublishingWarningGroup) {

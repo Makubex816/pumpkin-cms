@@ -87,6 +87,30 @@ export const TENANT_PUBLISHING_PROFILES: Record<string, { domain: string; displa
   },
 }
 
+export function getTenantPublishCommands(tenantId: string) {
+  if (tenantId === 'ice-rink-rentals') {
+    return [
+      'cd apps/ice-rink-web',
+      'npm run snapshot:cms:ice',
+      'npm run validate:snapshot:ice',
+      'npm run export:static:ice:cms',
+      'npm run publish:dry-run:cms',
+    ]
+  }
+
+  if (tenantId === 'roller-rink-rentals') {
+    return [
+      'cd apps/ice-rink-web',
+      'npm run snapshot:cms:roller',
+      'npm run validate:snapshot:roller',
+      'npm run export:static:roller:cms',
+      'npm run publish:dry-run:cms',
+    ]
+  }
+
+  return []
+}
+
 export function normalizeSlug(value: string | null | undefined) {
   if (!value) return ''
 

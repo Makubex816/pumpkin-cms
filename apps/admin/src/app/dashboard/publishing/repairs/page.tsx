@@ -207,9 +207,14 @@ export default function PublishingRepairsPage() {
               Preview and apply safe metadata backfills for {currentTenant.name || currentTenant.tenantId}. Repairs update metadata, not editorial page copy or invented image alt text.
             </p>
           </div>
-          <Link href="/dashboard/publishing" className="btn btn-secondary">
-            Back To Publishing
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/dashboard/publishing/action-center" className="btn btn-secondary">
+              Action Center
+            </Link>
+            <Link href="/dashboard/publishing" className="btn btn-secondary">
+              Back To Publishing
+            </Link>
+          </div>
         </div>
       </header>
 
