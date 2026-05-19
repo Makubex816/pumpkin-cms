@@ -875,6 +875,14 @@ app.MapPost("/api/admin/pages/{tenantId}",
                 return Results.BadRequest("Page data is required");
             if (string.IsNullOrEmpty(page.PageId))
                 return Results.BadRequest("Page ID is required");
+            if (string.IsNullOrWhiteSpace(page.PageSlug))
+                return Results.BadRequest("Page slug is required");
+            if (!string.IsNullOrWhiteSpace(page.TenantId) && page.TenantId != tenantId)
+                return Results.BadRequest("Page tenant ID must match the route tenant ID");
+
+            var existingPageWithSlug = await databaseService.GetPageBySlugAsync(tenantId, page.PageSlug);
+            if (existingPageWithSlug != null)
+                return Results.Conflict($"Page with slug '{page.PageSlug}' already exists");
 
             var savedPage = await databaseService.SavePageAdminAsync(tenantId, page);
             return Results.Created($"/api/admin/pages/{tenantId}/{savedPage.PageSlug}", savedPage);
@@ -924,8 +932,22 @@ app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
         {
             if (page == null)
                 return Results.BadRequest("Page data is required");
+            if (string.IsNullOrWhiteSpace(page.PageSlug))
+                return Results.BadRequest("Page slug is required");
+            if (!string.IsNullOrWhiteSpace(page.TenantId) && page.TenantId != tenantId)
+                return Results.BadRequest("Page tenant ID must match the route tenant ID");
 
             var decodedSlug = Uri.UnescapeDataString(pageSlug);
+            var normalizedRouteSlug = decodedSlug.ToLowerInvariant();
+            var normalizedBodySlug = page.PageSlug.ToLowerInvariant();
+
+            if (normalizedBodySlug != normalizedRouteSlug)
+            {
+                var pageWithTargetSlug = await databaseService.GetPageBySlugAsync(tenantId, normalizedBodySlug);
+                if (pageWithTargetSlug != null)
+                    return Results.Conflict($"Page with slug '{page.PageSlug}' already exists");
+            }
+
             var updatedPage = await databaseService.UpdatePageAdminAsync(tenantId, decodedSlug, page);
             return Results.Ok(updatedPage);
         }
