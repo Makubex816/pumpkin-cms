@@ -16,6 +16,7 @@ interface PageRendererProps {
   page: Page;
   blockStyles?: BlockStyleMap;
   renderMode?: 'runtime' | 'static';
+  staticFormEndpoint?: string;
   staticFormAction?: string;
 }
 
@@ -23,18 +24,20 @@ export function PageRenderer({
   page,
   blockStyles,
   renderMode = 'runtime',
+  staticFormEndpoint = '',
   staticFormAction = '',
 }: PageRendererProps) {
   const blocks = (page.ContentData.ContentBlocks as CmsBlock[]).filter(
     (block) => block.enabled !== false
   );
   const classNames = (blockStyles ?? {}) as BlockClassNamesMap;
+  const resolvedStaticFormEndpoint = staticFormEndpoint || staticFormAction;
 
   const handleContactSubmit = async (payload: ContactSubmitPayload) => {
-    const endpoint = renderMode === 'static' ? staticFormAction : '/api/contact';
+    const endpoint = renderMode === 'static' ? resolvedStaticFormEndpoint : '/api/contact';
 
     if (!endpoint) {
-      throw new Error('Static contact submissions are not configured yet. Please contact us directly.');
+      throw new Error('Online quote requests are not configured for this static site yet. Please contact us directly.');
     }
 
     const response = await fetch(endpoint, {

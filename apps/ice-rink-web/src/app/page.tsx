@@ -4,7 +4,7 @@ import { StructuredData } from '@/components/StructuredData';
 import { getFallbackHome, getFallbackTheme } from '@/data';
 import { getPageForRender, getThemeForRender } from '@/lib/content-source';
 import { buildMetadata } from '@/lib/metadata';
-import { getRenderMode, getStaticFormAction } from '@/lib/render-mode';
+import { getRenderMode, getStaticFormEndpoint } from '@/lib/render-mode';
 import { resolveSite } from '@/lib/resolve-site';
 import { replaceSiteTokens } from '@/lib/token-replace';
 
@@ -31,7 +31,7 @@ export default async function HomePage() {
         page={page}
         blockStyles={theme.blockStyles}
         renderMode={getRenderMode()}
-        staticFormAction={getStaticFormAction()}
+        staticFormEndpoint={getStaticFormEndpoint()}
       />
     </>
   );

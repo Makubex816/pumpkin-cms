@@ -31,6 +31,7 @@ Recommended conservative cache until purge exists:
 
 - `/`
 - HTML page routes
+- `/contact`
 - `sitemap.xml`
 - `robots.txt`
 
@@ -41,13 +42,14 @@ Once purge automation is reliable, HTML can be cached more aggressively with dep
 Bypass cache for dynamic or sensitive paths:
 
 - `/api/*`
+- `/api/static-contact`
 - `/admin/*`
 - `/login*`
 - `/dashboard/*`
 - dynamic form endpoints
 - `/contact*` if it is handled by a dynamic form service instead of pure static HTML
 
-The current static public output does not include `/api/contact`, but future form/admin/API endpoints should be explicitly bypassed.
+The current static public output does not include `/api/contact`. Static forms should post to an external endpoint such as an Azure Function URL or `/api/static-contact` route, and that POST target should always bypass cache.
 
 ## Purge Strategy
 

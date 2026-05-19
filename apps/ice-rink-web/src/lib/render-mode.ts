@@ -24,5 +24,15 @@ export function getStaticContentSource(): string {
 }
 
 export function getStaticFormAction(): string {
-  return process.env.STATIC_FORM_ACTION || process.env.NEXT_PUBLIC_STATIC_FORM_ACTION || '';
+  return getStaticFormEndpoint();
+}
+
+export function getStaticFormEndpoint(): string {
+  return (
+    process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT ||
+    process.env.STATIC_FORM_ENDPOINT ||
+    process.env.NEXT_PUBLIC_STATIC_FORM_ACTION ||
+    process.env.STATIC_FORM_ACTION ||
+    ''
+  );
 }

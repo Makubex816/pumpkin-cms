@@ -134,6 +134,8 @@ See `cloudflare-cache-rules.md` for more detail.
 
 Static exports do not include Next.js API routes. The current runtime `/api/contact` route works only in runtime CMS mode.
 
+Static public forms can post to `NEXT_PUBLIC_STATIC_FORM_ENDPOINT` when that endpoint is configured at static build time. If no endpoint is configured, the static form shows an inline error and does not pretend success.
+
 Static public forms need one of:
 
 - Azure Function
@@ -141,7 +143,13 @@ Static public forms need one of:
 - trusted third-party form endpoint
 - CRM-native endpoint
 
-See `static-form-strategy.md`.
+Recommended first route shape:
+
+```text
+https://<function-app>.azurewebsites.net/api/static-contact
+```
+
+See `static-form-strategy.md` and `forms/README.md`.
 
 ## No-Secrets Policy
 

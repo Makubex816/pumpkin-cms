@@ -1,6 +1,6 @@
 # Static Form Strategy
 
-Static export mode cannot rely on Next.js API routes at runtime.
+Static export mode cannot rely on Next.js API routes at runtime. The public `/contact` page can be static HTML, but the browser must POST to a separate endpoint.
 
 The current `apps/ice-rink-web/src/app/api/contact/route.ts` remains useful for runtime CMS mode, local preview, and any future runtime deployment. It is not present in the static `out` folder used for Azure static hosting.
 
@@ -10,11 +10,40 @@ Runtime CMS mode:
 
 - contact form posts to `/api/contact`
 - Next route forwards the submission to Pumpkin API
+- FormEntry records continue to be saved through Pumpkin API
 
 Static mode:
 
-- contact form can post to `STATIC_FORM_ACTION` or `NEXT_PUBLIC_STATIC_FORM_ACTION` if configured
-- if no static form action is configured, the form shows a clear error and does not pretend success
+- contact form posts to `NEXT_PUBLIC_STATIC_FORM_ENDPOINT` when configured at build time
+- `STATIC_FORM_ENDPOINT`, `NEXT_PUBLIC_STATIC_FORM_ACTION`, and `STATIC_FORM_ACTION` are supported as compatibility aliases
+- if no static endpoint is configured, the form shows a clear inline error and does not pretend success
+- no Pumpkin API keys or cloud credentials are exposed to the browser
+
+## Frontend Endpoint Configuration
+
+Preferred build-time variable:
+
+```text
+NEXT_PUBLIC_STATIC_FORM_ENDPOINT=https://<function-app>.azurewebsites.net/api/static-contact
+```
+
+This value is public by design. It should be only a URL. Do not put tokens, API keys, or connection strings in the frontend endpoint value.
+
+## Recommended Route Names
+
+Recommended first endpoint path:
+
+```text
+/api/static-contact
+```
+
+For Azure Functions, the public URL will commonly look like:
+
+```text
+https://<function-app>.azurewebsites.net/api/static-contact
+```
+
+For a standalone Pumpkin-compatible public endpoint, use the same route shape if possible so the static frontend does not need tenant-specific code.
 
 ## Options
 
@@ -90,6 +119,40 @@ Recommended responsibilities:
 - return a minimal success/failure response
 
 Do not put Pumpkin tenant API keys or cloud credentials in browser code.
+
+See `forms/README.md` and `forms/azure-function-contact.example.ts` for the local implementation template.
+
+## CORS And Origins
+
+Allowed production origins should include:
+
+- `https://iceskatingrinkrentals.com`
+- `https://www.iceskatingrinkrentals.com`
+- `https://rollerrinkrentals.com`
+- `https://www.rollerrinkrentals.com`
+
+Add staging domains later when staging hosts exist.
+
+The endpoint should:
+
+- reject unrecognized origins
+- respond to `OPTIONS`
+- allow `POST`
+- allow `Content-Type`
+- return `Vary: Origin`
+- return `Cache-Control: no-store`
+
+## Cloudflare Cache
+
+The `/contact` page itself can be static and cached conservatively like other HTML routes.
+
+The form POST target must bypass cache:
+
+- Azure Function path such as `/api/static-contact`
+- standalone Pumpkin/public form endpoint
+- CRM/webhook endpoint if proxied through Cloudflare
+
+Do not cache POST responses.
 
 ## Security Notes
 

@@ -5,7 +5,7 @@ import { StructuredData } from '@/components/StructuredData';
 import { getFallbackPage, getFallbackTheme } from '@/data';
 import { getPageForRender, getStaticSlugsForBuild, getThemeForRender } from '@/lib/content-source';
 import { buildMetadata, buildNotFoundMetadata } from '@/lib/metadata';
-import { getRenderMode, getStaticFormAction, isStaticRenderMode } from '@/lib/render-mode';
+import { getRenderMode, getStaticFormEndpoint, isStaticRenderMode } from '@/lib/render-mode';
 import { resolveSite } from '@/lib/resolve-site';
 import { replaceSiteTokens } from '@/lib/token-replace';
 
@@ -57,7 +57,7 @@ export default async function SlugPage({ params }: SlugPageProps) {
         page={page}
         blockStyles={theme.blockStyles}
         renderMode={getRenderMode()}
-        staticFormAction={getStaticFormAction()}
+        staticFormEndpoint={getStaticFormEndpoint()}
       />
     </>
   );
