@@ -134,6 +134,39 @@ The dry run does not:
 
 Before any real deployment, inspect the manifest and summary, then follow `static-release-checklist.md`.
 
+## CMS To Static Publish Bridge
+
+Phase 5H adds a local bridge from Pumpkin CMS content to static publishing artifacts.
+
+Default static export still uses seed-sites. CMS snapshot mode is opt-in:
+
+```powershell
+cd apps/ice-rink-web
+npm run snapshot:cms:ice
+npm run validate:snapshot:ice
+npm run export:static:ice:cms
+npm run publish:dry-run:cms
+```
+
+Roller uses the matching `:roller` scripts.
+
+CMS snapshot artifacts are generated under:
+
+```text
+apps/ice-rink-web/.static-content-snapshots/{SITE_KEY}/
+```
+
+That folder is ignored by git. It is a generated publish artifact, not source code.
+
+Source-of-truth guidance:
+
+- Cosmos/Pumpkin API is the editable CMS store.
+- CMS snapshots are generated JSON publish artifacts.
+- Static output is the deployable public site.
+- Seed-sites remain developer/bootstrap content and the default static source.
+
+See `cms-to-static-publish-bridge.md` for the full workflow and safety rules.
+
 ## GitHub Actions Examples
 
 Copy/paste-ready workflow templates live outside `.github/workflows` so they cannot run accidentally:

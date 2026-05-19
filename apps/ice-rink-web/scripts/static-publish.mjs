@@ -5,7 +5,7 @@ import process from 'process';
 const siteDefinitions = {
   'ice-rink-rentals': {
     domain: 'iceskatingrinkrentals.com',
-    expectedSlugs: ['home', 'ice-rink-rentals', 'contact'],
+    expectedSlugs: ['home', 'ice-rink-rentals', 'events-holiday-activations', 'contact'],
   },
   'roller-rink-rentals': {
     domain: 'rollerrinkrentals.com',
@@ -37,6 +37,10 @@ function getSite() {
 function getSiteRoot() {
   if (contentSource === 'seed-sites') {
     return path.join(repoRoot, 'tools', 'ice-rink-local-seed', 'seed-sites', siteKey);
+  }
+
+  if (contentSource === 'cms-snapshot') {
+    return path.join(appRoot, '.static-content-snapshots', siteKey);
   }
 
   if (process.env.STATIC_CONTENT_DIR) {

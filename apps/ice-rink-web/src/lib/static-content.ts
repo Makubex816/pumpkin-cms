@@ -26,6 +26,10 @@ function getStaticSiteRoot(site: ResolvedSite) {
     return path.join(getSeedSitesRoot(), site.key);
   }
 
+  if (source === 'cms-snapshot') {
+    return path.join(process.cwd(), '.static-content-snapshots', site.key);
+  }
+
   const explicitRoot = process.env.STATIC_CONTENT_DIR;
   if (explicitRoot) {
     return path.resolve(process.cwd(), explicitRoot, site.key);

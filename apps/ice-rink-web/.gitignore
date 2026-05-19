@@ -31,4 +31,5 @@ next-env.d.ts
 # sample data
 /src/data/sample-pages
 /.static-content/
+/.static-content-snapshots/
 /.static-artifacts/

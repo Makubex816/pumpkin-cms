@@ -10,13 +10,17 @@ const repoRoot = path.resolve(scriptDir, '../../..');
 const appRoot = path.join(repoRoot, 'apps', 'ice-rink-web');
 const releaseRoot = path.join(repoRoot, '.static-release-dry-runs');
 const nodeExecutable = process.execPath;
+const contentSource = process.env.STATIC_CONTENT_SOURCE || 'seed-sites';
 
 const sites = [
   {
     siteKey: 'ice-rink-rentals',
     displayName: 'Ice Skating Rink Rentals',
     domain: 'iceskatingrinkrentals.com',
-    exportScript: 'export:static:ice',
+    exportScripts: {
+      'seed-sites': 'export:static:ice',
+      'cms-snapshot': 'export:static:ice:cms',
+    },
     expectedRoutes: ['/', '/ice-rink-rentals', '/events-holiday-activations', '/contact', '/sitemap.xml', '/robots.txt'],
     expectedPageFolders: ['ice-rink-rentals', 'events-holiday-activations', 'contact'],
   },
@@ -24,7 +28,10 @@ const sites = [
     siteKey: 'roller-rink-rentals',
     displayName: 'Roller Rink Rentals',
     domain: 'rollerrinkrentals.com',
-    exportScript: 'export:static:roller',
+    exportScripts: {
+      'seed-sites': 'export:static:roller',
+      'cms-snapshot': 'export:static:roller:cms',
+    },
     expectedRoutes: ['/', '/roller-rink-rentals', '/contact', '/sitemap.xml', '/robots.txt'],
     expectedPageFolders: ['roller-rink-rentals', 'contact'],
   },
@@ -110,6 +117,16 @@ function runNpmScript(scriptName) {
   }
 
   runCommand('npm', ['run', scriptName], { cwd: appRoot });
+}
+
+function getExportScript(site) {
+  const exportScript = site.exportScripts[contentSource];
+
+  if (!exportScript) {
+    throw new Error(`Unsupported STATIC_CONTENT_SOURCE: ${contentSource}`);
+  }
+
+  return exportScript;
 }
 
 function runJsonCommand(command, args, options = {}) {
@@ -298,6 +315,7 @@ function writeSummaryMarkdown(runDir, manifest) {
     `- Run ID: \`${manifest.runId}\``,
     `- Generated at: \`${manifest.generatedAt}\``,
     `- Release folder: \`${manifest.releaseFolder}\``,
+    `- Content source: \`${manifest.contentSource}\``,
     '- Deployment attempted: `false`',
     '- Cloudflare modified: `false`',
     '',
@@ -361,6 +379,7 @@ function main() {
     runId: path.basename(runDir),
     generatedAt,
     releaseFolder: toPosix(path.relative(repoRoot, runDir)),
+    contentSource,
     deploymentAttempted: false,
     cloudflareModified: false,
     packageFormat: 'folder',
@@ -372,7 +391,7 @@ function main() {
 
   for (const site of sites) {
     console.log(`[dry-run] Exporting ${site.siteKey}`);
-    runNpmScript(site.exportScript);
+    runNpmScript(getExportScript(site));
 
     const sourceOut = path.join(appRoot, '.static-artifacts', site.siteKey, 'out');
     const releaseSiteDir = path.join(runDir, site.siteKey);
@@ -395,6 +414,7 @@ function main() {
     ok: manifest.ok,
     runId: manifest.runId,
     releaseFolder: manifest.releaseFolder,
+    contentSource: manifest.contentSource,
     sites: manifest.sites.map((site) => ({
       siteKey: site.siteKey,
       domain: site.domain,

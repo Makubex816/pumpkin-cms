@@ -12,11 +12,20 @@
     "validate:static": "node scripts/static-publish.mjs validate",
     "validate:static:ice": "cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=ice-rink-rentals STATIC_CONTENT_SOURCE=seed-sites node scripts/static-publish.mjs validate",
     "validate:static:roller": "cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=roller-rink-rentals STATIC_CONTENT_SOURCE=seed-sites node scripts/static-publish.mjs validate",
+    "snapshot:cms:ice": "cross-env SITE_KEY=ice-rink-rentals node scripts/snapshot-cms-content.mjs snapshot",
+    "snapshot:cms:roller": "cross-env SITE_KEY=roller-rink-rentals node scripts/snapshot-cms-content.mjs snapshot",
+    "validate:snapshot:ice": "cross-env SITE_KEY=ice-rink-rentals node scripts/snapshot-cms-content.mjs validate",
+    "validate:snapshot:roller": "cross-env SITE_KEY=roller-rink-rentals node scripts/snapshot-cms-content.mjs validate",
     "build:static:ice": "cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=ice-rink-rentals STATIC_CONTENT_SOURCE=seed-sites next build",
     "build:static:roller": "cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=roller-rink-rentals STATIC_CONTENT_SOURCE=seed-sites next build",
+    "build:static:ice:cms": "cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=ice-rink-rentals STATIC_CONTENT_SOURCE=cms-snapshot next build",
+    "build:static:roller:cms": "cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=roller-rink-rentals STATIC_CONTENT_SOURCE=cms-snapshot next build",
     "export:static:ice": "npm run validate:static:ice && npm run build:static:ice && cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=ice-rink-rentals STATIC_CONTENT_SOURCE=seed-sites node scripts/static-publish.mjs generate",
     "export:static:roller": "npm run validate:static:roller && npm run build:static:roller && cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=roller-rink-rentals STATIC_CONTENT_SOURCE=seed-sites node scripts/static-publish.mjs generate",
-    "publish:dry-run": "node ../../deployment/static-azure/scripts/static-publish-dry-run.mjs"
+    "export:static:ice:cms": "npm run snapshot:cms:ice && npm run validate:snapshot:ice && npm run build:static:ice:cms && cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=ice-rink-rentals STATIC_CONTENT_SOURCE=cms-snapshot node scripts/static-publish.mjs generate",
+    "export:static:roller:cms": "npm run snapshot:cms:roller && npm run validate:snapshot:roller && npm run build:static:roller:cms && cross-env PUMPKIN_RENDER_MODE=static SITE_KEY=roller-rink-rentals STATIC_CONTENT_SOURCE=cms-snapshot node scripts/static-publish.mjs generate",
+    "publish:dry-run": "node ../../deployment/static-azure/scripts/static-publish-dry-run.mjs",
+    "publish:dry-run:cms": "cross-env STATIC_CONTENT_SOURCE=cms-snapshot node ../../deployment/static-azure/scripts/static-publish-dry-run.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
