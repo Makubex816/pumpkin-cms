@@ -1,0 +1,15 @@
+{
+  "schemaType": "leadRouting",
+  "recordStatus": "template",
+  "siteKey": "ice-rink-rentals",
+  "stateCode": "XX",
+  "city": "",
+  "service": "Portable Rink Rental",
+  "fulfillmentStatus": "research_only_until_provider_confirmed",
+  "leadRoutingMode": "unmet_demand_followup",
+  "partnerId": "",
+  "providerIds": [],
+  "manualReviewRequired": true,
+  "fallbackAction": "store_for_manual_review",
+  "routingNotes": "Template only. Replace with site, state, service, and routing rules after partner/provider research."
+}

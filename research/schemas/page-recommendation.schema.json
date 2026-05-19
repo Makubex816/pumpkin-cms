@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkin-cms.local/research/schemas/page-recommendation.schema.json",
+  "title": "Pumpkin Page Recommendation Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaType",
+    "recordStatus",
+    "siteKey",
+    "stateCode",
+    "stateName",
+    "pageType",
+    "proposedSlug",
+    "proposedTitle",
+    "targetKeyword",
+    "secondaryKeywords",
+    "buyerIntent",
+    "uniqueValueReason",
+    "fulfillmentStatus",
+    "primaryPartnerAvailable",
+    "manualReviewRequired",
+    "providerResearchCompleted",
+    "topProviderCount",
+    "leadRoutingMode",
+    "publicDisclosureRequired",
+    "googleAdsEligible",
+    "noindexRecommended",
+    "publishRecommended",
+    "pageScore",
+    "scoreBreakdown",
+    "internalLinks",
+    "requiredSections",
+    "requiredFAQs",
+    "imageNeeds",
+    "notes"
+  ],
+  "properties": {
+    "schemaType": { "type": "string", "const": "pageRecommendation" },
+    "recordStatus": {
+      "type": "string",
+      "enum": ["template", "example", "draft", "researched", "approved", "verified"]
+    },
+    "siteKey": { "type": "string", "enum": ["ice-rink-rentals", "roller-rink-rentals"] },
+    "stateCode": { "type": "string", "minLength": 2, "maxLength": 2 },
+    "stateName": { "type": "string", "minLength": 1 },
+    "pageType": {
+      "type": "string",
+      "enum": ["service", "state-service", "metro-service", "city-service", "event-service", "lead-routing", "resource"]
+    },
+    "proposedSlug": { "type": "string", "minLength": 1 },
+    "proposedTitle": { "type": "string", "minLength": 1 },
+    "targetKeyword": { "type": "string" },
+    "secondaryKeywords": { "type": "array", "items": { "type": "string" } },
+    "buyerIntent": { "type": "string" },
+    "uniqueValueReason": { "type": "string" },
+    "fulfillmentStatus": {
+      "type": "string",
+      "enum": [
+        "direct_partner_available",
+        "partner_network_or_researched_provider",
+        "research_only_until_provider_confirmed"
+      ]
+    },
+    "primaryPartnerAvailable": { "type": "boolean" },
+    "manualReviewRequired": { "type": "boolean" },
+    "providerResearchCompleted": { "type": "boolean" },
+    "topProviderCount": { "type": "number", "minimum": 0 },
+    "leadRoutingMode": {
+      "type": "string",
+      "enum": [
+        "send_to_primary_partner",
+        "manual_review_then_provider_match",
+        "researched_provider_match",
+        "unmet_demand_followup"
+      ]
+    },
+    "publicDisclosureRequired": { "type": "boolean" },
+    "googleAdsEligible": { "type": "boolean" },
+    "noindexRecommended": { "type": "boolean" },
+    "publishRecommended": { "type": "boolean" },
+    "pageScore": { "type": "number", "minimum": 0, "maximum": 30 },
+    "scoreBreakdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "searchVolumeDemand",
+        "supplierCoverage",
+        "eventLocationDensity",
+        "leadValue",
+        "uniqueIntent",
+        "contentDepthPossible"
+      ],
+      "properties": {
+        "searchVolumeDemand": { "type": "number", "minimum": 0, "maximum": 5 },
+        "supplierCoverage": { "type": "number", "minimum": 0, "maximum": 5 },
+        "eventLocationDensity": { "type": "number", "minimum": 0, "maximum": 5 },
+        "leadValue": { "type": "number", "minimum": 0, "maximum": 5 },
+        "uniqueIntent": { "type": "number", "minimum": 0, "maximum": 5 },
+        "contentDepthPossible": { "type": "number", "minimum": 0, "maximum": 5 }
+      }
+    },
+    "internalLinks": { "type": "array", "items": { "type": "string" } },
+    "requiredSections": { "type": "array", "items": { "type": "string" } },
+    "requiredFAQs": { "type": "array", "items": { "type": "string" } },
+    "imageNeeds": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "string" }
+  }
+}

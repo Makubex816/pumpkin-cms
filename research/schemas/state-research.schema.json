@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkin-cms.local/research/schemas/state-research.schema.json",
+  "title": "Pumpkin State Research Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaType",
+    "recordStatus",
+    "siteKey",
+    "stateName",
+    "stateCode",
+    "primaryService",
+    "primaryKeyword",
+    "researchStatus",
+    "researchedAt",
+    "researchedBy",
+    "topProviders",
+    "shortlistedProviders",
+    "targetMetros",
+    "targetCities",
+    "eventDemandZones",
+    "majorVenueTypes",
+    "seasonalNotes",
+    "climateLogisticsNotes",
+    "serviceCoverageNotes",
+    "partnerCoverageStatus",
+    "fulfillmentNotes",
+    "recommendedPageCount",
+    "pageRecommendations",
+    "warnings",
+    "nextResearchActions"
+  ],
+  "properties": {
+    "schemaType": { "type": "string", "const": "stateResearch" },
+    "recordStatus": {
+      "type": "string",
+      "enum": ["template", "example", "draft", "researched", "approved", "verified"]
+    },
+    "siteKey": { "type": "string", "enum": ["ice-rink-rentals", "roller-rink-rentals"] },
+    "stateName": { "type": "string", "minLength": 1 },
+    "stateCode": { "type": "string", "minLength": 2, "maxLength": 2 },
+    "primaryService": { "type": "string", "minLength": 1 },
+    "primaryKeyword": { "type": "string", "minLength": 1 },
+    "researchStatus": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "provider_research_complete",
+        "page_map_ready",
+        "approved_for_content",
+        "paused"
+      ]
+    },
+    "researchedAt": { "type": "string" },
+    "researchedBy": { "type": "string" },
+    "topProviders": { "type": "array", "items": { "type": "string" } },
+    "shortlistedProviders": { "type": "array", "items": { "type": "string" } },
+    "targetMetros": { "type": "array", "items": { "type": "string" } },
+    "targetCities": { "type": "array", "items": { "type": "string" } },
+    "eventDemandZones": { "type": "array", "items": { "type": "string" } },
+    "majorVenueTypes": { "type": "array", "items": { "type": "string" } },
+    "seasonalNotes": { "type": "string" },
+    "climateLogisticsNotes": { "type": "string" },
+    "serviceCoverageNotes": { "type": "string" },
+    "partnerCoverageStatus": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "direct_partner_available",
+        "partner_network_or_researched_provider",
+        "research_only_until_provider_confirmed"
+      ]
+    },
+    "fulfillmentNotes": { "type": "string" },
+    "recommendedPageCount": { "type": "number", "minimum": 0 },
+    "pageRecommendations": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "nextResearchActions": { "type": "array", "items": { "type": "string" } }
+  }
+}

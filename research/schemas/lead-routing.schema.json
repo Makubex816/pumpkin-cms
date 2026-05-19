@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkin-cms.local/research/schemas/lead-routing.schema.json",
+  "title": "Pumpkin Lead Routing Rule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaType",
+    "recordStatus",
+    "siteKey",
+    "stateCode",
+    "city",
+    "service",
+    "fulfillmentStatus",
+    "leadRoutingMode",
+    "partnerId",
+    "providerIds",
+    "manualReviewRequired",
+    "fallbackAction",
+    "routingNotes"
+  ],
+  "properties": {
+    "schemaType": { "type": "string", "const": "leadRouting" },
+    "recordStatus": {
+      "type": "string",
+      "enum": ["template", "example", "draft", "researched", "approved", "verified"]
+    },
+    "siteKey": { "type": "string", "enum": ["ice-rink-rentals", "roller-rink-rentals"] },
+    "stateCode": { "type": "string", "minLength": 2, "maxLength": 2 },
+    "city": { "type": "string" },
+    "service": { "type": "string", "minLength": 1 },
+    "fulfillmentStatus": {
+      "type": "string",
+      "enum": [
+        "direct_partner_available",
+        "partner_network_or_researched_provider",
+        "research_only_until_provider_confirmed"
+      ]
+    },
+    "leadRoutingMode": {
+      "type": "string",
+      "enum": [
+        "send_to_primary_partner",
+        "manual_review_then_provider_match",
+        "researched_provider_match",
+        "unmet_demand_followup"
+      ]
+    },
+    "partnerId": { "type": "string" },
+    "providerIds": { "type": "array", "items": { "type": "string" } },
+    "manualReviewRequired": { "type": "boolean" },
+    "fallbackAction": {
+      "type": "string",
+      "enum": [
+        "store_for_manual_review",
+        "send_to_primary_partner",
+        "match_to_researched_provider",
+        "mark_unmet_demand",
+        "do_not_route"
+      ]
+    },
+    "routingNotes": { "type": "string" }
+  }
+}
