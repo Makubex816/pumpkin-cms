@@ -243,6 +243,7 @@ export type PageChangeSource =
   | 'rollback'
   | 'cms_snapshot'
   | 'metadata_repair'
+  | 'form_builder'
   | 'manual_unknown';
 
 /**
@@ -320,6 +321,7 @@ export interface PageFormConfig {
   thankYouMessage: string;
   recipientGroup: string;
   staticFormEndpointKey: string;
+  normalizedFieldMap?: Record<string, string>;
   requiresConsent?: boolean;
   consentRequired: boolean;
   spamProtectionRequired?: boolean;

@@ -387,13 +387,18 @@ function getPageSchemaControls(page: Page) {
 
 function getPageFormConfig(page: Page) {
   return {
+    formId: page.formConfig?.formId || '',
     formType: page.formConfig?.formType || '',
     conversionGoal: page.formConfig?.conversionGoal || '',
+    routingMode: page.formConfig?.routingMode || '',
     thankYouUrl: page.formConfig?.thankYouUrl || '',
     thankYouMessage: page.formConfig?.thankYouMessage || '',
     recipientGroup: page.formConfig?.recipientGroup || '',
     staticFormEndpointKey: page.formConfig?.staticFormEndpointKey || '',
+    normalizedFieldMap: page.formConfig?.normalizedFieldMap || {},
+    requiresConsent: page.formConfig?.requiresConsent ?? true,
     consentRequired: page.formConfig?.consentRequired ?? true,
+    spamProtectionRequired: page.formConfig?.spamProtectionRequired ?? true,
     spamProtectionEnabled: Boolean(page.formConfig?.spamProtectionEnabled),
   }
 }

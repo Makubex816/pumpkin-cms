@@ -46,6 +46,12 @@ public class ContactContent
 
 public class FormField
 {
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("key")]
+    public string Key { get; set; } = string.Empty;
+
     [JsonPropertyName("label")]
     public string Label { get; set; } = string.Empty;
 
@@ -57,6 +63,12 @@ public class FormField
 
     [JsonPropertyName("placeholder")]
     public string Placeholder { get; set; } = string.Empty;
+
+    [JsonPropertyName("helpText")]
+    public string HelpText { get; set; } = string.Empty;
+
+    [JsonPropertyName("options")]
+    public List<string> Options { get; set; } = new();
 }
 
 public class SocialLink

@@ -47,10 +47,10 @@ export function PageRenderer({
       },
       body: JSON.stringify(payload),
     });
-    const result = (await response.json().catch(() => ({}))) as { error?: string };
+    const result = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
 
     if (!response.ok) {
-      throw new Error(result.error || 'Unable to submit the contact form. Please try again.');
+      throw new Error(result.error || result.message || 'Unable to submit the contact form. Please try again.');
     }
   };
 
@@ -61,8 +61,19 @@ export function PageRenderer({
   return (
     <>
       {blocks.map((block, index) => {
+        const thankYouMessage = page.formConfig?.thankYouMessage?.trim();
+        const blockForRender = block.type === 'Contact'
+          ? {
+              ...block,
+              content: {
+                ...(block.content ?? {}),
+                formConfig: page.formConfig,
+                ...(thankYouMessage ? { thankYouMessage } : {}),
+              },
+            }
+          : block;
         const polishedBlock = renderPolishedBlock({
-          block,
+          block: blockForRender,
           pageSlug: page.pageSlug,
           onContactSubmit: handleContactSubmit,
         });

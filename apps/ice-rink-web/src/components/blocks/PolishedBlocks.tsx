@@ -114,8 +114,10 @@ function getCardGridColumns(layout: string, count: number): string {
   return 'md:grid-cols-2 lg:grid-cols-3';
 }
 
-function getFieldName(label: string, index: number): string {
-  const normalized = label
+function getFieldName(field: CmsContent, label: string, index: number): string {
+  const configuredName = getString(field.name) || getString(field.key);
+  const source = configuredName || label;
+  const normalized = source
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
@@ -461,6 +463,13 @@ export function PolishedContactBlock({
   const resolvedPageSlug = pageSlug || 'contact';
   const [status, setStatus] = React.useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [message, setMessage] = React.useState('');
+  const statusRef = React.useRef<HTMLParagraphElement | null>(null);
+
+  React.useEffect(() => {
+    if (status === 'success' || status === 'error') {
+      statusRef.current?.focus();
+    }
+  }, [status, message]);
 
   async function submitContactForm(payload: ContactSubmitPayload) {
     if (onSubmit) {
@@ -475,10 +484,10 @@ export function PolishedContactBlock({
       },
       body: JSON.stringify(payload),
     });
-    const result = (await response.json().catch(() => ({}))) as { error?: string };
+    const result = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
 
     if (!response.ok) {
-      throw new Error(result.error || 'Unable to submit the contact form. Please try again.');
+      throw new Error(result.error || result.message || 'Unable to submit the contact form. Please try again.');
     }
   }
 
@@ -493,7 +502,7 @@ export function PolishedContactBlock({
     });
 
     setStatus('submitting');
-    setMessage('');
+    setMessage('Sending your quote request...');
 
     try {
       await submitContactForm({
@@ -503,7 +512,7 @@ export function PolishedContactBlock({
       });
       form.reset();
       setStatus('success');
-      setMessage('Thanks — your quote request was submitted.');
+      setMessage(getString(content.thankYouMessage).trim() || 'Thanks - your quote request was submitted.');
     } catch (error) {
       setStatus('error');
       setMessage(error instanceof Error ? error.message : 'Unable to send your quote request. Please try again.');
@@ -555,26 +564,42 @@ export function PolishedContactBlock({
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-900/5 md:p-7">
+        <form
+          onSubmit={handleSubmit}
+          aria-busy={status === 'submitting'}
+          className="rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-900/5 md:p-7"
+        >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {fields.map((field, index) => {
               const label = getString(field.label, `Field ${index + 1}`);
               const type = getString(field.type, 'text');
-              const name = getFieldName(label, index);
+              const name = getFieldName(field, label, index);
               const required = getBoolean(field.required);
               const placeholder = getString(field.placeholder);
+              const helpText = getString(field.helpText);
+              const inputType = type === 'phone' ? 'tel' : type;
+              const options = getArray<unknown>(field.options)
+                .map((option) => getString(option))
+                .filter(Boolean);
               const isTextarea = type === 'textarea';
+              const isSelect = type === 'select';
+              const isCheckbox = type === 'checkbox';
+              const isHidden = type === 'hidden';
 
               return (
                 <label
                   key={`${label}-${index}`}
-                  className={isTextarea ? 'sm:col-span-2' : undefined}
+                  className={isTextarea || isCheckbox || isHidden ? 'sm:col-span-2' : undefined}
                 >
-                  <span className="mb-1.5 block text-sm font-bold text-slate-800">
-                    {label}
-                    {required && <span className="text-sky-700"> *</span>}
-                  </span>
-                  {isTextarea ? (
+                  {!isHidden && (
+                    <span className="mb-1.5 block text-sm font-bold text-slate-800">
+                      {label}
+                      {required && <span className="text-sky-700"> *</span>}
+                    </span>
+                  )}
+                  {isHidden ? (
+                    <input name={name} type="hidden" value={placeholder} />
+                  ) : isTextarea ? (
                     <textarea
                       name={name}
                       required={required}
@@ -582,20 +607,64 @@ export function PolishedContactBlock({
                       placeholder={placeholder}
                       className="min-h-[130px] w-full resize-y rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-600 focus:bg-white focus:ring-2 focus:ring-sky-200"
                     />
+                  ) : isSelect ? (
+                    <select
+                      name={name}
+                      required={required}
+                      disabled={status === 'submitting'}
+                      defaultValue=""
+                      className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-600 focus:bg-white focus:ring-2 focus:ring-sky-200"
+                    >
+                      <option value="" disabled>{placeholder || 'Select an option'}</option>
+                      {options.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  ) : isCheckbox ? (
+                    <span className="flex items-start gap-3 rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-800">
+                      <input
+                        name={name}
+                        type="checkbox"
+                        required={required}
+                        disabled={status === 'submitting'}
+                        value="true"
+                        className="mt-1 h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-500"
+                      />
+                      <span>{placeholder || label}</span>
+                    </span>
                   ) : (
                     <input
                       name={name}
-                      type={type}
+                      type={inputType}
                       required={required}
                       disabled={status === 'submitting'}
                       placeholder={placeholder}
                       className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-600 focus:bg-white focus:ring-2 focus:ring-sky-200"
                     />
                   )}
+                  {helpText && <span className="mt-1.5 block text-xs text-slate-500">{helpText}</span>}
                 </label>
               );
             })}
           </div>
+
+          {status !== 'idle' && message && (
+            <p
+              ref={statusRef}
+              tabIndex={-1}
+              className={`mt-5 rounded-2xl px-4 py-3 text-sm font-semibold outline-none ${
+                status === 'success'
+                  ? 'border border-emerald-200 bg-emerald-50 text-emerald-800'
+                  : status === 'error'
+                    ? 'border border-red-200 bg-red-50 text-red-800'
+                    : 'border border-sky-200 bg-sky-50 text-sky-800'
+              }`}
+              role={status === 'error' ? 'alert' : 'status'}
+              aria-live={status === 'error' ? 'assertive' : 'polite'}
+            >
+              {message}
+            </p>
+          )}
 
           <button
             type="submit"
@@ -605,19 +674,6 @@ export function PolishedContactBlock({
             {status === 'submitting' ? 'Sending...' : getString(content.submitButtonText, 'Send Request')}
             <Send className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
-          {message && (
-            <p
-              className={`mt-4 rounded-2xl px-4 py-3 text-sm font-semibold ${
-                status === 'success'
-                  ? 'border border-emerald-200 bg-emerald-50 text-emerald-800'
-                  : 'border border-red-200 bg-red-50 text-red-800'
-              }`}
-              role={status === 'error' ? 'alert' : 'status'}
-              aria-live="polite"
-            >
-              {message}
-            </p>
-          )}
         </form>
       </div>
     </div>

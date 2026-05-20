@@ -40,10 +40,14 @@ export interface TestimonialsBlock extends IHtmlBlock {
 
 // Contact Block
 export interface FormField {
+  name?: string;
+  key?: string;
   label: string;
   type: string;
   required: boolean;
   placeholder: string;
+  helpText?: string;
+  options?: string[];
 }
 
 export interface SocialLink {

@@ -24,6 +24,7 @@ public static class PageRevisionHelper
         "rollback",
         "cms_snapshot",
         "metadata_repair",
+        "form_builder",
         "manual_unknown"
     };
 
@@ -391,6 +392,7 @@ public static class PageRevisionHelper
             "rollback" => "Rollback restore",
             "cms_snapshot" => "CMS snapshot update",
             "metadata_repair" => "Metadata repair update",
+            "form_builder" => "Form builder update",
             _ => "Page update"
         };
     }

@@ -536,6 +536,9 @@ public class PageFormConfig
     [JsonPropertyName("staticFormEndpointKey")]
     public string StaticFormEndpointKey { get; set; } = string.Empty;
 
+    [JsonPropertyName("normalizedFieldMap")]
+    public Dictionary<string, string> NormalizedFieldMap { get; set; } = new();
+
     [JsonPropertyName("requiresConsent")]
     public bool RequiresConsent { get; set; } = true;
 
