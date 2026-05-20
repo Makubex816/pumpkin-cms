@@ -211,6 +211,8 @@ export default function ContentPackagesPage() {
         packageId: item.packageId,
         packageName: item.packageName,
         tenantId: item.tenantId,
+        status: item.status,
+        sourceLabel: item.sourceLabel,
         rawJson: item.rawJson,
         handedOffAt: new Date().toISOString(),
       }))

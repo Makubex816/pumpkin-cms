@@ -5,7 +5,13 @@ import type { ChangeEvent, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import { IMPORT_DIFF_HANDOFF_STORAGE_KEY } from '@/lib/import-diff'
+import {
+  IMPORT_DIFF_HANDOFF_STORAGE_KEY,
+  buildImportDiffReport,
+  type ImportDiffReport,
+  type ImportDiffRiskCategory,
+} from '@/lib/import-diff'
+import { validateContentJsonText, type ContentContractReport } from '@/lib/content-json-contracts'
 import type { IHtmlBlock, Page, PageChangeSource, PageRedirect } from 'pumpkin-ts-models'
 
 type ExportScope = 'all' | 'published' | 'single'
@@ -87,6 +93,40 @@ interface SectionProps {
   title: string
   description?: string
   children: ReactNode
+}
+
+interface ImportHandoffInfo {
+  packageName: string
+  tenantId: string
+  status: string
+  sourceLabel: string
+  handedOffAt: string
+}
+
+interface ImportConfirmations {
+  publishedUpdates: boolean
+  slugChanges: boolean
+  warnings: boolean
+}
+
+interface ImportPreflight {
+  available: boolean
+  contractErrorCount: number
+  diffErrorCount: number
+  warningCount: number
+  createCount: number
+  updateCount: number
+  skipCount: number
+  conflictCount: number
+  publishedUpdateCount: number
+  slugChangeCount: number
+  tenantMismatchCount: number
+  staticRebuildCount: number
+  riskCounts: Array<[ImportDiffRiskCategory, number]>
+  blockingMessages: string[]
+  requiresPublishedUpdateConfirmation: boolean
+  requiresSlugChangeConfirmation: boolean
+  requiresWarningConfirmation: boolean
 }
 
 type FlatPageRow = Record<string, string>
@@ -273,6 +313,18 @@ const FILE_ACCEPT: Record<ImportSourceType, string> = {
 }
 
 const IMPORT_HANDOFF_STORAGE_KEY = 'pumpkin:page-import-handoff:v1'
+
+const RISK_LABELS: Record<ImportDiffRiskCategory, string> = {
+  seo: 'SEO risk',
+  slug_redirect: 'Slug/redirect risk',
+  publishing: 'Publishing risk',
+  media: 'Media risk',
+  fulfillment_ads: 'Fulfillment/Ads risk',
+  form_lead_capture: 'Form/lead capture risk',
+  destructive_overwrite: 'Destructive overwrite risk',
+  tenant_mismatch: 'Tenant mismatch',
+  static_rebuild: 'Static rebuild needed',
+}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -2198,9 +2250,34 @@ export default function PageImportExportPage() {
   const [report, setReport] = useState<ImportReport | null>(null)
   const [runningImport, setRunningImport] = useState(false)
   const [runningExport, setRunningExport] = useState(false)
+  const [handoffInfo, setHandoffInfo] = useState<ImportHandoffInfo | null>(null)
+  const [confirmations, setConfirmations] = useState<ImportConfirmations>({
+    publishedUpdates: false,
+    slugChanges: false,
+    warnings: false,
+  })
 
   const tenantId = currentTenant?.tenantId || ''
   const publishedPages = useMemo(() => pages.filter((page) => page.isPublished), [pages])
+  const contractReport = useMemo<ContentContractReport | null>(() => {
+    if (!tenantId || importSourceType !== 'json' || !importText.trim()) return null
+    return validateContentJsonText(importText, {
+      expectedTenantId: tenantId,
+      selectedTemplate: 'auto',
+    })
+  }, [importSourceType, importText, tenantId])
+  const diffReport = useMemo<ImportDiffReport | null>(() => {
+    if (!tenantId || importSourceType !== 'json' || !importText.trim()) return null
+    return buildImportDiffReport({
+      currentPages: pages,
+      incomingJson: importText,
+      tenantId,
+      mode: importMode,
+    })
+  }, [importMode, importSourceType, importText, pages, tenantId])
+  const preflight = useMemo(() => buildImportPreflight(contractReport, diffReport), [contractReport, diffReport])
+  const isWriteMode = importMode !== 'dry-run'
+  const canRunImport = !runningImport && isWriteMode && isImportPreflightSatisfied(preflight, confirmations)
 
   const fetchPages = useCallback(async () => {
     if (!token || !user || !currentTenant) {
@@ -2243,6 +2320,9 @@ export default function PageImportExportPage() {
       const handoffTenantId = stringValue(handoff.tenantId)
       const rawJson = stringValue(handoff.rawJson)
       const packageName = stringValue(handoff.packageName) || 'staged content package'
+      const packageStatus = stringValue(handoff.status)
+      const sourceLabel = stringValue(handoff.sourceLabel)
+      const handedOffAt = stringValue(handoff.handedOffAt)
 
       if (handoffTenantId && handoffTenantId !== currentTenant.tenantId) {
         setNotice(`A staged package for ${handoffTenantId} is waiting, but the selected tenant is ${currentTenant.tenantId}. Switch tenants before importing it.`)
@@ -2255,6 +2335,14 @@ export default function PageImportExportPage() {
         setXlsxImport(null)
         setReport(null)
         setError(null)
+        setHandoffInfo({
+          packageName,
+          tenantId: handoffTenantId || currentTenant.tenantId,
+          status: packageStatus || 'unknown',
+          sourceLabel: sourceLabel || 'unknown',
+          handedOffAt,
+        })
+        setConfirmations({ publishedUpdates: false, slugChanges: false, warnings: false })
         setNotice(`Loaded staged package "${packageName}" from the review queue. Run dry-run before importing.`)
         window.localStorage.removeItem(IMPORT_HANDOFF_STORAGE_KEY)
       }
@@ -2390,6 +2478,8 @@ export default function PageImportExportPage() {
         setImportText(text)
         setNotice(`Loaded ${file.name}. Run dry-run before importing.`)
       }
+      setHandoffInfo(null)
+      setConfirmations({ publishedUpdates: false, slugChanges: false, warnings: false })
     } catch (fileError) {
       setError(getErrorMessage(fileError, `Failed to read ${importSourceType.toUpperCase()} file.`))
     } finally {
@@ -2428,8 +2518,37 @@ export default function PageImportExportPage() {
     }
   }
 
+  const downloadValidationReport = () => {
+    if (!contractReport) return
+    downloadJson(`${tenantId}-contract-validation-${contractReport.generatedAt.replace(/[:.]/g, '-')}.json`, contractReport)
+  }
+
+  const downloadDiffReport = () => {
+    if (!diffReport) return
+    downloadJson(`${tenantId}-import-diff-${diffReport.generatedAt.replace(/[:.]/g, '-')}.json`, diffReport)
+  }
+
+  const copyPreflightSummary = async () => {
+    if (!preflight) return
+
+    try {
+      await navigator.clipboard.writeText(buildPreflightSummary(preflight, handoffInfo, importMode))
+      setNotice('Copied import preflight summary to the clipboard.')
+      setError(null)
+    } catch {
+      setError('Unable to copy import preflight summary.')
+      setNotice(null)
+    }
+  }
+
   const runImport = async () => {
     if (!token || !currentTenant || importMode === 'dry-run') return
+
+    if (!isImportPreflightSatisfied(preflight, confirmations)) {
+      setNotice(null)
+      setError('Import preflight is not approved. Resolve blocking issues or complete the required confirmations before writing to CMS.')
+      return
+    }
 
     const parsed = parseCurrentImport()
     const initialReport = validateParsedImport(parsed, pages, currentTenant.tenantId, importMode, rewriteTenantId)
@@ -2566,7 +2685,7 @@ export default function PageImportExportPage() {
       </div>
 
       <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
-        Phase 5A supports JSON, CSV, and XLSX Page exports plus dry-run validation and safe create/update imports. Static publishing and hard delete are not included.
+        Phase 6P adds import preflight guardrails. Dry-run remains the default. Write imports update CMS only after validation, diff preview, and required confirmations. No Azure deploy or Cloudflare purge happens here.
       </div>
 
       {error && (
@@ -2665,6 +2784,8 @@ export default function PageImportExportPage() {
                 setReport(null)
                 setError(null)
                 setNotice(null)
+                setHandoffInfo(null)
+                setConfirmations({ publishedUpdates: false, slugChanges: false, warnings: false })
               }}
               className="input"
             >
@@ -2721,6 +2842,8 @@ export default function PageImportExportPage() {
               setReport(null)
               setError(null)
               setNotice(null)
+              setHandoffInfo(null)
+              setConfirmations({ publishedUpdates: false, slugChanges: false, warnings: false })
             }}
             rows={14}
             readOnly={importSourceType === 'xlsx'}
@@ -2740,12 +2863,128 @@ export default function PageImportExportPage() {
           <button
             type="button"
             onClick={runImport}
-            disabled={importMode === 'dry-run' || runningImport}
+            disabled={!canRunImport}
             className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-60"
           >
             {runningImport ? 'Importing...' : 'Run Import'}
           </button>
         </div>
+      </Section>
+
+      <Section
+        title="Import Preflight Guardrails"
+        description="Validate content contracts, preview CMS changes, and complete required confirmations before any write import."
+      >
+        {importSourceType !== 'json' ? (
+          <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            JSON imports have the strongest production preflight because they preserve the canonical Page document shape. CSV/XLSX imports still use the existing dry-run validation, but JSON is recommended for externally generated production content packages.
+          </div>
+        ) : !preflight.available ? (
+          <div className="rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+            Paste or upload JSON to run contract validation and import diff preview. Preflight does not write pages.
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {handoffInfo && (
+              <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+                <div className="font-semibold">Loaded staged package: {handoffInfo.packageName}</div>
+                <div className="mt-1">
+                  Status: {handoffInfo.status || 'unknown'} / Source: {handoffInfo.sourceLabel || 'unknown'} / Tenant: {handoffInfo.tenantId}
+                </div>
+                {handoffInfo.status && handoffInfo.status !== 'ready_for_import' && (
+                  <div className="mt-1 font-semibold text-amber-900">
+                    This staged package is not marked ready_for_import. Review staging status before writing.
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className={isWriteMode ? 'rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900' : 'rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900'}>
+              <div className="font-semibold">{isWriteMode ? 'Import writes to CMS' : 'Validate only'}</div>
+              <div className="mt-1">
+                {isWriteMode
+                  ? 'This mode can create or update Page documents. Updates should create revisions and mark static publishing as needing rebuild. No Azure deploy or Cloudflare purge happens here.'
+                  : 'Dry-run mode writes nothing. Use validation and preview results before selecting a write mode.'}
+              </div>
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-7">
+              <ReportStat label="Contract Errors" value={preflight.contractErrorCount} />
+              <ReportStat label="Diff Errors" value={preflight.diffErrorCount} />
+              <ReportStat label="Warnings" value={preflight.warningCount} />
+              <ReportStat label="Creates" value={preflight.createCount} />
+              <ReportStat label="Updates" value={preflight.updateCount} />
+              <ReportStat label="Skips" value={preflight.skipCount} />
+              <ReportStat label="Conflicts" value={preflight.conflictCount} />
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-4">
+              <ReportStat label="Published Updates" value={preflight.publishedUpdateCount} />
+              <ReportStat label="Slug Changes" value={preflight.slugChangeCount} />
+              <ReportStat label="Tenant Mismatches" value={preflight.tenantMismatchCount} />
+              <ReportStat label="Rebuild Needed" value={preflight.staticRebuildCount} />
+            </div>
+
+            {preflight.riskCounts.length > 0 && (
+              <div className="rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3">
+                <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Risk Categories</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {preflight.riskCounts.map(([risk, count]) => (
+                    <span key={risk} className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                      {RISK_LABELS[risk]}: {count}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {preflight.blockingMessages.length > 0 && (
+              <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                <div className="font-semibold">Blocking issues</div>
+                <ul className="mt-2 list-disc space-y-1 pl-5">
+                  {preflight.blockingMessages.map((message) => <li key={message}>{message}</li>)}
+                </ul>
+              </div>
+            )}
+
+            {isWriteMode && (
+              <div className="space-y-2 rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
+                <div className="font-semibold">Required write confirmations</div>
+                {preflight.requiresPublishedUpdateConfirmation && (
+                  <ConfirmBox
+                    checked={confirmations.publishedUpdates}
+                    onChange={(checked) => setConfirmations((current) => ({ ...current, publishedUpdates: checked }))}
+                    label="I understand this will update published pages and create revisions."
+                  />
+                )}
+                {preflight.requiresSlugChangeConfirmation && (
+                  <ConfirmBox
+                    checked={confirmations.slugChanges}
+                    onChange={(checked) => setConfirmations((current) => ({ ...current, slugChanges: checked }))}
+                    label="I understand slug changes may create redirects and affect SEO/Ads final URLs."
+                  />
+                )}
+                {preflight.requiresWarningConfirmation && (
+                  <ConfirmBox
+                    checked={confirmations.warnings}
+                    onChange={(checked) => setConfirmations((current) => ({ ...current, warnings: checked }))}
+                    label="I understand this package has warnings that should be reviewed."
+                  />
+                )}
+                {!preflight.requiresPublishedUpdateConfirmation && !preflight.requiresSlugChangeConfirmation && !preflight.requiresWarningConfirmation && (
+                  <div className="text-neutral-600">No extra confirmations are required for this preflight result.</div>
+                )}
+              </div>
+            )}
+
+            <div className="flex flex-wrap justify-end gap-2">
+              <button type="button" onClick={copyPreflightSummary} className="btn btn-secondary">Copy Summary</button>
+              <button type="button" onClick={downloadValidationReport} className="btn btn-secondary" disabled={!contractReport}>Download Validation Report</button>
+              <button type="button" onClick={downloadDiffReport} className="btn btn-secondary" disabled={!diffReport}>Download Diff Report</button>
+              <button type="button" onClick={openDiffPreview} className="btn btn-secondary">Open Full Diff Preview</button>
+            </div>
+          </div>
+        )}
       </Section>
 
       {report && (
@@ -2770,6 +3009,12 @@ export default function PageImportExportPage() {
             </button>
           </div>
 
+          {report.results.some((result) => result.wrote) && (
+            <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+              Import writes completed for this tenant. Updated pages should have revision/rollback metadata where the API reported it, and changed pages should be treated as needing static rebuild. Review the Publishing Dashboard and Publish Action Center before any static release.
+            </div>
+          )}
+
           <div className="overflow-x-auto rounded-md border border-neutral-200">
             <table className="min-w-full divide-y divide-neutral-200">
               <thead className="bg-neutral-50">
@@ -2780,6 +3025,7 @@ export default function PageImportExportPage() {
                   <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-neutral-500">Action</th>
                   <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-neutral-500">Status</th>
                   <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-neutral-500">Messages</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-neutral-500">Links</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200 bg-white">
@@ -2821,6 +3067,18 @@ export default function PageImportExportPage() {
                         )}
                       </div>
                     </td>
+                    <td className="px-4 py-3 text-sm">
+                      {result.normalizedSlug && result.index >= 0 ? (
+                        <a
+                          href={`/dashboard/pages/${encodeURIComponent(result.normalizedSlug)}/view?tenantId=${encodeURIComponent(tenantId)}`}
+                          className="font-medium text-primary-700 hover:text-primary-900"
+                        >
+                          View
+                        </a>
+                      ) : (
+                        <span className="text-neutral-500">n/a</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -2848,6 +3106,121 @@ function ReportTextStat({ label, value }: { label: string; value: string }) {
       <div className="mt-1 text-xl font-semibold text-neutral-900">{value}</div>
     </div>
   )
+}
+
+function ConfirmBox({ checked, onChange, label }: { checked: boolean; onChange: (checked: boolean) => void; label: string }) {
+  return (
+    <label className="flex items-start gap-2">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="mt-0.5 rounded border-neutral-300 text-primary-600"
+      />
+      <span>{label}</span>
+    </label>
+  )
+}
+
+function buildImportPreflight(contractReport: ContentContractReport | null, diffReport: ImportDiffReport | null): ImportPreflight {
+  if (!contractReport || !diffReport) {
+    return {
+      available: false,
+      contractErrorCount: 0,
+      diffErrorCount: 0,
+      warningCount: 0,
+      createCount: 0,
+      updateCount: 0,
+      skipCount: 0,
+      conflictCount: 0,
+      publishedUpdateCount: 0,
+      slugChangeCount: 0,
+      tenantMismatchCount: 0,
+      staticRebuildCount: 0,
+      riskCounts: [],
+      blockingMessages: [],
+      requiresPublishedUpdateConfirmation: false,
+      requiresSlugChangeConfirmation: false,
+      requiresWarningConfirmation: false,
+    }
+  }
+
+  const riskCounter = new Map<ImportDiffRiskCategory, number>()
+  diffReport.results.forEach((result) => {
+    result.riskCategories.forEach((risk) => {
+      riskCounter.set(risk, (riskCounter.get(risk) || 0) + 1)
+    })
+  })
+
+  const tenantMismatchCount = diffReport.results.reduce((total, result) => (
+    total + result.errors.filter((issue) => issue.category === 'tenant_mismatch').length
+  ), 0)
+  const publishedUpdateCount = diffReport.results.filter((result) => result.wouldOverwritePublishedPage).length
+  const slugChangeCount = diffReport.results.filter((result) => result.wouldChangeSlug).length
+  const staticRebuildCount = diffReport.results.filter((result) => result.staticRebuildNeeded && (result.action === 'create' || result.action === 'update')).length
+  const warningCount = contractReport.warningCount + diffReport.warningCount
+  const blockingMessages: string[] = []
+
+  if (contractReport.errorCount > 0) {
+    blockingMessages.push(`Contract validation has ${contractReport.errorCount} blocking error${contractReport.errorCount === 1 ? '' : 's'}.`)
+  }
+  if (diffReport.errorCount > 0) {
+    blockingMessages.push(`Diff preview has ${diffReport.errorCount} blocking error${diffReport.errorCount === 1 ? '' : 's'}.`)
+  }
+  if (tenantMismatchCount > 0) {
+    blockingMessages.push('Tenant mismatch detected. Import is blocked until tenant issues are resolved.')
+  }
+  if (diffReport.conflictCount > 0) {
+    blockingMessages.push('Matching conflicts detected. Resolve id/PageId/slug conflicts before importing.')
+  }
+
+  return {
+    available: true,
+    contractErrorCount: contractReport.errorCount,
+    diffErrorCount: diffReport.errorCount,
+    warningCount,
+    createCount: diffReport.createCount,
+    updateCount: diffReport.updateCount,
+    skipCount: diffReport.skipCount,
+    conflictCount: diffReport.conflictCount,
+    publishedUpdateCount,
+    slugChangeCount,
+    tenantMismatchCount,
+    staticRebuildCount,
+    riskCounts: Array.from(riskCounter.entries()).sort((a, b) => b[1] - a[1]),
+    blockingMessages,
+    requiresPublishedUpdateConfirmation: publishedUpdateCount > 0,
+    requiresSlugChangeConfirmation: slugChangeCount > 0,
+    requiresWarningConfirmation: warningCount > 0,
+  }
+}
+
+function isImportPreflightSatisfied(preflight: ImportPreflight, confirmations: ImportConfirmations) {
+  if (!preflight.available) return true
+  if (preflight.contractErrorCount > 0 || preflight.diffErrorCount > 0 || preflight.tenantMismatchCount > 0 || preflight.conflictCount > 0) return false
+  if (preflight.requiresPublishedUpdateConfirmation && !confirmations.publishedUpdates) return false
+  if (preflight.requiresSlugChangeConfirmation && !confirmations.slugChanges) return false
+  if (preflight.requiresWarningConfirmation && !confirmations.warnings) return false
+  return true
+}
+
+function buildPreflightSummary(preflight: ImportPreflight, handoffInfo: ImportHandoffInfo | null, importMode: ImportMode) {
+  return [
+    'Pumpkin CMS Import Preflight',
+    `Mode: ${importMode}`,
+    `Package: ${handoffInfo?.packageName || 'manual/pasted input'}`,
+    `Contract errors: ${preflight.contractErrorCount}`,
+    `Diff errors: ${preflight.diffErrorCount}`,
+    `Warnings: ${preflight.warningCount}`,
+    `Creates: ${preflight.createCount}`,
+    `Updates: ${preflight.updateCount}`,
+    `Skips: ${preflight.skipCount}`,
+    `Conflicts: ${preflight.conflictCount}`,
+    `Published updates: ${preflight.publishedUpdateCount}`,
+    `Slug changes: ${preflight.slugChangeCount}`,
+    `Static rebuild needed: ${preflight.staticRebuildCount}`,
+    'No Azure deploy or Cloudflare purge happens from Import/Export.',
+  ].join('\n')
 }
 
 function getActionClass(action: PlannedAction) {
