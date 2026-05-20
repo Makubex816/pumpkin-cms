@@ -41,6 +41,12 @@ public interface IDatabaseService
     Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId);
     Task<PublishRun?> GetPublishRunAsync(string tenantId, string id);
     Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun);
+
+    // Media asset registry methods (JWT authentication required at endpoint level)
+    Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId);
+    Task<MediaAsset?> GetMediaAssetAsync(string tenantId, string id);
+    Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset);
+    Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset);
     
     // Theme methods (content serving - API key required)
     Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId);

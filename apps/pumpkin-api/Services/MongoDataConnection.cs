@@ -837,6 +837,60 @@ public class MongoDataConnection : IDataConnection, IDisposable
         return publishRun;
     }
 
+    public async Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId)
+    {
+        var mediaAssetCollection = _database.GetCollection<MediaAsset>("MediaAsset");
+        var filter = Builders<MediaAsset>.Filter.Eq(asset => asset.TenantId, tenantId);
+
+        return await mediaAssetCollection
+            .Find(filter)
+            .SortByDescending(asset => asset.UpdatedAt)
+            .ToListAsync();
+    }
+
+    public async Task<MediaAsset?> GetMediaAssetAsync(string tenantId, string id)
+    {
+        var mediaAssetCollection = _database.GetCollection<MediaAsset>("MediaAsset");
+        var filter = Builders<MediaAsset>.Filter.And(
+            Builders<MediaAsset>.Filter.Eq(asset => asset.TenantId, tenantId),
+            Builders<MediaAsset>.Filter.Eq(asset => asset.Id, id)
+        );
+
+        return await mediaAssetCollection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset)
+    {
+        var mediaAssetCollection = _database.GetCollection<MediaAsset>("MediaAsset");
+        mediaAsset.TenantId = tenantId;
+
+        var filter = Builders<MediaAsset>.Filter.And(
+            Builders<MediaAsset>.Filter.Eq(asset => asset.TenantId, tenantId),
+            Builders<MediaAsset>.Filter.Eq(asset => asset.Id, mediaAsset.Id)
+        );
+
+        await mediaAssetCollection.ReplaceOneAsync(filter, mediaAsset, new ReplaceOptions { IsUpsert = true });
+        return mediaAsset;
+    }
+
+    public async Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset)
+    {
+        var mediaAssetCollection = _database.GetCollection<MediaAsset>("MediaAsset");
+        mediaAsset.TenantId = tenantId;
+        mediaAsset.Id = id;
+
+        var filter = Builders<MediaAsset>.Filter.And(
+            Builders<MediaAsset>.Filter.Eq(asset => asset.TenantId, tenantId),
+            Builders<MediaAsset>.Filter.Eq(asset => asset.Id, id)
+        );
+
+        var result = await mediaAssetCollection.ReplaceOneAsync(filter, mediaAsset);
+        if (result.MatchedCount == 0)
+            throw new KeyNotFoundException($"Media asset '{id}' not found");
+
+        return mediaAsset;
+    }
+
     public void Dispose()
     {
         if (!_disposed)
@@ -1110,6 +1164,26 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<MediaAsset?> GetMediaAssetAsync(string tenantId, string id)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

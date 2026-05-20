@@ -165,6 +165,26 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.SavePublishRunAsync(tenantId, publishRun);
     }
 
+    public Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId)
+    {
+        return _dataConnection.GetMediaAssetsByTenantAsync(tenantId);
+    }
+
+    public Task<MediaAsset?> GetMediaAssetAsync(string tenantId, string id)
+    {
+        return _dataConnection.GetMediaAssetAsync(tenantId, id);
+    }
+
+    public Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset)
+    {
+        return _dataConnection.SaveMediaAssetAsync(tenantId, mediaAsset);
+    }
+
+    public Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset)
+    {
+        return _dataConnection.UpdateMediaAssetAsync(tenantId, id, mediaAsset);
+    }
+
     // Theme methods (content serving - API key required)
     public Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId)
     {

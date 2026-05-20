@@ -1946,7 +1946,11 @@ export default function PageStructuredEditor() {
         </div>
       </Section>
 
-      <Section title="Media" description="Page-level image slots for production readiness plus detected per-block image fields.">
+      <Section title="Media" description="Page-level image slots for production readiness plus detected per-block image fields. Use assetId to reference registered Media Library records.">
+        <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-900">
+          Media Library integration is metadata-first in this phase. Register image URLs and license/alt metadata in{' '}
+          <a href="/dashboard/media" className="font-semibold underline">Media</a>, then paste the assetId, URL, and alt text into the relevant page slot.
+        </div>
         <div className="grid gap-4 xl:grid-cols-2">
           {([
             ['featuredImage', 'Featured image'],

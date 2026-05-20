@@ -1261,6 +1261,109 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId)
+    {
+        try
+        {
+            var mediaAssetContainer = _database.GetContainer("MediaAsset");
+            var query = "SELECT * FROM c WHERE c.tenantId = @tenantId ORDER BY c.updatedAt DESC";
+            var queryDefinition = new QueryDefinition(query).WithParameter("@tenantId", tenantId);
+
+            var mediaAssets = new List<MediaAsset>();
+            using var iterator = mediaAssetContainer.GetItemQueryIterator<MediaAsset>(queryDefinition, requestOptions: new QueryRequestOptions
+            {
+                PartitionKey = new PartitionKey(tenantId)
+            });
+
+            while (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync();
+                mediaAssets.AddRange(response);
+                _logger.LogInformation("GetMediaAssetsByTenantAsync - TenantId: {TenantId}, BatchCount: {Count}, RU: {RU}",
+                    tenantId, response.Count, response.RequestCharge);
+            }
+
+            return mediaAssets;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetMediaAssetsByTenantAsync error - TenantId: {TenantId}", tenantId);
+            throw;
+        }
+    }
+
+    public async Task<MediaAsset?> GetMediaAssetAsync(string tenantId, string id)
+    {
+        try
+        {
+            var mediaAssetContainer = _database.GetContainer("MediaAsset");
+            var response = await mediaAssetContainer.ReadItemAsync<MediaAsset>(id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("GetMediaAssetAsync - TenantId: {TenantId}, Id: {Id}, RU: {RU}",
+                tenantId, id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation("GetMediaAssetAsync - Media asset not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            return null;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetMediaAssetAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
+    public async Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset)
+    {
+        try
+        {
+            var mediaAssetContainer = _database.GetContainer("MediaAsset");
+            mediaAsset.TenantId = tenantId;
+
+            var response = await mediaAssetContainer.UpsertItemAsync(mediaAsset, new PartitionKey(tenantId));
+
+            _logger.LogInformation("SaveMediaAssetAsync - Media asset saved - TenantId: {TenantId}, AssetId: {AssetId}, Id: {Id}, RU: {RU}",
+                tenantId, mediaAsset.AssetId, mediaAsset.Id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "SaveMediaAssetAsync error - TenantId: {TenantId}, AssetId: {AssetId}", tenantId, mediaAsset.AssetId);
+            throw;
+        }
+    }
+
+    public async Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset)
+    {
+        try
+        {
+            var mediaAssetContainer = _database.GetContainer("MediaAsset");
+            mediaAsset.TenantId = tenantId;
+            mediaAsset.Id = id;
+
+            var response = await mediaAssetContainer.ReplaceItemAsync(mediaAsset, id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("UpdateMediaAssetAsync - Media asset updated - TenantId: {TenantId}, AssetId: {AssetId}, Id: {Id}, RU: {RU}",
+                tenantId, mediaAsset.AssetId, id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation("UpdateMediaAssetAsync - Media asset not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw new KeyNotFoundException($"Media asset '{id}' not found", ex);
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "UpdateMediaAssetAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
     // Admin: Get hub pages for a tenant (JWT authentication required at endpoint level)
     public async Task<List<Page>> GetHubPagesAsync(string tenantId)
     {

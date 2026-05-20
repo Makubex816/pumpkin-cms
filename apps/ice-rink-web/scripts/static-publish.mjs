@@ -224,6 +224,9 @@ function addImageAltWarnings(page, label, warnings) {
     if (stringValue(asset.url) && !stringValue(asset.alt) && asset.decorative !== true) {
       warnings.push(`${label}: media.${slot}.alt is missing while media.${slot}.url is set.`);
     }
+    if (stringValue(asset.url) && !stringValue(asset.assetId)) {
+      warnings.push(`${label}: media.${slot}.assetId is missing; register or reference a MediaAsset before production publish.`);
+    }
     if (stringValue(asset.url) && !stringValue(asset.source)) {
       warnings.push(`${label}: media.${slot}.source is missing while media.${slot}.url is set.`);
     }

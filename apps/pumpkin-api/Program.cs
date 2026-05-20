@@ -1340,6 +1340,166 @@ app.MapPost("/api/admin/{tenantId}/publish-runs",
     .WithSummary("Create/import a publish/build run")
     .WithDescription("Stores sanitized dry-run/build metadata only. Does not deploy, upload, purge, or execute shell commands.");
 
+// Admin: List media assets for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/{tenantId}/media-assets",
+    async (IDatabaseService databaseService, string tenantId, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var mediaAssets = await databaseService.GetMediaAssetsByTenantAsync(tenantId);
+            return Results.Ok(new { mediaAssets, count = mediaAssets.Count, tenantId });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving media assets: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("GetMediaAssets")
+    .WithSummary("Get media assets for a tenant")
+    .WithDescription("Lists tenant-scoped media asset metadata. Requires JWT authentication.");
+
+// Admin: Get one media asset for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/{tenantId}/media-assets/{id}",
+    async (IDatabaseService databaseService, string tenantId, string id, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var mediaAsset = await databaseService.GetMediaAssetAsync(tenantId, id);
+            return mediaAsset == null ? Results.NotFound("Media asset not found") : Results.Ok(mediaAsset);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving media asset: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("GetMediaAsset")
+    .WithSummary("Get one media asset")
+    .WithDescription("Reads one tenant-scoped media asset metadata record. Requires JWT authentication.");
+
+// Admin: Register media asset metadata for an existing URL (JWT auth, no API key)
+app.MapPost("/api/admin/{tenantId}/media-assets",
+    async (IDatabaseService databaseService, string tenantId, MediaAsset mediaAsset, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var createdBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+
+            var preparedMediaAsset = MediaAssetSanitizer.PrepareForCreate(mediaAsset, tenantId, createdBy);
+            var savedMediaAsset = await databaseService.SaveMediaAssetAsync(tenantId, preparedMediaAsset);
+            return Results.Created($"/api/admin/{tenantId}/media-assets/{savedMediaAsset.Id}", savedMediaAsset);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error saving media asset: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("CreateMediaAsset")
+    .WithSummary("Register media asset metadata")
+    .WithDescription("Stores metadata for an existing image URL only. Does not upload files or manage production storage.");
+
+// Admin: Update media asset metadata only (JWT auth, no API key)
+app.MapPatch("/api/admin/{tenantId}/media-assets/{id}",
+    async (IDatabaseService databaseService, string tenantId, string id, MediaAsset mediaAsset, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var updatedBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+
+            var existingMediaAsset = await databaseService.GetMediaAssetAsync(tenantId, id);
+            if (existingMediaAsset == null)
+                return Results.NotFound("Media asset not found");
+
+            var preparedMediaAsset = MediaAssetSanitizer.PrepareForUpdate(existingMediaAsset, mediaAsset, tenantId, updatedBy);
+            var updatedMediaAsset = await databaseService.UpdateMediaAssetAsync(tenantId, id, preparedMediaAsset);
+            return Results.Ok(updatedMediaAsset);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Results.Forbid();
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error updating media asset: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("UpdateMediaAsset")
+    .WithSummary("Update media asset metadata")
+    .WithDescription("Updates safe media metadata only. Does not upload files, delete assets, deploy, or alter Cloudflare.");
+
 // Admin: Get hub pages for a tenant
 app.MapGet("/api/admin/tenants/{tenantId}/hubs",
     async (IDatabaseService databaseService, string tenantId, HttpContext context) =>

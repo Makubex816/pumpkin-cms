@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, FormEntry } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, FormEntry, MediaAsset } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -395,6 +395,59 @@ class ApiClient {
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ status, tags }),
+      }
+    )
+  }
+
+  async getMediaAssets(token: string, tenantId: string): Promise<MediaAsset[]> {
+    const response = await this.request<{ mediaAssets: MediaAsset[]; count: number; tenantId: string }>(
+      `/api/admin/${encodeURIComponent(tenantId)}/media-assets`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+    return response.mediaAssets
+  }
+
+  async getMediaAsset(token: string, tenantId: string, id: string): Promise<MediaAsset> {
+    return this.request<MediaAsset>(
+      `/api/admin/${encodeURIComponent(tenantId)}/media-assets/${encodeURIComponent(id)}`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  async createMediaAsset(token: string, tenantId: string, mediaAsset: MediaAsset): Promise<MediaAsset> {
+    return this.request<MediaAsset>(
+      `/api/admin/${encodeURIComponent(tenantId)}/media-assets`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(mediaAsset),
+      }
+    )
+  }
+
+  async updateMediaAsset(token: string, tenantId: string, id: string, mediaAsset: MediaAsset): Promise<MediaAsset> {
+    return this.request<MediaAsset>(
+      `/api/admin/${encodeURIComponent(tenantId)}/media-assets/${encodeURIComponent(id)}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(mediaAsset),
       }
     )
   }

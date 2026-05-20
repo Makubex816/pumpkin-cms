@@ -38,6 +38,15 @@ export type {
   FormEntryMetadata
 } from './models/FormEntry';
 
+// Media asset models
+export type {
+  MediaAsset,
+  MediaAssetFocalPoint,
+  MediaAssetUsageReference,
+  MediaAssetLicenseStatus,
+  MediaAssetUsageStatus
+} from './models/MediaAsset';
+
 // Page models
 export type {
   Page,
