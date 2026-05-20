@@ -118,6 +118,13 @@ export default function ContentJsonContractValidatorPage() {
           <p className="mt-1 text-neutral-600">
             Dry-run externally generated Page JSON before import, static publishing, or production review.
           </p>
+          <button
+            type="button"
+            onClick={() => router.push('/dashboard/pages/content-packages')}
+            className="mt-3 text-sm font-medium text-primary-700 hover:text-primary-900"
+          >
+            Open content package staging
+          </button>
         </div>
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           Validation only. This page does not import, save, publish, deploy, or purge.

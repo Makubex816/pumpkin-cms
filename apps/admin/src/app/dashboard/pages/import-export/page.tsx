@@ -271,6 +271,8 @@ const FILE_ACCEPT: Record<ImportSourceType, string> = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xlsx',
 }
 
+const IMPORT_HANDOFF_STORAGE_KEY = 'pumpkin:page-import-handoff:v1'
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
@@ -2224,6 +2226,43 @@ export default function PageImportExportPage() {
     fetchPages()
   }, [fetchPages])
 
+  useEffect(() => {
+    if (!currentTenant) return
+
+    try {
+      const rawHandoff = window.localStorage.getItem(IMPORT_HANDOFF_STORAGE_KEY)
+      if (!rawHandoff) return
+
+      const handoff = JSON.parse(rawHandoff)
+      if (!isRecord(handoff)) {
+        window.localStorage.removeItem(IMPORT_HANDOFF_STORAGE_KEY)
+        return
+      }
+
+      const handoffTenantId = stringValue(handoff.tenantId)
+      const rawJson = stringValue(handoff.rawJson)
+      const packageName = stringValue(handoff.packageName) || 'staged content package'
+
+      if (handoffTenantId && handoffTenantId !== currentTenant.tenantId) {
+        setNotice(`A staged package for ${handoffTenantId} is waiting, but the selected tenant is ${currentTenant.tenantId}. Switch tenants before importing it.`)
+        return
+      }
+
+      if (rawJson.trim()) {
+        setImportSourceType('json')
+        setImportText(rawJson)
+        setXlsxImport(null)
+        setReport(null)
+        setError(null)
+        setNotice(`Loaded staged package "${packageName}" from the review queue. Run dry-run before importing.`)
+        window.localStorage.removeItem(IMPORT_HANDOFF_STORAGE_KEY)
+      }
+    } catch {
+      window.localStorage.removeItem(IMPORT_HANDOFF_STORAGE_KEY)
+      setError('Unable to load the staged package handoff. Download or copy the package JSON from Content Package Staging instead.')
+    }
+  }, [currentTenant])
+
   const getExportPages = () => {
     if (exportScope === 'published') return publishedPages
     if (exportScope === 'single') return pages.filter((page) => page.pageSlug === selectedSlug)
@@ -2476,13 +2515,22 @@ export default function PageImportExportPage() {
         <div className="text-right">
           <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">Tenant</div>
           <div className="text-sm font-semibold text-neutral-900">{currentTenant.tenantId}</div>
-          <button
-            type="button"
-            onClick={() => router.push('/dashboard/pages/content-validator')}
-            className="mt-2 text-sm font-medium text-primary-700 hover:text-primary-900"
-          >
-            Validate content JSON
-          </button>
+          <div className="mt-2 flex flex-col gap-1">
+            <button
+              type="button"
+              onClick={() => router.push('/dashboard/pages/content-validator')}
+              className="text-sm font-medium text-primary-700 hover:text-primary-900"
+            >
+              Validate content JSON
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push('/dashboard/pages/content-packages')}
+              className="text-sm font-medium text-primary-700 hover:text-primary-900"
+            >
+              Stage content package
+            </button>
+          </div>
         </div>
       </div>
 
