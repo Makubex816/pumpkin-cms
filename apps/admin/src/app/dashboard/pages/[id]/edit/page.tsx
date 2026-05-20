@@ -1,11 +1,14 @@
 'use client'
 
+/* eslint-disable @next/next/no-img-element */
+
 import { useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import MediaPicker, { getMediaAssetReference } from '@/components/MediaPicker'
 import { apiClient } from '@/lib/api'
-import type { IHtmlBlock, Page, PageRedirect } from 'pumpkin-ts-models'
+import type { IHtmlBlock, MediaAsset, Page, PageRedirect } from 'pumpkin-ts-models'
 
 const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
   'ice-rink-rentals': 'http://localhost:3002',
@@ -279,6 +282,57 @@ function getPageMedia(page: Page) {
       alt: page.media?.openGraphImage?.alt || page.seo?.openGraph?.['og:image:alt'] || '',
     },
   }
+}
+
+type ImageAssetDraft = ReturnType<typeof emptyImageAsset>
+
+function imageAssetFromMediaAsset(asset: MediaAsset, current: ImageAssetDraft): ImageAssetDraft {
+  return {
+    ...current,
+    assetId: getMediaAssetReference(asset),
+    url: asset.url || current.url,
+    alt: asset.alt || current.alt,
+    title: asset.title || current.title,
+    caption: asset.caption || current.caption,
+    source: asset.source || current.source,
+    licenseStatus: asset.licenseStatus || current.licenseStatus,
+    usageStatus: asset.usageStatus || current.usageStatus,
+    width: asset.width ?? current.width,
+    height: asset.height ?? current.height,
+    focalPointX: asset.focalPoint?.x ?? current.focalPointX,
+    focalPointY: asset.focalPoint?.y ?? current.focalPointY,
+    decorative: asset.decorative,
+  }
+}
+
+function getImageSlotWarnings(slot: MediaSlot, asset: ImageAssetDraft, isPublished: boolean) {
+  const warnings: string[] = []
+
+  if (asset.url && !asset.assetId) warnings.push('Image URL is not linked to a Media Library assetId.')
+  if (asset.url && !asset.decorative && !asset.alt.trim()) warnings.push('Alt text is missing for a non-decorative image.')
+  if (asset.decorative && asset.alt.trim()) warnings.push('Decorative images usually should have empty alt text.')
+  if (asset.url && (asset.licenseStatus === 'unknown' || asset.licenseStatus === 'needs_review' || !asset.licenseStatus)) {
+    warnings.push('License status needs review before publish.')
+  }
+  if (isPublished && asset.url && asset.usageStatus !== 'approved_for_publish') {
+    warnings.push('Published page uses an image that is not marked approved_for_publish.')
+  }
+  if ((slot === 'featuredImage' || slot === 'heroImage') && asset.url && (asset.focalPointX === null || asset.focalPointY === null)) {
+    warnings.push('Focal point is missing for a primary image slot.')
+  }
+
+  return warnings
+}
+
+function getBlockImageWarnings(url: string, assetId: string, alt: string, licenseStatus: string, usageStatus: string) {
+  const warnings: string[] = []
+
+  if (url && !assetId) warnings.push('URL is not linked to a Media Library assetId.')
+  if (url && !alt.trim()) warnings.push('Alt text is missing.')
+  if (url && (licenseStatus === 'unknown' || licenseStatus === 'needs_review')) warnings.push('License needs review.')
+  if (url && usageStatus && usageStatus !== 'approved_for_publish') warnings.push('Asset usage is not approved_for_publish.')
+
+  return warnings
 }
 
 function getPageFulfillment(page: Page) {
@@ -1336,6 +1390,58 @@ export default function PageStructuredEditor() {
     }))
   }
 
+  const applyMediaAssetToSlot = (slot: MediaSlot, asset: MediaAsset) => {
+    updatePageState((current) => {
+      const media = getPageMedia(current)
+
+      return {
+        ...current,
+        media: {
+          ...media,
+          [slot]: imageAssetFromMediaAsset(asset, media[slot]),
+        },
+      }
+    })
+  }
+
+  const clearMediaSlotAsset = (slot: MediaSlot) => {
+    updatePageState((current) => {
+      const media = getPageMedia(current)
+
+      return {
+        ...current,
+        media: {
+          ...media,
+          [slot]: {
+            ...media[slot],
+            assetId: '',
+          },
+        },
+      }
+    })
+  }
+
+  const applyOpenGraphMediaAsset = (asset: MediaAsset) => {
+    updatePageState((current) => ({
+      ...current,
+      media: {
+        ...getPageMedia(current),
+        openGraphImage: {
+          url: asset.url || '',
+          alt: asset.alt || '',
+        },
+      },
+      seo: {
+        ...current.seo,
+        openGraph: {
+          ...current.seo.openGraph,
+          'og:image': asset.url || '',
+          'og:image:alt': asset.alt || '',
+        },
+      },
+    }))
+  }
+
   const updateWorkflowField = (field: WorkflowStringField, value: string) => {
     updatePageState((current) => ({
       ...current,
@@ -1578,6 +1684,53 @@ export default function PageStructuredEditor() {
       currentItems[itemIndex] = {
         ...currentItem,
         [field]: value,
+      }
+
+      return {
+        ...content,
+        [arrayKey]: currentItems,
+      }
+    })
+  }
+
+  const applyMediaAssetToBlockField = (
+    blockIndex: number,
+    imageField: string,
+    altField: string,
+    asset: MediaAsset,
+  ) => {
+    updateBlockContent(blockIndex, (content) => ({
+      ...content,
+      [imageField]: asset.url || '',
+      ...(altField ? { [altField]: asset.alt || '' } : {}),
+      [`${imageField}AssetId`]: getMediaAssetReference(asset),
+      [`${imageField}LicenseStatus`]: asset.licenseStatus || '',
+      [`${imageField}UsageStatus`]: asset.usageStatus || '',
+      [`${imageField}FocalPointX`]: asset.focalPoint?.x ?? null,
+      [`${imageField}FocalPointY`]: asset.focalPoint?.y ?? null,
+    }))
+  }
+
+  const applyMediaAssetToBlockArrayItem = (
+    blockIndex: number,
+    arrayKey: string,
+    itemIndex: number,
+    imageField: string,
+    altField: string,
+    asset: MediaAsset,
+  ) => {
+    updateBlockContent(blockIndex, (content) => {
+      const currentItems = Array.isArray(content[arrayKey]) ? [...content[arrayKey] as unknown[]] : []
+      const currentItem = toRecord(currentItems[itemIndex])
+      currentItems[itemIndex] = {
+        ...currentItem,
+        [imageField]: asset.url || '',
+        ...(altField ? { [altField]: asset.alt || '' } : {}),
+        [`${imageField}AssetId`]: getMediaAssetReference(asset),
+        [`${imageField}LicenseStatus`]: asset.licenseStatus || '',
+        [`${imageField}UsageStatus`]: asset.usageStatus || '',
+        [`${imageField}FocalPointX`]: asset.focalPoint?.x ?? null,
+        [`${imageField}FocalPointY`]: asset.focalPoint?.y ?? null,
       }
 
       return {
@@ -1948,8 +2101,8 @@ export default function PageStructuredEditor() {
 
       <Section title="Media" description="Page-level image slots for production readiness plus detected per-block image fields. Use assetId to reference registered Media Library records.">
         <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-900">
-          Media Library integration is metadata-first in this phase. Register image URLs and license/alt metadata in{' '}
-          <a href="/dashboard/media" className="font-semibold underline">Media</a>, then paste the assetId, URL, and alt text into the relevant page slot.
+          Select registered tenant media assets directly from the Media Library, or keep using manual URLs as a fallback.
+          Image changes save through the same revision and static rebuild path as other page edits.
         </div>
         <div className="grid gap-4 xl:grid-cols-2">
           {([
@@ -1962,7 +2115,58 @@ export default function PageStructuredEditor() {
 
             return (
               <div key={slot} className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
-                <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</div>
+                <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</div>
+                    {asset?.assetId && (
+                      <div className="mt-1 text-xs text-green-700">Selected from Media Library: {asset.assetId}</div>
+                    )}
+                  </div>
+                  {asset?.assetId && (
+                    <a
+                      href={`/dashboard/media/${encodeURIComponent(asset.assetId)}?tenantId=${encodeURIComponent(page.tenantId)}`}
+                      className="text-xs font-semibold text-primary-700 hover:text-primary-900"
+                    >
+                      View Asset
+                    </a>
+                  )}
+                </div>
+                {asset?.url && (
+                  <div className="mb-3 overflow-hidden rounded-md border border-neutral-200 bg-white">
+                    <img
+                      src={asset.url}
+                      alt={asset.alt || asset.title || `${label} preview`}
+                      className="h-32 w-full object-cover"
+                    />
+                  </div>
+                )}
+                <MediaPicker
+                  token={token}
+                  tenantId={page.tenantId}
+                  selectedAssetId={asset?.assetId || ''}
+                  buttonLabel={`Choose ${label}`}
+                  panelTitle={`${label} picker`}
+                  onSelect={(selectedAsset) => applyMediaAssetToSlot(slot, selectedAsset)}
+                />
+                {asset?.assetId && (
+                  <button
+                    type="button"
+                    onClick={() => clearMediaSlotAsset(slot)}
+                    className="mt-2 text-xs font-semibold text-neutral-600 hover:text-neutral-900"
+                  >
+                    Clear Media Library asset link
+                  </button>
+                )}
+                {getImageSlotWarnings(slot, asset || emptyImageAsset(), Boolean(page.isPublished)).length > 0 && (
+                  <div className="mt-3 space-y-1 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+                    {getImageSlotWarnings(slot, asset || emptyImageAsset(), Boolean(page.isPublished)).map((warning) => (
+                      <div key={warning}>{warning}</div>
+                    ))}
+                    {asset?.url && !asset.assetId && (
+                      <a href="/dashboard/media" className="font-semibold underline">Register this URL in Media Library</a>
+                    )}
+                  </div>
+                )}
                 <div className="grid gap-3 lg:grid-cols-2">
                   <TextField label="assetId" value={asset?.assetId || ''} onChange={(value) => updateMediaField(slot, 'assetId', value)} />
                   <TextField label="url" value={asset?.url || ''} onChange={(value) => updateMediaField(slot, 'url', value)} />
@@ -1983,6 +2187,25 @@ export default function PageStructuredEditor() {
           })}
           <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
             <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">Open Graph image mirror</div>
+            {pageMedia?.openGraphImage.url && (
+              <div className="mb-3 overflow-hidden rounded-md border border-neutral-200 bg-white">
+                <img
+                  src={pageMedia.openGraphImage.url}
+                  alt={pageMedia.openGraphImage.alt || 'Open Graph image preview'}
+                  className="h-32 w-full object-cover"
+                />
+              </div>
+            )}
+            <MediaPicker
+              token={token}
+              tenantId={page.tenantId}
+              buttonLabel="Choose Open Graph image"
+              panelTitle="Open Graph image picker"
+              onSelect={applyOpenGraphMediaAsset}
+            />
+            <p className="mt-2 text-xs text-neutral-500">
+              Current Open Graph schema stores URL and alt text only; the page-level slots above retain assetId and license metadata.
+            </p>
             <div className="grid gap-3 lg:grid-cols-2">
               <TextField label="url" value={pageMedia?.openGraphImage.url || ''} onChange={(value) => updateOpenGraphImageField('url', value)} />
               <TextField label="alt" value={pageMedia?.openGraphImage.alt || ''} onChange={(value) => updateOpenGraphImageField('alt', value)} />
@@ -2175,8 +2398,12 @@ export default function PageStructuredEditor() {
                 key={`${block.type}-${blockIndex}`}
                 block={block}
                 blockIndex={blockIndex}
+                token={token}
+                tenantId={page.tenantId}
                 updateBlockField={updateBlockField}
                 updateBlockArrayItemField={updateBlockArrayItemField}
+                applyMediaAssetToBlockField={applyMediaAssetToBlockField}
+                applyMediaAssetToBlockArrayItem={applyMediaAssetToBlockArrayItem}
               />
             ))}
           </div>
@@ -2189,13 +2416,21 @@ export default function PageStructuredEditor() {
 function BlockEditor({
   block,
   blockIndex,
+  token,
+  tenantId,
   updateBlockField,
   updateBlockArrayItemField,
+  applyMediaAssetToBlockField,
+  applyMediaAssetToBlockArrayItem,
 }: {
   block: IHtmlBlock
   blockIndex: number
+  token: string | null
+  tenantId: string
   updateBlockField: (blockIndex: number, field: string, value: string) => void
   updateBlockArrayItemField: (blockIndex: number, arrayKey: string, itemIndex: number, field: string, value: string | boolean) => void
+  applyMediaAssetToBlockField: (blockIndex: number, imageField: string, altField: string, asset: MediaAsset) => void
+  applyMediaAssetToBlockArrayItem: (blockIndex: number, arrayKey: string, itemIndex: number, imageField: string, altField: string, asset: MediaAsset) => void
 }) {
   const content = toRecord(block.content)
   const blockTitle = block.type || 'Missing type'
@@ -2220,8 +2455,166 @@ function BlockEditor({
 
       <div className="p-4">
         {SUPPORTED_BLOCK_TYPES.has(block.type)
-          ? renderBlockFields(block.type, content, blockIndex, updateBlockField, updateBlockArrayItemField)
+          ? renderBlockFields(
+              block.type,
+              content,
+              blockIndex,
+              token,
+              tenantId,
+              updateBlockField,
+              updateBlockArrayItemField,
+              applyMediaAssetToBlockField,
+              applyMediaAssetToBlockArrayItem,
+            )
           : <UnsupportedBlock block={block} />}
+      </div>
+    </div>
+  )
+}
+
+function BlockImageField({
+  token,
+  tenantId,
+  content,
+  blockIndex,
+  imageField,
+  altField,
+  label,
+  updateBlockField,
+  applyMediaAssetToBlockField,
+}: {
+  token: string | null
+  tenantId: string
+  content: EditableContent
+  blockIndex: number
+  imageField: string
+  altField: string
+  label: string
+  updateBlockField: (blockIndex: number, field: string, value: string) => void
+  applyMediaAssetToBlockField: (blockIndex: number, imageField: string, altField: string, asset: MediaAsset) => void
+}) {
+  const url = stringValue(content[imageField])
+  const alt = altField ? stringValue(content[altField]) : ''
+  const assetId = stringValue(content[`${imageField}AssetId`])
+  const licenseStatus = stringValue(content[`${imageField}LicenseStatus`])
+  const usageStatus = stringValue(content[`${imageField}UsageStatus`])
+  const warnings = getBlockImageWarnings(url, assetId, alt, licenseStatus, usageStatus)
+
+  return (
+    <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
+      <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</div>
+          {assetId && <div className="mt-1 text-xs text-green-700">Selected from Media Library: {assetId}</div>}
+        </div>
+        {assetId && (
+          <a
+            href={`/dashboard/media/${encodeURIComponent(assetId)}?tenantId=${encodeURIComponent(tenantId)}`}
+            className="text-xs font-semibold text-primary-700 hover:text-primary-900"
+          >
+            View Asset
+          </a>
+        )}
+      </div>
+      {url && (
+        <div className="mb-3 overflow-hidden rounded-md border border-neutral-200 bg-white">
+          <img src={url} alt={alt || `${label} preview`} className="h-28 w-full object-cover" />
+        </div>
+      )}
+      <MediaPicker
+        token={token}
+        tenantId={tenantId}
+        selectedAssetId={assetId}
+        buttonLabel={`Choose ${label}`}
+        panelTitle={`${label} picker`}
+        onSelect={(asset) => applyMediaAssetToBlockField(blockIndex, imageField, altField, asset)}
+      />
+      {warnings.length > 0 && (
+        <div className="mt-3 space-y-1 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          {warnings.map((warning) => <div key={warning}>{warning}</div>)}
+          {url && !assetId && <a href="/dashboard/media" className="font-semibold underline">Register this URL in Media Library</a>}
+        </div>
+      )}
+      <div className="mt-3 grid gap-3 lg:grid-cols-2">
+        <TextField label={imageField} value={url} onChange={(value) => updateBlockField(blockIndex, imageField, value)} />
+        {altField && <TextField label={altField} value={alt} onChange={(value) => updateBlockField(blockIndex, altField, value)} />}
+        <TextField label={`${imageField}AssetId`} value={assetId} onChange={(value) => updateBlockField(blockIndex, `${imageField}AssetId`, value)} />
+      </div>
+    </div>
+  )
+}
+
+function BlockArrayImageField({
+  token,
+  tenantId,
+  item,
+  blockIndex,
+  arrayKey,
+  itemIndex,
+  imageField,
+  altField,
+  label,
+  updateBlockArrayItemField,
+  applyMediaAssetToBlockArrayItem,
+}: {
+  token: string | null
+  tenantId: string
+  item: EditableContent
+  blockIndex: number
+  arrayKey: string
+  itemIndex: number
+  imageField: string
+  altField: string
+  label: string
+  updateBlockArrayItemField: (blockIndex: number, arrayKey: string, itemIndex: number, field: string, value: string | boolean) => void
+  applyMediaAssetToBlockArrayItem: (blockIndex: number, arrayKey: string, itemIndex: number, imageField: string, altField: string, asset: MediaAsset) => void
+}) {
+  const url = stringValue(item[imageField])
+  const alt = altField ? stringValue(item[altField]) : ''
+  const assetId = stringValue(item[`${imageField}AssetId`])
+  const licenseStatus = stringValue(item[`${imageField}LicenseStatus`])
+  const usageStatus = stringValue(item[`${imageField}UsageStatus`])
+  const warnings = getBlockImageWarnings(url, assetId, alt, licenseStatus, usageStatus)
+
+  return (
+    <div className="rounded-md border border-neutral-200 bg-white p-3 lg:col-span-2">
+      <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</div>
+          {assetId && <div className="mt-1 text-xs text-green-700">Selected from Media Library: {assetId}</div>}
+        </div>
+        {assetId && (
+          <a
+            href={`/dashboard/media/${encodeURIComponent(assetId)}?tenantId=${encodeURIComponent(tenantId)}`}
+            className="text-xs font-semibold text-primary-700 hover:text-primary-900"
+          >
+            View Asset
+          </a>
+        )}
+      </div>
+      {url && (
+        <div className="mb-3 overflow-hidden rounded-md border border-neutral-200 bg-neutral-50">
+          <img src={url} alt={alt || `${label} preview`} className="h-28 w-full object-cover" />
+        </div>
+      )}
+      <MediaPicker
+        token={token}
+        tenantId={tenantId}
+        selectedAssetId={assetId}
+        buttonLabel={`Choose ${label}`}
+        panelTitle={`${label} picker`}
+        onSelect={(asset) => applyMediaAssetToBlockArrayItem(blockIndex, arrayKey, itemIndex, imageField, altField, asset)}
+      />
+      {warnings.length > 0 && (
+        <div className="mt-3 space-y-1 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          {warnings.map((warning) => <div key={warning}>{warning}</div>)}
+          {url && !assetId && <a href="/dashboard/media" className="font-semibold underline">Register this URL in Media Library</a>}
+        </div>
+      )}
+      <div className="mt-3 grid gap-3 lg:grid-cols-3">
+        <TextField label={imageField} value={url} onChange={(value) => updateBlockArrayItemField(blockIndex, arrayKey, itemIndex, imageField, value)} />
+        {altField && <TextField label={altField} value={alt} onChange={(value) => updateBlockArrayItemField(blockIndex, arrayKey, itemIndex, altField, value)} />}
+        <TextField label={`${imageField}AssetId`} value={assetId} onChange={(value) => updateBlockArrayItemField(blockIndex, arrayKey, itemIndex, `${imageField}AssetId`, value)} />
       </div>
     </div>
   )
@@ -2231,8 +2624,12 @@ function renderBlockFields(
   blockType: string,
   content: EditableContent,
   blockIndex: number,
+  token: string | null,
+  tenantId: string,
   updateBlockField: (blockIndex: number, field: string, value: string) => void,
   updateBlockArrayItemField: (blockIndex: number, arrayKey: string, itemIndex: number, field: string, value: string | boolean) => void,
+  applyMediaAssetToBlockField: (blockIndex: number, imageField: string, altField: string, asset: MediaAsset) => void,
+  applyMediaAssetToBlockArrayItem: (blockIndex: number, arrayKey: string, itemIndex: number, imageField: string, altField: string, asset: MediaAsset) => void,
 ) {
   const field = (fieldName: string, label: string, options?: Omit<TextFieldProps, 'label' | 'value' | 'onChange'>) => (
     <TextField
@@ -2257,10 +2654,28 @@ function renderBlockFields(
           <div className="rounded-md border border-neutral-200 bg-white p-3">
             <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">Hero image fields</div>
             <div className="grid gap-4 lg:grid-cols-2">
-              {field('backgroundImage', 'backgroundImage')}
-              {field('backgroundImageAltText', 'backgroundImageAltText')}
-              {field('mainImage', 'mainImage')}
-              {field('mainImageAltText', 'mainImageAltText')}
+              <BlockImageField
+                token={token}
+                tenantId={tenantId}
+                content={content}
+                blockIndex={blockIndex}
+                imageField="backgroundImage"
+                altField="backgroundImageAltText"
+                label="backgroundImage"
+                updateBlockField={updateBlockField}
+                applyMediaAssetToBlockField={applyMediaAssetToBlockField}
+              />
+              <BlockImageField
+                token={token}
+                tenantId={tenantId}
+                content={content}
+                blockIndex={blockIndex}
+                imageField="mainImage"
+                altField="mainImageAltText"
+                label="mainImage"
+                updateBlockField={updateBlockField}
+                applyMediaAssetToBlockField={applyMediaAssetToBlockField}
+              />
             </div>
           </div>
         </div>
@@ -2306,8 +2721,19 @@ function renderBlockFields(
                 <TextField label="description" value={stringValue(item.description)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'cards', itemIndex, 'description', value)} multiline rows={3} />
                 <TextField label="icon" value={stringValue(item.icon)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'cards', itemIndex, 'icon', value)} />
                 <TextField label="link" value={stringValue(item.link)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'cards', itemIndex, 'link', value)} />
-                <TextField label="image" value={stringValue(item.image)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'cards', itemIndex, 'image', value)} />
-                <TextField label="image-alt" value={stringValue(item['image-alt'])} onChange={(value) => updateBlockArrayItemField(blockIndex, 'cards', itemIndex, 'image-alt', value)} />
+                <BlockArrayImageField
+                  token={token}
+                  tenantId={tenantId}
+                  item={item}
+                  blockIndex={blockIndex}
+                  arrayKey="cards"
+                  itemIndex={itemIndex}
+                  imageField="image"
+                  altField="image-alt"
+                  label="card image"
+                  updateBlockArrayItemField={updateBlockArrayItemField}
+                  applyMediaAssetToBlockArrayItem={applyMediaAssetToBlockArrayItem}
+                />
                 <TextField label="alt" value={stringValue(item.alt)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'cards', itemIndex, 'alt', value)} />
               </div>
             )}
@@ -2327,8 +2753,19 @@ function renderBlockFields(
               <div className="grid gap-3 lg:grid-cols-2">
                 <TextField label="step title" value={stringValue(item.title)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'steps', itemIndex, 'title', value)} />
                 <TextField label="step text" value={stringValue(item.text)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'steps', itemIndex, 'text', value)} multiline rows={3} />
-                <TextField label="step image" value={stringValue(item.image)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'steps', itemIndex, 'image', value)} />
-                <TextField label="step alt" value={stringValue(item.alt)} onChange={(value) => updateBlockArrayItemField(blockIndex, 'steps', itemIndex, 'alt', value)} />
+                <BlockArrayImageField
+                  token={token}
+                  tenantId={tenantId}
+                  item={item}
+                  blockIndex={blockIndex}
+                  arrayKey="steps"
+                  itemIndex={itemIndex}
+                  imageField="image"
+                  altField="alt"
+                  label="step image"
+                  updateBlockArrayItemField={updateBlockArrayItemField}
+                  applyMediaAssetToBlockArrayItem={applyMediaAssetToBlockArrayItem}
+                />
               </div>
             )}
           />
@@ -2375,9 +2812,28 @@ function renderBlockFields(
           <div className="rounded-md border border-neutral-200 bg-white p-3">
             <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">Closing image fields</div>
             <div className="grid gap-4 lg:grid-cols-2">
-              {field('backgroundImage', 'backgroundImage')}
-              {field('mainImage', 'mainImage')}
-              {field('alt', 'alt')}
+              <BlockImageField
+                token={token}
+                tenantId={tenantId}
+                content={content}
+                blockIndex={blockIndex}
+                imageField="backgroundImage"
+                altField="alt"
+                label="backgroundImage"
+                updateBlockField={updateBlockField}
+                applyMediaAssetToBlockField={applyMediaAssetToBlockField}
+              />
+              <BlockImageField
+                token={token}
+                tenantId={tenantId}
+                content={content}
+                blockIndex={blockIndex}
+                imageField="mainImage"
+                altField="alt"
+                label="mainImage"
+                updateBlockField={updateBlockField}
+                applyMediaAssetToBlockField={applyMediaAssetToBlockField}
+              />
             </div>
           </div>
         </div>

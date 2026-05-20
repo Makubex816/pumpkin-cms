@@ -853,7 +853,10 @@ public class MongoDataConnection : IDataConnection, IDisposable
         var mediaAssetCollection = _database.GetCollection<MediaAsset>("MediaAsset");
         var filter = Builders<MediaAsset>.Filter.And(
             Builders<MediaAsset>.Filter.Eq(asset => asset.TenantId, tenantId),
-            Builders<MediaAsset>.Filter.Eq(asset => asset.Id, id)
+            Builders<MediaAsset>.Filter.Or(
+                Builders<MediaAsset>.Filter.Eq(asset => asset.Id, id),
+                Builders<MediaAsset>.Filter.Eq(asset => asset.AssetId, id)
+            )
         );
 
         return await mediaAssetCollection.Find(filter).FirstOrDefaultAsync();

@@ -1306,7 +1306,31 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
         catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
         {
-            _logger.LogInformation("GetMediaAssetAsync - Media asset not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            var mediaAssetContainer = _database.GetContainer("MediaAsset");
+            var queryDefinition = new QueryDefinition(
+                    "SELECT TOP 1 * FROM c WHERE c.tenantId = @tenantId AND c.assetId = @assetId")
+                .WithParameter("@tenantId", tenantId)
+                .WithParameter("@assetId", id);
+
+            using var iterator = mediaAssetContainer.GetItemQueryIterator<MediaAsset>(queryDefinition, requestOptions: new QueryRequestOptions
+            {
+                PartitionKey = new PartitionKey(tenantId),
+                MaxItemCount = 1
+            });
+
+            while (iterator.HasMoreResults)
+            {
+                var queryResponse = await iterator.ReadNextAsync();
+                var asset = queryResponse.FirstOrDefault();
+                if (asset != null)
+                {
+                    _logger.LogInformation("GetMediaAssetAsync - TenantId: {TenantId}, AssetId: {AssetId}, RU: {RU}",
+                        tenantId, id, queryResponse.RequestCharge);
+                    return asset;
+                }
+            }
+
+            _logger.LogInformation("GetMediaAssetAsync - Media asset not found - TenantId: {TenantId}, IdOrAssetId: {Id}", tenantId, id);
             return null;
         }
         catch (CosmosException ex)
