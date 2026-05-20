@@ -221,7 +221,7 @@ export interface PageRevisionMetadata {
     lastChangeAt: string;
     latestSnapshot?: PageRevisionSnapshot | null;
 }
-export type PageChangeSource = 'admin_editor' | 'json_import' | 'csv_import' | 'xlsx_import' | 'lifecycle_action' | 'rollback' | 'cms_snapshot' | 'metadata_repair' | 'manual_unknown';
+export type PageChangeSource = 'admin_editor' | 'json_import' | 'csv_import' | 'xlsx_import' | 'lifecycle_action' | 'rollback' | 'cms_snapshot' | 'metadata_repair' | 'form_builder' | 'manual_unknown';
 /**
  * Single latest pre-update page snapshot stored in the Page document.
  */
@@ -292,6 +292,7 @@ export interface PageFormConfig {
     thankYouMessage: string;
     recipientGroup: string;
     staticFormEndpointKey: string;
+    normalizedFieldMap?: Record<string, string>;
     requiresConsent?: boolean;
     consentRequired: boolean;
     spamProtectionRequired?: boolean;
