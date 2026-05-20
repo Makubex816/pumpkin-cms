@@ -125,6 +125,13 @@ export default function ContentJsonContractValidatorPage() {
           >
             Open content package staging
           </button>
+          <button
+            type="button"
+            onClick={() => router.push('/dashboard/pages/import-diff')}
+            className="ml-4 mt-3 text-sm font-medium text-primary-700 hover:text-primary-900"
+          >
+            Open import diff preview
+          </button>
         </div>
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           Validation only. This page does not import, save, publish, deploy, or purge.

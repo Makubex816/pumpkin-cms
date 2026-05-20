@@ -12,6 +12,7 @@ import {
   type PageContractResult,
   type TemplateSelection,
 } from '@/lib/content-json-contracts'
+import { IMPORT_DIFF_HANDOFF_STORAGE_KEY } from '@/lib/import-diff'
 
 type PackageStatus = 'draft' | 'needs_review' | 'ready_for_import' | 'rejected'
 
@@ -220,6 +221,23 @@ export default function ContentPackagesPage() {
     }
   }
 
+  function openImportDiff(item: StagedContentPackage) {
+    try {
+      window.localStorage.setItem(IMPORT_DIFF_HANDOFF_STORAGE_KEY, JSON.stringify({
+        packageId: item.packageId,
+        packageName: item.packageName,
+        tenantId: item.tenantId,
+        rawJson: item.rawJson,
+        importMode: 'dry-run',
+        handedOffAt: new Date().toISOString(),
+      }))
+      router.push('/dashboard/pages/import-diff')
+    } catch {
+      setError('Unable to prepare Import Diff handoff. Download or copy the package JSON instead.')
+      setNotice(null)
+    }
+  }
+
   async function handleFileUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
     if (!file) return
@@ -391,6 +409,7 @@ export default function ContentPackagesPage() {
                           <button type="button" onClick={() => updatePackageStatus(item.packageId, 'rejected')} className="btn btn-secondary text-xs">Reject</button>
                           <button type="button" onClick={() => exportPackageJson(item)} className="btn btn-secondary text-xs">Export JSON</button>
                           <button type="button" onClick={() => downloadValidationReport(item)} className="btn btn-secondary text-xs">Report</button>
+                          <button type="button" onClick={() => openImportDiff(item)} className="btn btn-secondary text-xs">Preview Diff</button>
                           <button type="button" onClick={() => openImportExport(item)} className="btn btn-primary text-xs">Go To Import/Export</button>
                         </div>
                       </td>
@@ -426,6 +445,7 @@ export default function ContentPackagesPage() {
             <button type="button" onClick={() => copyPackageJson(selectedPackage)} className="btn btn-secondary">Copy Package JSON</button>
             <button type="button" onClick={() => copySummary(selectedPackage)} className="btn btn-secondary">Copy Summary</button>
             <button type="button" onClick={() => downloadValidationReport(selectedPackage)} className="btn btn-secondary">Download Validation Report</button>
+            <button type="button" onClick={() => openImportDiff(selectedPackage)} className="btn btn-secondary">Preview Import Diff</button>
             <button type="button" onClick={() => openImportExport(selectedPackage)} className="btn btn-primary">Open Import/Export With This Package</button>
           </div>
 

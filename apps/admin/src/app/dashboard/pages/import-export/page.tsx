@@ -5,6 +5,7 @@ import type { ChangeEvent, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
+import { IMPORT_DIFF_HANDOFF_STORAGE_KEY } from '@/lib/import-diff'
 import type { IHtmlBlock, Page, PageChangeSource, PageRedirect } from 'pumpkin-ts-models'
 
 type ExportScope = 'all' | 'published' | 'single'
@@ -2404,6 +2405,29 @@ export default function PageImportExportPage() {
     setNotice(`${importSourceType.toUpperCase()} import dry-run complete. No pages were written.`)
   }
 
+  const openDiffPreview = () => {
+    if (!currentTenant) return
+
+    if (!importText.trim() || importSourceType === 'csv') {
+      router.push('/dashboard/pages/import-diff')
+      return
+    }
+
+    try {
+      window.localStorage.setItem(IMPORT_DIFF_HANDOFF_STORAGE_KEY, JSON.stringify({
+        packageName: 'Import/Export input',
+        tenantId: currentTenant.tenantId,
+        rawJson: importText,
+        importMode,
+        handedOffAt: new Date().toISOString(),
+      }))
+      router.push('/dashboard/pages/import-diff')
+    } catch {
+      setError('Unable to prepare Import Diff handoff. Open Import Diff and paste the JSON manually.')
+      setNotice(null)
+    }
+  }
+
   const runImport = async () => {
     if (!token || !currentTenant || importMode === 'dry-run') return
 
@@ -2529,6 +2553,13 @@ export default function PageImportExportPage() {
               className="text-sm font-medium text-primary-700 hover:text-primary-900"
             >
               Stage content package
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push('/dashboard/pages/import-diff')}
+              className="text-sm font-medium text-primary-700 hover:text-primary-900"
+            >
+              Preview import diff
             </button>
           </div>
         </div>
@@ -2700,6 +2731,9 @@ export default function PageImportExportPage() {
         </label>
 
         <div className="flex flex-wrap justify-end gap-2">
+          <button type="button" onClick={openDiffPreview} className="btn btn-secondary">
+            Preview Diff Before Import
+          </button>
           <button type="button" onClick={runDryRun} className="btn btn-secondary">
             Run Dry-Run
           </button>
