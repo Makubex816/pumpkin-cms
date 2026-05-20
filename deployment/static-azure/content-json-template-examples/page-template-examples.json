@@ -1,0 +1,90 @@
+{
+  "format": "pumpkin-cms-content-contract-examples",
+  "version": 1,
+  "tenantId": "example-tenant",
+  "notes": "Placeholder-safe examples only. Do not import as production pages.",
+  "pages": [
+    {
+      "id": "example-home",
+      "PageId": "example-home",
+      "tenantId": "example-tenant",
+      "pageSlug": "home",
+      "PageVersion": 1,
+      "Layout": "default",
+      "MetaData": {
+        "title": "Example Rental Site",
+        "description": "Placeholder homepage for content contract validation.",
+        "pageType": "home",
+        "keyword": "example rental service"
+      },
+      "searchData": {
+        "keyword": "example rental service"
+      },
+      "ContentData": {
+        "ContentBlocks": [
+          { "type": "Hero", "content": { "headline": "Example Rental Site", "subheadline": "Placeholder copy.", "buttonText": "Request Info", "buttonLink": "/contact" } },
+          { "type": "TrustBar", "content": { "items": [{ "title": "Reviewed", "text": "Placeholder trust item." }] } },
+          { "type": "CardGrid", "content": { "title": "Example Services", "cards": [{ "title": "Service", "description": "Placeholder service." }] } },
+          { "type": "HowItWorks", "content": { "title": "How It Works", "steps": [{ "title": "Plan", "text": "Placeholder step." }] } },
+          { "type": "FAQ", "content": { "title": "FAQ", "items": [{ "question": "Is this production content?", "answer": "No. This is a placeholder example." }] } },
+          { "type": "PrimaryCTA", "content": { "title": "Ready?", "description": "Placeholder CTA.", "buttonText": "Contact", "buttonLink": "/contact" } }
+        ]
+      },
+      "contentRelationships": {},
+      "seo": {
+        "metaTitle": "Example Rental Site",
+        "metaDescription": "Placeholder homepage for content contract validation.",
+        "canonicalUrl": "https://example.test/",
+        "robots": "noindex,follow",
+        "keywords": ["example rental service"]
+      },
+      "isPublished": false,
+      "publishedAt": null,
+      "includeInSitemap": false,
+      "media": {
+        "heroImage": { "assetId": "example-hero", "url": "https://example.test/media/hero.jpg", "alt": "Placeholder hero image", "title": "Hero", "caption": "", "source": "placeholder", "licenseStatus": "needs_review", "usageStatus": "needs_review", "width": 1200, "height": 800, "focalPointX": 0.5, "focalPointY": 0.5, "decorative": false },
+        "localImage": { "assetId": "example-local", "url": "https://example.test/media/local.jpg", "alt": "Placeholder local image", "title": "Local", "caption": "", "source": "placeholder", "licenseStatus": "needs_review", "usageStatus": "needs_review", "width": 1200, "height": 800, "focalPointX": 0.5, "focalPointY": 0.5, "decorative": false },
+        "closingImage": { "assetId": "example-closing", "url": "https://example.test/media/closing.jpg", "alt": "Placeholder closing image", "title": "Closing", "caption": "", "source": "placeholder", "licenseStatus": "needs_review", "usageStatus": "needs_review", "width": 1200, "height": 800, "focalPointX": 0.5, "focalPointY": 0.5, "decorative": false },
+        "featuredImage": { "assetId": "", "url": "", "alt": "", "title": "", "caption": "", "source": "", "licenseStatus": "", "usageStatus": "", "width": null, "height": null, "focalPointX": null, "focalPointY": null, "decorative": false },
+        "openGraphImage": { "url": "https://example.test/media/hero.jpg", "alt": "Placeholder hero image" }
+      },
+      "fulfillment": { "fulfillmentStatus": "partner_network_or_researched_provider", "leadRoutingMode": "manual_review_then_provider_match", "manualReviewRequired": true, "publicDisclosureRequired": true, "primaryPartnerAvailable": false, "providerResearchCompleted": false, "topProviderCount": 0 },
+      "formConfig": { "conversionGoal": "quote_form_submit" },
+      "linking": { "requiredLinks": ["contact"] },
+      "template": { "templateKey": "home", "templateVersion": "1", "layoutVariant": "default", "contentModelVersion": "1" },
+      "staticPublishing": { "staticEligible": true, "needsRebuild": true, "deploymentStatus": "not_deployed" }
+    },
+    {
+      "id": "example-contact",
+      "PageId": "example-contact",
+      "tenantId": "example-tenant",
+      "pageSlug": "contact",
+      "PageVersion": 1,
+      "Layout": "default",
+      "MetaData": { "title": "Request A Quote", "description": "Placeholder contact page.", "pageType": "contact", "keyword": "example rental quote" },
+      "searchData": { "keyword": "example rental quote" },
+      "ContentData": {
+        "ContentBlocks": [
+          { "type": "Contact", "content": { "title": "Request A Quote", "submitButtonText": "Submit Request", "formFields": [{ "label": "Name", "type": "text", "required": true }, { "label": "Email", "type": "email", "required": true }, { "label": "Phone", "type": "tel", "required": true }, { "label": "Event Location", "type": "text", "required": true }, { "label": "Message", "type": "textarea", "required": false }] } }
+        ]
+      },
+      "contentRelationships": {},
+      "seo": { "metaTitle": "Request A Quote", "metaDescription": "Placeholder contact page.", "canonicalUrl": "https://example.test/contact", "robots": "noindex,follow", "keywords": ["example rental quote"] },
+      "isPublished": false,
+      "publishedAt": null,
+      "includeInSitemap": false,
+      "media": {
+        "featuredImage": { "assetId": "example-contact-image", "url": "https://example.test/media/contact.jpg", "alt": "Placeholder contact image", "title": "Contact", "caption": "", "source": "placeholder", "licenseStatus": "needs_review", "usageStatus": "needs_review", "width": 1200, "height": 800, "focalPointX": 0.5, "focalPointY": 0.5, "decorative": false },
+        "heroImage": { "assetId": "", "url": "", "alt": "", "title": "", "caption": "", "source": "", "licenseStatus": "", "usageStatus": "", "width": null, "height": null, "focalPointX": null, "focalPointY": null, "decorative": false },
+        "localImage": { "assetId": "", "url": "", "alt": "", "title": "", "caption": "", "source": "", "licenseStatus": "", "usageStatus": "", "width": null, "height": null, "focalPointX": null, "focalPointY": null, "decorative": false },
+        "closingImage": { "assetId": "", "url": "", "alt": "", "title": "", "caption": "", "source": "", "licenseStatus": "", "usageStatus": "", "width": null, "height": null, "focalPointX": null, "focalPointY": null, "decorative": false },
+        "openGraphImage": { "url": "https://example.test/media/contact.jpg", "alt": "Placeholder contact image" }
+      },
+      "fulfillment": { "fulfillmentStatus": "partner_network_or_researched_provider", "leadRoutingMode": "manual_review_then_provider_match", "manualReviewRequired": true, "publicDisclosureRequired": true, "primaryPartnerAvailable": false, "providerResearchCompleted": false, "topProviderCount": 0 },
+      "formConfig": { "formType": "quote_request", "conversionGoal": "quote_form_submit", "routingMode": "manual_review_then_provider_match", "normalizedFieldMap": { "name": "Name", "email": "Email", "phone": "Phone", "eventLocation": "Event Location", "message": "Message" } },
+      "linking": { "breadcrumbTrail": ["home", "contact"] },
+      "template": { "templateKey": "contact", "templateVersion": "1", "layoutVariant": "default", "contentModelVersion": "1" },
+      "staticPublishing": { "staticEligible": true, "needsRebuild": true, "deploymentStatus": "not_deployed" }
+    }
+  ]
+}

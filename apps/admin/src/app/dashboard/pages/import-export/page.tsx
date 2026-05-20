@@ -2476,6 +2476,13 @@ export default function PageImportExportPage() {
         <div className="text-right">
           <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">Tenant</div>
           <div className="text-sm font-semibold text-neutral-900">{currentTenant.tenantId}</div>
+          <button
+            type="button"
+            onClick={() => router.push('/dashboard/pages/content-validator')}
+            className="mt-2 text-sm font-medium text-primary-700 hover:text-primary-900"
+          >
+            Validate content JSON
+          </button>
         </div>
       </div>
 
