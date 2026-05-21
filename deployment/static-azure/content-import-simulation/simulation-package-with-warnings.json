@@ -1,0 +1,216 @@
+{
+  "tenantId": "ice-rink-rentals",
+  "packageName": "Phase 6S Warning Simulation Package",
+  "sourceLabel": "local_simulation_only",
+  "notes": "Intentionally incomplete placeholder-safe package used to verify warnings. Do not publish.",
+  "pages": [
+    {
+      "id": "phase-6s-warning-simulation-page",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "phase-6s-warning-simulation-page",
+      "Layout": "Default",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "MetaData": {
+        "title": "Phase 6S Warning Simulation Page",
+        "description": "Local-only placeholder page with intentional production readiness gaps.",
+        "pageType": "state-service-hub"
+      },
+      "seo": {
+        "metaTitle": "Phase 6S Warning Simulation Page",
+        "metaDescription": "Local-only placeholder page with intentional warnings for import pipeline testing.",
+        "canonicalUrl": "https://iceskatingrinkrentals.com/phase-6s-warning-simulation-page",
+        "robots": "noindex,nofollow"
+      },
+      "searchData": {
+        "keyword": "phase 6s warning simulation",
+        "state": "PA"
+      },
+      "template": {
+        "templateKey": "state-service-hub",
+        "templateVersion": "1.0.0",
+        "contentModelVersion": "2026-05"
+      },
+      "workflow": {
+        "status": "draft",
+        "reviewStatus": "needs_review",
+        "approvedForPublish": false
+      },
+      "staticPublishing": {
+        "staticEligible": false,
+        "needsRebuild": true,
+        "deploymentStatus": "not_deployed"
+      },
+      "media": {
+        "heroImage": {
+          "url": "https://example.com/pumpkin-cms/phase-6s-warning-hero.jpg",
+          "alt": "Local-only placeholder hero image missing assetId",
+          "decorative": false,
+          "licenseStatus": "needs_review",
+          "usageStatus": "needs_review"
+        },
+        "localImage": {
+          "assetId": "phase-6s-warning-local-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-warning-local.jpg",
+          "alt": "Local-only placeholder local image",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish"
+        },
+        "closingImage": {
+          "assetId": "phase-6s-warning-closing-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-warning-closing.jpg",
+          "alt": "Local-only placeholder closing image",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish"
+        }
+      },
+      "serviceSchema": {
+        "serviceName": "Portable Ice Rink Rentals",
+        "serviceType": "Event Rental Service",
+        "serviceCategory": "Portable rink rental",
+        "productsOffered": [],
+        "areasServed": [],
+        "schemaOutputMode": "disabled_until_review",
+        "publicSchemaEnabled": false,
+        "notes": "Intentionally missing products and areas to verify warnings."
+      },
+      "fulfillment": {
+        "fulfillmentStatus": "research_only_until_provider_confirmed",
+        "primaryPartnerAvailable": false,
+        "manualReviewRequired": true,
+        "providerResearchCompleted": false,
+        "topProviderCount": 0,
+        "leadRoutingMode": "manual_review_then_provider_match",
+        "publicDisclosureRequired": true
+      },
+      "googleAds": {
+        "eligible": false
+      },
+      "formConfig": {
+        "formId": "phase-6s-warning-contact",
+        "formType": "quote_request",
+        "conversionGoal": "quote_form_submit",
+        "routingMode": "manual_review_then_provider_match",
+        "domainRoutingKey": "ice-rink-rentals-default",
+        "recipientGroup": "local_admin",
+        "normalizedFieldMap": {
+          "name": "name",
+          "email": "email",
+          "phone": "phone",
+          "eventLocation": "event-location"
+        }
+      },
+      "leadCapture": {
+        "formId": "phase-6s-warning-contact",
+        "formType": "quote_request",
+        "conversionGoal": "quote_form_submit",
+        "routingMode": "manual_review_then_provider_match",
+        "domainRoutingKey": "ice-rink-rentals-default",
+        "recipientGroup": "local_admin"
+      },
+      "linking": {
+        "relatedPages": [],
+        "requiredLinks": [
+          {
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ],
+        "breadcrumbTrail": [
+          {
+            "label": "Home",
+            "href": "/"
+          },
+          {
+            "label": "Phase 6S Warning Simulation Page",
+            "href": "/phase-6s-warning-simulation-page"
+          }
+        ]
+      },
+      "schemaControls": {
+        "enableWebPageSchema": true,
+        "enableBreadcrumbSchema": true,
+        "enableFAQSchema": true,
+        "enableServiceSchema": false,
+        "schemaWarnings": [
+          "Simulation package intentionally lacks productsOffered and areasServed."
+        ]
+      },
+      "pageQuality": {
+        "status": "needs_review",
+        "score": 0,
+        "uniqueValueReason": "Warning simulation package. Not production content.",
+        "warnings": [
+          "productsOffered missing",
+          "areasServed missing",
+          "staticFormEndpointKey missing",
+          "one image assetId missing"
+        ],
+        "blockingIssues": [],
+        "lastCheckedAt": "2026-05-21T00:00:00.000Z"
+      },
+      "ContentData": {
+        "ContentBlocks": [
+          {
+            "type": "Hero",
+            "content": {
+              "title": "Phase 6S Warning Simulation Page"
+            }
+          },
+          {
+            "type": "CardGrid",
+            "content": {
+              "cards": []
+            }
+          },
+          {
+            "type": "FAQ",
+            "content": {
+              "items": []
+            }
+          },
+          {
+            "type": "PrimaryCTA",
+            "content": {
+              "heading": "Local warning simulation only"
+            }
+          },
+          {
+            "type": "Contact",
+            "content": {
+              "heading": "Simulation Contact Form",
+              "formFields": [
+                {
+                  "key": "name",
+                  "label": "Name",
+                  "type": "text",
+                  "required": true
+                },
+                {
+                  "key": "email",
+                  "label": "Email",
+                  "type": "email",
+                  "required": true
+                },
+                {
+                  "key": "phone",
+                  "label": "Phone",
+                  "type": "tel",
+                  "required": true
+                },
+                {
+                  "key": "event-location",
+                  "label": "Event Location",
+                  "type": "text",
+                  "required": true
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

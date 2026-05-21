@@ -1,0 +1,269 @@
+{
+  "tenantId": "ice-rink-rentals",
+  "packageName": "Phase 6S Existing Page Update Simulation Package",
+  "sourceLabel": "local_simulation_only",
+  "notes": "Placeholder-safe package intended to preview an update when pageSlug phase-6d-redirect-test exists locally. Do not import automatically.",
+  "pages": [
+    {
+      "id": "phase-6s-existing-update-candidate",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "phase-6d-redirect-test",
+      "Layout": "Default",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "MetaData": {
+        "title": "Phase 6S Existing Page Update Preview",
+        "description": "Local-only placeholder update candidate for diff preview against a safe test page.",
+        "pageType": "service"
+      },
+      "seo": {
+        "metaTitle": "Phase 6S Existing Page Update Preview",
+        "metaDescription": "Local-only placeholder update candidate used to preview service schema, area, and routing changes.",
+        "canonicalUrl": "https://iceskatingrinkrentals.com/phase-6d-redirect-test",
+        "robots": "noindex,nofollow"
+      },
+      "searchData": {
+        "keyword": "phase 6s existing page update preview",
+        "primaryService": "portable ice rink rentals",
+        "state": "PA"
+      },
+      "template": {
+        "templateKey": "service",
+        "templateVersion": "1.0.0",
+        "layoutVariant": "default",
+        "contentModelVersion": "2026-05"
+      },
+      "workflow": {
+        "status": "draft",
+        "reviewStatus": "needs_review",
+        "approvedForPublish": false
+      },
+      "staticPublishing": {
+        "staticEligible": false,
+        "needsRebuild": true,
+        "deploymentStatus": "not_deployed"
+      },
+      "media": {
+        "heroImage": {
+          "assetId": "phase-6s-update-hero-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-update-hero.jpg",
+          "alt": "Local-only placeholder hero image for update preview",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish"
+        },
+        "localImage": {
+          "assetId": "phase-6s-update-local-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-update-local.jpg",
+          "alt": "Local-only placeholder local image for update preview",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish"
+        },
+        "closingImage": {
+          "assetId": "phase-6s-update-closing-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-update-closing.jpg",
+          "alt": "Local-only placeholder closing image for update preview",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish"
+        }
+      },
+      "serviceSchema": {
+        "serviceName": "Portable Ice Rink Rentals",
+        "serviceType": "Event Rental Service",
+        "serviceCategory": "Portable rink rental",
+        "productsOffered": [
+          {
+            "name": "Phase 6S updated placeholder rink rental",
+            "type": "Service",
+            "description": "Update-preview placeholder service item only.",
+            "category": "local_simulation_only",
+            "isPrimary": true,
+            "displayOrder": 1
+          },
+          {
+            "name": "Phase 6S updated placeholder skate add-on",
+            "type": "Product",
+            "description": "Update-preview placeholder product item only.",
+            "category": "local_simulation_only",
+            "isPrimary": false,
+            "displayOrder": 2
+          }
+        ],
+        "areasServed": [
+          {
+            "name": "Pennsylvania",
+            "type": "State",
+            "stateCode": "PA",
+            "country": "US",
+            "serviceAreaType": "State",
+            "confidence": "placeholder_only",
+            "isPrimary": true
+          },
+          {
+            "name": "Phase 6S Local Simulation Metro",
+            "type": "Metro",
+            "metro": "Phase 6S Local Simulation Metro",
+            "country": "US",
+            "serviceAreaType": "Metro",
+            "confidence": "placeholder_only",
+            "isPrimary": false
+          }
+        ],
+        "schemaOutputMode": "disabled_until_review",
+        "publicSchemaEnabled": false,
+        "notes": "Update-preview simulation only."
+      },
+      "fulfillment": {
+        "fulfillmentStatus": "research_only_until_provider_confirmed",
+        "primaryPartnerAvailable": false,
+        "manualReviewRequired": true,
+        "providerResearchCompleted": false,
+        "topProviderCount": 0,
+        "leadRoutingMode": "manual_review_then_provider_match",
+        "publicDisclosureRequired": true
+      },
+      "googleAds": {
+        "eligible": false
+      },
+      "formConfig": {
+        "formId": "contact",
+        "formType": "quote_request",
+        "conversionGoal": "quote_form_submit",
+        "routingMode": "manual_review_then_provider_match",
+        "domainRoutingKey": "ice-rink-rentals-default",
+        "recipientGroup": "local_admin",
+        "staticFormEndpointKey": "local-simulation-static-form-endpoint",
+        "normalizedFieldMap": {
+          "name": "name",
+          "email": "email",
+          "phone": "phone",
+          "eventLocation": "event-location"
+        }
+      },
+      "leadCapture": {
+        "formId": "contact",
+        "formType": "quote_request",
+        "conversionGoal": "quote_form_submit",
+        "routingMode": "manual_review_then_provider_match",
+        "domainRoutingKey": "ice-rink-rentals-default",
+        "recipientGroup": "local_admin",
+        "staticFormEndpointKey": "local-simulation-static-form-endpoint"
+      },
+      "linking": {
+        "relatedPages": [
+          {
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ],
+        "requiredLinks": [
+          {
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ],
+        "breadcrumbTrail": [
+          {
+            "label": "Home",
+            "href": "/"
+          },
+          {
+            "label": "Phase 6D Redirect Test",
+            "href": "/phase-6d-redirect-test"
+          }
+        ]
+      },
+      "schemaControls": {
+        "enableWebPageSchema": true,
+        "enableBreadcrumbSchema": true,
+        "enableFAQSchema": true,
+        "enableServiceSchema": false,
+        "schemaWarnings": []
+      },
+      "pageQuality": {
+        "status": "needs_review",
+        "score": 0,
+        "uniqueValueReason": "Local-only update preview for service schema, areas served, products offered, and routing fields.",
+        "warnings": [],
+        "blockingIssues": [],
+        "lastCheckedAt": "2026-05-21T00:00:00.000Z"
+      },
+      "ContentData": {
+        "ContentBlocks": [
+          {
+            "type": "Hero",
+            "content": {
+              "title": "Phase 6S Existing Page Update Preview"
+            }
+          },
+          {
+            "type": "TrustBar",
+            "content": {
+              "items": [
+                "Local update simulation only"
+              ]
+            }
+          },
+          {
+            "type": "CardGrid",
+            "content": {
+              "cards": []
+            }
+          },
+          {
+            "type": "HowItWorks",
+            "content": {
+              "steps": []
+            }
+          },
+          {
+            "type": "FAQ",
+            "content": {
+              "items": []
+            }
+          },
+          {
+            "type": "PrimaryCTA",
+            "content": {
+              "heading": "Do not import automatically"
+            }
+          },
+          {
+            "type": "Contact",
+            "content": {
+              "heading": "Update Preview Contact Form",
+              "formFields": [
+                {
+                  "key": "name",
+                  "label": "Name",
+                  "type": "text",
+                  "required": true
+                },
+                {
+                  "key": "email",
+                  "label": "Email",
+                  "type": "email",
+                  "required": true
+                },
+                {
+                  "key": "phone",
+                  "label": "Phone",
+                  "type": "tel",
+                  "required": true
+                },
+                {
+                  "key": "event-location",
+                  "label": "Event Location",
+                  "type": "text",
+                  "required": true
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

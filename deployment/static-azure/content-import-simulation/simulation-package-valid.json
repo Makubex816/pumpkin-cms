@@ -1,0 +1,402 @@
+{
+  "tenantId": "ice-rink-rentals",
+  "packageName": "Phase 6S Valid Simulation Package",
+  "sourceLabel": "local_simulation_only",
+  "notes": "Placeholder-safe simulation package. Not production content. Do not publish.",
+  "pages": [
+    {
+      "id": "phase-6s-valid-simulation-page",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "phase-6s-valid-simulation-page",
+      "Layout": "Default",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "previousSlugs": [],
+      "redirects": [],
+      "MetaData": {
+        "title": "Phase 6S Valid Simulation Page",
+        "description": "Local-only placeholder page for validating the production content import pipeline.",
+        "pageType": "service"
+      },
+      "seo": {
+        "metaTitle": "Phase 6S Valid Simulation Page",
+        "metaDescription": "Local-only placeholder page for validating the production content import pipeline before any real content import.",
+        "canonicalUrl": "https://iceskatingrinkrentals.com/phase-6s-valid-simulation-page",
+        "robots": "noindex,nofollow",
+        "keywords": [
+          "phase 6s local simulation"
+        ],
+        "openGraph": {
+          "title": "Phase 6S Valid Simulation Page",
+          "description": "Placeholder-safe import simulation page.",
+          "image": "https://example.com/pumpkin-cms/phase-6s-valid-og.jpg",
+          "imageAlt": "Local-only placeholder Open Graph image"
+        }
+      },
+      "searchData": {
+        "keyword": "phase 6s local simulation",
+        "primaryService": "portable ice rink rentals",
+        "state": "PA",
+        "secondaryKeywords": [
+          "local-only content import simulation"
+        ]
+      },
+      "template": {
+        "templateKey": "service",
+        "templateVersion": "1.0.0",
+        "layoutVariant": "default",
+        "contentModelVersion": "2026-05"
+      },
+      "workflow": {
+        "status": "draft",
+        "reviewStatus": "needs_review",
+        "approvedForPublish": false,
+        "lastEditedBy": "local_simulation_only",
+        "lastEditedAt": "2026-05-21T00:00:00.000Z"
+      },
+      "staticPublishing": {
+        "staticEligible": false,
+        "needsRebuild": true,
+        "deploymentStatus": "not_deployed",
+        "lastSnapshotAt": "",
+        "lastStaticBuildAt": "",
+        "lastDeployedAt": ""
+      },
+      "media": {
+        "featuredImage": {
+          "assetId": "phase-6s-valid-featured-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-valid-featured.jpg",
+          "alt": "Local-only placeholder featured image for Phase 6S validation",
+          "title": "Phase 6S Placeholder Featured Image",
+          "caption": "Placeholder image metadata for simulation only.",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish",
+          "focalPoint": {
+            "x": 50,
+            "y": 50
+          }
+        },
+        "heroImage": {
+          "assetId": "phase-6s-valid-hero-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-valid-hero.jpg",
+          "alt": "Local-only placeholder hero image for Phase 6S validation",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish",
+          "focalPoint": {
+            "x": 50,
+            "y": 45
+          }
+        },
+        "localImage": {
+          "assetId": "phase-6s-valid-local-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-valid-local.jpg",
+          "alt": "Local-only placeholder local image for Phase 6S validation",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish",
+          "focalPoint": {
+            "x": 50,
+            "y": 50
+          }
+        },
+        "closingImage": {
+          "assetId": "phase-6s-valid-closing-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-valid-closing.jpg",
+          "alt": "Local-only placeholder closing image for Phase 6S validation",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish",
+          "focalPoint": {
+            "x": 50,
+            "y": 55
+          }
+        },
+        "openGraphImage": {
+          "assetId": "phase-6s-valid-og-placeholder",
+          "url": "https://example.com/pumpkin-cms/phase-6s-valid-og.jpg",
+          "alt": "Local-only placeholder Open Graph image",
+          "decorative": false,
+          "licenseStatus": "owned",
+          "usageStatus": "approved_for_publish"
+        }
+      },
+      "serviceSchema": {
+        "serviceName": "Portable Ice Rink Rentals",
+        "serviceType": "Event Rental Service",
+        "serviceCategory": "Portable rink rental",
+        "productsOffered": [
+          {
+            "name": "Phase 6S placeholder portable ice rink rental",
+            "type": "Service",
+            "description": "Placeholder service item used only to validate import simulation flow.",
+            "url": "https://iceskatingrinkrentals.com/phase-6s-valid-simulation-page",
+            "category": "local_simulation_only",
+            "isPrimary": true,
+            "displayOrder": 1
+          }
+        ],
+        "areasServed": [
+          {
+            "name": "Pennsylvania",
+            "type": "State",
+            "stateCode": "PA",
+            "country": "US",
+            "url": "https://iceskatingrinkrentals.com/phase-6s-valid-simulation-page",
+            "serviceAreaType": "State",
+            "confidence": "placeholder_only",
+            "isPrimary": true
+          }
+        ],
+        "audience": [
+          "local simulation reviewers"
+        ],
+        "eventTypes": [
+          "local simulation event"
+        ],
+        "schemaOutputMode": "disabled_until_review",
+        "publicSchemaEnabled": false,
+        "notes": "Simulation metadata only. Not a provider claim."
+      },
+      "fulfillment": {
+        "fulfillmentStatus": "research_only_until_provider_confirmed",
+        "primaryPartnerAvailable": false,
+        "manualReviewRequired": true,
+        "providerResearchCompleted": false,
+        "topProviderCount": 0,
+        "leadRoutingMode": "manual_review_then_provider_match",
+        "publicDisclosureRequired": true,
+        "confirmedServiceStates": [],
+        "extendedStatesPossible": []
+      },
+      "googleAds": {
+        "eligible": false,
+        "finalUrl": "",
+        "landingPageType": "service",
+        "campaignTheme": "local_simulation_only",
+        "conversionGoals": [],
+        "notes": "Not eligible. Local simulation only."
+      },
+      "formConfig": {
+        "formId": "phase-6s-simulation-contact",
+        "formType": "quote_request",
+        "conversionGoal": "quote_form_submit",
+        "routingMode": "manual_review_then_provider_match",
+        "domainRoutingKey": "ice-rink-rentals-default",
+        "recipientGroup": "local_admin",
+        "staticFormEndpointKey": "local-simulation-static-form-endpoint",
+        "replyToMode": "submitter_email",
+        "emailSubjectTemplate": "Phase 6S local simulation lead",
+        "thankYouMessage": "Thanks. This is a local simulation form configuration.",
+        "consentRequired": true,
+        "spamProtectionEnabled": true,
+        "mailtoFallbackEnabled": false,
+        "normalizedFieldMap": {
+          "name": "name",
+          "email": "email",
+          "phone": "phone",
+          "eventLocation": "event-location",
+          "message": "message"
+        }
+      },
+      "leadCapture": {
+        "formId": "phase-6s-simulation-contact",
+        "formType": "quote_request",
+        "conversionGoal": "quote_form_submit",
+        "routingMode": "manual_review_then_provider_match",
+        "domainRoutingKey": "ice-rink-rentals-default",
+        "recipientGroup": "local_admin",
+        "staticFormEndpointKey": "local-simulation-static-form-endpoint",
+        "replyToMode": "submitter_email",
+        "emailSubjectTemplate": "Phase 6S local simulation lead",
+        "mailtoFallbackEnabled": false,
+        "requiresConsent": true,
+        "spamProtectionRequired": true
+      },
+      "domainRouting": {
+        "domain": "iceskatingrinkrentals.com",
+        "brandName": "Ice Skating Rink Rentals",
+        "publicContactEmail": "",
+        "quoteRequestEmail": "",
+        "supportEmail": "",
+        "replyToEmail": "",
+        "fromName": "Ice Skating Rink Rentals",
+        "fromEmail": "",
+        "contactPageSlug": "contact",
+        "primaryPhone": "",
+        "mailtoLinksEnabled": false,
+        "defaultLeadRoutingMode": "manual_review_then_provider_match",
+        "defaultRecipientGroup": "local_admin",
+        "staticFormEndpointKey": "local-simulation-static-form-endpoint",
+        "emailProvider": "not_configured",
+        "emailProviderStatus": "not_configured",
+        "mxStatus": "not_checked",
+        "spfStatus": "not_checked",
+        "dkimStatus": "not_checked",
+        "dmarcStatus": "not_checked",
+        "notes": "Non-secret routing metadata for local simulation only."
+      },
+      "linking": {
+        "hubPage": "",
+        "parentPage": "",
+        "relatedPages": [
+          {
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ],
+        "requiredLinks": [
+          {
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ],
+        "breadcrumbTrail": [
+          {
+            "label": "Home",
+            "href": "/"
+          },
+          {
+            "label": "Phase 6S Valid Simulation Page",
+            "href": "/phase-6s-valid-simulation-page"
+          }
+        ]
+      },
+      "schemaControls": {
+        "enableWebPageSchema": true,
+        "enableBreadcrumbSchema": true,
+        "enableFAQSchema": true,
+        "enableServiceSchema": false,
+        "schemaWarnings": []
+      },
+      "structuredDataSettings": {
+        "enableWebPageSchema": true,
+        "enableBreadcrumbSchema": true,
+        "enableFAQSchema": true,
+        "enableServiceSchema": false
+      },
+      "pageQuality": {
+        "status": "needs_review",
+        "score": 0,
+        "uniqueValueReason": "Local-only simulation package used to test validation, staging, diff, preflight, dry-run, and ImportRun history.",
+        "warnings": [],
+        "blockingIssues": [],
+        "lastCheckedAt": "2026-05-21T00:00:00.000Z"
+      },
+      "ContentData": {
+        "ContentBlocks": [
+          {
+            "type": "Hero",
+            "content": {
+              "title": "Phase 6S Valid Simulation Page",
+              "subtitle": "Local-only content import pipeline simulation.",
+              "primaryButtonText": "Request a Quote",
+              "primaryButtonHref": "/contact"
+            }
+          },
+          {
+            "type": "TrustBar",
+            "content": {
+              "items": [
+                "Local-only test content",
+                "No production claims",
+                "No provider research"
+              ]
+            }
+          },
+          {
+            "type": "CardGrid",
+            "content": {
+              "heading": "Simulation Checks",
+              "cards": [
+                {
+                  "title": "Validator",
+                  "description": "Confirms contract readiness without writing pages."
+                },
+                {
+                  "title": "Diff Preview",
+                  "description": "Shows create/update behavior before import."
+                }
+              ]
+            }
+          },
+          {
+            "type": "HowItWorks",
+            "content": {
+              "steps": [
+                {
+                  "title": "Validate",
+                  "description": "Run contract validation first."
+                },
+                {
+                  "title": "Preview",
+                  "description": "Review diff and preflight before dry-run."
+                }
+              ]
+            }
+          },
+          {
+            "type": "FAQ",
+            "content": {
+              "items": [
+                {
+                  "question": "Is this production content?",
+                  "answer": "No. This package is placeholder-safe and local simulation only."
+                }
+              ]
+            }
+          },
+          {
+            "type": "PrimaryCTA",
+            "content": {
+              "heading": "Local Simulation Only",
+              "body": "Do not publish or deploy this page.",
+              "buttonText": "Contact",
+              "buttonHref": "/contact"
+            }
+          },
+          {
+            "type": "Contact",
+            "content": {
+              "heading": "Simulation Contact Form",
+              "submitButtonText": "Submit Simulation Request",
+              "formFields": [
+                {
+                  "key": "name",
+                  "label": "Name",
+                  "type": "text",
+                  "required": true
+                },
+                {
+                  "key": "email",
+                  "label": "Email",
+                  "type": "email",
+                  "required": true
+                },
+                {
+                  "key": "phone",
+                  "label": "Phone",
+                  "type": "tel",
+                  "required": true
+                },
+                {
+                  "key": "event-location",
+                  "label": "Event Location",
+                  "type": "text",
+                  "required": true
+                },
+                {
+                  "key": "message",
+                  "label": "Message",
+                  "type": "textarea",
+                  "required": false
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
