@@ -267,6 +267,14 @@ https://<function-app>.azurewebsites.net/api/static-contact
 
 See `static-form-strategy.md` and `forms/README.md`.
 
+Phase 6T adds a local/testable endpoint foundation at:
+
+```text
+deployment/static-azure/forms/static-form-endpoint/
+```
+
+Use it to validate static form payloads and Azure Function readiness before creating any Azure resources. It does not deploy, send email, or expose Pumpkin API keys to the browser.
+
 ## No-Secrets Policy
 
 Do not commit:

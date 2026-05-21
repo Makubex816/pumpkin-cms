@@ -45,7 +45,11 @@ export function PageRenderer({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        ...payload,
+        siteKey: payload.siteKey || page.tenantId,
+        tenantId: payload.tenantId || page.tenantId,
+      }),
     });
     const result = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
 

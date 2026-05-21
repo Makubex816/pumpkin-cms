@@ -1,0 +1,11 @@
+{
+  "name": "pumpkin-static-form-endpoint",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check contact-handler.mjs && node --check validate-static-form-payload.mjs && node --check sanitize-static-form-payload.mjs && node --check local-test-server.mjs",
+    "start:local": "node local-test-server.mjs",
+    "test:dry-run": "node local-test-server.mjs"
+  }
+}

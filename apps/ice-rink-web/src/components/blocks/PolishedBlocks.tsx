@@ -44,6 +44,8 @@ type CmsBlock = IHtmlBlock & {
 export interface ContactSubmitPayload {
   formId: string;
   pageSlug: string;
+  siteKey?: string;
+  tenantId?: string;
   formData: Record<string, string>;
 }
 

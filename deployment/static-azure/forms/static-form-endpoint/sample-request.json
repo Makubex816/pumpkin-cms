@@ -1,0 +1,15 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "formId": "contact",
+  "pageSlug": "contact",
+  "formType": "quote_request",
+  "domainRoutingKey": "ice-rink-rentals-default",
+  "recipientGroup": "local_admin",
+  "formData": {
+    "name": "Local Smoke Test",
+    "email": "local-smoke-test@example.com",
+    "phone": "555-0100",
+    "event-location": "Local test venue",
+    "message": "Local-only static endpoint smoke test."
+  }
+}

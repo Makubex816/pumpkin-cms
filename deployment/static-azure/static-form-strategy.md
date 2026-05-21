@@ -120,7 +120,25 @@ Recommended responsibilities:
 
 Do not put Pumpkin tenant API keys or cloud credentials in browser code.
 
-See `forms/README.md` and `forms/azure-function-contact.example.ts` for the local implementation template.
+See `forms/README.md` and `forms/static-form-endpoint/README.md` for the local implementation package and Azure Function wrapper template.
+
+## Phase 6T Local Endpoint Foundation
+
+Phase 6T adds a separated local implementation package:
+
+```text
+deployment/static-azure/forms/static-form-endpoint/
+```
+
+It includes:
+
+- reusable `contact-handler.mjs`
+- payload validation and sanitization helpers
+- local-only server on `/api/contact`
+- sample request/response JSON
+- Azure Function wrapper example
+
+The package supports Ice and Roller tenant routing by `siteKey`, tenant/domain, or allowed origin. It forwards valid submissions to Pumpkin API `/api/forms/{tenantId}/entries` when server-side API key environment variables are configured. It can also run in `STATIC_FORM_FORWARD_MODE=dry-run` for validation-only local tests.
 
 ## CORS And Origins
 
@@ -164,3 +182,5 @@ Before launch:
 - log errors without storing sensitive values unnecessarily
 - keep all service credentials in Azure/GitHub secret storage
 - bypass Cloudflare cache for the form endpoint
+
+Future production work still needs durable rate limiting, CAPTCHA/Turnstile, monitoring, alerting, and optional email/CRM notification wiring.
