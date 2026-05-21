@@ -275,6 +275,30 @@ deployment/static-azure/forms/static-form-endpoint/
 
 Use it to validate static form payloads and Azure Function readiness before creating any Azure resources. It does not deploy, send email, or expose Pumpkin API keys to the browser.
 
+## Azure SWA Staging Execution Prep
+
+Phase 6U prepares the manual Azure Static Web Apps staging handoff. It does not create Azure resources or deploy anything.
+
+Start here:
+
+- `swa-staging-execution-prep.md`
+- `static-form-endpoint-staging-plan.md`
+- `staging-validation-checklist.md`
+- `staging-rollback-checklist.md`
+- `release-manifest-review.md`
+- `publish-action-center.md`
+- `publish-run-registry.md`
+- `static-form-strategy.md`
+
+Optional package validation before staging:
+
+```powershell
+node deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder ".static-release-dry-runs/<runId>/ice-rink-rentals"
+node deployment/static-azure/validate-staging-package.mjs --site roller-rink-rentals --folder ".static-release-dry-runs/<runId>/roller-rink-rentals"
+```
+
+Keep SWA deployment tokens outside the repo. Do not add active workflows under `.github/workflows` until Timothy explicitly approves deployment automation.
+
 ## No-Secrets Policy
 
 Do not commit:

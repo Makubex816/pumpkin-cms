@@ -2,10 +2,24 @@
 
 Use this after each Azure Static Web Apps staging deployment.
 
+Validate the Azure default hostname first. Validate custom staging domains only after Timothy approves staging DNS work.
+
 ## Ice Staging URLs
 
 Validate:
 
+- `https://<ice-azure-default-host>/`
+- `https://<ice-azure-default-host>/ice-rink-rentals`
+- `https://<ice-azure-default-host>/events-holiday-activations`
+- `https://<ice-azure-default-host>/contact`
+- `https://<ice-azure-default-host>/sitemap.xml`
+- `https://<ice-azure-default-host>/robots.txt`
+- `https://staging.iceskatingrinkrentals.com/` if configured later
+- `https://staging.iceskatingrinkrentals.com/ice-rink-rentals` if configured later
+- `https://staging.iceskatingrinkrentals.com/events-holiday-activations` if configured later
+- `https://staging.iceskatingrinkrentals.com/contact` if configured later
+- `https://staging.iceskatingrinkrentals.com/sitemap.xml` if configured later
+- `https://staging.iceskatingrinkrentals.com/robots.txt` if configured later
 - `https://ice-dev.iceskatingrinkrentals.com/`
 - `https://ice-dev.iceskatingrinkrentals.com/ice-rink-rentals`
 - `https://ice-dev.iceskatingrinkrentals.com/events-holiday-activations`
@@ -17,6 +31,16 @@ Validate:
 
 Validate:
 
+- `https://<roller-azure-default-host>/`
+- `https://<roller-azure-default-host>/roller-rink-rentals`
+- `https://<roller-azure-default-host>/contact`
+- `https://<roller-azure-default-host>/sitemap.xml`
+- `https://<roller-azure-default-host>/robots.txt`
+- `https://staging.rollerrinkrentals.com/` if configured later
+- `https://staging.rollerrinkrentals.com/roller-rink-rentals` if configured later
+- `https://staging.rollerrinkrentals.com/contact` if configured later
+- `https://staging.rollerrinkrentals.com/sitemap.xml` if configured later
+- `https://staging.rollerrinkrentals.com/robots.txt` if configured later
 - `https://roller-dev.rollerrinkrentals.com/`
 - `https://roller-dev.rollerrinkrentals.com/roller-rink-rentals`
 - `https://roller-dev.rollerrinkrentals.com/contact`
@@ -33,8 +57,13 @@ For each staged page:
 - footer links work
 - page source contains no obvious secrets
 - page source contains no `CMS LIVE` marker
+- page source contains no localhost references
+- page source contains no tenant API keys or deployment tokens
 - no live-domain cutover occurred
 - no opposite-site branding appears
+- CSS and JavaScript assets load without 404s
+- mobile viewport smoke check passes
+- status/warnings are recorded in the staging notes
 
 ## Canonical And SEO Checks
 
@@ -58,6 +87,9 @@ If a staging form endpoint is configured:
 - endpoint is not cached
 - CORS allows the staging origins
 - no credentials are exposed in browser code
+- static form endpoint returns success
+- Lead Inbox receives the staging form submission under the correct tenant
+- no real emails are sent
 
 ## Cloudflare Checks
 
