@@ -8,6 +8,7 @@ export type PublishingWarningCategory =
   | 'static'
   | 'redirect'
   | 'template'
+  | 'schema'
   | 'form'
 
 export type PublishingWarningSeverity = 'warning' | 'error'
@@ -73,6 +74,7 @@ const WARNING_LABELS: Record<PublishingWarningCategory, string> = {
   static: 'Static Rebuild Required',
   redirect: 'Redirect Or Canonical Mismatch',
   template: 'Template Identity Missing',
+  schema: 'Service Schema Missing',
   form: 'Form And Lead Capture Missing',
 }
 
@@ -380,6 +382,7 @@ export function getPublishingWarnings(page: Page, tenantPages: Page[] = []) {
     ...getStaticWarnings(page),
     ...getRedirectWarnings(page, tenantPages),
     ...getTemplateWarnings(page),
+    ...getServiceSchemaWarnings(page),
     ...getFormWarnings(page),
   ]
 
@@ -624,6 +627,65 @@ function getTemplateWarnings(page: Page) {
   return warnings
 }
 
+function getServiceSchemaWarnings(page: Page) {
+  const warnings: PublishingWarning[] = []
+  const templateKey = page.template?.templateKey || ''
+  const pageType = page.MetaData?.pageType || ''
+  const slug = page.pageSlug || ''
+  const serviceSchema = page.serviceSchema
+  const productsOffered = Array.isArray(serviceSchema?.productsOffered) ? serviceSchema.productsOffered : []
+  const areasServed = Array.isArray(serviceSchema?.areasServed) ? serviceSchema.areasServed : []
+  const isServiceLike = ['service', 'state-service-hub', 'city-service-area', 'event-use', 'product-intent'].includes(templateKey) ||
+    ['service', 'state', 'city', 'event', 'product'].some((value) => `${pageType} ${slug}`.toLowerCase().includes(value))
+
+  if (isServiceLike && !serviceSchema?.serviceName?.trim()) {
+    warnings.push({
+      category: 'schema',
+      severity: 'warning',
+      field: 'serviceSchema.serviceName',
+      message: 'Service-like page is missing serviceSchema.serviceName.',
+    })
+  }
+
+  if (isServiceLike && !serviceSchema?.serviceType?.trim()) {
+    warnings.push({
+      category: 'schema',
+      severity: 'warning',
+      field: 'serviceSchema.serviceType',
+      message: 'Service-like page is missing serviceSchema.serviceType.',
+    })
+  }
+
+  if (isServiceLike && productsOffered.length === 0) {
+    warnings.push({
+      category: 'schema',
+      severity: 'warning',
+      field: 'serviceSchema.productsOffered',
+      message: 'Service-like page is missing productsOffered.',
+    })
+  }
+
+  if (['state-service-hub', 'city-service-area'].includes(templateKey) && areasServed.length === 0) {
+    warnings.push({
+      category: 'schema',
+      severity: 'warning',
+      field: 'serviceSchema.areasServed',
+      message: 'Location/service-area page is missing areasServed.',
+    })
+  }
+
+  if (serviceSchema?.publicSchemaEnabled && (!serviceSchema.serviceName?.trim() || !serviceSchema.serviceType?.trim())) {
+    warnings.push({
+      category: 'schema',
+      severity: 'warning',
+      field: 'serviceSchema.publicSchemaEnabled',
+      message: 'Public Service schema is enabled before serviceName/serviceType are complete.',
+    })
+  }
+
+  return warnings
+}
+
 function getFormWarnings(page: Page) {
   const warnings: PublishingWarning[] = []
   const blocks = page.ContentData?.ContentBlocks || []
@@ -654,6 +716,15 @@ function getFormWarnings(page: Page) {
       severity: 'warning',
       field: 'formConfig.staticFormEndpointKey',
       message: 'Contact form has no static form endpoint key recorded.',
+    })
+  }
+
+  if (hasContactBlock && !page.formConfig?.domainRoutingKey?.trim()) {
+    warnings.push({
+      category: 'form',
+      severity: 'warning',
+      field: 'formConfig.domainRoutingKey',
+      message: 'Contact form has no domain routing key recorded.',
     })
   }
 

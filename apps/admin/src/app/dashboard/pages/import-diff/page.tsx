@@ -30,6 +30,7 @@ const RISK_LABELS: Record<ImportDiffRiskCategory, string> = {
   publishing: 'Publishing risk',
   media: 'Media risk',
   fulfillment_ads: 'Fulfillment/Ads risk',
+  service_schema: 'Service schema risk',
   form_lead_capture: 'Form/lead capture risk',
   destructive_overwrite: 'Destructive overwrite risk',
   tenant_mismatch: 'Tenant mismatch',

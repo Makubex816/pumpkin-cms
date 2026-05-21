@@ -48,6 +48,7 @@ const LEAD_ROUTING_MODES = [
   'unmet_demand_followup',
 ] as const
 
+const AREA_SERVED_TYPES = ['', 'Country', 'State', 'City', 'County', 'Metro', 'Region', 'ServiceArea', 'Custom'] as const
 const SITEMAP_CHANGE_FREQUENCIES = ['', 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'] as const
 const WORKFLOW_STATUSES = ['', 'draft', 'review', 'approved', 'published', 'unpublished', 'archived', 'deprecated'] as const
 
@@ -68,8 +69,17 @@ type TemplateStringField = 'templateKey' | 'templateVersion' | 'layoutVariant' |
 type LinkingStringField = 'hubPage' | 'parentPage'
 type LinkingListField = 'relatedPages' | 'requiredLinks' | 'breadcrumbTrail'
 type SchemaControlBooleanField = 'enableWebPageSchema' | 'enableBreadcrumbSchema' | 'enableFAQSchema' | 'enableServiceSchema'
-type FormConfigStringField = 'formType' | 'conversionGoal' | 'thankYouUrl' | 'thankYouMessage' | 'recipientGroup' | 'staticFormEndpointKey'
-type FormConfigBooleanField = 'consentRequired' | 'spamProtectionEnabled'
+type ServiceSchemaStringField = 'serviceName' | 'serviceType' | 'serviceCategory' | 'schemaOutputMode' | 'notes'
+type ServiceSchemaListField = 'audience' | 'eventTypes'
+type ProductOfferedStringField = 'name' | 'type' | 'description' | 'url' | 'category'
+type ProductOfferedBooleanField = 'isPrimary'
+type ProductOfferedNumberField = 'displayOrder'
+type AreaServedStringField = 'name' | 'type' | 'stateCode' | 'city' | 'county' | 'metro' | 'country' | 'url' | 'serviceAreaType' | 'confidence'
+type AreaServedBooleanField = 'isPrimary'
+type FormConfigStringField = 'formType' | 'conversionGoal' | 'routingMode' | 'domainRoutingKey' | 'replyToMode' | 'emailSubjectTemplate' | 'thankYouUrl' | 'thankYouMessage' | 'recipientGroup' | 'staticFormEndpointKey'
+type FormConfigBooleanField = 'consentRequired' | 'spamProtectionEnabled' | 'mailtoFallbackEnabled'
+type DomainRoutingStringField = 'domain' | 'brandName' | 'publicContactEmail' | 'quoteRequestEmail' | 'supportEmail' | 'replyToEmail' | 'fromName' | 'fromEmail' | 'contactPageSlug' | 'primaryPhone' | 'defaultLeadRoutingMode' | 'defaultRecipientGroup' | 'staticFormEndpointKey' | 'emailProvider' | 'emailProviderStatus' | 'mxStatus' | 'spfStatus' | 'dkimStatus' | 'dmarcStatus' | 'notes'
+type DomainRoutingBooleanField = 'mailtoLinksEnabled'
 type EditableContent = Record<string, unknown>
 
 interface ValidationResult {
@@ -271,6 +281,34 @@ function emptyImageAsset() {
   }
 }
 
+function emptyProductOffered() {
+  return {
+    name: '',
+    type: '',
+    description: '',
+    url: '',
+    category: '',
+    isPrimary: false,
+    displayOrder: 0,
+  }
+}
+
+function emptyAreaServed() {
+  return {
+    name: '',
+    type: '',
+    stateCode: '',
+    city: '',
+    county: '',
+    metro: '',
+    country: 'US',
+    url: '',
+    serviceAreaType: '',
+    confidence: '',
+    isPrimary: false,
+  }
+}
+
 function getPageMedia(page: Page) {
   return {
     featuredImage: { ...emptyImageAsset(), ...page.media?.featuredImage },
@@ -439,12 +477,63 @@ function getPageSchemaControls(page: Page) {
   }
 }
 
+function getPageServiceSchema(page: Page) {
+  const serviceSchema = toRecord(page.serviceSchema)
+  const productsOffered = Array.isArray(serviceSchema.productsOffered)
+    ? serviceSchema.productsOffered.filter(isRecord).map((item) => ({
+        ...emptyProductOffered(),
+        ...item,
+        name: stringValue(item.name),
+        type: stringValue(item.type),
+        description: stringValue(item.description),
+        url: stringValue(item.url),
+        category: stringValue(item.category),
+        isPrimary: booleanValue(item.isPrimary),
+        displayOrder: numberValue(item.displayOrder, 0),
+      }))
+    : []
+  const areasServed = Array.isArray(serviceSchema.areasServed)
+    ? serviceSchema.areasServed.filter(isRecord).map((item) => ({
+        ...emptyAreaServed(),
+        ...item,
+        name: stringValue(item.name),
+        type: stringValue(item.type),
+        stateCode: stringValue(item.stateCode),
+        city: stringValue(item.city),
+        county: stringValue(item.county),
+        metro: stringValue(item.metro),
+        country: stringValue(item.country) || 'US',
+        url: stringValue(item.url),
+        serviceAreaType: stringValue(item.serviceAreaType),
+        confidence: stringValue(item.confidence),
+        isPrimary: booleanValue(item.isPrimary),
+      }))
+    : []
+
+  return {
+    serviceName: stringValue(serviceSchema.serviceName),
+    serviceType: stringValue(serviceSchema.serviceType),
+    serviceCategory: stringValue(serviceSchema.serviceCategory),
+    productsOffered,
+    areasServed,
+    audience: stringListValue(serviceSchema.audience),
+    eventTypes: stringListValue(serviceSchema.eventTypes),
+    schemaOutputMode: stringValue(serviceSchema.schemaOutputMode) || 'validate_only',
+    publicSchemaEnabled: booleanValue(serviceSchema.publicSchemaEnabled),
+    notes: stringValue(serviceSchema.notes),
+  }
+}
+
 function getPageFormConfig(page: Page) {
   return {
     formId: page.formConfig?.formId || '',
     formType: page.formConfig?.formType || '',
     conversionGoal: page.formConfig?.conversionGoal || '',
     routingMode: page.formConfig?.routingMode || '',
+    domainRoutingKey: page.formConfig?.domainRoutingKey || '',
+    replyToMode: page.formConfig?.replyToMode || '',
+    emailSubjectTemplate: page.formConfig?.emailSubjectTemplate || '',
+    mailtoFallbackEnabled: Boolean(page.formConfig?.mailtoFallbackEnabled),
     thankYouUrl: page.formConfig?.thankYouUrl || '',
     thankYouMessage: page.formConfig?.thankYouMessage || '',
     recipientGroup: page.formConfig?.recipientGroup || '',
@@ -454,6 +543,34 @@ function getPageFormConfig(page: Page) {
     consentRequired: page.formConfig?.consentRequired ?? true,
     spamProtectionRequired: page.formConfig?.spamProtectionRequired ?? true,
     spamProtectionEnabled: Boolean(page.formConfig?.spamProtectionEnabled),
+  }
+}
+
+function getPageDomainRouting(page: Page) {
+  const domainRouting = toRecord(page.domainRouting)
+
+  return {
+    domain: stringValue(domainRouting.domain),
+    brandName: stringValue(domainRouting.brandName),
+    publicContactEmail: stringValue(domainRouting.publicContactEmail),
+    quoteRequestEmail: stringValue(domainRouting.quoteRequestEmail),
+    supportEmail: stringValue(domainRouting.supportEmail),
+    replyToEmail: stringValue(domainRouting.replyToEmail),
+    fromName: stringValue(domainRouting.fromName),
+    fromEmail: stringValue(domainRouting.fromEmail),
+    contactPageSlug: stringValue(domainRouting.contactPageSlug),
+    primaryPhone: stringValue(domainRouting.primaryPhone),
+    mailtoLinksEnabled: booleanValue(domainRouting.mailtoLinksEnabled),
+    defaultLeadRoutingMode: stringValue(domainRouting.defaultLeadRoutingMode),
+    defaultRecipientGroup: stringValue(domainRouting.defaultRecipientGroup),
+    staticFormEndpointKey: stringValue(domainRouting.staticFormEndpointKey),
+    emailProvider: stringValue(domainRouting.emailProvider),
+    emailProviderStatus: stringValue(domainRouting.emailProviderStatus),
+    mxStatus: stringValue(domainRouting.mxStatus),
+    spfStatus: stringValue(domainRouting.spfStatus),
+    dkimStatus: stringValue(domainRouting.dkimStatus),
+    dmarcStatus: stringValue(domainRouting.dmarcStatus),
+    notes: stringValue(domainRouting.notes),
   }
 }
 
@@ -529,7 +646,9 @@ function normalizeProductionFields(page: Page, editorName = 'Pumpkin CMS Admin')
   const template = getPageTemplateIdentity(page)
   const linking = getPageLinking(page)
   const schemaControls = getPageSchemaControls(page)
+  const serviceSchema = getPageServiceSchema(page)
   const formConfig = getPageFormConfig(page)
+  const domainRouting = getPageDomainRouting(page)
   const importProvenance = getPageImportProvenance(page)
   const deploymentHooks = getPageDeploymentHooks(page)
   const targetKeyword = page.MetaData?.keyword || page.searchData?.keyword || ''
@@ -579,7 +698,9 @@ function normalizeProductionFields(page: Page, editorName = 'Pumpkin CMS Admin')
     template,
     linking,
     schemaControls,
+    serviceSchema,
     formConfig,
+    domainRouting,
     importProvenance,
     deploymentHooks,
   }
@@ -912,6 +1033,49 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
     warnings.push('template.contentModelVersion is missing.')
   }
 
+  const serviceSchema = getPageServiceSchema(page)
+  const isServiceLikePage = [
+    'service',
+    'state-service-hub',
+    'city-service-area',
+    'event-use',
+    'product-intent',
+  ].includes(template.templateKey) || ['service', 'state', 'city', 'event', 'product'].some((value) =>
+    `${page.MetaData?.pageType || ''} ${page.pageSlug || ''}`.toLowerCase().includes(value),
+  )
+
+  if (isServiceLikePage && !serviceSchema.serviceName.trim()) {
+    warnings.push('serviceSchema.serviceName is missing for a service-like page.')
+  }
+
+  if (isServiceLikePage && !serviceSchema.serviceType.trim()) {
+    warnings.push('serviceSchema.serviceType is missing for a service-like page.')
+  }
+
+  if (isServiceLikePage && serviceSchema.productsOffered.length === 0) {
+    warnings.push('serviceSchema.productsOffered should include at least one item for service-like pages.')
+  }
+
+  if (['state-service-hub', 'city-service-area'].includes(template.templateKey) && serviceSchema.areasServed.length === 0) {
+    warnings.push('serviceSchema.areasServed should include at least one area for location/service-area pages.')
+  }
+
+  serviceSchema.productsOffered.forEach((product, index) => {
+    if (!product.name.trim() || !product.type.trim()) {
+      warnings.push(`serviceSchema.productsOffered[${index}] should include name and type.`)
+    }
+  })
+
+  serviceSchema.areasServed.forEach((area, index) => {
+    if (!area.name.trim() || !area.type.trim()) {
+      warnings.push(`serviceSchema.areasServed[${index}] should include name and type.`)
+    }
+  })
+
+  if (serviceSchema.publicSchemaEnabled && (!serviceSchema.serviceName.trim() || !serviceSchema.serviceType.trim())) {
+    warnings.push('Public Service schema is enabled but serviceName/serviceType are incomplete.')
+  }
+
   const fulfillment = getPageFulfillment(page)
   if (!fulfillment.fulfillmentStatus) {
     warnings.push('Fulfillment status is missing.')
@@ -959,6 +1123,14 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
 
   if (blocks.some((block) => block.type === 'Contact') && !formConfig.formType) {
     warnings.push('Contact block exists but formConfig.formType is missing.')
+  }
+
+  if (blocks.some((block) => block.type === 'Contact') && !formConfig.domainRoutingKey) {
+    warnings.push('Contact block exists but formConfig.domainRoutingKey is missing.')
+  }
+
+  if (blocks.some((block) => block.type === 'Contact') && !formConfig.staticFormEndpointKey) {
+    warnings.push('Contact block exists but formConfig.staticFormEndpointKey is missing for static publishing.')
   }
 
   blocks.forEach((block, index) => {
@@ -1226,7 +1398,9 @@ export default function PageStructuredEditor() {
   const pageTemplate = page ? getPageTemplateIdentity(page) : null
   const pageLinking = page ? getPageLinking(page) : null
   const pageSchemaControls = page ? getPageSchemaControls(page) : null
+  const pageServiceSchema = page ? getPageServiceSchema(page) : null
   const pageFormConfig = page ? getPageFormConfig(page) : null
+  const pageDomainRouting = page ? getPageDomainRouting(page) : null
   const pageImportProvenance = page ? getPageImportProvenance(page) : null
   const pageDeploymentHooks = page ? getPageDeploymentHooks(page) : null
   const slugChanged = page ? normalizeRedirectSlug(page.pageSlug) !== normalizeRedirectSlug(originalSlug) : false
@@ -1512,6 +1686,138 @@ export default function PageStructuredEditor() {
     }))
   }
 
+  const updateServiceSchemaField = (field: ServiceSchemaStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      serviceSchema: {
+        ...getPageServiceSchema(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateServiceSchemaBoolean = (field: 'publicSchemaEnabled', value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      serviceSchema: {
+        ...getPageServiceSchema(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateServiceSchemaList = (field: ServiceSchemaListField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      serviceSchema: {
+        ...getPageServiceSchema(current),
+        [field]: stringListValue(value),
+      },
+    }))
+  }
+
+  const addProductOffered = () => {
+    updatePageState((current) => {
+      const serviceSchema = getPageServiceSchema(current)
+      return {
+        ...current,
+        serviceSchema: {
+          ...serviceSchema,
+          productsOffered: [
+            ...serviceSchema.productsOffered,
+            { ...emptyProductOffered(), displayOrder: serviceSchema.productsOffered.length + 1 },
+          ],
+        },
+      }
+    })
+  }
+
+  const updateProductOffered = (
+    index: number,
+    field: ProductOfferedStringField | ProductOfferedBooleanField | ProductOfferedNumberField,
+    value: string | boolean,
+  ) => {
+    updatePageState((current) => {
+      const serviceSchema = getPageServiceSchema(current)
+      const productsOffered = serviceSchema.productsOffered.map((item, itemIndex) => {
+        if (itemIndex !== index) return item
+        if (field === 'isPrimary') return { ...item, [field]: Boolean(value) }
+        if (field === 'displayOrder') return { ...item, [field]: numberValue(value, item.displayOrder) }
+        return { ...item, [field]: stringValue(value) }
+      })
+
+      return {
+        ...current,
+        serviceSchema: {
+          ...serviceSchema,
+          productsOffered,
+        },
+      }
+    })
+  }
+
+  const removeProductOffered = (index: number) => {
+    updatePageState((current) => {
+      const serviceSchema = getPageServiceSchema(current)
+      return {
+        ...current,
+        serviceSchema: {
+          ...serviceSchema,
+          productsOffered: serviceSchema.productsOffered.filter((_, itemIndex) => itemIndex !== index),
+        },
+      }
+    })
+  }
+
+  const addAreaServed = () => {
+    updatePageState((current) => {
+      const serviceSchema = getPageServiceSchema(current)
+      return {
+        ...current,
+        serviceSchema: {
+          ...serviceSchema,
+          areasServed: [...serviceSchema.areasServed, emptyAreaServed()],
+        },
+      }
+    })
+  }
+
+  const updateAreaServed = (
+    index: number,
+    field: AreaServedStringField | AreaServedBooleanField,
+    value: string | boolean,
+  ) => {
+    updatePageState((current) => {
+      const serviceSchema = getPageServiceSchema(current)
+      const areasServed = serviceSchema.areasServed.map((item, itemIndex) => {
+        if (itemIndex !== index) return item
+        if (field === 'isPrimary') return { ...item, [field]: Boolean(value) }
+        return { ...item, [field]: stringValue(value) }
+      })
+
+      return {
+        ...current,
+        serviceSchema: {
+          ...serviceSchema,
+          areasServed,
+        },
+      }
+    })
+  }
+
+  const removeAreaServed = (index: number) => {
+    updatePageState((current) => {
+      const serviceSchema = getPageServiceSchema(current)
+      return {
+        ...current,
+        serviceSchema: {
+          ...serviceSchema,
+          areasServed: serviceSchema.areasServed.filter((_, itemIndex) => itemIndex !== index),
+        },
+      }
+    })
+  }
+
   const updateFormConfigField = (field: FormConfigStringField, value: string) => {
     updatePageState((current) => ({
       ...current,
@@ -1527,6 +1833,26 @@ export default function PageStructuredEditor() {
       ...current,
       formConfig: {
         ...getPageFormConfig(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateDomainRoutingField = (field: DomainRoutingStringField, value: string) => {
+    updatePageState((current) => ({
+      ...current,
+      domainRouting: {
+        ...getPageDomainRouting(current),
+        [field]: value,
+      },
+    }))
+  }
+
+  const updateDomainRoutingBoolean = (field: DomainRoutingBooleanField, value: boolean) => {
+    updatePageState((current) => ({
+      ...current,
+      domainRouting: {
+        ...getPageDomainRouting(current),
         [field]: value,
       },
     }))
@@ -2099,6 +2425,105 @@ export default function PageStructuredEditor() {
         </div>
       </Section>
 
+      <Section title="Service Schema / Areas Served" description="Products offered and internal areasServed data for future Schema.org areaServed output. Do not invent provider or coverage claims.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <TextField label="serviceSchema.serviceName" value={pageServiceSchema?.serviceName || ''} onChange={(value) => updateServiceSchemaField('serviceName', value)} placeholder="Portable ice rink rentals" />
+          <TextField label="serviceSchema.serviceType" value={pageServiceSchema?.serviceType || ''} onChange={(value) => updateServiceSchemaField('serviceType', value)} placeholder="RentalService" />
+          <TextField label="serviceSchema.serviceCategory" value={pageServiceSchema?.serviceCategory || ''} onChange={(value) => updateServiceSchemaField('serviceCategory', value)} placeholder="Event rentals" />
+          <TextField label="serviceSchema.schemaOutputMode" value={pageServiceSchema?.schemaOutputMode || ''} onChange={(value) => updateServiceSchemaField('schemaOutputMode', value)} placeholder="validate_only or json_ld" />
+          <TextField label="serviceSchema.audience" value={(pageServiceSchema?.audience || []).join(', ')} onChange={(value) => updateServiceSchemaList('audience', value)} placeholder="municipal events, corporate events" />
+          <TextField label="serviceSchema.eventTypes" value={(pageServiceSchema?.eventTypes || []).join(', ')} onChange={(value) => updateServiceSchemaList('eventTypes', value)} placeholder="holiday activations, school events" />
+          <TextField label="serviceSchema.notes" value={pageServiceSchema?.notes || ''} onChange={(value) => updateServiceSchemaField('notes', value)} multiline rows={3} />
+          <CheckboxField label="Public Service schema enabled" checked={Boolean(pageServiceSchema?.publicSchemaEnabled)} onChange={(value) => updateServiceSchemaBoolean('publicSchemaEnabled', value)} />
+        </div>
+
+        <div className="mt-5 rounded-md border border-neutral-200 bg-neutral-50 p-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 className="text-sm font-semibold text-neutral-900">Products Offered</h3>
+              <p className="text-xs text-neutral-600">Use factual service/product items only. These are preserved for future offers or hasOfferCatalog mapping.</p>
+            </div>
+            <button type="button" onClick={addProductOffered} className="rounded-md border border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-700 hover:bg-white">
+              Add Product
+            </button>
+          </div>
+          {(pageServiceSchema?.productsOffered || []).length === 0 ? (
+            <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+              No productsOffered items are recorded yet.
+            </div>
+          ) : (
+            <div className="mt-3 space-y-3">
+              {(pageServiceSchema?.productsOffered || []).map((product, index) => (
+                <div key={`product-${index}`} className="rounded-md border border-neutral-200 bg-white p-3">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Product {index + 1}</div>
+                    <button type="button" onClick={() => removeProductOffered(index)} className="text-xs font-semibold text-red-700 hover:text-red-900">
+                      Remove
+                    </button>
+                  </div>
+                  <div className="grid gap-3 lg:grid-cols-2">
+                    <TextField label="name" value={product.name} onChange={(value) => updateProductOffered(index, 'name', value)} />
+                    <TextField label="type" value={product.type} onChange={(value) => updateProductOffered(index, 'type', value)} />
+                    <TextField label="category" value={product.category} onChange={(value) => updateProductOffered(index, 'category', value)} />
+                    <TextField label="url" value={product.url} onChange={(value) => updateProductOffered(index, 'url', value)} />
+                    <TextField label="displayOrder" value={String(product.displayOrder || 0)} onChange={(value) => updateProductOffered(index, 'displayOrder', value)} />
+                    <CheckboxField label="Primary product" checked={Boolean(product.isPrimary)} onChange={(value) => updateProductOffered(index, 'isPrimary', value)} />
+                    <div className="lg:col-span-2">
+                      <TextField label="description" value={product.description} onChange={(value) => updateProductOffered(index, 'description', value)} multiline rows={3} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="mt-5 rounded-md border border-neutral-200 bg-neutral-50 p-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 className="text-sm font-semibold text-neutral-900">Areas Served</h3>
+              <p className="text-xs text-neutral-600">Internal areasServed values map to Schema.org areaServed when public schema output is enabled.</p>
+            </div>
+            <button type="button" onClick={addAreaServed} className="rounded-md border border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-700 hover:bg-white">
+              Add Area
+            </button>
+          </div>
+          {(pageServiceSchema?.areasServed || []).length === 0 ? (
+            <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+              No areasServed items are recorded yet.
+            </div>
+          ) : (
+            <div className="mt-3 space-y-3">
+              {(pageServiceSchema?.areasServed || []).map((area, index) => (
+                <div key={`area-${index}`} className="rounded-md border border-neutral-200 bg-white p-3">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Area {index + 1}</div>
+                    <button type="button" onClick={() => removeAreaServed(index)} className="text-xs font-semibold text-red-700 hover:text-red-900">
+                      Remove
+                    </button>
+                  </div>
+                  <div className="grid gap-3 lg:grid-cols-2">
+                    <TextField label="name" value={area.name} onChange={(value) => updateAreaServed(index, 'name', value)} />
+                    <SelectField label="type" value={area.type} onChange={(value) => updateAreaServed(index, 'type', value)}>
+                      {AREA_SERVED_TYPES.map((type) => <option key={type || 'blank'} value={type}>{type || 'Select area type'}</option>)}
+                    </SelectField>
+                    <TextField label="stateCode" value={area.stateCode} onChange={(value) => updateAreaServed(index, 'stateCode', value)} />
+                    <TextField label="city" value={area.city} onChange={(value) => updateAreaServed(index, 'city', value)} />
+                    <TextField label="county" value={area.county} onChange={(value) => updateAreaServed(index, 'county', value)} />
+                    <TextField label="metro" value={area.metro} onChange={(value) => updateAreaServed(index, 'metro', value)} />
+                    <TextField label="country" value={area.country} onChange={(value) => updateAreaServed(index, 'country', value)} />
+                    <TextField label="serviceAreaType" value={area.serviceAreaType} onChange={(value) => updateAreaServed(index, 'serviceAreaType', value)} />
+                    <TextField label="confidence" value={area.confidence} onChange={(value) => updateAreaServed(index, 'confidence', value)} />
+                    <TextField label="url" value={area.url} onChange={(value) => updateAreaServed(index, 'url', value)} />
+                    <CheckboxField label="Primary area" checked={Boolean(area.isPrimary)} onChange={(value) => updateAreaServed(index, 'isPrimary', value)} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </Section>
+
       <Section title="Media" description="Page-level image slots for production readiness plus detected per-block image fields. Use assetId to reference registered Media Library records.">
         <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-900">
           Select registered tenant media assets directly from the Media Library, or keep using manual URLs as a fallback.
@@ -2360,6 +2785,10 @@ export default function PageStructuredEditor() {
           <ReadOnlyPill label="schemaWarnings" value={(pageSchemaControls?.schemaWarnings || []).join(', ')} />
           <TextField label="formConfig.formType" value={pageFormConfig?.formType || ''} onChange={(value) => updateFormConfigField('formType', value)} />
           <TextField label="formConfig.conversionGoal" value={pageFormConfig?.conversionGoal || ''} onChange={(value) => updateFormConfigField('conversionGoal', value)} />
+          <TextField label="formConfig.routingMode" value={pageFormConfig?.routingMode || ''} onChange={(value) => updateFormConfigField('routingMode', value)} />
+          <TextField label="formConfig.domainRoutingKey" value={pageFormConfig?.domainRoutingKey || ''} onChange={(value) => updateFormConfigField('domainRoutingKey', value)} />
+          <TextField label="formConfig.replyToMode" value={pageFormConfig?.replyToMode || ''} onChange={(value) => updateFormConfigField('replyToMode', value)} />
+          <TextField label="formConfig.emailSubjectTemplate" value={pageFormConfig?.emailSubjectTemplate || ''} onChange={(value) => updateFormConfigField('emailSubjectTemplate', value)} />
           <TextField label="formConfig.thankYouUrl" value={pageFormConfig?.thankYouUrl || ''} onChange={(value) => updateFormConfigField('thankYouUrl', value)} />
           <TextField label="formConfig.thankYouMessage" value={pageFormConfig?.thankYouMessage || ''} onChange={(value) => updateFormConfigField('thankYouMessage', value)} />
           <TextField label="formConfig.recipientGroup" value={pageFormConfig?.recipientGroup || ''} onChange={(value) => updateFormConfigField('recipientGroup', value)} />
@@ -2367,6 +2796,36 @@ export default function PageStructuredEditor() {
           <div className="space-y-3">
             <CheckboxField label="Consent required" checked={Boolean(pageFormConfig?.consentRequired)} onChange={(value) => updateFormConfigBoolean('consentRequired', value)} />
             <CheckboxField label="Spam protection enabled" checked={Boolean(pageFormConfig?.spamProtectionEnabled)} onChange={(value) => updateFormConfigBoolean('spamProtectionEnabled', value)} />
+            <CheckboxField label="Mailto fallback enabled" checked={Boolean(pageFormConfig?.mailtoFallbackEnabled)} onChange={(value) => updateFormConfigBoolean('mailtoFallbackEnabled', value)} />
+          </div>
+        </div>
+        <div className="mt-5 rounded-md border border-neutral-200 bg-neutral-50 p-3">
+          <div className="mb-3">
+            <h3 className="text-sm font-semibold text-neutral-900">Domain Routing Snapshot</h3>
+            <p className="text-xs text-neutral-600">Non-secret routing/contact metadata only. Do not store SMTP passwords, API tokens, or provider credentials here.</p>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <TextField label="domainRouting.domain" value={pageDomainRouting?.domain || ''} onChange={(value) => updateDomainRoutingField('domain', value)} />
+            <TextField label="domainRouting.brandName" value={pageDomainRouting?.brandName || ''} onChange={(value) => updateDomainRoutingField('brandName', value)} />
+            <TextField label="domainRouting.publicContactEmail" value={pageDomainRouting?.publicContactEmail || ''} onChange={(value) => updateDomainRoutingField('publicContactEmail', value)} />
+            <TextField label="domainRouting.quoteRequestEmail" value={pageDomainRouting?.quoteRequestEmail || ''} onChange={(value) => updateDomainRoutingField('quoteRequestEmail', value)} />
+            <TextField label="domainRouting.supportEmail" value={pageDomainRouting?.supportEmail || ''} onChange={(value) => updateDomainRoutingField('supportEmail', value)} />
+            <TextField label="domainRouting.replyToEmail" value={pageDomainRouting?.replyToEmail || ''} onChange={(value) => updateDomainRoutingField('replyToEmail', value)} />
+            <TextField label="domainRouting.fromName" value={pageDomainRouting?.fromName || ''} onChange={(value) => updateDomainRoutingField('fromName', value)} />
+            <TextField label="domainRouting.fromEmail" value={pageDomainRouting?.fromEmail || ''} onChange={(value) => updateDomainRoutingField('fromEmail', value)} />
+            <TextField label="domainRouting.contactPageSlug" value={pageDomainRouting?.contactPageSlug || ''} onChange={(value) => updateDomainRoutingField('contactPageSlug', value)} />
+            <TextField label="domainRouting.primaryPhone" value={pageDomainRouting?.primaryPhone || ''} onChange={(value) => updateDomainRoutingField('primaryPhone', value)} />
+            <TextField label="domainRouting.defaultLeadRoutingMode" value={pageDomainRouting?.defaultLeadRoutingMode || ''} onChange={(value) => updateDomainRoutingField('defaultLeadRoutingMode', value)} />
+            <TextField label="domainRouting.defaultRecipientGroup" value={pageDomainRouting?.defaultRecipientGroup || ''} onChange={(value) => updateDomainRoutingField('defaultRecipientGroup', value)} />
+            <TextField label="domainRouting.staticFormEndpointKey" value={pageDomainRouting?.staticFormEndpointKey || ''} onChange={(value) => updateDomainRoutingField('staticFormEndpointKey', value)} />
+            <TextField label="domainRouting.emailProvider" value={pageDomainRouting?.emailProvider || ''} onChange={(value) => updateDomainRoutingField('emailProvider', value)} />
+            <TextField label="domainRouting.emailProviderStatus" value={pageDomainRouting?.emailProviderStatus || ''} onChange={(value) => updateDomainRoutingField('emailProviderStatus', value)} />
+            <TextField label="domainRouting.mxStatus" value={pageDomainRouting?.mxStatus || ''} onChange={(value) => updateDomainRoutingField('mxStatus', value)} />
+            <TextField label="domainRouting.spfStatus" value={pageDomainRouting?.spfStatus || ''} onChange={(value) => updateDomainRoutingField('spfStatus', value)} />
+            <TextField label="domainRouting.dkimStatus" value={pageDomainRouting?.dkimStatus || ''} onChange={(value) => updateDomainRoutingField('dkimStatus', value)} />
+            <TextField label="domainRouting.dmarcStatus" value={pageDomainRouting?.dmarcStatus || ''} onChange={(value) => updateDomainRoutingField('dmarcStatus', value)} />
+            <TextField label="domainRouting.notes" value={pageDomainRouting?.notes || ''} onChange={(value) => updateDomainRoutingField('notes', value)} multiline rows={3} />
+            <CheckboxField label="Mailto links enabled" checked={Boolean(pageDomainRouting?.mailtoLinksEnabled)} onChange={(value) => updateDomainRoutingBoolean('mailtoLinksEnabled', value)} />
           </div>
         </div>
       </Section>

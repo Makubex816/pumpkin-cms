@@ -9,6 +9,7 @@ export type ImportDiffRiskCategory =
   | 'publishing'
   | 'media'
   | 'fulfillment_ads'
+  | 'service_schema'
   | 'form_lead_capture'
   | 'destructive_overwrite'
   | 'tenant_mismatch'
@@ -94,6 +95,25 @@ const FIELD_SUMMARIES: Array<{
   { field: 'workflow.status', label: 'Workflow status', risks: ['publishing'] },
   { field: 'staticPublishing.staticEligible', label: 'Static eligible', risks: ['publishing', 'static_rebuild'] },
   { field: 'fulfillment.fulfillmentStatus', label: 'Fulfillment status', risks: ['fulfillment_ads'] },
+  { field: 'serviceSchema.serviceName', label: 'Service name', risks: ['service_schema', 'seo', 'static_rebuild'] },
+  { field: 'serviceSchema.serviceType', label: 'Service type', risks: ['service_schema', 'static_rebuild'] },
+  {
+    field: 'serviceSchema.productsOffered',
+    label: 'Products offered',
+    risks: ['service_schema', 'fulfillment_ads', 'static_rebuild'],
+    customSummary: (page) => summarizeNamedItems(getPath(page, 'serviceSchema.productsOffered')),
+  },
+  {
+    field: 'serviceSchema.areasServed',
+    label: 'Areas served',
+    risks: ['service_schema', 'fulfillment_ads', 'static_rebuild'],
+    customSummary: (page) => summarizeNamedItems(getPath(page, 'serviceSchema.areasServed')),
+  },
+  { field: 'serviceSchema.publicSchemaEnabled', label: 'Public service schema enabled', risks: ['service_schema', 'seo', 'static_rebuild'] },
+  { field: 'formConfig.domainRoutingKey', label: 'Domain routing key', risks: ['form_lead_capture', 'service_schema', 'static_rebuild'] },
+  { field: 'formConfig.recipientGroup', label: 'Recipient group', risks: ['form_lead_capture'] },
+  { field: 'formConfig.staticFormEndpointKey', label: 'Static form endpoint key', risks: ['form_lead_capture'] },
+  { field: 'domainRouting', label: 'Domain routing metadata', risks: ['form_lead_capture', 'service_schema'] },
   { field: 'formConfig', label: 'Form config', risks: ['form_lead_capture', 'static_rebuild'] },
   { field: 'media.featuredImage', label: 'Featured image', risks: ['media', 'static_rebuild'] },
   { field: 'media.heroImage', label: 'Hero image', risks: ['media', 'static_rebuild'] },
@@ -242,6 +262,8 @@ function diffIncomingPage(
 
   validateRedirects(incoming, warnings)
   validateCanonical(incoming, tenantId, incomingSlug, warnings)
+  validateServiceSchema(incoming, warnings)
+  validateRoutingFields(incoming, warnings)
 
   let action = getBaseAction(existingPage, mode)
   if (errors.length > 0) {
@@ -455,6 +477,111 @@ function validateRedirects(page: JsonRecord, warnings: ImportDiffIssue[]) {
   })
 }
 
+function validateServiceSchema(page: JsonRecord, warnings: ImportDiffIssue[]) {
+  const templateKey = stringValue(getPath(page, 'template.templateKey'))
+  const pageType = stringValue(getPath(page, 'MetaData.pageType'))
+  const slug = stringValue(page.pageSlug)
+  const isServiceLike = ['service', 'state-service-hub', 'city-service-area', 'event-use', 'product-intent'].includes(templateKey) ||
+    ['service', 'state', 'city', 'event', 'product'].some((value) => `${pageType} ${slug}`.toLowerCase().includes(value))
+  const productsOffered = getPath(page, 'serviceSchema.productsOffered')
+  const areasServed = getPath(page, 'serviceSchema.areasServed')
+  const publicSchemaEnabled = getPath(page, 'serviceSchema.publicSchemaEnabled') === true
+  const fulfillmentStatus = stringValue(getPath(page, 'fulfillment.fulfillmentStatus'))
+  const publicDisclosureRequired = getPath(page, 'fulfillment.publicDisclosureRequired') === true
+
+  if (isServiceLike && !stringValue(getPath(page, 'serviceSchema.serviceName')).trim()) {
+    warnings.push({
+      category: 'service_schema',
+      field: 'serviceSchema.serviceName',
+      message: 'Incoming service-like page is missing serviceSchema.serviceName.',
+    })
+  }
+
+  if (isServiceLike && !stringValue(getPath(page, 'serviceSchema.serviceType')).trim()) {
+    warnings.push({
+      category: 'service_schema',
+      field: 'serviceSchema.serviceType',
+      message: 'Incoming service-like page is missing serviceSchema.serviceType.',
+    })
+  }
+
+  if (productsOffered !== undefined && !Array.isArray(productsOffered)) {
+    warnings.push({
+      category: 'service_schema',
+      field: 'serviceSchema.productsOffered',
+      message: 'Incoming productsOffered should be an array.',
+    })
+  }
+
+  if (areasServed !== undefined && !Array.isArray(areasServed)) {
+    warnings.push({
+      category: 'service_schema',
+      field: 'serviceSchema.areasServed',
+      message: 'Incoming areasServed should be an array.',
+    })
+  }
+
+  if (isServiceLike && (!Array.isArray(productsOffered) || productsOffered.length === 0)) {
+    warnings.push({
+      category: 'service_schema',
+      field: 'serviceSchema.productsOffered',
+      message: 'Incoming service-like page has no productsOffered entries.',
+    })
+  }
+
+  if (['state-service-hub', 'city-service-area'].includes(templateKey) && (!Array.isArray(areasServed) || areasServed.length === 0)) {
+    warnings.push({
+      category: 'service_schema',
+      field: 'serviceSchema.areasServed',
+      message: 'Incoming location/service-area page has no areasServed entries.',
+    })
+  }
+
+  if (publicSchemaEnabled && (!Array.isArray(productsOffered) || productsOffered.length === 0)) {
+    warnings.push({
+      category: 'service_schema',
+      field: 'serviceSchema.productsOffered',
+      message: 'Public service schema is enabled without productsOffered entries.',
+    })
+  }
+
+  if (
+    Array.isArray(areasServed) &&
+    areasServed.length > 0 &&
+    fulfillmentStatus &&
+    fulfillmentStatus !== 'direct_partner_available' &&
+    !publicDisclosureRequired
+  ) {
+    warnings.push({
+      category: 'fulfillment_ads',
+      field: 'fulfillment.publicDisclosureRequired',
+      message: 'Incoming areasServed on non-direct fulfillment should require public disclosure.',
+    })
+  }
+}
+
+function validateRoutingFields(page: JsonRecord, warnings: ImportDiffIssue[]) {
+  const blocks = getPath(page, 'ContentData.ContentBlocks')
+  const hasContactBlock = Array.isArray(blocks) && blocks.some((block) => isRecord(block) && stringValue(block.type) === 'Contact')
+  const adsEligible = getPath(page, 'googleAds.eligible') === true
+
+  if ((hasContactBlock || adsEligible) && !stringValue(getPath(page, 'formConfig.domainRoutingKey')).trim()) {
+    warnings.push({
+      category: 'form_lead_capture',
+      field: 'formConfig.domainRoutingKey',
+      message: 'Incoming form or Ads-eligible page is missing a domain routing key.',
+    })
+  }
+
+  if (hasContactBlock && !stringValue(getPath(page, 'formConfig.staticFormEndpointKey')).trim()) {
+    warnings.push({
+      category: 'form_lead_capture',
+      field: 'formConfig.staticFormEndpointKey',
+      message: 'Incoming static public form page has no static form endpoint key.',
+    })
+  }
+}
+
 function hasRedirectCoverage(incoming: JsonRecord, oldSlug: string, newSlug: string) {
   const normalizedOld = normalizeSlug(oldSlug)
   const normalizedNew = normalizeSlug(newSlug)
@@ -508,6 +635,16 @@ function summarizeBlockTypes(page: JsonRecord) {
   return blocks.map((block) => isRecord(block) ? stringValue(block.type) || 'Unknown' : 'Invalid')
 }
 
+function summarizeNamedItems(value: unknown) {
+  if (!Array.isArray(value)) return value
+  return value.map((item) => {
+    if (!isRecord(item)) return 'Invalid'
+    const name = stringValue(item.name) || 'Unnamed'
+    const type = stringValue(item.type)
+    return type ? `${name} (${type})` : name
+  })
+}
+
 function summarizeValue(value: unknown): string {
   if (value === undefined || value === null || value === '') return 'not set'
   if (typeof value === 'boolean') return value ? 'true' : 'false'
@@ -554,6 +691,7 @@ function isRiskCategory(value: string): value is ImportDiffRiskCategory {
     'publishing',
     'media',
     'fulfillment_ads',
+    'service_schema',
     'form_lead_capture',
     'destructive_overwrite',
     'tenant_mismatch',

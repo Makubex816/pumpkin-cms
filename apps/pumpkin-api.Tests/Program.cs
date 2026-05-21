@@ -471,6 +471,15 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
     public Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry)
         => _connection.SaveFormEntryAsync(apiKey, tenantId, formEntry);
 
+    public Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
+        => _connection.GetFormEntriesByTenantAsync(tenantId);
+
+    public Task<FormEntry?> GetFormEntryAsync(string tenantId, string id)
+        => _connection.GetFormEntryAsync(tenantId, id);
+
+    public Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate)
+        => _connection.UpdateFormEntryStatusAsync(tenantId, id, statusUpdate);
+
     public Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
         => _connection.GetSitemapPagesAsync(apiKey, tenantId);
 
@@ -501,6 +510,36 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
 
     public Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null)
         => _connection.UpdatePageAdminAsync(tenantId, pageSlug, page, changeContext);
+
+    public Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId)
+        => _connection.GetPublishRunsByTenantAsync(tenantId);
+
+    public Task<PublishRun?> GetPublishRunAsync(string tenantId, string id)
+        => _connection.GetPublishRunAsync(tenantId, id);
+
+    public Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun)
+        => _connection.SavePublishRunAsync(tenantId, publishRun);
+
+    public Task<List<ImportRun>> GetImportRunsByTenantAsync(string tenantId)
+        => _connection.GetImportRunsByTenantAsync(tenantId);
+
+    public Task<ImportRun?> GetImportRunAsync(string tenantId, string id)
+        => _connection.GetImportRunAsync(tenantId, id);
+
+    public Task<ImportRun> SaveImportRunAsync(string tenantId, ImportRun importRun)
+        => _connection.SaveImportRunAsync(tenantId, importRun);
+
+    public Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId)
+        => _connection.GetMediaAssetsByTenantAsync(tenantId);
+
+    public Task<MediaAsset?> GetMediaAssetAsync(string tenantId, string id)
+        => _connection.GetMediaAssetAsync(tenantId, id);
+
+    public Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset)
+        => _connection.SaveMediaAssetAsync(tenantId, mediaAsset);
+
+    public Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset)
+        => _connection.UpdateMediaAssetAsync(tenantId, id, mediaAsset);
 
     public Task<List<Page>> GetHubPagesAsync(string tenantId)
         => _connection.GetHubPagesAsync(tenantId);

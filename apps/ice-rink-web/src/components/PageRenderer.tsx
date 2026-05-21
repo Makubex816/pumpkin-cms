@@ -68,6 +68,7 @@ export function PageRenderer({
               content: {
                 ...(block.content ?? {}),
                 formConfig: page.formConfig,
+                ...getPublicContactOverrides(page),
                 ...(thankYouMessage ? { thankYouMessage } : {}),
               },
             }
@@ -107,6 +108,15 @@ export function PageRenderer({
       })}
     </>
   );
+}
+
+function getPublicContactOverrides(page: Page) {
+  const domainRouting = page.domainRouting;
+  if (!domainRouting?.mailtoLinksEnabled || !domainRouting.publicContactEmail?.trim()) return {};
+
+  return {
+    email: domainRouting.publicContactEmail,
+  };
 }
 
 function getSectionId(block: CmsBlock): string {

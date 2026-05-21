@@ -25,6 +25,7 @@ export type ContractCategory =
   | 'linking'
   | 'static'
   | 'redirect'
+  | 'service_schema'
 
 export interface TemplateContract {
   key: TemplateKey
@@ -36,6 +37,7 @@ export interface TemplateContract {
   requiredBlocks: string[]
   allowedBlocks: string[]
   requiredFulfillmentFields: string[]
+  requiredServiceSchemaFields: string[]
   requiredLeadFields: string[]
   requiredFormLeadFields: string[]
   requiredInternalLinkFields: string[]
@@ -137,6 +139,17 @@ const COMMON_LEAD_FIELDS = [
   'formConfig.routingMode',
 ]
 
+const COMMON_SERVICE_SCHEMA_FIELDS = [
+  'serviceSchema.serviceName',
+  'serviceSchema.serviceType',
+  'serviceSchema.productsOffered',
+]
+
+const LOCATION_SERVICE_SCHEMA_FIELDS = [
+  ...COMMON_SERVICE_SCHEMA_FIELDS,
+  'serviceSchema.areasServed',
+]
+
 export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
   home: {
     key: 'home',
@@ -148,6 +161,7 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredBlocks: ['Hero', 'TrustBar', 'CardGrid', 'HowItWorks', 'FAQ', 'PrimaryCTA'],
     allowedBlocks: COMMON_ALLOWED_BLOCKS,
     requiredFulfillmentFields: COMMON_FULFILLMENT_FIELDS,
+    requiredServiceSchemaFields: [],
     requiredLeadFields: ['formConfig.conversionGoal'],
     requiredFormLeadFields: [],
     requiredInternalLinkFields: ['linking.requiredLinks'],
@@ -163,6 +177,7 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredBlocks: ['Contact'],
     allowedBlocks: ['Hero', 'FAQ', 'PrimaryCTA', 'Contact', 'Breadcrumbs'],
     requiredFulfillmentFields: COMMON_FULFILLMENT_FIELDS,
+    requiredServiceSchemaFields: [],
     requiredLeadFields: COMMON_LEAD_FIELDS,
     requiredFormLeadFields: ['name', 'email', 'phone', 'eventLocation', 'message'],
     requiredInternalLinkFields: ['linking.breadcrumbTrail'],
@@ -178,6 +193,7 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredBlocks: ['Hero', 'TrustBar', 'CardGrid', 'HowItWorks', 'FAQ', 'PrimaryCTA'],
     allowedBlocks: COMMON_ALLOWED_BLOCKS,
     requiredFulfillmentFields: COMMON_FULFILLMENT_FIELDS,
+    requiredServiceSchemaFields: COMMON_SERVICE_SCHEMA_FIELDS,
     requiredLeadFields: COMMON_LEAD_FIELDS,
     requiredFormLeadFields: ['name', 'email', 'phone', 'eventLocation'],
     requiredInternalLinkFields: ['linking.breadcrumbTrail', 'linking.requiredLinks'],
@@ -193,6 +209,7 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredBlocks: ['Hero', 'CardGrid', 'FAQ', 'PrimaryCTA'],
     allowedBlocks: COMMON_ALLOWED_BLOCKS,
     requiredFulfillmentFields: [...COMMON_FULFILLMENT_FIELDS, 'fulfillment.topProviderCount'],
+    requiredServiceSchemaFields: LOCATION_SERVICE_SCHEMA_FIELDS,
     requiredLeadFields: COMMON_LEAD_FIELDS,
     requiredFormLeadFields: ['name', 'email', 'phone', 'eventLocation'],
     requiredInternalLinkFields: ['linking.breadcrumbTrail', 'linking.relatedPages', 'linking.requiredLinks'],
@@ -208,6 +225,7 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredBlocks: ['Hero', 'HowItWorks', 'FAQ', 'PrimaryCTA'],
     allowedBlocks: COMMON_ALLOWED_BLOCKS,
     requiredFulfillmentFields: [...COMMON_FULFILLMENT_FIELDS, 'fulfillment.topProviderCount'],
+    requiredServiceSchemaFields: LOCATION_SERVICE_SCHEMA_FIELDS,
     requiredLeadFields: COMMON_LEAD_FIELDS,
     requiredFormLeadFields: ['name', 'email', 'phone', 'eventLocation'],
     requiredInternalLinkFields: ['linking.breadcrumbTrail', 'linking.parentPage', 'linking.requiredLinks'],
@@ -223,6 +241,7 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredBlocks: ['Hero', 'CardGrid', 'FAQ', 'PrimaryCTA'],
     allowedBlocks: COMMON_ALLOWED_BLOCKS,
     requiredFulfillmentFields: COMMON_FULFILLMENT_FIELDS,
+    requiredServiceSchemaFields: COMMON_SERVICE_SCHEMA_FIELDS,
     requiredLeadFields: COMMON_LEAD_FIELDS,
     requiredFormLeadFields: ['name', 'email', 'phone', 'eventLocation', 'eventDate'],
     requiredInternalLinkFields: ['linking.breadcrumbTrail', 'linking.relatedPages'],
@@ -238,6 +257,7 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredBlocks: ['Hero', 'CardGrid', 'FAQ', 'PrimaryCTA'],
     allowedBlocks: COMMON_ALLOWED_BLOCKS,
     requiredFulfillmentFields: COMMON_FULFILLMENT_FIELDS,
+    requiredServiceSchemaFields: COMMON_SERVICE_SCHEMA_FIELDS,
     requiredLeadFields: COMMON_LEAD_FIELDS,
     requiredFormLeadFields: ['name', 'email', 'phone'],
     requiredInternalLinkFields: ['linking.breadcrumbTrail', 'linking.requiredLinks'],
@@ -253,6 +273,7 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredBlocks: ['Hero'],
     allowedBlocks: COMMON_ALLOWED_BLOCKS,
     requiredFulfillmentFields: [],
+    requiredServiceSchemaFields: [],
     requiredLeadFields: [],
     requiredFormLeadFields: [],
     requiredInternalLinkFields: ['linking.breadcrumbTrail'],
@@ -319,6 +340,7 @@ export function validatePageContract(pageValue: unknown, index: number, options:
   validateRequiredFields(page, contract.requiredPageFields, 'template', 'error', errors)
   validateRequiredFields(page, contract.requiredSeoFields, 'seo', 'error', errors)
   validateRequiredFields(page, contract.requiredFulfillmentFields, 'fulfillment', 'error', errors)
+  validateRequiredFields(page, contract.requiredServiceSchemaFields, 'service_schema', 'warning', warnings)
   validateRequiredFields(page, contract.requiredLeadFields, 'forms', 'warning', warnings)
   validateRequiredFields(page, contract.requiredInternalLinkFields, 'linking', 'warning', warnings)
   validateRequiredFields(page, contract.staticRequirements, 'static', 'warning', warnings)
@@ -326,6 +348,7 @@ export function validatePageContract(pageValue: unknown, index: number, options:
   validateBlocks(page, contract, errors, warnings)
   validateMedia(page, contract, errors, warnings)
   validateFulfillment(page, errors, warnings)
+  validateServiceSchema(page, contract, errors, warnings)
   validateForms(page, contract, errors, warnings)
   validateStatic(page, warnings)
   validateRedirects(page, warnings)
@@ -529,6 +552,98 @@ function validateFulfillment(page: JsonRecord, errors: ContractIssue[], warnings
   }
 }
 
+function validateServiceSchema(page: JsonRecord, contract: TemplateContract, errors: ContractIssue[], warnings: ContractIssue[]) {
+  const serviceSchema = getPath(page, 'serviceSchema')
+  const productsOffered = getPath(page, 'serviceSchema.productsOffered')
+  const areasServed = getPath(page, 'serviceSchema.areasServed')
+  const publicSchemaEnabled = getPath(page, 'serviceSchema.publicSchemaEnabled') === true
+  const adsEligible = getPath(page, 'googleAds.eligible') === true
+  const fulfillmentStatus = stringValue(getPath(page, 'fulfillment.fulfillmentStatus'))
+  const publicDisclosureRequired = getPath(page, 'fulfillment.publicDisclosureRequired') === true
+  const templateKey = contract.key
+
+  if (serviceSchema !== undefined && !isRecord(serviceSchema)) {
+    errors.push(issue('error', 'service_schema', 'serviceSchema', 'serviceSchema must be an object when supplied.'))
+    return
+  }
+
+  if (productsOffered !== undefined && !Array.isArray(productsOffered)) {
+    errors.push(issue('error', 'service_schema', 'serviceSchema.productsOffered', 'productsOffered must be an array when supplied.'))
+  }
+
+  if (areasServed !== undefined && !Array.isArray(areasServed)) {
+    errors.push(issue('error', 'service_schema', 'serviceSchema.areasServed', 'areasServed must be an array when supplied.'))
+  }
+
+  if (Array.isArray(productsOffered)) {
+    productsOffered.forEach((item, index) => {
+      if (!isRecord(item)) {
+        warnings.push(issue('warning', 'service_schema', `serviceSchema.productsOffered[${index}]`, 'Product offered item should be an object.'))
+        return
+      }
+
+      if (!stringValue(item.name).trim() || !stringValue(item.type).trim()) {
+        warnings.push(issue('warning', 'service_schema', `serviceSchema.productsOffered[${index}]`, 'Product offered item should include name and type.'))
+      }
+    })
+  }
+
+  if (Array.isArray(areasServed)) {
+    areasServed.forEach((item, index) => {
+      if (!isRecord(item)) {
+        warnings.push(issue('warning', 'service_schema', `serviceSchema.areasServed[${index}]`, 'areasServed item should be an object.'))
+        return
+      }
+
+      if (!stringValue(item.name).trim() || !stringValue(item.type).trim()) {
+        warnings.push(issue('warning', 'service_schema', `serviceSchema.areasServed[${index}]`, 'areasServed item should include name and type.'))
+      }
+    })
+  }
+
+  if (publicSchemaEnabled) {
+    if (!stringValue(getPath(page, 'serviceSchema.serviceName')).trim()) {
+      warnings.push(issue('warning', 'service_schema', 'serviceSchema.serviceName', 'publicSchemaEnabled requires serviceName.'))
+    }
+
+    if (!stringValue(getPath(page, 'serviceSchema.serviceType')).trim()) {
+      warnings.push(issue('warning', 'service_schema', 'serviceSchema.serviceType', 'publicSchemaEnabled requires serviceType.'))
+    }
+
+    if (!Array.isArray(productsOffered) || productsOffered.length === 0) {
+      warnings.push(issue('warning', 'service_schema', 'serviceSchema.productsOffered', 'publicSchemaEnabled should have at least one productsOffered item.'))
+    }
+  }
+
+  if (adsEligible) {
+    if (!Array.isArray(productsOffered) || productsOffered.length === 0) {
+      warnings.push(issue('warning', 'service_schema', 'serviceSchema.productsOffered', 'Google Ads eligible pages should record productsOffered.'))
+    }
+
+    if (!Array.isArray(areasServed) || areasServed.length === 0) {
+      warnings.push(issue('warning', 'service_schema', 'serviceSchema.areasServed', 'Google Ads eligible pages should record areasServed or service area context.'))
+    }
+  }
+
+  if (['state-service-hub', 'city-service-area'].includes(templateKey) && (!Array.isArray(areasServed) || areasServed.length === 0)) {
+    warnings.push(issue('warning', 'service_schema', 'serviceSchema.areasServed', `${contract.label} should include at least one areasServed entry.`))
+  }
+
+  if (
+    Array.isArray(areasServed) &&
+    areasServed.length > 0 &&
+    fulfillmentStatus &&
+    fulfillmentStatus !== 'direct_partner_available' &&
+    !publicDisclosureRequired
+  ) {
+    warnings.push(issue('warning', 'fulfillment', 'fulfillment.publicDisclosureRequired', 'areasServed on non-direct fulfillment should keep publicDisclosureRequired true.'))
+  }
+
+  if (adsEligible && !stringValue(getPath(page, 'formConfig.domainRoutingKey')).trim()) {
+    warnings.push(issue('warning', 'forms', 'formConfig.domainRoutingKey', 'Google Ads eligible pages should record a domain routing key.'))
+  }
+}
+
 function validateForms(page: JsonRecord, contract: TemplateContract, errors: ContractIssue[], warnings: ContractIssue[]) {
   if (contract.requiredFormLeadFields.length === 0) return
 
@@ -545,6 +660,14 @@ function validateForms(page: JsonRecord, contract: TemplateContract, errors: Con
       warnings.push(issue('warning', 'forms', 'formConfig.normalizedFieldMap', `Recommended lead field "${field}" is missing from form mapping or Contact block fields.`))
     }
   })
+
+  if (!stringValue(getPath(page, 'formConfig.domainRoutingKey')).trim()) {
+    warnings.push(issue('warning', 'forms', 'formConfig.domainRoutingKey', 'Contact/quote page should record a domain routing key before production import.'))
+  }
+
+  if (!stringValue(getPath(page, 'formConfig.staticFormEndpointKey')).trim()) {
+    warnings.push(issue('warning', 'forms', 'formConfig.staticFormEndpointKey', 'Static public form pages should record a static form endpoint key.'))
+  }
 }
 
 function validateStatic(page: JsonRecord, warnings: ContractIssue[]) {

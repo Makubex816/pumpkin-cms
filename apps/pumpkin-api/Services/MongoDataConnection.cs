@@ -837,6 +837,42 @@ public class MongoDataConnection : IDataConnection, IDisposable
         return publishRun;
     }
 
+    public async Task<List<ImportRun>> GetImportRunsByTenantAsync(string tenantId)
+    {
+        var importRunCollection = _database.GetCollection<ImportRun>("ImportRun");
+        var filter = Builders<ImportRun>.Filter.Eq(run => run.TenantId, tenantId);
+
+        return await importRunCollection
+            .Find(filter)
+            .SortByDescending(run => run.CompletedAt)
+            .ToListAsync();
+    }
+
+    public async Task<ImportRun?> GetImportRunAsync(string tenantId, string id)
+    {
+        var importRunCollection = _database.GetCollection<ImportRun>("ImportRun");
+        var filter = Builders<ImportRun>.Filter.And(
+            Builders<ImportRun>.Filter.Eq(run => run.TenantId, tenantId),
+            Builders<ImportRun>.Filter.Eq(run => run.Id, id)
+        );
+
+        return await importRunCollection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<ImportRun> SaveImportRunAsync(string tenantId, ImportRun importRun)
+    {
+        var importRunCollection = _database.GetCollection<ImportRun>("ImportRun");
+        importRun.TenantId = tenantId;
+
+        var filter = Builders<ImportRun>.Filter.And(
+            Builders<ImportRun>.Filter.Eq(run => run.TenantId, tenantId),
+            Builders<ImportRun>.Filter.Eq(run => run.Id, importRun.Id)
+        );
+
+        await importRunCollection.ReplaceOneAsync(filter, importRun, new ReplaceOptions { IsUpsert = true });
+        return importRun;
+    }
+
     public async Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId)
     {
         var mediaAssetCollection = _database.GetCollection<MediaAsset>("MediaAsset");
@@ -1167,6 +1203,21 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<List<ImportRun>> GetImportRunsByTenantAsync(string tenantId)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<ImportRun?> GetImportRunAsync(string tenantId, string id)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<ImportRun> SaveImportRunAsync(string tenantId, ImportRun importRun)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

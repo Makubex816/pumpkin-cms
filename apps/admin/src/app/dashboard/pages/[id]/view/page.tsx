@@ -637,6 +637,13 @@ export default function PageReadOnlyView() {
         <FieldRow label="Linking"><ReadOnlyValue value={page.linking} /></FieldRow>
       </Section>
 
+      <Section title="Service Schema And Domain Routing" description="Products offered, areasServed, and non-secret domain/contact routing metadata for production content review.">
+        <FieldRow label="Service Schema"><ReadOnlyValue value={page.serviceSchema} /></FieldRow>
+        <FieldRow label="Products Offered">{Array.isArray(page.serviceSchema?.productsOffered) ? page.serviceSchema.productsOffered.length : 0}</FieldRow>
+        <FieldRow label="Areas Served">{Array.isArray(page.serviceSchema?.areasServed) ? page.serviceSchema.areasServed.length : 0}</FieldRow>
+        <FieldRow label="Domain Routing"><ReadOnlyValue value={page.domainRouting} /></FieldRow>
+      </Section>
+
       <Section title="Workflow And Publishing Contract">
         <FieldRow label="Revision ID">{page.revision?.currentRevisionId || <MissingValue text="No revision saved yet" />}</FieldRow>
         <FieldRow label="Revision Number">{page.revision?.revisionNumber ?? <MissingValue />}</FieldRow>

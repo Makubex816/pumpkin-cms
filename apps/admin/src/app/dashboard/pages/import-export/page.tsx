@@ -12,7 +12,7 @@ import {
   type ImportDiffRiskCategory,
 } from '@/lib/import-diff'
 import { validateContentJsonText, type ContentContractReport } from '@/lib/content-json-contracts'
-import type { IHtmlBlock, Page, PageChangeSource, PageRedirect } from 'pumpkin-ts-models'
+import type { IHtmlBlock, ImportRun, ImportRunAffectedPageAction, ImportRunSource, Page, PageChangeSource, PageRedirect } from 'pumpkin-ts-models'
 
 type ExportScope = 'all' | 'published' | 'single'
 type ExportFormat = 'json' | 'csv' | 'xlsx'
@@ -96,6 +96,7 @@ interface SectionProps {
 }
 
 interface ImportHandoffInfo {
+  packageId: string
   packageName: string
   tenantId: string
   status: string
@@ -250,15 +251,31 @@ const PAGE_FLAT_HEADERS = [
   'schemaControls.enableServiceSchema',
   'schemaControls.schemaWarnings',
   'schemaControls',
+  'serviceSchema.serviceName',
+  'serviceSchema.serviceType',
+  'productsOffered',
+  'areasServed',
+  'serviceSchema',
   'formConfig.formType',
   'formConfig.conversionGoal',
-  'formConfig.thankYouUrl',
-  'formConfig.thankYouMessage',
+  'formConfig.routingMode',
+  'formConfig.domainRoutingKey',
   'formConfig.recipientGroup',
   'formConfig.staticFormEndpointKey',
+  'formConfig.replyToMode',
+  'formConfig.emailSubjectTemplate',
+  'formConfig.thankYouUrl',
+  'formConfig.thankYouMessage',
   'formConfig.consentRequired',
   'formConfig.spamProtectionEnabled',
+  'formConfig.mailtoFallbackEnabled',
   'formConfig',
+  'domainRouting.domain',
+  'domainRouting.publicContactEmail',
+  'domainRouting.quoteRequestEmail',
+  'domainRouting.defaultRecipientGroup',
+  'domainRouting.staticFormEndpointKey',
+  'domainRouting',
   'importProvenance.lastImportBatchId',
   'importProvenance.sourceFile',
   'importProvenance.sourceRow',
@@ -299,7 +316,11 @@ const JSON_COLUMN_HEADERS = new Set<string>([
   'linking',
   'schemaControls.schemaWarnings',
   'schemaControls',
+  'productsOffered',
+  'areasServed',
+  'serviceSchema',
   'formConfig',
+  'domainRouting',
   'importProvenance.lockedFields',
   'importProvenance',
   'deploymentHooks',
@@ -320,6 +341,7 @@ const RISK_LABELS: Record<ImportDiffRiskCategory, string> = {
   publishing: 'Publishing risk',
   media: 'Media risk',
   fulfillment_ads: 'Fulfillment/Ads risk',
+  service_schema: 'Service schema risk',
   form_lead_capture: 'Form/lead capture risk',
   destructive_overwrite: 'Destructive overwrite risk',
   tenant_mismatch: 'Tenant mismatch',
@@ -652,16 +674,62 @@ function createDefaultSchemaControls() {
   }
 }
 
+function createDefaultServiceSchema() {
+  return {
+    serviceName: '',
+    serviceType: '',
+    serviceCategory: '',
+    productsOffered: [],
+    areasServed: [],
+    audience: [],
+    eventTypes: [],
+    schemaOutputMode: 'validate_only',
+    publicSchemaEnabled: false,
+    notes: '',
+  }
+}
+
 function createDefaultFormConfig() {
   return {
     formType: '',
     conversionGoal: '',
+    routingMode: '',
+    domainRoutingKey: '',
+    replyToMode: '',
+    emailSubjectTemplate: '',
     thankYouUrl: '',
     thankYouMessage: '',
     recipientGroup: '',
     staticFormEndpointKey: '',
     consentRequired: true,
     spamProtectionEnabled: false,
+    mailtoFallbackEnabled: false,
+  }
+}
+
+function createDefaultDomainRouting() {
+  return {
+    domain: '',
+    brandName: '',
+    publicContactEmail: '',
+    quoteRequestEmail: '',
+    supportEmail: '',
+    replyToEmail: '',
+    fromName: '',
+    fromEmail: '',
+    contactPageSlug: '',
+    primaryPhone: '',
+    mailtoLinksEnabled: false,
+    defaultLeadRoutingMode: '',
+    defaultRecipientGroup: '',
+    staticFormEndpointKey: '',
+    emailProvider: '',
+    emailProviderStatus: '',
+    mxStatus: '',
+    spfStatus: '',
+    dkimStatus: '',
+    dmarcStatus: '',
+    notes: '',
   }
 }
 
@@ -775,10 +843,30 @@ function getPageSchemaControls(page: Partial<Page>) {
   }
 }
 
+function getPageServiceSchema(page: Partial<Page>) {
+  const serviceSchema: Record<string, unknown> = isRecord(page.serviceSchema) ? page.serviceSchema : {}
+  return {
+    ...createDefaultServiceSchema(),
+    ...serviceSchema,
+    productsOffered: Array.isArray(serviceSchema.productsOffered) ? serviceSchema.productsOffered : [],
+    areasServed: Array.isArray(serviceSchema.areasServed) ? serviceSchema.areasServed : [],
+    audience: stringListValue(serviceSchema.audience),
+    eventTypes: stringListValue(serviceSchema.eventTypes),
+    publicSchemaEnabled: serviceSchema.publicSchemaEnabled === true,
+  }
+}
+
 function getPageFormConfig(page: Partial<Page>) {
   return {
     ...createDefaultFormConfig(),
     ...(isRecord(page.formConfig) ? page.formConfig : {}),
+  }
+}
+
+function getPageDomainRouting(page: Partial<Page>) {
+  return {
+    ...createDefaultDomainRouting(),
+    ...(isRecord(page.domainRouting) ? page.domainRouting : {}),
   }
 }
 
@@ -852,7 +940,9 @@ function createTemplatePage(tenantId: string) {
     template: createDefaultTemplateIdentity(),
     linking: createDefaultLinking(),
     schemaControls: createDefaultSchemaControls(),
+    serviceSchema: createDefaultServiceSchema(),
     formConfig: createDefaultFormConfig(),
+    domainRouting: createDefaultDomainRouting(),
     importProvenance: createDefaultImportProvenance(),
     deploymentHooks: createDefaultDeploymentHooks(),
   } satisfies Page
@@ -1111,7 +1201,9 @@ function flattenPage(page: Page): FlatPageRow {
   const template = getPageTemplate(page)
   const linking = getPageLinking(page)
   const schemaControls = getPageSchemaControls(page)
+  const serviceSchema = getPageServiceSchema(page)
   const formConfig = getPageFormConfig(page)
+  const domainRouting = getPageDomainRouting(page)
   const importProvenance = getPageImportProvenance(page)
   const deploymentHooks = getPageDeploymentHooks(page)
   const targetKeyword = page.MetaData?.keyword || page.searchData?.keyword || ''
@@ -1238,15 +1330,31 @@ function flattenPage(page: Page): FlatPageRow {
     'schemaControls.enableServiceSchema': stringValue(schemaControls.enableServiceSchema),
     'schemaControls.schemaWarnings': toJsonCell(schemaControls.schemaWarnings),
     schemaControls: toJsonCell(schemaControls),
+    'serviceSchema.serviceName': stringValue(serviceSchema.serviceName),
+    'serviceSchema.serviceType': stringValue(serviceSchema.serviceType),
+    productsOffered: toJsonCell(serviceSchema.productsOffered),
+    areasServed: toJsonCell(serviceSchema.areasServed),
+    serviceSchema: toJsonCell(serviceSchema),
     'formConfig.formType': stringValue(formConfig.formType),
     'formConfig.conversionGoal': stringValue(formConfig.conversionGoal),
-    'formConfig.thankYouUrl': stringValue(formConfig.thankYouUrl),
-    'formConfig.thankYouMessage': stringValue(formConfig.thankYouMessage),
+    'formConfig.routingMode': stringValue(formConfig.routingMode),
+    'formConfig.domainRoutingKey': stringValue(formConfig.domainRoutingKey),
     'formConfig.recipientGroup': stringValue(formConfig.recipientGroup),
     'formConfig.staticFormEndpointKey': stringValue(formConfig.staticFormEndpointKey),
+    'formConfig.replyToMode': stringValue(formConfig.replyToMode),
+    'formConfig.emailSubjectTemplate': stringValue(formConfig.emailSubjectTemplate),
+    'formConfig.thankYouUrl': stringValue(formConfig.thankYouUrl),
+    'formConfig.thankYouMessage': stringValue(formConfig.thankYouMessage),
     'formConfig.consentRequired': stringValue(formConfig.consentRequired),
     'formConfig.spamProtectionEnabled': stringValue(formConfig.spamProtectionEnabled),
+    'formConfig.mailtoFallbackEnabled': stringValue(formConfig.mailtoFallbackEnabled),
     formConfig: toJsonCell(formConfig),
+    'domainRouting.domain': stringValue(domainRouting.domain),
+    'domainRouting.publicContactEmail': stringValue(domainRouting.publicContactEmail),
+    'domainRouting.quoteRequestEmail': stringValue(domainRouting.quoteRequestEmail),
+    'domainRouting.defaultRecipientGroup': stringValue(domainRouting.defaultRecipientGroup),
+    'domainRouting.staticFormEndpointKey': stringValue(domainRouting.staticFormEndpointKey),
+    domainRouting: toJsonCell(domainRouting),
     'importProvenance.lastImportBatchId': stringValue(importProvenance.lastImportBatchId),
     'importProvenance.sourceFile': stringValue(importProvenance.sourceFile),
     'importProvenance.sourceRow': stringValue(importProvenance.sourceRow),
@@ -1294,7 +1402,11 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
   const templateJson = parseJsonCell(row.template || '', 'template', sourceRow, 'object', {}, errors)
   const linkingJson = parseJsonCell(row.linking || '', 'linking', sourceRow, 'object', {}, errors)
   const schemaControlsJson = parseJsonCell(row.schemaControls || '', 'schemaControls', sourceRow, 'object', {}, errors)
+  const serviceSchemaJson = parseJsonCell(row.serviceSchema || '', 'serviceSchema', sourceRow, 'object', {}, errors)
+  const productsOfferedJson = parseJsonCell(row.productsOffered || '', 'productsOffered', sourceRow, 'array', [], errors)
+  const areasServedJson = parseJsonCell(row.areasServed || '', 'areasServed', sourceRow, 'array', [], errors)
   const formConfigJson = parseJsonCell(row.formConfig || '', 'formConfig', sourceRow, 'object', {}, errors)
+  const domainRoutingJson = parseJsonCell(row.domainRouting || '', 'domainRouting', sourceRow, 'object', {}, errors)
   const importProvenanceJson = parseJsonCell(row.importProvenance || '', 'importProvenance', sourceRow, 'object', {}, errors)
   const deploymentHooksJson = parseJsonCell(row.deploymentHooks || '', 'deploymentHooks', sourceRow, 'object', {}, errors)
   const previousSlugs = stringListValue(row.previousSlugs || '')
@@ -1325,6 +1437,7 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
   const enableServiceSchema = parseOptionalBooleanCell(row['schemaControls.enableServiceSchema'] || '', true, 'schemaControls.enableServiceSchema', sourceRow, errors)
   const consentRequired = parseOptionalBooleanCell(row['formConfig.consentRequired'] || '', true, 'formConfig.consentRequired', sourceRow, errors)
   const spamProtectionEnabled = parseOptionalBooleanCell(row['formConfig.spamProtectionEnabled'] || '', false, 'formConfig.spamProtectionEnabled', sourceRow, errors)
+  const mailtoFallbackEnabled = parseOptionalBooleanCell(row['formConfig.mailtoFallbackEnabled'] || '', false, 'formConfig.mailtoFallbackEnabled', sourceRow, errors)
   const version = parseNumberCell(row.PageVersion || '1', 1, 'PageVersion', sourceRow, warnings)
   const sitemapPriority = row.sitemapPriority?.trim()
     ? parseNumberCell(row.sitemapPriority, 0.5, 'sitemapPriority', sourceRow, warnings)
@@ -1470,17 +1583,47 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     enableServiceSchema,
     schemaWarnings: row['schemaControls.schemaWarnings'] ? stringListValue(row['schemaControls.schemaWarnings']) : stringListValue((schemaControlsJson as Record<string, unknown>).schemaWarnings),
   }
+  const serviceSchemaRecord = isRecord(serviceSchemaJson) ? serviceSchemaJson : {}
+  const serviceSchema = {
+    ...createDefaultServiceSchema(),
+    ...serviceSchemaRecord,
+    serviceName: row['serviceSchema.serviceName'] || stringValue(serviceSchemaRecord.serviceName),
+    serviceType: row['serviceSchema.serviceType'] || stringValue(serviceSchemaRecord.serviceType),
+    productsOffered: Array.isArray(productsOfferedJson) && productsOfferedJson.length > 0
+      ? productsOfferedJson
+      : (Array.isArray(serviceSchemaRecord.productsOffered) ? serviceSchemaRecord.productsOffered : []),
+    areasServed: Array.isArray(areasServedJson) && areasServedJson.length > 0
+      ? areasServedJson
+      : (Array.isArray(serviceSchemaRecord.areasServed) ? serviceSchemaRecord.areasServed : []),
+    audience: stringListValue(serviceSchemaRecord.audience),
+    eventTypes: stringListValue(serviceSchemaRecord.eventTypes),
+    publicSchemaEnabled: serviceSchemaRecord.publicSchemaEnabled === true,
+  }
   const formConfig = {
     ...createDefaultFormConfig(),
     ...(isRecord(formConfigJson) ? formConfigJson : {}),
     formType: row['formConfig.formType'] || stringValue((formConfigJson as Record<string, unknown>).formType),
     conversionGoal: row['formConfig.conversionGoal'] || stringValue((formConfigJson as Record<string, unknown>).conversionGoal),
-    thankYouUrl: row['formConfig.thankYouUrl'] || stringValue((formConfigJson as Record<string, unknown>).thankYouUrl),
-    thankYouMessage: row['formConfig.thankYouMessage'] || stringValue((formConfigJson as Record<string, unknown>).thankYouMessage),
+    routingMode: row['formConfig.routingMode'] || stringValue((formConfigJson as Record<string, unknown>).routingMode),
+    domainRoutingKey: row['formConfig.domainRoutingKey'] || stringValue((formConfigJson as Record<string, unknown>).domainRoutingKey),
     recipientGroup: row['formConfig.recipientGroup'] || stringValue((formConfigJson as Record<string, unknown>).recipientGroup),
     staticFormEndpointKey: row['formConfig.staticFormEndpointKey'] || stringValue((formConfigJson as Record<string, unknown>).staticFormEndpointKey),
+    replyToMode: row['formConfig.replyToMode'] || stringValue((formConfigJson as Record<string, unknown>).replyToMode),
+    emailSubjectTemplate: row['formConfig.emailSubjectTemplate'] || stringValue((formConfigJson as Record<string, unknown>).emailSubjectTemplate),
+    thankYouUrl: row['formConfig.thankYouUrl'] || stringValue((formConfigJson as Record<string, unknown>).thankYouUrl),
+    thankYouMessage: row['formConfig.thankYouMessage'] || stringValue((formConfigJson as Record<string, unknown>).thankYouMessage),
     consentRequired,
     spamProtectionEnabled,
+    mailtoFallbackEnabled,
+  }
+  const domainRouting = {
+    ...createDefaultDomainRouting(),
+    ...(isRecord(domainRoutingJson) ? domainRoutingJson : {}),
+    domain: row['domainRouting.domain'] || stringValue((domainRoutingJson as Record<string, unknown>).domain),
+    publicContactEmail: row['domainRouting.publicContactEmail'] || stringValue((domainRoutingJson as Record<string, unknown>).publicContactEmail),
+    quoteRequestEmail: row['domainRouting.quoteRequestEmail'] || stringValue((domainRoutingJson as Record<string, unknown>).quoteRequestEmail),
+    defaultRecipientGroup: row['domainRouting.defaultRecipientGroup'] || stringValue((domainRoutingJson as Record<string, unknown>).defaultRecipientGroup),
+    staticFormEndpointKey: row['domainRouting.staticFormEndpointKey'] || stringValue((domainRoutingJson as Record<string, unknown>).staticFormEndpointKey),
   }
   const importProvenance = {
     ...createDefaultImportProvenance(),
@@ -1576,7 +1719,9 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     template,
     linking,
     schemaControls,
+    serviceSchema,
     formConfig,
+    domainRouting,
     importProvenance,
     deploymentHooks,
   }
@@ -1908,6 +2053,28 @@ function validateParsedImport(
       warnings.push('template.contentModelVersion is missing.')
     }
 
+    const serviceSchema = isRecord(page.serviceSchema) ? page.serviceSchema : null
+    const productsOffered = Array.isArray(serviceSchema?.productsOffered) ? serviceSchema.productsOffered : []
+    const areasServed = Array.isArray(serviceSchema?.areasServed) ? serviceSchema.areasServed : []
+    const isServiceLike = ['service', 'state-service-hub', 'city-service-area', 'event-use', 'product-intent'].includes(stringValue(template?.templateKey)) ||
+      ['service', 'state', 'city', 'event', 'product'].some((value) => `${page.pageSlug || ''} ${stringValue((isRecord(page.MetaData) ? page.MetaData : {}).pageType)}`.toLowerCase().includes(value))
+
+    if (isServiceLike && !stringValue(serviceSchema?.serviceName)) {
+      warnings.push('serviceSchema.serviceName is missing for a service-like import page.')
+    }
+
+    if (isServiceLike && !stringValue(serviceSchema?.serviceType)) {
+      warnings.push('serviceSchema.serviceType is missing for a service-like import page.')
+    }
+
+    if (isServiceLike && productsOffered.length === 0) {
+      warnings.push('productsOffered is empty for a service-like import page.')
+    }
+
+    if (['state-service-hub', 'city-service-area'].includes(stringValue(template?.templateKey)) && areasServed.length === 0) {
+      warnings.push('areasServed is empty for a location/service-area import page.')
+    }
+
     const importProvenance = isRecord(page.importProvenance) ? page.importProvenance : null
     if (stringListValue(importProvenance?.lockedFields).length > 0) {
       warnings.push('lockedFields are preserved as provenance, but CSV/XLSX import does not enforce field-level locks yet.')
@@ -1925,6 +2092,11 @@ function validateParsedImport(
       fulfillment.publicDisclosureRequired !== true
     ) {
       warnings.push('Non-direct fulfillment should mark publicDisclosureRequired before launch.')
+    }
+
+    const formConfig = isRecord(page.formConfig) ? page.formConfig : null
+    if (blocks.some((block) => isRecord(block) && block.type === 'Contact') && !stringValue(formConfig?.domainRoutingKey)) {
+      warnings.push('Contact import page is missing formConfig.domainRoutingKey.')
     }
 
     if (blocks.some((block) => !isRecord(block) || !stringValue(block.type))) {
@@ -2067,7 +2239,9 @@ function coercePageForWrite(page: Record<string, unknown>, tenantId: string, rew
   const template = isRecord(page.template) ? page.template : createDefaultTemplateIdentity()
   const linking = isRecord(page.linking) ? page.linking : createDefaultLinking()
   const schemaControls = isRecord(page.schemaControls) ? page.schemaControls : createDefaultSchemaControls()
+  const serviceSchema = isRecord(page.serviceSchema) ? page.serviceSchema : createDefaultServiceSchema()
   const formConfig = isRecord(page.formConfig) ? page.formConfig : createDefaultFormConfig()
+  const domainRouting = isRecord(page.domainRouting) ? page.domainRouting : createDefaultDomainRouting()
   const importProvenance = isRecord(page.importProvenance) ? page.importProvenance : createDefaultImportProvenance()
   const deploymentHooks = isRecord(page.deploymentHooks) ? page.deploymentHooks : createDefaultDeploymentHooks()
   const finalTenantId = rewriteTenantId || !incomingTenantId ? tenantId : incomingTenantId
@@ -2160,9 +2334,23 @@ function coercePageForWrite(page: Record<string, unknown>, tenantId: string, rew
       ...schemaControls,
       schemaWarnings: stringListValue(schemaControls.schemaWarnings),
     },
+    serviceSchema: {
+      ...createDefaultServiceSchema(),
+      ...serviceSchema,
+      productsOffered: Array.isArray(serviceSchema.productsOffered) ? serviceSchema.productsOffered : [],
+      areasServed: Array.isArray(serviceSchema.areasServed) ? serviceSchema.areasServed : [],
+      audience: stringListValue(serviceSchema.audience),
+      eventTypes: stringListValue(serviceSchema.eventTypes),
+      publicSchemaEnabled: serviceSchema.publicSchemaEnabled === true,
+    },
     formConfig: {
       ...createDefaultFormConfig(),
       ...formConfig,
+    },
+    domainRouting: {
+      ...createDefaultDomainRouting(),
+      ...domainRouting,
+      mailtoLinksEnabled: domainRouting.mailtoLinksEnabled === true,
     },
     importProvenance: {
       ...createDefaultImportProvenance(),
@@ -2244,10 +2432,13 @@ export default function PageImportExportPage() {
   const [selectedSlug, setSelectedSlug] = useState('')
   const [importSourceType, setImportSourceType] = useState<ImportSourceType>('json')
   const [importText, setImportText] = useState('')
+  const [importFileName, setImportFileName] = useState('')
   const [xlsxImport, setXlsxImport] = useState<ParsedImport | null>(null)
   const [importMode, setImportMode] = useState<ImportMode>('dry-run')
   const [rewriteTenantId, setRewriteTenantId] = useState(false)
   const [report, setReport] = useState<ImportReport | null>(null)
+  const [savedImportRun, setSavedImportRun] = useState<ImportRun | null>(null)
+  const [savingImportRun, setSavingImportRun] = useState(false)
   const [runningImport, setRunningImport] = useState(false)
   const [runningExport, setRunningExport] = useState(false)
   const [handoffInfo, setHandoffInfo] = useState<ImportHandoffInfo | null>(null)
@@ -2319,6 +2510,7 @@ export default function PageImportExportPage() {
 
       const handoffTenantId = stringValue(handoff.tenantId)
       const rawJson = stringValue(handoff.rawJson)
+      const packageId = stringValue(handoff.packageId)
       const packageName = stringValue(handoff.packageName) || 'staged content package'
       const packageStatus = stringValue(handoff.status)
       const sourceLabel = stringValue(handoff.sourceLabel)
@@ -2332,10 +2524,13 @@ export default function PageImportExportPage() {
       if (rawJson.trim()) {
         setImportSourceType('json')
         setImportText(rawJson)
+        setImportFileName('')
         setXlsxImport(null)
         setReport(null)
+        setSavedImportRun(null)
         setError(null)
         setHandoffInfo({
+          packageId,
           packageName,
           tenantId: handoffTenantId || currentTenant.tenantId,
           status: packageStatus || 'unknown',
@@ -2466,7 +2661,9 @@ export default function PageImportExportPage() {
     try {
       setError(null)
       setReport(null)
+      setSavedImportRun(null)
       setXlsxImport(null)
+      setImportFileName(file.name)
 
       if (importSourceType === 'xlsx') {
         const parsed = await parseXlsxFile(file)
@@ -2492,6 +2689,7 @@ export default function PageImportExportPage() {
     const parsed = parseCurrentImport()
     const nextReport = validateParsedImport(parsed, pages, tenantId, importMode, rewriteTenantId)
     setReport(nextReport)
+    setSavedImportRun(null)
     setNotice(`${importSourceType.toUpperCase()} import dry-run complete. No pages were written.`)
   }
 
@@ -2541,6 +2739,32 @@ export default function PageImportExportPage() {
     }
   }
 
+  const saveImportRunToHistory = async () => {
+    if (!token || !currentTenant || !report) return
+
+    try {
+      setSavingImportRun(true)
+      setError(null)
+      const payload = buildImportRunPayload({
+        report,
+        preflight,
+        contractReport,
+        diffReport,
+        handoffInfo,
+        confirmations,
+        fileName: importFileName,
+      })
+      const savedRun = await apiClient.createImportRun(token, currentTenant.tenantId, payload)
+      setSavedImportRun(savedRun)
+      setNotice(`Saved import ${report.mode === 'dry-run' ? 'dry-run' : 'result'} to Import History.`)
+    } catch (saveError) {
+      setError(getErrorMessage(saveError, 'Failed to save import run history. Confirm the ImportRun container exists locally.'))
+      setNotice(null)
+    } finally {
+      setSavingImportRun(false)
+    }
+  }
+
   const runImport = async () => {
     if (!token || !currentTenant || importMode === 'dry-run') return
 
@@ -2553,6 +2777,7 @@ export default function PageImportExportPage() {
     const parsed = parseCurrentImport()
     const initialReport = validateParsedImport(parsed, pages, currentTenant.tenantId, importMode, rewriteTenantId)
     setReport(initialReport)
+    setSavedImportRun(null)
 
     if (initialReport.errorCount > 0) {
       setNotice(null)
@@ -2614,6 +2839,7 @@ export default function PageImportExportPage() {
       const payloadResults = initialReport.results.filter((result) => result.index < 0)
       const nextReport = buildReport(importMode, parsed.sourceType, currentTenant.tenantId, [...payloadResults, ...writeResults])
       setReport(nextReport)
+      setSavedImportRun(null)
       await fetchPages()
       setNotice(`Import complete: ${nextReport.createdCount} created, ${nextReport.updatedCount} updated, ${nextReport.skippedCount} skipped, ${nextReport.errorCount} errors.`)
     } finally {
@@ -2679,6 +2905,13 @@ export default function PageImportExportPage() {
               className="text-sm font-medium text-primary-700 hover:text-primary-900"
             >
               Preview import diff
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push('/dashboard/pages/import-runs')}
+              className="text-sm font-medium text-primary-700 hover:text-primary-900"
+            >
+              View import history
             </button>
           </div>
         </div>
@@ -2780,8 +3013,10 @@ export default function PageImportExportPage() {
               onChange={(event) => {
                 setImportSourceType(event.target.value as ImportSourceType)
                 setImportText('')
+                setImportFileName('')
                 setXlsxImport(null)
                 setReport(null)
+                setSavedImportRun(null)
                 setError(null)
                 setNotice(null)
                 setHandoffInfo(null)
@@ -2838,8 +3073,10 @@ export default function PageImportExportPage() {
             value={importText}
             onChange={(event) => {
               setImportText(event.target.value)
+              setImportFileName('')
               setXlsxImport(null)
               setReport(null)
+              setSavedImportRun(null)
               setError(null)
               setNotice(null)
               setHandoffInfo(null)
@@ -2999,7 +3236,14 @@ export default function PageImportExportPage() {
             <ReportTextStat label="Source" value={report.sourceType.toUpperCase()} />
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex flex-wrap justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => router.push('/dashboard/pages/import-runs')}
+              className="btn btn-secondary"
+            >
+              View Import History
+            </button>
             <button
               type="button"
               onClick={() => downloadJson(`${tenantId}-${report.sourceType}-import-report-${report.timestamp.replace(/[:.]/g, '-')}.json`, report)}
@@ -3007,11 +3251,31 @@ export default function PageImportExportPage() {
             >
               Download Report JSON
             </button>
+            <button
+              type="button"
+              onClick={saveImportRunToHistory}
+              disabled={savingImportRun || Boolean(savedImportRun)}
+              className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {savedImportRun ? 'Saved To Import History' : savingImportRun ? 'Saving...' : report.mode === 'dry-run' ? 'Save Dry-Run Report To History' : 'Save Import Result To History'}
+            </button>
           </div>
 
           {report.results.some((result) => result.wrote) && (
             <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
               Import writes completed for this tenant. Updated pages should have revision/rollback metadata where the API reported it, and changed pages should be treated as needing static rebuild. Review the Publishing Dashboard and Publish Action Center before any static release.
+            </div>
+          )}
+
+          {savedImportRun && (
+            <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900">
+              Import audit record saved as {savedImportRun.importRunId}.{' '}
+              <a
+                href={`/dashboard/pages/import-runs/${encodeURIComponent(savedImportRun.id)}?tenantId=${encodeURIComponent(savedImportRun.tenantId)}`}
+                className="font-semibold text-green-950 underline"
+              >
+                View ImportRun detail
+              </a>
             </div>
           )}
 
@@ -3221,6 +3485,166 @@ function buildPreflightSummary(preflight: ImportPreflight, handoffInfo: ImportHa
     `Static rebuild needed: ${preflight.staticRebuildCount}`,
     'No Azure deploy or Cloudflare purge happens from Import/Export.',
   ].join('\n')
+}
+
+function buildImportRunPayload({
+  report,
+  preflight,
+  contractReport,
+  diffReport,
+  handoffInfo,
+  confirmations,
+  fileName,
+}: {
+  report: ImportReport
+  preflight: ImportPreflight
+  contractReport: ContentContractReport | null
+  diffReport: ImportDiffReport | null
+  handoffInfo: ImportHandoffInfo | null
+  confirmations: ImportConfirmations
+  fileName: string
+}): ImportRun {
+  const wroteCount = report.results.filter((result) => result.wrote).length
+  const revisionCreatedCount = report.results.filter((result) => result.revisionCreated).length
+  const importRunId = buildImportRunId(report, handoffInfo)
+  const diffByIndex = new Map((diffReport?.results || []).map((result) => [result.index, result]))
+  const riskCategories = preflight.riskCounts.map(([risk]) => risk)
+  const tenantMatch = preflight.tenantMismatchCount === 0 && report.tenantId !== ''
+  const status = deriveImportRunStatus(report, preflight)
+
+  return {
+    id: '',
+    tenantId: report.tenantId,
+    importRunId,
+    source: getImportRunSource(report.sourceType, handoffInfo),
+    sourceLabel: handoffInfo?.sourceLabel || (fileName ? 'uploaded_file' : 'manual'),
+    sourcePackageId: handoffInfo?.packageId || '',
+    sourcePackageName: handoffInfo?.packageName || '',
+    fileName,
+    importMode: report.mode,
+    status,
+    createdAt: report.timestamp,
+    completedAt: new Date().toISOString(),
+    createdBy: '',
+    notes: report.mode === 'dry-run'
+      ? 'Dry-run import audit record. No pages were written by this import result.'
+      : 'Import result audit record. No deployment or Cloudflare purge was triggered.',
+    tenantMatch,
+    pageCount: report.total,
+    createCount: report.createdCount,
+    updateCount: report.updatedCount,
+    skipCount: report.skippedCount,
+    conflictCount: preflight.conflictCount,
+    errorCount: report.errorCount + preflight.contractErrorCount + preflight.diffErrorCount,
+    warningCount: report.warningCount + preflight.warningCount,
+    revisionCount: revisionCreatedCount,
+    pagesNeedingRebuildCount: preflight.staticRebuildCount,
+    affectedPages: report.results
+      .filter((result) => result.index >= 0)
+      .map((result) => {
+        const diffResult = diffByIndex.get(result.index)
+        return {
+          pageId: diffResult?.incomingPageId || diffResult?.incomingId || '',
+          pageSlug: result.normalizedSlug || result.pageSlug,
+          title: result.title,
+          action: mapImportResultAction(result, diffResult?.action),
+          revisionCreated: Boolean(result.revisionCreated),
+          previousSlug: diffResult?.wouldChangeSlug ? diffResult.existingSlug : '',
+          newSlug: diffResult?.wouldChangeSlug ? diffResult.incomingSlug : '',
+          needsRebuild: Boolean(diffResult?.staticRebuildNeeded || result.wrote),
+          warnings: result.warnings,
+          errors: result.errors,
+        }
+      }),
+    validationSummary: {
+      generatedAt: contractReport?.generatedAt || '',
+      pageCount: contractReport?.pageCount || 0,
+      errorCount: contractReport?.errorCount || 0,
+      warningCount: contractReport?.warningCount || 0,
+      payloadErrorCount: contractReport?.payloadErrors.length || 0,
+      payloadWarningCount: contractReport?.payloadWarnings.length || 0,
+    },
+    diffSummary: {
+      generatedAt: diffReport?.generatedAt || '',
+      incomingCount: diffReport?.incomingCount || 0,
+      createCount: diffReport?.createCount || 0,
+      updateCount: diffReport?.updateCount || 0,
+      skipCount: diffReport?.skipCount || 0,
+      conflictCount: diffReport?.conflictCount || 0,
+      errorCount: diffReport?.errorCount || 0,
+      warningCount: diffReport?.warningCount || 0,
+      publishedUpdateCount: preflight.publishedUpdateCount,
+      slugChangeCount: preflight.slugChangeCount,
+      tenantMismatchCount: preflight.tenantMismatchCount,
+      staticRebuildCount: preflight.staticRebuildCount,
+      riskCategories,
+    },
+    importResultSummary: {
+      timestamp: report.timestamp,
+      total: report.total,
+      createdCount: report.createdCount,
+      updatedCount: report.updatedCount,
+      skippedCount: report.skippedCount,
+      errorCount: report.errorCount,
+      warningCount: report.warningCount,
+    },
+    preflightAcknowledgements: {
+      publishedUpdatesAcknowledged: confirmations.publishedUpdates,
+      slugChangesAcknowledged: confirmations.slugChanges,
+      warningsAcknowledged: confirmations.warnings,
+    },
+    reportSummary: {
+      sourceType: report.sourceType,
+      importMode: report.mode,
+      dryRunOnly: report.mode === 'dry-run',
+      writeAttempted: report.mode !== 'dry-run',
+      wroteCount,
+      revisionCreatedCount,
+    },
+    protectedConfigChanged: 'false',
+    deploymentTriggered: false,
+  }
+}
+
+function buildImportRunId(report: ImportReport, handoffInfo: ImportHandoffInfo | null) {
+  const timestamp = report.timestamp.replace(/[:.]/g, '-')
+  const packagePart = handoffInfo?.packageId || handoffInfo?.packageName || 'manual'
+  return `${report.tenantId}-${report.sourceType}-${report.mode}-${sanitizeRunId(packagePart)}-${timestamp}`
+}
+
+function sanitizeRunId(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 80) || 'import'
+}
+
+function getImportRunSource(sourceType: ImportSourceType, handoffInfo: ImportHandoffInfo | null): ImportRunSource {
+  if (handoffInfo) return 'staged_package'
+  if (sourceType === 'csv') return 'csv_import'
+  if (sourceType === 'xlsx') return 'xlsx_import'
+  if (sourceType === 'json') return 'json_import'
+  return 'unknown'
+}
+
+function deriveImportRunStatus(report: ImportReport, preflight: ImportPreflight): ImportRun['status'] {
+  if (report.mode === 'dry-run') return 'dry_run'
+  if (preflight.contractErrorCount > 0 || preflight.diffErrorCount > 0 || preflight.tenantMismatchCount > 0 || preflight.conflictCount > 0) {
+    return 'blocked_by_preflight'
+  }
+  if (report.errorCount > 0) return 'failed'
+  if (report.warningCount > 0 || preflight.warningCount > 0) return 'completed_with_warnings'
+  return 'completed'
+}
+
+function mapImportResultAction(result: ImportResult, diffAction?: string): ImportRunAffectedPageAction {
+  if (diffAction === 'conflict') return 'conflicted'
+  if (result.action === 'create') return 'created'
+  if (result.action === 'update') return 'updated'
+  if (result.action === 'skip') return 'skipped'
+  return 'failed'
 }
 
 function getActionClass(action: PlannedAction) {

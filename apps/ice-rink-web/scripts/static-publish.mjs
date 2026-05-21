@@ -208,6 +208,10 @@ function getSchemaControls(page) {
   return page.schemaControls && typeof page.schemaControls === 'object' ? page.schemaControls : {};
 }
 
+function getServiceSchema(page) {
+  return page.serviceSchema && typeof page.serviceSchema === 'object' ? page.serviceSchema : {};
+}
+
 function getFormConfig(page) {
   return page.formConfig && typeof page.formConfig === 'object' ? page.formConfig : {};
 }
@@ -270,6 +274,7 @@ function addProductionReadinessWarnings(page, label, warnings) {
   const template = getTemplateIdentity(page);
   const linking = getLinking(page);
   const schemaControls = getSchemaControls(page);
+  const serviceSchema = getServiceSchema(page);
   const formConfig = getFormConfig(page);
   const blocks = Array.isArray(page.ContentData?.ContentBlocks) ? page.ContentData.ContentBlocks : [];
 
@@ -307,6 +312,22 @@ function addProductionReadinessWarnings(page, label, warnings) {
   if (!stringValue(template.contentModelVersion)) {
     warnings.push(`${label}: template.contentModelVersion is missing.`);
   }
+
+  const serviceLike = ['service', 'state-service-hub', 'city-service-area', 'event-use', 'product-intent'].includes(stringValue(template.templateKey)) ||
+    ['service', 'state', 'city', 'event', 'product'].some((value) => `${page.MetaData?.pageType || ''} ${page.pageSlug || ''}`.toLowerCase().includes(value));
+  const productsOffered = Array.isArray(serviceSchema.productsOffered) ? serviceSchema.productsOffered : [];
+  const areasServed = Array.isArray(serviceSchema.areasServed) ? serviceSchema.areasServed : [];
+
+  if (serviceLike && !stringValue(serviceSchema.serviceName)) warnings.push(`${label}: serviceSchema.serviceName is missing.`);
+  if (serviceLike && !stringValue(serviceSchema.serviceType)) warnings.push(`${label}: serviceSchema.serviceType is missing.`);
+  if (serviceLike && productsOffered.length === 0) warnings.push(`${label}: serviceSchema.productsOffered is empty.`);
+  if (['state-service-hub', 'city-service-area'].includes(stringValue(template.templateKey)) && areasServed.length === 0) {
+    warnings.push(`${label}: serviceSchema.areasServed is empty for a location/service-area page.`);
+  }
+  if (serviceSchema.publicSchemaEnabled === true && (!stringValue(serviceSchema.serviceName) || !stringValue(serviceSchema.serviceType))) {
+    warnings.push(`${label}: public Service schema is enabled before serviceName/serviceType are complete.`);
+  }
+
   if (!stringValue(fulfillment.fulfillmentStatus)) warnings.push(`${label}: fulfillment.fulfillmentStatus is missing.`);
 
   if (
@@ -345,6 +366,14 @@ function addProductionReadinessWarnings(page, label, warnings) {
 
   if (blocks.some((block) => block.type === 'Contact') && !stringValue(formConfig.formType)) {
     warnings.push(`${label}: Contact block exists but formConfig.formType is missing.`);
+  }
+
+  if (blocks.some((block) => block.type === 'Contact') && !stringValue(formConfig.domainRoutingKey)) {
+    warnings.push(`${label}: Contact block exists but formConfig.domainRoutingKey is missing.`);
+  }
+
+  if (blocks.some((block) => block.type === 'Contact') && !stringValue(formConfig.staticFormEndpointKey)) {
+    warnings.push(`${label}: Contact block exists but formConfig.staticFormEndpointKey is missing.`);
   }
 
   if (hasFormOrCta(page) && !stringValue(formConfig.conversionGoal)) {

@@ -1340,6 +1340,112 @@ app.MapPost("/api/admin/{tenantId}/publish-runs",
     .WithSummary("Create/import a publish/build run")
     .WithDescription("Stores sanitized dry-run/build metadata only. Does not deploy, upload, purge, or execute shell commands.");
 
+// Admin: List import runs for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/{tenantId}/import-runs",
+    async (IDatabaseService databaseService, string tenantId, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var importRuns = await databaseService.GetImportRunsByTenantAsync(tenantId);
+            return Results.Ok(new { importRuns, count = importRuns.Count, tenantId });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving import runs. Confirm the ImportRun container exists with partition key /tenantId. Details: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Import Runs")
+    .WithName("GetImportRuns")
+    .WithSummary("Get import audit history for a tenant")
+    .WithDescription("Lists tenant-scoped import audit records. Requires JWT authentication.");
+
+// Admin: Get one import run for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/{tenantId}/import-runs/{id}",
+    async (IDatabaseService databaseService, string tenantId, string id, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var importRun = await databaseService.GetImportRunAsync(tenantId, id);
+            return importRun == null ? Results.NotFound("Import run not found") : Results.Ok(importRun);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving import run. Confirm the ImportRun container exists with partition key /tenantId. Details: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Import Runs")
+    .WithName("GetImportRun")
+    .WithSummary("Get one import audit record")
+    .WithDescription("Reads one tenant-scoped import audit record. Requires JWT authentication.");
+
+// Admin: Save an import dry-run/result summary as an import run (JWT auth, no API key)
+app.MapPost("/api/admin/{tenantId}/import-runs",
+    async (IDatabaseService databaseService, string tenantId, ImportRun importRun, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var createdBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+
+            var preparedImportRun = ImportRunSanitizer.PrepareForSave(importRun, tenantId, createdBy);
+            var savedImportRun = await databaseService.SaveImportRunAsync(tenantId, preparedImportRun);
+            return Results.Created($"/api/admin/{tenantId}/import-runs/{savedImportRun.Id}", savedImportRun);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error saving import run. Confirm the ImportRun container exists with partition key /tenantId. Details: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Import Runs")
+    .WithName("CreateImportRun")
+    .WithSummary("Create an import audit record")
+    .WithDescription("Stores sanitized import dry-run/result metadata only. Does not execute imports, deploy, upload, purge, or run shell commands.");
+
 // Admin: List media assets for a tenant (JWT auth, no API key)
 app.MapGet("/api/admin/{tenantId}/media-assets",
     async (IDatabaseService databaseService, string tenantId, HttpContext context) =>

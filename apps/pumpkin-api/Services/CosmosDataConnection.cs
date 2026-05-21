@@ -1261,6 +1261,82 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<List<ImportRun>> GetImportRunsByTenantAsync(string tenantId)
+    {
+        try
+        {
+            var importRunContainer = _database.GetContainer("ImportRun");
+            var query = "SELECT * FROM c WHERE c.tenantId = @tenantId ORDER BY c.completedAt DESC";
+            var queryDefinition = new QueryDefinition(query).WithParameter("@tenantId", tenantId);
+
+            var importRuns = new List<ImportRun>();
+            using var iterator = importRunContainer.GetItemQueryIterator<ImportRun>(queryDefinition, requestOptions: new QueryRequestOptions
+            {
+                PartitionKey = new PartitionKey(tenantId)
+            });
+
+            while (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync();
+                importRuns.AddRange(response);
+                _logger.LogInformation("GetImportRunsByTenantAsync - TenantId: {TenantId}, BatchCount: {Count}, RU: {RU}",
+                    tenantId, response.Count, response.RequestCharge);
+            }
+
+            return importRuns;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetImportRunsByTenantAsync error - TenantId: {TenantId}", tenantId);
+            throw;
+        }
+    }
+
+    public async Task<ImportRun?> GetImportRunAsync(string tenantId, string id)
+    {
+        try
+        {
+            var importRunContainer = _database.GetContainer("ImportRun");
+            var response = await importRunContainer.ReadItemAsync<ImportRun>(id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("GetImportRunAsync - TenantId: {TenantId}, Id: {Id}, RU: {RU}",
+                tenantId, id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation("GetImportRunAsync - Import run not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            return null;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetImportRunAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
+    public async Task<ImportRun> SaveImportRunAsync(string tenantId, ImportRun importRun)
+    {
+        try
+        {
+            var importRunContainer = _database.GetContainer("ImportRun");
+            importRun.TenantId = tenantId;
+
+            var response = await importRunContainer.UpsertItemAsync(importRun, new PartitionKey(tenantId));
+
+            _logger.LogInformation("SaveImportRunAsync - Import run saved - TenantId: {TenantId}, ImportRunId: {ImportRunId}, Id: {Id}, RU: {RU}",
+                tenantId, importRun.ImportRunId, importRun.Id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "SaveImportRunAsync error - TenantId: {TenantId}, ImportRunId: {ImportRunId}", tenantId, importRun.ImportRunId);
+            throw;
+        }
+    }
+
     public async Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId)
     {
         try

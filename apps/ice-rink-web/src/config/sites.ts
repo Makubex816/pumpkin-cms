@@ -18,6 +18,29 @@ export interface SiteDefinition {
   service: string;
   serviceKeyword: string;
   product: ProductTokens;
+  domainRouting: {
+    domain: string;
+    brandName: string;
+    publicContactEmail: string;
+    quoteRequestEmail: string;
+    supportEmail: string;
+    replyToEmail: string;
+    fromName: string;
+    fromEmail: string;
+    contactPageSlug: string;
+    primaryPhone: string;
+    mailtoLinksEnabled: boolean;
+    defaultLeadRoutingMode: string;
+    defaultRecipientGroup: string;
+    staticFormEndpointKey: string;
+    emailProvider: string;
+    emailProviderStatus: string;
+    mxStatus: string;
+    spfStatus: string;
+    dkimStatus: string;
+    dmarcStatus: string;
+    notes: string;
+  };
   featureFlags: {
     pages: boolean;
     forms: boolean;
@@ -50,6 +73,29 @@ export const sites: SiteDefinition[] = [
       singular: 'portable ice rink',
       plural: 'portable ice rinks',
     },
+    domainRouting: {
+      domain: 'iceskatingrinkrentals.com',
+      brandName: 'Ice Skating Rink Rentals',
+      publicContactEmail: '',
+      quoteRequestEmail: '',
+      supportEmail: '',
+      replyToEmail: '',
+      fromName: 'Ice Skating Rink Rentals',
+      fromEmail: '',
+      contactPageSlug: 'contact',
+      primaryPhone: '',
+      mailtoLinksEnabled: false,
+      defaultLeadRoutingMode: 'manual_review_then_provider_match',
+      defaultRecipientGroup: 'quote_requests',
+      staticFormEndpointKey: '',
+      emailProvider: '',
+      emailProviderStatus: 'not_configured',
+      mxStatus: 'unknown',
+      spfStatus: 'unknown',
+      dkimStatus: 'unknown',
+      dmarcStatus: 'unknown',
+      notes: 'Non-secret routing metadata only. Do not store provider credentials here.',
+    },
     featureFlags: {
       pages: true,
       forms: true,
@@ -71,6 +117,29 @@ export const sites: SiteDefinition[] = [
     product: {
       singular: 'portable roller rink',
       plural: 'portable roller rinks',
+    },
+    domainRouting: {
+      domain: 'rollerrinkrentals.com',
+      brandName: 'Roller Rink Rentals',
+      publicContactEmail: '',
+      quoteRequestEmail: '',
+      supportEmail: '',
+      replyToEmail: '',
+      fromName: 'Roller Rink Rentals',
+      fromEmail: '',
+      contactPageSlug: 'contact',
+      primaryPhone: '',
+      mailtoLinksEnabled: false,
+      defaultLeadRoutingMode: 'manual_review_then_provider_match',
+      defaultRecipientGroup: 'quote_requests',
+      staticFormEndpointKey: '',
+      emailProvider: '',
+      emailProviderStatus: 'not_configured',
+      mxStatus: 'unknown',
+      spfStatus: 'unknown',
+      dkimStatus: 'unknown',
+      dmarcStatus: 'unknown',
+      notes: 'Non-secret routing metadata only. Do not store provider credentials here.',
     },
     featureFlags: {
       pages: true,

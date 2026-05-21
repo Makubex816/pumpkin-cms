@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, FormEntry, MediaAsset } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, ImportRun, FormEntry, MediaAsset } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -355,6 +355,46 @@ class ApiClient {
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(publishRun),
+      }
+    )
+  }
+
+  async getImportRuns(token: string, tenantId: string): Promise<ImportRun[]> {
+    const response = await this.request<{ importRuns: ImportRun[]; count: number; tenantId: string }>(
+      `/api/admin/${encodeURIComponent(tenantId)}/import-runs`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+    return response.importRuns
+  }
+
+  async getImportRun(token: string, tenantId: string, id: string): Promise<ImportRun> {
+    return this.request<ImportRun>(
+      `/api/admin/${encodeURIComponent(tenantId)}/import-runs/${encodeURIComponent(id)}`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  async createImportRun(token: string, tenantId: string, importRun: ImportRun): Promise<ImportRun> {
+    return this.request<ImportRun>(
+      `/api/admin/${encodeURIComponent(tenantId)}/import-runs`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(importRun),
       }
     )
   }

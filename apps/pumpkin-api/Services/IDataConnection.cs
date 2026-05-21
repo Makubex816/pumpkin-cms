@@ -42,6 +42,11 @@ public interface IDataConnection
     Task<PublishRun?> GetPublishRunAsync(string tenantId, string id);
     Task<PublishRun> SavePublishRunAsync(string tenantId, PublishRun publishRun);
 
+    // Import run registry methods (JWT authentication required at endpoint level)
+    Task<List<ImportRun>> GetImportRunsByTenantAsync(string tenantId);
+    Task<ImportRun?> GetImportRunAsync(string tenantId, string id);
+    Task<ImportRun> SaveImportRunAsync(string tenantId, ImportRun importRun);
+
     // Media asset registry methods (JWT authentication required at endpoint level)
     Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId);
     Task<MediaAsset?> GetMediaAssetAsync(string tenantId, string id);

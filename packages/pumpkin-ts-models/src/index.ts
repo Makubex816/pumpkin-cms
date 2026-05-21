@@ -70,7 +70,12 @@ export type {
   PageTemplateIdentity,
   PageLinking,
   PageStructuredDataControls,
+  PageServiceSchema,
+  PageProductOffered,
+  PageAreaServed,
+  PageAreaServedType,
   PageFormConfig,
+  PageDomainRouting,
   PageImportProvenance,
   PageDeploymentHooks,
   AlternateUrl,
@@ -177,6 +182,21 @@ export type {
   PublishRunDeploymentTarget,
   PublishRunDeploymentStatus
 } from './models/PublishRun';
+
+// Import run models
+export type {
+  ImportRun,
+  ImportRunAffectedPage,
+  ImportRunValidationSummary,
+  ImportRunDiffSummary,
+  ImportRunResultSummary,
+  ImportRunPreflightAcknowledgements,
+  ImportRunReportSummary,
+  ImportRunSource,
+  ImportRunMode,
+  ImportRunStatus,
+  ImportRunAffectedPageAction
+} from './models/ImportRun';
 
 // JSON converter
 export { PageJsonConverter } from './PageJsonConverter';

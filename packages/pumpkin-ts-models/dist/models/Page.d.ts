@@ -84,9 +84,19 @@ export interface Page {
      */
     schemaControls?: PageStructuredDataControls;
     /**
+     * Service schema contract fields used for products offered, areas served,
+     * and future Schema.org Service output.
+     */
+    serviceSchema?: PageServiceSchema;
+    /**
      * Lead capture and form configuration metadata.
      */
     formConfig?: PageFormConfig;
+    /**
+     * Non-secret tenant/domain contact routing metadata. This is configuration
+     * status only and must not contain provider credentials.
+     */
+    domainRouting?: PageDomainRouting;
     /**
      * Import/export provenance and field-locking metadata.
      */
@@ -280,6 +290,52 @@ export interface PageStructuredDataControls {
     enableServiceSchema: boolean;
     schemaWarnings: string[];
 }
+export type PageAreaServedType = 'Country' | 'State' | 'City' | 'County' | 'Metro' | 'Region' | 'ServiceArea' | 'Custom';
+/**
+ * Product or service item offered by this page. Public JSON-LD can map this
+ * into offers/hasOfferCatalog later.
+ */
+export interface PageProductOffered {
+    name: string;
+    type: string;
+    description: string;
+    url: string;
+    category: string;
+    isPrimary: boolean;
+    displayOrder: number;
+}
+/**
+ * Internal areasServed field. Public JSON-LD should map this to Schema.org
+ * areaServed.
+ */
+export interface PageAreaServed {
+    name: string;
+    type: PageAreaServedType | string;
+    stateCode: string;
+    city: string;
+    county: string;
+    metro: string;
+    country: string;
+    url: string;
+    serviceAreaType: string;
+    confidence: string;
+    isPrimary: boolean;
+}
+/**
+ * Page-level service schema contract for production content packages.
+ */
+export interface PageServiceSchema {
+    serviceName: string;
+    serviceType: string;
+    serviceCategory: string;
+    productsOffered: PageProductOffered[];
+    areasServed: PageAreaServed[];
+    audience: string[];
+    eventTypes: string[];
+    schemaOutputMode: string;
+    publicSchemaEnabled: boolean;
+    notes: string;
+}
 /**
  * Lead capture and form configuration
  */
@@ -288,6 +344,10 @@ export interface PageFormConfig {
     formType: string;
     conversionGoal: string;
     routingMode?: string;
+    domainRoutingKey?: string;
+    replyToMode?: string;
+    emailSubjectTemplate?: string;
+    mailtoFallbackEnabled?: boolean;
     thankYouUrl: string;
     thankYouMessage: string;
     recipientGroup: string;
@@ -297,6 +357,33 @@ export interface PageFormConfig {
     consentRequired: boolean;
     spamProtectionRequired?: boolean;
     spamProtectionEnabled: boolean;
+}
+/**
+ * Non-secret domain contact routing metadata. Status fields are advisory; no
+ * SMTP passwords, API tokens, or provider credentials belong here.
+ */
+export interface PageDomainRouting {
+    domain: string;
+    brandName: string;
+    publicContactEmail: string;
+    quoteRequestEmail: string;
+    supportEmail: string;
+    replyToEmail: string;
+    fromName: string;
+    fromEmail: string;
+    contactPageSlug: string;
+    primaryPhone: string;
+    mailtoLinksEnabled: boolean;
+    defaultLeadRoutingMode: string;
+    defaultRecipientGroup: string;
+    staticFormEndpointKey: string;
+    emailProvider: string;
+    emailProviderStatus: string;
+    mxStatus: string;
+    spfStatus: string;
+    dkimStatus: string;
+    dmarcStatus: string;
+    notes: string;
 }
 /**
  * Import/export provenance and field locking

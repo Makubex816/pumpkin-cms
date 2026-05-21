@@ -122,8 +122,14 @@ public class Page
     [JsonPropertyName("schemaControls")]
     public PageStructuredDataControls SchemaControls { get; set; } = new();
 
+    [JsonPropertyName("serviceSchema")]
+    public PageServiceSchema ServiceSchema { get; set; } = new();
+
     [JsonPropertyName("formConfig")]
     public PageFormConfig FormConfig { get; set; } = new();
+
+    [JsonPropertyName("domainRouting")]
+    public PageDomainRouting DomainRouting { get; set; } = new();
 
     [JsonPropertyName("importProvenance")]
     public PageImportProvenance ImportProvenance { get; set; } = new();
@@ -510,6 +516,99 @@ public class PageStructuredDataControls
     public List<string> SchemaWarnings { get; set; } = new();
 }
 
+public class PageProductOffered
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("type")]
+    public string Type { get; set; } = string.Empty;
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
+
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = string.Empty;
+
+    [JsonPropertyName("category")]
+    public string Category { get; set; } = string.Empty;
+
+    [JsonPropertyName("isPrimary")]
+    public bool IsPrimary { get; set; } = false;
+
+    [JsonPropertyName("displayOrder")]
+    public int DisplayOrder { get; set; } = 0;
+}
+
+public class PageAreaServed
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("type")]
+    public string Type { get; set; } = string.Empty;
+
+    [JsonPropertyName("stateCode")]
+    public string StateCode { get; set; } = string.Empty;
+
+    [JsonPropertyName("city")]
+    public string City { get; set; } = string.Empty;
+
+    [JsonPropertyName("county")]
+    public string County { get; set; } = string.Empty;
+
+    [JsonPropertyName("metro")]
+    public string Metro { get; set; } = string.Empty;
+
+    [JsonPropertyName("country")]
+    public string Country { get; set; } = string.Empty;
+
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = string.Empty;
+
+    [JsonPropertyName("serviceAreaType")]
+    public string ServiceAreaType { get; set; } = string.Empty;
+
+    [JsonPropertyName("confidence")]
+    public string Confidence { get; set; } = string.Empty;
+
+    [JsonPropertyName("isPrimary")]
+    public bool IsPrimary { get; set; } = false;
+}
+
+public class PageServiceSchema
+{
+    [JsonPropertyName("serviceName")]
+    public string ServiceName { get; set; } = string.Empty;
+
+    [JsonPropertyName("serviceType")]
+    public string ServiceType { get; set; } = string.Empty;
+
+    [JsonPropertyName("serviceCategory")]
+    public string ServiceCategory { get; set; } = string.Empty;
+
+    [JsonPropertyName("productsOffered")]
+    public List<PageProductOffered> ProductsOffered { get; set; } = new();
+
+    [JsonPropertyName("areasServed")]
+    public List<PageAreaServed> AreasServed { get; set; } = new();
+
+    [JsonPropertyName("audience")]
+    public List<string> Audience { get; set; } = new();
+
+    [JsonPropertyName("eventTypes")]
+    public List<string> EventTypes { get; set; } = new();
+
+    [JsonPropertyName("schemaOutputMode")]
+    public string SchemaOutputMode { get; set; } = string.Empty;
+
+    [JsonPropertyName("publicSchemaEnabled")]
+    public bool PublicSchemaEnabled { get; set; } = false;
+
+    [JsonPropertyName("notes")]
+    public string Notes { get; set; } = string.Empty;
+}
+
 public class PageFormConfig
 {
     [JsonPropertyName("formId")]
@@ -523,6 +622,18 @@ public class PageFormConfig
 
     [JsonPropertyName("routingMode")]
     public string RoutingMode { get; set; } = string.Empty;
+
+    [JsonPropertyName("domainRoutingKey")]
+    public string DomainRoutingKey { get; set; } = string.Empty;
+
+    [JsonPropertyName("replyToMode")]
+    public string ReplyToMode { get; set; } = string.Empty;
+
+    [JsonPropertyName("emailSubjectTemplate")]
+    public string EmailSubjectTemplate { get; set; } = string.Empty;
+
+    [JsonPropertyName("mailtoFallbackEnabled")]
+    public bool MailtoFallbackEnabled { get; set; } = false;
 
     [JsonPropertyName("thankYouUrl")]
     public string ThankYouUrl { get; set; } = string.Empty;
@@ -550,6 +661,72 @@ public class PageFormConfig
 
     [JsonPropertyName("spamProtectionEnabled")]
     public bool SpamProtectionEnabled { get; set; } = false;
+}
+
+public class PageDomainRouting
+{
+    [JsonPropertyName("domain")]
+    public string Domain { get; set; } = string.Empty;
+
+    [JsonPropertyName("brandName")]
+    public string BrandName { get; set; } = string.Empty;
+
+    [JsonPropertyName("publicContactEmail")]
+    public string PublicContactEmail { get; set; } = string.Empty;
+
+    [JsonPropertyName("quoteRequestEmail")]
+    public string QuoteRequestEmail { get; set; } = string.Empty;
+
+    [JsonPropertyName("supportEmail")]
+    public string SupportEmail { get; set; } = string.Empty;
+
+    [JsonPropertyName("replyToEmail")]
+    public string ReplyToEmail { get; set; } = string.Empty;
+
+    [JsonPropertyName("fromName")]
+    public string FromName { get; set; } = string.Empty;
+
+    [JsonPropertyName("fromEmail")]
+    public string FromEmail { get; set; } = string.Empty;
+
+    [JsonPropertyName("contactPageSlug")]
+    public string ContactPageSlug { get; set; } = string.Empty;
+
+    [JsonPropertyName("primaryPhone")]
+    public string PrimaryPhone { get; set; } = string.Empty;
+
+    [JsonPropertyName("mailtoLinksEnabled")]
+    public bool MailtoLinksEnabled { get; set; } = false;
+
+    [JsonPropertyName("defaultLeadRoutingMode")]
+    public string DefaultLeadRoutingMode { get; set; } = string.Empty;
+
+    [JsonPropertyName("defaultRecipientGroup")]
+    public string DefaultRecipientGroup { get; set; } = string.Empty;
+
+    [JsonPropertyName("staticFormEndpointKey")]
+    public string StaticFormEndpointKey { get; set; } = string.Empty;
+
+    [JsonPropertyName("emailProvider")]
+    public string EmailProvider { get; set; } = string.Empty;
+
+    [JsonPropertyName("emailProviderStatus")]
+    public string EmailProviderStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("mxStatus")]
+    public string MxStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("spfStatus")]
+    public string SpfStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("dkimStatus")]
+    public string DkimStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("dmarcStatus")]
+    public string DmarcStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("notes")]
+    public string Notes { get; set; } = string.Empty;
 }
 
 public class PageImportProvenance

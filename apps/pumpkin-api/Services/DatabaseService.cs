@@ -165,6 +165,21 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.SavePublishRunAsync(tenantId, publishRun);
     }
 
+    public Task<List<ImportRun>> GetImportRunsByTenantAsync(string tenantId)
+    {
+        return _dataConnection.GetImportRunsByTenantAsync(tenantId);
+    }
+
+    public Task<ImportRun?> GetImportRunAsync(string tenantId, string id)
+    {
+        return _dataConnection.GetImportRunAsync(tenantId, id);
+    }
+
+    public Task<ImportRun> SaveImportRunAsync(string tenantId, ImportRun importRun)
+    {
+        return _dataConnection.SaveImportRunAsync(tenantId, importRun);
+    }
+
     public Task<List<MediaAsset>> GetMediaAssetsByTenantAsync(string tenantId)
     {
         return _dataConnection.GetMediaAssetsByTenantAsync(tenantId);
