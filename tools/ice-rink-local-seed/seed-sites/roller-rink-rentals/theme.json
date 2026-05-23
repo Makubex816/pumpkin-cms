@@ -3,7 +3,7 @@
   "themeId": "roller-rink-rentals-default",
   "tenantId": "roller-rink-rentals",
   "name": "Roller Rink Rentals Default Theme",
-  "description": "Local proof theme for Roller Rink Rentals.",
+  "description": "Roller Rink Rentals theme for portable rink rental planning.",
   "isActive": true,
   "header": {
     "logoUrl": "",
