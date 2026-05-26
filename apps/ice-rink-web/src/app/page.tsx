@@ -30,6 +30,7 @@ export default async function HomePage() {
       <PageRenderer
         page={page}
         blockStyles={theme.blockStyles}
+        designSystem={theme.designSystem}
         renderMode={getRenderMode()}
         staticFormEndpoint={getStaticFormEndpoint()}
       />

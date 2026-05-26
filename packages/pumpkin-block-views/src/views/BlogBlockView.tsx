@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlogBlock } from 'pumpkin-ts-models';
+import { sanitizeHtml } from 'pumpkin-ts-models';
 import { blogDefaults, type BlogClassNames } from '../defaults/blog';
 import { mergeClasses } from '../utils/mergeClasses';
 
@@ -13,6 +14,7 @@ export interface BlogBlockViewProps {
 export function BlogBlockView({ block, classNames, renderBody }: BlogBlockViewProps) {
   const cx = mergeClasses(blogDefaults, classNames);
   const { content } = block;
+  const sanitizedBody = content.body ? sanitizeHtml(content.body, { profile: 'marketing-rich', path: 'Blog.content.body' }) : null;
 
   return (
     <article className={cx.root}>
@@ -50,7 +52,7 @@ export function BlogBlockView({ block, classNames, renderBody }: BlogBlockViewPr
         {content.body && (
           <div className={cx.body}>
             {renderBody ? renderBody(content.body) : (
-              <div dangerouslySetInnerHTML={{ __html: content.body }} />
+              <div dangerouslySetInnerHTML={{ __html: sanitizedBody?.ok ? sanitizedBody.sanitizedHtml || '' : '' }} />
             )}
           </div>
         )}

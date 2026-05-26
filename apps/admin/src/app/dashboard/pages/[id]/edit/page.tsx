@@ -9,6 +9,15 @@ import { useAuth } from '@/contexts/AuthContext'
 import MediaPicker, { getMediaAssetReference } from '@/components/MediaPicker'
 import { apiClient } from '@/lib/api'
 import type { IHtmlBlock, MediaAsset, Page, PageRedirect } from 'pumpkin-ts-models'
+import {
+  RICH_HTML_PROFILES,
+  SECTION_CONTAINERS,
+  SECTION_VARIANTS,
+  TRUSTED_EMBED_PROVIDERS,
+  validateContentBlocksDesignSystem,
+  validateCustomHtmlContent,
+  validateTrustedEmbedContent,
+} from 'pumpkin-ts-models'
 
 const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
   'ice-rink-rentals': 'http://localhost:3002',
@@ -23,6 +32,8 @@ const SUPPORTED_BLOCK_TYPES = new Set([
   'FAQ',
   'PrimaryCTA',
   'Contact',
+  'customHtml',
+  'trustedEmbed',
 ])
 
 const BLOCK_ARRAY_FIELDS: Record<string, string[]> = {
@@ -818,6 +829,38 @@ function sanitizeSupportedBlockForSave(block: IHtmlBlock): IHtmlBlock {
           formFields: sanitizeRecordArray(content.formFields, ['label', 'type', 'placeholder'], ['required']),
         },
       }
+    case 'customHtml':
+      return {
+        ...block,
+        content: {
+          ...content,
+          id: stringValue(content.id),
+          label: stringValue(content.label),
+          html: stringValue(content.html),
+          container: stringValue(content.container) || 'standard',
+          allowedProfile: stringValue(content.allowedProfile) || 'marketing-basic',
+          sectionVariant: stringValue(content.sectionVariant),
+          css: stringValue(content.css),
+          sanitize: content.sanitize !== false,
+          review: isRecord(content.review) ? content.review : { status: 'draft' },
+          validation: isRecord(content.validation) ? content.validation : {},
+        },
+      }
+    case 'trustedEmbed':
+      return {
+        ...block,
+        content: {
+          ...content,
+          provider: stringValue(content.provider) || 'youtube',
+          url: stringValue(content.url),
+          title: stringValue(content.title),
+          aspectRatio: stringValue(content.aspectRatio) || '16:9',
+          caption: stringValue(content.caption),
+          container: stringValue(content.container) || 'standard',
+          review: isRecord(content.review) ? content.review : { status: 'draft' },
+          validation: isRecord(content.validation) ? content.validation : {},
+        },
+      }
     default:
       return block
   }
@@ -931,6 +974,10 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
   const blocks = Array.isArray(page.ContentData?.ContentBlocks)
     ? page.ContentData.ContentBlocks
     : []
+
+  const designValidation = validateContentBlocksDesignSystem(blocks)
+  designValidation.errors.forEach((issue) => errors.push(issue.message))
+  designValidation.warnings.forEach((issue) => warnings.push(issue.message))
 
   if (!page.MetaData?.title?.trim()) {
     warnings.push('MetaData.title is empty.')
@@ -1256,6 +1303,31 @@ function SelectField({ label, value, onChange, children }: { label: string; valu
         {children}
       </select>
     </label>
+  )
+}
+
+function RichValidationPanel({ errors, warnings }: { errors: string[]; warnings: string[] }) {
+  if (errors.length === 0 && warnings.length === 0) {
+    return (
+      <div className="rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800">
+        Rich section validation passed.
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-2">
+      {errors.length > 0 && (
+        <div className="space-y-1 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+          {errors.map((error) => <div key={error}>{error}</div>)}
+        </div>
+      )}
+      {warnings.length > 0 && (
+        <div className="space-y-1 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+          {warnings.map((warning) => <div key={warning}>{warning}</div>)}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -3325,6 +3397,55 @@ function renderBlockFields(
           />
         </div>
       )
+    case 'customHtml': {
+      const validation = validateCustomHtmlContent(content)
+      return (
+        <div className="space-y-4">
+          <div className="grid gap-4 lg:grid-cols-2">
+            {field('id', 'section id')}
+            {field('label', 'label')}
+          </div>
+          <div className="grid gap-4 lg:grid-cols-3">
+            <SelectField label="container" value={stringValue(content.container) || 'standard'} onChange={(value) => updateBlockField(blockIndex, 'container', value)}>
+              {SECTION_CONTAINERS.map((option) => <option key={option} value={option}>{option}</option>)}
+            </SelectField>
+            <SelectField label="allowedProfile" value={stringValue(content.allowedProfile) || 'marketing-basic'} onChange={(value) => updateBlockField(blockIndex, 'allowedProfile', value)}>
+              {RICH_HTML_PROFILES.map((option) => <option key={option} value={option}>{option}</option>)}
+            </SelectField>
+            <SelectField label="sectionVariant" value={stringValue(content.sectionVariant) || 'split-feature'} onChange={(value) => updateBlockField(blockIndex, 'sectionVariant', value)}>
+              {SECTION_VARIANTS.map((option) => <option key={option} value={option}>{option}</option>)}
+            </SelectField>
+          </div>
+          {field('html', 'html', { multiline: true, rows: 12 })}
+          {field('css', 'section scoped css', { multiline: true, rows: 8 })}
+          <RichValidationPanel errors={validation.errors.map((issue) => issue.message)} warnings={validation.warnings.map((issue) => issue.message)} />
+          <div className="rounded-md border border-neutral-200 bg-white p-4">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">Sanitized preview</div>
+            <div className="prose max-w-none text-sm" dangerouslySetInnerHTML={{ __html: validation.sanitizedHtml || '' }} />
+          </div>
+        </div>
+      )
+    }
+    case 'trustedEmbed': {
+      const validation = validateTrustedEmbedContent(content)
+      return (
+        <div className="space-y-4">
+          <div className="grid gap-4 lg:grid-cols-3">
+            <SelectField label="provider" value={stringValue(content.provider) || 'youtube'} onChange={(value) => updateBlockField(blockIndex, 'provider', value)}>
+              {TRUSTED_EMBED_PROVIDERS.map((option) => <option key={option} value={option}>{option}</option>)}
+            </SelectField>
+            <SelectField label="container" value={stringValue(content.container) || 'standard'} onChange={(value) => updateBlockField(blockIndex, 'container', value)}>
+              {SECTION_CONTAINERS.map((option) => <option key={option} value={option}>{option}</option>)}
+            </SelectField>
+            {field('aspectRatio', 'aspectRatio')}
+          </div>
+          {field('url', 'url')}
+          {field('title', 'title')}
+          {field('caption', 'caption', { multiline: true, rows: 3 })}
+          <RichValidationPanel errors={validation.errors.map((issue) => issue.message)} warnings={validation.warnings.map((issue) => issue.message)} />
+        </div>
+      )
+    }
     default:
       return <UnsupportedBlock block={{ type: blockType, content }} />
   }

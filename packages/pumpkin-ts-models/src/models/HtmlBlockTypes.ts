@@ -5,11 +5,12 @@ import { CardGridBlock, FaqBlock } from './ContentBlocks';
 import { BreadcrumbsBlock, TrustBarBlock, HowItWorksBlock, ServiceAreaMapBlock, LocalProTipsBlock } from './NavigationBlocks';
 import { GalleryBlock, TestimonialsBlock, ContactBlock } from './InteractionBlocks';
 import { BlogBlock } from './BlogBlocks';
+import type { CustomHtmlBlock, TrustedEmbedBlock } from '../design-system';
 
 /**
  * Union type of all supported HTML blocks
  */
-export type HtmlBlock = 
+export type HtmlBlock =
   | HeroBlock
   | PrimaryCtaBlock
   | SecondaryCtaBlock
@@ -23,7 +24,9 @@ export type HtmlBlock =
   | GalleryBlock
   | TestimonialsBlock
   | ContactBlock
-  | BlogBlock;
+  | BlogBlock
+  | CustomHtmlBlock
+  | TrustedEmbedBlock;
 
 /**
  * Map of block types to their corresponding interfaces
@@ -42,7 +45,9 @@ export const BLOCK_TYPE_MAP = {
   'Gallery': 'GalleryBlock',
   'Testimonials': 'TestimonialsBlock',
   'Contact': 'ContactBlock',
-  'Blog': 'BlogBlock'
+  'Blog': 'BlogBlock',
+  'customHtml': 'CustomHtmlBlock',
+  'trustedEmbed': 'TrustedEmbedBlock'
 } as const;
 
 /**

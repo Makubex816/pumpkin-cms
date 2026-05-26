@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import type { BlockStyleMap, IHtmlBlock, Page } from 'pumpkin-ts-models';
+import type { BlockStyleMap, DesignSystemMetadata, IHtmlBlock, Page } from 'pumpkin-ts-models';
+import { sanitizeHtml } from 'pumpkin-ts-models';
 import type { BlockClassNamesMap } from 'pumpkin-block-views';
 import { BlockViewRenderer } from 'pumpkin-block-views';
 import { renderPolishedBlock, type ContactSubmitPayload } from '@/components/blocks/PolishedBlocks';
@@ -15,6 +16,7 @@ interface CmsBlock extends IHtmlBlock {
 interface PageRendererProps {
   page: Page;
   blockStyles?: BlockStyleMap;
+  designSystem?: DesignSystemMetadata;
   renderMode?: 'runtime' | 'static';
   staticFormEndpoint?: string;
   staticFormAction?: string;
@@ -23,6 +25,7 @@ interface PageRendererProps {
 export function PageRenderer({
   page,
   blockStyles,
+  designSystem,
   renderMode = 'runtime',
   staticFormEndpoint = '',
   staticFormAction = '',
@@ -59,7 +62,8 @@ export function PageRenderer({
   };
 
   const renderBlogBody = (body: string) => {
-    return <div dangerouslySetInnerHTML={{ __html: body }} />;
+    const result = sanitizeHtml(body, { profile: 'marketing-rich', path: 'Blog.content.body' });
+    return <div dangerouslySetInnerHTML={{ __html: result.ok ? result.sanitizedHtml || '' : '' }} />;
   };
 
   return (
@@ -89,6 +93,7 @@ export function PageRenderer({
               <BlockViewRenderer
                 block={block}
                 classNames={classNames}
+                approvedClasses={designSystem?.approvedClasses}
                 overrides={{
                   Contact: {
                     onSubmit: (formData: Record<string, string>) =>

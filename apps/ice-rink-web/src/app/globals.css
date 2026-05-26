@@ -18,6 +18,120 @@
 }
 
 @layer components {
+  .cms-container {
+    @apply mx-auto px-6 md:px-8;
+  }
+
+  .cms-container-standard {
+    @apply max-w-5xl;
+  }
+
+  .cms-container-wide {
+    @apply max-w-7xl;
+  }
+
+  .cms-container-full-bleed,
+  .cms-container-none {
+    @apply max-w-none px-0;
+  }
+
+  .cms-rich-section {
+    @apply w-full py-12 md:py-16;
+  }
+
+  .cms-rich-section-invalid,
+  .cms-trusted-embed-invalid {
+    @apply border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900;
+  }
+
+  .rich-content {
+    @apply text-slate-700;
+  }
+
+  .rich-content h2 {
+    @apply mb-4 text-3xl font-bold leading-tight text-slate-950 md:text-4xl;
+  }
+
+  .rich-content h3 {
+    @apply mb-3 text-2xl font-bold leading-tight text-slate-900;
+  }
+
+  .rich-content h4 {
+    @apply mb-2 text-xl font-bold text-slate-900;
+  }
+
+  .rich-content p {
+    @apply mb-4 text-base leading-7;
+  }
+
+  .rich-content a {
+    @apply font-semibold text-sky-700 underline underline-offset-4 hover:text-sky-900;
+  }
+
+  .rich-content ul,
+  .rich-content ol {
+    @apply mb-5 space-y-2 pl-6;
+  }
+
+  .rich-content ul {
+    @apply list-disc;
+  }
+
+  .rich-content ol {
+    @apply list-decimal;
+  }
+
+  .rich-content blockquote {
+    @apply my-6 border-l-4 border-sky-300 pl-5 text-lg italic text-slate-700;
+  }
+
+  .rich-content figure {
+    @apply my-6;
+  }
+
+  .rich-content img {
+    @apply h-auto max-w-full rounded-lg;
+  }
+
+  .rich-content figcaption,
+  .cms-embed-caption {
+    @apply mt-2 text-sm text-slate-500;
+  }
+
+  .rich-content table {
+    @apply my-6 w-full border-collapse text-sm;
+  }
+
+  .rich-content th,
+  .rich-content td {
+    @apply border border-slate-200 px-4 py-3 text-left align-top;
+  }
+
+  .rich-content th {
+    @apply bg-slate-50 font-bold text-slate-950;
+  }
+
+  .cms-trusted-embed {
+    @apply py-12 md:py-16;
+  }
+
+  .cms-embed-frame {
+    @apply overflow-hidden rounded-lg border border-slate-200 bg-slate-950 shadow-sm;
+  }
+
+  .cms-embed-frame iframe {
+    @apply h-full w-full border-0;
+  }
+
+  .section-premium-hero {
+    @apply bg-sky-50;
+  }
+
+  .section-trust-band,
+  .section-final-cta {
+    @apply bg-slate-950 text-white;
+  }
+
   .prose h2 {
     @apply text-2xl font-bold text-slate-950 mt-8 mb-4;
   }

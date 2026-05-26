@@ -6,6 +6,7 @@ import type {
   TrustBarBlock, HowItWorksBlock, ServiceAreaMapBlock,
   LocalProTipsBlock, GalleryBlock, TestimonialsBlock,
   ContactBlock, BlogBlock,
+  CustomHtmlBlock, TrustedEmbedBlock,
 } from 'pumpkin-ts-models';
 
 import { HeroBlockView } from './views/HeroBlockView';
@@ -22,6 +23,8 @@ import { GalleryBlockView } from './views/GalleryBlockView';
 import { TestimonialsBlockView } from './views/TestimonialsBlockView';
 import { ContactBlockView } from './views/ContactBlockView';
 import { BlogBlockView } from './views/BlogBlockView';
+import { CustomHtmlBlockView } from './views/CustomHtmlBlockView';
+import { TrustedEmbedBlockView } from './views/TrustedEmbedBlockView';
 
 import type { HeroClassNames } from './defaults/hero';
 import type { PrimaryCtaClassNames } from './defaults/primaryCta';
@@ -77,6 +80,8 @@ export interface BlockViewRendererProps {
   classNames?: BlockClassNamesMap;
   /** Per-block-type extra props (callbacks, render props). */
   overrides?: BlockOverrides;
+  /** Additional approved classes available to customHtml and scoped CSS. */
+  approvedClasses?: string[];
   /** Rendered when the block type is not recognised. */
   fallback?: React.ReactNode;
 }
@@ -92,7 +97,7 @@ export interface BlockViewRendererProps {
  * />
  * ```
  */
-export function BlockViewRenderer({ block, classNames, overrides, fallback }: BlockViewRendererProps) {
+export function BlockViewRenderer({ block, classNames, overrides, approvedClasses, fallback }: BlockViewRendererProps) {
   switch (block.type) {
     case 'Hero':
       return <HeroBlockView block={block as HeroBlock} classNames={classNames?.Hero} />;
@@ -147,6 +152,12 @@ export function BlockViewRenderer({ block, classNames, overrides, fallback }: Bl
           renderBody={overrides?.Blog?.renderBody}
         />
       );
+
+    case 'customHtml':
+      return <CustomHtmlBlockView block={block as CustomHtmlBlock} approvedClasses={approvedClasses} />;
+
+    case 'trustedEmbed':
+      return <TrustedEmbedBlockView block={block as TrustedEmbedBlock} />;
 
     default:
       return <>{fallback ?? null}</>;

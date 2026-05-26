@@ -40,6 +40,12 @@ export type { ContactBlockViewProps } from './ContactBlockView';
 export { BlogBlockView } from './BlogBlockView';
 export type { BlogBlockViewProps } from './BlogBlockView';
 
+export { CustomHtmlBlockView } from './CustomHtmlBlockView';
+export type { CustomHtmlBlockViewProps } from './CustomHtmlBlockView';
+
+export { TrustedEmbedBlockView } from './TrustedEmbedBlockView';
+export type { TrustedEmbedBlockViewProps } from './TrustedEmbedBlockView';
+
 export { HeaderView } from './HeaderView';
 export type { HeaderViewProps } from './HeaderView';
 

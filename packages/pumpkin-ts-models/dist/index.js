@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PageJsonConverter = exports.createGenericBlock = exports.isHtmlBlock = exports.isBlockOfType = exports.SUPPORTED_BLOCK_TYPES = exports.BLOCK_TYPE_MAP = exports.tenantToTenantInfo = exports.userToUserInfo = exports.isUserRole = exports.stringToUserRole = exports.userRoleToString = exports.UserRole = void 0;
+exports.PageJsonConverter = exports.resolveTrustedEmbedUrl = exports.getSectionVariantClass = exports.getContainerClass = exports.buildThemeTokenCssVariables = exports.validateThemeTokens = exports.validateThemeDesignSystem = exports.validateContentBlocksDesignSystem = exports.validateCss = exports.sanitizeHtml = exports.validateTrustedEmbedContent = exports.validateCustomHtmlContent = exports.normalizeSectionId = exports.isTrustedEmbedProvider = exports.isSectionVariant = exports.isSectionContainer = exports.isRichHtmlProfile = exports.APPROVED_CLASS_PREFIXES = exports.TRUSTED_EMBED_PROVIDERS = exports.SECTION_VARIANTS = exports.SECTION_CONTAINERS = exports.RICH_HTML_PROFILES = exports.createGenericBlock = exports.isHtmlBlock = exports.isBlockOfType = exports.SUPPORTED_BLOCK_TYPES = exports.BLOCK_TYPE_MAP = exports.tenantToTenantInfo = exports.userToUserInfo = exports.isUserRole = exports.stringToUserRole = exports.userRoleToString = exports.UserRole = void 0;
 var User_1 = require("./models/User");
 Object.defineProperty(exports, "UserRole", { enumerable: true, get: function () { return User_1.UserRole; } });
 Object.defineProperty(exports, "userRoleToString", { enumerable: true, get: function () { return User_1.userRoleToString; } });
@@ -15,6 +15,28 @@ Object.defineProperty(exports, "SUPPORTED_BLOCK_TYPES", { enumerable: true, get:
 Object.defineProperty(exports, "isBlockOfType", { enumerable: true, get: function () { return HtmlBlockTypes_1.isBlockOfType; } });
 Object.defineProperty(exports, "isHtmlBlock", { enumerable: true, get: function () { return HtmlBlockTypes_1.isHtmlBlock; } });
 Object.defineProperty(exports, "createGenericBlock", { enumerable: true, get: function () { return HtmlBlockTypes_1.createGenericBlock; } });
+var design_system_1 = require("./design-system");
+Object.defineProperty(exports, "RICH_HTML_PROFILES", { enumerable: true, get: function () { return design_system_1.RICH_HTML_PROFILES; } });
+Object.defineProperty(exports, "SECTION_CONTAINERS", { enumerable: true, get: function () { return design_system_1.SECTION_CONTAINERS; } });
+Object.defineProperty(exports, "SECTION_VARIANTS", { enumerable: true, get: function () { return design_system_1.SECTION_VARIANTS; } });
+Object.defineProperty(exports, "TRUSTED_EMBED_PROVIDERS", { enumerable: true, get: function () { return design_system_1.TRUSTED_EMBED_PROVIDERS; } });
+Object.defineProperty(exports, "APPROVED_CLASS_PREFIXES", { enumerable: true, get: function () { return design_system_1.APPROVED_CLASS_PREFIXES; } });
+Object.defineProperty(exports, "isRichHtmlProfile", { enumerable: true, get: function () { return design_system_1.isRichHtmlProfile; } });
+Object.defineProperty(exports, "isSectionContainer", { enumerable: true, get: function () { return design_system_1.isSectionContainer; } });
+Object.defineProperty(exports, "isSectionVariant", { enumerable: true, get: function () { return design_system_1.isSectionVariant; } });
+Object.defineProperty(exports, "isTrustedEmbedProvider", { enumerable: true, get: function () { return design_system_1.isTrustedEmbedProvider; } });
+Object.defineProperty(exports, "normalizeSectionId", { enumerable: true, get: function () { return design_system_1.normalizeSectionId; } });
+Object.defineProperty(exports, "validateCustomHtmlContent", { enumerable: true, get: function () { return design_system_1.validateCustomHtmlContent; } });
+Object.defineProperty(exports, "validateTrustedEmbedContent", { enumerable: true, get: function () { return design_system_1.validateTrustedEmbedContent; } });
+Object.defineProperty(exports, "sanitizeHtml", { enumerable: true, get: function () { return design_system_1.sanitizeHtml; } });
+Object.defineProperty(exports, "validateCss", { enumerable: true, get: function () { return design_system_1.validateCss; } });
+Object.defineProperty(exports, "validateContentBlocksDesignSystem", { enumerable: true, get: function () { return design_system_1.validateContentBlocksDesignSystem; } });
+Object.defineProperty(exports, "validateThemeDesignSystem", { enumerable: true, get: function () { return design_system_1.validateThemeDesignSystem; } });
+Object.defineProperty(exports, "validateThemeTokens", { enumerable: true, get: function () { return design_system_1.validateThemeTokens; } });
+Object.defineProperty(exports, "buildThemeTokenCssVariables", { enumerable: true, get: function () { return design_system_1.buildThemeTokenCssVariables; } });
+Object.defineProperty(exports, "getContainerClass", { enumerable: true, get: function () { return design_system_1.getContainerClass; } });
+Object.defineProperty(exports, "getSectionVariantClass", { enumerable: true, get: function () { return design_system_1.getSectionVariantClass; } });
+Object.defineProperty(exports, "resolveTrustedEmbedUrl", { enumerable: true, get: function () { return design_system_1.resolveTrustedEmbedUrl; } });
 // JSON converter
 var PageJsonConverter_1 = require("./PageJsonConverter");
 Object.defineProperty(exports, "PageJsonConverter", { enumerable: true, get: function () { return PageJsonConverter_1.PageJsonConverter; } });

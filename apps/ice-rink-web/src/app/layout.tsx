@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import type { FooterClassNames, HeaderClassNames } from 'pumpkin-block-views';
+import { DesignSystemStyles } from '@/components/DesignSystemStyles';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { getFallbackTheme } from '@/data';
@@ -31,7 +32,8 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-white">
+      <body className="min-h-screen bg-white" data-tenant-id={site.tenantId} data-domain={site.domain}>
+        <DesignSystemStyles theme={theme} tenantId={site.tenantId} domain={site.domain} />
         <SiteHeader
           header={theme.header}
           menu={theme.menu}

@@ -12,6 +12,7 @@ import {
   type ImportDiffRiskCategory,
 } from '@/lib/import-diff'
 import { validateContentJsonText, type ContentContractReport } from '@/lib/content-json-contracts'
+import { validateContentBlocksDesignSystem } from 'pumpkin-ts-models'
 import type { IHtmlBlock, ImportRun, ImportRunAffectedPageAction, ImportRunSource, Page, PageChangeSource, PageRedirect } from 'pumpkin-ts-models'
 
 type ExportScope = 'all' | 'published' | 'single'
@@ -1942,6 +1943,10 @@ function validateParsedImport(
     if (!isRecord(page.ContentData) || !Array.isArray(page.ContentData.ContentBlocks)) {
       errors.push('ContentData.ContentBlocks must be an array.')
     }
+
+    const designValidation = validateContentBlocksDesignSystem(blocks as IHtmlBlock[])
+    designValidation.errors.forEach((issue) => errors.push(issue.message))
+    designValidation.warnings.forEach((issue) => warnings.push(issue.message))
 
     if (typeof page.isPublished !== 'boolean') {
       errors.push('isPublished must be a boolean.')

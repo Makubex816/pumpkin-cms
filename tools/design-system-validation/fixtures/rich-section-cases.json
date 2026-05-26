@@ -1,0 +1,223 @@
+{
+  "customHtml": [
+    {
+      "name": "valid marketing-basic customHtml",
+      "expect": "ok",
+      "content": {
+        "id": "basic-copy",
+        "html": "<h2>Plan a portable ice rink</h2><p><strong>Fast quote support</strong> for seasonal events.</p><a href=\"/contact\">Request pricing</a>",
+        "container": "standard",
+        "allowedProfile": "marketing-basic",
+        "sectionVariant": "split-feature"
+      }
+    },
+    {
+      "name": "valid marketing-rich customHtml",
+      "expect": "ok",
+      "content": {
+        "id": "rich-copy",
+        "html": "<section class=\"cms-copy\"><h2>Built for event teams</h2><blockquote>Clear scope, clear timing.</blockquote></section>",
+        "container": "wide",
+        "allowedProfile": "marketing-rich",
+        "sectionVariant": "trust-band"
+      }
+    },
+    {
+      "name": "valid media-rich customHtml",
+      "expect": "ok",
+      "content": {
+        "id": "media-copy",
+        "html": "<figure><img src=\"/media/rink.jpg\" alt=\"Temporary ice rink setup\"><figcaption>Portable rink installation.</figcaption></figure>",
+        "container": "standard",
+        "allowedProfile": "media-rich",
+        "sectionVariant": "media-feature"
+      }
+    },
+    {
+      "name": "valid table-rich customHtml",
+      "expect": "ok",
+      "content": {
+        "id": "table-copy",
+        "html": "<table><caption>Planning comparison</caption><thead><tr><th>Need</th><th>Support</th></tr></thead><tbody><tr><td>Holiday market</td><td>Rental planning</td></tr></tbody></table>",
+        "container": "wide",
+        "allowedProfile": "table-rich",
+        "sectionVariant": "table-comparison"
+      }
+    },
+    {
+      "name": "valid layout-rich customHtml",
+      "expect": "ok",
+      "content": {
+        "id": "layout-copy",
+        "html": "<section class=\"cms-layout\"><div><h2>One contact path</h2><p>Share location, dates, and expected attendance.</p></div><figure><img src=\"/images/rink.jpg\" alt=\"Ice rink event\"></figure></section>",
+        "container": "wide",
+        "allowedProfile": "layout-rich",
+        "sectionVariant": "premium-hero"
+      }
+    },
+    {
+      "name": "script tag blocked",
+      "expect": "error",
+      "content": {
+        "id": "script-copy",
+        "html": "<h2>Bad</h2><script>alert(1)</script>",
+        "container": "standard",
+        "allowedProfile": "marketing-rich"
+      }
+    },
+    {
+      "name": "onclick blocked",
+      "expect": "error",
+      "content": {
+        "id": "onclick-copy",
+        "html": "<p onclick=\"alert(1)\">Bad</p>",
+        "container": "standard",
+        "allowedProfile": "marketing-rich"
+      }
+    },
+    {
+      "name": "javascript href blocked",
+      "expect": "error",
+      "content": {
+        "id": "href-copy",
+        "html": "<a href=\"javascript:alert(1)\">Bad</a>",
+        "container": "standard",
+        "allowedProfile": "marketing-basic"
+      }
+    },
+    {
+      "name": "raw iframe blocked",
+      "expect": "error",
+      "content": {
+        "id": "iframe-copy",
+        "html": "<iframe src=\"https://www.youtube.com/embed/abc123\"></iframe>",
+        "container": "standard",
+        "allowedProfile": "layout-rich"
+      }
+    },
+    {
+      "name": "form/input blocked",
+      "expect": "error",
+      "content": {
+        "id": "form-copy",
+        "html": "<form><input name=\"email\"></form>",
+        "container": "standard",
+        "allowedProfile": "layout-rich"
+      }
+    },
+    {
+      "name": "image missing alt warning",
+      "expect": "warning",
+      "content": {
+        "id": "image-warning",
+        "html": "<img src=\"/media/rink.jpg\">",
+        "container": "standard",
+        "allowedProfile": "media-rich"
+      }
+    },
+    {
+      "name": "external target blank rel correction",
+      "expect": "warning",
+      "content": {
+        "id": "blank-rel",
+        "html": "<a href=\"https://example.com\" target=\"_blank\">External</a>",
+        "container": "standard",
+        "allowedProfile": "marketing-basic"
+      }
+    },
+    {
+      "name": "unknown class warning",
+      "expect": "warning",
+      "content": {
+        "id": "unknown-class",
+        "html": "<div class=\"wild-class\"><h2>Review class</h2></div>",
+        "container": "standard",
+        "allowedProfile": "marketing-rich"
+      }
+    },
+    {
+      "name": "malformed HTML handling",
+      "expect": "warning",
+      "content": {
+        "id": "malformed-copy",
+        "html": "<h2>Still safe</h2><p Broken",
+        "container": "standard",
+        "allowedProfile": "marketing-rich"
+      }
+    }
+  ],
+  "css": [
+    {
+      "name": "valid domain CSS scoped to tenant",
+      "expect": "ok",
+      "css": "[data-tenant-id=\"ice-rink-rentals\"] .ice-launch-copy { color: var(--cms-colors-text); }",
+      "options": { "mode": "domainCss", "tenantId": "ice-rink-rentals" }
+    },
+    {
+      "name": "invalid global CSS blocked",
+      "expect": "error",
+      "css": "body { color: red; }",
+      "options": { "mode": "domainCss", "tenantId": "ice-rink-rentals" }
+    },
+    {
+      "name": "valid sectionScopedCss",
+      "expect": "ok",
+      "css": "[data-section-id=\"quote-panel\"] .ice-proof-row { display: grid; gap: 1rem; }",
+      "options": { "mode": "sectionScopedCss", "sectionId": "quote-panel" }
+    },
+    {
+      "name": "unscoped section CSS blocked",
+      "expect": "error",
+      "css": ".ice-proof-row { display: grid; }",
+      "options": { "mode": "sectionScopedCss", "sectionId": "quote-panel" }
+    }
+  ],
+  "theme": [
+    {
+      "name": "valid theme token rendering",
+      "expect": "ok",
+      "designSystem": {
+        "tokens": { "colors": { "primary": "#0369a1" }, "spacing": { "section": "4rem" } },
+        "domainCss": "[data-tenant-id=\"ice-rink-rentals\"] .ice-launch-copy { color: var(--cms-colors-primary); }"
+      }
+    },
+    {
+      "name": "invalid theme token rejected",
+      "expect": "error",
+      "designSystem": {
+        "tokens": { "colors": { "bad token": { "nested": true } } }
+      }
+    }
+  ],
+  "trustedEmbed": [
+    {
+      "name": "valid trustedEmbed provider",
+      "expect": "ok",
+      "content": {
+        "provider": "youtube",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "title": "Ice rink planning video",
+        "aspectRatio": "16:9",
+        "container": "standard"
+      }
+    },
+    {
+      "name": "invalid trustedEmbed provider blocked",
+      "expect": "error",
+      "content": {
+        "provider": "unknown",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "title": "Bad provider"
+      }
+    },
+    {
+      "name": "invalid trustedEmbed URL blocked",
+      "expect": "error",
+      "content": {
+        "provider": "youtube",
+        "url": "javascript:alert(1)",
+        "title": "Bad URL"
+      }
+    }
+  ]
+}

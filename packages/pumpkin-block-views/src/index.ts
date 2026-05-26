@@ -18,6 +18,8 @@ export {
   TestimonialsBlockView,
   ContactBlockView,
   BlogBlockView,
+  CustomHtmlBlockView,
+  TrustedEmbedBlockView,
   HeaderView,
   FooterView,
 } from './views';
@@ -37,6 +39,8 @@ export type {
   TestimonialsBlockViewProps,
   ContactBlockViewProps,
   BlogBlockViewProps,
+  CustomHtmlBlockViewProps,
+  TrustedEmbedBlockViewProps,
   HeaderViewProps,
   FooterViewProps,
 } from './views';

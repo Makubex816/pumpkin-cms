@@ -1,4 +1,5 @@
-import type { Page } from 'pumpkin-ts-models'
+import type { IHtmlBlock, Page } from 'pumpkin-ts-models'
+import { validateContentBlocksDesignSystem } from 'pumpkin-ts-models'
 import { TENANT_PUBLISHING_PROFILES, normalizeSlug } from './publishing-readiness'
 
 export type TemplateKey =
@@ -97,6 +98,8 @@ const COMMON_ALLOWED_BLOCKS = [
   'Gallery',
   'Testimonials',
   'Blog',
+  'customHtml',
+  'trustedEmbed',
 ]
 
 const COMMON_PAGE_FIELDS = [
@@ -487,6 +490,14 @@ function validateBlocks(page: JsonRecord, contract: TemplateContract, errors: Co
     if (!contract.allowedBlocks.includes(blockType)) {
       warnings.push(issue('warning', 'blocks', `ContentData.ContentBlocks[${blockIndex}].type`, `${blockType} is not listed in the ${contract.label} allowed block set.`))
     }
+  })
+
+  const designValidation = validateContentBlocksDesignSystem(blocks as unknown as IHtmlBlock[])
+  designValidation.errors.forEach((item) => {
+    errors.push(issue('error', 'blocks', item.path || 'ContentData.ContentBlocks', item.message))
+  })
+  designValidation.warnings.forEach((item) => {
+    warnings.push(issue('warning', 'blocks', item.path || 'ContentData.ContentBlocks', item.message))
   })
 }
 

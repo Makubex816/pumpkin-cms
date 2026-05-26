@@ -1,4 +1,5 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
+import { createRequire } from 'module';
 import path from 'path';
 import process from 'process';
 
@@ -18,6 +19,11 @@ const siteKey = process.env.STATIC_SITE_KEY || process.env.SITE_KEY || '';
 const contentSource = process.env.STATIC_CONTENT_SOURCE || 'seed-sites';
 const appRoot = process.cwd();
 const repoRoot = path.resolve(appRoot, '../..');
+const require = createRequire(import.meta.url);
+const {
+  validateContentBlocksDesignSystem,
+  validateThemeDesignSystem,
+} = require(path.join(repoRoot, 'packages', 'pumpkin-ts-models', 'dist', 'index.js'));
 
 function fail(message) {
   console.error(`[static-publish] ${message}`);
@@ -508,6 +514,14 @@ function validatePageShape(site, pages) {
     if (!page.seo) warnings.push(`${label}: seo object is missing.`);
     if (!Array.isArray(page.ContentData?.ContentBlocks)) {
       errors.push(`${label}: ContentData.ContentBlocks must be an array.`);
+    } else {
+      const designValidation = validateContentBlocksDesignSystem(page.ContentData.ContentBlocks);
+      for (const issue of designValidation.errors) {
+        errors.push(`${label}: ${issue.message}`);
+      }
+      for (const issue of designValidation.warnings) {
+        warnings.push(`${label}: ${issue.message}`);
+      }
     }
     if (typeof page.isPublished !== 'boolean') errors.push(`${label}: isPublished must be boolean.`);
     if (typeof page.includeInSitemap !== 'boolean') errors.push(`${label}: includeInSitemap must be boolean.`);
@@ -529,6 +543,18 @@ function validatePageShape(site, pages) {
   }
 
   const redirects = buildRedirectManifest(site, pages, warnings);
+
+  const themePath = path.join(getSiteRoot(), 'theme.json');
+  if (existsSync(themePath)) {
+    const theme = readJson(themePath);
+    const designValidation = validateThemeDesignSystem(theme.designSystem, siteKey);
+    for (const issue of designValidation.errors) {
+      errors.push(`theme.json: ${issue.message}`);
+    }
+    for (const issue of designValidation.warnings) {
+      warnings.push(`theme.json: ${issue.message}`);
+    }
+  }
 
   return { errors, warnings, redirects };
 }

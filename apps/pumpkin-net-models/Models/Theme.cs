@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -46,6 +47,9 @@ public class Theme
 
     [JsonPropertyName("blockStyles")]
     public Dictionary<string, Dictionary<string, string>> BlockStyles { get; set; } = new();
+
+    [JsonPropertyName("designSystem")]
+    public ThemeDesignSystem? DesignSystem { get; set; }
 
     // ── Navigation ───────────────────────────────────────────
 
@@ -108,6 +112,57 @@ public class ThemeFooter
 }
 
 // ─── Menu tree ───────────────────────────────────────────────
+
+public class ThemeDesignSystem
+{
+    [JsonPropertyName("version")]
+    public string Version { get; set; } = "1";
+
+    [JsonPropertyName("tenantId")]
+    public string TenantId { get; set; } = string.Empty;
+
+    [JsonPropertyName("domain")]
+    public string Domain { get; set; } = string.Empty;
+
+    [JsonPropertyName("tokens")]
+    public Dictionary<string, Dictionary<string, JsonElement>> Tokens { get; set; } = new();
+
+    [JsonPropertyName("domainCss")]
+    public string DomainCss { get; set; } = string.Empty;
+
+    [JsonPropertyName("templateCss")]
+    public Dictionary<string, string> TemplateCss { get; set; } = new();
+
+    [JsonPropertyName("approvedClasses")]
+    public List<string> ApprovedClasses { get; set; } = new();
+
+    [JsonPropertyName("sectionVariants")]
+    public Dictionary<string, SectionVariantDefinition> SectionVariants { get; set; } = new();
+
+    [JsonPropertyName("validation")]
+    public Dictionary<string, JsonElement> Validation { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
+}
+
+public class SectionVariantDefinition
+{
+    [JsonPropertyName("variant")]
+    public string Variant { get; set; } = string.Empty;
+
+    [JsonPropertyName("label")]
+    public string Label { get; set; } = string.Empty;
+
+    [JsonPropertyName("className")]
+    public string ClassName { get; set; } = string.Empty;
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
+}
 
 public class MenuItem
 {

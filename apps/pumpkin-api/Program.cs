@@ -1,4 +1,4 @@
-﻿using pumpkin_api.Services;
+using pumpkin_api.Services;
 using pumpkin_api.Managers;
 using pumpkin_net_models.Models;
 using System.Text.Json.Serialization;
@@ -175,12 +175,12 @@ app.MapPost("/api/pages/{tenantId}",
         // Extract API key from Authorization header (Bearer token format)
         var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
         var apiKey = string.Empty;
-        
+
         if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
         {
             apiKey = authHeader.Substring("Bearer ".Length).Trim();
         }
-        
+
         return await PumpkinManager.SavePageAsync(databaseService, apiKey, tenantId, page);
     })
     .WithTags("Pages")
@@ -196,7 +196,7 @@ app.MapPut("/api/pages/{tenantId}/{**pageSlug}",
         // Extract API key from Authorization header (Bearer token format)
         var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
         var apiKey = string.Empty;
-        
+
         if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
         {
             apiKey = authHeader.Substring("Bearer ".Length).Trim();
@@ -217,7 +217,7 @@ app.MapDelete("/api/pages/{tenantId}/{**pageSlug}",
         // Extract API key from Authorization header (Bearer token format)
         var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
         var apiKey = string.Empty;
-        
+
         if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
         {
             apiKey = authHeader.Substring("Bearer ".Length).Trim();
@@ -238,12 +238,12 @@ app.MapPost("/api/forms/{tenantId}/entries",
         // Extract API key from Authorization header (Bearer token format)
         var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
         var apiKey = string.Empty;
-        
+
         if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
         {
             apiKey = authHeader.Substring("Bearer ".Length).Trim();
         }
-        
+
         return await PumpkinManager.SaveFormEntryAsync(databaseService, apiKey, tenantId, formEntry);
     })
     .WithTags("Forms")
@@ -259,12 +259,12 @@ app.MapGet("/api/tenant/{tenantId}/sitemap",
         // Extract API key from Authorization header (Bearer token format)
         var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
         var apiKey = string.Empty;
-        
+
         if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
         {
             apiKey = authHeader.Substring("Bearer ".Length).Trim();
         }
-        
+
         return await PumpkinManager.GetSitemapPagesAsync(databaseService, apiKey, tenantId);
     })
     .WithTags("Sitemap")
@@ -320,27 +320,27 @@ app.MapPost("/api/auth/login",
     async (IDatabaseService databaseService, LoginRequest request, IConfiguration configuration) =>
     {
         var user = await databaseService.GetUserByEmailAsync(request.Email);
-        
+
         if (user == null || !user.IsActive)
         {
             return Results.Unauthorized();
         }
-        
+
         // Verify password with BCrypt
         if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
             return Results.Unauthorized();
         }
-        
+
         Console.WriteLine($"[Login] User: {user.Username}, Role enum value: {user.Role}, Role as string: {user.Role.ToString()}");
-        
+
         // Generate JWT token
         var jwtSettings = configuration.GetSection("Jwt");
         var secretKey = new SymmetricSecurityKey(
             System.Text.Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!));
-        
+
         var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-        
+
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -349,10 +349,10 @@ app.MapPost("/api/auth/login",
             new Claim(ClaimTypes.Role, user.Role.ToString()),
             new Claim("tenantId", user.TenantId)
         };
-        
+
         var expirationMinutes = int.Parse(jwtSettings["ExpirationMinutes"]!);
         var expiresAt = DateTime.UtcNow.AddMinutes(expirationMinutes);
-        
+
         var token = new JwtSecurityToken(
             issuer: jwtSettings["Issuer"],
             audience: jwtSettings["Audience"],
@@ -360,12 +360,12 @@ app.MapPost("/api/auth/login",
             expires: expiresAt,
             signingCredentials: credentials
         );
-        
+
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-        
+
         // Update last login
         await databaseService.UpdateUserLastLoginAsync(user.Id, user.TenantId);
-        
+
         return Results.Ok(new LoginResponse
         {
             Token = tokenString,
@@ -477,16 +477,16 @@ app.MapGet("/api/admin/tenants/{tenantId}",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         // Only SuperAdmins can get any tenant
         if (userRole != "SuperAdmin")
         {
             return Results.Forbid();
         }
-        
+
         return await PumpkinManager.GetTenantAsync(databaseService, tenantId);
     })
     .RequireAuthorization()
@@ -504,26 +504,26 @@ app.MapPost("/api/admin/tenants",
         {
             return Results.Unauthorized();
         }
-        
+
         // Debug: Log all claims
         Console.WriteLine("[CreateTenant] All claims:");
         foreach (var claim in context.User.Claims)
         {
             Console.WriteLine($"  {claim.Type}: {claim.Value}");
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         Console.WriteLine($"[CreateTenant] User TenantId: {userTenantId}, Role: {userRole}");
         Console.WriteLine($"[CreateTenant] ClaimTypes.Role constant: {ClaimTypes.Role}");
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         // Only SuperAdmins can create tenants
         if (userRole != "SuperAdmin")
         {
@@ -533,7 +533,7 @@ app.MapPost("/api/admin/tenants",
                 statusCode: 403
             );
         }
-        
+
         try
         {
             var createdTenant = await PumpkinManager.CreateTenantAsync(databaseService, tenant);
@@ -568,16 +568,16 @@ app.MapGet("/api/admin/tenants",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         try
         {
             // If SuperAdmin, return all tenants; otherwise just return the user's tenant
@@ -604,22 +604,22 @@ app.MapPut("/api/admin/tenants/{tenantId}",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         // Only SuperAdmins can update tenants
         if (userRole != "SuperAdmin")
         {
             return Results.Forbid();
         }
-        
+
         try
         {
             var updatedTenant = await databaseService.UpdateTenantAsync(tenantId, tenant);
@@ -652,22 +652,22 @@ app.MapPost("/api/admin/tenants/{tenantId}/regenerate-api-key",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         // Only SuperAdmins can regenerate API keys
         if (userRole != "SuperAdmin")
         {
             return Results.Forbid();
         }
-        
+
         try
         {
             // Get the tenant first
@@ -676,12 +676,12 @@ app.MapPost("/api/admin/tenants/{tenantId}/regenerate-api-key",
             {
                 return Results.NotFound($"Tenant {tenantId} not found");
             }
-            
+
             // Generate new API key
             var keyBytes = System.Security.Cryptography.RandomNumberGenerator.GetBytes(32);
             var newApiKey = Convert.ToBase64String(keyBytes);
             var newApiKeyHash = BCrypt.Net.BCrypt.HashPassword(newApiKey, 12);
-            
+
             // Update tenant with new API key
             tenant.ApiKey = newApiKey;
             tenant.ApiKeyHash = newApiKeyHash;
@@ -691,13 +691,13 @@ app.MapPost("/api/admin/tenants/{tenantId}/regenerate-api-key",
                 IsActive = true
             };
             tenant.UpdatedAt = DateTime.UtcNow;
-            
+
             // Save updated tenant
             var updatedTenant = await databaseService.UpdateTenantAsync(tenantId, tenant);
-            
+
             // Return the plain-text API key (one-time view)
-            return Results.Ok(new 
-            { 
+            return Results.Ok(new
+            {
                 tenant = updatedTenant,
                 apiKey = newApiKey  // Plain-text key for one-time display
             });
@@ -729,28 +729,28 @@ app.MapDelete("/api/admin/tenants/{tenantId}",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         // Only SuperAdmins can delete tenants
         if (userRole != "SuperAdmin")
         {
             return Results.Forbid();
         }
-        
+
         // Prevent deleting their own tenant
         if (tenantId == userTenantId)
         {
             return Results.BadRequest("Cannot delete your own tenant");
         }
-        
+
         try
         {
             var deleted = await databaseService.DeleteTenantAsync(tenantId);
@@ -784,27 +784,27 @@ app.MapGet("/api/admin/pages",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         // Determine which tenant's pages to retrieve
         // If tenantId query param is provided, use that (requires SuperAdmin)
         // Otherwise, use the user's tenantId from the JWT
         var targetTenantId = tenantId ?? userTenantId;
-        
+
         // If requesting different tenant data, verify SuperAdmin role
         if (targetTenantId != userTenantId && userRole != "SuperAdmin")
         {
             return Results.Forbid();
         }
-        
+
         try
         {
             var pages = await databaseService.GetPagesByTenantAsync(targetTenantId);
@@ -892,6 +892,10 @@ app.MapPost("/api/admin/pages/{tenantId}",
             if (!string.IsNullOrWhiteSpace(page.TenantId) && page.TenantId != tenantId)
                 return Results.BadRequest("Page tenant ID must match the route tenant ID");
 
+            var designValidation = DesignSystemGuard.ValidatePage(page);
+            if (!designValidation.Ok)
+                return Results.BadRequest(designValidation);
+
             var existingPageWithSlug = await databaseService.GetPageBySlugAsync(tenantId, page.PageSlug);
             if (existingPageWithSlug != null)
                 return Results.Conflict($"Page with slug '{page.PageSlug}' already exists");
@@ -973,6 +977,12 @@ app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
             if (!string.IsNullOrWhiteSpace(redirectValidationError))
             {
                 return Results.BadRequest(redirectValidationError);
+            }
+
+            var designValidation = DesignSystemGuard.ValidatePage(page);
+            if (!designValidation.Ok)
+            {
+                return Results.BadRequest(designValidation);
             }
 
             var tenantPages = await databaseService.GetPagesByTenantAsync(tenantId);
@@ -1615,22 +1625,22 @@ app.MapGet("/api/admin/tenants/{tenantId}/hubs",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         // If requesting different tenant data, verify SuperAdmin role
         if (tenantId != userTenantId && userRole != "SuperAdmin")
         {
             return Results.Forbid();
         }
-        
+
         return await PumpkinManager.GetHubPagesAsync(databaseService, tenantId);
     })
     .RequireAuthorization()
@@ -1648,25 +1658,25 @@ app.MapGet("/api/admin/tenants/{tenantId}/hubs/{hubPageSlug}/spokes",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         // If requesting different tenant data, verify SuperAdmin role
         if (tenantId != userTenantId && userRole != "SuperAdmin")
         {
             return Results.Forbid();
         }
-        
+
         // Decode hubPageSlug in case it's URL encoded
         var decodedHubPageSlug = Uri.UnescapeDataString(hubPageSlug);
-        
+
         return await PumpkinManager.GetSpokePagesAsync(databaseService, tenantId, decodedHubPageSlug);
     })
     .RequireAuthorization()
@@ -1684,22 +1694,22 @@ app.MapGet("/api/admin/tenants/{tenantId}/content-hierarchy",
         {
             return Results.Unauthorized();
         }
-        
+
         // Extract user info from JWT claims
         var userTenantId = context.User.FindFirst("tenantId")?.Value;
         var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         if (string.IsNullOrEmpty(userTenantId))
         {
             return Results.BadRequest("User tenant ID not found in token");
         }
-        
+
         // If requesting different tenant data, verify SuperAdmin role
         if (tenantId != userTenantId && userRole != "SuperAdmin")
         {
             return Results.Forbid();
         }
-        
+
         return await PumpkinManager.GetContentHierarchyAsync(databaseService, tenantId);
     })
     .RequireAuthorization()

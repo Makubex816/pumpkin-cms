@@ -50,6 +50,7 @@ declare module 'pumpkin-block-views' {
     block: IHtmlBlock;
     classNames?: BlockClassNamesMap;
     overrides?: BlockOverrides;
+    approvedClasses?: string[];
     fallback?: ReactNode;
   }
 

@@ -1,6 +1,14 @@
 'use client'
 
 import type { IHtmlBlock } from 'pumpkin-ts-models'
+import {
+  RICH_HTML_PROFILES,
+  SECTION_CONTAINERS,
+  SECTION_VARIANTS,
+  TRUSTED_EMBED_PROVIDERS,
+  validateCustomHtmlContent,
+  validateTrustedEmbedContent,
+} from 'pumpkin-ts-models'
 
 interface BlockEditorFieldsProps {
   block: IHtmlBlock
@@ -43,6 +51,10 @@ export default function BlockEditorFields({ block, onChange }: BlockEditorFields
       return <ContactFields content={content} update={update} onChange={onChange} />
     case 'Blog':
       return <BlogFields content={content} update={update} onChange={onChange} />
+    case 'customHtml':
+      return <CustomHtmlFields content={content} update={update} />
+    case 'trustedEmbed':
+      return <TrustedEmbedFields content={content} update={update} />
     default:
       return <GenericFields content={content} onChange={onChange} />
   }
@@ -53,14 +65,14 @@ export default function BlockEditorFields({ block, onChange }: BlockEditorFields
 const inputClass = 'w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary-500'
 const labelClass = 'block text-xs font-medium text-neutral-600 mb-1'
 
-function Field({ label, value, onChange, placeholder, type = 'text', multiline = false }: {
-  label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; multiline?: boolean
+function Field({ label, value, onChange, placeholder, type = 'text', multiline = false, rows = 3 }: {
+  label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; multiline?: boolean; rows?: number
 }) {
   return (
     <div>
       <label className={labelClass}>{label}</label>
       {multiline ? (
-        <textarea value={value || ''} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} rows={3} />
+        <textarea value={value || ''} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} rows={rows} />
       ) : (
         <input type={type} value={value || ''} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} />
       )}
@@ -574,6 +586,92 @@ function BlogFields({ content, update, onChange }: { content: any; update: (k: s
           </div>
         )}
       />
+    </div>
+  )
+}
+
+/* ????? Rich Sections ????? */
+
+function CustomHtmlFields({ content, update }: { content: any; update: (k: string, v: any) => void }) {
+  const validation = validateCustomHtmlContent(content)
+
+  return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Section ID" value={content.id} onChange={v => update('id', v)} placeholder="launch-proof" />
+        <Field label="Label" value={content.label} onChange={v => update('label', v)} placeholder="Launch proof section" />
+      </div>
+      <div className="grid grid-cols-3 gap-3">
+        <SelectValue label="Container" value={content.container || 'standard'} onChange={v => update('container', v)} options={SECTION_CONTAINERS} />
+        <SelectValue label="Allowed Profile" value={content.allowedProfile || 'marketing-basic'} onChange={v => update('allowedProfile', v)} options={RICH_HTML_PROFILES} />
+        <SelectValue label="Section Variant" value={content.sectionVariant || 'split-feature'} onChange={v => update('sectionVariant', v)} options={SECTION_VARIANTS} />
+      </div>
+      <Field label="HTML" value={content.html} onChange={v => update('html', v)} multiline rows={10} />
+      <Field label="Scoped CSS" value={content.css} onChange={v => update('css', v)} multiline rows={8} placeholder='[data-section-id="launch-proof"] .ice-proof-row { display: grid; }' />
+      <ValidationPanel errors={validation.errors.map(item => item.message)} warnings={validation.warnings.map(item => item.message)} />
+      <div className="rounded-md border border-neutral-200 bg-white p-4">
+        <div className="mb-2 text-xs font-medium uppercase text-neutral-500">Sanitized preview</div>
+        <div className="prose max-w-none text-sm" dangerouslySetInnerHTML={{ __html: validation.sanitizedHtml || '' }} />
+      </div>
+    </div>
+  )
+}
+
+function TrustedEmbedFields({ content, update }: { content: any; update: (k: string, v: any) => void }) {
+  const validation = validateTrustedEmbedContent(content)
+
+  return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-3 gap-3">
+        <SelectValue label="Provider" value={content.provider || 'youtube'} onChange={v => update('provider', v)} options={TRUSTED_EMBED_PROVIDERS} />
+        <SelectValue label="Container" value={content.container || 'standard'} onChange={v => update('container', v)} options={SECTION_CONTAINERS} />
+        <Field label="Aspect Ratio" value={content.aspectRatio || '16:9'} onChange={v => update('aspectRatio', v)} />
+      </div>
+      <Field label="URL" value={content.url} onChange={v => update('url', v)} placeholder="https://www.youtube.com/watch?v=..." />
+      <Field label="Title" value={content.title} onChange={v => update('title', v)} />
+      <Field label="Caption" value={content.caption} onChange={v => update('caption', v)} multiline />
+      <ValidationPanel errors={validation.errors.map(item => item.message)} warnings={validation.warnings.map(item => item.message)} />
+    </div>
+  )
+}
+
+function SelectValue({ label, value, onChange, options }: {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  options: readonly string[]
+}) {
+  return (
+    <div>
+      <label className={labelClass}>{label}</label>
+      <select value={value} onChange={e => onChange(e.target.value)} className={inputClass}>
+        {options.map(option => <option key={option} value={option}>{option}</option>)}
+      </select>
+    </div>
+  )
+}
+
+function ValidationPanel({ errors, warnings }: { errors: string[]; warnings: string[] }) {
+  if (errors.length === 0 && warnings.length === 0) {
+    return (
+      <div className="rounded-md border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-800">
+        Rich section validation passed.
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-2">
+      {errors.length > 0 && (
+        <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-800">
+          {errors.map(error => <div key={error}>{error}</div>)}
+        </div>
+      )}
+      {warnings.length > 0 && (
+        <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          {warnings.map(warning => <div key={warning}>{warning}</div>)}
+        </div>
+      )}
     </div>
   )
 }

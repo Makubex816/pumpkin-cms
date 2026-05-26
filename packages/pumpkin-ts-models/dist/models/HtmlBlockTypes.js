@@ -21,7 +21,9 @@ exports.BLOCK_TYPE_MAP = {
     'Gallery': 'GalleryBlock',
     'Testimonials': 'TestimonialsBlock',
     'Contact': 'ContactBlock',
-    'Blog': 'BlogBlock'
+    'Blog': 'BlogBlock',
+    'customHtml': 'CustomHtmlBlock',
+    'trustedEmbed': 'TrustedEmbedBlock'
 };
 /**
  * Array of all supported block types

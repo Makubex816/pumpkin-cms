@@ -143,6 +143,85 @@ const fallbackThemeTemplate: Theme = {
       submitButton: 'inline-flex min-h-12 w-full items-center justify-center rounded-full bg-sky-700 px-6 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-sky-800',
     },
   },
+  designSystem: {
+    version: '1',
+    tenantId: '',
+    domain: '{{domain}}',
+    tokens: {
+      colors: {
+        primary: '#0369a1',
+        primaryDark: '#075985',
+        surface: '#ffffff',
+        text: '#0f172a',
+        mutedText: '#475569',
+      },
+      typography: {
+        display: 'var(--font-display)',
+        body: 'var(--font-body)',
+      },
+      spacing: {
+        sectionY: '4rem',
+        cardGap: '1.25rem',
+      },
+      layout: {
+        standardContainer: '64rem',
+        wideContainer: '80rem',
+      },
+      borderRadius: {
+        card: '0.5rem',
+        panel: '0.5rem',
+      },
+      buttons: {
+        radius: '999px',
+      },
+      cards: {
+        border: '1px solid #e2e8f0',
+      },
+      heroSections: {
+        minHeight: '520px',
+      },
+      ctaBands: {
+        background: '#075985',
+      },
+      forms: {
+        fieldRadius: '0.75rem',
+      },
+      faqBlocks: {
+        itemRadius: '0.5rem',
+      },
+      mediaBlocks: {
+        imageRadius: '0.5rem',
+      },
+      tables: {
+        borderColor: '#e2e8f0',
+      },
+      shadows: {
+        card: '0 1px 2px rgba(15, 23, 42, 0.08)',
+      },
+      backgrounds: {
+        subtle: '#f8fafc',
+      },
+    },
+    domainCss: '',
+    templateCss: {},
+    approvedClasses: [
+      'ice-launch-copy',
+      'ice-proof-row',
+      'ice-service-grid',
+    ],
+    sectionVariants: {
+      'premium-hero': { variant: 'premium-hero', label: 'Premium hero', className: 'section-premium-hero' },
+      'split-feature': { variant: 'split-feature', label: 'Split feature', className: 'section-split-feature' },
+      'trust-band': { variant: 'trust-band', label: 'Trust band', className: 'section-trust-band' },
+      'event-card-grid': { variant: 'event-card-grid', label: 'Event card grid', className: 'section-event-card-grid' },
+      'service-area-grid': { variant: 'service-area-grid', label: 'Service area grid', className: 'section-service-area-grid' },
+      'quote-form-panel': { variant: 'quote-form-panel', label: 'Quote form panel', className: 'section-quote-form-panel' },
+      'faq-panel': { variant: 'faq-panel', label: 'FAQ panel', className: 'section-faq-panel' },
+      'media-feature': { variant: 'media-feature', label: 'Media feature', className: 'section-media-feature' },
+      'table-comparison': { variant: 'table-comparison', label: 'Table comparison', className: 'section-table-comparison' },
+      'final-cta': { variant: 'final-cta', label: 'Final CTA', className: 'section-final-cta' },
+    },
+  },
   menu: [
     { label: 'Rentals', url: '/ice-rink-rentals', target: '_self', icon: '', order: 1, isVisible: true, children: [] },
     { label: 'Events', url: '/events-holiday-activations', target: '_self', icon: '', order: 2, isVisible: true, children: [] },
@@ -155,10 +234,18 @@ const fallbackThemeTemplate: Theme = {
 };
 
 export function getFallbackTheme(site: ResolvedSite): Theme {
+  const theme = replaceSiteTokens(fallbackThemeTemplate, site);
   return {
-    ...replaceSiteTokens(fallbackThemeTemplate, site),
+    ...theme,
     id: `${site.key}-fallback-theme`,
     themeId: `${site.key}-fallback-theme`,
     tenantId: site.tenantId || site.key,
+    designSystem: theme.designSystem
+      ? {
+          ...theme.designSystem,
+          tenantId: site.tenantId || site.key,
+          domain: site.domain,
+        }
+      : undefined,
   };
 }

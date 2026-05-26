@@ -5,10 +5,11 @@ import { CardGridBlock, FaqBlock } from './ContentBlocks';
 import { BreadcrumbsBlock, TrustBarBlock, HowItWorksBlock, ServiceAreaMapBlock, LocalProTipsBlock } from './NavigationBlocks';
 import { GalleryBlock, TestimonialsBlock, ContactBlock } from './InteractionBlocks';
 import { BlogBlock } from './BlogBlocks';
+import type { CustomHtmlBlock, TrustedEmbedBlock } from '../design-system';
 /**
  * Union type of all supported HTML blocks
  */
-export type HtmlBlock = HeroBlock | PrimaryCtaBlock | SecondaryCtaBlock | CardGridBlock | FaqBlock | BreadcrumbsBlock | TrustBarBlock | HowItWorksBlock | ServiceAreaMapBlock | LocalProTipsBlock | GalleryBlock | TestimonialsBlock | ContactBlock | BlogBlock;
+export type HtmlBlock = HeroBlock | PrimaryCtaBlock | SecondaryCtaBlock | CardGridBlock | FaqBlock | BreadcrumbsBlock | TrustBarBlock | HowItWorksBlock | ServiceAreaMapBlock | LocalProTipsBlock | GalleryBlock | TestimonialsBlock | ContactBlock | BlogBlock | CustomHtmlBlock | TrustedEmbedBlock;
 /**
  * Map of block types to their corresponding interfaces
  */
@@ -27,6 +28,8 @@ export declare const BLOCK_TYPE_MAP: {
     readonly Testimonials: "TestimonialsBlock";
     readonly Contact: "ContactBlock";
     readonly Blog: "BlogBlock";
+    readonly customHtml: "CustomHtmlBlock";
+    readonly trustedEmbed: "TrustedEmbedBlock";
 };
 /**
  * Array of all supported block types

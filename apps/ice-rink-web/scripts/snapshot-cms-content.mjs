@@ -1,4 +1,5 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'fs';
+import { createRequire } from 'module';
 import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
@@ -34,6 +35,12 @@ const secretPatterns = [
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.resolve(scriptDir, '..');
+const repoRoot = path.resolve(appRoot, '../..');
+const require = createRequire(import.meta.url);
+const {
+  validateContentBlocksDesignSystem,
+  validateThemeDesignSystem,
+} = require(path.join(repoRoot, 'packages', 'pumpkin-ts-models', 'dist', 'index.js'));
 const command = process.argv[2] || 'snapshot';
 const args = parseArgs(process.argv);
 
@@ -653,6 +660,14 @@ function validateSnapshot(site, { allowUnpublished = false } = {}) {
     if (!page?.seo) warnings.push(`${label}: seo object is missing.`);
     if (!Array.isArray(getContentBlocks(page))) {
       errors.push(`${label}: ContentData.ContentBlocks must be an array.`);
+    } else {
+      const designValidation = validateContentBlocksDesignSystem(getContentBlocks(page));
+      for (const issue of designValidation.errors) {
+        errors.push(`${label}: ${issue.message}`);
+      }
+      for (const issue of designValidation.warnings) {
+        warnings.push(`${label}: ${issue.message}`);
+      }
     }
     if (typeof page?.isPublished !== 'boolean') errors.push(`${label}: isPublished must be boolean.`);
     if (typeof page?.includeInSitemap !== 'boolean') errors.push(`${label}: includeInSitemap must be boolean.`);
@@ -668,6 +683,18 @@ function validateSnapshot(site, { allowUnpublished = false } = {}) {
 
   if (pages.length === 0 && errors.length === 0) {
     errors.push('Snapshot must contain at least one page.');
+  }
+
+  const themePath = path.join(site.snapshotRoot, 'theme.json');
+  if (existsSync(themePath)) {
+    const theme = readJson(themePath);
+    const designValidation = validateThemeDesignSystem(theme.designSystem, site.tenantId);
+    for (const issue of designValidation.errors) {
+      errors.push(`theme.json: ${issue.message}`);
+    }
+    for (const issue of designValidation.warnings) {
+      warnings.push(`theme.json: ${issue.message}`);
+    }
   }
 
   return {

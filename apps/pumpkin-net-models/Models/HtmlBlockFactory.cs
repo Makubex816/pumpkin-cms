@@ -23,7 +23,9 @@ public static class HtmlBlockFactory
         { "Gallery", typeof(GalleryBlock) },
         { "Testimonials", typeof(TestimonialsBlock) },
         { "Contact", typeof(ContactBlock) },
-        { "Blog", typeof(BlogBlock) }
+        { "Blog", typeof(BlogBlock) },
+        { "customHtml", typeof(CustomHtmlBlock) },
+        { "trustedEmbed", typeof(TrustedEmbedBlock) }
     };
 
     /// <summary>

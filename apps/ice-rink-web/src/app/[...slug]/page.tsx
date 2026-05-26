@@ -75,6 +75,7 @@ export default async function SlugPage({ params }: SlugPageProps) {
       <PageRenderer
         page={page}
         blockStyles={theme.blockStyles}
+        designSystem={theme.designSystem}
         renderMode={getRenderMode()}
         staticFormEndpoint={getStaticFormEndpoint()}
       />

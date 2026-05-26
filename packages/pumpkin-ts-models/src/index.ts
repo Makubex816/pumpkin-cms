@@ -162,13 +162,60 @@ export {
   createGenericBlock
 } from './models/HtmlBlockTypes';
 
+// Design system and safe rich-section utilities
+export type {
+  ValidationSeverity,
+  DesignSystemValidationIssue,
+  DesignSystemValidationResult,
+  RichHtmlProfile,
+  SectionContainer,
+  SectionVariant,
+  TrustedEmbedProvider,
+  ThemeTokenMap,
+  ThemeTokens,
+  SectionVariantDefinition,
+  DesignSystemMetadata,
+  CustomHtmlContent,
+  CustomHtmlBlock,
+  TrustedEmbedContent,
+  TrustedEmbedBlock,
+  HtmlValidationOptions,
+  CssValidationMode,
+  CssValidationOptions
+} from './design-system';
+
+export {
+  RICH_HTML_PROFILES,
+  SECTION_CONTAINERS,
+  SECTION_VARIANTS,
+  TRUSTED_EMBED_PROVIDERS,
+  APPROVED_CLASS_PREFIXES,
+  isRichHtmlProfile,
+  isSectionContainer,
+  isSectionVariant,
+  isTrustedEmbedProvider,
+  normalizeSectionId,
+  validateCustomHtmlContent,
+  validateTrustedEmbedContent,
+  sanitizeHtml,
+  validateCss,
+  validateContentBlocksDesignSystem,
+  validateThemeDesignSystem,
+  validateThemeTokens,
+  buildThemeTokenCssVariables,
+  getContainerClass,
+  getSectionVariantClass,
+  resolveTrustedEmbedUrl
+} from './design-system';
+
 // Theme models
 export type {
   Theme,
   ThemeHeader,
   ThemeFooter,
   BlockStyleMap,
-  MenuItem
+  MenuItem,
+  ThemeDesignSystem
 } from './models/Theme';
 
 // Publish run models

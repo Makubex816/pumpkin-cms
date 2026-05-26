@@ -4,15 +4,16 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import { Theme, ThemeHeader, ThemeFooter, MenuItem } from 'pumpkin-ts-models'
+import { Theme, ThemeHeader, ThemeFooter, MenuItem, validateThemeDesignSystem } from 'pumpkin-ts-models'
 
-type TabId = 'general' | 'header' | 'footer' | 'styles' | 'menu'
+type TabId = 'general' | 'header' | 'footer' | 'styles' | 'design' | 'menu'
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'general', label: 'General' },
   { id: 'header', label: 'Header' },
   { id: 'footer', label: 'Footer' },
   { id: 'styles', label: 'Block Styles' },
+  { id: 'design', label: 'Design System' },
   { id: 'menu', label: 'Menu' },
 ]
 
@@ -39,6 +40,16 @@ function createEmptyTheme(tenantId: string): Theme {
       classNames: {},
     },
     blockStyles: {},
+    designSystem: {
+      version: '1',
+      tenantId,
+      domain: '',
+      tokens: {},
+      domainCss: '',
+      templateCss: {},
+      approvedClasses: [],
+      sectionVariants: {},
+    },
     menu: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -72,6 +83,9 @@ export default function ThemeEditorPage() {
   const [activeTab, setActiveTab] = useState<TabId>('general')
   const [blockStylesJson, setBlockStylesJson] = useState('')
   const [blockStylesError, setBlockStylesError] = useState<string | null>(null)
+  const [designSystemJson, setDesignSystemJson] = useState('')
+  const [designSystemError, setDesignSystemError] = useState<string | null>(null)
+  const [designSystemWarnings, setDesignSystemWarnings] = useState<string[]>([])
   const [headerClassNamesJson, setHeaderClassNamesJson] = useState('')
   const [headerClassNamesError, setHeaderClassNamesError] = useState<string | null>(null)
   const [footerClassNamesJson, setFooterClassNamesJson] = useState('')
@@ -88,6 +102,7 @@ export default function ThemeEditorPage() {
         const empty = createEmptyTheme(currentTenant.tenantId)
         setTheme(empty)
         setBlockStylesJson(JSON.stringify(empty.blockStyles, null, 2))
+        setDesignSystemJson(JSON.stringify(empty.designSystem || {}, null, 2))
         setHeaderClassNamesJson(JSON.stringify(empty.header.classNames, null, 2))
         setFooterClassNamesJson(JSON.stringify(empty.footer.classNames, null, 2))
         setLoading(false)
@@ -100,6 +115,7 @@ export default function ThemeEditorPage() {
         const data = await apiClient.getTheme(token, currentTenant.tenantId, themeId)
         setTheme(data)
         setBlockStylesJson(JSON.stringify(data.blockStyles || {}, null, 2))
+        setDesignSystemJson(JSON.stringify(data.designSystem || {}, null, 2))
         setHeaderClassNamesJson(JSON.stringify(data.header?.classNames || {}, null, 2))
         setFooterClassNamesJson(JSON.stringify(data.footer?.classNames || {}, null, 2))
       } catch (err: any) {
@@ -151,6 +167,23 @@ export default function ThemeEditorPage() {
       return
     }
 
+    let parsedDesignSystem = theme.designSystem
+    try {
+      parsedDesignSystem = designSystemJson.trim() ? JSON.parse(designSystemJson) : undefined
+      const validation = validateThemeDesignSystem(parsedDesignSystem, currentTenant.tenantId)
+      setDesignSystemWarnings(validation.warnings.map((issue) => issue.message))
+      if (!validation.ok) {
+        setDesignSystemError(validation.errors.map((issue) => issue.message).join(' '))
+        setActiveTab('design')
+        return
+      }
+      setDesignSystemError(null)
+    } catch {
+      setDesignSystemError('Invalid JSON in design system metadata')
+      setActiveTab('design')
+      return
+    }
+
     // Parse header classNames JSON
     let parsedHeaderClassNames = theme.header.classNames
     try {
@@ -176,6 +209,7 @@ export default function ThemeEditorPage() {
     const themeToSave: Theme = {
       ...theme,
       blockStyles: parsedBlockStyles,
+      designSystem: parsedDesignSystem,
       header: { ...theme.header, classNames: parsedHeaderClassNames },
       footer: { ...theme.footer, classNames: parsedFooterClassNames },
       tenantId: currentTenant.tenantId,
@@ -201,6 +235,7 @@ export default function ThemeEditorPage() {
         const updated = await apiClient.updateTheme(token, currentTenant.tenantId, themeId, themeToSave)
         setTheme(updated)
         setBlockStylesJson(JSON.stringify(updated.blockStyles || {}, null, 2))
+        setDesignSystemJson(JSON.stringify(updated.designSystem || {}, null, 2))
         setHeaderClassNamesJson(JSON.stringify(updated.header?.classNames || {}, null, 2))
         setFooterClassNamesJson(JSON.stringify(updated.footer?.classNames || {}, null, 2))
         setSuccess('Theme saved successfully!')
@@ -349,6 +384,14 @@ export default function ThemeEditorPage() {
             json={blockStylesJson}
             setJson={setBlockStylesJson}
             error={blockStylesError}
+          />
+        )}
+        {activeTab === 'design' && (
+          <DesignSystemTab
+            json={designSystemJson}
+            setJson={setDesignSystemJson}
+            error={designSystemError}
+            warnings={designSystemWarnings}
           />
         )}
         {activeTab === 'menu' && (
@@ -734,6 +777,78 @@ function BlockStylesTab({
 }
 
 // ─── Menu Tab ─────────────────────────────────────────────────
+
+function DesignSystemTab({
+  json,
+  setJson,
+  error,
+  warnings,
+}: {
+  json: string
+  setJson: (val: string) => void
+  error: string | null
+  warnings: string[]
+}) {
+  const formatJson = () => {
+    try {
+      const parsed = JSON.parse(json || '{}')
+      setJson(JSON.stringify(parsed, null, 2))
+    } catch {
+      // Invalid JSON is shown by save-time validation.
+    }
+  }
+
+  let tokenCategoryCount = 0
+  let approvedClassCount = 0
+  try {
+    const parsed = JSON.parse(json || '{}')
+    tokenCategoryCount = Object.keys(parsed.tokens || {}).length
+    approvedClassCount = Array.isArray(parsed.approvedClasses) ? parsed.approvedClasses.length : 0
+  } catch {
+    // Skip stats for invalid JSON.
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold text-neutral-900">Design System Metadata</h3>
+          <p className="text-sm text-neutral-500 mt-1">
+            Tenant-scoped tokens, domain CSS, section variants, approved classes, and rich-section validation metadata.
+          </p>
+        </div>
+        <div className="flex items-center gap-3 text-sm">
+          <span className="text-neutral-500">{tokenCategoryCount} token categories &middot; {approvedClassCount} approved classes</span>
+          <button type="button" onClick={formatJson} className="px-3 py-1.5 border border-neutral-300 rounded-md text-neutral-700 hover:bg-neutral-50">
+            Format
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-800 px-3 py-2 rounded-md text-sm">
+          {error}
+        </div>
+      )}
+
+      {warnings.length > 0 && (
+        <div className="space-y-1 bg-amber-50 border border-amber-200 text-amber-900 px-3 py-2 rounded-md text-sm">
+          {warnings.map((warning) => <div key={warning}>{warning}</div>)}
+        </div>
+      )}
+
+      <textarea
+        value={json}
+        onChange={e => setJson(e.target.value)}
+        rows={30}
+        className={`w-full px-3 py-2 border rounded-md font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+          error ? 'border-red-300 bg-red-50' : 'border-neutral-300'
+        }`}
+        spellCheck={false}
+      />
+    </div>
+  )
+}
 
 function MenuTab({
   menu,

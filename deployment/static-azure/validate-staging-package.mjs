@@ -145,6 +145,32 @@ function validatePackage({ siteKey, folder }) {
         errors.push(`Possible ${label} found: ${rel}`);
       }
     }
+
+    if (path.extname(filePath).toLowerCase() === '.html' && !rel.startsWith('_next/')) {
+      const unsafeCmsPatterns = [
+        { label: 'javascript URL', pattern: /javascript:/i },
+        { label: 'inline onclick handler', pattern: /\sonclick\s*=/i },
+        { label: 'inline onerror handler', pattern: /\sonerror\s*=/i },
+        { label: 'script tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<script\b/i },
+        { label: 'object tag', pattern: /<object\b/i },
+        { label: 'embed tag', pattern: /<embed\b/i },
+        { label: 'form tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<form\b/i },
+        { label: 'input tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<input\b/i },
+        { label: 'textarea tag', pattern: /<textarea\b/i },
+        { label: 'select tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<select\b/i },
+        { label: 'style tag in CMS rich HTML', pattern: /cms-rich-html[\s\S]*?<style\b/i },
+      ];
+
+      for (const { label, pattern } of unsafeCmsPatterns) {
+        if (pattern.test(content)) {
+          errors.push(`Unsafe CMS-authored ${label} found in page HTML: ${rel}`);
+        }
+      }
+
+      if (/data-cms-section=["'][^"']+["'][\s\S]*?<iframe\b/i.test(content)) {
+        warnings.push(`Iframe found inside CMS section; confirm it came from trustedEmbed, not customHtml: ${rel}`);
+      }
+    }
   }
 
   return {

@@ -5,7 +5,10 @@
 // Inner key = style slot  ("root", "headline", …)
 // Value     = CSS class string
 
+import type { DesignSystemMetadata } from '../design-system';
+
 export type BlockStyleMap = Record<string, Record<string, string>>;
+export type ThemeDesignSystem = DesignSystemMetadata;
 
 // ─── Menu tree ───────────────────────────────────────────────
 
@@ -63,6 +66,9 @@ export interface Theme {
 
   /** Per-block-type classNames overrides (mirrors BlockClassNamesMap). */
   blockStyles: BlockStyleMap;
+
+  /** Tenant-scoped tokens, approved classes, section variants, and safe CSS. */
+  designSystem?: ThemeDesignSystem;
 
   menu: MenuItem[];
 

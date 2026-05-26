@@ -23,6 +23,8 @@ export const BLOCK_TYPE_INFO: BlockTypeInfo[] = [
   { type: 'Testimonials', label: 'Testimonials', icon: '?', category: 'interaction', description: 'Customer reviews and testimonials' },
   { type: 'Contact', label: 'Contact', icon: '??', category: 'interaction', description: 'Contact form with details' },
   { type: 'Blog', label: 'Blog', icon: '??', category: 'blog', description: 'Blog post content block' },
+  { type: 'customHtml', label: 'Custom HTML', icon: '<>', category: 'content', description: 'Sanitized rich HTML inside a controlled page section' },
+  { type: 'trustedEmbed', label: 'Trusted Embed', icon: '[]', category: 'content', description: 'Provider-approved YouTube, Vimeo, or Google Maps embed' },
 ]
 
 export const BLOCK_CATEGORIES = [
@@ -64,6 +66,36 @@ export function createDefaultBlock(type: string): IHtmlBlock {
       return { type: 'Contact', content: { id: '', title: '', subtitle: '', address: '', phone: '', email: '', hours: '', formFields: [], submitButtonText: 'Submit', socialLinks: [] } }
     case 'Blog':
       return { type: 'Blog', content: { title: '', subtitle: '', author: '', authorImage: '', authorBio: '', publishedDate: '', featuredImage: '', featuredImageAlt: '', excerpt: '', body: '', tags: [], categories: [], readingTime: 0, relatedPosts: [] } }
+    case 'customHtml':
+      return {
+        type: 'customHtml',
+        content: {
+          id: `custom-html-${Date.now()}`,
+          label: '',
+          html: '<h2>Section heading</h2><p>Write approved marketing copy here.</p>',
+          container: 'standard',
+          allowedProfile: 'marketing-basic',
+          sectionVariant: 'split-feature',
+          css: '',
+          sanitize: true,
+          review: { status: 'draft' },
+          validation: {},
+        },
+      }
+    case 'trustedEmbed':
+      return {
+        type: 'trustedEmbed',
+        content: {
+          provider: 'youtube',
+          url: '',
+          title: '',
+          aspectRatio: '16:9',
+          caption: '',
+          container: 'standard',
+          review: { status: 'draft' },
+          validation: {},
+        },
+      }
     default:
       return { type, content: {} }
   }

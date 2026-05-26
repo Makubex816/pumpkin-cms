@@ -64,18 +64,22 @@ public static class PumpkinManager
             // Validate required parameters
             if (string.IsNullOrEmpty(apiKey))
                 return Results.BadRequest("API key is required");
-            
+
             if (string.IsNullOrEmpty(tenantId))
                 return Results.BadRequest("Tenant ID is required");
-            
+
             if (page == null)
                 return Results.BadRequest("Page data is required");
-            
+
             if (string.IsNullOrEmpty(page.PageId))
                 return Results.BadRequest("Page ID is required");
 
+            var designValidation = DesignSystemGuard.ValidatePage(page);
+            if (!designValidation.Ok)
+                return Results.BadRequest(designValidation);
+
             var savedPage = await databaseService.SavePageAsync(apiKey, tenantId, page);
-            
+
             return Results.Created($"/api/pages/{tenantId}/{savedPage.PageId}", savedPage);
         }
         catch (UnauthorizedAccessException)
@@ -99,18 +103,22 @@ public static class PumpkinManager
             // Validate required parameters
             if (string.IsNullOrEmpty(apiKey))
                 return Results.BadRequest("API key is required");
-            
+
             if (string.IsNullOrEmpty(tenantId))
                 return Results.BadRequest("Tenant ID is required");
-            
+
             if (string.IsNullOrEmpty(pageSlug))
                 return Results.BadRequest("Page slug is required");
-            
+
             if (page == null)
                 return Results.BadRequest("Page data is required");
 
+            var designValidation = DesignSystemGuard.ValidatePage(page);
+            if (!designValidation.Ok)
+                return Results.BadRequest(designValidation);
+
             var updatedPage = await databaseService.UpdatePageAsync(apiKey, tenantId, pageSlug, page);
-            
+
             return Results.Ok(updatedPage);
         }
         catch (UnauthorizedAccessException)
@@ -138,15 +146,15 @@ public static class PumpkinManager
             // Validate required parameters
             if (string.IsNullOrEmpty(apiKey))
                 return Results.BadRequest("API key is required");
-            
+
             if (string.IsNullOrEmpty(tenantId))
                 return Results.BadRequest("Tenant ID is required");
-            
+
             if (string.IsNullOrEmpty(pageSlug))
                 return Results.BadRequest("Page slug is required");
 
             var deleted = await databaseService.DeletePageAsync(apiKey, tenantId, pageSlug);
-            
+
             return Results.NoContent();
         }
         catch (UnauthorizedAccessException)
@@ -174,18 +182,18 @@ public static class PumpkinManager
             // Validate required parameters
             if (string.IsNullOrEmpty(apiKey))
                 return Results.BadRequest("API key is required");
-            
+
             if (string.IsNullOrEmpty(tenantId))
                 return Results.BadRequest("Tenant ID is required");
-            
+
             if (formEntry == null)
                 return Results.BadRequest("Form entry data is required");
-            
+
             if (string.IsNullOrEmpty(formEntry.FormId))
                 return Results.BadRequest("Form ID is required");
 
             var savedFormEntry = await databaseService.SaveFormEntryAsync(apiKey, tenantId, formEntry);
-            
+
             return Results.Created($"/api/forms/{tenantId}/entries/{savedFormEntry.Id}", savedFormEntry);
         }
         catch (UnauthorizedAccessException)
@@ -209,12 +217,12 @@ public static class PumpkinManager
             // Validate required parameters
             if (string.IsNullOrEmpty(apiKey))
                 return Results.BadRequest("API key is required");
-            
+
             if (string.IsNullOrEmpty(tenantId))
                 return Results.BadRequest("Tenant ID is required");
 
             var sitemapEntries = await databaseService.GetSitemapPagesAsync(apiKey, tenantId);
-            
+
             return Results.Ok(new { tenantId, pages = sitemapEntries, count = sitemapEntries.Count });
         }
         catch (UnauthorizedAccessException)
@@ -229,17 +237,17 @@ public static class PumpkinManager
 
     public static async Task<(bool IsValid, Tenant? Tenant, bool IsAdmin)> ValidateTenantAsync(
         IDatabaseService databaseService,
-        string tenantId, 
+        string tenantId,
         string apiKey)
     {
         try
         {
             // For now, we'll validate by trying to get a page (which validates the API key)
             // This is a temporary workaround until we add a dedicated ValidateTenantApiKeyAsync method
-            
+
             // If we can access data with this tenant/key combo, it's valid
             // We'll need to add a proper ValidateTenantApiKeyAsync method to IDatabaseService later
-            
+
             // For now, just return basic validation
             // TODO: Add proper tenant validation method to IDatabaseService
             return (false, null, false);
@@ -275,10 +283,10 @@ public static class PumpkinManager
                 return Results.BadRequest("Tenant ID is required");
 
             var tenant = await databaseService.GetTenantAsync(tenantId);
-            
+
             if (tenant == null)
                 return Results.NotFound("Tenant not found");
-            
+
             return Results.Ok(tenant);
         }
         catch (Exception ex)
@@ -294,12 +302,12 @@ public static class PumpkinManager
         {
             if (tenant == null)
                 return Results.BadRequest("Tenant data is required");
-            
+
             if (string.IsNullOrEmpty(tenant.TenantId))
                 return Results.BadRequest("Tenant ID is required");
 
             var createdTenant = await databaseService.CreateTenantAsync(tenant);
-            
+
             return Results.Created($"/api/admin/tenants/{createdTenant.TenantId}", createdTenant);
         }
         catch (InvalidOperationException ex)
@@ -318,7 +326,7 @@ public static class PumpkinManager
         try
         {
             var tenants = await databaseService.GetAllTenantsAsync();
-            
+
             return Results.Ok(new { tenants, count = tenants.Count });
         }
         catch (Exception ex)
@@ -333,7 +341,7 @@ public static class PumpkinManager
         try
         {
             var pages = await databaseService.GetAllPagesAsync(tenantId);
-            
+
             return Results.Ok(new { pages, count = pages.Count, tenantId = tenantId ?? "all" });
         }
         catch (Exception ex)
@@ -351,7 +359,7 @@ public static class PumpkinManager
                 return Results.BadRequest("Tenant ID is required");
 
             var hubPages = await databaseService.GetHubPagesAsync(tenantId);
-            
+
             return Results.Ok(new { tenantId, hubPages, count = hubPages.Count });
         }
         catch (Exception ex)
@@ -367,12 +375,12 @@ public static class PumpkinManager
         {
             if (string.IsNullOrEmpty(tenantId))
                 return Results.BadRequest("Tenant ID is required");
-            
+
             if (string.IsNullOrEmpty(hubPageSlug))
                 return Results.BadRequest("Hub page slug is required");
 
             var spokePages = await databaseService.GetSpokePagesAsync(tenantId, hubPageSlug);
-            
+
             return Results.Ok(new { tenantId, hubPageSlug, spokePages, count = spokePages.Count });
         }
         catch (Exception ex)
@@ -390,7 +398,7 @@ public static class PumpkinManager
                 return Results.BadRequest("Tenant ID is required");
 
             var hierarchy = await databaseService.GetContentHierarchyAsync(tenantId);
-            
+
             return Results.Ok(hierarchy);
         }
         catch (Exception ex)
@@ -539,6 +547,10 @@ public static class PumpkinManager
             if (string.IsNullOrEmpty(theme.ThemeId))
                 return Results.BadRequest("Theme ID is required");
 
+            var designValidation = DesignSystemGuard.ValidateTheme(theme, tenantId);
+            if (!designValidation.Ok)
+                return Results.BadRequest(designValidation);
+
             var created = await databaseService.CreateThemeAsync(tenantId, theme);
 
             return Results.Created($"/api/admin/themes/{tenantId}/{created.ThemeId}", created);
@@ -563,6 +575,10 @@ public static class PumpkinManager
                 return Results.BadRequest("Theme ID is required");
             if (theme == null)
                 return Results.BadRequest("Theme data is required");
+
+            var designValidation = DesignSystemGuard.ValidateTheme(theme, tenantId);
+            if (!designValidation.Ok)
+                return Results.BadRequest(designValidation);
 
             var updated = await databaseService.UpdateThemeAsync(tenantId, themeId, theme);
 

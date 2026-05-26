@@ -255,6 +255,40 @@ function validateRedirectManifest(outDir, warnings) {
   }
 }
 
+function validateCmsAuthoredHtmlSafety(outDir, files, errors, warnings) {
+  const unsafePatterns = [
+    { label: 'javascript URL', pattern: /javascript:/i },
+    { label: 'inline onclick handler', pattern: /\sonclick\s*=/i },
+    { label: 'inline onerror handler', pattern: /\sonerror\s*=/i },
+    { label: 'script tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<script\b/i },
+    { label: 'object tag', pattern: /<object\b/i },
+    { label: 'embed tag', pattern: /<embed\b/i },
+    { label: 'form tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<form\b/i },
+    { label: 'input tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<input\b/i },
+    { label: 'textarea tag', pattern: /<textarea\b/i },
+    { label: 'select tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<select\b/i },
+    { label: 'style tag in CMS rich HTML', pattern: /cms-rich-html[\s\S]*?<style\b/i },
+  ];
+
+  for (const filePath of files) {
+    if (path.extname(filePath).toLowerCase() !== '.html') continue;
+    if (getRelativePath(outDir, filePath).startsWith('_next/')) continue;
+
+    const relativePath = getRelativePath(outDir, filePath);
+    const content = readText(filePath);
+
+    for (const { label, pattern } of unsafePatterns) {
+      if (pattern.test(content)) {
+        errors.push(`Unsafe CMS-authored ${label} found in page HTML: ${relativePath}`);
+      }
+    }
+
+    if (/data-cms-section=["'][^"']+["'][\s\S]*?<iframe\b/i.test(content)) {
+      warnings.push(`Iframe found inside CMS section in page HTML; confirm it came from trustedEmbed, not customHtml: ${relativePath}`);
+    }
+  }
+}
+
 function main() {
   const args = parseArgs(process.argv);
   const siteKey = String(args.site || '');
@@ -285,6 +319,7 @@ function main() {
     validateSensitiveContent(outDir, files, errors);
     validateDomainReferences(outDir, files, site, errors);
     validateRedirectManifest(outDir, warnings);
+    validateCmsAuthoredHtmlSafety(outDir, files, errors, warnings);
   }
 
   const summary = {
