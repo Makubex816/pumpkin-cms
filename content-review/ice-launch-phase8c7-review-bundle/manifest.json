@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "pumpkin-review-bundle.v1",
+  "phase": "8C.7",
+  "bundleName": "IceSkatingRinkRentals.com Template Review Bundle",
+  "bundlePurpose": "human_editing_handoff_before_cms_import",
+  "createdAt": "2026-05-27T00:00:00Z",
+  "createdBy": "codex_phase8c7_review_bundle",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "primaryFocus": "IceSkatingRinkRentals.com",
+  "pausedTenantNotice": "RollerRinkRentals.com remains paused and is not included.",
+  "sourcePhase": "8C.6",
+  "sourceFolder": "../ice-launch-phase8c6",
+  "reviewBundleFolder": "content-review/ice-launch-phase8c7-review-bundle",
+  "status": {
+    "reviewOnly": true,
+    "cmsImportPerformed": false,
+    "cmsPageRecordsChanged": false,
+    "cmsThemeRecordsChanged": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForProduction": false
+  },
+  "routeDecisions": {
+    "homepage": {
+      "route": "/",
+      "slug": "home",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/"
+    },
+    "contact": {
+      "route": "/contact",
+      "slug": "contact",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/contact"
+    },
+    "serviceAreas": {
+      "route": "/service-areas",
+      "slug": "service-areas",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/service-areas"
+    },
+    "areasServedAliasCandidate": {
+      "route": "/areas-served",
+      "status": "future_alias_or_redirect_candidate_only"
+    },
+    "targetCityPage": {
+      "included": false,
+      "reason": "No target city/location has been confirmed."
+    }
+  },
+  "copiedTemplateFiles": [
+    {
+      "source": "../ice-launch-phase8c6/ice-homepage.design-system.template.json",
+      "file": "ice-homepage.design-system.template.json",
+      "route": "/",
+      "copyMode": "unchanged"
+    },
+    {
+      "source": "../ice-launch-phase8c6/ice-contact.design-system.template.json",
+      "file": "ice-contact.design-system.template.json",
+      "route": "/contact",
+      "copyMode": "unchanged"
+    },
+    {
+      "source": "../ice-launch-phase8c6/ice-service-areas.design-system.template.json",
+      "file": "ice-service-areas.design-system.template.json",
+      "route": "/service-areas",
+      "copyMode": "unchanged"
+    },
+    {
+      "source": "../ice-launch-phase8c6/ice-launch-template-package.design-system.json",
+      "file": "ice-launch-template-package.design-system.json",
+      "route": "package_manifest",
+      "copyMode": "unchanged"
+    }
+  ],
+  "handoffFiles": [
+    "README.md",
+    "REVIEW_CHECKLIST.md",
+    "PLACEHOLDERS_TO_RESOLVE.md",
+    "APPROVAL_GATE.md",
+    "manifest.json"
+  ],
+  "placeholdersToResolve": [
+    "{{PRIMARY_PHONE}}",
+    "{{PRIMARY_EMAIL}}",
+    "{{PRIMARY_SERVICE_AREA}}",
+    "{{PRIMARY_REGION}}",
+    "{{TARGET_CITY}}",
+    "{{TARGET_STATE}}",
+    "{{TARGET_REGION}}",
+    "{{TARGET_CITY_SLUG}}",
+    "{{LEAD_RECIPIENT_REF}}",
+    "{{STATIC_CONTACT_ENDPOINT_REF}}"
+  ],
+  "validationExpectations": [
+    "JSON parse validation for all bundle JSON files",
+    "Phase 8C.5 rich-section validation for copied page templates",
+    "Phase 8C.5 theme design-system validation for copied package recommendation",
+    "Targeted secret scan before commit",
+    "Protected config and generated static folder status check"
+  ],
+  "zipPolicy": {
+    "zipMayBeCreatedOutsideRepo": true,
+    "zipShouldBeCommitted": false,
+    "reason": "The tracked bundle is the source of truth; ZIP files are local handoff artifacts."
+  },
+  "nextRecommendedPhase": "Phase 8C.8 - Human review feedback incorporation or CMS import preflight dry-run after approval"
+}
