@@ -4,7 +4,15 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import { Theme, ThemeHeader, ThemeFooter, MenuItem, validateThemeDesignSystem } from 'pumpkin-ts-models'
+import {
+  ICE_LAUNCH_NAVIGATION_ROUTES,
+  Theme,
+  ThemeHeader,
+  ThemeFooter,
+  MenuItem,
+  validateThemeDesignSystem,
+  validateThemeNavigation,
+} from 'pumpkin-ts-models'
 
 type TabId = 'general' | 'header' | 'footer' | 'styles' | 'design' | 'menu'
 
@@ -90,6 +98,7 @@ export default function ThemeEditorPage() {
   const [headerClassNamesError, setHeaderClassNamesError] = useState<string | null>(null)
   const [footerClassNamesJson, setFooterClassNamesJson] = useState('')
   const [footerClassNamesError, setFooterClassNamesError] = useState<string | null>(null)
+  const [menuValidationWarnings, setMenuValidationWarnings] = useState<string[]>([])
 
   useEffect(() => {
     const fetchTheme = async () => {
@@ -203,6 +212,22 @@ export default function ThemeEditorPage() {
     } catch {
       setFooterClassNamesError('Invalid JSON in footer class names')
       setActiveTab('footer')
+      return
+    }
+
+    const navigationValidation = validateThemeNavigation(theme.menu, {
+      path: 'theme.menu',
+      approvedRoutes: currentTenant.tenantId === 'ice-rink-rentals'
+        ? [...ICE_LAUNCH_NAVIGATION_ROUTES]
+        : undefined,
+      requireRoutes: currentTenant.tenantId === 'ice-rink-rentals'
+        ? [...ICE_LAUNCH_NAVIGATION_ROUTES]
+        : undefined,
+    })
+    setMenuValidationWarnings(navigationValidation.warnings.map((issue) => issue.message))
+    if (!navigationValidation.ok) {
+      setError(navigationValidation.errors.map((issue) => issue.message).join(' '))
+      setActiveTab('menu')
       return
     }
 
@@ -395,7 +420,7 @@ export default function ThemeEditorPage() {
           />
         )}
         {activeTab === 'menu' && (
-          <MenuTab menu={theme.menu} updateTheme={updateTheme} />
+          <MenuTab menu={theme.menu} updateTheme={updateTheme} warnings={menuValidationWarnings} />
         )}
       </div>
     </div>
@@ -853,9 +878,11 @@ function DesignSystemTab({
 function MenuTab({
   menu,
   updateTheme,
+  warnings,
 }: {
   menu: MenuItem[]
   updateTheme: (updates: Partial<Theme>) => void
+  warnings: string[]
 }) {
   const setMenu = (newMenu: MenuItem[]) => {
     updateTheme({ menu: newMenu })
@@ -936,6 +963,12 @@ function MenuTab({
           <span>Add Menu Item</span>
         </button>
       </div>
+
+      {warnings.length > 0 && (
+        <div className="space-y-1 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+          {warnings.map((warning) => <div key={warning}>{warning}</div>)}
+        </div>
+      )}
 
       {menu.length === 0 ? (
         <div className="text-center py-8 bg-neutral-50 rounded-lg border-2 border-dashed border-neutral-200">

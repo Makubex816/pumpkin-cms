@@ -220,7 +220,9 @@ export type {
   TrustedEmbedBlock,
   HtmlValidationOptions,
   CssValidationMode,
-  CssValidationOptions
+  CssValidationOptions,
+  NavigationMenuItemLike,
+  NavigationValidationOptions
 } from './design-system';
 
 export {
@@ -229,10 +231,12 @@ export {
   SECTION_VARIANTS,
   TRUSTED_EMBED_PROVIDERS,
   APPROVED_CLASS_PREFIXES,
+  ICE_LAUNCH_NAVIGATION_ROUTES,
   isRichHtmlProfile,
   isSectionContainer,
   isSectionVariant,
   isTrustedEmbedProvider,
+  isTailwindUtilityLikeClass,
   normalizeSectionId,
   validateCustomHtmlContent,
   validateTrustedEmbedContent,
@@ -240,6 +244,7 @@ export {
   validateCss,
   validateContentBlocksDesignSystem,
   validateThemeDesignSystem,
+  validateThemeNavigation,
   validateThemeTokens,
   buildThemeTokenCssVariables,
   getContainerClass,

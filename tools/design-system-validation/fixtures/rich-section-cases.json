@@ -136,6 +136,16 @@
       }
     },
     {
+      "name": "Tailwind utility class blocked",
+      "expect": "error",
+      "content": {
+        "id": "tailwind-utility-class",
+        "html": "<div class=\"flex p-4 text-slate-700\"><h2>Unsafe dependency</h2></div>",
+        "container": "standard",
+        "allowedProfile": "marketing-rich"
+      }
+    },
+    {
       "name": "malformed HTML handling",
       "expect": "warning",
       "content": {
@@ -169,6 +179,12 @@
       "name": "unscoped section CSS blocked",
       "expect": "error",
       "css": ".ice-proof-row { display: grid; }",
+      "options": { "mode": "sectionScopedCss", "sectionId": "quote-panel" }
+    },
+    {
+      "name": "Tailwind selector class blocked",
+      "expect": "error",
+      "css": "[data-section-id=\"quote-panel\"] .text-slate-700 { color: #334155; }",
       "options": { "mode": "sectionScopedCss", "sectionId": "quote-panel" }
     }
   ],
@@ -217,6 +233,40 @@
         "provider": "youtube",
         "url": "javascript:alert(1)",
         "title": "Bad URL"
+      }
+    }
+  ],
+  "navigation": [
+    {
+      "name": "valid Ice launch navigation",
+      "expect": "ok",
+      "menu": [
+        { "label": "Home", "url": "/", "target": "_self", "icon": "", "order": 1, "isVisible": true, "children": [] },
+        { "label": "Service Areas", "url": "/service-areas", "target": "_self", "icon": "", "order": 2, "isVisible": true, "children": [] },
+        { "label": "Contact", "url": "/contact", "target": "_self", "icon": "", "order": 3, "isVisible": true, "children": [] }
+      ],
+      "options": {
+        "approvedRoutes": ["/", "/service-areas", "/contact"],
+        "requireRoutes": ["/", "/service-areas", "/contact"]
+      }
+    },
+    {
+      "name": "unsafe navigation URL blocked",
+      "expect": "error",
+      "menu": [
+        { "label": "Bad", "url": "javascript:alert(1)", "target": "_self", "icon": "", "order": 1, "isVisible": true, "children": [] }
+      ]
+    },
+    {
+      "name": "future city route not required in main nav",
+      "expect": "ok",
+      "menu": [
+        { "label": "Home", "url": "/", "target": "_self", "icon": "", "order": 1, "isVisible": true, "children": [] },
+        { "label": "Service Areas", "url": "/service-areas", "target": "_self", "icon": "", "order": 2, "isVisible": true, "children": [] },
+        { "label": "Contact", "url": "/contact", "target": "_self", "icon": "", "order": 3, "isVisible": true, "children": [] }
+      ],
+      "options": {
+        "requireRoutes": ["/", "/service-areas", "/contact"]
       }
     }
   ]

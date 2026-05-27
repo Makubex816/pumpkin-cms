@@ -40,6 +40,9 @@ public static class DesignSystemGuard
         "event-card-grid",
         "service-area-grid",
         "quote-form-panel",
+        "contact-card",
+        "inline-contact",
+        "compact-contact",
         "faq-panel",
         "media-feature",
         "table-comparison",
@@ -121,6 +124,85 @@ public static class DesignSystemGuard
         "ice-"
     };
 
+    private static readonly HashSet<string> TailwindVariantPrefixes = new(StringComparer.Ordinal)
+    {
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "2xl",
+        "hover",
+        "focus",
+        "focus-visible",
+        "active",
+        "visited",
+        "disabled",
+        "group-hover",
+        "group-focus",
+        "peer-checked",
+        "dark",
+        "motion-safe",
+        "motion-reduce",
+        "portrait",
+        "landscape",
+        "print"
+    };
+
+    private static readonly HashSet<string> TailwindExactUtilities = new(StringComparer.Ordinal)
+    {
+        "block",
+        "inline-block",
+        "inline",
+        "flex",
+        "inline-flex",
+        "grid",
+        "inline-grid",
+        "contents",
+        "hidden",
+        "relative",
+        "absolute",
+        "fixed",
+        "sticky",
+        "static",
+        "container",
+        "sr-only",
+        "not-sr-only",
+        "visible",
+        "invisible",
+        "collapse",
+        "isolate",
+        "isolation-auto",
+        "antialiased",
+        "subpixel-antialiased",
+        "truncate",
+        "clearfix"
+    };
+
+    private static readonly Regex[] TailwindUtilityPatterns =
+    {
+        new("^-?(?:m|mx|my|mt|mr|mb|ml|p|px|py|pt|pr|pb|pl)-", RegexOptions.Compiled),
+        new("^(?:w|h|min-w|min-h|max-w|max-h)-", RegexOptions.Compiled),
+        new("^(?:text|bg|from|via|to|decoration|accent|caret|fill|stroke|placeholder|border|divide|ring|outline)-", RegexOptions.Compiled),
+        new("^(?:rounded|shadow|opacity|z|order|col|row|basis|grow|shrink|gap|gap-x|gap-y|space-x|space-y)-", RegexOptions.Compiled),
+        new("^(?:items|justify|content|self|place-items|place-content|place-self)-", RegexOptions.Compiled),
+        new("^(?:font|leading|tracking|align|whitespace|break|hyphens|list|underline|no-underline|uppercase|lowercase|capitalize|normal-case)", RegexOptions.Compiled),
+        new("^(?:overflow|overscroll|object|inset|top|right|bottom|left)-", RegexOptions.Compiled),
+        new("^(?:grid-cols|grid-rows|auto-cols|auto-rows|col-span|row-span)-", RegexOptions.Compiled),
+        new("^(?:flex|table|flow-root|clear|float|box|line-clamp)-", RegexOptions.Compiled),
+        new("^(?:transition|duration|ease|delay|animate|transform|scale|rotate|translate|skew|origin)-", RegexOptions.Compiled),
+        new("^(?:filter|blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia|backdrop)-", RegexOptions.Compiled),
+        new("^(?:cursor|select|resize|appearance|pointer-events|touch|scroll|snap)-", RegexOptions.Compiled),
+        new("^(?:aria|data)-", RegexOptions.Compiled),
+        new("^\\[.+\\]$", RegexOptions.Compiled)
+    };
+
+    private static readonly string[] IceLaunchRoutes =
+    {
+        "/",
+        "/service-areas",
+        "/contact"
+    };
+
     public static DesignSystemGuardResult ValidatePage(Page page)
     {
         var result = new DesignSystemGuardResult();
@@ -171,36 +253,35 @@ public static class DesignSystemGuard
     {
         var result = new DesignSystemGuardResult();
         var designSystem = theme.DesignSystem;
-        if (designSystem == null)
+        if (designSystem != null)
         {
-            return result;
-        }
-
-        if (!string.IsNullOrWhiteSpace(designSystem.DomainCss))
-        {
-            ValidateCss(designSystem.DomainCss, "domainCss", tenantId, string.Empty, "theme.designSystem.domainCss", result);
-        }
-
-        foreach (var item in designSystem.TemplateCss)
-        {
-            if (!Variants.Contains(item.Key))
+            if (!string.IsNullOrWhiteSpace(designSystem.DomainCss))
             {
-                Warn(result, "theme.templateCss.variant", $"Template CSS key \"{item.Key}\" is not an approved section variant.", $"theme.designSystem.templateCss.{item.Key}");
+                ValidateCss(designSystem.DomainCss, "domainCss", tenantId, string.Empty, "theme.designSystem.domainCss", result);
             }
-            ValidateCss(item.Value, "templateCss", tenantId, item.Key, $"theme.designSystem.templateCss.{item.Key}", result);
-        }
 
-        foreach (var category in designSystem.Tokens)
-        {
-            foreach (var token in category.Value)
+            foreach (var item in designSystem.TemplateCss)
             {
-                if (token.Value.ValueKind != JsonValueKind.String && token.Value.ValueKind != JsonValueKind.Number)
+                if (!Variants.Contains(item.Key))
                 {
-                    Error(result, "theme.tokens.value", $"Theme token \"{category.Key}.{token.Key}\" must be a string or number.", $"theme.designSystem.tokens.{category.Key}.{token.Key}");
+                    Warn(result, "theme.templateCss.variant", $"Template CSS key \"{item.Key}\" is not an approved section variant.", $"theme.designSystem.templateCss.{item.Key}");
+                }
+                ValidateCss(item.Value, "templateCss", tenantId, item.Key, $"theme.designSystem.templateCss.{item.Key}", result);
+            }
+
+            foreach (var category in designSystem.Tokens)
+            {
+                foreach (var token in category.Value)
+                {
+                    if (token.Value.ValueKind != JsonValueKind.String && token.Value.ValueKind != JsonValueKind.Number)
+                    {
+                        Error(result, "theme.tokens.value", $"Theme token \"{category.Key}.{token.Key}\" must be a string or number.", $"theme.designSystem.tokens.{category.Key}.{token.Key}");
+                    }
                 }
             }
         }
 
+        ValidateNavigation(theme.Menu, tenantId, "theme.menu", result);
         return result;
     }
 
@@ -475,9 +556,16 @@ public static class DesignSystemGuard
                 {
                     foreach (var className in attrValue.Split(' ', StringSplitOptions.RemoveEmptyEntries))
                     {
-                        if (!ApprovedClassPrefixes.Any(prefix => className.StartsWith(prefix, StringComparison.Ordinal)))
+                        if (!IsApprovedClass(className))
                         {
-                            Warn(result, "html.unknownClass", $"Class \"{className}\" is not in the approved registry.", path);
+                            if (IsTailwindUtilityLikeClass(className))
+                            {
+                                Error(result, "html.tailwindUtilityClass", $"Tailwind utility class \"{className}\" is not allowed in CMS customHtml unless it is explicitly registered. Use semantic CMS classes or sectionScopedCss.", path);
+                            }
+                            else
+                            {
+                                Warn(result, "html.unknownClass", $"Class \"{className}\" is not in the approved registry.", path);
+                            }
                         }
                     }
                 }
@@ -548,10 +636,128 @@ public static class DesignSystemGuard
             }
         }
 
+        foreach (var selector in ExtractSelectors(css))
+        {
+            foreach (Match match in Regex.Matches(selector, "\\.([A-Za-z_][A-Za-z0-9_-]*)"))
+            {
+                var className = match.Groups[1].Value;
+                if (IsApprovedClass(className)) continue;
+                if (IsTailwindUtilityLikeClass(className))
+                {
+                    Error(result, "css.tailwindUtilityClass", $"Selector class \"{className}\" looks like a Tailwind utility and is not allowed in CMS-authored CSS unless explicitly registered.", path);
+                }
+                else
+                {
+                    Warn(result, "css.unknownClass", $"Selector class \"{className}\" is not in the approved registry.", path);
+                }
+            }
+        }
+
         if (Regex.IsMatch(css, "!important|position\\s*:\\s*fixed|animation(?:-[a-z-]+)?\\s*:|transform\\s*:|filter\\s*:|clip-path\\s*:", RegexOptions.IgnoreCase))
         {
             Warn(result, "css.review", "CMS-authored CSS contains properties that need design review.", path);
         }
+    }
+
+    private static void ValidateNavigation(List<MenuItem> menu, string tenantId, string path, DesignSystemGuardResult result)
+    {
+        var visibleTopLevelRoutes = new HashSet<string>(StringComparer.Ordinal);
+        for (var index = 0; index < menu.Count; index++)
+        {
+            ValidateNavigationItem(menu[index], $"{path}[{index}]", result);
+            if (menu[index].IsVisible && IsInternalNavigationUrl(menu[index].Url))
+            {
+                visibleTopLevelRoutes.Add(StripHash(menu[index].Url));
+            }
+        }
+
+        if (!tenantId.Equals("ice-rink-rentals", StringComparison.Ordinal)) return;
+
+        foreach (var route in IceLaunchRoutes)
+        {
+            if (!visibleTopLevelRoutes.Contains(route))
+            {
+                Warn(result, "navigation.route.missing", $"Ice primary navigation does not include expected launch route \"{route}\".", path);
+            }
+        }
+    }
+
+    private static void ValidateNavigationItem(MenuItem item, string path, DesignSystemGuardResult result)
+    {
+        if (string.IsNullOrWhiteSpace(item.Label))
+        {
+            Error(result, "navigation.label", "Navigation items require a label.", $"{path}.label");
+        }
+
+        if (string.IsNullOrWhiteSpace(item.Url))
+        {
+            Error(result, "navigation.url", "Navigation items require a URL.", $"{path}.url");
+        }
+        else if (!IsSafeNavigationUrl(item.Url))
+        {
+            Error(result, "navigation.url.unsafe", $"Navigation URL \"{item.Url}\" is not allowed.", $"{path}.url");
+        }
+
+        if (item.Target is not ("_self" or "_blank"))
+        {
+            Error(result, "navigation.target", "Navigation target must be \"_self\" or \"_blank\".", $"{path}.target");
+        }
+
+        for (var childIndex = 0; childIndex < item.Children.Count; childIndex++)
+        {
+            ValidateNavigationItem(item.Children[childIndex], $"{path}.children[{childIndex}]", result);
+        }
+    }
+
+    private static bool IsApprovedClass(string className)
+    {
+        return ApprovedClassPrefixes.Any(prefix => className.StartsWith(prefix, StringComparison.Ordinal));
+    }
+
+    private static bool IsTailwindUtilityLikeClass(string className)
+    {
+        var normalized = className.Trim().TrimStart('!');
+        if (string.IsNullOrWhiteSpace(normalized)) return false;
+
+        var parts = normalized.Split(':', StringSplitOptions.RemoveEmptyEntries);
+        var candidate = (parts.LastOrDefault() ?? normalized).TrimStart('!');
+        var hasTailwindVariant = parts.Length > 1 && parts.Take(parts.Length - 1).Any(part => TailwindVariantPrefixes.Contains(part) || Regex.IsMatch(part, "^\\[.+\\]$"));
+        if (hasTailwindVariant) return true;
+        if (TailwindExactUtilities.Contains(candidate)) return true;
+        return TailwindUtilityPatterns.Any(pattern => pattern.IsMatch(candidate));
+    }
+
+    private static bool IsSafeNavigationUrl(string url)
+    {
+        var trimmed = url.Trim();
+        var lower = trimmed.ToLowerInvariant();
+        if (lower.StartsWith("//", StringComparison.Ordinal)) return false;
+        if (lower.StartsWith("#", StringComparison.Ordinal) || lower.StartsWith("/", StringComparison.Ordinal)) return true;
+        if (lower.StartsWith("mailto:", StringComparison.Ordinal) || lower.StartsWith("tel:", StringComparison.Ordinal)) return true;
+        if (lower.StartsWith("javascript:", StringComparison.Ordinal) ||
+            lower.StartsWith("data:", StringComparison.Ordinal) ||
+            lower.StartsWith("vbscript:", StringComparison.Ordinal) ||
+            lower.StartsWith("file:", StringComparison.Ordinal) ||
+            lower.StartsWith("blob:", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        return Uri.TryCreate(trimmed, UriKind.Absolute, out var uri) && uri.Scheme == Uri.UriSchemeHttps;
+    }
+
+    private static bool IsInternalNavigationUrl(string url)
+    {
+        var trimmed = url.Trim();
+        return trimmed.StartsWith("/", StringComparison.Ordinal) && !trimmed.StartsWith("//", StringComparison.Ordinal);
+    }
+
+    private static string StripHash(string url)
+    {
+        var trimmed = url.Trim();
+        if (!trimmed.StartsWith("/", StringComparison.Ordinal)) return trimmed;
+        var hashIndex = trimmed.IndexOf('#', StringComparison.Ordinal);
+        return hashIndex >= 0 ? (hashIndex == 0 ? "/" : trimmed[..hashIndex]) : trimmed;
     }
 
     private static List<string> ExtractSelectors(string css)

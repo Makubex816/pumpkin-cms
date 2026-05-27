@@ -12,6 +12,7 @@ const {
   validateCss,
   validateCustomHtmlContent,
   validateThemeDesignSystem,
+  validateThemeNavigation,
   validateTrustedEmbedContent,
 } = require(path.join(repoRoot, 'packages', 'pumpkin-ts-models', 'dist', 'index.js'));
 
@@ -62,6 +63,10 @@ for (const testCase of fixtures.theme) {
 
 for (const testCase of fixtures.trustedEmbed) {
   assertExpectation(testCase.name, testCase.expect, validateTrustedEmbedContent(testCase.content));
+}
+
+for (const testCase of fixtures.navigation || []) {
+  assertExpectation(testCase.name, testCase.expect, validateThemeNavigation(testCase.menu, testCase.options || {}));
 }
 
 const summary = {

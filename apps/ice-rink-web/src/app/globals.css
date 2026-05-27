@@ -44,71 +44,105 @@
     @apply border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900;
   }
 
-  .rich-content {
+  .rich-content,
+  .cms-rich-html {
     @apply text-slate-700;
   }
 
-  .rich-content h2 {
+  .rich-content h2,
+  .cms-rich-html h2 {
     @apply mb-4 text-3xl font-bold leading-tight text-slate-950 md:text-4xl;
   }
 
-  .rich-content h3 {
+  .rich-content h3,
+  .cms-rich-html h3 {
     @apply mb-3 text-2xl font-bold leading-tight text-slate-900;
   }
 
-  .rich-content h4 {
+  .rich-content h4,
+  .cms-rich-html h4 {
     @apply mb-2 text-xl font-bold text-slate-900;
   }
 
-  .rich-content p {
+  .rich-content p,
+  .cms-rich-html p {
     @apply mb-4 text-base leading-7;
   }
 
-  .rich-content a {
+  .rich-content a,
+  .cms-rich-html a {
     @apply font-semibold text-sky-700 underline underline-offset-4 hover:text-sky-900;
   }
 
   .rich-content ul,
-  .rich-content ol {
+  .rich-content ol,
+  .cms-rich-html ul,
+  .cms-rich-html ol {
     @apply mb-5 space-y-2 pl-6;
   }
 
-  .rich-content ul {
+  .rich-content ul,
+  .cms-rich-html ul {
     @apply list-disc;
   }
 
-  .rich-content ol {
+  .rich-content ol,
+  .cms-rich-html ol {
     @apply list-decimal;
   }
 
-  .rich-content blockquote {
+  .rich-content blockquote,
+  .cms-rich-html blockquote {
     @apply my-6 border-l-4 border-sky-300 pl-5 text-lg italic text-slate-700;
   }
 
-  .rich-content figure {
+  .rich-content figure,
+  .cms-rich-html figure {
     @apply my-6;
   }
 
-  .rich-content img {
+  .rich-content img,
+  .cms-rich-html img {
     @apply h-auto max-w-full rounded-lg;
   }
 
   .rich-content figcaption,
+  .cms-rich-html figcaption,
   .cms-embed-caption {
     @apply mt-2 text-sm text-slate-500;
   }
 
-  .rich-content table {
+  .rich-content table,
+  .cms-rich-html table {
     @apply my-6 w-full border-collapse text-sm;
   }
 
   .rich-content th,
-  .rich-content td {
+  .rich-content td,
+  .cms-rich-html th,
+  .cms-rich-html td {
     @apply border border-slate-200 px-4 py-3 text-left align-top;
   }
 
-  .rich-content th {
+  .rich-content th,
+  .cms-rich-html th {
     @apply bg-slate-50 font-bold text-slate-950;
+  }
+
+  .cms-layout {
+    @apply grid grid-cols-1 gap-6 md:grid-cols-2;
+  }
+
+  .cms-copy {
+    @apply mx-auto max-w-4xl;
+  }
+
+  .cms-eyebrow {
+    @apply mb-3 text-xs font-bold uppercase tracking-wider text-sky-700;
+  }
+
+  .cms-panel {
+    @apply rounded-lg border border-slate-200 bg-white p-6 shadow-sm;
   }
 
   .cms-trusted-embed {
@@ -127,9 +161,112 @@
     @apply bg-sky-50;
   }
 
+  .section-split-feature,
+  .section-media-feature {
+    @apply bg-white;
+  }
+
+  .section-event-card-grid,
+  .section-service-area-grid,
+  .section-table-comparison,
+  .section-faq-panel {
+    @apply bg-slate-50;
+  }
+
+  .section-quote-form-panel,
+  .section-contact-card,
+  .section-inline-contact,
+  .section-compact-contact {
+    @apply bg-white;
+  }
+
   .section-trust-band,
   .section-final-cta {
     @apply bg-slate-950 text-white;
+  }
+
+  .section-trust-band .rich-content,
+  .section-final-cta .rich-content,
+  .section-trust-band .cms-rich-html,
+  .section-final-cta .cms-rich-html {
+    @apply text-slate-100;
+  }
+
+  .section-trust-band .rich-content h2,
+  .section-trust-band .rich-content h3,
+  .section-final-cta .rich-content h2,
+  .section-final-cta .rich-content h3,
+  .section-trust-band .cms-rich-html h2,
+  .section-trust-band .cms-rich-html h3,
+  .section-final-cta .cms-rich-html h2,
+  .section-final-cta .cms-rich-html h3 {
+    @apply text-white;
+  }
+
+  .ice-hero-grid,
+  .ice-quote-grid {
+    @apply grid grid-cols-1 gap-8 rounded-lg border border-sky-100 bg-white p-6 shadow-sm md:grid-cols-2 md:p-8;
+  }
+
+  .ice-check-list,
+  .ice-details-list,
+  .ice-region-list {
+    @apply space-y-2 pl-5;
+  }
+
+  .ice-check-list li,
+  .ice-details-list li,
+  .ice-region-list li {
+    @apply leading-7 text-slate-700;
+  }
+
+  .ice-event-grid,
+  .ice-area-grid {
+    @apply grid grid-cols-1 gap-4 md:grid-cols-3;
+  }
+
+  .ice-event-card,
+  .ice-area-card,
+  .ice-service-teaser,
+  .ice-response-note,
+  .ice-privacy-note,
+  .ice-alias-note {
+    @apply rounded-lg border border-slate-200 bg-white p-5 shadow-sm;
+  }
+
+  .ice-event-card h3,
+  .ice-area-card h3 {
+    @apply text-lg font-extrabold text-slate-950;
+  }
+
+  .ice-event-card p,
+  .ice-area-card p,
+  .ice-service-teaser p,
+  .ice-response-note p,
+  .ice-privacy-note p,
+  .ice-alias-note p {
+    @apply text-sm leading-6 text-slate-600;
+  }
+
+  .ice-planning-table,
+  .ice-city-note {
+    @apply w-full overflow-hidden rounded-lg border border-slate-200 bg-white text-sm;
+  }
+
+  .ice-planning-table th,
+  .ice-city-note th {
+    @apply bg-sky-50 text-left font-bold text-sky-900;
+  }
+
+  .ice-planning-table th,
+  .ice-planning-table td,
+  .ice-city-note th,
+  .ice-city-note td {
+    @apply border border-slate-200 px-4 py-3 align-top;
+  }
+
+  .ice-cta-link {
+    @apply font-bold text-sky-700 underline underline-offset-4 hover:text-sky-900;
   }
 
   .prose h2 {

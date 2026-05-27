@@ -37,6 +37,9 @@ export const SECTION_VARIANTS = [
   'event-card-grid',
   'service-area-grid',
   'quote-form-panel',
+  'contact-card',
+  'inline-contact',
+  'compact-contact',
   'faq-panel',
   'media-feature',
   'table-comparison',
@@ -161,6 +164,25 @@ export interface CssValidationOptions {
   path?: string;
 }
 
+export interface NavigationMenuItemLike {
+  label?: unknown;
+  url?: unknown;
+  target?: unknown;
+  icon?: unknown;
+  order?: unknown;
+  isVisible?: unknown;
+  children?: unknown;
+}
+
+export interface NavigationValidationOptions {
+  path?: string;
+  approvedRoutes?: string[];
+  requireRoutes?: string[];
+  allowExternalHttps?: boolean;
+}
+
+export const ICE_LAUNCH_NAVIGATION_ROUTES = ['/', '/service-areas', '/contact'] as const;
+
 const profileTags: Record<RichHtmlProfile, Set<string>> = {
   'marketing-basic': new Set(['h2', 'h3', 'h4', 'p', 'span', 'strong', 'em', 'br', 'ul', 'ol', 'li', 'a']),
   'marketing-rich': new Set(['section', 'div', 'article', 'aside', 'h2', 'h3', 'h4', 'p', 'span', 'strong', 'em', 'br', 'ul', 'ol', 'li', 'a', 'blockquote']),
@@ -217,6 +239,75 @@ const cssWarningPatterns: Array<{ code: string; pattern: RegExp; message: string
   { code: 'css.transform', pattern: /\btransform\s*:/i, message: 'Transforms should be reviewed for layout safety.' },
   { code: 'css.filter', pattern: /\bfilter\s*:/i, message: 'Filters should be reviewed for rendering cost.' },
   { code: 'css.clip-path', pattern: /\bclip-path\s*:/i, message: 'clip-path should be reviewed for browser support and layout safety.' },
+];
+
+const tailwindVariantPrefixes = new Set([
+  'sm',
+  'md',
+  'lg',
+  'xl',
+  '2xl',
+  'hover',
+  'focus',
+  'focus-visible',
+  'active',
+  'visited',
+  'disabled',
+  'group-hover',
+  'group-focus',
+  'peer-checked',
+  'dark',
+  'motion-safe',
+  'motion-reduce',
+  'portrait',
+  'landscape',
+  'print',
+]);
+
+const tailwindExactUtilities = new Set([
+  'block',
+  'inline-block',
+  'inline',
+  'flex',
+  'inline-flex',
+  'grid',
+  'inline-grid',
+  'contents',
+  'hidden',
+  'relative',
+  'absolute',
+  'fixed',
+  'sticky',
+  'static',
+  'container',
+  'sr-only',
+  'not-sr-only',
+  'visible',
+  'invisible',
+  'collapse',
+  'isolate',
+  'isolation-auto',
+  'antialiased',
+  'subpixel-antialiased',
+  'truncate',
+  'clearfix',
+]);
+
+const tailwindUtilityPatterns: RegExp[] = [
+  /^-?(?:m|mx|my|mt|mr|mb|ml|p|px|py|pt|pr|pb|pl)-/,
+  /^(?:w|h|min-w|min-h|max-w|max-h)-/,
+  /^(?:text|bg|from|via|to|decoration|accent|caret|fill|stroke|placeholder|border|divide|ring|outline)-/,
+  /^(?:rounded|shadow|opacity|z|order|col|row|basis|grow|shrink|gap|gap-x|gap-y|space-x|space-y)-/,
+  /^(?:items|justify|content|self|place-items|place-content|place-self)-/,
+  /^(?:font|leading|tracking|align|whitespace|break|hyphens|list|underline|no-underline|uppercase|lowercase|capitalize|normal-case)/,
+  /^(?:overflow|overscroll|object|inset|top|right|bottom|left)-/,
+  /^(?:grid-cols|grid-rows|auto-cols|auto-rows|col-span|row-span)-/,
+  /^(?:flex|table|flow-root|clear|float|box|line-clamp)-/,
+  /^(?:transition|duration|ease|delay|animate|transform|scale|rotate|translate|skew|origin)-/,
+  /^(?:filter|blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia|backdrop)-/,
+  /^(?:cursor|select|resize|appearance|pointer-events|touch|scroll|snap)-/,
+  /^(?:aria|data)-/,
+  /^\[.+\]$/,
 ];
 
 const broadlyAllowedCssProperties = new Set([
@@ -286,6 +377,19 @@ export function isSectionVariant(value: unknown): value is SectionVariant {
 
 export function isTrustedEmbedProvider(value: unknown): value is TrustedEmbedProvider {
   return typeof value === 'string' && (TRUSTED_EMBED_PROVIDERS as readonly string[]).includes(value);
+}
+
+export function isTailwindUtilityLikeClass(className: string): boolean {
+  const normalized = className.trim().replace(/^!/, '');
+  if (!normalized) return false;
+
+  const parts = normalized.split(':').filter(Boolean);
+  const candidate = (parts[parts.length - 1] || normalized).replace(/^!/, '');
+  const hasTailwindVariant = parts.length > 1 && parts.slice(0, -1).some((part) => tailwindVariantPrefixes.has(part) || /^\[.+\]$/.test(part));
+
+  if (hasTailwindVariant) return true;
+  if (tailwindExactUtilities.has(candidate)) return true;
+  return tailwindUtilityPatterns.some((pattern) => pattern.test(candidate));
 }
 
 export function normalizeSectionId(value: unknown, fallback = 'custom-html-section'): string {
@@ -585,6 +689,35 @@ export function validateThemeDesignSystem(designSystem: Partial<DesignSystemMeta
   return { ok: errors.length === 0, errors, warnings };
 }
 
+export function validateThemeNavigation(menu: unknown, options: NavigationValidationOptions = {}): DesignSystemValidationResult {
+  const errors: DesignSystemValidationIssue[] = [];
+  const warnings: DesignSystemValidationIssue[] = [];
+  const path = options.path || 'theme.menu';
+
+  if (!Array.isArray(menu)) {
+    errors.push(issue('error', 'navigation.shape', 'Navigation menu must be an array.', path));
+    return { ok: false, errors, warnings };
+  }
+
+  const visibleUrls = new Set<string>();
+  menu.forEach((item, index) => {
+    validateMenuItem(item as NavigationMenuItemLike, {
+      ...options,
+      path: `${path}[${index}]`,
+      visibleUrls,
+    }, errors, warnings);
+  });
+
+  const requiredRoutes = options.requireRoutes || [];
+  requiredRoutes.forEach((route) => {
+    if (!visibleUrls.has(route)) {
+      warnings.push(issue('warning', 'navigation.route.missing', `Primary navigation does not include expected route "${route}".`, path));
+    }
+  });
+
+  return { ok: errors.length === 0, errors, warnings };
+}
+
 export function validateThemeTokens(tokens: ThemeTokens | undefined): DesignSystemValidationResult {
   const errors: DesignSystemValidationIssue[] = [];
   const warnings: DesignSystemValidationIssue[] = [];
@@ -731,7 +864,11 @@ function sanitizeAttributes(
       const classes = value.split(/\s+/).map((item) => item.trim()).filter(Boolean);
       classes.forEach((className) => {
         if (!isApprovedClass(className, options.approvedClasses)) {
-          warnings.push(issue('warning', 'html.unknownClass', `Class "${className}" is not in the approved registry.`, options.path));
+          if (isTailwindUtilityLikeClass(className)) {
+            errors.push(issue('error', 'html.tailwindUtilityClass', `Tailwind utility class "${className}" is not allowed in CMS customHtml unless it is explicitly registered. Use semantic CMS classes or sectionScopedCss.`, options.path));
+          } else {
+            warnings.push(issue('warning', 'html.unknownClass', `Class "${className}" is not in the approved registry.`, options.path));
+          }
         }
       });
       output.set(name, classes.join(' '));
@@ -851,10 +988,91 @@ function validateCssSelectors(
     for (const className of selector.matchAll(/\.([A-Za-z_][A-Za-z0-9_-]*)/g)) {
       const value = className[1];
       if (!isApprovedClass(value, approvedClasses)) {
-        warnings.push(issue('warning', 'css.unknownClass', `Selector class "${value}" is not in the approved registry.`, path));
+        if (isTailwindUtilityLikeClass(value)) {
+          errors.push(issue('error', 'css.tailwindUtilityClass', `Selector class "${value}" looks like a Tailwind utility and is not allowed in CMS-authored CSS unless explicitly registered.`, path));
+        } else {
+          warnings.push(issue('warning', 'css.unknownClass', `Selector class "${value}" is not in the approved registry.`, path));
+        }
       }
     }
   });
+}
+
+function validateMenuItem(
+  item: NavigationMenuItemLike,
+  options: NavigationValidationOptions & { path: string; visibleUrls: Set<string> },
+  errors: DesignSystemValidationIssue[],
+  warnings: DesignSystemValidationIssue[],
+) {
+  const label = typeof item?.label === 'string' ? item.label.trim() : '';
+  const url = typeof item?.url === 'string' ? item.url.trim() : '';
+  const target = typeof item?.target === 'string' && item.target.trim() ? item.target.trim() : '_self';
+  const isVisible = item?.isVisible !== false;
+
+  if (!label) {
+    errors.push(issue('error', 'navigation.label', 'Navigation items require a label.', `${options.path}.label`));
+  }
+
+  if (!url) {
+    errors.push(issue('error', 'navigation.url', 'Navigation items require a URL.', `${options.path}.url`));
+  } else if (!isSafeNavigationUrl(url, options.allowExternalHttps !== false)) {
+    errors.push(issue('error', 'navigation.url.unsafe', `Navigation URL "${url}" is not allowed.`, `${options.path}.url`));
+  } else if (isVisible) {
+    options.visibleUrls.add(stripHash(url));
+  }
+
+  if (!['_self', '_blank'].includes(target)) {
+    errors.push(issue('error', 'navigation.target', 'Navigation target must be "_self" or "_blank".', `${options.path}.target`));
+  }
+
+  const approvedRoutes = options.approvedRoutes || [];
+  const normalizedUrl = stripHash(url);
+  if (
+    isVisible &&
+    approvedRoutes.length > 0 &&
+    isInternalNavigationUrl(url) &&
+    normalizedUrl &&
+    !approvedRoutes.includes(normalizedUrl)
+  ) {
+    warnings.push(issue('warning', 'navigation.route.unapproved', `Navigation URL "${url}" is not in the approved route list for this launch package.`, `${options.path}.url`));
+  }
+
+  if (Array.isArray(item?.children)) {
+    item.children.forEach((child, index) => {
+      validateMenuItem(child as NavigationMenuItemLike, {
+        ...options,
+        path: `${options.path}.children[${index}]`,
+      }, errors, warnings);
+    });
+  }
+}
+
+function isSafeNavigationUrl(url: string, allowExternalHttps: boolean): boolean {
+  const lower = url.trim().toLowerCase();
+  if (!lower) return false;
+  if (lower.startsWith('//')) return false;
+  if (lower.startsWith('#') || lower.startsWith('/')) return true;
+  if (lower.startsWith('mailto:') || lower.startsWith('tel:')) return true;
+  if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('vbscript:') || lower.startsWith('file:') || lower.startsWith('blob:')) return false;
+
+  try {
+    const parsed = new URL(url);
+    return allowExternalHttps && parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+function isInternalNavigationUrl(url: string): boolean {
+  const trimmed = url.trim();
+  return trimmed.startsWith('/') && !trimmed.startsWith('//');
+}
+
+function stripHash(url: string): string {
+  const trimmed = url.trim();
+  if (!trimmed.startsWith('/')) return trimmed;
+  const hashIndex = trimmed.indexOf('#');
+  return hashIndex >= 0 ? trimmed.slice(0, hashIndex) || '/' : trimmed;
 }
 
 function validateCssDeclarations(body: string, errors: DesignSystemValidationIssue[], warnings: DesignSystemValidationIssue[], path: string) {

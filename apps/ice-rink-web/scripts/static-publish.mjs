@@ -21,8 +21,10 @@ const appRoot = process.cwd();
 const repoRoot = path.resolve(appRoot, '../..');
 const require = createRequire(import.meta.url);
 const {
+  ICE_LAUNCH_NAVIGATION_ROUTES,
   validateContentBlocksDesignSystem,
   validateThemeDesignSystem,
+  validateThemeNavigation,
 } = require(path.join(repoRoot, 'packages', 'pumpkin-ts-models', 'dist', 'index.js'));
 
 function fail(message) {
@@ -593,6 +595,18 @@ function validatePageShape(site, pages) {
       errors.push(`theme.json: ${issue.message}`);
     }
     for (const issue of designValidation.warnings) {
+      warnings.push(`theme.json: ${issue.message}`);
+    }
+
+    const navigationValidation = validateThemeNavigation(theme.menu || [], {
+      path: 'theme.menu',
+      approvedRoutes: siteKey === 'ice-rink-rentals' ? [...ICE_LAUNCH_NAVIGATION_ROUTES] : undefined,
+      requireRoutes: siteKey === 'ice-rink-rentals' ? [...ICE_LAUNCH_NAVIGATION_ROUTES] : undefined,
+    });
+    for (const issue of navigationValidation.errors) {
+      errors.push(`theme.json: ${issue.message}`);
+    }
+    for (const issue of navigationValidation.warnings) {
       warnings.push(`theme.json: ${issue.message}`);
     }
   }
