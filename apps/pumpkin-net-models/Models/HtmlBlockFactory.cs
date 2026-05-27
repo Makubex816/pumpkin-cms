@@ -29,6 +29,27 @@ public static class HtmlBlockFactory
         { "trustedEmbed", typeof(TrustedEmbedBlock) }
     };
 
+    private static readonly Dictionary<string, Type> ContentTypeMap = new()
+    {
+        { "Hero", typeof(HeroContent) },
+        { "PrimaryCTA", typeof(PrimaryCtaContent) },
+        { "SecondaryCTA", typeof(SecondaryCtaContent) },
+        { "CardGrid", typeof(CardGridContent) },
+        { "FAQ", typeof(FaqContent) },
+        { "Breadcrumbs", typeof(BreadcrumbsContent) },
+        { "TrustBar", typeof(TrustBarContent) },
+        { "HowItWorks", typeof(HowItWorksContent) },
+        { "ServiceAreaMap", typeof(ServiceAreaMapContent) },
+        { "LocalProTips", typeof(LocalProTipsContent) },
+        { "Gallery", typeof(GalleryContent) },
+        { "Testimonials", typeof(TestimonialsContent) },
+        { "Contact", typeof(ContactContent) },
+        { "formBlock", typeof(FormBlockContent) },
+        { "Blog", typeof(BlogContent) },
+        { "customHtml", typeof(CustomHtmlContent) },
+        { "trustedEmbed", typeof(TrustedEmbedContent) }
+    };
+
     /// <summary>
     /// Creates an HTML block from a JsonElement
     /// </summary>
@@ -50,7 +71,15 @@ public static class HtmlBlockFactory
             };
         }
 
-        return (IHtmlBlock?)JsonSerializer.Deserialize(blockElement.GetRawText(), type);
+        var block = (HtmlBlockBase?)JsonSerializer.Deserialize(blockElement.GetRawText(), type);
+        if (block != null &&
+            blockElement.TryGetProperty("content", out var contentElement) &&
+            ContentTypeMap.TryGetValue(blockType, out var contentType))
+        {
+            block.Content = JsonSerializer.Deserialize(contentElement.GetRawText(), contentType) ?? block.Content;
+        }
+
+        return block;
     }
 
     /// <summary>

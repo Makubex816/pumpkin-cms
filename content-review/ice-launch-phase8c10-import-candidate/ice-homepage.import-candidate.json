@@ -565,30 +565,15 @@
     "hubPage": "",
     "parentPage": "",
     "relatedPages": [
-      {
-        "label": "Contact",
-        "href": "/contact"
-      },
-      {
-        "label": "Service Areas",
-        "href": "/service-areas"
-      }
+      "/contact",
+      "/service-areas"
     ],
     "requiredLinks": [
-      {
-        "label": "Request a Quote",
-        "href": "/contact"
-      },
-      {
-        "label": "Service Areas",
-        "href": "/service-areas"
-      }
+      "/contact",
+      "/service-areas"
     ],
     "breadcrumbTrail": [
-      {
-        "label": "Home",
-        "href": "/"
-      }
+      "/"
     ]
   },
   "schemaControls": {

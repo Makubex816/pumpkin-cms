@@ -16,6 +16,19 @@
     "readyForProductionPublishing": false,
     "reason": "Safe references and a visible default quote form are present, but media, business values, human approvals, and import preflight remain blockers."
   },
+  "contractGates": {
+    "dotNetPageContract": {
+      "requiredBeforeCmsImport": true,
+      "command": "dotnet run --project tools/dotnet-page-contract/Pumpkin.PageContractTool.csproj -- validate-package --path content-review/ice-launch-phase8c10-import-candidate",
+      "phase8c11cResult": "passed_with_warnings_not_cms_import_ready",
+      "notes": "Warnings are expected for unresolved media and review/import metadata. Blocking errors must be zero before admin import/export preflight."
+    },
+    "blockContractAlignment": {
+      "requiredBeforeCmsImport": true,
+      "command": "node tools/dotnet-page-contract/validate-contract-alignment.mjs",
+      "phase8c11cResult": "passed"
+    }
+  },
   "routeDecisions": {
     "homepage": {
       "route": "/",

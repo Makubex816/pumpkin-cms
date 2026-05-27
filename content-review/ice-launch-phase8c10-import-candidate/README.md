@@ -30,6 +30,7 @@ No targeted city/location page is included. The first city page must be created 
 - Empty media URL/asset fields were replaced with structured MediaAsset requirement/reference objects.
 - Phase 8C.11 added default contact/quote form definitions.
 - The contact page now uses a visible `formBlock` section backed by `default-quote-request`.
+- Phase 8C.11C normalized Page linking arrays to the .NET `PageLinking` contract and validated the package through .NET Page/block classes.
 - Unknown phone, email, service-area, region, target-city, and final media values remain blockers.
 
 ## Default Form
@@ -48,3 +49,14 @@ Ready for human review: yes.
 Ready for CMS import: no.
 
 Ready for production/indexing: no.
+
+## .NET Contract Gate
+
+Before this package can move from import-candidate to CMS-ready, run:
+
+```powershell
+dotnet run --project tools\dotnet-page-contract\Pumpkin.PageContractTool.csproj -- validate-package --path content-review\ice-launch-phase8c10-import-candidate
+node tools\dotnet-page-contract\validate-contract-alignment.mjs
+```
+
+The current package is .NET-contract-valid, but unresolved media, business values, approval, and admin import/export preflight still block CMS import.

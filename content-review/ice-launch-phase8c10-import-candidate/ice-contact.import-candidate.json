@@ -445,34 +445,16 @@
     "hubPage": "home",
     "parentPage": "",
     "relatedPages": [
-      {
-        "label": "Home",
-        "href": "/"
-      },
-      {
-        "label": "Service Areas",
-        "href": "/service-areas"
-      }
+      "/",
+      "/service-areas"
     ],
     "requiredLinks": [
-      {
-        "label": "Home",
-        "href": "/"
-      },
-      {
-        "label": "Service Areas",
-        "href": "/service-areas"
-      }
+      "/",
+      "/service-areas"
     ],
     "breadcrumbTrail": [
-      {
-        "label": "Home",
-        "href": "/"
-      },
-      {
-        "label": "Contact",
-        "href": "/contact"
-      }
+      "/",
+      "/contact"
     ]
   },
   "schemaControls": {

@@ -225,6 +225,11 @@ public static class DesignSystemGuard
         for (var index = 0; index < blocks.Count; index++)
         {
             var block = blocks[index];
+            if (!HtmlBlockFactory.GetSupportedBlockTypes().Contains(block.Type))
+            {
+                Error(result, "blocks.unknownType", $"Unsupported content block type \"{block.Type}\".", $"ContentData.ContentBlocks[{index}].type");
+            }
+
             if (block.Type == "customHtml")
             {
                 ValidateCustomHtmlBlock(block, $"ContentData.ContentBlocks[{index}].content", result);
