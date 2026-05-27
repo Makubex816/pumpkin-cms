@@ -155,10 +155,10 @@ function validatePackage({ siteKey, folder }) {
         { label: 'script tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<script\b/i },
         { label: 'object tag', pattern: /<object\b/i },
         { label: 'embed tag', pattern: /<embed\b/i },
-        { label: 'form tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<form\b/i },
-        { label: 'input tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<input\b/i },
-        { label: 'textarea tag', pattern: /<textarea\b/i },
-        { label: 'select tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<select\b/i },
+        { label: 'form tag in CMS rich HTML', pattern: /cms-rich-html[\s\S]*?<form\b/i },
+        { label: 'input tag in CMS rich HTML', pattern: /cms-rich-html[\s\S]*?<input\b/i },
+        { label: 'textarea tag in CMS rich HTML', pattern: /cms-rich-html[\s\S]*?<textarea\b/i },
+        { label: 'select tag in CMS rich HTML', pattern: /cms-rich-html[\s\S]*?<select\b/i },
         { label: 'style tag in CMS rich HTML', pattern: /cms-rich-html[\s\S]*?<style\b/i },
       ];
 

@@ -14,8 +14,11 @@ import {
   SECTION_CONTAINERS,
   SECTION_VARIANTS,
   TRUSTED_EMBED_PROVIDERS,
+  getDefaultFormDefinitions,
   validateContentBlocksDesignSystem,
   validateCustomHtmlContent,
+  validateFormBlockContent,
+  validatePageFormBlocks,
   validateTrustedEmbedContent,
 } from 'pumpkin-ts-models'
 
@@ -32,6 +35,7 @@ const SUPPORTED_BLOCK_TYPES = new Set([
   'FAQ',
   'PrimaryCTA',
   'Contact',
+  'formBlock',
   'customHtml',
   'trustedEmbed',
 ])
@@ -837,6 +841,27 @@ function sanitizeSupportedBlockForSave(block: IHtmlBlock): IHtmlBlock {
           formFields: sanitizeRecordArray(content.formFields, ['label', 'type', 'placeholder'], ['required']),
         },
       }
+    case 'formBlock':
+      return {
+        ...block,
+        content: {
+          ...content,
+          id: stringValue(content.id),
+          label: stringValue(content.label),
+          formKey: stringValue(content.formKey) || 'default-contact',
+          variant: stringValue(content.variant) || 'contact-card',
+          heading: stringValue(content.heading),
+          intro: stringValue(content.intro),
+          submitLabel: stringValue(content.submitLabel) || 'Submit',
+          successMessage: stringValue(content.successMessage),
+          errorMessage: stringValue(content.errorMessage),
+          staticEndpointRef: stringValue(content.staticEndpointRef),
+          leadRecipientRef: stringValue(content.leadRecipientRef),
+          sourcePage: stringValue(content.sourcePage),
+          review: isRecord(content.review) ? content.review : { status: 'draft' },
+          validation: isRecord(content.validation) ? content.validation : {},
+        },
+      }
     case 'customHtml':
       return {
         ...block,
@@ -899,6 +924,7 @@ function hasFormOrCta(page: Page) {
   return blocks.some((block) => {
     const content = toRecord(block.content)
     if (block.type === 'Contact') return true
+    if (block.type === 'formBlock') return true
     if (block.type === 'PrimaryCTA') return Boolean(stringValue(content.buttonText) || stringValue(content.buttonLink))
     return false
   })
@@ -986,6 +1012,10 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
   const designValidation = validateContentBlocksDesignSystem(blocks)
   designValidation.errors.forEach((issue) => errors.push(issue.message))
   designValidation.warnings.forEach((issue) => warnings.push(issue.message))
+
+  const formValidation = validatePageFormBlocks(page)
+  formValidation.errors.forEach((issue) => errors.push(issue.message))
+  formValidation.warnings.forEach((issue) => warnings.push(issue.message))
 
   if (!page.MetaData?.title?.trim()) {
     warnings.push('MetaData.title is empty.')
@@ -1176,16 +1206,18 @@ function validatePage(page: Page | null, tenantId: string): ValidationResult {
     warnings.push('Page has a form or CTA but formConfig.conversionGoal is missing.')
   }
 
-  if (blocks.some((block) => block.type === 'Contact') && !formConfig.formType) {
-    warnings.push('Contact block exists but formConfig.formType is missing.')
+  const hasStructuredForm = blocks.some((block) => block.type === 'Contact' || block.type === 'formBlock')
+
+  if (hasStructuredForm && !formConfig.formType) {
+    warnings.push('Contact/formBlock exists but formConfig.formType is missing.')
   }
 
-  if (blocks.some((block) => block.type === 'Contact') && !formConfig.domainRoutingKey) {
-    warnings.push('Contact block exists but formConfig.domainRoutingKey is missing.')
+  if (hasStructuredForm && !formConfig.domainRoutingKey) {
+    warnings.push('Contact/formBlock exists but formConfig.domainRoutingKey is missing.')
   }
 
-  if (blocks.some((block) => block.type === 'Contact') && !formConfig.staticFormEndpointKey) {
-    warnings.push('Contact block exists but formConfig.staticFormEndpointKey is missing for static publishing.')
+  if (hasStructuredForm && !formConfig.staticFormEndpointKey) {
+    warnings.push('Contact/formBlock exists but formConfig.staticFormEndpointKey is missing for static publishing.')
   }
 
   blocks.forEach((block, index) => {
@@ -2077,6 +2109,51 @@ export default function PageStructuredEditor() {
     }))
   }
 
+  const addFormBlockSection = () => {
+    updatePageState((current) => {
+      const blocks = Array.isArray(current.ContentData?.ContentBlocks)
+        ? current.ContentData.ContentBlocks
+        : []
+      const isIce = current.tenantId === 'ice-rink-rentals'
+      const formKey = isIce && normalizeSlug(current.pageSlug) === 'contact'
+        ? 'default-quote-request'
+        : 'default-contact'
+      const endpointRef = current.formConfig?.staticFormEndpointKey || current.domainRouting?.staticFormEndpointKey || (isIce ? 'ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT' : '')
+      const leadRecipientRef = current.formConfig?.recipientGroup || current.formConfig?.domainRoutingKey || current.domainRouting?.defaultRecipientGroup || (isIce ? 'ICE_RINK_RENTALS_LEAD_RECIPIENT' : '')
+      const normalizedPageSlug = normalizeSlug(current.pageSlug) || 'contact'
+      const sourcePage = normalizedPageSlug === 'home' ? '/' : `/${normalizedPageSlug}`
+
+      return {
+        ...current,
+        ContentData: {
+          ...current.ContentData,
+          ContentBlocks: [
+            ...blocks,
+            {
+              type: 'formBlock',
+              content: {
+                id: 'contact-quote-form',
+                label: 'Quote request form',
+                formKey,
+                variant: isIce ? 'quote-form-panel' : 'contact-card',
+                heading: isIce ? 'Request an ice rink rental quote' : 'Send a message',
+                intro: isIce ? 'Share the event basics so the request can be reviewed for timing, location, and setup needs.' : 'Send the details needed for follow-up.',
+                submitLabel: isIce ? 'Submit Quote Request' : 'Submit',
+                successMessage: current.formConfig?.thankYouMessage || 'Thanks. Your request has been received.',
+                errorMessage: 'Unable to submit this request right now. Please try again.',
+                staticEndpointRef: endpointRef,
+                leadRecipientRef,
+                sourcePage,
+                review: { status: 'draft' },
+                validation: { expected: 'visible structured formBlock' },
+              },
+            } as IHtmlBlock,
+          ],
+        },
+      }
+    })
+  }
+
   const updateBlockArrayItemField = (
     blockIndex: number,
     arrayKey: string,
@@ -2926,6 +3003,11 @@ export default function PageStructuredEditor() {
       </Section>
 
       <Section title="Content Blocks" description="Structured editors are available for known text, SEO-adjacent, link, form, and image fields. Unsupported blocks are read-only JSON and preserved.">
+        <div className="mb-4 flex flex-wrap gap-3">
+          <button type="button" onClick={addFormBlockSection} className="btn btn-secondary">
+            Add Form Block
+          </button>
+        </div>
         {contentBlocks.length === 0 ? (
           <div className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-600">
             No ContentData.ContentBlocks entries are present.
@@ -3405,6 +3487,58 @@ function renderBlockFields(
           />
         </div>
       )
+    case 'formBlock': {
+      const definitions = getDefaultFormDefinitions(tenantId, tenantId)
+      const validation = validateFormBlockContent(content, { definitions })
+      const selectedDefinition = definitions.find((definition) => definition.formKey === stringValue(content.formKey))
+      return (
+        <div className="space-y-4">
+          <div className="grid gap-4 lg:grid-cols-2">
+            {field('id', 'section id')}
+            {field('label', 'label')}
+          </div>
+          <div className="grid gap-4 lg:grid-cols-3">
+            <SelectField label="formKey" value={stringValue(content.formKey) || 'default-contact'} onChange={(value) => updateBlockField(blockIndex, 'formKey', value)}>
+              {definitions.map((definition) => <option key={definition.formKey} value={definition.formKey}>{definition.formKey}</option>)}
+            </SelectField>
+            <SelectField label="variant" value={stringValue(content.variant) || 'contact-card'} onChange={(value) => updateBlockField(blockIndex, 'variant', value)}>
+              {['quote-form-panel', 'contact-card', 'inline-contact', 'compact-contact'].map((option) => <option key={option} value={option}>{option}</option>)}
+            </SelectField>
+            {field('sourcePage', 'sourcePage')}
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {field('heading', 'heading')}
+            {field('submitLabel', 'submitLabel')}
+            {field('staticEndpointRef', 'staticEndpointRef')}
+            {field('leadRecipientRef', 'leadRecipientRef')}
+          </div>
+          {field('intro', 'intro', { multiline: true, rows: 3 })}
+          <div className="grid gap-4 lg:grid-cols-2">
+            {field('successMessage', 'successMessage', { multiline: true, rows: 3 })}
+            {field('errorMessage', 'errorMessage', { multiline: true, rows: 3 })}
+          </div>
+          <RichValidationPanel errors={validation.errors.map((issue) => issue.message)} warnings={validation.warnings.map((issue) => issue.message)} />
+          <div className="rounded-md border border-neutral-200 bg-white p-4">
+            <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">Form preview</div>
+            <div className="space-y-3">
+              <h4 className="text-base font-semibold text-neutral-900">{stringValue(content.heading) || selectedDefinition?.name || 'Form block'}</h4>
+              {stringValue(content.intro) && <p className="text-sm text-neutral-600">{stringValue(content.intro)}</p>}
+              <div className="grid gap-2 md:grid-cols-2">
+                {(selectedDefinition?.fields || []).filter((item) => !item.hidden).map((item) => (
+                  <div key={item.name} className={item.width === 'full' || item.type === 'textarea' || item.type === 'checkbox' ? 'md:col-span-2 rounded border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm' : 'rounded border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm'}>
+                    <span className="font-medium text-neutral-800">{item.label}{item.required ? ' *' : ''}</span>
+                    <span className="ml-2 text-neutral-500">{item.type}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="text-xs text-neutral-500">
+                Uses non-secret refs only: {stringValue(content.staticEndpointRef) || 'missing staticEndpointRef'} / {stringValue(content.leadRecipientRef) || 'missing leadRecipientRef'}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
     case 'customHtml': {
       const validation = validateCustomHtmlContent(content)
       return (

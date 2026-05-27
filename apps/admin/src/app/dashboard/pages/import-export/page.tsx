@@ -271,6 +271,7 @@ const PAGE_FLAT_HEADERS = [
   'formConfig.spamProtectionEnabled',
   'formConfig.mailtoFallbackEnabled',
   'formConfig',
+  'formDefinitions',
   'domainRouting.domain',
   'domainRouting.publicContactEmail',
   'domainRouting.quoteRequestEmail',
@@ -1350,6 +1351,7 @@ function flattenPage(page: Page): FlatPageRow {
     'formConfig.spamProtectionEnabled': stringValue(formConfig.spamProtectionEnabled),
     'formConfig.mailtoFallbackEnabled': stringValue(formConfig.mailtoFallbackEnabled),
     formConfig: toJsonCell(formConfig),
+    formDefinitions: toJsonCell((page as Page & { formDefinitions?: unknown[] }).formDefinitions || []),
     'domainRouting.domain': stringValue(domainRouting.domain),
     'domainRouting.publicContactEmail': stringValue(domainRouting.publicContactEmail),
     'domainRouting.quoteRequestEmail': stringValue(domainRouting.quoteRequestEmail),
@@ -1407,6 +1409,7 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
   const productsOfferedJson = parseJsonCell(row.productsOffered || '', 'productsOffered', sourceRow, 'array', [], errors)
   const areasServedJson = parseJsonCell(row.areasServed || '', 'areasServed', sourceRow, 'array', [], errors)
   const formConfigJson = parseJsonCell(row.formConfig || '', 'formConfig', sourceRow, 'object', {}, errors)
+  const formDefinitionsJson = parseJsonCell(row.formDefinitions || '', 'formDefinitions', sourceRow, 'array', [], errors)
   const domainRoutingJson = parseJsonCell(row.domainRouting || '', 'domainRouting', sourceRow, 'object', {}, errors)
   const importProvenanceJson = parseJsonCell(row.importProvenance || '', 'importProvenance', sourceRow, 'object', {}, errors)
   const deploymentHooksJson = parseJsonCell(row.deploymentHooks || '', 'deploymentHooks', sourceRow, 'object', {}, errors)
@@ -1722,6 +1725,7 @@ function flatRowToPage(row: FlatPageRow, sourceRow: number): FlatRowParseResult 
     schemaControls,
     serviceSchema,
     formConfig,
+    formDefinitions: Array.isArray(formDefinitionsJson) ? formDefinitionsJson : [],
     domainRouting,
     importProvenance,
     deploymentHooks,

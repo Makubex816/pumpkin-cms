@@ -225,7 +225,7 @@ function getFormConfig(page) {
 
 function hasFormOrCta(page) {
   const blocks = Array.isArray(getContentBlocks(page)) ? getContentBlocks(page) : [];
-  return blocks.some((block) => block?.type === 'Contact' || block?.type === 'PrimaryCTA');
+  return blocks.some((block) => block?.type === 'Contact' || block?.type === 'formBlock' || block?.type === 'PrimaryCTA');
 }
 
 function addImageAltWarnings(page, label, warnings) {
@@ -416,16 +416,32 @@ function addProductionReadinessWarnings(page, label, warnings) {
     warnings.push(`${label}: FAQ block exists but schemaControls.enableFAQSchema is false.`);
   }
 
-  if (blocks.some((block) => block?.type === 'Contact') && !String(formConfig.formType || '')) {
-    warnings.push(`${label}: Contact block exists but formConfig.formType is missing.`);
+  const contactBlocks = blocks.filter((block) => block?.type === 'Contact' || block?.type === 'formBlock');
+  const formBlocks = blocks.filter((block) => block?.type === 'formBlock');
+  const isContactPage = normalizeSlug(getPageSlug(page)) === 'contact' || String(template.templateKey || '') === 'contact';
+
+  if (isContactPage && formBlocks.length === 0) {
+    warnings.push(`${label}: contact page has no visible formBlock.`);
   }
 
-  if (blocks.some((block) => block?.type === 'Contact') && !String(formConfig.domainRoutingKey || '')) {
-    warnings.push(`${label}: Contact block exists but formConfig.domainRoutingKey is missing.`);
+  if (contactBlocks.length > 0 && !String(formConfig.formType || '')) {
+    warnings.push(`${label}: contact/formBlock exists but formConfig.formType is missing.`);
   }
 
-  if (blocks.some((block) => block?.type === 'Contact') && !String(formConfig.staticFormEndpointKey || '')) {
-    warnings.push(`${label}: Contact block exists but formConfig.staticFormEndpointKey is missing.`);
+  if (contactBlocks.length > 0 && !String(formConfig.domainRoutingKey || '')) {
+    warnings.push(`${label}: contact/formBlock exists but formConfig.domainRoutingKey is missing.`);
+  }
+
+  if (contactBlocks.length > 0 && !String(formConfig.staticFormEndpointKey || '')) {
+    warnings.push(`${label}: contact/formBlock exists but formConfig.staticFormEndpointKey is missing.`);
+  }
+
+  for (const block of formBlocks) {
+    const content = block?.content && typeof block.content === 'object' ? block.content : {};
+    if (!String(content.formKey || '')) warnings.push(`${label}: formBlock is missing formKey.`);
+    if (!String(content.staticEndpointRef || '')) warnings.push(`${label}: formBlock ${String(content.id || '')} is missing staticEndpointRef.`);
+    if (!String(content.leadRecipientRef || '')) warnings.push(`${label}: formBlock ${String(content.id || '')} is missing leadRecipientRef.`);
+    if (!String(content.submitLabel || '')) warnings.push(`${label}: formBlock ${String(content.id || '')} is missing submitLabel.`);
   }
 
   if (hasFormOrCta(page) && !String(formConfig.conversionGoal || '')) {

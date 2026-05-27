@@ -1,0 +1,314 @@
+{
+  "definitionCases": [
+    { "name": "valid default-contact form definition", "kind": "default-contact", "expect": "ok" },
+    { "name": "valid Ice default-quote-request form definition", "kind": "ice-default-quote-request", "expect": "ok" },
+    { "name": "invalid form missing consent blocked", "kind": "ice-default-quote-request", "removeField": "consent", "expect": "error" },
+    { "name": "invalid form missing honeypot blocked", "kind": "ice-default-quote-request", "removeField": "honeypot", "expect": "error" },
+    { "name": "invalid form missing sourcePage hidden field blocked", "kind": "ice-default-quote-request", "removeField": "sourcePage", "expect": "error" },
+    { "name": "invalid unsupported field type blocked", "kind": "ice-default-quote-request", "patchField": { "name": "eventDateOrDateRange", "type": "calendar" }, "expect": "error" },
+    { "name": "invalid field name blocked", "kind": "ice-default-quote-request", "patchField": { "name": "fullName", "value": { "name": "1badField" } }, "expect": "error" },
+    { "name": "overlong field label warned", "kind": "ice-default-quote-request", "patchField": { "name": "fullName", "value": { "label": "Full legal name of the person responsible for submitting and coordinating this portable ice rink rental inquiry" } }, "expect": "warning" },
+    { "name": "secret-like value in form config blocked", "kind": "ice-default-quote-request", "patch": { "leadRecipientRef": "Bearer fake" }, "expect": "error" }
+  ],
+  "pageCases": [
+    {
+      "name": "valid Ice contact page with formBlock passes",
+      "expect": "ok",
+      "page": {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "pageSlug": "contact",
+        "template": { "templateKey": "contact" },
+        "ContentData": {
+          "ContentBlocks": [
+            {
+              "type": "formBlock",
+              "content": {
+                "id": "contact-quote-form",
+                "label": "Ice quote request form",
+                "formKey": "default-quote-request",
+                "variant": "quote-form-panel",
+                "heading": "Request a portable ice rink rental quote",
+                "intro": "Share the event basics for review.",
+                "submitLabel": "Submit Quote Request",
+                "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+                "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+                "sourcePage": "/contact"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "invalid formBlock missing formKey blocked",
+      "expect": "error",
+      "page": {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "pageSlug": "contact",
+        "template": { "templateKey": "contact" },
+        "ContentData": {
+          "ContentBlocks": [
+            {
+              "type": "formBlock",
+              "content": {
+                "id": "contact-quote-form",
+                "variant": "quote-form-panel",
+                "heading": "Request a portable ice rink rental quote",
+                "submitLabel": "Submit Quote Request",
+                "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+                "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+                "sourcePage": "/contact"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "invalid contact page missing formBlock blocked",
+      "expect": "error",
+      "page": {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "pageSlug": "contact",
+        "template": { "templateKey": "contact" },
+        "ContentData": { "ContentBlocks": [] }
+      }
+    },
+    {
+      "name": "raw form/input in customHtml blocked",
+      "expect": "error",
+      "page": {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "pageSlug": "contact",
+        "template": { "templateKey": "contact" },
+        "ContentData": {
+          "ContentBlocks": [
+            {
+              "type": "formBlock",
+              "content": {
+                "id": "contact-quote-form",
+                "label": "Ice quote request form",
+                "formKey": "default-quote-request",
+                "variant": "quote-form-panel",
+                "heading": "Request a portable ice rink rental quote",
+                "submitLabel": "Submit Quote Request",
+                "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+                "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+                "sourcePage": "/contact"
+              }
+            },
+            {
+              "type": "customHtml",
+              "content": {
+                "id": "unsafe-raw-form",
+                "html": "<form><input name=\"email\"></form>"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "staticEndpointRef missing blocked",
+      "expect": "error",
+      "page": {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "pageSlug": "contact",
+        "template": { "templateKey": "contact" },
+        "ContentData": {
+          "ContentBlocks": [
+            {
+              "type": "formBlock",
+              "content": {
+                "id": "contact-quote-form",
+                "label": "Ice quote request form",
+                "formKey": "default-quote-request",
+                "variant": "quote-form-panel",
+                "heading": "Request a portable ice rink rental quote",
+                "submitLabel": "Submit Quote Request",
+                "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+                "sourcePage": "/contact"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "leadRecipientRef missing blocked",
+      "expect": "error",
+      "page": {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "pageSlug": "contact",
+        "template": { "templateKey": "contact" },
+        "ContentData": {
+          "ContentBlocks": [
+            {
+              "type": "formBlock",
+              "content": {
+                "id": "contact-quote-form",
+                "label": "Ice quote request form",
+                "formKey": "default-quote-request",
+                "variant": "quote-form-panel",
+                "heading": "Request a portable ice rink rental quote",
+                "submitLabel": "Submit Quote Request",
+                "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+                "sourcePage": "/contact"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "sourcePage missing blocked",
+      "expect": "error",
+      "page": {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "pageSlug": "contact",
+        "template": { "templateKey": "contact" },
+        "ContentData": {
+          "ContentBlocks": [
+            {
+              "type": "formBlock",
+              "content": {
+                "id": "contact-quote-form",
+                "label": "Ice quote request form",
+                "formKey": "default-quote-request",
+                "variant": "quote-form-panel",
+                "heading": "Request a portable ice rink rental quote",
+                "submitLabel": "Submit Quote Request",
+                "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+                "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "unknown formKey blocked",
+      "expect": "error",
+      "page": {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "pageSlug": "contact",
+        "template": { "templateKey": "contact" },
+        "ContentData": {
+          "ContentBlocks": [
+            {
+              "type": "formBlock",
+              "content": {
+                "id": "contact-quote-form",
+                "label": "Ice quote request form",
+                "formKey": "unknown-form",
+                "variant": "quote-form-panel",
+                "heading": "Request a portable ice rink rental quote",
+                "submitLabel": "Submit Quote Request",
+                "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+                "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+                "sourcePage": "/contact"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "submissionCases": [
+    {
+      "name": "submission payload sanitization passes",
+      "expect": "ok",
+      "formKey": "default-quote-request",
+      "formData": {
+        "fullName": "  Test Person  ",
+        "email": "test@example.com",
+        "phone": "555-0100",
+        "eventCity": "Test City",
+        "eventState": "NY",
+        "eventDateOrDateRange": "December 2026",
+        "eventType": "Corporate event",
+        "venueSetting": "Indoor",
+        "message": "Planning a portable rink activation.",
+        "consent": "true",
+        "honeypot": "",
+        "sourcePage": "/contact",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "formKey": "default-quote-request"
+      }
+    },
+    {
+      "name": "honeypot submission flagged",
+      "expect": "warning",
+      "formKey": "default-quote-request",
+      "formData": {
+        "fullName": "Test Person",
+        "email": "test@example.com",
+        "phone": "555-0100",
+        "eventCity": "Test City",
+        "eventState": "NY",
+        "eventDateOrDateRange": "December 2026",
+        "eventType": "Corporate event",
+        "venueSetting": "Indoor",
+        "message": "Planning a portable rink activation.",
+        "consent": "true",
+        "honeypot": "spam",
+        "sourcePage": "/contact",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "formKey": "default-quote-request"
+      }
+    },
+    {
+      "name": "submission missing hidden sourcePage blocked",
+      "expect": "error",
+      "formKey": "default-quote-request",
+      "formData": {
+        "fullName": "Test Person",
+        "email": "test@example.com",
+        "phone": "555-0100",
+        "eventCity": "Test City",
+        "eventState": "NY",
+        "eventDateOrDateRange": "December 2026",
+        "eventType": "Corporate event",
+        "venueSetting": "Indoor",
+        "message": "Planning a portable rink activation.",
+        "consent": "true",
+        "honeypot": "",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "formKey": "default-quote-request"
+      }
+    },
+    {
+      "name": "submission false consent blocked",
+      "expect": "error",
+      "formKey": "default-quote-request",
+      "formData": {
+        "fullName": "Test Person",
+        "email": "test@example.com",
+        "phone": "555-0100",
+        "eventCity": "Test City",
+        "eventState": "NY",
+        "eventDateOrDateRange": "December 2026",
+        "eventType": "Corporate event",
+        "venueSetting": "Indoor",
+        "message": "Planning a portable rink activation.",
+        "consent": "false",
+        "honeypot": "",
+        "sourcePage": "/contact",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "formKey": "default-quote-request"
+      }
+    }
+  ]
+}

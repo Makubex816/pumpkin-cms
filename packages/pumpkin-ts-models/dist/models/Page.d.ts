@@ -1,4 +1,5 @@
 import { IHtmlBlock } from './IHtmlBlock';
+import type { FormDefinition } from '../forms';
 /**
  * Node position for XYFlow layout persistence
  */
@@ -92,6 +93,10 @@ export interface Page {
      * Lead capture and form configuration metadata.
      */
     formConfig?: PageFormConfig;
+    /**
+     * Optional tenant-scoped form definitions referenced by formBlock sections.
+     */
+    formDefinitions?: FormDefinition[];
     /**
      * Non-secret tenant/domain contact routing metadata. This is configuration
      * status only and must not contain provider credentials.

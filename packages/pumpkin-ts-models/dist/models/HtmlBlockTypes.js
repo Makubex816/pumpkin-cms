@@ -21,6 +21,7 @@ exports.BLOCK_TYPE_MAP = {
     'Gallery': 'GalleryBlock',
     'Testimonials': 'TestimonialsBlock',
     'Contact': 'ContactBlock',
+    'formBlock': 'FormBlock',
     'Blog': 'BlogBlock',
     'customHtml': 'CustomHtmlBlock',
     'trustedEmbed': 'TrustedEmbedBlock'

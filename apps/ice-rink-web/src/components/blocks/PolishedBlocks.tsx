@@ -32,6 +32,8 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import type { IHtmlBlock } from 'pumpkin-ts-models';
+import type { FormDefinition } from 'pumpkin-ts-models';
+import { FormBlockView, type FormBlockSubmitPayload } from 'pumpkin-block-views';
 
 type CmsContent = Record<string, unknown>;
 type CmsBlock = IHtmlBlock & {
@@ -43,9 +45,14 @@ type CmsBlock = IHtmlBlock & {
 
 export interface ContactSubmitPayload {
   formId: string;
+  formKey?: string;
   pageSlug: string;
+  sourcePage?: string;
   siteKey?: string;
   tenantId?: string;
+  formType?: string;
+  staticEndpointRef?: string;
+  leadRecipientRef?: string;
   formData: Record<string, string>;
 }
 
@@ -56,6 +63,9 @@ interface SubmitHandler {
 interface PolishedBlockProps {
   block: CmsBlock;
   pageSlug?: string;
+  tenantId?: string;
+  siteKey?: string;
+  formDefinitions?: FormDefinition[];
   onContactSubmit?: SubmitHandler;
 }
 
@@ -130,6 +140,9 @@ function getFieldName(field: CmsContent, label: string, index: number): string {
 export function renderPolishedBlock({
   block,
   pageSlug,
+  tenantId,
+  siteKey,
+  formDefinitions,
   onContactSubmit,
 }: PolishedBlockProps): React.ReactNode | null {
   switch (block.type) {
@@ -147,6 +160,17 @@ export function renderPolishedBlock({
       return <PolishedPrimaryCTABlock block={block} />;
     case 'Contact':
       return <PolishedContactBlock block={block} pageSlug={pageSlug} onSubmit={onContactSubmit} />;
+    case 'formBlock':
+      return (
+        <FormBlockView
+          block={block as unknown as import('pumpkin-ts-models').FormBlock}
+          definitions={formDefinitions}
+          tenantId={tenantId}
+          siteKey={siteKey}
+          pageSlug={pageSlug}
+          onSubmit={(payload: FormBlockSubmitPayload) => onContactSubmit?.(payload)}
+        />
+      );
     default:
       return null;
   }

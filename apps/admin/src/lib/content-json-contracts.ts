@@ -1,5 +1,5 @@
 import type { IHtmlBlock, Page } from 'pumpkin-ts-models'
-import { validateContentBlocksDesignSystem } from 'pumpkin-ts-models'
+import { validateContentBlocksDesignSystem, validatePageFormBlocks } from 'pumpkin-ts-models'
 import { TENANT_PUBLISHING_PROFILES, normalizeSlug } from './publishing-readiness'
 
 export type TemplateKey =
@@ -91,6 +91,7 @@ const COMMON_ALLOWED_BLOCKS = [
   'FAQ',
   'PrimaryCTA',
   'Contact',
+  'formBlock',
   'Breadcrumbs',
   'SecondaryCTA',
   'ServiceAreaMap',
@@ -177,8 +178,8 @@ export const TEMPLATE_CONTRACTS: Record<TemplateKey, TemplateContract> = {
     requiredPageFields: COMMON_PAGE_FIELDS,
     requiredSeoFields: COMMON_SEO_FIELDS,
     requiredMediaSlots: ['featuredImage'],
-    requiredBlocks: ['Contact'],
-    allowedBlocks: ['Hero', 'FAQ', 'PrimaryCTA', 'Contact', 'Breadcrumbs'],
+    requiredBlocks: ['formBlock'],
+    allowedBlocks: ['Hero', 'FAQ', 'PrimaryCTA', 'Contact', 'formBlock', 'Breadcrumbs', 'customHtml', 'trustedEmbed'],
     requiredFulfillmentFields: COMMON_FULFILLMENT_FIELDS,
     requiredServiceSchemaFields: [],
     requiredLeadFields: COMMON_LEAD_FIELDS,
@@ -499,6 +500,10 @@ function validateBlocks(page: JsonRecord, contract: TemplateContract, errors: Co
   designValidation.warnings.forEach((item) => {
     warnings.push(issue('warning', 'blocks', item.path || 'ContentData.ContentBlocks', item.message))
   })
+
+  const formValidation = validatePageFormBlocks(page)
+  formValidation.errors.forEach((item) => errors.push(issue('error', 'forms', item.path, item.message)))
+  formValidation.warnings.forEach((item) => warnings.push(issue('warning', 'forms', item.path, item.message)))
 }
 
 function validateMedia(page: JsonRecord, contract: TemplateContract, errors: ContractIssue[], warnings: ContractIssue[]) {
@@ -674,9 +679,9 @@ function validateForms(page: JsonRecord, contract: TemplateContract, errors: Con
   if (contract.requiredFormLeadFields.length === 0) return
 
   const blocks = getBlocks(page)
-  const contactBlocks = blocks.filter((block) => stringValue(block.type) === 'Contact')
+  const contactBlocks = blocks.filter((block) => stringValue(block.type) === 'Contact' || stringValue(block.type) === 'formBlock')
   if (contactBlocks.length === 0) {
-    errors.push(issue('error', 'forms', 'ContentData.ContentBlocks', `${contract.label} requires a Contact block or lead capture form.`))
+    errors.push(issue('error', 'forms', 'ContentData.ContentBlocks', `${contract.label} requires a visible formBlock or lead capture form.`))
     return
   }
 
@@ -760,6 +765,15 @@ function getAvailableLeadFields(page: JsonRecord, contactBlocks: JsonRecord[]) {
   }
 
   contactBlocks.forEach((block) => {
+    if (stringValue(block.type) === 'formBlock') {
+      const formKey = stringValue(getPath(block, 'content.formKey'))
+      if (formKey === 'default-quote-request') {
+        ;['name', 'email', 'phone', 'eventDate', 'eventLocation', 'message'].forEach((field) => fields.add(field))
+      } else if (formKey === 'default-contact') {
+        ;['name', 'email', 'phone', 'message'].forEach((field) => fields.add(field))
+      }
+    }
+
     const formFields = getPath(block, 'content.formFields')
     if (!Array.isArray(formFields)) return
 

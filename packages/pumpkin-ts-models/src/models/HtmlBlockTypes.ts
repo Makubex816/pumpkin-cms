@@ -4,6 +4,7 @@ import { PrimaryCtaBlock, SecondaryCtaBlock } from './CtaBlocks';
 import { CardGridBlock, FaqBlock } from './ContentBlocks';
 import { BreadcrumbsBlock, TrustBarBlock, HowItWorksBlock, ServiceAreaMapBlock, LocalProTipsBlock } from './NavigationBlocks';
 import { GalleryBlock, TestimonialsBlock, ContactBlock } from './InteractionBlocks';
+import type { FormBlock } from '../forms';
 import { BlogBlock } from './BlogBlocks';
 import type { CustomHtmlBlock, TrustedEmbedBlock } from '../design-system';
 
@@ -24,6 +25,7 @@ export type HtmlBlock =
   | GalleryBlock
   | TestimonialsBlock
   | ContactBlock
+  | FormBlock
   | BlogBlock
   | CustomHtmlBlock
   | TrustedEmbedBlock;
@@ -45,6 +47,7 @@ export const BLOCK_TYPE_MAP = {
   'Gallery': 'GalleryBlock',
   'Testimonials': 'TestimonialsBlock',
   'Contact': 'ContactBlock',
+  'formBlock': 'FormBlock',
   'Blog': 'BlogBlock',
   'customHtml': 'CustomHtmlBlock',
   'trustedEmbed': 'TrustedEmbedBlock'

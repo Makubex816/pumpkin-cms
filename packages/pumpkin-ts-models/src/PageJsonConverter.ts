@@ -95,7 +95,7 @@ export class PageJsonConverter {
     try {
       const opts = { ...this.defaultOptions, ...options };
       const parsed = JSON.parse(json, opts.reviver);
-      
+
       // Validate basic page structure
       if (!this.isValidPageObject(parsed)) {
         return null;
@@ -161,7 +161,6 @@ export class PageJsonConverter {
         const json = await fs.readFile(filePath, 'utf8');
         return this.fromJson(json, options);
       }
-      
       // Browser environment - would need fetch or file input
       console.warn('File system access not available in browser environment');
       return null;
@@ -180,18 +179,18 @@ export class PageJsonConverter {
       if (typeof require !== 'undefined') {
         const fs = require('fs').promises;
         const path = require('path');
-        
+
         const json = this.toJson(page, options);
         if (!json) return false;
 
         // Ensure directory exists
         const dir = path.dirname(filePath);
         await fs.mkdir(dir, { recursive: true });
-        
+
         await fs.writeFile(filePath, json, 'utf8');
         return true;
       }
-      
+
       console.warn('File system access not available in browser environment');
       return false;
     } catch (error) {
@@ -237,10 +236,11 @@ export class PageJsonConverter {
       case 'Gallery':
       case 'Testimonials':
       case 'Contact':
+      case 'formBlock':
       case 'Blog':
         // For known types, validate and return the block with proper structure
         return this.validateBlockContent(block);
-      
+
       default:
         // For unknown types, create a generic block
         console.warn(`Unknown block type: ${block.type}`);

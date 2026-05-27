@@ -1,6 +1,6 @@
 declare module 'pumpkin-block-views' {
   import type { ComponentType, ReactNode } from 'react';
-  import type { IHtmlBlock, MenuItem, ThemeFooter, ThemeHeader } from 'pumpkin-ts-models';
+  import type { FormBlock, FormDefinition, IHtmlBlock, MenuItem, ThemeFooter, ThemeHeader } from 'pumpkin-ts-models';
 
   export type SlotClassNames = Record<string, string>;
   export type HeroClassNames = SlotClassNames;
@@ -16,6 +16,7 @@ declare module 'pumpkin-block-views' {
   export type GalleryClassNames = SlotClassNames;
   export type TestimonialsClassNames = SlotClassNames;
   export type ContactClassNames = SlotClassNames;
+  export type FormBlockClassNames = SlotClassNames;
   export type BlogClassNames = SlotClassNames;
   export type HeaderClassNames = SlotClassNames;
   export type FooterClassNames = SlotClassNames;
@@ -34,12 +35,33 @@ declare module 'pumpkin-block-views' {
     Gallery?: GalleryClassNames;
     Testimonials?: TestimonialsClassNames;
     Contact?: ContactClassNames;
+    formBlock?: FormBlockClassNames;
     Blog?: BlogClassNames;
+  }
+
+  export interface FormBlockSubmitPayload {
+    formId: string;
+    formKey: string;
+    pageSlug: string;
+    sourcePage: string;
+    tenantId: string;
+    siteKey: string;
+    formType: string;
+    staticEndpointRef: string;
+    leadRecipientRef: string;
+    formData: Record<string, string>;
   }
 
   export interface BlockOverrides {
     Contact?: {
       onSubmit?: (formData: Record<string, string>) => void;
+    };
+    formBlock?: {
+      definitions?: FormDefinition[];
+      tenantId?: string;
+      siteKey?: string;
+      pageSlug?: string;
+      onSubmit?: (payload: FormBlockSubmitPayload) => Promise<void> | void;
     };
     Blog?: {
       renderBody?: (body: string) => ReactNode;
@@ -68,7 +90,18 @@ declare module 'pumpkin-block-views' {
     classNames?: FooterClassNames;
   }
 
+  export interface FormBlockViewProps {
+    block: FormBlock;
+    classNames?: FormBlockClassNames;
+    definitions?: FormDefinition[];
+    tenantId?: string;
+    siteKey?: string;
+    pageSlug?: string;
+    onSubmit?: (payload: FormBlockSubmitPayload) => Promise<void> | void;
+  }
+
   export const BlockViewRenderer: ComponentType<BlockViewRendererProps>;
+  export const FormBlockView: ComponentType<FormBlockViewProps>;
   export const HeaderView: ComponentType<HeaderViewProps>;
   export const FooterView: ComponentType<FooterViewProps>;
 }

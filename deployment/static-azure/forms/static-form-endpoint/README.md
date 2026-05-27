@@ -11,7 +11,7 @@ Browser form -> apps/ice-rink-web /api/contact -> Pumpkin API -> FormEntry -> Le
 Static publishing flow becomes:
 
 ```text
-Static browser form -> external static form endpoint -> Pumpkin API -> FormEntry -> Lead Inbox
+Static browser formBlock -> external static form endpoint -> Pumpkin API -> FormEntry -> Lead Inbox
 ```
 
 ## Files
@@ -93,7 +93,9 @@ The handler:
 - sanitizes field keys and string values
 - rejects honeypot fields
 - validates email shape
-- requires name/email plus quote-request phone and event location or message
+- requires consent
+- supports `default-contact` and `default-quote-request`
+- requires Ice quote requests to include name/email/phone, event city/state, date or date range, event type, venue setting, and message
 - never echoes API keys or credentials
 - returns safe JSON errors
 

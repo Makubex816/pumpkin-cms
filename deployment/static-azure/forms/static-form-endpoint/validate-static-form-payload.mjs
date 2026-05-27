@@ -39,9 +39,9 @@ export function getSiteConfigs(env = process.env) {
         ...sharedLocalOrigins,
       ],
       apiKeyEnv: 'ICE_RINK_RENTALS_API_KEY',
-      defaultFormId: 'contact',
+      defaultFormId: 'default-quote-request',
       defaultLeadRoutingMode: 'manual_review_then_provider_match',
-      defaultRecipientGroup: 'local_admin',
+      defaultRecipientGroup: 'ICE_RINK_RENTALS_LEAD_RECIPIENT',
       staticFormEndpointKey: env.ICE_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY || 'ice-rink-rentals-default',
     },
     {
@@ -55,7 +55,7 @@ export function getSiteConfigs(env = process.env) {
         ...sharedLocalOrigins,
       ],
       apiKeyEnv: 'ROLLER_RINK_RENTALS_API_KEY',
-      defaultFormId: 'contact',
+      defaultFormId: 'default-contact',
       defaultLeadRoutingMode: 'manual_review_then_provider_match',
       defaultRecipientGroup: 'local_admin',
       staticFormEndpointKey: env.ROLLER_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY || 'roller-rink-rentals-default',
@@ -161,9 +161,10 @@ export function validateStaticFormPayload({
   }
 
   const formData = sanitizeFormData(payload.formData);
-  const formId = sanitizeString(payload.formId, 120) || site?.defaultFormId || 'contact';
+  const formKey = normalizeFormKey(sanitizeString(payload.formKey, 120) || sanitizeString(formData.formKey, 120) || sanitizeString(payload.formId, 120) || site?.defaultFormId || 'default-contact');
+  const formId = sanitizeString(payload.formId, 120) || formKey;
   const pageSlug = sanitizeString(payload.pageSlug, 180) || 'contact';
-  const formType = sanitizeString(payload.formType, 120) || sanitizeString(payload?.formConfig?.formType, 120) || 'quote_request';
+  const formType = sanitizeString(payload.formType, 120) || sanitizeString(payload?.formConfig?.formType, 120) || (formKey === 'default-quote-request' ? 'quote-request' : 'contact');
 
   if (!formId) errors.push('formId is required.');
   if (Object.keys(formData).length === 0) errors.push('formData is required.');
@@ -176,8 +177,9 @@ export function validateStaticFormPayload({
   const email = firstNonEmpty(formData, ['email', 'email-address', 'emailAddress']);
   const name = firstNonEmpty(formData, ['name', 'full-name', 'fullName']);
   const phone = firstNonEmpty(formData, ['phone', 'phone-number', 'phoneNumber', 'tel']);
-  const eventLocation = firstNonEmpty(formData, ['event-location', 'eventLocation', 'event_location', 'location', 'venue']);
+  const eventLocation = firstNonEmpty(formData, ['event-location', 'eventLocation', 'event_location', 'eventCity', 'eventState', 'location', 'venue']);
   const message = firstNonEmpty(formData, ['message', 'details', 'comments']);
+  const consent = firstNonEmpty(formData, ['consent', 'terms', 'privacyConsent']);
 
   if (!name) errors.push('Name is required.');
   if (!email) {
@@ -186,7 +188,9 @@ export function validateStaticFormPayload({
     errors.push('Email must be valid.');
   }
 
-  if (formType === 'quote_request') {
+  if (!isTruthy(consent)) errors.push('Consent is required.');
+
+  if (formType === 'quote_request' || formType === 'quote-request' || formKey === 'default-quote-request') {
     if (!phone) errors.push('Phone is required for quote requests.');
     if (!eventLocation && !message) {
       errors.push('Event location or message is required for quote requests.');
@@ -202,6 +206,7 @@ export function validateStaticFormPayload({
     site,
     formData,
     formId,
+    formKey,
     pageSlug,
     formType,
   };
@@ -232,6 +237,16 @@ function normalizeDomain(value) {
 
 function isLocalOrigin(origin) {
   return /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
+}
+
+function isTruthy(value) {
+  return ['true', 'on', 'yes', '1'].includes(String(value || '').toLowerCase());
+}
+
+function normalizeFormKey(value) {
+  if (value === 'contact') return 'default-contact';
+  if (value === 'ice-contact-quote-request') return 'default-quote-request';
+  return value;
 }
 
 function parseInteger(value, fallback) {

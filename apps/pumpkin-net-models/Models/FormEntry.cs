@@ -13,11 +13,35 @@ public class FormEntry
     [JsonPropertyName("tenantId")]
     public string TenantId { get; set; } = string.Empty;
 
+    [JsonPropertyName("siteKey")]
+    public string SiteKey { get; set; } = string.Empty;
+
     [JsonPropertyName("formId")]
     public string FormId { get; set; } = string.Empty;
 
+    [JsonPropertyName("formKey")]
+    public string FormKey { get; set; } = string.Empty;
+
     [JsonPropertyName("pageSlug")]
     public string PageSlug { get; set; } = string.Empty;
+
+    [JsonPropertyName("sourcePage")]
+    public string SourcePage { get; set; } = string.Empty;
+
+    [JsonPropertyName("leadType")]
+    public string LeadType { get; set; } = string.Empty;
+
+    [JsonPropertyName("status")]
+    public string Status { get; set; } = "new";
+
+    [JsonPropertyName("spamStatus")]
+    public string SpamStatus { get; set; } = "clean";
+
+    [JsonPropertyName("consentAccepted")]
+    public bool ConsentAccepted { get; set; } = false;
+
+    [JsonPropertyName("honeypotFilled")]
+    public bool HoneypotFilled { get; set; } = false;
 
     [JsonPropertyName("formData")]
     public Dictionary<string, object> FormData { get; set; } = new();
@@ -48,6 +72,18 @@ public class FormEntryMetadata
 
     [JsonPropertyName("tags")]
     public List<string> Tags { get; set; } = new();
+
+    [JsonPropertyName("spamStatus")]
+    public string SpamStatus { get; set; } = "clean";
+
+    [JsonPropertyName("consentAccepted")]
+    public bool ConsentAccepted { get; set; } = false;
+
+    [JsonPropertyName("leadRecipientRef")]
+    public string LeadRecipientRef { get; set; } = string.Empty;
+
+    [JsonPropertyName("staticEndpointRef")]
+    public string StaticEndpointRef { get; set; } = string.Empty;
 }
 
 public class FormEntryStatusUpdate

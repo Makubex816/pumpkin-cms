@@ -6,6 +6,10 @@ export interface FormEntryMetadata {
   referrer: string;
   status: string;
   tags: string[];
+  spamStatus?: 'clean' | 'suspected-spam';
+  consentAccepted?: boolean;
+  leadRecipientRef?: string;
+  staticEndpointRef?: string;
 }
 
 /**
@@ -14,8 +18,16 @@ export interface FormEntryMetadata {
 export interface FormEntry {
   id: string;
   tenantId: string;
+  siteKey?: string;
   formId: string;
+  formKey?: string;
   pageSlug: string;
+  sourcePage?: string;
+  leadType?: string;
+  status?: string;
+  spamStatus?: 'clean' | 'suspected-spam';
+  consentAccepted?: boolean;
+  honeypotFilled?: boolean;
   formData: Record<string, any>;
   submittedAt: string; // ISO 8601 date string
   ipAddress: string;

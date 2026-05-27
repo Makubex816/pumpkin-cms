@@ -1,6 +1,6 @@
 {
   "schemaVersion": "pumpkin-import-candidate-manifest.v1",
-  "phase": "8C.10",
+  "phase": "8C.11",
   "bundleName": "IceSkatingRinkRentals.com Import Candidate Prep Bundle",
   "bundlePurpose": "review_only_before_cms_import",
   "createdAt": "2026-05-27T00:00:00Z",
@@ -30,7 +30,10 @@
     "ice-contact.import-candidate.json",
     "ice-service-areas.import-candidate.json",
     "ice-launch-import-candidate-package.json",
-    "manifest.json"
+    "manifest.json",
+    "DEFAULT_CONTACT_FORM.md",
+    "default-contact.form-definition.json",
+    "default-quote-request.form-definition.json"
   ],
   "placeholdersResolved": {
     "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
@@ -65,5 +68,11 @@
     "No Azure, Cloudflare, DNS, workflow, or deployment action is included.",
     "No protected config reference is required.",
     "No secrets, API keys, JWTs, Azure tokens, deployment tokens, or Cloudflare tokens are included."
-  ]
+  ],
+  "updatedAt": "2026-05-27T00:00:00Z",
+  "defaultForms": {
+    "defaultContact": "default-contact.form-definition.json",
+    "iceDefaultQuoteRequest": "default-quote-request.form-definition.json",
+    "contactPageFormBlock": "contact-quote-form"
+  }
 }

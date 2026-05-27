@@ -5,10 +5,10 @@ namespace pumpkin_net_models.Models;
 public class Page
 {
     [JsonPropertyName("id")]
-    public string Id 
-    { 
-        get => PageId; 
-        set => PageId = value; 
+    public string Id
+    {
+        get => PageId;
+        set => PageId = value;
     }
 
     [JsonPropertyName("PageId")]
@@ -18,12 +18,12 @@ public class Page
     public string TenantId { get; set; } = string.Empty;
 
     private string _pageSlug = string.Empty;
-    
+
     [JsonPropertyName("pageSlug")]
-    public string PageSlug 
-    { 
+    public string PageSlug
+    {
         get => _pageSlug;
-        set 
+        set
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -33,18 +33,18 @@ public class Page
 
             // Convert to lowercase
             var slug = value.ToLowerInvariant();
-            
+
             // Replace spaces, slashes, and backslashes with hyphens
             slug = slug.Replace(' ', '-')
                        .Replace('/', '-')
                        .Replace('\\', '-');
-            
+
             // Remove consecutive hyphens
             while (slug.Contains("--"))
             {
                 slug = slug.Replace("--", "-");
             }
-            
+
             // Remove leading/trailing hyphens
             _pageSlug = slug.Trim('-');
         }
@@ -127,6 +127,9 @@ public class Page
 
     [JsonPropertyName("formConfig")]
     public PageFormConfig FormConfig { get; set; } = new();
+
+    [JsonPropertyName("formDefinitions")]
+    public List<FormDefinition> FormDefinitions { get; set; } = new();
 
     [JsonPropertyName("domainRouting")]
     public PageDomainRouting DomainRouting { get; set; } = new();

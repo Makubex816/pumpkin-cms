@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PageJsonConverter = exports.resolveTrustedEmbedUrl = exports.getSectionVariantClass = exports.getContainerClass = exports.buildThemeTokenCssVariables = exports.validateThemeTokens = exports.validateThemeDesignSystem = exports.validateContentBlocksDesignSystem = exports.validateCss = exports.sanitizeHtml = exports.validateTrustedEmbedContent = exports.validateCustomHtmlContent = exports.normalizeSectionId = exports.isTrustedEmbedProvider = exports.isSectionVariant = exports.isSectionContainer = exports.isRichHtmlProfile = exports.APPROVED_CLASS_PREFIXES = exports.TRUSTED_EMBED_PROVIDERS = exports.SECTION_VARIANTS = exports.SECTION_CONTAINERS = exports.RICH_HTML_PROFILES = exports.createGenericBlock = exports.isHtmlBlock = exports.isBlockOfType = exports.SUPPORTED_BLOCK_TYPES = exports.BLOCK_TYPE_MAP = exports.tenantToTenantInfo = exports.userToUserInfo = exports.isUserRole = exports.stringToUserRole = exports.userRoleToString = exports.UserRole = void 0;
+exports.PageJsonConverter = exports.resolveTrustedEmbedUrl = exports.getSectionVariantClass = exports.getContainerClass = exports.buildThemeTokenCssVariables = exports.validateThemeTokens = exports.validateThemeDesignSystem = exports.validateContentBlocksDesignSystem = exports.validateCss = exports.sanitizeHtml = exports.validateTrustedEmbedContent = exports.validateCustomHtmlContent = exports.normalizeSectionId = exports.isTrustedEmbedProvider = exports.isSectionVariant = exports.isSectionContainer = exports.isRichHtmlProfile = exports.APPROVED_CLASS_PREFIXES = exports.TRUSTED_EMBED_PROVIDERS = exports.SECTION_VARIANTS = exports.SECTION_CONTAINERS = exports.RICH_HTML_PROFILES = exports.createGenericBlock = exports.isHtmlBlock = exports.isBlockOfType = exports.SUPPORTED_BLOCK_TYPES = exports.BLOCK_TYPE_MAP = exports.validatePageFormBlocks = exports.validateFormSubmissionPayload = exports.validateFormDefinition = exports.validateFormBlockContent = exports.getDefaultFormDefinitions = exports.getDefaultFormDefinition = exports.ICE_DEFAULT_QUOTE_REQUEST_FORM_DEFINITION = exports.FORM_FIELD_TYPES = exports.FORM_BLOCK_VARIANTS = exports.DEFAULT_FORM_KEYS = exports.DEFAULT_CONTACT_FORM_DEFINITION = exports.tenantToTenantInfo = exports.userToUserInfo = exports.isUserRole = exports.stringToUserRole = exports.userRoleToString = exports.UserRole = void 0;
 var User_1 = require("./models/User");
 Object.defineProperty(exports, "UserRole", { enumerable: true, get: function () { return User_1.UserRole; } });
 Object.defineProperty(exports, "userRoleToString", { enumerable: true, get: function () { return User_1.userRoleToString; } });
@@ -9,6 +9,18 @@ Object.defineProperty(exports, "isUserRole", { enumerable: true, get: function (
 Object.defineProperty(exports, "userToUserInfo", { enumerable: true, get: function () { return User_1.userToUserInfo; } });
 var Tenant_1 = require("./models/Tenant");
 Object.defineProperty(exports, "tenantToTenantInfo", { enumerable: true, get: function () { return Tenant_1.tenantToTenantInfo; } });
+var forms_1 = require("./forms");
+Object.defineProperty(exports, "DEFAULT_CONTACT_FORM_DEFINITION", { enumerable: true, get: function () { return forms_1.DEFAULT_CONTACT_FORM_DEFINITION; } });
+Object.defineProperty(exports, "DEFAULT_FORM_KEYS", { enumerable: true, get: function () { return forms_1.DEFAULT_FORM_KEYS; } });
+Object.defineProperty(exports, "FORM_BLOCK_VARIANTS", { enumerable: true, get: function () { return forms_1.FORM_BLOCK_VARIANTS; } });
+Object.defineProperty(exports, "FORM_FIELD_TYPES", { enumerable: true, get: function () { return forms_1.FORM_FIELD_TYPES; } });
+Object.defineProperty(exports, "ICE_DEFAULT_QUOTE_REQUEST_FORM_DEFINITION", { enumerable: true, get: function () { return forms_1.ICE_DEFAULT_QUOTE_REQUEST_FORM_DEFINITION; } });
+Object.defineProperty(exports, "getDefaultFormDefinition", { enumerable: true, get: function () { return forms_1.getDefaultFormDefinition; } });
+Object.defineProperty(exports, "getDefaultFormDefinitions", { enumerable: true, get: function () { return forms_1.getDefaultFormDefinitions; } });
+Object.defineProperty(exports, "validateFormBlockContent", { enumerable: true, get: function () { return forms_1.validateFormBlockContent; } });
+Object.defineProperty(exports, "validateFormDefinition", { enumerable: true, get: function () { return forms_1.validateFormDefinition; } });
+Object.defineProperty(exports, "validateFormSubmissionPayload", { enumerable: true, get: function () { return forms_1.validateFormSubmissionPayload; } });
+Object.defineProperty(exports, "validatePageFormBlocks", { enumerable: true, get: function () { return forms_1.validatePageFormBlocks; } });
 var HtmlBlockTypes_1 = require("./models/HtmlBlockTypes");
 Object.defineProperty(exports, "BLOCK_TYPE_MAP", { enumerable: true, get: function () { return HtmlBlockTypes_1.BLOCK_TYPE_MAP; } });
 Object.defineProperty(exports, "SUPPORTED_BLOCK_TYPES", { enumerable: true, get: function () { return HtmlBlockTypes_1.SUPPORTED_BLOCK_TYPES; } });

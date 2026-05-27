@@ -476,6 +476,7 @@ var allowedFormEntryStatuses = new HashSet<string>(StringComparer.OrdinalIgnoreC
     "won",
     "lost",
     "spam",
+    "suspected-spam",
     "archived"
 };
 

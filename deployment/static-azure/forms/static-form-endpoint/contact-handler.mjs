@@ -89,6 +89,7 @@ export async function handleStaticContactRequest({
   const entry = buildFormEntry({
     site: validation.site,
     formId: validation.formId,
+    formKey: validation.formKey,
     pageSlug: validation.pageSlug,
     formData: validation.formData,
     origin,
@@ -122,16 +123,25 @@ export async function handleStaticContactRequest({
   }
 }
 
-export function buildFormEntry({ site, formId, pageSlug, formData, origin, referrer, userAgent, clientIp, now, payload }) {
+export function buildFormEntry({ site, formId, formKey, pageSlug, formData, origin, referrer, userAgent, clientIp, now, payload }) {
   const domainRoutingKey = sanitizeString(payload?.domainRoutingKey || payload?.formConfig?.domainRoutingKey || site.staticFormEndpointKey, 160);
   const recipientGroup = sanitizeString(payload?.recipientGroup || payload?.formConfig?.recipientGroup || site.defaultRecipientGroup, 160);
   const routingMode = sanitizeString(payload?.routingMode || payload?.formConfig?.routingMode || site.defaultLeadRoutingMode, 160);
+  const consentAccepted = ['true', 'on', 'yes', '1'].includes(String(formData.consent || '').toLowerCase());
 
   return {
     id: `${site.tenantId}-${formId}-${randomUUID()}`,
     tenantId: site.tenantId,
+    siteKey: site.siteKey,
     formId,
+    formKey: formKey || formId,
     pageSlug,
+    sourcePage: sanitizeString(payload?.sourcePage || formData.sourcePage || pageSlug, 180),
+    leadType: (formKey || formId) === 'default-quote-request' ? 'quote-request' : 'contact',
+    status: 'new',
+    spamStatus: 'clean',
+    consentAccepted,
+    honeypotFilled: false,
     formData,
     submittedAt: now().toISOString(),
     ipAddress: clientIp,
@@ -140,10 +150,15 @@ export function buildFormEntry({ site, formId, pageSlug, formData, origin, refer
       source: 'static-form-endpoint',
       referrer,
       status: 'new',
+      spamStatus: 'clean',
+      consentAccepted,
+      leadRecipientRef: recipientGroup,
+      staticEndpointRef: domainRoutingKey,
       tags: [
         site.siteKey,
         pageSlug,
         formId,
+        formKey,
         domainRoutingKey,
         recipientGroup,
         routingMode,

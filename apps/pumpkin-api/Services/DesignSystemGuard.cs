@@ -53,6 +53,27 @@ public static class DesignSystemGuard
         "googleMaps"
     };
 
+    private static readonly HashSet<string> FormBlockVariants = new(StringComparer.Ordinal)
+    {
+        "quote-form-panel",
+        "contact-card",
+        "inline-contact",
+        "compact-contact"
+    };
+
+    private static readonly HashSet<string> FormFieldTypes = new(StringComparer.Ordinal)
+    {
+        "text",
+        "email",
+        "tel",
+        "textarea",
+        "select",
+        "checkbox",
+        "hidden",
+        "dateText",
+        "number"
+    };
+
     private static readonly HashSet<string> BlockedTags = new(StringComparer.OrdinalIgnoreCase)
     {
         "script",
@@ -104,6 +125,20 @@ public static class DesignSystemGuard
     {
         var result = new DesignSystemGuardResult();
         var blocks = page.ContentData?.ContentBlocks ?? new List<HtmlBlockBase>();
+        var formKeys = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "default-contact",
+            "default-quote-request"
+        };
+
+        foreach (var definition in page.FormDefinitions ?? new List<FormDefinition>())
+        {
+            if (!string.IsNullOrWhiteSpace(definition.FormKey))
+            {
+                formKeys.Add(definition.FormKey);
+            }
+            ValidateFormDefinition(definition, $"formDefinitions[{(page.FormDefinitions ?? new List<FormDefinition>()).IndexOf(definition)}]", result);
+        }
 
         for (var index = 0; index < blocks.Count; index++)
         {
@@ -116,6 +151,17 @@ public static class DesignSystemGuard
             {
                 ValidateTrustedEmbedBlock(block, $"ContentData.ContentBlocks[{index}].content", result);
             }
+            else if (block.Type == "formBlock")
+            {
+                ValidateFormBlock(block, formKeys, $"ContentData.ContentBlocks[{index}].content", result);
+            }
+        }
+
+        var requiresVisibleForm = page.PageSlug.Equals("contact", StringComparison.OrdinalIgnoreCase) ||
+                                  string.Equals(page.Template?.TemplateKey, "contact", StringComparison.OrdinalIgnoreCase);
+        if (requiresVisibleForm && blocks.All(block => block.Type != "formBlock"))
+        {
+            Error(result, "contact.formBlock.missing", "Contact pages must include a visible formBlock section.", "ContentData.ContentBlocks");
         }
 
         return result;
@@ -232,6 +278,144 @@ public static class DesignSystemGuard
         if (!IsTrustedEmbedUrl(provider, url))
         {
             Error(result, "trustedEmbed.url", "trustedEmbed url must be an approved https provider URL.", $"{path}.url");
+        }
+    }
+
+    private static void ValidateFormBlock(HtmlBlockBase block, HashSet<string> formKeys, string path, DesignSystemGuardResult result)
+    {
+        using var document = JsonDocument.Parse(JsonSerializer.Serialize(block.Content));
+        var root = document.RootElement;
+        var id = GetString(root, "id");
+        var formKey = GetString(root, "formKey");
+        var variant = GetString(root, "variant");
+        var heading = GetString(root, "heading");
+        var submitLabel = GetString(root, "submitLabel");
+        var staticEndpointRef = GetString(root, "staticEndpointRef");
+        var leadRecipientRef = GetString(root, "leadRecipientRef");
+        var sourcePage = GetString(root, "sourcePage");
+
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            Error(result, "formBlock.id", "formBlock sections require a stable id.", $"{path}.id");
+        }
+
+        if (string.IsNullOrWhiteSpace(formKey))
+        {
+            Error(result, "formBlock.formKey", "formBlock requires formKey.", $"{path}.formKey");
+        }
+        else if (!formKeys.Contains(formKey))
+        {
+            Error(result, "formBlock.formKey.unknown", $"Unknown formKey \"{formKey}\".", $"{path}.formKey");
+        }
+
+        if (!FormBlockVariants.Contains(variant))
+        {
+            Error(result, "formBlock.variant", $"Unsupported formBlock variant \"{variant}\".", $"{path}.variant");
+        }
+
+        if (string.IsNullOrWhiteSpace(heading))
+        {
+            Error(result, "formBlock.heading", "formBlock heading is required.", $"{path}.heading");
+        }
+
+        if (string.IsNullOrWhiteSpace(submitLabel))
+        {
+            Error(result, "formBlock.submitLabel", "formBlock submitLabel is required.", $"{path}.submitLabel");
+        }
+
+        if (string.IsNullOrWhiteSpace(sourcePage))
+        {
+            Error(result, "formBlock.sourcePage", "formBlock sourcePage is required.", $"{path}.sourcePage");
+        }
+
+        ValidateSafeReference(staticEndpointRef, "formBlock.staticEndpointRef", $"{path}.staticEndpointRef", result);
+        ValidateSafeReference(leadRecipientRef, "formBlock.leadRecipientRef", $"{path}.leadRecipientRef", result);
+
+        if (ContainsSecretLike(root))
+        {
+            Error(result, "formBlock.secretLike", "Secret-like values are not allowed in formBlock configuration.", path);
+        }
+    }
+
+    private static void ValidateFormDefinition(FormDefinition definition, string path, DesignSystemGuardResult result)
+    {
+        if (string.IsNullOrWhiteSpace(definition.Id))
+        {
+            Error(result, "form.id", "Form definition id is required.", $"{path}.id");
+        }
+        if (string.IsNullOrWhiteSpace(definition.TenantId))
+        {
+            Error(result, "form.tenantId", "Form definition tenantId is required.", $"{path}.tenantId");
+        }
+        if (string.IsNullOrWhiteSpace(definition.SiteKey))
+        {
+            Error(result, "form.siteKey", "Form definition siteKey is required.", $"{path}.siteKey");
+        }
+        if (string.IsNullOrWhiteSpace(definition.FormKey))
+        {
+            Error(result, "form.formKey", "Form definition formKey is required.", $"{path}.formKey");
+        }
+        if (definition.Status is not ("draft" or "active" or "archived"))
+        {
+            Error(result, "form.status", "Form status must be draft, active, or archived.", $"{path}.status");
+        }
+        if (definition.SubmitAction != "form-entry")
+        {
+            Error(result, "form.submitAction", "Default production forms must submit to FormEntry.", $"{path}.submitAction");
+        }
+
+        ValidateSafeReference(definition.StaticEndpointRef, "form.staticEndpointRef", $"{path}.staticEndpointRef", result);
+        ValidateSafeReference(definition.LeadRecipientRef, "form.leadRecipientRef", $"{path}.leadRecipientRef", result);
+        if (!string.IsNullOrWhiteSpace(definition.NotificationEmailRef))
+        {
+            ValidateSafeReference(definition.NotificationEmailRef, "form.notificationEmailRef", $"{path}.notificationEmailRef", result);
+        }
+
+        var names = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var field in definition.Fields.Concat(definition.HiddenFields))
+        {
+            var fieldPath = $"{path}.fields.{field.Name}";
+            if (string.IsNullOrWhiteSpace(field.Name))
+            {
+                Error(result, "form.field.name", "Form field name is required.", fieldPath);
+            }
+            else if (!Regex.IsMatch(field.Name, "^[A-Za-z][A-Za-z0-9_-]{1,80}$"))
+            {
+                Error(result, "form.field.name", $"Invalid form field name \"{field.Name}\".", fieldPath);
+            }
+
+            if (!FormFieldTypes.Contains(field.Type))
+            {
+                Error(result, "form.field.type", $"Unsupported form field type \"{field.Type}\".", $"{fieldPath}.type");
+            }
+
+            if (field.Type == "select" && field.Options.Count == 0)
+            {
+                Error(result, "form.field.options", $"Select field \"{field.Name}\" requires options.", $"{fieldPath}.options");
+            }
+
+            if (!string.IsNullOrWhiteSpace(field.Name) && !names.Add(field.Name))
+            {
+                Error(result, "form.field.duplicate", $"Duplicate field name \"{field.Name}\".", fieldPath);
+            }
+        }
+
+        if (!names.Contains("consent"))
+        {
+            Error(result, "form.consent", "Default forms must include a consent field.", $"{path}.fields");
+        }
+        if (!names.Contains("honeypot"))
+        {
+            Error(result, "form.honeypot", "Default forms must include a honeypot field.", $"{path}.fields");
+        }
+        if (!names.Contains("tenantId") || !names.Contains("siteKey") || !names.Contains("formKey") || !names.Contains("sourcePage"))
+        {
+            Error(result, "form.hiddenFields", "Default forms must include tenantId, siteKey, formKey, and sourcePage hidden fields.", $"{path}.hiddenFields");
+        }
+
+        if (ContainsSecretLike(JsonSerializer.SerializeToElement(definition)))
+        {
+            Error(result, "form.secretLike", "Secret-like values are not allowed in form definitions.", path);
         }
     }
 
@@ -411,6 +595,36 @@ public static class DesignSystemGuard
                lower.StartsWith("vbscript:", StringComparison.Ordinal) ||
                lower.StartsWith("file:", StringComparison.Ordinal) ||
                lower.StartsWith("blob:", StringComparison.Ordinal);
+    }
+
+    private static void ValidateSafeReference(string value, string code, string path, DesignSystemGuardResult result)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            Error(result, code, "Non-secret reference name is required.", path);
+            return;
+        }
+
+        if (!Regex.IsMatch(value, "^[A-Z0-9_:-]{3,160}$"))
+        {
+            Error(result, code, "Reference values must be non-secret names, not URLs or credentials.", path);
+        }
+    }
+
+    private static bool ContainsSecretLike(JsonElement element)
+    {
+        switch (element.ValueKind)
+        {
+            case JsonValueKind.String:
+                var value = element.GetString() ?? string.Empty;
+                return Regex.IsMatch(value, "\\bBearer\\s+[A-Za-z0-9._~-]+|\\beyJ[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\b|\\bsk-[A-Za-z0-9]{20,}\\b|\\b(AccountKey|SharedAccessKey|DefaultEndpointsProtocol|EndpointSuffix)=", RegexOptions.IgnoreCase);
+            case JsonValueKind.Array:
+                return element.EnumerateArray().Any(ContainsSecretLike);
+            case JsonValueKind.Object:
+                return element.EnumerateObject().Any(property => ContainsSecretLike(property.Value));
+            default:
+                return false;
+        }
     }
 
     private static string GetString(JsonElement element, string property)

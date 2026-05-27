@@ -189,6 +189,16 @@ public static class PumpkinManager
             if (formEntry == null)
                 return Results.BadRequest("Form entry data is required");
 
+            var submissionValidation = FormSubmissionGuard.Sanitize(formEntry);
+            if (!submissionValidation.Ok)
+            {
+                return Results.BadRequest(new
+                {
+                    errors = submissionValidation.Errors.Select(issue => issue.Message).ToList(),
+                    warnings = submissionValidation.Warnings.Select(issue => issue.Message).ToList()
+                });
+            }
+
             if (string.IsNullOrEmpty(formEntry.FormId))
                 return Results.BadRequest("Form ID is required");
 

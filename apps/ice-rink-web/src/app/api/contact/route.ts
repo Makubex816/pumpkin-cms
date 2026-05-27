@@ -5,7 +5,14 @@ const API_URL = (process.env.PUMPKIN_API_URL || 'http://localhost:5064').replace
 
 interface ContactRequestBody {
   formId?: unknown;
+  formKey?: unknown;
   pageSlug?: unknown;
+  sourcePage?: unknown;
+  siteKey?: unknown;
+  tenantId?: unknown;
+  formType?: unknown;
+  staticEndpointRef?: unknown;
+  leadRecipientRef?: unknown;
   formData?: unknown;
 }
 
@@ -60,14 +67,31 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Contact form data is required.' }, { status: 400 });
   }
 
-  const formId = getString(body.formId, 'contact');
-  const pageSlug = getString(body.pageSlug, 'contact');
+  const rawFormKey = getString(body.formKey, getString(body.formId, 'default-contact'));
+  const formKey = rawFormKey === 'contact'
+    ? 'default-contact'
+    : rawFormKey === 'ice-contact-quote-request'
+      ? 'default-quote-request'
+      : rawFormKey;
+  const formId = getString(body.formId, formKey);
+  const pageSlug = getString(body.pageSlug, getString(body.sourcePage, 'contact'));
   const tenantId = site.tenantId;
+  const siteKey = site.key;
+  const spamStatus = formData.honeypot?.trim() ? 'suspected-spam' : 'clean';
+  const consentAccepted = ['true', 'on', 'yes', '1'].includes((formData.consent || '').toLowerCase());
   const formEntry = {
     id: `${tenantId}-${formId}-${crypto.randomUUID()}`,
     tenantId,
+    siteKey,
     formId,
+    formKey,
     pageSlug,
+    sourcePage: getString(body.sourcePage, pageSlug),
+    leadType: formKey === 'default-quote-request' ? 'quote-request' : 'contact',
+    status: spamStatus === 'suspected-spam' ? 'suspected-spam' : 'new',
+    spamStatus,
+    consentAccepted,
+    honeypotFilled: spamStatus === 'suspected-spam',
     formData,
     submittedAt: new Date().toISOString(),
     ipAddress: getClientIp(request),
@@ -75,8 +99,12 @@ export async function POST(request: NextRequest) {
     metadata: {
       source: 'ice-rink-web',
       referrer: request.headers.get('referer') ?? '',
-      status: 'new',
-      tags: [site.key, pageSlug, formId],
+      status: spamStatus === 'suspected-spam' ? 'suspected-spam' : 'new',
+      tags: [site.key, pageSlug, formId, formKey, spamStatus],
+      spamStatus,
+      consentAccepted,
+      leadRecipientRef: getString(body.leadRecipientRef),
+      staticEndpointRef: getString(body.staticEndpointRef),
     },
   };
 

@@ -38,6 +38,41 @@ export type {
   FormEntryMetadata
 } from './models/FormEntry';
 
+// Form definition and default form system
+export type {
+  DefaultFormKey,
+  FormBlock,
+  FormBlockContent,
+  FormBlockVariant,
+  FormDefinition,
+  FormDefinitionConsent,
+  FormDefinitionField,
+  FormDefinitionRouting,
+  FormDefinitionSpamProtection,
+  FormDefinitionStatus,
+  FormDefinitionType,
+  FormFieldType,
+  FormSpamStatus,
+  FormSubmissionPayload,
+  FormSubmitAction,
+  FormValidationIssue,
+  FormValidationResult
+} from './forms';
+
+export {
+  DEFAULT_CONTACT_FORM_DEFINITION,
+  DEFAULT_FORM_KEYS,
+  FORM_BLOCK_VARIANTS,
+  FORM_FIELD_TYPES,
+  ICE_DEFAULT_QUOTE_REQUEST_FORM_DEFINITION,
+  getDefaultFormDefinition,
+  getDefaultFormDefinitions,
+  validateFormBlockContent,
+  validateFormDefinition,
+  validateFormSubmissionPayload,
+  validatePageFormBlocks
+} from './forms';
+
 // Media asset models
 export type {
   MediaAsset,

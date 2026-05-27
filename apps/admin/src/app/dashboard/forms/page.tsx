@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
 import type { FormEntry } from 'pumpkin-ts-models'
 
-const STATUS_OPTIONS = ['all', 'new', 'reviewed', 'contacted', 'quoted', 'won', 'lost', 'spam', 'archived'] as const
+const STATUS_OPTIONS = ['all', 'new', 'reviewed', 'contacted', 'quoted', 'won', 'lost', 'spam', 'suspected-spam', 'archived'] as const
 
 type StatusFilter = (typeof STATUS_OPTIONS)[number]
 type LeadField = 'name' | 'email' | 'phone' | 'eventDate' | 'eventLocation'
@@ -286,7 +286,7 @@ function Metric({ label, value }: { label: string; value: string | number }) {
 function StatusBadge({ status }: { status: string }) {
   const styles = status === 'new'
     ? 'border-blue-200 bg-blue-50 text-blue-800'
-    : status === 'spam' || status === 'lost'
+    : status === 'spam' || status === 'suspected-spam' || status === 'lost'
       ? 'border-red-200 bg-red-50 text-red-800'
       : status === 'won'
         ? 'border-green-200 bg-green-50 text-green-800'
@@ -338,8 +338,8 @@ function getLeadField(entry: FormEntry, field: LeadField) {
     name: ['name', 'fullName', 'contactName', 'firstName'],
     email: ['email', 'emailAddress', 'contactEmail'],
     phone: ['phone', 'phoneNumber', 'telephone', 'contactPhone'],
-    eventDate: ['eventDate', 'date', 'event_date', 'event-date', 'preferredDate'],
-    eventLocation: ['eventLocation', 'location', 'event_location', 'event-location', 'city', 'venue'],
+    eventDate: ['eventDate', 'eventDateOrDateRange', 'date', 'event_date', 'event-date', 'preferredDate'],
+    eventLocation: ['eventLocation', 'eventCity', 'eventState', 'location', 'event_location', 'event-location', 'city', 'venue'],
   }
 
   const formData = entry.formData || {}

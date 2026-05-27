@@ -4,6 +4,8 @@
 
 - LEAD_RECIPIENT_REF -> ICE_RINK_RENTALS_LEAD_RECIPIENT
 - STATIC_CONTACT_ENDPOINT_REF -> ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT
+- default contact form key -> default-contact
+- primary Ice quote form key -> default-quote-request
 - tenantId -> ice-rink-rentals
 - siteKey -> ice-rink-rentals
 - domain -> iceskatingrinkrentals.com
@@ -19,6 +21,13 @@
 - HUMAN_APPROVALS: content, design, SEO/schema, operations/form, and technical approval are not recorded.
 - ADMIN_PREFLIGHT: admin import/export dry-run has not been run against this candidate.
 
+## Form Policy
+
+- `/contact` must render the visible `contact-quote-form` formBlock.
+- The form works without public phone/email display.
+- `ICE_RINK_RENTALS_LEAD_RECIPIENT` is an internal non-secret reference name, not a public email address.
+- Real recipient routing and endpoint URLs must be configured outside page JSON.
+
 ## Removed From Customer-Facing Candidate Copy
 
 - TARGET_CITY
@@ -33,5 +42,5 @@ No city/location page is created in this phase. The first city page must wait fo
 - Any unresolved public placeholder.
 - Any unapproved media reference.
 - Any unsupported service-area or city claim.
-- Any unverified form behavior.
+- Any missing or unverified visible form behavior.
 - Any failed static/staging validator.

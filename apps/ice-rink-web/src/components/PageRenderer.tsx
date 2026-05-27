@@ -52,6 +52,8 @@ export function PageRenderer({
         ...payload,
         siteKey: payload.siteKey || page.tenantId,
         tenantId: payload.tenantId || page.tenantId,
+        formKey: payload.formKey || payload.formId,
+        sourcePage: payload.sourcePage || page.pageSlug,
       }),
     });
     const result = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
@@ -84,6 +86,9 @@ export function PageRenderer({
         const polishedBlock = renderPolishedBlock({
           block: blockForRender,
           pageSlug: page.pageSlug,
+          tenantId: page.tenantId,
+          siteKey: page.tenantId,
+          formDefinitions: page.formDefinitions,
           onContactSubmit: handleContactSubmit,
         });
 
@@ -102,6 +107,13 @@ export function PageRenderer({
                         pageSlug: page.pageSlug,
                         formData,
                       }),
+                  },
+                  formBlock: {
+                    definitions: page.formDefinitions,
+                    tenantId: page.tenantId,
+                    siteKey: page.tenantId,
+                    pageSlug: page.pageSlug,
+                    onSubmit: handleContactSubmit,
                   },
                   Blog: { renderBody: renderBlogBody },
                 }}
@@ -136,6 +148,7 @@ function getSectionId(block: CmsBlock): string {
     FAQ: 'faq',
     Blog: 'blog',
     Contact: 'contact',
+    formBlock: 'contact',
     Testimonials: 'testimonials',
     Gallery: 'gallery',
     ServiceAreaMap: 'service-area-map',

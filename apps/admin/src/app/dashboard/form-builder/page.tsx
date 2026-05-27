@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
+import { getDefaultFormDefinitions } from 'pumpkin-ts-models'
 import type { IHtmlBlock, Page, PageChangeSource, PageFormConfig } from 'pumpkin-ts-models'
 
 const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
@@ -118,6 +119,10 @@ export default function FormBuilderPage() {
   }, [token, currentTenant])
 
   const forms = useMemo(() => buildFormDescriptors(pages), [pages])
+  const defaultDefinitions = useMemo(
+    () => currentTenant ? getDefaultFormDefinitions(currentTenant.tenantId, currentTenant.tenantId) : [],
+    [currentTenant],
+  )
 
   useEffect(() => {
     if (selectedFormKey && forms.some((form) => form.key === selectedFormKey)) return
@@ -357,6 +362,8 @@ export default function FormBuilderPage() {
       {error && <div className="card border-red-200 bg-red-50 text-sm text-red-800">{error}</div>}
       {success && <div className="card border-green-200 bg-green-50 text-sm text-green-800">{success}</div>}
 
+      <DefaultFormsPanel definitions={defaultDefinitions} />
+
       {!loading && !error && forms.length === 0 && (
         <div className="card">
           <h2 className="text-lg font-semibold text-neutral-900">No Form Templates Found</h2>
@@ -492,6 +499,45 @@ export default function FormBuilderPage() {
         </>
       )}
     </div>
+  )
+}
+
+function DefaultFormsPanel({ definitions }: { definitions: ReturnType<typeof getDefaultFormDefinitions> }) {
+  if (definitions.length === 0) return null
+
+  return (
+    <section className="card overflow-hidden">
+      <h2 className="text-lg font-semibold text-neutral-900">System Default Forms</h2>
+      <p className="mt-1 text-sm text-neutral-600">
+        Default forms are tenant-scoped, FormEntry-backed definitions available to formBlock sections. Reference names are shown here; secrets are not stored in page JSON.
+      </p>
+      <div className="mt-4 overflow-x-auto">
+        <table className="min-w-full divide-y divide-neutral-200 text-sm">
+          <thead className="bg-neutral-50 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500">
+            <tr>
+              <th className="px-4 py-3">Form Key</th>
+              <th className="px-4 py-3">Type</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Fields</th>
+              <th className="px-4 py-3">Static Endpoint Ref</th>
+              <th className="px-4 py-3">Lead Recipient Ref</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-neutral-100 bg-white">
+            {definitions.map((definition) => (
+              <tr key={definition.formKey}>
+                <td className="px-4 py-3 font-medium text-neutral-900">{definition.formKey}</td>
+                <td className="px-4 py-3 text-neutral-700">{definition.formType}</td>
+                <td className="px-4 py-3 text-neutral-700">{definition.systemDefault ? `${definition.status} system default` : definition.status}</td>
+                <td className="px-4 py-3 text-neutral-700">{definition.fields.length + definition.hiddenFields.length}</td>
+                <td className="px-4 py-3 text-neutral-700">{definition.staticEndpointRef}</td>
+                <td className="px-4 py-3 text-neutral-700">{definition.leadRecipientRef}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   )
 }
 

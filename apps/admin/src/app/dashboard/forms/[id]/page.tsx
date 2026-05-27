@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
 import type { FormEntry } from 'pumpkin-ts-models'
 
-const STATUS_OPTIONS = ['new', 'reviewed', 'contacted', 'quoted', 'won', 'lost', 'spam', 'archived'] as const
+const STATUS_OPTIONS = ['new', 'reviewed', 'contacted', 'quoted', 'won', 'lost', 'spam', 'suspected-spam', 'archived'] as const
 
 type LeadStatus = (typeof STATUS_OPTIONS)[number]
 type LeadField = 'name' | 'email' | 'phone' | 'eventDate' | 'eventLocation'
@@ -285,8 +285,8 @@ function getLeadField(entry: FormEntry, field: LeadField) {
     name: ['name', 'fullName', 'contactName', 'firstName'],
     email: ['email', 'emailAddress', 'contactEmail'],
     phone: ['phone', 'phoneNumber', 'telephone', 'contactPhone'],
-    eventDate: ['eventDate', 'date', 'event_date', 'event-date', 'preferredDate'],
-    eventLocation: ['eventLocation', 'location', 'event_location', 'event-location', 'city', 'venue'],
+    eventDate: ['eventDate', 'eventDateOrDateRange', 'date', 'event_date', 'event-date', 'preferredDate'],
+    eventLocation: ['eventLocation', 'eventCity', 'eventState', 'location', 'event_location', 'event-location', 'city', 'venue'],
   }
 
   const formData = entry.formData || {}
