@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "ice-import-readiness-input-request.v1",
+  "createdAt": "2026-05-27T00:00:00Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "primaryFocus": "IceSkatingRinkRentals.com",
+  "rollerStatus": "paused",
+  "currentReadiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForLocalCmsDraftImport": false,
+    "readyForStaticRegeneration": false,
+    "readyForProductionIndexing": false
+  },
+  "sourceReportsReviewed": [
+    "PUMPKIN_ICE_HOMEPAGE_MEDIA_UPLOAD_SELECTION_REPORT.md",
+    "PUMPKIN_ICE_FINAL_APPROVAL_RESOLUTION_PHASE8C13_REPORT.md",
+    "PUMPKIN_ICE_HOMEPAGE_JSON_MEDIA_INTAKE_PHASE8C14_REPORT.md"
+  ],
+  "sourceFoldersReviewed": [
+    "content-review/ice-homepage-media-upload-selection/",
+    "content-review/ice-launch-phase8c13-approval-resolution/",
+    "content-review/ice-homepage-phase8c14-validated/"
+  ],
+  "requiredRawMediaFolder": "content-review/ice-homepage-media-input/",
+  "expectedHomepageRawMediaFiles": [
+    "CorporateIceRinkRentalEvent.png",
+    "HolidayIceRink.png",
+    "IceRinkRentalsSetup.png",
+    "IceSkatingRinkRentalsLogo.png",
+    "WinterFestIceRinkRentals.png"
+  ],
+  "safeResolvedRefs": {
+    "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "staticContactEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "defaultQuoteFormKey": "default-quote-request",
+    "canonicalServiceRoute": "/service-areas",
+    "futureCityRoutePattern": "/state-city"
+  },
+  "blockersBeforeCmsImport": [
+    "actual MediaAsset upload or approved selection",
+    "approved phone/email display policy",
+    "legal/business display name",
+    "primary service-area wording",
+    "primary region wording",
+    "human approvals",
+    "admin import/export preflight"
+  ],
+  "outputs": [
+    "README.md",
+    "REQUIRED_BUSINESS_VALUES.md",
+    "REQUIRED_MEDIA_FILES.md",
+    "REQUIRED_MEDIA_SLOT_ASSIGNMENTS.md",
+    "REQUIRED_APPROVALS.md",
+    "CMS_IMPORT_BLOCKER_MATRIX.md",
+    "NEXT_ACTION_CHECKLIST.md",
+    "manifest.json"
+  ],
+  "nextTechnicalStepAfterInputs": "MediaAsset upload/selection execution, then CMS import preflight.",
+  "noGoConfirmations": {
+    "cmsRecordsChanged": false,
+    "mediaRecordsCreated": false,
+    "staticPackagesRegenerated": false,
+    "azureTouched": false,
+    "cloudflareDnsTouched": false,
+    "protectedConfigTouched": false,
+    "rawMediaStaged": false
+  }
+}
