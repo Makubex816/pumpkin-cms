@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "homepage-media-upload-selection-output-manifest.v1",
+  "phase": "homepage-media-upload-selection",
+  "createdAt": "2026-05-27T00:00:00Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "sourceStatus": {
+    "schemaVersion": "homepage-media-upload-selection-source-status.v1",
+    "phase": "homepage-media-upload-selection",
+    "createdAt": "2026-05-27T00:00:00Z",
+    "tenantId": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "sourceFolder": "content-review/ice-homepage-media-input",
+    "sourceFolderExists": false,
+    "expectedFiles": [
+      {
+        "fileName": "CorporateIceRinkRentalEvent.png",
+        "expectedPath": "content-review/ice-homepage-media-input/CorporateIceRinkRentalEvent.png",
+        "present": false,
+        "details": null
+      },
+      {
+        "fileName": "HolidayIceRink.png",
+        "expectedPath": "content-review/ice-homepage-media-input/HolidayIceRink.png",
+        "present": false,
+        "details": null
+      },
+      {
+        "fileName": "IceRinkRentalsSetup.png",
+        "expectedPath": "content-review/ice-homepage-media-input/IceRinkRentalsSetup.png",
+        "present": false,
+        "details": null
+      },
+      {
+        "fileName": "IceSkatingRinkRentalsLogo.png",
+        "expectedPath": "content-review/ice-homepage-media-input/IceSkatingRinkRentalsLogo.png",
+        "present": false,
+        "details": null
+      },
+      {
+        "fileName": "WinterFestIceRinkRentals.png",
+        "expectedPath": "content-review/ice-homepage-media-input/WinterFestIceRinkRentals.png",
+        "present": false,
+        "details": null
+      }
+    ],
+    "discoveredFiles": [],
+    "sourceFileCountFound": 0,
+    "expectedFileCountFound": 0,
+    "uploadFeasibility": "blocked_missing_raw_media_input_folder_or_files",
+    "uploadAttempted": false,
+    "uploadSkippedReason": "Raw media files were not present in the local media input folder; continuing with manifest-only upload and selection prep.",
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "cmsPageRecordsChanged": false,
+    "cmsThemeRecordsChanged": false,
+    "mediaAssetRecordsCreated": false,
+    "rollerStatus": "paused"
+  },
+  "sourceCandidate": "content-review/ice-homepage-phase8c14b-normalized/proposed-homepage.normalizer-verified.json",
+  "previousManifestOnlyPackage": "content-review/ice-homepage-phase8c15-media-binding/",
+  "outputs": [
+    "README.md",
+    "MEDIA_SOURCE_STATUS.md",
+    "MEDIA_UPLOAD_SELECTION_PLAN.md",
+    "MEDIA_ASSET_RECORDS_OR_MANIFEST.md",
+    "HOMEPAGE_MEDIA_BINDING_RESULT.md",
+    "homepage-mediaasset-bindings.json",
+    "homepage-media-upload-manifest.json",
+    "proposed-homepage.media-selected-candidate.json",
+    "homepage-media-selected-package.json",
+    "manifest.json"
+  ],
+  "readiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForLocalCmsDraftImport": false,
+    "readyForStaticRegeneration": false,
+    "readyForProductionIndexing": false,
+    "cmsImportReason": "Not CMS-import-ready until real MediaAsset IDs, business values, human approval, and admin import/export preflight are complete.",
+    "localPreviewReason": "Local CMS draft import still needs explicit authorization and a preflight decision about unresolved media.",
+    "productionReason": "Production requires CMS import, fresh static regeneration, Azure default-host staging review, form smoke tests, and final cutover approval."
+  },
+  "rollerStatus": "paused"
+}
