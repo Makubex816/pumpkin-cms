@@ -1,0 +1,302 @@
+{
+  "schemaVersion": "pumpkin-review-package.v1",
+  "contentPackageVersion": "phase8c6.design-system.v1",
+  "packageName": "IceSkatingRinkRentals.com Phase 8C.6 Design-System Template Review Package",
+  "packagePurpose": "human_review_only_before_cms_import",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "primaryFocus": "IceSkatingRinkRentals.com",
+  "pausedTenantNotice": "RollerRinkRentals.com remains paused and is not included in this package.",
+  "createdAt": "2026-05-26T00:00:00Z",
+  "createdBy": "codex_phase8c6_review_package",
+  "importReadiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForProductionPublishing": false,
+    "reason": "Templates intentionally retain placeholders, media asset gaps, endpoint placeholders, and missing human approval."
+  },
+  "routeDecisions": {
+    "homepage": {
+      "route": "/",
+      "slug": "home",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/"
+    },
+    "contact": {
+      "route": "/contact",
+      "slug": "contact",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/contact"
+    },
+    "serviceAreas": {
+      "route": "/service-areas",
+      "slug": "service-areas",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/service-areas",
+      "aliasNote": "/areas-served is a planned redirect or alias candidate only after route approval."
+    },
+    "targetCityPage": {
+      "status": "excluded_until_target_city_is_confirmed",
+      "placeholderRouteOptions": [
+        "/ice-rink-rentals-{{TARGET_CITY_SLUG}}",
+        "/service-areas/{{TARGET_CITY_SLUG}}"
+      ]
+    }
+  },
+  "pageFiles": [
+    {
+      "label": "Homepage",
+      "file": "ice-homepage.design-system.template.json",
+      "route": "/",
+      "slug": "home",
+      "templateKey": "home",
+      "status": "needs_human_review"
+    },
+    {
+      "label": "Contact",
+      "file": "ice-contact.design-system.template.json",
+      "route": "/contact",
+      "slug": "contact",
+      "templateKey": "contact",
+      "status": "needs_human_review"
+    },
+    {
+      "label": "Service Areas",
+      "file": "ice-service-areas.design-system.template.json",
+      "route": "/service-areas",
+      "slug": "service-areas",
+      "templateKey": "service",
+      "status": "needs_human_review"
+    }
+  ],
+  "pagesIncluded": [
+    "Homepage",
+    "Contact page",
+    "Service Areas page"
+  ],
+  "pagesIntentionallyExcluded": [
+    {
+      "label": "Targeted city/location page",
+      "reason": "No specific city/location was confirmed in the reviewed repo reports."
+    },
+    {
+      "label": "RollerRinkRentals.com pages",
+      "reason": "Roller is paused."
+    }
+  ],
+  "placeholdersRemaining": [
+    "{{PRIMARY_PHONE}}",
+    "{{PRIMARY_EMAIL}}",
+    "{{PRIMARY_SERVICE_AREA}}",
+    "{{PRIMARY_REGION}}",
+    "{{TARGET_CITY}}",
+    "{{TARGET_STATE}}",
+    "{{TARGET_REGION}}",
+    "{{TARGET_CITY_SLUG}}",
+    "{{LEAD_RECIPIENT_REF}}",
+    "{{STATIC_CONTACT_ENDPOINT_REF}}"
+  ],
+  "themeDesignSystemRecommendation": {
+    "version": "phase8c5",
+    "tenantId": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "tokens": {
+      "colors": {
+        "primary": "#0369a1",
+        "accent": "#0f766e",
+        "ink": "#102033",
+        "muted": "#4b6478",
+        "surface": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "typography": {
+        "headingFamily": "system-ui",
+        "bodyFamily": "system-ui",
+        "baseSize": "1rem",
+        "heroSize": "3rem"
+      },
+      "spacing": {
+        "section": "4rem",
+        "card": "1.25rem",
+        "inlineGap": "1rem"
+      },
+      "layout": {
+        "sectionGap": "3rem",
+        "gridGap": "1rem"
+      },
+      "containerWidths": {
+        "standard": "68rem",
+        "wide": "82rem",
+        "narrow": "48rem"
+      },
+      "borderRadius": {
+        "card": "8px",
+        "button": "6px",
+        "panel": "8px"
+      },
+      "buttons": {
+        "primaryBackground": "#0369a1",
+        "primaryColor": "#ffffff"
+      },
+      "cards": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "heroSections": {
+        "background": "#eef8fc",
+        "text": "#102033"
+      },
+      "ctaBands": {
+        "background": "#0f766e",
+        "text": "#ffffff"
+      },
+      "forms": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "faqBlocks": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "mediaBlocks": {
+        "background": "#eef8fc"
+      },
+      "tables": {
+        "header": "#eef8fc",
+        "border": "#d6e4ee"
+      },
+      "shadows": {
+        "card": "0 16px 40px rgba(16, 32, 51, 0.10)"
+      },
+      "backgrounds": {
+        "frost": "#eef8fc",
+        "quiet": "#f7fbfd"
+      }
+    },
+    "domainCss": "[data-tenant-id=\"ice-rink-rentals\"] .ice-cta-link { color: var(--cms-colors-primary); font-weight: 700; text-decoration: underline; }\n[data-tenant-id=\"ice-rink-rentals\"] .cms-panel { background: var(--cms-colors-surface); border: 1px solid var(--cms-colors-border); border-radius: var(--cms-border-radius-panel); padding: var(--cms-spacing-card); }",
+    "templateCss": {
+      "premium-hero": ".section-premium-hero .ice-hero-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "split-feature": ".section-split-feature .cms-layout { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "trust-band": ".section-trust-band .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }",
+      "event-card-grid": ".section-event-card-grid .ice-event-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "service-area-grid": ".section-service-area-grid .ice-area-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "quote-form-panel": ".section-quote-form-panel .ice-quote-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "faq-panel": ".section-faq-panel .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }",
+      "media-feature": ".section-media-feature .media-feature { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "table-comparison": ".section-table-comparison table { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "final-cta": ".section-final-cta .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }"
+    },
+    "approvedClasses": [
+      "cms-copy",
+      "cms-layout",
+      "cms-panel",
+      "cms-eyebrow",
+      "section-premium-hero",
+      "section-split-feature",
+      "section-trust-band",
+      "section-event-card-grid",
+      "section-service-area-grid",
+      "section-quote-form-panel",
+      "section-faq-panel",
+      "section-media-feature",
+      "section-table-comparison",
+      "section-final-cta",
+      "ice-hero-grid",
+      "ice-proof-row",
+      "ice-proof-item",
+      "ice-event-grid",
+      "ice-event-card",
+      "ice-check-list",
+      "ice-process-note",
+      "ice-service-teaser",
+      "ice-quote-grid",
+      "ice-details-list",
+      "ice-response-note",
+      "ice-privacy-note",
+      "ice-area-grid",
+      "ice-area-card",
+      "ice-region-list",
+      "ice-city-note",
+      "ice-alias-note",
+      "ice-cta-link"
+    ],
+    "sectionVariants": {
+      "premium-hero": {
+        "variant": "premium-hero",
+        "label": "Premium Hero",
+        "className": "section-premium-hero",
+        "description": "High-value opening content with CTA routing and planning context."
+      },
+      "split-feature": {
+        "variant": "split-feature",
+        "label": "Split Feature",
+        "className": "section-split-feature",
+        "description": "Two-column planning or service explanation."
+      },
+      "trust-band": {
+        "variant": "trust-band",
+        "label": "Trust Band",
+        "className": "section-trust-band",
+        "description": "Trust, privacy, and expectation-setting copy."
+      },
+      "event-card-grid": {
+        "variant": "event-card-grid",
+        "label": "Event Card Grid",
+        "className": "section-event-card-grid",
+        "description": "Use-case cards for event audiences."
+      },
+      "service-area-grid": {
+        "variant": "service-area-grid",
+        "label": "Service Area Grid",
+        "className": "section-service-area-grid",
+        "description": "Review-safe service area placeholder cards."
+      },
+      "quote-form-panel": {
+        "variant": "quote-form-panel",
+        "label": "Quote Form Panel",
+        "className": "section-quote-form-panel",
+        "description": "Quote request context around a structured Contact block."
+      },
+      "faq-panel": {
+        "variant": "faq-panel",
+        "label": "FAQ Panel",
+        "className": "section-faq-panel",
+        "description": "Visible FAQ copy eligible for FAQ schema after review."
+      },
+      "media-feature": {
+        "variant": "media-feature",
+        "label": "Media Feature",
+        "className": "section-media-feature",
+        "description": "Reserved for approved MediaAsset-backed content."
+      },
+      "table-comparison": {
+        "variant": "table-comparison",
+        "label": "Table Comparison",
+        "className": "section-table-comparison",
+        "description": "Accessible comparison tables for planning details."
+      },
+      "final-cta": {
+        "variant": "final-cta",
+        "label": "Final CTA",
+        "className": "section-final-cta",
+        "description": "Closing quote path."
+      }
+    }
+  },
+  "validationPlan": {
+    "designSystemRichSectionValidation": "Run validateContentBlocksDesignSystem against each page ContentData.ContentBlocks with page designSystem.approvedClasses.",
+    "themeDesignSystemValidation": "Run validateThemeDesignSystem against themeDesignSystemRecommendation.",
+    "templateContractValidation": "Run admin import/export preflight before any future CMS import.",
+    "secretValidation": "Run targeted secret scan before commit."
+  },
+  "trustedEmbedUsage": {
+    "used": false,
+    "reason": "No approved public video/map URL is needed for this review package. Raw iframe HTML is not used."
+  },
+  "noGoConfirmations": [
+    "No CMS records are updated by this package.",
+    "No live Theme records are updated by this package.",
+    "No static package is regenerated by this package.",
+    "No Azure, Cloudflare, DNS, workflow, or deployment action is included.",
+    "No protected config reference is required.",
+    "No secrets, API keys, JWTs, Azure tokens, deployment tokens, or Cloudflare tokens are included."
+  ]
+}
