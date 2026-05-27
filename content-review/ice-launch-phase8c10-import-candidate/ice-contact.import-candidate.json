@@ -1,0 +1,782 @@
+{
+  "schemaVersion": "pumpkin-review-template.v1",
+  "contentPackageVersion": "phase8c10.import-candidate.v1",
+  "templatePurpose": "cms_import_candidate_prep_review_only",
+  "id": "ice-rink-rentals-contact-phase8c10-import-candidate",
+  "PageId": "ice-rink-rentals-contact-phase8c10-import-candidate",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "route": "/contact",
+  "path": "/contact",
+  "slug": "contact",
+  "pageSlug": "contact",
+  "canonicalUrl": "https://iceskatingrinkrentals.com/contact",
+  "PageVersion": 2,
+  "Layout": "default",
+  "reviewMetadata": {
+    "phase": "8C.10",
+    "status": "import_candidate_prep_needs_media_business_and_human_approval",
+    "approvedForCmsImport": false,
+    "approvedForProduction": false,
+    "sourcePhase": "8C.7",
+    "sourceFile": "ice-contact.design-system.template.json",
+    "notes": [
+      "Derived from the Phase 8C.7 review bundle.",
+      "Safe non-secret lead/static endpoint references are resolved.",
+      "Unknown phone, email, service-area, city, and media values remain blockers.",
+      "RollerRinkRentals.com remains paused."
+    ]
+  },
+  "MetaData": {
+    "category": "rentals",
+    "product": "portable ice rink",
+    "keyword": "ice rink rental quote",
+    "pageType": "contact",
+    "title": "Request an Ice Rink Rental Quote",
+    "description": "Request a portable ice rink rental quote with your event date, location, venue type, attendee estimate, and site details.",
+    "createdAt": "2026-05-26T00:00:00Z",
+    "updatedAt": "2026-05-26T00:00:00Z",
+    "author": "Ice Skating Rink Rentals Team",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "ice rink rental quote",
+    "focusKeyword": "ice rink rental quote",
+    "secondaryKeywords": [
+      "portable ice rink rental quote",
+      "temporary ice rink rental quote",
+      "ice rink event rental pricing",
+      "portable rink quote request"
+    ],
+    "tags": [
+      "ice rink rental quote",
+      "portable ice rink quote",
+      "event rental quote"
+    ],
+    "contentSummary": "Contact page template for quote requests, event detail collection, response expectations, privacy reassurance, and structured static form metadata.",
+    "blockTypes": [
+      "Hero",
+      "customHtml",
+      "Contact",
+      "FAQ",
+      "PrimaryCTA"
+    ]
+  },
+  "template": {
+    "templateKey": "contact",
+    "templateVersion": "8C.6",
+    "layoutVariant": "design-system-rich",
+    "contentModelVersion": "2026-05",
+    "reviewPackage": "ice-launch-phase8c6"
+  },
+  "workflow": {
+    "status": "needs_human_review",
+    "reviewStatus": "needs_human_review",
+    "approvedForPublish": false,
+    "approvedBy": "",
+    "approvedAt": "",
+    "lastEditedBy": "codex_phase8c6_review_package",
+    "lastEditedAt": "2026-05-26T00:00:00Z",
+    "approvedForImport": false,
+    "approvedForProduction": false
+  },
+  "staticPublishing": {
+    "staticEligible": false,
+    "needsRebuild": true,
+    "lastSnapshotAt": "",
+    "lastStaticBuildAt": "",
+    "lastDeployedAt": "",
+    "contentHash": "",
+    "lastPublishedContentHash": "",
+    "deploymentStatus": "review_only_not_deployed"
+  },
+  "seo": {
+    "metaTitle": "Request an Ice Rink Rental Quote | Ice Skating Rink Rentals",
+    "metaDescription": "Request a portable ice rink rental quote. Share event dates, location, venue type, expected attendance, surface details, and setup needs.",
+    "keywords": [
+      "ice rink rental quote",
+      "portable ice rink rental quote",
+      "temporary ice rink rental quote",
+      "portable rink quote request"
+    ],
+    "focusKeyword": "ice rink rental quote",
+    "secondaryKeywords": [
+      "portable ice rink rental quote",
+      "event ice rink rental quote",
+      "temporary rink quote request"
+    ],
+    "robots": "noindex, nofollow",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/contact",
+    "alternateUrls": [],
+    "schemaRecommendations": [
+      "ContactPage schema after final contact details are approved",
+      "Service schema reference only after service-area claims are approved",
+      "FAQ schema only for visible contact FAQs"
+    ],
+    "structuredData": [],
+    "openGraph": {
+      "og:title": "Request an Ice Rink Rental Quote | Ice Skating Rink Rentals",
+      "og:description": "Share event dates, location, venue type, expected attendance, surface details, and setup needs for portable rink quote review.",
+      "og:type": "website",
+      "og:url": "https://iceskatingrinkrentals.com/contact",
+      "og:image": null,
+      "og:image:alt": "Ice rink rental quote request",
+      "og:site_name": "Ice Skating Rink Rentals",
+      "og:locale": "en_US",
+      "og:image:requirementRef": "contact-open-graph-image"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Request an Ice Rink Rental Quote | Ice Skating Rink Rentals",
+      "twitter:description": "Share event dates, location, venue type, expected attendance, surface details, and setup needs for portable rink quote review.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "openGraph": {
+    "title": "Request an Ice Rink Rental Quote | Ice Skating Rink Rentals",
+    "description": "Share event dates, location, venue type, expected attendance, surface details, and setup needs for portable rink quote review.",
+    "url": "https://iceskatingrinkrentals.com/contact",
+    "image": null,
+    "imageAlt": "Ice rink rental quote request",
+    "imageRequirementRef": "contact-open-graph-image"
+  },
+  "media": {
+    "featuredImage": {
+      "requiredMediaSlotId": "contact-featured-image",
+      "mediaRequirementRef": "contact-featured-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Ice rink rental quote request planning",
+      "title": "Ice rink rental quote request",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "hero",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    },
+    "heroImage": {
+      "requiredMediaSlotId": "contact-hero-image",
+      "mediaRequirementRef": "contact-hero-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Portable ice rink quote planning",
+      "title": "Portable ice rink quote planning",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "hero",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    },
+    "localImage": {
+      "requiredMediaSlotId": "contact-quote-support-image",
+      "mediaRequirementRef": "contact-quote-support-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Event detail checklist for portable ice rink rental",
+      "title": "Event detail checklist",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "inline",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    },
+    "closingImage": {
+      "requiredMediaSlotId": "contact-closing-support-image",
+      "mediaRequirementRef": "contact-closing-support-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Portable ice rink event quote follow-up",
+      "title": "Quote follow-up planning",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "card",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    },
+    "openGraphImage": {
+      "requiredMediaSlotId": "contact-open-graph-image",
+      "mediaRequirementRef": "contact-open-graph-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Ice rink rental quote request",
+      "title": "Ice rink rental quote request",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "og-image",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    }
+  },
+  "designSystem": {
+    "version": "phase8c5",
+    "tenantId": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "themeTokenReferences": [
+      "--cms-colors-primary",
+      "--cms-colors-accent",
+      "--cms-colors-ink",
+      "--cms-spacing-section",
+      "--cms-container-widths-standard",
+      "--cms-border-radius-card",
+      "--cms-shadows-card"
+    ],
+    "approvedClasses": [
+      "cms-copy",
+      "cms-layout",
+      "cms-panel",
+      "cms-eyebrow",
+      "section-quote-form-panel",
+      "section-trust-band",
+      "section-faq-panel",
+      "section-final-cta",
+      "ice-quote-grid",
+      "ice-details-list",
+      "ice-response-note",
+      "ice-privacy-note",
+      "ice-cta-link"
+    ],
+    "sectionVariantsUsed": [
+      "quote-form-panel",
+      "trust-band",
+      "faq-panel",
+      "final-cta"
+    ],
+    "customHtmlProfilesUsed": [
+      "marketing-rich",
+      "layout-rich"
+    ],
+    "sectionScopedCss": [
+      "contact-quote-context",
+      "contact-response-expectations"
+    ]
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Request an Ice Rink Rental Quote",
+          "subheadline": "Tell us where, when, and how the rink will be used so the next conversation can focus on availability, setup fit, and scope.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "Ice rink rental quote request",
+          "buttonText": "Start Quote Request",
+          "buttonLink": "#contact",
+          "secondaryButtonText": "Review Service Areas",
+          "secondaryButtonLink": "/service-areas"
+        }
+      },
+      {
+        "type": "customHtml",
+        "content": {
+          "id": "contact-quote-context",
+          "label": "Quote request context panel",
+          "container": "wide",
+          "allowedProfile": "layout-rich",
+          "sectionVariant": "quote-form-panel",
+          "sanitize": true,
+          "html": "<section class=\"cms-layout ice-quote-grid\"><div><p class=\"cms-eyebrow\">Quote request</p><h2>The best first message is specific, not technical.</h2><p>You do not need to know the final rink size before reaching out. Share the event basics and any known venue constraints so the rental fit can be reviewed.</p></div><aside class=\"cms-panel\"><h3>Include these details</h3><ul class=\"ice-details-list\"><li>Event date or date range</li><li>City, state, venue, and surface type</li><li>Indoor, outdoor, covered, or exposed setup</li><li>Expected attendance and operating hours</li><li>Access, loading, setup, and teardown notes</li></ul></aside></section>",
+          "css": "[data-section-id='contact-quote-context'] .ice-quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem; background: var(--cms-backgrounds-frost); border-radius: var(--cms-border-radius-card); }\n[data-section-id='contact-quote-context'] .cms-eyebrow { color: var(--cms-colors-primary); font-weight: 700; }\n[data-section-id='contact-quote-context'] .ice-details-list { display: grid; gap: 0.5rem; padding-left: 1rem; }",
+          "review": {
+            "status": "needs_human_review",
+            "notes": "No raw form markup; structured Contact block below owns fields and endpoint metadata."
+          },
+          "validation": {
+            "expected": "no blocking errors"
+          }
+        }
+      },
+      {
+        "type": "Contact",
+        "content": {
+          "id": "contact",
+          "title": "Start your quote request",
+          "subtitle": "Share event details so the rental request can be reviewed for timing, location, setup needs, and follow-up.",
+          "address": "",
+          "phone": "",
+          "email": "",
+          "hours": "Response expectations must be approved by operations before production copy is finalized.",
+          "formId": "ice-contact-quote-request",
+          "formType": "quote_request",
+          "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+          "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+          "formFields": [
+            {
+              "key": "name",
+              "label": "Name",
+              "type": "text",
+              "required": true,
+              "placeholder": "Your name"
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "type": "email",
+              "required": true,
+              "placeholder": "you@example.com"
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "type": "tel",
+              "required": false,
+              "placeholder": "Best callback number"
+            },
+            {
+              "key": "eventDate",
+              "label": "Event Date or Date Range",
+              "type": "text",
+              "required": true,
+              "placeholder": "Preferred date or date range"
+            },
+            {
+              "key": "eventLocation",
+              "label": "Event Location",
+              "type": "text",
+              "required": true,
+              "placeholder": "City, state, and venue"
+            },
+            {
+              "key": "venueType",
+              "label": "Venue Type",
+              "type": "text",
+              "required": false,
+              "placeholder": "Town center, school, venue, mall, private property"
+            },
+            {
+              "key": "expectedAttendance",
+              "label": "Expected Attendance",
+              "type": "text",
+              "required": false,
+              "placeholder": "Estimated guest count"
+            },
+            {
+              "key": "surfaceDetails",
+              "label": "Surface and Access Details",
+              "type": "textarea",
+              "required": false,
+              "placeholder": "Indoor or outdoor, surface type, available space, loading area, setup window"
+            },
+            {
+              "key": "message",
+              "label": "Event Goals and Notes",
+              "type": "textarea",
+              "required": true,
+              "placeholder": "Tell us what you want the rink experience to accomplish"
+            }
+          ],
+          "submitButtonText": "Send Quote Request",
+          "consentText": "I agree to be contacted about this quote request.",
+          "socialLinks": []
+        }
+      },
+      {
+        "type": "customHtml",
+        "content": {
+          "id": "contact-response-expectations",
+          "label": "Response and privacy expectations",
+          "container": "standard",
+          "allowedProfile": "marketing-rich",
+          "sectionVariant": "trust-band",
+          "sanitize": true,
+          "html": "<section class=\"cms-copy ice-response-note\"><h2>What happens after you send the request</h2><p>The review team should use your details to understand timing, location, venue fit, and the next planning questions. Final response timing, lead routing, and email behavior must be approved before production.</p><blockquote class=\"ice-privacy-note\">Privacy note: contact details should only be used to respond to the submitted rink rental inquiry and should not expose private routing information in public page code.</blockquote></section>",
+          "css": "[data-section-id='contact-response-expectations'] .ice-response-note { padding: 1.5rem; background: var(--cms-colors-surface); border: 1px solid var(--cms-colors-border); border-radius: var(--cms-border-radius-card); }\n[data-section-id='contact-response-expectations'] .ice-privacy-note { color: var(--cms-colors-muted); }",
+          "review": {
+            "status": "needs_human_review"
+          },
+          "validation": {
+            "expected": "no blocking errors"
+          }
+        }
+      },
+      {
+        "type": "FAQ",
+        "content": {
+          "title": "Quote request questions",
+          "subtitle": "These answers keep the form focused and realistic.",
+          "layout": "accordion",
+          "items": [
+            {
+              "question": "Can I request a quote before every detail is final?",
+              "answer": "Yes. Share the details you have now, especially date, location, venue type, guest count, and surface notes. The scope can be refined during follow-up."
+            },
+            {
+              "question": "What information helps most?",
+              "answer": "Date range, operating hours, venue address, indoor or outdoor placement, surface type, access, expected attendance, and add-on needs are the most useful first details."
+            },
+            {
+              "question": "Will this form send to a real inbox yet?",
+              "answer": "Not until the production static form endpoint and lead recipient reference are approved. This template intentionally uses non-secret placeholders."
+            },
+            {
+              "question": "Can I ask about service in my city?",
+              "answer": "Yes. Include your city and state. Final availability should be confirmed through quote review rather than assumed from a public page."
+            }
+          ]
+        }
+      },
+      {
+        "type": "PrimaryCTA",
+        "content": {
+          "title": "Have your event details ready?",
+          "description": "Use the quote form to send the date, location, venue type, and goals for review.",
+          "buttonText": "Start Quote Request",
+          "buttonLink": "#contact",
+          "secondaryText": "Checking coverage first?",
+          "secondaryLinkText": "View Service Areas",
+          "secondaryLink": "/service-areas",
+          "backgroundImage": "",
+          "mainImage": "",
+          "alt": "Start an ice rink rental quote request"
+        }
+      }
+    ]
+  },
+  "contentRelationships": {
+    "isHub": false,
+    "hubPageSlug": "home",
+    "topicCluster": "portable-ice-rink-rentals",
+    "relatedHubs": [],
+    "spokePriority": 1
+  },
+  "linking": {
+    "hubPage": "home",
+    "parentPage": "",
+    "relatedPages": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Service Areas",
+        "href": "/service-areas"
+      }
+    ],
+    "requiredLinks": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Service Areas",
+        "href": "/service-areas"
+      }
+    ],
+    "breadcrumbTrail": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ]
+  },
+  "schemaControls": {
+    "enableWebPageSchema": true,
+    "enableBreadcrumbSchema": true,
+    "enableFAQSchema": true,
+    "enableServiceSchema": false,
+    "schemaWarnings": [
+      "ContactPage schema can be enabled after public contact details and form behavior are approved."
+    ]
+  },
+  "serviceSchema": {
+    "serviceName": "Portable Ice Rink Rental Quote Request",
+    "serviceType": "Event Rental Service",
+    "serviceCategory": "Quote request",
+    "productsOffered": [
+      {
+        "name": "Portable ice rink rental quote review",
+        "type": "Service",
+        "description": "Review-only quote request path for portable ice rink rental planning.",
+        "url": "https://iceskatingrinkrentals.com/contact",
+        "category": "event rentals",
+        "isPrimary": true,
+        "displayOrder": 1
+      }
+    ],
+    "areasServed": [],
+    "audience": [
+      "event planners",
+      "venue operators",
+      "school and municipal event teams",
+      "corporate event producers"
+    ],
+    "eventTypes": [
+      "holiday activation",
+      "community event",
+      "school event",
+      "corporate event",
+      "private event"
+    ],
+    "schemaOutputMode": "disabled_until_review",
+    "publicSchemaEnabled": false,
+    "notes": "Service schema remains disabled until service-area wording and media/business identity are approved."
+  },
+  "fulfillment": {
+    "fulfillmentStatus": "research_only_until_provider_confirmed",
+    "primaryPartnerAvailable": false,
+    "manualReviewRequired": true,
+    "providerResearchCompleted": false,
+    "topProviderCount": 0,
+    "leadRoutingMode": "manual_review_then_provider_match",
+    "publicDisclosureRequired": true,
+    "confirmedServiceStates": [],
+    "extendedStatesPossible": []
+  },
+  "googleAds": {
+    "eligible": false,
+    "finalUrl": "",
+    "landingPageType": "contact",
+    "campaignTheme": "ice_rink_rental_quote",
+    "conversionGoals": [
+      "quote_form_submit"
+    ],
+    "notes": "Not marked ads-ready during review-only template phase."
+  },
+  "formConfig": {
+    "formId": "ice-contact-quote-request",
+    "formType": "quote_request",
+    "conversionGoal": "quote_form_submit",
+    "routingMode": "manual_review_then_provider_match",
+    "domainRoutingKey": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "recipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "replyToMode": "submitter_email",
+    "emailSubjectTemplate": "Ice rink rental quote request",
+    "thankYouUrl": "/contact",
+    "thankYouMessage": "Thanks. Your request has been received for review.",
+    "consentRequired": true,
+    "requiresConsent": true,
+    "spamProtectionEnabled": true,
+    "spamProtectionRequired": true,
+    "mailtoFallbackEnabled": false,
+    "normalizedFieldMap": {
+      "name": "name",
+      "email": "email",
+      "phone": "phone",
+      "eventDate": "eventDate",
+      "eventLocation": "eventLocation",
+      "venueType": "venueType",
+      "expectedAttendance": "expectedAttendance",
+      "surfaceDetails": "surfaceDetails",
+      "message": "message"
+    }
+  },
+  "leadCapture": {
+    "formId": "ice-contact-quote-request",
+    "formType": "quote_request",
+    "conversionGoal": "quote_form_submit",
+    "routingMode": "manual_review_then_provider_match",
+    "recipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "requiresConsent": true,
+    "spamProtectionRequired": true
+  },
+  "domainRouting": {
+    "domain": "iceskatingrinkrentals.com",
+    "brandName": "Ice Skating Rink Rentals",
+    "publicContactEmail": "",
+    "quoteRequestEmail": "",
+    "supportEmail": "",
+    "replyToEmail": "",
+    "fromName": "Ice Skating Rink Rentals",
+    "fromEmail": "",
+    "contactPageSlug": "contact",
+    "primaryPhone": "",
+    "mailtoLinksEnabled": false,
+    "defaultLeadRoutingMode": "manual_review_then_provider_match",
+    "defaultRecipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "emailProvider": "not_configured_in_template",
+    "emailProviderStatus": "requires_review",
+    "mxStatus": "not_checked_in_template",
+    "spfStatus": "not_checked_in_template",
+    "dkimStatus": "not_checked_in_template",
+    "dmarcStatus": "not_checked_in_template",
+    "notes": "Lead recipient and static form endpoint are non-secret reference names. Public phone/email remain unresolved blockers."
+  },
+  "pageQuality": {
+    "status": "needs_human_review",
+    "score": null,
+    "uniqueValueReason": "Contact page focuses the quote request around customer-owned event details and keeps endpoint/recipient data as non-secret placeholders.",
+    "buyerIntent": "quote request",
+    "landingPageType": "contact",
+    "launchNotes": "Resolve endpoint, recipient routing, contact placeholders, and form behavior before CMS import.",
+    "warnings": [
+      "Static form endpoint placeholder remains unresolved.",
+      "Lead recipient placeholder remains unresolved.",
+      "Public contact phone/email placeholders remain unresolved.",
+      "Reviewer approval is required before CMS import."
+    ],
+    "blockingIssues": [
+      "Not approved for CMS import.",
+      "Not approved for production publishing."
+    ],
+    "lastCheckedAt": "2026-05-26T00:00:00Z"
+  },
+  "isPublished": false,
+  "publishedAt": null,
+  "includeInSitemap": false,
+  "previousSlugs": [],
+  "redirects": [],
+  "sitemapPriority": 0.8,
+  "sitemapChangeFrequency": "monthly",
+  "importCandidateStatus": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForProductionIndexing": false,
+    "blockersBeforeCmsImport": [
+      "approved MediaAsset records are still required",
+      "public phone/email remain unresolved or must be intentionally omitted",
+      "primary service-area wording remains unresolved",
+      "human approvals are not recorded",
+      "admin import/export preflight has not been run against this candidate"
+    ],
+    "blockersBeforeProduction": [
+      "CMS import approval and write are not complete",
+      "fresh static regeneration is required after any CMS write",
+      "Azure/default-host staging validation is required",
+      "form behavior, schema, sitemap, robots, and canonical output must be verified"
+    ]
+  },
+  "mediaRequirements": [
+    {
+      "requiredMediaSlotId": "contact-featured-image",
+      "intendedUsageType": "hero",
+      "page": "Contact",
+      "sectionId": "contact-quote-context",
+      "slot": "featuredImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Ice rink rental quote request planning",
+      "suggestedFilename": "ice-contact-featured-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-hero-image",
+      "intendedUsageType": "hero",
+      "page": "Contact",
+      "sectionId": "hero",
+      "slot": "heroImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Portable ice rink quote planning",
+      "suggestedFilename": "ice-contact-hero-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-quote-support-image",
+      "intendedUsageType": "inline",
+      "page": "Contact",
+      "sectionId": "contact-quote-context",
+      "slot": "localImage",
+      "recommendedAspectRatio": "4:3",
+      "recommendedDimensions": "1600x1200",
+      "requiredAltText": "Event detail checklist for portable ice rink rental",
+      "suggestedFilename": "ice-contact-quote-checklist-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-closing-support-image",
+      "intendedUsageType": "card",
+      "page": "Contact",
+      "sectionId": "contact-response-expectations",
+      "slot": "closingImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "1600x900",
+      "requiredAltText": "Portable ice rink event quote follow-up",
+      "suggestedFilename": "ice-contact-follow-up-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-open-graph-image",
+      "intendedUsageType": "og-image",
+      "page": "Contact",
+      "sectionId": "seo.openGraph",
+      "slot": "openGraphImage",
+      "recommendedAspectRatio": "1.91:1",
+      "recommendedDimensions": "1200x630",
+      "requiredAltText": "Ice rink rental quote request",
+      "suggestedFilename": "ice-contact-og-1200x630.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    }
+  ]
+}

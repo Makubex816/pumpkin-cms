@@ -1,0 +1,794 @@
+{
+  "schemaVersion": "pumpkin-review-template.v1",
+  "contentPackageVersion": "phase8c10.import-candidate.v1",
+  "templatePurpose": "cms_import_candidate_prep_review_only",
+  "id": "ice-rink-rentals-service-areas-phase8c10-import-candidate",
+  "PageId": "ice-rink-rentals-service-areas-phase8c10-import-candidate",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "route": "/service-areas",
+  "path": "/service-areas",
+  "slug": "service-areas",
+  "pageSlug": "service-areas",
+  "canonicalUrl": "https://iceskatingrinkrentals.com/service-areas",
+  "PageVersion": 1,
+  "Layout": "default",
+  "reviewMetadata": {
+    "phase": "8C.10",
+    "status": "import_candidate_prep_needs_media_business_and_human_approval",
+    "approvedForCmsImport": false,
+    "approvedForProduction": false,
+    "sourcePhase": "8C.7",
+    "sourceFile": "ice-service-areas.design-system.template.json",
+    "notes": [
+      "Derived from the Phase 8C.7 review bundle.",
+      "Safe non-secret lead/static endpoint references are resolved.",
+      "Unknown phone, email, service-area, city, and media values remain blockers.",
+      "RollerRinkRentals.com remains paused."
+    ]
+  },
+  "MetaData": {
+    "category": "rentals",
+    "product": "portable ice rink",
+    "keyword": "ice rink rental service areas",
+    "pageType": "service",
+    "title": "Ice Rink Rental Service Areas",
+    "description": "Review portable ice rink rental service-area planning, coverage questions, region placeholders, and the quote path for your event location.",
+    "createdAt": "2026-05-26T00:00:00Z",
+    "updatedAt": "2026-05-26T00:00:00Z",
+    "author": "Ice Skating Rink Rentals Team",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "ice rink rental service areas",
+    "focusKeyword": "ice rink rental service areas",
+    "secondaryKeywords": [
+      "portable ice rink rentals near me",
+      "temporary ice rink rental service area",
+      "portable rink rental availability",
+      "ice rink rental coverage"
+    ],
+    "tags": [
+      "ice rink rental service areas",
+      "portable ice rink availability",
+      "temporary rink coverage"
+    ],
+    "contentSummary": "Service areas page template that explains coverage review, event location requirements, future market grouping, and city page strategy without making unsupported served-area claims.",
+    "blockTypes": [
+      "Hero",
+      "customHtml",
+      "CardGrid",
+      "FAQ",
+      "PrimaryCTA"
+    ]
+  },
+  "template": {
+    "templateKey": "service",
+    "templateVersion": "8C.6",
+    "layoutVariant": "design-system-rich",
+    "contentModelVersion": "2026-05",
+    "reviewPackage": "ice-launch-phase8c6"
+  },
+  "workflow": {
+    "status": "needs_human_review",
+    "reviewStatus": "needs_human_review",
+    "approvedForPublish": false,
+    "approvedBy": "",
+    "approvedAt": "",
+    "lastEditedBy": "codex_phase8c6_review_package",
+    "lastEditedAt": "2026-05-26T00:00:00Z",
+    "approvedForImport": false,
+    "approvedForProduction": false
+  },
+  "staticPublishing": {
+    "staticEligible": false,
+    "needsRebuild": true,
+    "lastSnapshotAt": "",
+    "lastStaticBuildAt": "",
+    "lastDeployedAt": "",
+    "contentHash": "",
+    "lastPublishedContentHash": "",
+    "deploymentStatus": "review_only_not_deployed"
+  },
+  "seo": {
+    "metaTitle": "Ice Rink Rental Service Areas | Ice Skating Rink Rentals",
+    "metaDescription": "Check portable ice rink rental service-area planning and ask about availability for your event city, venue, and date range.",
+    "keywords": [
+      "ice rink rental service areas",
+      "portable ice rink rentals near me",
+      "temporary ice rink rental service area",
+      "portable rink rental availability"
+    ],
+    "focusKeyword": "ice rink rental service areas",
+    "secondaryKeywords": [
+      "portable ice rink rentals near me",
+      "temporary rink rental availability",
+      "ice rink rental coverage"
+    ],
+    "robots": "noindex, nofollow",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/service-areas",
+    "alternateUrls": [
+      {
+        "hrefLang": "x-alias-planned",
+        "href": "https://iceskatingrinkrentals.com/areas-served"
+      }
+    ],
+    "schemaRecommendations": [
+      "CollectionPage or WebPage schema for the service-area hub",
+      "Breadcrumb schema after route approval",
+      "Service areaServed only after approved regions/cities are confirmed",
+      "FAQ schema only for visible service-area FAQs"
+    ],
+    "structuredData": [],
+    "openGraph": {
+      "og:title": "Ice Rink Rental Service Areas | Ice Skating Rink Rentals",
+      "og:description": "Check portable ice rink rental service-area planning and ask about availability for your event city, venue, and date range.",
+      "og:type": "website",
+      "og:url": "https://iceskatingrinkrentals.com/service-areas",
+      "og:image": null,
+      "og:image:alt": "Ice rink rental service area planning",
+      "og:site_name": "Ice Skating Rink Rentals",
+      "og:locale": "en_US",
+      "og:image:requirementRef": "service-areas-open-graph-image"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Ice Rink Rental Service Areas | Ice Skating Rink Rentals",
+      "twitter:description": "Check portable ice rink rental service-area planning and ask about availability for your event city, venue, and date range.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "openGraph": {
+    "title": "Ice Rink Rental Service Areas | Ice Skating Rink Rentals",
+    "description": "Check portable ice rink rental service-area planning and ask about availability for your event city, venue, and date range.",
+    "url": "https://iceskatingrinkrentals.com/service-areas",
+    "image": null,
+    "imageAlt": "Ice rink rental service area planning",
+    "imageRequirementRef": "service-areas-open-graph-image"
+  },
+  "media": {
+    "featuredImage": {
+      "requiredMediaSlotId": "service-areas-featured-image",
+      "mediaRequirementRef": "service-areas-featured-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Portable ice rink rental service area planning",
+      "title": "Portable ice rink rental service area planning",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "hero",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    },
+    "heroImage": {
+      "requiredMediaSlotId": "service-areas-hero-image",
+      "mediaRequirementRef": "service-areas-hero-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Map and venue planning for portable ice rink rentals",
+      "title": "Service area planning hero image",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "hero",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    },
+    "localImage": {
+      "requiredMediaSlotId": "service-areas-map-region-image",
+      "mediaRequirementRef": "service-areas-map-region-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Event location review for temporary ice rink rental",
+      "title": "Event location review",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "inline",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    },
+    "closingImage": {
+      "requiredMediaSlotId": "service-areas-closing-image",
+      "mediaRequirementRef": "service-areas-closing-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Portable rink availability inquiry",
+      "title": "Availability inquiry",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "card",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    },
+    "openGraphImage": {
+      "requiredMediaSlotId": "service-areas-open-graph-image",
+      "mediaRequirementRef": "service-areas-open-graph-image",
+      "mediaAssetId": null,
+      "assetId": null,
+      "publicUrl": null,
+      "url": null,
+      "alt": "Ice rink rental service area planning",
+      "title": "Ice rink rental service area planning",
+      "caption": "",
+      "source": "phase8c9_media_pipeline_required_before_import",
+      "licenseStatus": "needs_review",
+      "usageStatus": "needs_review",
+      "usageType": "og-image",
+      "status": "needs-upload",
+      "blocker": true,
+      "width": null,
+      "height": null,
+      "focalPointX": null,
+      "focalPointY": null,
+      "decorative": false,
+      "notes": "No fake URL is used. Resolve this with an uploaded/approved MediaAsset before CMS import."
+    }
+  },
+  "designSystem": {
+    "version": "phase8c5",
+    "tenantId": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "themeTokenReferences": [
+      "--cms-colors-primary",
+      "--cms-colors-accent",
+      "--cms-colors-ink",
+      "--cms-spacing-section",
+      "--cms-container-widths-wide",
+      "--cms-border-radius-card",
+      "--cms-shadows-card"
+    ],
+    "approvedClasses": [
+      "cms-copy",
+      "cms-layout",
+      "cms-panel",
+      "cms-eyebrow",
+      "section-service-area-grid",
+      "section-split-feature",
+      "section-table-comparison",
+      "section-faq-panel",
+      "section-final-cta",
+      "ice-area-grid",
+      "ice-area-card",
+      "ice-region-list",
+      "ice-city-note",
+      "ice-alias-note",
+      "ice-cta-link"
+    ],
+    "sectionVariantsUsed": [
+      "service-area-grid",
+      "split-feature",
+      "table-comparison",
+      "faq-panel",
+      "final-cta"
+    ],
+    "customHtmlProfilesUsed": [
+      "marketing-rich",
+      "layout-rich",
+      "table-rich"
+    ],
+    "sectionScopedCss": [
+      "service-area-model",
+      "service-area-placeholder-grid",
+      "service-area-city-strategy"
+    ]
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Ice Rink Rental Service Areas",
+          "subheadline": "Ask about portable ice rink rental availability for your event location. Final coverage depends on date, venue fit, access, surface, and operational review.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "Portable ice rink rental service area planning",
+          "buttonText": "Ask About Your Area",
+          "buttonLink": "/contact",
+          "secondaryButtonText": "Return Home",
+          "secondaryButtonLink": "/"
+        }
+      },
+      {
+        "type": "customHtml",
+        "content": {
+          "id": "service-area-model",
+          "label": "Service area coverage model",
+          "container": "wide",
+          "allowedProfile": "layout-rich",
+          "sectionVariant": "split-feature",
+          "sanitize": true,
+          "html": "<section class=\"cms-layout\"><div><p class=\"cms-eyebrow\">Coverage review</p><h2>Service-area planning should be honest before it is local.</h2><p>This page should help visitors understand how availability is reviewed without claiming unconfirmed cities, states, partners, or installed rink history.</p><p><a class=\"ice-cta-link\" href=\"/contact\">Ask about your city</a></p></div><aside class=\"cms-panel\"><h3>Availability depends on</h3><ul class=\"ice-region-list\"><li>Event city, state, and venue access</li><li>Date range and seasonal demand</li><li>Surface, footprint, and setup window</li><li>Operating hours and expected attendance</li><li>Support level and add-ons requested</li></ul></aside></section>",
+          "css": "[data-section-id='service-area-model'] .cms-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem; background: var(--cms-backgrounds-frost); border-radius: var(--cms-border-radius-card); }\n[data-section-id='service-area-model'] .cms-eyebrow { color: var(--cms-colors-primary); font-weight: 700; }\n[data-section-id='service-area-model'] .ice-region-list { display: grid; gap: 0.5rem; padding-left: 1rem; }",
+          "review": {
+            "status": "needs_human_review",
+            "notes": "Avoids confirmed service-area claims until business approval."
+          },
+          "validation": {
+            "expected": "no blocking errors"
+          }
+        }
+      },
+      {
+        "type": "customHtml",
+        "content": {
+          "id": "service-area-placeholder-grid",
+          "label": "Service area review factors",
+          "container": "wide",
+          "allowedProfile": "marketing-rich",
+          "sectionVariant": "service-area-grid",
+          "sanitize": true,
+          "html": "<section class=\"cms-copy\"><h2>How service-area reviews work</h2><div class=\"ice-area-grid\"><article class=\"ice-area-card\"><h3>Event location</h3><p>Share the city, venue, surface, access details, and date range so the request can be reviewed accurately.</p></article><article class=\"ice-area-card\"><h3>Setup conditions</h3><p>Portable ice rink planning depends on available footprint, indoor or outdoor conditions, loading access, utilities, and event timing.</p></article><article class=\"ice-area-card\"><h3>Future local pages</h3><p>City-specific pages can be added later after a target location, route, and indexability decision are approved.</p></article></div></section>",
+          "css": "[data-section-id='service-area-placeholder-grid'] .ice-area-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }\n[data-section-id='service-area-placeholder-grid'] .ice-area-card { padding: 1.25rem; background: var(--cms-colors-surface); border: 1px solid var(--cms-colors-border); border-radius: var(--cms-border-radius-card); }\n[data-section-id='service-area-placeholder-grid'] .ice-area-card h3 { color: var(--cms-colors-primary); }",
+          "review": {
+            "status": "needs_human_review",
+            "notes": "Target-city placeholders removed from customer-facing import-candidate copy."
+          },
+          "validation": {
+            "expected": "no blocking errors"
+          }
+        }
+      },
+      {
+        "type": "CardGrid",
+        "content": {
+          "title": "How to ask about service in your area",
+          "subtitle": "The quote request should give enough location context to evaluate fit without overpromising public coverage.",
+          "layout": "grid-3",
+          "cards": [
+            {
+              "title": "Share the exact event location",
+              "description": "Include city, state, venue name if available, indoor or outdoor placement, and access constraints.",
+              "image": "",
+              "image-alt": "",
+              "icon": "MapPin",
+              "link": "/contact",
+              "alt": "Share the exact event location"
+            },
+            {
+              "title": "Describe the event window",
+              "description": "Send date range, setup and teardown timing, operating hours, and any seasonal deadlines.",
+              "image": "",
+              "image-alt": "",
+              "icon": "CalendarCheck",
+              "link": "/contact",
+              "alt": "Describe the event window"
+            },
+            {
+              "title": "Confirm venue readiness",
+              "description": "Surface, footprint, power, loading access, permits, and weather exposure can affect feasibility.",
+              "image": "",
+              "image-alt": "",
+              "icon": "ClipboardCheck",
+              "link": "/contact",
+              "alt": "Confirm venue readiness"
+            }
+          ]
+        }
+      },
+      {
+        "type": "customHtml",
+        "content": {
+          "id": "service-area-city-strategy",
+          "label": "Future city page planning note",
+          "container": "wide",
+          "allowedProfile": "table-rich",
+          "sectionVariant": "table-comparison",
+          "sanitize": true,
+          "html": "<section class=\"cms-copy\"><h2>Future city pages require approval</h2><table class=\"ice-city-note\"><caption>City page readiness requirements</caption><thead><tr><th scope=\"col\">Decision</th><th scope=\"col\">Required before writing</th></tr></thead><tbody><tr><td>Target route</td><td>Confirm the city, state, route pattern, and canonical strategy.</td></tr><tr><td>Local claim</td><td>Approve availability language before any location-specific page is created or indexed.</td></tr><tr><td>Internal links</td><td>Link from Homepage and Service Areas only after the city page is approved.</td></tr></tbody></table></section>",
+          "css": "[data-section-id='service-area-city-strategy'] .ice-city-note { width: 100%; border: 1px solid var(--cms-colors-border); border-radius: var(--cms-border-radius-card); background: var(--cms-colors-surface); }\n[data-section-id='service-area-city-strategy'] .ice-city-note th { text-align: left; color: var(--cms-colors-primary); }\n[data-section-id='service-area-city-strategy'] .ice-city-note th, [data-section-id='service-area-city-strategy'] .ice-city-note td { padding: 1rem; }",
+          "review": {
+            "status": "needs_human_review",
+            "notes": "No city page is created because no target city is confirmed."
+          },
+          "validation": {
+            "expected": "no blocking errors"
+          }
+        }
+      },
+      {
+        "type": "customHtml",
+        "content": {
+          "id": "service-area-alias-note",
+          "label": "Areas-served alias note",
+          "container": "standard",
+          "allowedProfile": "marketing-rich",
+          "sectionVariant": "trust-band",
+          "sanitize": true,
+          "html": "<aside class=\"cms-copy ice-alias-note\"><h2>Route recommendation</h2><p>Use <strong>/service-areas</strong> as the canonical service-area route. Treat <strong>/areas-served</strong> as a planned redirect or alias candidate after routing review, not as a separate content page.</p></aside>",
+          "review": {
+            "status": "needs_human_review"
+          },
+          "validation": {
+            "expected": "no blocking errors"
+          }
+        }
+      },
+      {
+        "type": "FAQ",
+        "content": {
+          "title": "Service area questions",
+          "subtitle": "Use this page to set expectations without overclaiming coverage.",
+          "layout": "accordion",
+          "items": [
+            {
+              "question": "Does this page confirm service in every city?",
+              "answer": "No. This template intentionally avoids unsupported city claims. Final availability should be reviewed from the event location, date, venue, and setup details."
+            },
+            {
+              "question": "What should I include when asking about my area?",
+              "answer": "Include city, state, venue, date range, indoor or outdoor placement, surface type, expected attendance, and any access or setup constraints."
+            },
+            {
+              "question": "Why not list every possible city?",
+              "answer": "Listing cities without approval can create misleading coverage claims. The launch package should start with approved areas only."
+            },
+            {
+              "question": "When will the first city page be created?",
+              "answer": "After the specific target city, state, route, local copy, service availability language, and indexing decision are approved."
+            }
+          ]
+        }
+      },
+      {
+        "type": "PrimaryCTA",
+        "content": {
+          "title": "Ask whether your event location can be reviewed",
+          "description": "Send your city, state, venue, date range, and event details through the quote page.",
+          "buttonText": "Ask About Your Area",
+          "buttonLink": "/contact",
+          "secondaryText": "Need the broader offer first?",
+          "secondaryLinkText": "Return Home",
+          "secondaryLink": "/",
+          "backgroundImage": "",
+          "mainImage": "",
+          "alt": "Ask about portable ice rink rental service areas"
+        }
+      }
+    ]
+  },
+  "contentRelationships": {
+    "isHub": true,
+    "hubPageSlug": "",
+    "topicCluster": "portable-ice-rink-rentals-service-areas",
+    "relatedHubs": [
+      "home"
+    ],
+    "spokePriority": 1
+  },
+  "linking": {
+    "hubPage": "",
+    "parentPage": "",
+    "relatedPages": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ],
+    "requiredLinks": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ],
+    "breadcrumbTrail": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Service Areas",
+        "href": "/service-areas"
+      }
+    ],
+    "plannedAliases": [
+      {
+        "from": "/areas-served",
+        "to": "/service-areas",
+        "type": 301,
+        "status": "planned_after_route_approval"
+      }
+    ]
+  },
+  "schemaControls": {
+    "enableWebPageSchema": true,
+    "enableBreadcrumbSchema": true,
+    "enableFAQSchema": true,
+    "enableServiceSchema": false,
+    "schemaWarnings": [
+      "Do not enable Service areaServed output until service areas are approved.",
+      "Do not add city page schema until a target city and state are confirmed."
+    ]
+  },
+  "serviceSchema": {
+    "serviceName": "Portable Ice Rink Rental Service Areas",
+    "serviceType": "Event Rental Service",
+    "serviceCategory": "Service area and availability planning",
+    "productsOffered": [
+      {
+        "name": "Portable ice rink rental availability review",
+        "type": "Service",
+        "description": "Review-only service area planning copy for portable ice rink rental inquiries.",
+        "url": "https://iceskatingrinkrentals.com/service-areas",
+        "category": "event rentals",
+        "isPrimary": true,
+        "displayOrder": 1
+      }
+    ],
+    "areasServed": [],
+    "audience": [
+      "event planners",
+      "municipal recreation teams",
+      "school and campus event teams",
+      "venue operators"
+    ],
+    "eventTypes": [
+      "holiday activation",
+      "municipal event",
+      "school event",
+      "corporate event",
+      "private event"
+    ],
+    "schemaOutputMode": "disabled_until_review",
+    "publicSchemaEnabled": false,
+    "notes": "Service-area schema remains disabled. No public areaServed claim should be emitted until coverage wording is approved."
+  },
+  "fulfillment": {
+    "fulfillmentStatus": "research_only_until_provider_confirmed",
+    "primaryPartnerAvailable": false,
+    "manualReviewRequired": true,
+    "providerResearchCompleted": false,
+    "topProviderCount": 0,
+    "leadRoutingMode": "manual_review_then_provider_match",
+    "publicDisclosureRequired": true,
+    "confirmedServiceStates": [],
+    "extendedStatesPossible": []
+  },
+  "googleAds": {
+    "eligible": false,
+    "finalUrl": "",
+    "landingPageType": "service_area_hub",
+    "campaignTheme": "ice_rink_rental_service_areas",
+    "conversionGoals": [
+      "service_area_quote_click"
+    ],
+    "notes": "Not marked ads-ready during review-only template phase."
+  },
+  "formConfig": {
+    "formId": "ice-service-area-inquiry-routing",
+    "formType": "quote_request",
+    "conversionGoal": "service_area_quote_click",
+    "routingMode": "manual_review_then_provider_match",
+    "domainRoutingKey": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "recipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "replyToMode": "submitter_email",
+    "emailSubjectTemplate": "Ice rink rental service area inquiry",
+    "thankYouUrl": "/contact",
+    "thankYouMessage": "Thanks. Use the contact form to send full event details.",
+    "consentRequired": true,
+    "requiresConsent": true,
+    "spamProtectionEnabled": true,
+    "spamProtectionRequired": true,
+    "mailtoFallbackEnabled": false,
+    "normalizedFieldMap": {
+      "name": "name",
+      "email": "email",
+      "phone": "phone",
+      "eventLocation": "eventLocation",
+      "eventDate": "eventDate",
+      "message": "message"
+    }
+  },
+  "leadCapture": {
+    "formId": "ice-service-area-inquiry-routing",
+    "formType": "quote_request",
+    "conversionGoal": "service_area_quote_click",
+    "routingMode": "manual_review_then_provider_match",
+    "recipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "requiresConsent": true,
+    "spamProtectionRequired": true
+  },
+  "domainRouting": {
+    "domain": "iceskatingrinkrentals.com",
+    "brandName": "Ice Skating Rink Rentals",
+    "publicContactEmail": "",
+    "quoteRequestEmail": "",
+    "supportEmail": "",
+    "replyToEmail": "",
+    "fromName": "Ice Skating Rink Rentals",
+    "fromEmail": "",
+    "contactPageSlug": "contact",
+    "primaryPhone": "",
+    "mailtoLinksEnabled": false,
+    "defaultLeadRoutingMode": "manual_review_then_provider_match",
+    "defaultRecipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "emailProvider": "not_configured_in_template",
+    "emailProviderStatus": "requires_review",
+    "mxStatus": "not_checked_in_template",
+    "spfStatus": "not_checked_in_template",
+    "dkimStatus": "not_checked_in_template",
+    "dmarcStatus": "not_checked_in_template",
+    "notes": "Lead recipient and static form endpoint are non-secret reference names. Public phone/email remain unresolved blockers."
+  },
+  "pageQuality": {
+    "status": "needs_human_review",
+    "score": null,
+    "uniqueValueReason": "Service Areas page explains availability review and future city strategy without fabricating served cities, states, partners, or local proof.",
+    "buyerIntent": "service area availability check",
+    "landingPageType": "service_area_hub",
+    "launchNotes": "Confirm primary service area, region, city strategy, alias route, and service-area schema before CMS import.",
+    "warnings": [
+      "Service area placeholders remain unresolved.",
+      "Target city remains unconfirmed.",
+      "Alias route /areas-served is only a planned note.",
+      "Reviewer approval is required before CMS import."
+    ],
+    "blockingIssues": [
+      "Not approved for CMS import.",
+      "Not approved for production publishing.",
+      "No target city page should be created until city/state are confirmed."
+    ],
+    "lastCheckedAt": "2026-05-26T00:00:00Z"
+  },
+  "isPublished": false,
+  "publishedAt": null,
+  "includeInSitemap": false,
+  "previousSlugs": [],
+  "redirects": [],
+  "sitemapPriority": 0.8,
+  "sitemapChangeFrequency": "monthly",
+  "importCandidateStatus": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForProductionIndexing": false,
+    "blockersBeforeCmsImport": [
+      "approved MediaAsset records are still required",
+      "public phone/email remain unresolved or must be intentionally omitted",
+      "primary service-area wording remains unresolved",
+      "human approvals are not recorded",
+      "admin import/export preflight has not been run against this candidate"
+    ],
+    "blockersBeforeProduction": [
+      "CMS import approval and write are not complete",
+      "fresh static regeneration is required after any CMS write",
+      "Azure/default-host staging validation is required",
+      "form behavior, schema, sitemap, robots, and canonical output must be verified"
+    ]
+  },
+  "mediaRequirements": [
+    {
+      "requiredMediaSlotId": "service-areas-featured-image",
+      "intendedUsageType": "hero",
+      "page": "Service Areas",
+      "sectionId": "service-area-model",
+      "slot": "featuredImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Portable ice rink rental service area planning",
+      "suggestedFilename": "ice-service-areas-featured-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-hero-image",
+      "intendedUsageType": "hero",
+      "page": "Service Areas",
+      "sectionId": "hero",
+      "slot": "heroImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Map and venue planning for portable ice rink rentals",
+      "suggestedFilename": "ice-service-areas-hero-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-map-region-image",
+      "intendedUsageType": "inline",
+      "page": "Service Areas",
+      "sectionId": "service-area-model",
+      "slot": "localImage",
+      "recommendedAspectRatio": "4:3",
+      "recommendedDimensions": "1600x1200",
+      "requiredAltText": "Event location review for temporary ice rink rental",
+      "suggestedFilename": "ice-service-areas-region-review-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-closing-image",
+      "intendedUsageType": "card",
+      "page": "Service Areas",
+      "sectionId": "service-area-alias-note",
+      "slot": "closingImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "1600x900",
+      "requiredAltText": "Portable rink availability inquiry",
+      "suggestedFilename": "ice-service-areas-availability-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-open-graph-image",
+      "intendedUsageType": "og-image",
+      "page": "Service Areas",
+      "sectionId": "seo.openGraph",
+      "slot": "openGraphImage",
+      "recommendedAspectRatio": "1.91:1",
+      "recommendedDimensions": "1200x630",
+      "requiredAltText": "Ice rink rental service area planning",
+      "suggestedFilename": "ice-service-areas-og-1200x630.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    }
+  ]
+}

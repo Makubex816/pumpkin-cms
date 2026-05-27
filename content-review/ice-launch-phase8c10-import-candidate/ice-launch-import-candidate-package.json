@@ -1,0 +1,534 @@
+{
+  "schemaVersion": "pumpkin-import-candidate-prep.v1",
+  "contentPackageVersion": "phase8c10.import-candidate.v1",
+  "packageName": "IceSkatingRinkRentals.com Phase 8C.10 Import Candidate Prep Package",
+  "packagePurpose": "cms_import_candidate_prep_review_only",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "primaryFocus": "IceSkatingRinkRentals.com",
+  "pausedTenantNotice": "RollerRinkRentals.com remains paused and is not included in this package.",
+  "createdAt": "2026-05-27T00:00:00Z",
+  "createdBy": "codex_phase8c10_import_candidate_prep",
+  "importReadiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForProductionPublishing": false,
+    "reason": "Safe references are resolved and target-city placeholders are removed from page copy, but media, business values, human approvals, and import preflight remain blockers."
+  },
+  "routeDecisions": {
+    "homepage": {
+      "route": "/",
+      "slug": "home",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/"
+    },
+    "contact": {
+      "route": "/contact",
+      "slug": "contact",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/contact"
+    },
+    "serviceAreas": {
+      "route": "/service-areas",
+      "slug": "service-areas",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/service-areas",
+      "aliasNote": "/areas-served is a planned redirect or alias candidate only after route approval."
+    },
+    "targetCityPage": {
+      "status": "excluded_until_target_city_is_confirmed",
+      "note": "No city page is created and no city route placeholder is included in import-candidate page copy."
+    }
+  },
+  "pageFiles": [
+    {
+      "label": "Homepage",
+      "file": "ice-homepage.import-candidate.json",
+      "route": "/",
+      "slug": "home",
+      "templateKey": "home",
+      "status": "import_candidate_prep_needs_review"
+    },
+    {
+      "label": "Contact",
+      "file": "ice-contact.import-candidate.json",
+      "route": "/contact",
+      "slug": "contact",
+      "templateKey": "contact",
+      "status": "import_candidate_prep_needs_review"
+    },
+    {
+      "label": "Service Areas",
+      "file": "ice-service-areas.import-candidate.json",
+      "route": "/service-areas",
+      "slug": "service-areas",
+      "templateKey": "service",
+      "status": "import_candidate_prep_needs_review"
+    }
+  ],
+  "pagesIncluded": [
+    "Homepage",
+    "Contact page",
+    "Service Areas page"
+  ],
+  "pagesIntentionallyExcluded": [
+    {
+      "label": "Targeted city/location page",
+      "reason": "No specific city/location is confirmed."
+    },
+    {
+      "label": "RollerRinkRentals.com pages",
+      "reason": "Roller is paused."
+    }
+  ],
+  "placeholdersRemaining": [],
+  "themeDesignSystemRecommendation": {
+    "version": "phase8c5",
+    "tenantId": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "tokens": {
+      "colors": {
+        "primary": "#0369a1",
+        "accent": "#0f766e",
+        "ink": "#102033",
+        "muted": "#4b6478",
+        "surface": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "typography": {
+        "headingFamily": "system-ui",
+        "bodyFamily": "system-ui",
+        "baseSize": "1rem",
+        "heroSize": "3rem"
+      },
+      "spacing": {
+        "section": "4rem",
+        "card": "1.25rem",
+        "inlineGap": "1rem"
+      },
+      "layout": {
+        "sectionGap": "3rem",
+        "gridGap": "1rem"
+      },
+      "containerWidths": {
+        "standard": "68rem",
+        "wide": "82rem",
+        "narrow": "48rem"
+      },
+      "borderRadius": {
+        "card": "8px",
+        "button": "6px",
+        "panel": "8px"
+      },
+      "buttons": {
+        "primaryBackground": "#0369a1",
+        "primaryColor": "#ffffff"
+      },
+      "cards": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "heroSections": {
+        "background": "#eef8fc",
+        "text": "#102033"
+      },
+      "ctaBands": {
+        "background": "#0f766e",
+        "text": "#ffffff"
+      },
+      "forms": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "faqBlocks": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "mediaBlocks": {
+        "background": "#eef8fc"
+      },
+      "tables": {
+        "header": "#eef8fc",
+        "border": "#d6e4ee"
+      },
+      "shadows": {
+        "card": "0 16px 40px rgba(16, 32, 51, 0.10)"
+      },
+      "backgrounds": {
+        "frost": "#eef8fc",
+        "quiet": "#f7fbfd"
+      }
+    },
+    "domainCss": "[data-tenant-id=\"ice-rink-rentals\"] .ice-cta-link { color: var(--cms-colors-primary); font-weight: 700; text-decoration: underline; }\n[data-tenant-id=\"ice-rink-rentals\"] .cms-panel { background: var(--cms-colors-surface); border: 1px solid var(--cms-colors-border); border-radius: var(--cms-border-radius-panel); padding: var(--cms-spacing-card); }",
+    "templateCss": {
+      "premium-hero": ".section-premium-hero .ice-hero-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "split-feature": ".section-split-feature .cms-layout { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "trust-band": ".section-trust-band .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }",
+      "event-card-grid": ".section-event-card-grid .ice-event-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "service-area-grid": ".section-service-area-grid .ice-area-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "quote-form-panel": ".section-quote-form-panel .ice-quote-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "faq-panel": ".section-faq-panel .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }",
+      "media-feature": ".section-media-feature .media-feature { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "table-comparison": ".section-table-comparison table { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "final-cta": ".section-final-cta .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }"
+    },
+    "approvedClasses": [
+      "cms-copy",
+      "cms-layout",
+      "cms-panel",
+      "cms-eyebrow",
+      "section-premium-hero",
+      "section-split-feature",
+      "section-trust-band",
+      "section-event-card-grid",
+      "section-service-area-grid",
+      "section-quote-form-panel",
+      "section-faq-panel",
+      "section-media-feature",
+      "section-table-comparison",
+      "section-final-cta",
+      "ice-hero-grid",
+      "ice-proof-row",
+      "ice-proof-item",
+      "ice-event-grid",
+      "ice-event-card",
+      "ice-check-list",
+      "ice-process-note",
+      "ice-service-teaser",
+      "ice-quote-grid",
+      "ice-details-list",
+      "ice-response-note",
+      "ice-privacy-note",
+      "ice-area-grid",
+      "ice-area-card",
+      "ice-region-list",
+      "ice-city-note",
+      "ice-alias-note",
+      "ice-cta-link"
+    ],
+    "sectionVariants": {
+      "premium-hero": {
+        "variant": "premium-hero",
+        "label": "Premium Hero",
+        "className": "section-premium-hero",
+        "description": "High-value opening content with CTA routing and planning context."
+      },
+      "split-feature": {
+        "variant": "split-feature",
+        "label": "Split Feature",
+        "className": "section-split-feature",
+        "description": "Two-column planning or service explanation."
+      },
+      "trust-band": {
+        "variant": "trust-band",
+        "label": "Trust Band",
+        "className": "section-trust-band",
+        "description": "Trust, privacy, and expectation-setting copy."
+      },
+      "event-card-grid": {
+        "variant": "event-card-grid",
+        "label": "Event Card Grid",
+        "className": "section-event-card-grid",
+        "description": "Use-case cards for event audiences."
+      },
+      "service-area-grid": {
+        "variant": "service-area-grid",
+        "label": "Service Area Grid",
+        "className": "section-service-area-grid",
+        "description": "Review-safe service area placeholder cards."
+      },
+      "quote-form-panel": {
+        "variant": "quote-form-panel",
+        "label": "Quote Form Panel",
+        "className": "section-quote-form-panel",
+        "description": "Quote request context around a structured Contact block."
+      },
+      "faq-panel": {
+        "variant": "faq-panel",
+        "label": "FAQ Panel",
+        "className": "section-faq-panel",
+        "description": "Visible FAQ copy eligible for FAQ schema after review."
+      },
+      "media-feature": {
+        "variant": "media-feature",
+        "label": "Media Feature",
+        "className": "section-media-feature",
+        "description": "Reserved for approved MediaAsset-backed content."
+      },
+      "table-comparison": {
+        "variant": "table-comparison",
+        "label": "Table Comparison",
+        "className": "section-table-comparison",
+        "description": "Accessible comparison tables for planning details."
+      },
+      "final-cta": {
+        "variant": "final-cta",
+        "label": "Final CTA",
+        "className": "section-final-cta",
+        "description": "Closing quote path."
+      }
+    }
+  },
+  "validationPlan": {
+    "designSystemRichSectionValidation": "Run validateContentBlocksDesignSystem against each page ContentData.ContentBlocks with page designSystem.approvedClasses.",
+    "themeDesignSystemValidation": "Run validateThemeDesignSystem against themeDesignSystemRecommendation.",
+    "templateContractValidation": "Run admin import/export preflight before any future CMS import.",
+    "secretValidation": "Run targeted secret scan before commit."
+  },
+  "trustedEmbedUsage": {
+    "used": false,
+    "reason": "No approved public video/map URL is needed for this review package. Raw iframe HTML is not used."
+  },
+  "noGoConfirmations": [
+    "No CMS records are updated by this package.",
+    "No live Theme records are updated by this package.",
+    "No static package is regenerated by this package.",
+    "No Azure, Cloudflare, DNS, workflow, or deployment action is included.",
+    "No protected config reference is required.",
+    "No secrets, API keys, JWTs, Azure tokens, deployment tokens, or Cloudflare tokens are included."
+  ],
+  "placeholdersResolved": {
+    "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "staticContactEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "tenantId": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "canonicalServiceRoute": "/service-areas"
+  },
+  "unresolvedBusinessValues": [
+    "PRIMARY_PHONE",
+    "PRIMARY_EMAIL",
+    "PRIMARY_SERVICE_AREA",
+    "PRIMARY_REGION",
+    "TARGET_CITY",
+    "TARGET_STATE",
+    "TARGET_REGION",
+    "TARGET_CITY_SLUG",
+    "FINAL_IMAGE_ASSETS"
+  ],
+  "mediaRequirements": [
+    {
+      "requiredMediaSlotId": "homepage-featured-image",
+      "intendedUsageType": "hero",
+      "page": "Homepage",
+      "sectionId": "home-premium-intro",
+      "slot": "featuredImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Portable ice rink rental event setup",
+      "suggestedFilename": "ice-homepage-featured-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "homepage-hero-image",
+      "intendedUsageType": "hero",
+      "page": "Homepage",
+      "sectionId": "hero",
+      "slot": "heroImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Portable ice rink rental for a seasonal event",
+      "suggestedFilename": "ice-homepage-hero-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "homepage-event-use-case-image",
+      "intendedUsageType": "inline",
+      "page": "Homepage",
+      "sectionId": "home-event-fit",
+      "slot": "localImage",
+      "recommendedAspectRatio": "4:3",
+      "recommendedDimensions": "1600x1200",
+      "requiredAltText": "Event site planning for a temporary ice rink",
+      "suggestedFilename": "ice-homepage-event-planning-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "homepage-closing-trust-image",
+      "intendedUsageType": "card",
+      "page": "Homepage",
+      "sectionId": "home-service-areas-teaser",
+      "slot": "closingImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "1600x900",
+      "requiredAltText": "Guests enjoying a temporary ice rink event",
+      "suggestedFilename": "ice-homepage-closing-event-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "homepage-open-graph-image",
+      "intendedUsageType": "og-image",
+      "page": "Homepage",
+      "sectionId": "seo.openGraph",
+      "slot": "openGraphImage",
+      "recommendedAspectRatio": "1.91:1",
+      "recommendedDimensions": "1200x630",
+      "requiredAltText": "Portable ice rink rental planning",
+      "suggestedFilename": "ice-homepage-og-1200x630.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-featured-image",
+      "intendedUsageType": "hero",
+      "page": "Contact",
+      "sectionId": "contact-quote-context",
+      "slot": "featuredImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Ice rink rental quote request planning",
+      "suggestedFilename": "ice-contact-featured-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-hero-image",
+      "intendedUsageType": "hero",
+      "page": "Contact",
+      "sectionId": "hero",
+      "slot": "heroImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Portable ice rink quote planning",
+      "suggestedFilename": "ice-contact-hero-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-quote-support-image",
+      "intendedUsageType": "inline",
+      "page": "Contact",
+      "sectionId": "contact-quote-context",
+      "slot": "localImage",
+      "recommendedAspectRatio": "4:3",
+      "recommendedDimensions": "1600x1200",
+      "requiredAltText": "Event detail checklist for portable ice rink rental",
+      "suggestedFilename": "ice-contact-quote-checklist-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-closing-support-image",
+      "intendedUsageType": "card",
+      "page": "Contact",
+      "sectionId": "contact-response-expectations",
+      "slot": "closingImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "1600x900",
+      "requiredAltText": "Portable ice rink event quote follow-up",
+      "suggestedFilename": "ice-contact-follow-up-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "contact-open-graph-image",
+      "intendedUsageType": "og-image",
+      "page": "Contact",
+      "sectionId": "seo.openGraph",
+      "slot": "openGraphImage",
+      "recommendedAspectRatio": "1.91:1",
+      "recommendedDimensions": "1200x630",
+      "requiredAltText": "Ice rink rental quote request",
+      "suggestedFilename": "ice-contact-og-1200x630.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-featured-image",
+      "intendedUsageType": "hero",
+      "page": "Service Areas",
+      "sectionId": "service-area-model",
+      "slot": "featuredImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Portable ice rink rental service area planning",
+      "suggestedFilename": "ice-service-areas-featured-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-hero-image",
+      "intendedUsageType": "hero",
+      "page": "Service Areas",
+      "sectionId": "hero",
+      "slot": "heroImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "2400x1350",
+      "requiredAltText": "Map and venue planning for portable ice rink rentals",
+      "suggestedFilename": "ice-service-areas-hero-2400w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-map-region-image",
+      "intendedUsageType": "inline",
+      "page": "Service Areas",
+      "sectionId": "service-area-model",
+      "slot": "localImage",
+      "recommendedAspectRatio": "4:3",
+      "recommendedDimensions": "1600x1200",
+      "requiredAltText": "Event location review for temporary ice rink rental",
+      "suggestedFilename": "ice-service-areas-region-review-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-closing-image",
+      "intendedUsageType": "card",
+      "page": "Service Areas",
+      "sectionId": "service-area-alias-note",
+      "slot": "closingImage",
+      "recommendedAspectRatio": "16:9",
+      "recommendedDimensions": "1600x900",
+      "requiredAltText": "Portable rink availability inquiry",
+      "suggestedFilename": "ice-service-areas-availability-1600w.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    },
+    {
+      "requiredMediaSlotId": "service-areas-open-graph-image",
+      "intendedUsageType": "og-image",
+      "page": "Service Areas",
+      "sectionId": "seo.openGraph",
+      "slot": "openGraphImage",
+      "recommendedAspectRatio": "1.91:1",
+      "recommendedDimensions": "1200x630",
+      "requiredAltText": "Ice rink rental service area planning",
+      "suggestedFilename": "ice-service-areas-og-1200x630.jpg",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "blocker": true,
+      "notes": "Upload/select an approved tenant-scoped MediaAsset through the Phase 8C.9 media pipeline before CMS import."
+    }
+  ]
+}
