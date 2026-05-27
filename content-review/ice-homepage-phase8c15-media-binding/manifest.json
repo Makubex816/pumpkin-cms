@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "phase8c15.media-binding-manifest.v1",
+  "phase": "8C.15",
+  "createdAt": "2026-05-27T00:00:00Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "outputFolder": "content-review/ice-homepage-phase8c15-media-binding",
+  "sourceStatus": {
+    "schemaVersion": "phase8c15.media-source-status.v1",
+    "phase": "8C.15",
+    "tenantId": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "sourceFolder": "content-review/ice-homepage-phase8c15-media-input",
+    "sourceFolderExists": false,
+    "expectedFiles": [
+      {
+        "fileName": "CorporateIceRinkRentalEvent.png",
+        "expectedPath": "content-review/ice-homepage-phase8c15-media-input/CorporateIceRinkRentalEvent.png",
+        "present": false
+      },
+      {
+        "fileName": "HolidayIceRink.png",
+        "expectedPath": "content-review/ice-homepage-phase8c15-media-input/HolidayIceRink.png",
+        "present": false
+      },
+      {
+        "fileName": "IceRinkRentalsSetup.png",
+        "expectedPath": "content-review/ice-homepage-phase8c15-media-input/IceRinkRentalsSetup.png",
+        "present": false
+      },
+      {
+        "fileName": "IceSkatingRinkRentalsLogo.png",
+        "expectedPath": "content-review/ice-homepage-phase8c15-media-input/IceSkatingRinkRentalsLogo.png",
+        "present": false
+      },
+      {
+        "fileName": "WinterFestIceRinkRentals.png",
+        "expectedPath": "content-review/ice-homepage-phase8c15-media-input/WinterFestIceRinkRentals.png",
+        "present": false
+      }
+    ],
+    "sourceFileCountFound": 0,
+    "uploadFeasibility": "blocked_missing_raw_media_input_folder_or_files",
+    "uploadAttempted": false,
+    "uploadSkippedReason": "Raw media files were not present in the Phase 8C.15 local input folder; continuing with manifest-only binding prep.",
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "cmsPageRecordsChanged": false,
+    "cmsThemeRecordsChanged": false,
+    "mediaAssetRecordsCreated": false
+  },
+  "files": [
+    "README.md",
+    "MEDIA_SOURCE_STATUS.md",
+    "MEDIA_UPLOAD_MANIFEST.md",
+    "MEDIA_ASSET_BINDING_PLAN.md",
+    "MEDIA_VALIDATION_RESULTS.md",
+    "HOMEPAGE_BINDING_DECISION.md",
+    "homepage-mediaasset-bindings.json",
+    "homepage-media-upload-manifest.json",
+    "proposed-homepage.media-bound-candidate.json",
+    "homepage-media-bound-package.json",
+    "manifest.json"
+  ],
+  "readiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForLocalCmsDraftImport": false,
+    "readyForStaticRegeneration": false,
+    "readyForProductionPublishing": false,
+    "reason": "MediaAsset upload/selection did not occur; mediaAssetId values remain null, and business values/human approval/admin preflight remain blockers."
+  }
+}
