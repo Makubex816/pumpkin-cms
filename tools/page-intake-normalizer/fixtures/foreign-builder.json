@@ -1,0 +1,19 @@
+{
+  "builder": "example-builder",
+  "pageTitle": "Foreign Builder Ice Rink Page",
+  "metaDescription": "Foreign builder content normalized into Pumpkin blocks.",
+  "urlPath": "/service-areas",
+  "hero": {
+    "headline": "Portable rink rentals by region",
+    "subheadline": "Review service coverage before requesting a quote."
+  },
+  "sections": [
+    {
+      "type": "richText",
+      "id": "foreign-section",
+      "heading": "Coverage planning",
+      "text": "Service area language requires human review before CMS import."
+    }
+  ]
+}
+

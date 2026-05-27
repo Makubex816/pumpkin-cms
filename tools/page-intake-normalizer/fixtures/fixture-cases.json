@@ -1,0 +1,85 @@
+{
+  "cases": [
+    {
+      "name": "valid Pumpkin page JSON",
+      "file": "valid-pumpkin-page.json",
+      "expect": "ok"
+    },
+    {
+      "name": "partial page JSON normalized to scaffold",
+      "file": "partial-page.json",
+      "expect": "ok"
+    },
+    {
+      "name": "malformed JSON blocked",
+      "file": "malformed-json.json",
+      "expect": "error"
+    },
+    {
+      "name": "foreign builder JSON normalized",
+      "file": "foreign-builder.json",
+      "expect": "ok"
+    },
+    {
+      "name": "HTML fragment mapped to customHtml",
+      "file": "html-fragment.html",
+      "expect": "ok"
+    },
+    {
+      "name": "unsafe HTML blocked",
+      "file": "unsafe-html-fragment.html",
+      "expect": "error"
+    },
+    {
+      "name": "CF7 reference mapped to formBlock",
+      "file": "cf7-reference.json",
+      "expect": "ok"
+    },
+    {
+      "name": "raw form HTML blocked",
+      "file": "raw-form-html.html",
+      "expect": "error"
+    },
+    {
+      "name": "media manifest mapped to MediaAsset requirements",
+      "file": "media-manifest.json",
+      "expect": "ok"
+    },
+    {
+      "name": "base64 image blocked",
+      "file": "base64-image.json",
+      "expect": "error"
+    },
+    {
+      "name": "raw Tailwind utility class blocked",
+      "file": "tailwind-class.html",
+      "expect": "error"
+    },
+    {
+      "name": "safe semantic classes allowed",
+      "file": "semantic-classes.html",
+      "expect": "ok"
+    },
+    {
+      "name": "future state-city route valid",
+      "file": "state-city-valid.json",
+      "expect": "ok"
+    },
+    {
+      "name": "bad city route blocked",
+      "file": "state-city-bad-route.json",
+      "expect": "error"
+    },
+    {
+      "name": "unknown block type blocked",
+      "file": "unknown-block-type.json",
+      "expect": "error"
+    },
+    {
+      "name": ".NET contract failure blocked",
+      "file": "dotnet-contract-failure.json",
+      "expect": "error"
+    }
+  ]
+}
+

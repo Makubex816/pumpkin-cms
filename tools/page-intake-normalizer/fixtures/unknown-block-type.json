@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "fixture.unknown-block.v1",
+  "id": "ice-rink-rentals-unknown-block-fixture",
+  "PageId": "ice-rink-rentals-unknown-block-fixture",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "route": "/",
+  "path": "/",
+  "slug": "home",
+  "pageSlug": "home",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "title": "Unknown Block Fixture",
+    "description": "Unknown block fixture.",
+    "keyword": "ice rink rentals"
+  },
+  "seo": {
+    "metaTitle": "Unknown Block Fixture",
+    "metaDescription": "Unknown block fixture.",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/"
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "MysteryBlock",
+        "content": {
+          "title": "Unsupported block"
+        }
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "fixture.dotnet-contract-failure.v1",
+  "id": "roller-rink-rentals-home-fixture",
+  "PageId": "roller-rink-rentals-home-fixture",
+  "tenantId": "roller-rink-rentals",
+  "siteKey": "roller-rink-rentals",
+  "domain": "rollerrinkrentals.com",
+  "route": "/",
+  "path": "/",
+  "slug": "home",
+  "pageSlug": "home",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "title": "Wrong Tenant Fixture",
+    "description": "This intentionally fails the Ice .NET contract.",
+    "keyword": "roller rink rentals"
+  },
+  "seo": {
+    "metaTitle": "Wrong Tenant Fixture",
+    "metaDescription": "This intentionally fails the Ice .NET contract.",
+    "canonicalUrl": "https://rollerrinkrentals.com/"
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Wrong tenant",
+          "subheadline": "This should fail.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "",
+          "buttonText": "Request a Quote",
+          "buttonLink": "/contact"
+        }
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "fixture.valid-pumpkin-page.v1",
+  "id": "ice-rink-rentals-home-fixture",
+  "PageId": "ice-rink-rentals-home-fixture",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "route": "/",
+  "path": "/",
+  "slug": "home",
+  "pageSlug": "home",
+  "canonicalUrl": "https://iceskatingrinkrentals.com/",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "category": "rentals",
+    "product": "portable ice rink",
+    "keyword": "portable ice skating rink rentals",
+    "pageType": "home",
+    "title": "Portable Ice Skating Rink Rentals",
+    "description": "Review-only fixture page for portable ice skating rink rentals.",
+    "createdAt": "2026-05-27T00:00:00Z",
+    "updatedAt": "2026-05-27T00:00:00Z",
+    "author": "fixture",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "portable ice skating rink rentals",
+    "tags": [
+      "fixture"
+    ],
+    "contentSummary": "Fixture page.",
+    "blockTypes": [
+      "Hero",
+      "customHtml"
+    ]
+  },
+  "seo": {
+    "metaTitle": "Portable Ice Skating Rink Rentals",
+    "metaDescription": "Review-only fixture page for portable ice skating rink rentals.",
+    "keywords": [
+      "portable ice skating rink rentals"
+    ],
+    "robots": "noindex, nofollow",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/",
+    "alternateUrls": [],
+    "structuredData": [],
+    "openGraph": {
+      "og:title": "Portable Ice Skating Rink Rentals",
+      "og:description": "Review-only fixture page for portable ice skating rink rentals.",
+      "og:type": "website",
+      "og:url": "https://iceskatingrinkrentals.com/",
+      "og:image": "",
+      "og:image:alt": "",
+      "og:site_name": "IceSkatingRinkRentals.com",
+      "og:locale": "en_US"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Portable Ice Skating Rink Rentals",
+      "twitter:description": "Review-only fixture page for portable ice skating rink rentals.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Portable ice skating rink rentals",
+          "subheadline": "Plan a review-only ice rink rental page.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "",
+          "buttonText": "Request a Quote",
+          "buttonLink": "/contact"
+        }
+      },
+      {
+        "type": "customHtml",
+        "content": {
+          "id": "fixture-copy",
+          "label": "Fixture copy",
+          "html": "<section class=\"cms-copy\"><h2>Review fixture</h2><p>This is a safe semantic class fixture.</p></section>",
+          "container": "standard",
+          "allowedProfile": "marketing-rich",
+          "sectionVariant": "split-feature",
+          "css": "",
+          "sanitize": true
+        }
+      }
+    ]
+  },
+  "workflow": {
+    "status": "needs_human_review",
+    "reviewStatus": "needs_human_review",
+    "approvedForPublish": false
+  },
+  "staticPublishing": {
+    "staticEligible": false,
+    "needsRebuild": true,
+    "deploymentStatus": "review_only"
+  },
+  "isPublished": false,
+  "includeInSitemap": false
+}
+

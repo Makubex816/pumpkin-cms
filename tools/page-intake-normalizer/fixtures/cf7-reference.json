@@ -1,0 +1,18 @@
+{
+  "title": "CF7 Reference Package",
+  "route": "/",
+  "contactForm7": {
+    "shortcode": "[contact-form-7 id=\"123\" title=\"Ice Quote\"]",
+    "fields": [
+      "your-name",
+      "your-email",
+      "your-phone",
+      "event-city",
+      "event-state",
+      "event-date",
+      "message"
+    ],
+    "successMessage": "Thanks for your request."
+  }
+}
+

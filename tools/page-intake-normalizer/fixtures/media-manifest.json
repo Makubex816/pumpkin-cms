@@ -1,0 +1,21 @@
+{
+  "title": "Media Manifest Scaffold",
+  "route": "/",
+  "mediaRequirements": [
+    {
+      "requiredMediaSlotId": "homepage-hero-image",
+      "intendedUsageType": "hero",
+      "page": "/",
+      "sectionId": "homepage-hero",
+      "sourceFile": "WinterFestIceRinkRentals.png",
+      "requiredAltText": "Portable ice skating rink at a winter event",
+      "suggestedFilename": "homepage-hero-winter-fest-ice-rink.webp",
+      "requiredBeforeCmsImport": true,
+      "requiredBeforeStaging": true,
+      "requiredBeforeProduction": true,
+      "mediaAssetId": null,
+      "status": "needs-upload"
+    }
+  ]
+}
+

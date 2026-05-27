@@ -1,0 +1,13 @@
+{
+  "title": "Partial Homepage Draft",
+  "metaDescription": "Partial source that should be scaffolded safely.",
+  "route": "/",
+  "sections": [
+    {
+      "id": "partial-intro",
+      "title": "Imported planning copy",
+      "body": "This partial section is converted into safe customHtml."
+    }
+  ]
+}
+

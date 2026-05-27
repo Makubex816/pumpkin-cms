@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "fixture.bad-city-route.v1",
+  "id": "ice-rink-rentals-orlando-fl-fixture",
+  "PageId": "ice-rink-rentals-orlando-fl-fixture",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "route": "/orlando-fl",
+  "path": "/orlando-fl",
+  "slug": "orlando-fl",
+  "pageSlug": "orlando-fl",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "title": "Bad City Route",
+    "description": "Bad future city route fixture.",
+    "keyword": "ice rink rentals"
+  },
+  "searchData": {
+    "state": "FL",
+    "city": "Orlando",
+    "keyword": "ice rink rentals",
+    "tags": [],
+    "contentSummary": "Bad route fixture.",
+    "blockTypes": [
+      "Hero"
+    ]
+  },
+  "seo": {
+    "metaTitle": "Bad City Route",
+    "metaDescription": "Bad future city route fixture.",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/orlando-fl"
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Bad city route",
+          "subheadline": "This should be blocked.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "",
+          "buttonText": "Request a Quote",
+          "buttonLink": "/contact"
+        }
+      }
+    ]
+  }
+}
+

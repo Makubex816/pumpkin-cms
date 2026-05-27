@@ -1,0 +1,15 @@
+{
+  "title": "Base64 Image Manifest",
+  "route": "/",
+  "mediaRequirements": [
+    {
+      "requiredMediaSlotId": "inline-base64-image",
+      "intendedUsageType": "inline",
+      "page": "/",
+      "sectionId": "unsafe-media",
+      "publicUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB",
+      "requiredAltText": "Unsafe base64 image"
+    }
+  ]
+}
+

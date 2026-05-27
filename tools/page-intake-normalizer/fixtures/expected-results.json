@@ -1,0 +1,27 @@
+{
+  "description": "Expected Phase 8C.14B page intake normalizer fixture outcomes.",
+  "expectedPassedCases": 16,
+  "contract": {
+    "okCases": [
+      "valid Pumpkin page JSON",
+      "partial page JSON normalized to scaffold",
+      "foreign builder JSON normalized",
+      "HTML fragment mapped to customHtml",
+      "CF7 reference mapped to formBlock",
+      "media manifest mapped to MediaAsset requirements",
+      "safe semantic classes allowed",
+      "future state-city route valid"
+    ],
+    "blockedCases": [
+      "malformed JSON blocked",
+      "unsafe HTML blocked",
+      "raw form HTML blocked",
+      "base64 image blocked",
+      "raw Tailwind utility class blocked",
+      "bad city route blocked",
+      "unknown block type blocked",
+      ".NET contract failure blocked"
+    ]
+  }
+}
+
