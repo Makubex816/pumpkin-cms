@@ -151,6 +151,7 @@ function validatePackage({ siteKey, folder }) {
         { label: 'javascript URL', pattern: /javascript:/i },
         { label: 'inline onclick handler', pattern: /\sonclick\s*=/i },
         { label: 'inline onerror handler', pattern: /\sonerror\s*=/i },
+        { label: 'base64 image blob', pattern: /\ssrc=["']data:image\//i },
         { label: 'script tag in CMS section', pattern: /data-cms-section=["'][^"']+["'][\s\S]*?<script\b/i },
         { label: 'object tag', pattern: /<object\b/i },
         { label: 'embed tag', pattern: /<embed\b/i },

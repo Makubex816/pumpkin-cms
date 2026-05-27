@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { MediaAsset, MediaAssetLicenseStatus, MediaAssetUsageStatus } from 'pumpkin-ts-models'
+import type { MediaAsset, MediaAssetLicenseStatus, MediaAssetStatus, MediaAssetUsageStatus, MediaAssetUsageType } from 'pumpkin-ts-models'
 
 const LICENSE_STATUSES: MediaAssetLicenseStatus[] = [
   'unknown',
@@ -25,6 +25,25 @@ const USAGE_STATUSES: MediaAssetUsageStatus[] = [
   'approved_for_publish',
 ]
 
+const MEDIA_STATUSES: MediaAssetStatus[] = [
+  'draft',
+  'active',
+  'archived',
+  'replaced',
+  'deleted-pending',
+]
+
+const USAGE_TYPES: MediaAssetUsageType[] = [
+  'hero',
+  'card',
+  'gallery',
+  'og-image',
+  'icon',
+  'background',
+  'inline',
+  'document',
+]
+
 export default function MediaAssetDetailPage() {
   const params = useParams<{ id: string }>()
   const searchParams = useSearchParams()
@@ -36,6 +55,7 @@ export default function MediaAssetDetailPage() {
   const [copyMessage, setCopyMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [replacementAssetId, setReplacementAssetId] = useState('')
 
   const id = decodeURIComponent(params.id)
   const routeTenantId = searchParams.get('tenantId') || currentTenant?.tenantId || ''
@@ -108,11 +128,76 @@ export default function MediaAssetDetailPage() {
     }
   }
 
-  async function copyUrl() {
-    if (!draft?.url) return
+  async function archiveAsset() {
+    if (!token || !routeTenantId || !draft || saving) return
 
     try {
-      await navigator.clipboard.writeText(draft.url)
+      setSaving(true)
+      setError(null)
+      setSuccess(null)
+      const savedAsset = await apiClient.archiveMediaAsset(token, routeTenantId, draft.id)
+      setAsset(savedAsset)
+      setDraft(normalizeMediaAssetDraft(savedAsset))
+      setSuccess('Media asset archived. Existing references should be reviewed before publish.')
+    } catch (err) {
+      console.error('[Media Detail] Failed to archive media asset:', err)
+      setError(getErrorMessage(err, 'Failed to archive media asset.'))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function restoreAsset() {
+    if (!token || !routeTenantId || !draft || saving) return
+
+    try {
+      setSaving(true)
+      setError(null)
+      setSuccess(null)
+      const savedAsset = await apiClient.restoreMediaAsset(token, routeTenantId, draft.id)
+      setAsset(savedAsset)
+      setDraft(normalizeMediaAssetDraft(savedAsset))
+      setSuccess('Media asset restored to active status.')
+    } catch (err) {
+      console.error('[Media Detail] Failed to restore media asset:', err)
+      setError(getErrorMessage(err, 'Failed to restore media asset.'))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function replaceAsset() {
+    if (!token || !routeTenantId || !draft || saving) return
+
+    const replacementId = replacementAssetId.trim()
+    if (!replacementId) {
+      setError('Replacement MediaAsset ID is required.')
+      return
+    }
+
+    try {
+      setSaving(true)
+      setError(null)
+      setSuccess(null)
+      const savedAsset = await apiClient.replaceMediaAsset(token, routeTenantId, draft.id, replacementId)
+      setAsset(savedAsset)
+      setDraft(normalizeMediaAssetDraft(savedAsset))
+      setReplacementAssetId('')
+      setSuccess('Media asset marked as replaced. Review page references before publish.')
+    } catch (err) {
+      console.error('[Media Detail] Failed to replace media asset:', err)
+      setError(getErrorMessage(err, 'Failed to replace media asset.'))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function copyUrl() {
+    const url = draft ? getAssetUrl(draft) : ''
+    if (!url) return
+
+    try {
+      await navigator.clipboard.writeText(url)
       setCopyMessage('URL copied.')
     } catch {
       setCopyMessage('Unable to copy URL automatically.')
@@ -166,12 +251,12 @@ export default function MediaAssetDetailPage() {
               {draft?.title || draft?.fileName || draft?.assetId || 'Media Asset'}
             </h1>
             <p className="mt-2 text-sm text-neutral-600">
-              Metadata-only asset record for {currentTenant.name || currentTenant.tenantId}.
+              Tenant-scoped media record for {currentTenant.name || currentTenant.tenantId}.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/dashboard/media" className="btn btn-secondary">Back to Media</Link>
-            {draft?.url && (
+            {draft && getAssetUrl(draft) && (
               <button type="button" onClick={copyUrl} className="btn btn-secondary">
                 Copy URL
               </button>
@@ -198,12 +283,26 @@ export default function MediaAssetDetailPage() {
               <h2 className="text-lg font-semibold text-neutral-900">Metadata</h2>
               <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <ReadOnlyInput label="Asset ID" value={draft.assetId || draft.id} />
-                <TextInput label="URL" value={draft.url} onChange={(value) => updateDraft('url', value)} required />
+                <TextInput label="Public URL" value={getAssetUrl(draft)} onChange={(value) => {
+                  updateDraft('url', value)
+                  updateDraft('publicUrl', value)
+                }} required />
                 <TextInput label="Title" value={draft.title} onChange={(value) => updateDraft('title', value)} />
-                <TextInput label="File Name" value={draft.fileName} onChange={(value) => updateDraft('fileName', value)} />
-                <TextInput label="Alt Text" value={draft.alt} onChange={(value) => updateDraft('alt', value)} />
+                <TextInput label="Original File Name" value={draft.originalFileName || draft.fileName} onChange={(value) => {
+                  updateDraft('fileName', value)
+                  updateDraft('originalFileName', value)
+                }} />
+                <TextInput label="Safe File Name" value={draft.safeFileName || ''} onChange={(value) => updateDraft('safeFileName', value)} />
+                <TextInput label="Alt Text" value={getAssetAlt(draft)} onChange={(value) => {
+                  updateDraft('alt', value)
+                  updateDraft('altText', value)
+                }} />
                 <TextInput label="Caption" value={draft.caption} onChange={(value) => updateDraft('caption', value)} />
-                <TextInput label="Source" value={draft.source} onChange={(value) => updateDraft('source', value)} />
+                <TextInput label="Credit/Source" value={draft.credit || draft.source} onChange={(value) => {
+                  updateDraft('source', value)
+                  updateDraft('credit', value)
+                }} />
+                <TextInput label="License/Source Label" value={draft.license || ''} onChange={(value) => updateDraft('license', value)} />
                 <TextInput label="Source URL" value={draft.sourceUrl} onChange={(value) => updateDraft('sourceUrl', value)} />
               </div>
             </div>
@@ -211,6 +310,18 @@ export default function MediaAssetDetailPage() {
             <div className="card">
               <h2 className="text-lg font-semibold text-neutral-900">Publishing Review</h2>
               <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                <SelectInput
+                  label="Media Status"
+                  value={draft.status || 'draft'}
+                  options={MEDIA_STATUSES}
+                  onChange={(value) => updateDraft('status', value as MediaAssetStatus)}
+                />
+                <SelectInput
+                  label="Usage Type"
+                  value={draft.usageType || 'inline'}
+                  options={USAGE_TYPES}
+                  onChange={(value) => updateDraft('usageType', value as MediaAssetUsageType)}
+                />
                 <SelectInput
                   label="License Status"
                   value={draft.licenseStatus}
@@ -225,6 +336,7 @@ export default function MediaAssetDetailPage() {
                 />
                 <TextInput label="Last Reviewed At" value={draft.lastReviewedAt} onChange={(value) => updateDraft('lastReviewedAt', value)} />
                 <TextInput label="Reviewed By" value={draft.reviewedBy} onChange={(value) => updateDraft('reviewedBy', value)} />
+                <TextInput label="Site Key" value={draft.siteKey || ''} onChange={(value) => updateDraft('siteKey', value)} />
                 <CheckboxInput label="Decorative image" checked={draft.decorative} onChange={(value) => updateDraft('decorative', value)} />
               </div>
             </div>
@@ -235,7 +347,16 @@ export default function MediaAssetDetailPage() {
                 <TextInput label="Width" value={nullableNumberValue(draft.width)} onChange={(value) => updateDraft('width', parseNullableInteger(value))} />
                 <TextInput label="Height" value={nullableNumberValue(draft.height)} onChange={(value) => updateDraft('height', parseNullableInteger(value))} />
                 <TextInput label="MIME Type" value={draft.mimeType} onChange={(value) => updateDraft('mimeType', value)} />
-                <TextInput label="File Size" value={nullableNumberValue(draft.fileSize)} onChange={(value) => updateDraft('fileSize', parseNullableInteger(value))} />
+                <TextInput label="Extension" value={draft.extension || ''} onChange={(value) => updateDraft('extension', value)} />
+                <TextInput label="File Size" value={nullableNumberValue(draft.sizeBytes ?? draft.fileSize)} onChange={(value) => {
+                  const parsed = parseNullableInteger(value)
+                  updateDraft('fileSize', parsed)
+                  updateDraft('sizeBytes', parsed)
+                }} />
+                <ReadOnlyInput label="Checksum" value={draft.checksum || draft.hash || 'Not recorded'} />
+                <ReadOnlyInput label="Storage Provider" value={draft.storageProvider || 'external'} />
+                <ReadOnlyInput label="Storage Container" value={draft.storageContainer || 'Not recorded'} />
+                <ReadOnlyInput label="Blob Path" value={draft.blobPath || 'Not recorded'} />
                 <TextInput label="Focal Point X (0-1)" value={nullableNumberValue(draft.focalPoint?.x)} onChange={(value) => updateFocalPoint('x', value)} />
                 <TextInput label="Focal Point Y (0-1)" value={nullableNumberValue(draft.focalPoint?.y)} onChange={(value) => updateFocalPoint('y', value)} />
               </div>
@@ -263,6 +384,15 @@ export default function MediaAssetDetailPage() {
               >
                 {saving ? 'Saving...' : 'Save Metadata'}
               </button>
+              {draft.status === 'archived' ? (
+                <button type="button" onClick={restoreAsset} disabled={saving} className="btn btn-secondary disabled:cursor-not-allowed disabled:opacity-50">
+                  Restore Asset
+                </button>
+              ) : (
+                <button type="button" onClick={archiveAsset} disabled={saving} className="btn btn-secondary disabled:cursor-not-allowed disabled:opacity-50">
+                  Archive Asset
+                </button>
+              )}
               <Link href="/dashboard/media" className="btn btn-secondary">Cancel</Link>
             </div>
           </section>
@@ -271,14 +401,14 @@ export default function MediaAssetDetailPage() {
             <div className="card">
               <h2 className="text-lg font-semibold text-neutral-900">Preview</h2>
               <div className="mt-4 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
-                {draft.url ? (
+                {getAssetUrl(draft) ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={draft.url} alt={draft.alt || draft.title || draft.fileName || 'Media asset preview'} className="max-h-80 w-full object-contain" />
+                  <img src={getAssetUrl(draft)} alt={getAssetAlt(draft) || draft.title || draft.fileName || 'Media asset preview'} className="max-h-80 w-full object-contain" />
                 ) : (
                   <div className="flex h-48 items-center justify-center text-sm text-neutral-500">No URL</div>
                 )}
               </div>
-              <div className="mt-3 break-all text-xs text-neutral-500">{draft.url || 'No URL recorded'}</div>
+              <div className="mt-3 break-all text-xs text-neutral-500">{getAssetUrl(draft) || 'No URL recorded'}</div>
             </div>
 
             <div className="card">
@@ -295,14 +425,37 @@ export default function MediaAssetDetailPage() {
             </div>
 
             <div className="card">
+              <h2 className="text-lg font-semibold text-neutral-900">Replace Flow</h2>
+              <p className="mt-2 text-sm text-neutral-600">
+                Mark this asset as replaced by another tenant-scoped MediaAsset. Existing page references are not rewritten automatically.
+              </p>
+              <div className="mt-4">
+                <TextInput
+                  label="Replacement MediaAsset ID"
+                  value={replacementAssetId}
+                  onChange={setReplacementAssetId}
+                  placeholder="ice-hero-new"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={replaceAsset}
+                disabled={saving}
+                className="btn btn-secondary mt-4 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Mark Replaced
+              </button>
+            </div>
+
+            <div className="card">
               <h2 className="text-lg font-semibold text-neutral-900">Usage References</h2>
-              {(draft.usageReferences || []).length === 0 ? (
+              {getUsageReferences(draft).length === 0 ? (
                 <p className="mt-3 text-sm text-neutral-600">
                   No explicit page usage references are recorded yet. Page-level `assetId` fields can point to this asset.
                 </p>
               ) : (
                 <div className="mt-3 space-y-3">
-                  {draft.usageReferences.map((reference, index) => (
+                  {getUsageReferences(draft).map((reference, index) => (
                     <div key={`${reference.pageSlug}-${reference.fieldPath}-${index}`} className="rounded-lg border border-neutral-200 p-3 text-sm">
                       <div className="font-medium text-neutral-900">{reference.pageSlug || reference.pageId || 'Unknown page'}</div>
                       <div className="mt-1 text-neutral-600">{reference.fieldPath || 'No field path'}</div>
@@ -318,9 +471,15 @@ export default function MediaAssetDetailPage() {
               <div className="mt-3 space-y-3 text-sm">
                 <ReadOnlyRow label="Record ID" value={draft.id} />
                 <ReadOnlyRow label="Tenant ID" value={draft.tenantId} />
+                <ReadOnlyRow label="Site Key" value={draft.siteKey || 'Not recorded'} />
+                <ReadOnlyRow label="Status" value={formatStatus(draft.status || 'draft')} />
                 <ReadOnlyRow label="Created" value={formatDateTime(draft.createdAt)} />
                 <ReadOnlyRow label="Updated" value={formatDateTime(draft.updatedAt)} />
                 <ReadOnlyRow label="Created By" value={draft.createdBy || 'Not recorded'} />
+                <ReadOnlyRow label="Uploaded By" value={draft.uploadedBy || 'Not recorded'} />
+                <ReadOnlyRow label="Archived At" value={formatDateTime(draft.archivedAt)} />
+                <ReadOnlyRow label="Archived By" value={draft.archivedBy || 'Not recorded'} />
+                <ReadOnlyRow label="Replaced By" value={draft.replacedByMediaAssetId || 'Not recorded'} />
               </div>
             </div>
           </aside>
@@ -433,22 +592,57 @@ function ReadOnlyRow({ label, value }: { label: string; value: string }) {
 function normalizeMediaAssetDraft(asset: MediaAsset): MediaAsset {
   return {
     ...asset,
+    status: asset.status || 'draft',
+    publicUrl: asset.publicUrl || asset.url || '',
+    thumbnailUrl: asset.thumbnailUrl || '',
+    originalFileName: asset.originalFileName || asset.fileName || '',
+    safeFileName: asset.safeFileName || '',
+    altText: asset.altText || asset.alt || '',
+    credit: asset.credit || asset.source || '',
+    license: asset.license || '',
+    usageType: asset.usageType || 'inline',
+    extension: asset.extension || '',
+    sizeBytes: asset.sizeBytes ?? asset.fileSize ?? null,
+    checksum: asset.checksum || asset.hash || '',
+    hash: asset.hash || asset.checksum || '',
+    storageProvider: asset.storageProvider || 'external',
+    storageContainer: asset.storageContainer || '',
+    blobPath: asset.blobPath || '',
     focalPoint: asset.focalPoint || { x: null, y: null },
     tags: asset.tags || [],
+    variants: asset.variants || [],
     usageReferences: asset.usageReferences || [],
+    usedByPages: asset.usedByPages || asset.usageReferences || [],
+    replacedByMediaAssetId: asset.replacedByMediaAssetId || '',
+    archivedAt: asset.archivedAt || '',
+    archivedBy: asset.archivedBy || '',
   }
 }
 
 function getAssetWarnings(asset: MediaAsset) {
   const warnings: string[] = []
-  if (asset.url && !asset.decorative && !asset.alt?.trim()) warnings.push('Missing alt text for non-decorative asset.')
+  if (getAssetUrl(asset) && !asset.decorative && !getAssetAlt(asset).trim()) warnings.push('Missing alt text for non-decorative asset.')
   if (asset.licenseStatus === 'unknown' || asset.licenseStatus === 'needs_review') warnings.push('License status needs review before production use.')
-  if (asset.url && !asset.source?.trim()) warnings.push('Image source is missing.')
-  if (asset.url && (!asset.width || !asset.height)) warnings.push('Image dimensions are missing.')
-  if ((asset.usageReferences?.length || 0) > 0 && !['approved', 'owned', 'licensed', 'partner_provided'].includes(asset.licenseStatus)) {
+  if (asset.status === 'archived') warnings.push('Archived media assets should not be used by production pages.')
+  if (asset.status === 'replaced') warnings.push('This media asset has been replaced; update page references where practical.')
+  if (getAssetUrl(asset) && !asset.source?.trim() && !asset.credit?.trim()) warnings.push('Image source is missing.')
+  if (getAssetUrl(asset) && (!asset.width || !asset.height)) warnings.push('Image dimensions are missing.')
+  if (getUsageReferences(asset).length > 0 && !['approved', 'owned', 'licensed', 'partner_provided'].includes(asset.licenseStatus)) {
     warnings.push('This asset is referenced but license status is not approved, owned, licensed, or partner provided.')
   }
   return warnings
+}
+
+function getAssetUrl(asset: MediaAsset) {
+  return asset.publicUrl || asset.url || ''
+}
+
+function getAssetAlt(asset: MediaAsset) {
+  return asset.altText || asset.alt || ''
+}
+
+function getUsageReferences(asset: MediaAsset) {
+  return asset.usedByPages || asset.usageReferences || []
 }
 
 function splitTags(value: string) {

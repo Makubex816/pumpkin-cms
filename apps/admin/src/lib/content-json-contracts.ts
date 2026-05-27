@@ -510,16 +510,22 @@ function validateMedia(page: JsonRecord, contract: TemplateContract, errors: Con
       return
     }
 
-    const url = stringValue(image.url)
+    const url = stringValue(image.publicUrl) || stringValue(image.url) || stringValue(image.src)
     const alt = stringValue(image.alt)
     const decorative = image.decorative === true
-    const assetId = stringValue(image.assetId)
+    const assetId = stringValue(image.assetId) || stringValue(image.mediaAssetId)
     const licenseStatus = stringValue(image.licenseStatus)
     const usageStatus = stringValue(image.usageStatus)
+    const status = stringValue(image.status)
 
     if (!url.trim()) errors.push(issue('error', 'media', `${basePath}.url`, `${basePath}.url is required.`))
+    if (url.trim() && !isSafeMediaUrl(url)) errors.push(issue('error', 'media', `${basePath}.url`, `${basePath}.url uses an unsafe or unsupported media URL scheme.`))
+    if (url.trim() && /^data:/i.test(url.trim())) errors.push(issue('error', 'media', `${basePath}.url`, `${basePath}.url must not embed base64 image data.`))
     if (url.trim() && !decorative && !alt.trim()) errors.push(issue('error', 'media', `${basePath}.alt`, `${basePath}.alt is required for non-decorative images.`))
     if (url.trim() && !assetId.trim()) warnings.push(issue('warning', 'media', `${basePath}.assetId`, `${basePath}.assetId should reference a MediaAsset.`))
+    if (url.trim() && (status === 'archived' || status === 'replaced' || status === 'deleted-pending')) {
+      warnings.push(issue('warning', 'media', `${basePath}.status`, `${basePath}.status is ${status}; select an active replacement before publish.`))
+    }
     if (url.trim() && (!licenseStatus || licenseStatus === 'unknown' || licenseStatus === 'needs_review')) {
       warnings.push(issue('warning', 'media', `${basePath}.licenseStatus`, `${basePath}.licenseStatus needs review before publish.`))
     }
@@ -527,6 +533,15 @@ function validateMedia(page: JsonRecord, contract: TemplateContract, errors: Con
       warnings.push(issue('warning', 'media', `${basePath}.usageStatus`, `${basePath}.usageStatus is not approved_for_publish.`))
     }
   })
+}
+
+function isSafeMediaUrl(value: string) {
+  const trimmed = value.trim()
+  if (!trimmed) return false
+  if (trimmed.startsWith('/') && !trimmed.startsWith('//')) return true
+  if (/^https:\/\//i.test(trimmed)) return true
+  if (/^http:\/\/localhost(?::\d+)?\//i.test(trimmed)) return true
+  return false
 }
 
 function validateFulfillment(page: JsonRecord, errors: ContractIssue[], warnings: ContractIssue[]) {

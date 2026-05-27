@@ -75,3 +75,6 @@ appsettings.*.json
 # Static publish dry-run artifacts
 .static-release-dry-runs/
 *.static-release.zip
+
+# Local development media uploads
+apps/pumpkin-api/.local-media/

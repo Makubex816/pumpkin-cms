@@ -1,0 +1,154 @@
+{
+  "assets": [
+    {
+      "id": "ice-hero-jpeg",
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "assetId": "ice-hero-jpeg",
+      "status": "active",
+      "publicUrl": "/media/ice-rink-rentals/hero.jpg",
+      "safeFileName": "hero.jpg",
+      "title": "Portable ice rink event hero",
+      "altText": "Portable ice rink installed for a winter event",
+      "mimeType": "image/jpeg",
+      "extension": ".jpg",
+      "sizeBytes": 1024,
+      "width": 1600,
+      "height": 900,
+      "storageProvider": "local-dev",
+      "usageType": "hero",
+      "licenseStatus": "owned",
+      "usageStatus": "approved_for_publish",
+      "tags": ["hero", "ice"],
+      "usageReferences": []
+    },
+    {
+      "id": "ice-card-png",
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "assetId": "ice-card-png",
+      "status": "active",
+      "publicUrl": "/media/ice-rink-rentals/card.png",
+      "safeFileName": "card.png",
+      "title": "Event card",
+      "altText": "Synthetic ice rink panels ready for installation",
+      "mimeType": "image/png",
+      "extension": ".png",
+      "sizeBytes": 2048,
+      "width": 1024,
+      "height": 768,
+      "storageProvider": "local-dev",
+      "usageType": "card",
+      "licenseStatus": "licensed",
+      "usageStatus": "approved_for_publish",
+      "tags": ["card"],
+      "usageReferences": []
+    },
+    {
+      "id": "ice-inline-webp",
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "assetId": "ice-inline-webp",
+      "status": "active",
+      "publicUrl": "https://cdn.example.com/ice/inline.webp",
+      "safeFileName": "inline.webp",
+      "title": "Inline rink detail",
+      "altText": "Guests skating on a portable rink",
+      "mimeType": "image/webp",
+      "extension": ".webp",
+      "sizeBytes": 3072,
+      "width": 640,
+      "height": 420,
+      "storageProvider": "external",
+      "usageType": "inline",
+      "licenseStatus": "partner_provided",
+      "usageStatus": "approved_for_publish",
+      "tags": ["inline"],
+      "usageReferences": []
+    },
+    {
+      "id": "ice-archived",
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "assetId": "ice-archived",
+      "status": "archived",
+      "publicUrl": "/media/ice-rink-rentals/archived.jpg",
+      "safeFileName": "archived.jpg",
+      "title": "Archived image",
+      "altText": "Archived portable ice rink image",
+      "mimeType": "image/jpeg",
+      "extension": ".jpg",
+      "sizeBytes": 512,
+      "width": 800,
+      "height": 450,
+      "storageProvider": "local-dev",
+      "usageType": "inline",
+      "licenseStatus": "owned",
+      "usageStatus": "approved_for_publish",
+      "tags": ["archive"],
+      "usageReferences": []
+    }
+  ],
+  "pageReferences": [
+    {
+      "label": "valid hero reference",
+      "tenantId": "ice-rink-rentals",
+      "assetId": "ice-hero-jpeg",
+      "url": "/media/ice-rink-rentals/hero.jpg",
+      "alt": "Portable ice rink installed for a winter event"
+    },
+    {
+      "label": "missing alt warning",
+      "tenantId": "ice-rink-rentals",
+      "assetId": "ice-card-png",
+      "url": "/media/ice-rink-rentals/card.png",
+      "alt": ""
+    },
+    {
+      "label": "archived media warning",
+      "tenantId": "ice-rink-rentals",
+      "assetId": "ice-archived",
+      "url": "/media/ice-rink-rentals/archived.jpg",
+      "alt": "Archived portable ice rink image"
+    },
+    {
+      "label": "cross tenant blocked",
+      "expectError": true,
+      "tenantId": "roller-rink-rentals",
+      "assetId": "ice-hero-jpeg",
+      "url": "/media/ice-rink-rentals/hero.jpg",
+      "alt": "Portable ice rink installed for a winter event"
+    },
+    {
+      "label": "external image policy",
+      "tenantId": "ice-rink-rentals",
+      "assetId": "",
+      "url": "https://cdn.example.com/ice/inline.webp",
+      "alt": "Guests skating on a portable rink"
+    },
+    {
+      "label": "empty media fields detected",
+      "tenantId": "ice-rink-rentals",
+      "assetId": "",
+      "url": "",
+      "alt": ""
+    }
+  ],
+  "invalidUploadSamples": [
+    {
+      "fileName": "unsafe-script.svg",
+      "mimeType": "image/svg+xml",
+      "expected": "reject"
+    },
+    {
+      "fileName": "photo.gif",
+      "mimeType": "image/gif",
+      "expected": "reject"
+    },
+    {
+      "fileName": "photo.jpg",
+      "mimeType": "image/png",
+      "expected": "reject"
+    }
+  ]
+}

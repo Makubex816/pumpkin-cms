@@ -42,7 +42,11 @@ export type {
 export type {
   MediaAsset,
   MediaAssetFocalPoint,
+  MediaAssetStatus,
+  MediaAssetStorageProvider,
+  MediaAssetUsageType,
   MediaAssetUsageReference,
+  MediaAssetVariant,
   MediaAssetLicenseStatus,
   MediaAssetUsageStatus
 } from './models/MediaAsset';

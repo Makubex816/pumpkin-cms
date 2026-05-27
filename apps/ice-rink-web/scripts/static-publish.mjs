@@ -231,19 +231,30 @@ function addImageAltWarnings(page, label, warnings) {
   const media = getMedia(page);
   for (const [slot, asset] of Object.entries(media)) {
     if (!asset || typeof asset !== 'object') continue;
-    if (stringValue(asset.url) && !stringValue(asset.alt) && asset.decorative !== true) {
+    const url = stringValue(asset.publicUrl) || stringValue(asset.url) || stringValue(asset.src);
+    const assetId = stringValue(asset.assetId) || stringValue(asset.mediaAssetId);
+    if (url && !isSafeMediaUrl(url)) {
+      warnings.push(`${label}: media.${slot}.url uses an unsafe or unsupported media URL scheme.`);
+    }
+    if (url && /^data:/i.test(url)) {
+      warnings.push(`${label}: media.${slot}.url must not embed base64 image data.`);
+    }
+    if (url && !stringValue(asset.alt) && asset.decorative !== true) {
       warnings.push(`${label}: media.${slot}.alt is missing while media.${slot}.url is set.`);
     }
-    if (stringValue(asset.url) && !stringValue(asset.assetId)) {
+    if (url && !assetId) {
       warnings.push(`${label}: media.${slot}.assetId is missing; register or reference a MediaAsset before production publish.`);
     }
-    if (stringValue(asset.url) && !stringValue(asset.source)) {
+    if (url && (asset.status === 'archived' || asset.status === 'replaced' || asset.status === 'deleted-pending')) {
+      warnings.push(`${label}: media.${slot}.status is ${asset.status}; choose an active MediaAsset before production publish.`);
+    }
+    if (url && !stringValue(asset.source) && !stringValue(asset.credit)) {
       warnings.push(`${label}: media.${slot}.source is missing while media.${slot}.url is set.`);
     }
-    if (stringValue(asset.url) && !stringValue(asset.licenseStatus)) {
+    if (url && !stringValue(asset.licenseStatus)) {
       warnings.push(`${label}: media.${slot}.licenseStatus is missing while media.${slot}.url is set.`);
     }
-    if (stringValue(asset.url) && !stringValue(asset.usageStatus)) {
+    if (url && !stringValue(asset.usageStatus)) {
       warnings.push(`${label}: media.${slot}.usageStatus is missing while media.${slot}.url is set.`);
     }
   }
@@ -252,7 +263,12 @@ function addImageAltWarnings(page, label, warnings) {
   blocks.forEach((block, blockIndex) => {
     const content = block.content && typeof block.content === 'object' ? block.content : {};
     for (const [key, value] of Object.entries(content)) {
-      if (!key.toLowerCase().includes('image') || typeof value !== 'string' || !value.trim()) continue;
+      const lowerKey = key.toLowerCase();
+      if (!lowerKey.includes('image') || typeof value !== 'string' || !value.trim()) continue;
+      const isImageUrlField = !/(alt|caption|assetid|license|usage|focal|title|source)/i.test(key);
+      if (isImageUrlField && !isSafeMediaUrl(value)) {
+        warnings.push(`${label}: ContentData.ContentBlocks[${blockIndex}].content.${key} uses an unsafe or unsupported media URL scheme.`);
+      }
 
       const altCandidates = [
         `${key}Alt`,
@@ -268,6 +284,15 @@ function addImageAltWarnings(page, label, warnings) {
       }
     }
   });
+}
+
+function isSafeMediaUrl(value) {
+  const trimmed = stringValue(value).trim();
+  if (!trimmed) return false;
+  if (trimmed.startsWith('/') && !trimmed.startsWith('//')) return true;
+  if (/^https:\/\//i.test(trimmed)) return true;
+  if (/^http:\/\/localhost(?::\d+)?\//i.test(trimmed)) return true;
+  return false;
 }
 
 function addProductionReadinessWarnings(page, label, warnings) {

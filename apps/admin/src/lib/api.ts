@@ -39,7 +39,7 @@ class ApiClient {
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`
-    
+
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       ...options.headers,
@@ -62,31 +62,31 @@ class ApiClient {
 
     try {
       const response = await fetch(url, config)
-      
+
       console.log('[API Client] Response:', {
         status: response.status,
         statusText: response.statusText,
         ok: response.ok
       })
-      
+
       if (!response.ok) {
         let errorData: any = {}
         const contentType = response.headers.get('content-type')
-        
+
         if (contentType?.includes('application/json')) {
           errorData = await response.json().catch(() => ({}))
         } else {
           const text = await response.text().catch(() => '')
           errorData = { message: text || response.statusText }
         }
-        
+
         console.error('[API Client] Error response:', errorData)
-        
-        const errorMessage = errorData.message || 
-                           errorData.error || 
+
+        const errorMessage = errorData.message ||
+                           errorData.error ||
                            errorData.title ||
                            `HTTP ${response.status}: ${response.statusText}`
-        
+
         throw {
           message: errorMessage,
           status: response.status,
@@ -111,7 +111,7 @@ class ApiClient {
 
   async login(email: string, password: string): Promise<LoginResponse> {
     const loginRequest: LoginRequest = { email, password }
-    
+
     return this.request<LoginResponse>('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(loginRequest),
@@ -148,7 +148,7 @@ class ApiClient {
         },
       }
     )
-    
+
     console.log('[API Client] Tenants response:', response)
     return response.tenants
   }
@@ -166,7 +166,7 @@ class ApiClient {
         body: JSON.stringify(tenant),
       }
     )
-    
+
     console.log('[API Client] Tenant created:', response)
     return response
   }
@@ -184,7 +184,7 @@ class ApiClient {
         body: JSON.stringify(tenant),
       }
     )
-    
+
     console.log('[API Client] Tenant updated:', response)
     return response
   }
@@ -201,7 +201,7 @@ class ApiClient {
         },
       }
     )
-    
+
     console.log('[API Client] API key regenerated')
     return response
   }
@@ -218,7 +218,7 @@ class ApiClient {
         },
       }
     )
-    
+
     console.log('[API Client] Tenant deleted:', response)
     return response
   }
@@ -479,6 +479,31 @@ class ApiClient {
     )
   }
 
+  async uploadMediaAsset(token: string, tenantId: string, formData: FormData): Promise<MediaAsset> {
+    const url = `${this.baseUrl}/api/admin/${encodeURIComponent(tenantId)}/media-assets/upload`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    })
+
+    if (!response.ok) {
+      const contentType = response.headers.get('content-type')
+      const errorData = contentType?.includes('application/json')
+        ? await response.json().catch(() => ({}))
+        : { message: await response.text().catch(() => response.statusText) }
+      throw {
+        message: errorData.message || errorData.error || errorData.title || `HTTP ${response.status}: ${response.statusText}`,
+        status: response.status,
+        details: errorData,
+      } as ApiError
+    }
+
+    return response.json()
+  }
+
   async updateMediaAsset(token: string, tenantId: string, id: string, mediaAsset: MediaAsset): Promise<MediaAsset> {
     return this.request<MediaAsset>(
       `/api/admin/${encodeURIComponent(tenantId)}/media-assets/${encodeURIComponent(id)}`,
@@ -488,6 +513,43 @@ class ApiClient {
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(mediaAsset),
+      }
+    )
+  }
+
+  async archiveMediaAsset(token: string, tenantId: string, id: string): Promise<MediaAsset> {
+    return this.request<MediaAsset>(
+      `/api/admin/${encodeURIComponent(tenantId)}/media-assets/${encodeURIComponent(id)}/archive`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  async restoreMediaAsset(token: string, tenantId: string, id: string): Promise<MediaAsset> {
+    return this.request<MediaAsset>(
+      `/api/admin/${encodeURIComponent(tenantId)}/media-assets/${encodeURIComponent(id)}/restore`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  async replaceMediaAsset(token: string, tenantId: string, id: string, replacementMediaAssetId: string): Promise<MediaAsset> {
+    return this.request<MediaAsset>(
+      `/api/admin/${encodeURIComponent(tenantId)}/media-assets/${encodeURIComponent(id)}/replace`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ replacementMediaAssetId }),
       }
     )
   }
@@ -590,14 +652,14 @@ class ApiClient {
   // Get dashboard statistics
   async getDashboardStats(token: string, tenantId: string): Promise<DashboardStats> {
     const pages = await this.getPages(token, tenantId)
-    
+
     const totalPages = pages.length
     const publishedPages = pages.filter(p => p.isPublished).length
     const draftPages = pages.filter(p => !p.isPublished).length
-    
+
     // Count unique media referenced in pages (simplified - counts image references in content)
     const mediaCount = this.countMediaReferences(pages)
-    
+
     return {
       totalPages,
       publishedPages,
@@ -625,7 +687,7 @@ class ApiClient {
 
   private getRecentActivity(pages: Page[]): ActivityItem[] {
     const activities: ActivityItem[] = []
-    
+
     // Sort pages by updatedAt
     const sortedPages = [...pages]
       .sort((a, b) => {
@@ -634,18 +696,18 @@ class ApiClient {
         return dateB - dateA
       })
       .slice(0, 5)
-    
+
     sortedPages.forEach(page => {
-      const wasPublished = page.publishedAt && 
+      const wasPublished = page.publishedAt &&
         new Date(page.publishedAt).getTime() > new Date(page.MetaData?.updatedAt || 0).getTime() - 60000
-      
+
       activities.push({
         title: wasPublished ? `${page.MetaData?.title || page.pageSlug} published` : `${page.MetaData?.title || page.pageSlug} updated`,
         time: this.getRelativeTime(page.MetaData?.updatedAt || page.publishedAt || new Date().toISOString()),
         user: page.MetaData?.author || 'Unknown',
       })
     })
-    
+
     return activities
   }
 
@@ -653,11 +715,11 @@ class ApiClient {
     const date = new Date(dateString)
     const now = new Date()
     const diff = now.getTime() - date.getTime()
-    
+
     const minutes = Math.floor(diff / 60000)
     const hours = Math.floor(diff / 3600000)
     const days = Math.floor(diff / 86400000)
-    
+
     if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`
     if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`
     return `${days} day${days !== 1 ? 's' : ''} ago`

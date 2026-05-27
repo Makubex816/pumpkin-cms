@@ -339,11 +339,11 @@ function imageAssetFromMediaAsset(asset: MediaAsset, current: ImageAssetDraft): 
   return {
     ...current,
     assetId: getMediaAssetReference(asset),
-    url: asset.url || current.url,
-    alt: asset.alt || current.alt,
+    url: getMediaAssetPublicUrl(asset) || current.url,
+    alt: getMediaAssetAltText(asset) || current.alt,
     title: asset.title || current.title,
     caption: asset.caption || current.caption,
-    source: asset.source || current.source,
+    source: asset.credit || asset.source || current.source,
     licenseStatus: asset.licenseStatus || current.licenseStatus,
     usageStatus: asset.usageStatus || current.usageStatus,
     width: asset.width ?? current.width,
@@ -352,6 +352,14 @@ function imageAssetFromMediaAsset(asset: MediaAsset, current: ImageAssetDraft): 
     focalPointY: asset.focalPoint?.y ?? current.focalPointY,
     decorative: asset.decorative,
   }
+}
+
+function getMediaAssetPublicUrl(asset: MediaAsset) {
+  return asset.publicUrl || asset.url || ''
+}
+
+function getMediaAssetAltText(asset: MediaAsset) {
+  return asset.altText || asset.alt || ''
 }
 
 function getImageSlotWarnings(slot: MediaSlot, asset: ImageAssetDraft, isPublished: boolean) {
@@ -1673,16 +1681,16 @@ export default function PageStructuredEditor() {
       media: {
         ...getPageMedia(current),
         openGraphImage: {
-          url: asset.url || '',
-          alt: asset.alt || '',
+          url: getMediaAssetPublicUrl(asset),
+          alt: getMediaAssetAltText(asset),
         },
       },
       seo: {
         ...current.seo,
         openGraph: {
           ...current.seo.openGraph,
-          'og:image': asset.url || '',
-          'og:image:alt': asset.alt || '',
+          'og:image': getMediaAssetPublicUrl(asset),
+          'og:image:alt': getMediaAssetAltText(asset),
         },
       },
     }))
@@ -2099,8 +2107,8 @@ export default function PageStructuredEditor() {
   ) => {
     updateBlockContent(blockIndex, (content) => ({
       ...content,
-      [imageField]: asset.url || '',
-      ...(altField ? { [altField]: asset.alt || '' } : {}),
+      [imageField]: getMediaAssetPublicUrl(asset),
+      ...(altField ? { [altField]: getMediaAssetAltText(asset) } : {}),
       [`${imageField}AssetId`]: getMediaAssetReference(asset),
       [`${imageField}LicenseStatus`]: asset.licenseStatus || '',
       [`${imageField}UsageStatus`]: asset.usageStatus || '',
@@ -2122,8 +2130,8 @@ export default function PageStructuredEditor() {
       const currentItem = toRecord(currentItems[itemIndex])
       currentItems[itemIndex] = {
         ...currentItem,
-        [imageField]: asset.url || '',
-        ...(altField ? { [altField]: asset.alt || '' } : {}),
+        [imageField]: getMediaAssetPublicUrl(asset),
+        ...(altField ? { [altField]: getMediaAssetAltText(asset) } : {}),
         [`${imageField}AssetId`]: getMediaAssetReference(asset),
         [`${imageField}LicenseStatus`]: asset.licenseStatus || '',
         [`${imageField}UsageStatus`]: asset.usageStatus || '',

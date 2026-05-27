@@ -30,6 +30,9 @@ export default function MediaPicker({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('')
+  const [usageType, setUsageType] = useState('')
+  const [tag, setTag] = useState('')
   const [licenseStatus, setLicenseStatus] = useState('')
   const [usageStatus, setUsageStatus] = useState('')
 
@@ -69,29 +72,41 @@ export default function MediaPicker({
     const query = search.trim().toLowerCase()
 
     return assets.filter((asset) => {
+      if (asset.tenantId && asset.tenantId !== tenantId) return false
+      if (status && asset.status !== status) return false
+      if (usageType && asset.usageType !== usageType) return false
       if (licenseStatus && asset.licenseStatus !== licenseStatus) return false
       if (usageStatus && asset.usageStatus !== usageStatus) return false
+      if (tag.trim() && !(asset.tags || []).some((assetTag) => assetTag.toLowerCase().includes(tag.trim().toLowerCase()))) return false
       if (!query) return true
 
       return [
         asset.id,
         asset.assetId,
-        asset.url,
+        getAssetUrl(asset),
         asset.fileName,
+        asset.originalFileName,
+        asset.safeFileName,
         asset.title,
-        asset.alt,
+        getAssetAlt(asset),
         asset.caption,
         asset.source,
+        asset.credit,
+        asset.usageType,
+        asset.status,
         asset.sourceUrl,
         ...(asset.tags || []),
       ].join(' ').toLowerCase().includes(query)
     })
-  }, [assets, licenseStatus, search, usageStatus])
+  }, [assets, licenseStatus, search, status, tag, tenantId, usageStatus, usageType])
 
   const licenseOptions = useMemo(() => uniqueOptions(assets.map((asset) => asset.licenseStatus)), [assets])
   const usageOptions = useMemo(() => uniqueOptions(assets.map((asset) => asset.usageStatus)), [assets])
+  const statusOptions = useMemo(() => uniqueOptions(assets.map((asset) => asset.status || 'draft')), [assets])
+  const usageTypeOptions = useMemo(() => uniqueOptions(assets.map((asset) => asset.usageType || 'inline')), [assets])
 
   function selectAsset(asset: MediaAsset) {
+    if (asset.tenantId && asset.tenantId !== tenantId) return
     onSelect(asset)
     setIsOpen(false)
   }
@@ -113,7 +128,7 @@ export default function MediaPicker({
             <div>
               <h3 className="text-base font-semibold text-neutral-900">{panelTitle}</h3>
               <p className="mt-1 text-sm text-neutral-600">
-                Select a tenant-scoped MediaAsset. This copies metadata into the page; it does not upload files.
+                Select a tenant-scoped MediaAsset. This copies the asset id, public URL, alt text, and publishing metadata into the page.
               </p>
             </div>
             <a
@@ -124,7 +139,7 @@ export default function MediaPicker({
             </a>
           </div>
 
-          <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-4">
+          <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-6">
             <label className="block lg:col-span-2">
               <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Search</span>
               <input
@@ -144,6 +159,24 @@ export default function MediaPicker({
               </select>
             </label>
             <label className="block">
+              <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Status</span>
+              <select value={status} onChange={(event) => setStatus(event.target.value)} className="input text-sm">
+                <option value="">All statuses</option>
+                {statusOptions.map((option) => (
+                  <option key={option} value={option}>{formatStatus(option)}</option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Type</span>
+              <select value={usageType} onChange={(event) => setUsageType(event.target.value)} className="input text-sm">
+                <option value="">All types</option>
+                {usageTypeOptions.map((option) => (
+                  <option key={option} value={option}>{formatStatus(option)}</option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
               <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Usage</span>
               <select value={usageStatus} onChange={(event) => setUsageStatus(event.target.value)} className="input text-sm">
                 <option value="">All usage</option>
@@ -151,6 +184,15 @@ export default function MediaPicker({
                   <option key={status} value={status}>{formatStatus(status)}</option>
                 ))}
               </select>
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Tag</span>
+              <input
+                value={tag}
+                onChange={(event) => setTag(event.target.value)}
+                className="input text-sm"
+                placeholder="hero"
+              />
             </label>
           </div>
 
@@ -199,7 +241,7 @@ export default function MediaPicker({
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 break-all font-mono text-xs text-neutral-600">{asset.url}</p>
+                        <p className="mt-1 break-all font-mono text-xs text-neutral-600">{getAssetUrl(asset)}</p>
                         <dl className="mt-2 grid grid-cols-1 gap-2 text-xs text-neutral-700 md:grid-cols-2">
                           <div>
                             <dt className="font-semibold uppercase tracking-wide text-neutral-500">assetId</dt>
@@ -207,7 +249,15 @@ export default function MediaPicker({
                           </div>
                           <div>
                             <dt className="font-semibold uppercase tracking-wide text-neutral-500">Alt</dt>
-                            <dd>{asset.alt || 'Missing alt text'}</dd>
+                            <dd>{getAssetAlt(asset) || 'Missing alt text'}</dd>
+                          </div>
+                          <div>
+                            <dt className="font-semibold uppercase tracking-wide text-neutral-500">Status</dt>
+                            <dd>{formatStatus(asset.status || 'draft')}</dd>
+                          </div>
+                          <div>
+                            <dt className="font-semibold uppercase tracking-wide text-neutral-500">Type</dt>
+                            <dd>{formatStatus(asset.usageType || 'inline')}</dd>
                           </div>
                           <div>
                             <dt className="font-semibold uppercase tracking-wide text-neutral-500">License</dt>
@@ -231,7 +281,8 @@ export default function MediaPicker({
                       <button
                         type="button"
                         onClick={() => selectAsset(asset)}
-                        className="btn btn-primary md:self-center"
+                        disabled={asset.status === 'archived' || asset.status === 'deleted-pending' || Boolean(asset.tenantId && asset.tenantId !== tenantId)}
+                        className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-50 md:self-center"
                       >
                         Use Asset
                       </button>
@@ -252,7 +303,8 @@ export function getMediaAssetReference(asset: MediaAsset) {
 }
 
 function AssetThumb({ asset }: { asset: MediaAsset }) {
-  if (!asset.url) {
+  const url = getAssetUrl(asset)
+  if (!url) {
     return (
       <div className="flex h-20 w-28 items-center justify-center rounded-md border border-neutral-200 bg-white text-xs text-neutral-500">
         No URL
@@ -262,8 +314,8 @@ function AssetThumb({ asset }: { asset: MediaAsset }) {
 
   return (
     <img
-      src={asset.url}
-      alt={asset.alt || asset.title || asset.fileName || 'Media asset preview'}
+      src={url}
+      alt={getAssetAlt(asset) || asset.title || asset.fileName || 'Media asset preview'}
       className="h-20 w-28 rounded-md border border-neutral-200 bg-white object-cover"
     />
   )
@@ -272,13 +324,24 @@ function AssetThumb({ asset }: { asset: MediaAsset }) {
 function getAssetWarnings(asset: MediaAsset) {
   const warnings: string[] = []
 
-  if (asset.url && !asset.decorative && !asset.alt?.trim()) warnings.push('Missing alt')
+  if (getAssetUrl(asset) && !asset.decorative && !getAssetAlt(asset).trim()) warnings.push('Missing alt')
+  if (asset.status === 'archived') warnings.push('Archived')
+  if (asset.status === 'replaced') warnings.push('Replaced')
+  if (asset.status === 'deleted-pending') warnings.push('Delete pending')
   if (asset.licenseStatus === 'unknown' || asset.licenseStatus === 'needs_review') warnings.push('License review')
-  if (asset.url && asset.usageStatus !== 'approved_for_publish' && !APPROVED_LICENSE_STATUSES.has(asset.licenseStatus)) {
+  if (getAssetUrl(asset) && asset.usageStatus !== 'approved_for_publish' && !APPROVED_LICENSE_STATUSES.has(asset.licenseStatus)) {
     warnings.push('Not publish-approved')
   }
 
   return warnings
+}
+
+function getAssetUrl(asset: MediaAsset) {
+  return asset.publicUrl || asset.url || ''
+}
+
+function getAssetAlt(asset: MediaAsset) {
+  return asset.altText || asset.alt || ''
 }
 
 function uniqueOptions(values: string[]) {

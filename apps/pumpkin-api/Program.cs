@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,6 +114,7 @@ builder.Services.AddSingleton<MongoDataConnection>();
 
 // Register the main database service (singleton for connection reuse)
 builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
+builder.Services.AddSingleton<IMediaStorageService, MediaStorageService>();
 
 var app = builder.Build();
 
@@ -123,6 +125,15 @@ app.UseCors("AllowAll");
 // Configure authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Local development media serving. Production media should use Azure Blob/CDN-compatible storage.
+var localMediaRoot = Path.Combine(app.Environment.ContentRootPath, ".local-media");
+Directory.CreateDirectory(localMediaRoot);
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(localMediaRoot),
+    RequestPath = "/media"
+});
 
 // Configure Swagger UI
 if (app.Environment.IsDevelopment())
@@ -1560,7 +1571,130 @@ app.MapPost("/api/admin/{tenantId}/media-assets",
     .WithTags("Admin - Media Assets")
     .WithName("CreateMediaAsset")
     .WithSummary("Register media asset metadata")
-    .WithDescription("Stores metadata for an existing image URL only. Does not upload files or manage production storage.");
+    .WithDescription("Stores metadata for an existing image URL. Requires JWT authentication and tenant authorization.");
+
+// Admin: Upload a binary image into configured media storage (JWT auth, no API key)
+app.MapPost("/api/admin/{tenantId}/media-assets/upload",
+    async (IDatabaseService databaseService, IMediaStorageService storageService, string tenantId, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        if (!context.Request.HasFormContentType)
+            return Results.BadRequest("Media upload must use multipart/form-data.");
+
+        try
+        {
+            var form = await context.Request.ReadFormAsync(context.RequestAborted);
+            var file = form.Files.GetFile("file");
+            if (file == null)
+                return Results.BadRequest("Upload field 'file' is required.");
+
+            var mimeType = file.ContentType?.Trim().ToLowerInvariant() ?? string.Empty;
+            MediaUploadPolicy.ValidateUpload(file.FileName, mimeType, file.Length, storageService.MaxUploadBytes);
+
+            await using var buffer = new MemoryStream();
+            await file.CopyToAsync(buffer, context.RequestAborted);
+            var bytes = buffer.ToArray();
+            var checksum = MediaUploadPolicy.ComputeSha256(bytes);
+            var safeFileName = MediaUploadPolicy.BuildSafeFileName(file.FileName, checksum);
+            var imageInfo = MediaUploadPolicy.InspectImage(bytes, mimeType);
+            var stored = await storageService.StoreAsync(tenantId, safeFileName, mimeType, bytes, context.RequestAborted);
+
+            var createdBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+            var now = DateTime.UtcNow.ToString("O");
+
+            var mediaAsset = new MediaAsset
+            {
+                TenantId = tenantId,
+                SiteKey = form["siteKey"].ToString(),
+                AssetId = Path.GetFileNameWithoutExtension(safeFileName),
+                Status = "draft",
+                Url = stored.PublicUrl,
+                PublicUrl = stored.PublicUrl,
+                ThumbnailUrl = stored.ThumbnailUrl,
+                FileName = file.FileName,
+                OriginalFileName = file.FileName,
+                SafeFileName = safeFileName,
+                Title = form["title"].ToString(),
+                Alt = form["altText"].ToString(),
+                AltText = form["altText"].ToString(),
+                Caption = form["caption"].ToString(),
+                Source = form["credit"].ToString(),
+                Credit = form["credit"].ToString(),
+                License = form["license"].ToString(),
+                SourceUrl = form["sourceUrl"].ToString(),
+                UsageType = string.IsNullOrWhiteSpace(form["usageType"].ToString()) ? "inline" : form["usageType"].ToString(),
+                LicenseStatus = string.IsNullOrWhiteSpace(form["licenseStatus"].ToString()) ? "needs_review" : form["licenseStatus"].ToString(),
+                UsageStatus = "needs_review",
+                Width = imageInfo.Width,
+                Height = imageInfo.Height,
+                MimeType = mimeType,
+                Extension = Path.GetExtension(safeFileName).ToLowerInvariant(),
+                FileSize = file.Length,
+                SizeBytes = file.Length,
+                Checksum = checksum,
+                Hash = checksum,
+                StorageProvider = stored.StorageProvider,
+                StorageContainer = stored.StorageContainer,
+                BlobPath = stored.BlobPath,
+                UploadedBy = createdBy,
+                Tags = form["tags"].ToString()
+                    .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                    .ToList(),
+                Variants = new List<MediaAssetVariant>
+                {
+                    new()
+                    {
+                        Name = "original",
+                        Url = stored.PublicUrl,
+                        PublicUrl = stored.PublicUrl,
+                        Width = imageInfo.Width,
+                        Height = imageInfo.Height,
+                        MimeType = mimeType,
+                        SizeBytes = file.Length,
+                        StorageProvider = stored.StorageProvider,
+                        BlobPath = stored.BlobPath,
+                        GeneratedAt = now,
+                        Status = "available"
+                    }
+                }
+            };
+
+            var preparedMediaAsset = MediaAssetSanitizer.PrepareForCreate(mediaAsset, tenantId, createdBy);
+            var savedMediaAsset = await databaseService.SaveMediaAssetAsync(tenantId, preparedMediaAsset);
+            return Results.Created($"/api/admin/{tenantId}/media-assets/{savedMediaAsset.Id}", savedMediaAsset);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.Problem(ex.Message, statusCode: StatusCodes.Status501NotImplemented);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error uploading media asset: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("UploadMediaAsset")
+    .WithSummary("Upload media asset")
+    .WithDescription("Uploads tenant-scoped JPEG, PNG, or WebP media through the configured storage provider. Requires JWT authentication.");
 
 // Admin: Update media asset metadata only (JWT auth, no API key)
 app.MapPatch("/api/admin/{tenantId}/media-assets/{id}",
@@ -1590,7 +1724,7 @@ app.MapPatch("/api/admin/{tenantId}/media-assets/{id}",
                 return Results.NotFound("Media asset not found");
 
             var preparedMediaAsset = MediaAssetSanitizer.PrepareForUpdate(existingMediaAsset, mediaAsset, tenantId, updatedBy);
-            var updatedMediaAsset = await databaseService.UpdateMediaAssetAsync(tenantId, id, preparedMediaAsset);
+            var updatedMediaAsset = await databaseService.UpdateMediaAssetAsync(tenantId, existingMediaAsset.Id, preparedMediaAsset);
             return Results.Ok(updatedMediaAsset);
         }
         catch (ArgumentException ex)
@@ -1614,7 +1748,148 @@ app.MapPatch("/api/admin/{tenantId}/media-assets/{id}",
     .WithTags("Admin - Media Assets")
     .WithName("UpdateMediaAsset")
     .WithSummary("Update media asset metadata")
-    .WithDescription("Updates safe media metadata only. Does not upload files, delete assets, deploy, or alter Cloudflare.");
+    .WithDescription("Updates safe media metadata only. Does not hard delete assets, deploy, or alter Cloudflare.");
+
+// Admin: Archive media asset without hard deleting it
+app.MapPost("/api/admin/{tenantId}/media-assets/{id}/archive",
+    async (IDatabaseService databaseService, string tenantId, string id, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var actor = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+            var existingMediaAsset = await databaseService.GetMediaAssetAsync(tenantId, id);
+            if (existingMediaAsset == null)
+                return Results.NotFound("Media asset not found");
+
+            existingMediaAsset.Status = "archived";
+            existingMediaAsset.ArchivedAt = DateTime.UtcNow.ToString("O");
+            existingMediaAsset.ArchivedBy = actor;
+            var preparedMediaAsset = MediaAssetSanitizer.PrepareForUpdate(existingMediaAsset, existingMediaAsset, tenantId, actor);
+            var updatedMediaAsset = await databaseService.UpdateMediaAssetAsync(tenantId, existingMediaAsset.Id, preparedMediaAsset);
+            return Results.Ok(updatedMediaAsset);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error archiving media asset: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("ArchiveMediaAsset")
+    .WithSummary("Archive media asset")
+    .WithDescription("Marks a tenant-scoped media asset as archived. Hard delete is intentionally not exposed.");
+
+// Admin: Restore an archived media asset
+app.MapPost("/api/admin/{tenantId}/media-assets/{id}/restore",
+    async (IDatabaseService databaseService, string tenantId, string id, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var actor = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+            var existingMediaAsset = await databaseService.GetMediaAssetAsync(tenantId, id);
+            if (existingMediaAsset == null)
+                return Results.NotFound("Media asset not found");
+
+            existingMediaAsset.Status = "active";
+            existingMediaAsset.ArchivedAt = string.Empty;
+            existingMediaAsset.ArchivedBy = string.Empty;
+            var preparedMediaAsset = MediaAssetSanitizer.PrepareForUpdate(existingMediaAsset, existingMediaAsset, tenantId, actor);
+            var updatedMediaAsset = await databaseService.UpdateMediaAssetAsync(tenantId, existingMediaAsset.Id, preparedMediaAsset);
+            return Results.Ok(updatedMediaAsset);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error restoring media asset: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("RestoreMediaAsset")
+    .WithSummary("Restore media asset")
+    .WithDescription("Restores an archived tenant-scoped media asset to active status.");
+
+// Admin: Mark a media asset as replaced by another tenant-scoped media asset
+app.MapPost("/api/admin/{tenantId}/media-assets/{id}/replace",
+    async (IDatabaseService databaseService, string tenantId, string id, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var payload = await System.Text.Json.JsonSerializer.DeserializeAsync<Dictionary<string, string>>(context.Request.Body, cancellationToken: context.RequestAborted)
+                ?? new Dictionary<string, string>();
+            payload.TryGetValue("replacementMediaAssetId", out var replacementMediaAssetId);
+            if (string.IsNullOrWhiteSpace(replacementMediaAssetId))
+                return Results.BadRequest("replacementMediaAssetId is required.");
+
+            var actor = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
+            var existingMediaAsset = await databaseService.GetMediaAssetAsync(tenantId, id);
+            if (existingMediaAsset == null)
+                return Results.NotFound("Media asset not found");
+
+            var replacementMediaAsset = await databaseService.GetMediaAssetAsync(tenantId, replacementMediaAssetId);
+            if (replacementMediaAsset == null)
+                return Results.BadRequest("Replacement media asset must exist in the same tenant.");
+
+            existingMediaAsset.Status = "replaced";
+            existingMediaAsset.ReplacedByMediaAssetId = replacementMediaAsset.AssetId;
+            var preparedMediaAsset = MediaAssetSanitizer.PrepareForUpdate(existingMediaAsset, existingMediaAsset, tenantId, actor);
+            var updatedMediaAsset = await databaseService.UpdateMediaAssetAsync(tenantId, existingMediaAsset.Id, preparedMediaAsset);
+            return Results.Ok(updatedMediaAsset);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error replacing media asset: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("ReplaceMediaAsset")
+    .WithSummary("Replace media asset")
+    .WithDescription("Marks a media asset as replaced by another tenant-scoped asset without deleting either record.");
 
 // Admin: Get hub pages for a tenant
 app.MapGet("/api/admin/tenants/{tenantId}/hubs",

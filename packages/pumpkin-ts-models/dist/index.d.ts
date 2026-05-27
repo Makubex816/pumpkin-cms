@@ -4,7 +4,7 @@ export { UserRole, userRoleToString, stringToUserRole, isUserRole, userToUserInf
 export type { Tenant, ApiKeyMeta, TenantSettings, Features, Contact, Billing, TenantInfo } from './models/Tenant';
 export { tenantToTenantInfo } from './models/Tenant';
 export type { FormEntry, FormEntryMetadata } from './models/FormEntry';
-export type { MediaAsset, MediaAssetFocalPoint, MediaAssetUsageReference, MediaAssetLicenseStatus, MediaAssetUsageStatus } from './models/MediaAsset';
+export type { MediaAsset, MediaAssetFocalPoint, MediaAssetStatus, MediaAssetStorageProvider, MediaAssetUsageType, MediaAssetUsageReference, MediaAssetVariant, MediaAssetLicenseStatus, MediaAssetUsageStatus } from './models/MediaAsset';
 export type { Page, PageMetaData, SearchData, ContentData, SeoData, PageImageAsset, PageOpenGraphImage, PageMedia, PageFulfillment, PageGoogleAds, PageQuality, PageWorkflow, PageRedirect, PageRedirectReason, PageRevisionMetadata, PageChangeSource, PageRevisionSnapshot, PageStaticPublishing, PageTemplateIdentity, PageLinking, PageStructuredDataControls, PageServiceSchema, PageProductOffered, PageAreaServed, PageAreaServedType, PageFormConfig, PageDomainRouting, PageImportProvenance, PageDeploymentHooks, AlternateUrl, OpenGraphData, TwitterCardData, ContentRelationships, NodePosition } from './models/Page';
 export type { HeroType, HeroContent, HeroBlock } from './models/HeroBlocks';
 export type { PrimaryCtaContent, PrimaryCtaBlock, SecondaryCtaContent, SecondaryCtaBlock } from './models/CtaBlocks';

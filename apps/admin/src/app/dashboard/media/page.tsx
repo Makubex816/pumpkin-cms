@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { MediaAsset, MediaAssetLicenseStatus, MediaAssetUsageStatus } from 'pumpkin-ts-models'
+import type { MediaAsset, MediaAssetLicenseStatus, MediaAssetStatus, MediaAssetUsageStatus, MediaAssetUsageType } from 'pumpkin-ts-models'
 
 const LICENSE_STATUSES: MediaAssetLicenseStatus[] = [
   'unknown',
@@ -24,18 +24,45 @@ const USAGE_STATUSES: MediaAssetUsageStatus[] = [
   'approved_for_publish',
 ]
 
+const MEDIA_STATUSES: MediaAssetStatus[] = [
+  'draft',
+  'active',
+  'archived',
+  'replaced',
+  'deleted-pending',
+]
+
+const USAGE_TYPES: MediaAssetUsageType[] = [
+  'hero',
+  'card',
+  'gallery',
+  'og-image',
+  'icon',
+  'background',
+  'inline',
+  'document',
+]
+
 interface Filters {
   search: string
+  status: string
+  siteKey: string
+  usageType: string
   licenseStatus: string
   usageStatus: string
+  tag: string
   missingAltOnly: boolean
   inUseOnly: boolean
 }
 
 const defaultFilters: Filters = {
   search: '',
+  status: '',
+  siteKey: '',
+  usageType: '',
   licenseStatus: '',
   usageStatus: '',
+  tag: '',
   missingAltOnly: false,
   inUseOnly: false,
 }
@@ -47,6 +74,7 @@ interface RegisterForm {
   source: string
   sourceUrl: string
   licenseStatus: MediaAssetLicenseStatus
+  usageType: MediaAssetUsageType
   tags: string
 }
 
@@ -57,7 +85,32 @@ const defaultRegisterForm: RegisterForm = {
   source: '',
   sourceUrl: '',
   licenseStatus: 'needs_review',
+  usageType: 'inline',
   tags: '',
+}
+
+interface UploadForm {
+  title: string
+  altText: string
+  caption: string
+  credit: string
+  license: string
+  sourceUrl: string
+  tags: string
+  usageType: MediaAssetUsageType
+  siteKey: string
+}
+
+const defaultUploadForm: UploadForm = {
+  title: '',
+  altText: '',
+  caption: '',
+  credit: '',
+  license: '',
+  sourceUrl: '',
+  tags: '',
+  usageType: 'inline',
+  siteKey: '',
 }
 
 export default function MediaLibraryPage() {
@@ -65,10 +118,14 @@ export default function MediaLibraryPage() {
   const [assets, setAssets] = useState<MediaAsset[]>([])
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [filters, setFilters] = useState<Filters>(defaultFilters)
   const [registerForm, setRegisterForm] = useState<RegisterForm>(defaultRegisterForm)
+  const [uploadForm, setUploadForm] = useState<UploadForm>(defaultUploadForm)
+  const [uploadFile, setUploadFile] = useState<File | null>(null)
+  const [uploadInputKey, setUploadInputKey] = useState(0)
 
   useEffect(() => {
     let isCurrent = true
@@ -135,6 +192,56 @@ export default function MediaLibraryPage() {
     }
   }
 
+  async function uploadAsset() {
+    if (!token || !currentTenant || uploading) return
+
+    if (!uploadFile) {
+      setError('Choose a JPEG, PNG, or WebP file before uploading.')
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('file', uploadFile)
+    formData.append('title', uploadForm.title.trim())
+    formData.append('altText', uploadForm.altText.trim())
+    formData.append('caption', uploadForm.caption.trim())
+    formData.append('credit', uploadForm.credit.trim())
+    formData.append('license', uploadForm.license.trim())
+    formData.append('sourceUrl', uploadForm.sourceUrl.trim())
+    formData.append('tags', uploadForm.tags.trim())
+    formData.append('usageType', uploadForm.usageType)
+    formData.append('siteKey', uploadForm.siteKey.trim())
+
+    try {
+      setUploading(true)
+      setError(null)
+      setSuccess(null)
+      const savedAsset = await apiClient.uploadMediaAsset(token, currentTenant.tenantId, formData)
+      setAssets((current) => [savedAsset, ...current.filter((asset) => asset.id !== savedAsset.id)])
+      setUploadForm(defaultUploadForm)
+      setUploadFile(null)
+      setUploadInputKey((current) => current + 1)
+      setSuccess(`Uploaded media asset ${savedAsset.assetId || savedAsset.id}.`)
+    } catch (err) {
+      console.error('[Media Library] Failed to upload media asset:', err)
+      setError(getErrorMessage(err, 'Failed to upload media asset.'))
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  async function copyAssetUrl(asset: MediaAsset) {
+    const url = getAssetUrl(asset)
+    if (!url) return
+
+    try {
+      await navigator.clipboard.writeText(url)
+      setSuccess('Public URL copied.')
+    } catch {
+      setError('Unable to copy public URL automatically.')
+    }
+  }
+
   if (isLoading) {
     return <StateCard title="Media" message="Loading admin session..." />
   }
@@ -163,12 +270,11 @@ export default function MediaLibraryPage() {
             <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Media Library</p>
             <h1 className="mt-1 text-3xl font-bold text-neutral-900">Asset Manager</h1>
             <p className="mt-2 max-w-3xl text-sm text-neutral-600">
-              Tenant-scoped metadata for existing image URLs. This MVP tracks alt text, source, license status,
-              focal point, usage state, and page references without uploading files.
+              Tenant-scoped image upload, metadata, lifecycle, storage, alt text, source, license, usage, and page-reference tracking.
             </p>
           </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            No binary upload, hard delete, Azure deployment, or Cloudflare action exists in this phase.
+          <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+            Uploads use the configured media storage provider. Hard delete, Azure resource creation, and Cloudflare actions stay disabled.
           </div>
         </div>
 
@@ -176,9 +282,72 @@ export default function MediaLibraryPage() {
           <Metric label="Total Assets" value={summary.total} />
           <Metric label="Needs License Review" value={summary.licenseReviewCount} />
           <Metric label="Missing Alt" value={summary.missingAltCount} />
-          <Metric label="In Use" value={summary.inUseCount} />
+          <Metric label="Archived/Replaced" value={summary.inactiveCount} />
         </div>
       </header>
+
+      <section className="card">
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-neutral-900">Upload Image</h2>
+            <p className="mt-1 text-sm text-neutral-600">
+              Upload JPEG, PNG, or WebP media into tenant-scoped storage and create a MediaAsset record.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <label className="block">
+            <span className="text-sm font-medium text-neutral-700">Image File *</span>
+            <input
+              key={uploadInputKey}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(event) => setUploadFile(event.target.files?.[0] || null)}
+              className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <TextInput label="Title" value={uploadForm.title} onChange={(value) => setUploadForm((current) => ({ ...current, title: value }))} />
+          <TextInput label="Alt Text" value={uploadForm.altText} onChange={(value) => setUploadForm((current) => ({ ...current, altText: value }))} />
+          <TextInput label="Caption" value={uploadForm.caption} onChange={(value) => setUploadForm((current) => ({ ...current, caption: value }))} />
+          <TextInput label="Credit" value={uploadForm.credit} onChange={(value) => setUploadForm((current) => ({ ...current, credit: value }))} />
+          <TextInput label="License/Source" value={uploadForm.license} onChange={(value) => setUploadForm((current) => ({ ...current, license: value }))} />
+          <TextInput label="Source URL" value={uploadForm.sourceUrl} onChange={(value) => setUploadForm((current) => ({ ...current, sourceUrl: value }))} />
+          <TextInput label="Site Key" value={uploadForm.siteKey} onChange={(value) => setUploadForm((current) => ({ ...current, siteKey: value }))} placeholder="ice-rink-rentals" />
+          <label className="block">
+            <span className="text-sm font-medium text-neutral-700">Usage Type</span>
+            <select
+              value={uploadForm.usageType}
+              onChange={(event) => setUploadForm((current) => ({ ...current, usageType: event.target.value as MediaAssetUsageType }))}
+              className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            >
+              {USAGE_TYPES.map((usageType) => (
+                <option key={usageType} value={usageType}>{formatStatus(usageType)}</option>
+              ))}
+            </select>
+          </label>
+          <TextInput
+            label="Tags"
+            value={uploadForm.tags}
+            onChange={(value) => setUploadForm((current) => ({ ...current, tags: value }))}
+            placeholder="hero, seasonal, partner"
+          />
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={uploadAsset}
+            disabled={uploading}
+            className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {uploading ? 'Uploading...' : 'Upload Image'}
+          </button>
+          <p className="text-sm text-neutral-500">
+            SVG upload is blocked. Azure Blob storage is configured later with placeholder app settings only.
+          </p>
+        </div>
+      </section>
 
       <section className="card">
         <div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
@@ -196,6 +365,18 @@ export default function MediaLibraryPage() {
           <TextInput label="Alt Text" value={registerForm.alt} onChange={(value) => setRegisterForm((current) => ({ ...current, alt: value }))} />
           <TextInput label="Source" value={registerForm.source} onChange={(value) => setRegisterForm((current) => ({ ...current, source: value }))} />
           <TextInput label="Source URL" value={registerForm.sourceUrl} onChange={(value) => setRegisterForm((current) => ({ ...current, sourceUrl: value }))} />
+          <label className="block">
+            <span className="text-sm font-medium text-neutral-700">Usage Type</span>
+            <select
+              value={registerForm.usageType}
+              onChange={(event) => setRegisterForm((current) => ({ ...current, usageType: event.target.value as MediaAssetUsageType }))}
+              className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            >
+              {USAGE_TYPES.map((usageType) => (
+                <option key={usageType} value={usageType}>{formatStatus(usageType)}</option>
+              ))}
+            </select>
+          </label>
           <label className="block">
             <span className="text-sm font-medium text-neutral-700">License Status</span>
             <select
@@ -233,7 +414,7 @@ export default function MediaLibraryPage() {
       {success && <div className="card border-green-200 bg-green-50 text-sm text-green-800">{success}</div>}
 
       <section className="card">
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-6">
           <label className="block lg:col-span-2">
             <span className="text-sm font-medium text-neutral-700">Search</span>
             <input
@@ -242,6 +423,34 @@ export default function MediaLibraryPage() {
               className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
               placeholder="Title, URL, alt, source, tag"
             />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-neutral-700">Status</span>
+            <select
+              value={filters.status}
+              onChange={(event) => setFilters((current) => ({ ...current, status: event.target.value }))}
+              className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            >
+              <option value="">All statuses</option>
+              {MEDIA_STATUSES.map((status) => (
+                <option key={status} value={status}>{formatStatus(status)}</option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-neutral-700">Usage Type</span>
+            <select
+              value={filters.usageType}
+              onChange={(event) => setFilters((current) => ({ ...current, usageType: event.target.value }))}
+              className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            >
+              <option value="">All types</option>
+              {USAGE_TYPES.map((usageType) => (
+                <option key={usageType} value={usageType}>{formatStatus(usageType)}</option>
+              ))}
+            </select>
           </label>
 
           <label className="block">
@@ -271,6 +480,19 @@ export default function MediaLibraryPage() {
               ))}
             </select>
           </label>
+
+          <TextInput
+            label="Tag"
+            value={filters.tag}
+            onChange={(value) => setFilters((current) => ({ ...current, tag: value }))}
+            placeholder="hero"
+          />
+          <TextInput
+            label="Site Key"
+            value={filters.siteKey}
+            onChange={(value) => setFilters((current) => ({ ...current, siteKey: value }))}
+            placeholder="ice-rink-rentals"
+          />
 
           <div className="space-y-2 pt-6 text-sm">
             <label className="flex items-center gap-2">
@@ -324,9 +546,12 @@ export default function MediaLibraryPage() {
                   <tr>
                     <th className="px-4 py-3">Preview</th>
                     <th className="px-4 py-3">Asset</th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3">Type</th>
                     <th className="px-4 py-3">Alt</th>
                     <th className="px-4 py-3">License</th>
                     <th className="px-4 py-3">Usage</th>
+                    <th className="px-4 py-3">Storage</th>
                     <th className="px-4 py-3">Dimensions</th>
                     <th className="px-4 py-3">Tags</th>
                     <th className="px-4 py-3">Refs</th>
@@ -339,35 +564,45 @@ export default function MediaLibraryPage() {
                     return (
                       <tr key={asset.id}>
                         <td className="px-4 py-3">
-                          {asset.url ? (
+                          {getAssetUrl(asset) ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={asset.url} alt={asset.alt || asset.title || asset.fileName || 'Media asset preview'} className="h-16 w-24 rounded-md border border-neutral-200 object-cover" />
+                            <img src={getAssetUrl(asset)} alt={getAssetAlt(asset) || asset.title || asset.fileName || 'Media asset preview'} className="h-16 w-24 rounded-md border border-neutral-200 object-cover" />
                           ) : (
                             <div className="flex h-16 w-24 items-center justify-center rounded-md border border-neutral-200 bg-neutral-50 text-xs text-neutral-500">No URL</div>
                           )}
                         </td>
                         <td className="max-w-xs px-4 py-3">
-                          <div className="font-medium text-neutral-900">{asset.title || asset.fileName || asset.assetId || 'Untitled asset'}</div>
-                          <div className="mt-1 truncate text-xs text-neutral-500">{asset.url || 'No URL'}</div>
+                          <div className="font-medium text-neutral-900">{asset.title || asset.originalFileName || asset.fileName || asset.assetId || 'Untitled asset'}</div>
+                          <div className="mt-1 truncate text-xs text-neutral-500">{getAssetUrl(asset) || 'No URL'}</div>
                           {warnings.length > 0 && (
                             <div className="mt-2 text-xs font-medium text-amber-700">{warnings.length} warning{warnings.length === 1 ? '' : 's'}</div>
                           )}
                         </td>
+                        <td className="px-4 py-3"><StatusBadge status={asset.status || 'draft'} /></td>
+                        <td className="px-4 py-3 text-neutral-700">{formatStatus(asset.usageType || 'inline')}</td>
                         <td className="px-4 py-3 text-neutral-700">
-                          {asset.decorative ? <span className="text-neutral-500">Decorative</span> : asset.alt || <span className="text-red-700">Missing</span>}
+                          {asset.decorative ? <span className="text-neutral-500">Decorative</span> : getAssetAlt(asset) || <span className="text-red-700">Missing</span>}
                         </td>
                         <td className="px-4 py-3"><StatusBadge status={asset.licenseStatus || 'unknown'} /></td>
                         <td className="px-4 py-3"><StatusBadge status={asset.usageStatus || 'unused'} /></td>
+                        <td className="px-4 py-3 text-neutral-700">{formatStatus(asset.storageProvider || 'external')}</td>
                         <td className="px-4 py-3 text-neutral-700">{formatDimensions(asset)}</td>
                         <td className="px-4 py-3 text-neutral-700">{(asset.tags || []).join(', ') || 'None'}</td>
-                        <td className="px-4 py-3 text-neutral-700">{asset.usageReferences?.length || 0}</td>
+                        <td className="px-4 py-3 text-neutral-700">{(asset.usedByPages || asset.usageReferences || []).length}</td>
                         <td className="px-4 py-3">
-                          <Link
-                            href={`/dashboard/media/${encodeURIComponent(asset.id)}?tenantId=${encodeURIComponent(asset.tenantId)}`}
-                            className="text-primary-700 hover:text-primary-900"
-                          >
-                            View/Edit
-                          </Link>
+                          <div className="flex flex-col gap-2">
+                            <Link
+                              href={`/dashboard/media/${encodeURIComponent(asset.id)}?tenantId=${encodeURIComponent(asset.tenantId)}`}
+                              className="text-primary-700 hover:text-primary-900"
+                            >
+                              View/Edit
+                            </Link>
+                            {getAssetUrl(asset) && (
+                              <button type="button" onClick={() => copyAssetUrl(asset)} className="text-left text-primary-700 hover:text-primary-900">
+                                Copy URL
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     )
@@ -449,53 +684,89 @@ function createMediaAssetPayload(form: RegisterForm, tenantId: string): MediaAss
   return {
     id: '',
     tenantId,
+    siteKey: '',
     assetId: '',
+    status: 'draft',
     url: form.url.trim(),
+    publicUrl: form.url.trim(),
+    thumbnailUrl: '',
     fileName: '',
+    originalFileName: '',
+    safeFileName: '',
     title: form.title.trim(),
     alt: form.alt.trim(),
+    altText: form.alt.trim(),
     caption: '',
     source: form.source.trim(),
+    credit: form.source.trim(),
+    license: '',
     sourceUrl: form.sourceUrl.trim(),
+    usageType: form.usageType,
     licenseStatus: form.licenseStatus,
     usageStatus: 'unused',
     width: null,
     height: null,
     mimeType: '',
+    extension: '',
     fileSize: null,
+    sizeBytes: null,
+    checksum: '',
+    hash: '',
+    storageProvider: 'external',
+    storageContainer: '',
+    blobPath: '',
     focalPoint: { x: null, y: null },
     decorative: false,
     tags: splitTags(form.tags),
     notes: '',
+    variants: [],
     createdAt: '',
     updatedAt: '',
     createdBy: '',
+    uploadedBy: '',
     lastReviewedAt: '',
     reviewedBy: '',
     usageReferences: [],
+    usedByPages: [],
+    replacedByMediaAssetId: '',
+    archivedAt: '',
+    archivedBy: '',
   }
 }
 
 function filterAssets(assets: MediaAsset[], filters: Filters) {
   const search = filters.search.trim().toLowerCase()
+  const tag = filters.tag.trim().toLowerCase()
+  const siteKey = filters.siteKey.trim().toLowerCase()
 
   return assets.filter((asset) => {
+    if (filters.status && asset.status !== filters.status) return false
+    if (filters.usageType && asset.usageType !== filters.usageType) return false
     if (filters.licenseStatus && asset.licenseStatus !== filters.licenseStatus) return false
     if (filters.usageStatus && asset.usageStatus !== filters.usageStatus) return false
-    if (filters.missingAltOnly && (asset.decorative || asset.alt?.trim())) return false
-    if (filters.inUseOnly && asset.usageStatus !== 'in_use' && asset.usageStatus !== 'approved_for_publish' && (asset.usageReferences?.length || 0) === 0) return false
+    if (tag && !(asset.tags || []).some((assetTag) => assetTag.toLowerCase().includes(tag))) return false
+    if (siteKey && !(asset.siteKey || '').toLowerCase().includes(siteKey)) return false
+    if (filters.missingAltOnly && (asset.decorative || getAssetAlt(asset).trim())) return false
+    if (filters.inUseOnly && asset.usageStatus !== 'in_use' && asset.usageStatus !== 'approved_for_publish' && (asset.usageReferences?.length || asset.usedByPages?.length || 0) === 0) return false
 
     if (!search) return true
 
     const searchText = [
       asset.assetId,
-      asset.url,
+      getAssetUrl(asset),
       asset.fileName,
+      asset.originalFileName,
+      asset.safeFileName,
       asset.title,
-      asset.alt,
+      getAssetAlt(asset),
       asset.caption,
       asset.source,
+      asset.credit,
+      asset.license,
       asset.sourceUrl,
+      asset.status,
+      asset.usageType,
+      asset.storageProvider,
       ...(asset.tags || []),
     ].join(' ').toLowerCase()
 
@@ -507,21 +778,32 @@ function buildSummary(assets: MediaAsset[]) {
   return {
     total: assets.length,
     licenseReviewCount: assets.filter((asset) => asset.licenseStatus === 'unknown' || asset.licenseStatus === 'needs_review').length,
-    missingAltCount: assets.filter((asset) => !asset.decorative && !asset.alt?.trim()).length,
-    inUseCount: assets.filter((asset) => asset.usageStatus === 'in_use' || asset.usageStatus === 'approved_for_publish' || (asset.usageReferences?.length || 0) > 0).length,
+    missingAltCount: assets.filter((asset) => !asset.decorative && !getAssetAlt(asset).trim()).length,
+    inUseCount: assets.filter((asset) => asset.usageStatus === 'in_use' || asset.usageStatus === 'approved_for_publish' || (asset.usageReferences?.length || asset.usedByPages?.length || 0) > 0).length,
+    inactiveCount: assets.filter((asset) => asset.status === 'archived' || asset.status === 'replaced' || asset.status === 'deleted-pending').length,
   }
 }
 
 function getAssetWarnings(asset: MediaAsset) {
   const warnings: string[] = []
-  if (asset.url && !asset.decorative && !asset.alt?.trim()) warnings.push('Missing alt text')
+  if (getAssetUrl(asset) && !asset.decorative && !getAssetAlt(asset).trim()) warnings.push('Missing alt text')
   if (asset.licenseStatus === 'unknown' || asset.licenseStatus === 'needs_review') warnings.push('License needs review')
-  if (asset.url && !asset.source?.trim()) warnings.push('Source missing')
-  if (asset.url && (!asset.width || !asset.height)) warnings.push('Dimensions missing')
+  if (asset.status === 'archived') warnings.push('Archived asset')
+  if (asset.status === 'replaced') warnings.push('Replaced asset')
+  if (getAssetUrl(asset) && !asset.source?.trim() && !asset.credit?.trim()) warnings.push('Source missing')
+  if (getAssetUrl(asset) && (!asset.width || !asset.height)) warnings.push('Dimensions missing')
   if ((asset.usageReferences?.length || 0) > 0 && !['approved', 'owned', 'licensed', 'partner_provided'].includes(asset.licenseStatus)) {
     warnings.push('Used asset is not license-approved')
   }
   return warnings
+}
+
+function getAssetUrl(asset: MediaAsset) {
+  return asset.publicUrl || asset.url || ''
+}
+
+function getAssetAlt(asset: MediaAsset) {
+  return asset.altText || asset.alt || ''
 }
 
 function splitTags(value: string) {
