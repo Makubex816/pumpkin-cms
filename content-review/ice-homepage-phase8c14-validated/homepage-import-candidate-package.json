@@ -1,0 +1,519 @@
+{
+  "schemaVersion": "pumpkin-homepage-phase8c14-package.v1",
+  "contentPackageVersion": "phase8c14.homepage.normalized-candidate.v1",
+  "packageName": "IceSkatingRinkRentals.com Phase 8C.14 Homepage Intake Package",
+  "packagePurpose": "validated_homepage_review_candidate_before_cms_import",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "primaryFocus": "IceSkatingRinkRentals.com",
+  "pausedTenantNotice": "RollerRinkRentals.com remains paused and is not included in this package.",
+  "createdAt": "2026-05-27T00:00:00Z",
+  "createdBy": "codex_phase8c14_homepage_intake_validation",
+  "sourceInputFolder": "content-review/ice-homepage-phase8c14-input/",
+  "sourceZip": "content-review/ice-homepage-phase8c14-input/ice-homepage-phase8k-cf7-template-pack.zip",
+  "importReadiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForLocalCmsDraftImport": false,
+    "readyForStaticRegeneration": false,
+    "readyForProductionPublishing": false,
+    "reason": "Normalized page shape is intended to pass .NET contract validation, but media assets are not uploaded/selected, business values are not approved, and admin import/export preflight has not run."
+  },
+  "pageFiles": [
+    {
+      "label": "Homepage normalized candidate",
+      "file": "proposed-homepage.normalized-candidate.json",
+      "route": "/",
+      "slug": "home",
+      "templateKey": "home",
+      "status": "normalized_review_candidate_not_cms_import_ready"
+    }
+  ],
+  "routeDecisions": {
+    "homepage": {
+      "route": "/",
+      "slug": "home",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/"
+    },
+    "contact": {
+      "route": "/contact"
+    },
+    "serviceAreas": {
+      "route": "/service-areas"
+    },
+    "targetCityPage": {
+      "status": "not_created",
+      "routeStrategy": "/state-city"
+    }
+  },
+  "cf7Mapping": {
+    "status": "reference_only_mapped_to_pumpkin_formBlock",
+    "pumpkinFormKey": "default-quote-request",
+    "sectionId": "homepage-quote-form",
+    "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT"
+  },
+  "mediaRequirements": [
+    {
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "domain": "iceskatingrinkrentals.com",
+      "requiredMediaSlotId": "site-logo-primary",
+      "intendedUsageType": "logo",
+      "page": "global-theme-homepage-reference",
+      "sectionId": "site-header-footer-branding",
+      "sourceFile": "content-review/ice-homepage-phase8c14-input/media/IceSkatingRinkRentalsLogo.png",
+      "optimizedSourceFile": "content-review/ice-homepage-phase8c14-input/extracted/ice-homepage-phase8k-cf7-template-pack/assets/logo-iceskatingrinkrentals-cropped.png",
+      "recommendedAspectRatio": "wide logo crop",
+      "recommendedDimensions": "1442x383 optimized crop available; source 1448x1086",
+      "requiredAltText": "IceSkatingRinkRentals.com logo",
+      "suggestedFilename": "ice-skating-rink-rentals-logo.png",
+      "requiredBeforeCmsImport": true,
+      "requiredBeforeStaging": true,
+      "requiredBeforeProduction": true,
+      "notes": "Starter logo exists locally and optimized crop exists in ZIP; upload/select MediaAsset before CMS import or theme branding application.",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "uploadStatus": "not_uploaded_to_cms",
+      "blocker": true,
+      "sourcePolicy": "local review source only; not a public URL and not a committed MediaAsset",
+      "sourceMetadata": {
+        "fileName": "IceSkatingRinkRentalsLogo.png",
+        "extension": ".png",
+        "mimeType": "image/png",
+        "sizeBytes": 1627660,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "0d1f970f0411e0778405f0a9cce316f0c7affca36e27576d4ebef751782f075b",
+        "safeFileName": true
+      },
+      "optimizedMetadata": {
+        "fileName": "logo-iceskatingrinkrentals-cropped.png",
+        "extension": ".png",
+        "mimeType": "image/png",
+        "sizeBytes": 262711,
+        "width": 1442,
+        "height": 383,
+        "sha256": "42158121d82f3d5610e4f70c11da20bba73025fa53f4c7e9b3f0fb24201def38",
+        "safeFileName": true
+      }
+    },
+    {
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "domain": "iceskatingrinkrentals.com",
+      "requiredMediaSlotId": "homepage-hero-image",
+      "intendedUsageType": "hero",
+      "page": "/",
+      "sectionId": "homepage-hero",
+      "sourceFile": "content-review/ice-homepage-phase8c14-input/media/WinterFestIceRinkRentals.png",
+      "optimizedSourceFile": "content-review/ice-homepage-phase8c14-input/extracted/ice-homepage-phase8k-cf7-template-pack/assets/hero-winter-fest-ice-rink.webp",
+      "recommendedAspectRatio": "16:9 or 1.78:1",
+      "recommendedDimensions": "1600x900 minimum for hero; source 1672x941",
+      "requiredAltText": "Portable ice skating rink at a festive evening winter event with guests skating under string lights",
+      "suggestedFilename": "homepage-hero-winter-fest-ice-rink.webp",
+      "requiredBeforeCmsImport": true,
+      "requiredBeforeStaging": true,
+      "requiredBeforeProduction": true,
+      "notes": "Recommended homepage hero and Open Graph candidate after MediaAsset upload/approval.",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "uploadStatus": "not_uploaded_to_cms",
+      "blocker": true,
+      "sourcePolicy": "local review source only; not a public URL and not a committed MediaAsset",
+      "sourceMetadata": {
+        "fileName": "WinterFestIceRinkRentals.png",
+        "extension": ".png",
+        "mimeType": "image/png",
+        "sizeBytes": 2552948,
+        "width": 1672,
+        "height": 941,
+        "sha256": "513503711f2b84540ad604bb18520aa65a8a341355e89aa665c5122c9196e194",
+        "safeFileName": true
+      },
+      "optimizedMetadata": {
+        "fileName": "hero-winter-fest-ice-rink.webp",
+        "extension": ".webp",
+        "mimeType": "image/webp",
+        "sizeBytes": 284056,
+        "width": 1672,
+        "height": 941,
+        "sha256": "8d06d9d6a9985a5596b656496e4b511cbf4226092b2d82fe8d5228559530fe7a",
+        "safeFileName": true
+      }
+    },
+    {
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "domain": "iceskatingrinkrentals.com",
+      "requiredMediaSlotId": "homepage-corporate-event-image",
+      "intendedUsageType": "card",
+      "page": "/",
+      "sectionId": "event-types",
+      "sourceFile": "content-review/ice-homepage-phase8c14-input/media/CorporateIceRinkRentalEvent.png",
+      "optimizedSourceFile": "content-review/ice-homepage-phase8c14-input/extracted/ice-homepage-phase8k-cf7-template-pack/assets/corporate-ice-rink-event.webp",
+      "recommendedAspectRatio": "16:9 or 1.78:1",
+      "recommendedDimensions": "1200x675 minimum for cards; source 1672x941",
+      "requiredAltText": "Evening corporate ice rink rental event outside office buildings",
+      "suggestedFilename": "homepage-corporate-ice-rink-event.webp",
+      "requiredBeforeCmsImport": false,
+      "requiredBeforeStaging": true,
+      "requiredBeforeProduction": true,
+      "notes": "Usable event-card media once uploaded/selected through MediaAsset pipeline.",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "uploadStatus": "not_uploaded_to_cms",
+      "blocker": false,
+      "sourcePolicy": "local review source only; not a public URL and not a committed MediaAsset",
+      "sourceMetadata": {
+        "fileName": "CorporateIceRinkRentalEvent.png",
+        "extension": ".png",
+        "mimeType": "image/png",
+        "sizeBytes": 2637438,
+        "width": 1672,
+        "height": 941,
+        "sha256": "a1f52117460ec31feca82b58d8c2ade213b72770f9ad03129561665df2ba60b1",
+        "safeFileName": true
+      },
+      "optimizedMetadata": {
+        "fileName": "corporate-ice-rink-event.webp",
+        "extension": ".webp",
+        "mimeType": "image/webp",
+        "sizeBytes": 336234,
+        "width": 1672,
+        "height": 941,
+        "sha256": "d9060071c81bc9b237a76293ccbc9c857a4900db19b147c7f94f6f993655f49e",
+        "safeFileName": true
+      }
+    },
+    {
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "domain": "iceskatingrinkrentals.com",
+      "requiredMediaSlotId": "homepage-setup-logistics-image",
+      "intendedUsageType": "inline",
+      "page": "/",
+      "sectionId": "rental-options",
+      "sourceFile": "content-review/ice-homepage-phase8c14-input/media/IceRinkRentalsSetup.png",
+      "optimizedSourceFile": "content-review/ice-homepage-phase8c14-input/extracted/ice-homepage-phase8k-cf7-template-pack/assets/portable-rink-setup.webp",
+      "recommendedAspectRatio": "4:3 or flexible inline crop",
+      "recommendedDimensions": "1200px wide minimum; source 1448x1086",
+      "requiredAltText": "Portable ice skating rink setup with white rink barriers and skating aids",
+      "suggestedFilename": "homepage-portable-rink-setup.webp",
+      "requiredBeforeCmsImport": false,
+      "requiredBeforeStaging": true,
+      "requiredBeforeProduction": true,
+      "notes": "Supports setup/logistics section after MediaAsset upload/approval.",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "uploadStatus": "not_uploaded_to_cms",
+      "blocker": false,
+      "sourcePolicy": "local review source only; not a public URL and not a committed MediaAsset",
+      "sourceMetadata": {
+        "fileName": "IceRinkRentalsSetup.png",
+        "extension": ".png",
+        "mimeType": "image/png",
+        "sizeBytes": 2590268,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "cda291f9a1be9394b104217d493f04eb0c8af8c3910dd8e030466e95d2f756a7",
+        "safeFileName": true
+      },
+      "optimizedMetadata": {
+        "fileName": "portable-rink-setup.webp",
+        "extension": ".webp",
+        "mimeType": "image/webp",
+        "sizeBytes": 280158,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "c1043d0373c0757918a91828d9241acdc8b62ddc406a31d21a1f76a527407229",
+        "safeFileName": true
+      }
+    },
+    {
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "domain": "iceskatingrinkrentals.com",
+      "requiredMediaSlotId": "homepage-holiday-shopping-center-image",
+      "intendedUsageType": "card",
+      "page": "/",
+      "sectionId": "public-holiday-events",
+      "sourceFile": "content-review/ice-homepage-phase8c14-input/media/HolidayIceRink.png",
+      "optimizedSourceFile": "content-review/ice-homepage-phase8c14-input/extracted/ice-homepage-phase8k-cf7-template-pack/assets/holiday-shopping-center-rink.webp",
+      "recommendedAspectRatio": "16:9 or 1.78:1",
+      "recommendedDimensions": "1200x675 minimum for cards; source 1672x941",
+      "requiredAltText": "Holiday ice rink at a shopping center with guests and festive lights",
+      "suggestedFilename": "homepage-holiday-shopping-center-rink.webp",
+      "requiredBeforeCmsImport": false,
+      "requiredBeforeStaging": true,
+      "requiredBeforeProduction": true,
+      "notes": "Supports public/holiday event section after MediaAsset upload/approval.",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "uploadStatus": "not_uploaded_to_cms",
+      "blocker": false,
+      "sourcePolicy": "local review source only; not a public URL and not a committed MediaAsset",
+      "sourceMetadata": {
+        "fileName": "HolidayIceRink.png",
+        "extension": ".png",
+        "mimeType": "image/png",
+        "sizeBytes": 2816809,
+        "width": 1672,
+        "height": 941,
+        "sha256": "d69be3785626be070e2b209f9c2f723b59455928560b1bf6ecde73130cac879a",
+        "safeFileName": true
+      },
+      "optimizedMetadata": {
+        "fileName": "holiday-shopping-center-rink.webp",
+        "extension": ".webp",
+        "mimeType": "image/webp",
+        "sizeBytes": 373240,
+        "width": 1672,
+        "height": 941,
+        "sha256": "620205903b0ba8abfe16bc22eec1d8a38278abac71c7acd4c078a6b900ad8ced",
+        "safeFileName": true
+      }
+    },
+    {
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "domain": "iceskatingrinkrentals.com",
+      "requiredMediaSlotId": "homepage-open-graph-image",
+      "intendedUsageType": "og-image",
+      "page": "/",
+      "sectionId": "seo-open-graph",
+      "sourceFile": "content-review/ice-homepage-phase8c14-input/media/WinterFestIceRinkRentals.png",
+      "optimizedSourceFile": "content-review/ice-homepage-phase8c14-input/extracted/ice-homepage-phase8k-cf7-template-pack/assets/hero-winter-fest-ice-rink.webp",
+      "recommendedAspectRatio": "1.91:1",
+      "recommendedDimensions": "1200x630 final crop required before production",
+      "requiredAltText": "Portable ice skating rink rental for a winter event",
+      "suggestedFilename": "og-ice-skating-rink-rentals-homepage.webp",
+      "requiredBeforeCmsImport": true,
+      "requiredBeforeStaging": true,
+      "requiredBeforeProduction": true,
+      "notes": "Create an approved OG crop from the hero source through the media pipeline before production/indexing.",
+      "mediaAssetId": null,
+      "status": "needs-upload",
+      "uploadStatus": "not_uploaded_to_cms",
+      "blocker": true,
+      "sourcePolicy": "local review source only; not a public URL and not a committed MediaAsset",
+      "sourceMetadata": {
+        "fileName": "WinterFestIceRinkRentals.png",
+        "extension": ".png",
+        "mimeType": "image/png",
+        "sizeBytes": 2552948,
+        "width": 1672,
+        "height": 941,
+        "sha256": "513503711f2b84540ad604bb18520aa65a8a341355e89aa665c5122c9196e194",
+        "safeFileName": true
+      },
+      "optimizedMetadata": {
+        "fileName": "hero-winter-fest-ice-rink.webp",
+        "extension": ".webp",
+        "mimeType": "image/webp",
+        "sizeBytes": 284056,
+        "width": 1672,
+        "height": 941,
+        "sha256": "8d06d9d6a9985a5596b656496e4b511cbf4226092b2d82fe8d5228559530fe7a",
+        "safeFileName": true
+      }
+    }
+  ],
+  "themeDesignSystemRecommendation": {
+    "version": "phase8c5",
+    "tenantId": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "tokens": {
+      "colors": {
+        "primary": "#0369a1",
+        "accent": "#0f766e",
+        "ink": "#102033",
+        "muted": "#4b6478",
+        "surface": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "typography": {
+        "headingFamily": "system-ui",
+        "bodyFamily": "system-ui",
+        "baseSize": "1rem",
+        "heroSize": "3rem"
+      },
+      "spacing": {
+        "section": "4rem",
+        "card": "1.25rem",
+        "inlineGap": "1rem"
+      },
+      "layout": {
+        "sectionGap": "3rem",
+        "gridGap": "1rem"
+      },
+      "containerWidths": {
+        "standard": "68rem",
+        "wide": "82rem",
+        "narrow": "48rem"
+      },
+      "borderRadius": {
+        "card": "8px",
+        "button": "6px",
+        "panel": "8px"
+      },
+      "buttons": {
+        "primaryBackground": "#0369a1",
+        "primaryColor": "#ffffff"
+      },
+      "cards": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "heroSections": {
+        "background": "#eef8fc",
+        "text": "#102033"
+      },
+      "ctaBands": {
+        "background": "#0f766e",
+        "text": "#ffffff"
+      },
+      "forms": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "faqBlocks": {
+        "background": "#ffffff",
+        "border": "#d6e4ee"
+      },
+      "mediaBlocks": {
+        "background": "#eef8fc"
+      },
+      "tables": {
+        "header": "#eef8fc",
+        "border": "#d6e4ee"
+      },
+      "shadows": {
+        "card": "0 16px 40px rgba(16, 32, 51, 0.10)"
+      },
+      "backgrounds": {
+        "frost": "#eef8fc",
+        "quiet": "#f7fbfd"
+      }
+    },
+    "domainCss": "[data-tenant-id=\"ice-rink-rentals\"] .ice-cta-link { color: var(--cms-colors-primary); font-weight: 700; text-decoration: underline; }\n[data-tenant-id=\"ice-rink-rentals\"] .cms-panel { background: var(--cms-colors-surface); border: 1px solid var(--cms-colors-border); border-radius: var(--cms-border-radius-panel); padding: var(--cms-spacing-card); }",
+    "templateCss": {
+      "premium-hero": ".section-premium-hero .ice-hero-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "split-feature": ".section-split-feature .cms-layout { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "trust-band": ".section-trust-band .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }",
+      "event-card-grid": ".section-event-card-grid .ice-event-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "service-area-grid": ".section-service-area-grid .ice-area-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "quote-form-panel": ".section-quote-form-panel .ice-quote-grid { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "faq-panel": ".section-faq-panel .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }",
+      "media-feature": ".section-media-feature .media-feature { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "table-comparison": ".section-table-comparison table { max-width: var(--cms-container-widths-wide); margin: 0 auto; }",
+      "final-cta": ".section-final-cta .cms-copy { max-width: var(--cms-container-widths-standard); margin: 0 auto; }"
+    },
+    "approvedClasses": [
+      "cms-copy",
+      "cms-layout",
+      "cms-panel",
+      "cms-eyebrow",
+      "section-premium-hero",
+      "section-split-feature",
+      "section-trust-band",
+      "section-event-card-grid",
+      "section-service-area-grid",
+      "section-quote-form-panel",
+      "section-faq-panel",
+      "section-media-feature",
+      "section-table-comparison",
+      "section-final-cta",
+      "ice-hero-grid",
+      "ice-proof-row",
+      "ice-proof-item",
+      "ice-event-grid",
+      "ice-event-card",
+      "ice-check-list",
+      "ice-process-note",
+      "ice-service-teaser",
+      "ice-quote-grid",
+      "ice-details-list",
+      "ice-response-note",
+      "ice-privacy-note",
+      "ice-area-grid",
+      "ice-area-card",
+      "ice-region-list",
+      "ice-city-note",
+      "ice-alias-note",
+      "ice-cta-link"
+    ],
+    "sectionVariants": {
+      "premium-hero": {
+        "variant": "premium-hero",
+        "label": "Premium Hero",
+        "className": "section-premium-hero",
+        "description": "High-value opening content with CTA routing and planning context."
+      },
+      "split-feature": {
+        "variant": "split-feature",
+        "label": "Split Feature",
+        "className": "section-split-feature",
+        "description": "Two-column planning or service explanation."
+      },
+      "trust-band": {
+        "variant": "trust-band",
+        "label": "Trust Band",
+        "className": "section-trust-band",
+        "description": "Trust, privacy, and expectation-setting copy."
+      },
+      "event-card-grid": {
+        "variant": "event-card-grid",
+        "label": "Event Card Grid",
+        "className": "section-event-card-grid",
+        "description": "Use-case cards for event audiences."
+      },
+      "service-area-grid": {
+        "variant": "service-area-grid",
+        "label": "Service Area Grid",
+        "className": "section-service-area-grid",
+        "description": "Review-safe service area placeholder cards."
+      },
+      "quote-form-panel": {
+        "variant": "quote-form-panel",
+        "label": "Quote Form Panel",
+        "className": "section-quote-form-panel",
+        "description": "Quote request context around a structured Contact block."
+      },
+      "faq-panel": {
+        "variant": "faq-panel",
+        "label": "FAQ Panel",
+        "className": "section-faq-panel",
+        "description": "Visible FAQ copy eligible for FAQ schema after review."
+      },
+      "media-feature": {
+        "variant": "media-feature",
+        "label": "Media Feature",
+        "className": "section-media-feature",
+        "description": "Reserved for approved MediaAsset-backed content."
+      },
+      "table-comparison": {
+        "variant": "table-comparison",
+        "label": "Table Comparison",
+        "className": "section-table-comparison",
+        "description": "Accessible comparison tables for planning details."
+      },
+      "final-cta": {
+        "variant": "final-cta",
+        "label": "Final CTA",
+        "className": "section-final-cta",
+        "description": "Closing quote path."
+      }
+    }
+  },
+  "blockersBeforeCmsImport": [
+    "Approve or remove proposed public phone value from package-level content policy.",
+    "Approve or remove proposed public email/display policy from package-level content policy.",
+    "Approve legal/business display name.",
+    "Approve primary service-area and primary-region wording.",
+    "Upload/select required MediaAsset records for required homepage media slots.",
+    "Human approval for copy, media, SEO, schema, and form behavior.",
+    "Admin import/export preflight after approval."
+  ]
+}

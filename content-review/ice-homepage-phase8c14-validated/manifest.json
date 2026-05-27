@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "phase8c14.homepage.validation-manifest.v1",
+  "phase": "8C.14",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "inputFolder": "content-review/ice-homepage-phase8c14-input/",
+  "outputFolder": "content-review/ice-homepage-phase8c14-validated/",
+  "rawInputPolicy": "ZIP and PNG inputs are local working inputs only and must not be staged or committed.",
+  "files": [
+    "README.md",
+    "HOMEPAGE_PACKAGE_INVENTORY.md",
+    "HOMEPAGE_JSON_AUDIT.md",
+    "HOMEPAGE_COMPARISON_TO_PHASE8C13.md",
+    "CF7_TO_PUMPKIN_FORM_MAPPING.md",
+    "MEDIA_AUDIT.md",
+    "MEDIA_BINDING_PLAN.md",
+    "homepage-media-requirements.json",
+    "proposed-homepage.normalized-candidate.json",
+    "homepage-import-candidate-package.json",
+    "manifest.json"
+  ],
+  "readiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForLocalCmsDraftImport": false,
+    "readyForStaticRegeneration": false,
+    "readyForProductionPublishing": false,
+    "reason": "Normalized page shape is intended to pass .NET contract validation, but media assets are not uploaded/selected, business values are not approved, and admin import/export preflight has not run."
+  }
+}
