@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "email-readiness.mailbox-alias-manifest.v1",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "status": "proposed/pending-provider-decision",
+  "catchAll": {
+    "policy": "disabled-by-default",
+    "status": "proposed/pending-provider-decision",
+    "inboundHandling": "Do not enable catch-all unless the selected provider and spam policy are approved.",
+    "notes": [
+      "Catch-all can increase spam volume.",
+      "Keep disabled for launch unless a human explicitly approves it."
+    ]
+  },
+  "mailboxes": [
+    {
+      "address": "contact@iceskatingrinkrentals.com",
+      "status": "proposed/pending-provider-decision",
+      "role": "public-contact",
+      "displayName": "Ice Skating Rink Rentals Contact",
+      "purpose": "General inbound public contact address if approved for display.",
+      "inboundHandling": "Route to the selected human/admin mailbox after provider setup.",
+      "outboundAllowed": true,
+      "publicDisplayAllowed": "pending-approval",
+      "usedByForms": true,
+      "usedByLeadNotifications": false,
+      "usedByAutoresponders": false,
+      "migrationRequired": false,
+      "notes": [
+        "Not created.",
+        "Do not display publicly until provider and public contact decision are approved."
+      ]
+    },
+    {
+      "address": "quotes@iceskatingrinkrentals.com",
+      "status": "proposed/pending-provider-decision",
+      "role": "quote-intake",
+      "displayName": "Ice Skating Rink Rentals Quotes",
+      "purpose": "Quote request intake and optional reply mailbox.",
+      "inboundHandling": "Route form-related replies to the selected human/admin mailbox.",
+      "outboundAllowed": true,
+      "publicDisplayAllowed": "pending-approval",
+      "usedByForms": true,
+      "usedByLeadNotifications": true,
+      "usedByAutoresponders": true,
+      "migrationRequired": false,
+      "notes": [
+        "Not created.",
+        "Recommended candidate for quote workflow after provider selection."
+      ]
+    },
+    {
+      "address": "admin@iceskatingrinkrentals.com",
+      "status": "proposed/pending-provider-decision",
+      "role": "admin",
+      "displayName": "Ice Skating Rink Rentals Admin",
+      "purpose": "Administrative mailbox or alias for internal notifications.",
+      "inboundHandling": "Receive internal lead notifications if selected as the recipient ref target.",
+      "outboundAllowed": true,
+      "publicDisplayAllowed": false,
+      "usedByForms": false,
+      "usedByLeadNotifications": true,
+      "usedByAutoresponders": false,
+      "migrationRequired": false,
+      "notes": [
+        "Not created.",
+        "Should not be exposed in static public content by default."
+      ]
+    },
+    {
+      "address": "no-reply@iceskatingrinkrentals.com",
+      "status": "proposed/pending-provider-decision",
+      "role": "no-reply",
+      "displayName": "Ice Skating Rink Rentals No Reply",
+      "purpose": "Optional autoresponder sender if a no-reply strategy is approved.",
+      "inboundHandling": "Should reject, discard, or route to monitored mailbox according to selected provider policy.",
+      "outboundAllowed": true,
+      "publicDisplayAllowed": false,
+      "usedByForms": false,
+      "usedByLeadNotifications": false,
+      "usedByAutoresponders": true,
+      "migrationRequired": false,
+      "notes": [
+        "Not created.",
+        "Prefer a monitored reply-to address for customer trust unless no-reply is explicitly approved."
+      ]
+    }
+  ],
+  "aliases": [],
+  "forwards": [],
+  "notes": [
+    "This manifest proposes addresses only. It does not create mailboxes, aliases, or forwards.",
+    "Final mailbox-vs-alias choices depend on the selected provider capabilities and cost model."
+  ]
+}

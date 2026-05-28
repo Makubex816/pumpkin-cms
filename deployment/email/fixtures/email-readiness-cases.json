@@ -1,0 +1,271 @@
+{
+  "providerConfigCases": [
+    {
+      "name": "valid provider config",
+      "expect": "ok",
+      "value": {
+        "providerKey": "example-hosted",
+        "providerType": "hosted-mailbox",
+        "displayName": "Example Hosted Mail",
+        "status": "candidate",
+        "supportedCapabilities": [
+          "mailboxHosting",
+          "aliases",
+          "forwarding",
+          "imap",
+          "smtpSubmission",
+          "webmail",
+          "outboundRelay",
+          "inboundRouting",
+          "dkim",
+          "dmarc",
+          "spf",
+          "migration",
+          "catchAll"
+        ],
+        "configRefs": {
+          "accountRef": "EXAMPLE_HOSTED_ACCOUNT_REF",
+          "smtpProfileRef": "EXAMPLE_HOSTED_SMTP_PROFILE_REF"
+        },
+        "requiredDnsRecords": [
+          { "recordRef": "EXAMPLE_HOSTED_MX_RECORDS_REF", "type": "MX", "status": "provider-docs-required" },
+          { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+        ],
+        "requiredSecretsRefs": [
+          "EXAMPLE_HOSTED_SMTP_USERNAME_REF",
+          "EXAMPLE_HOSTED_SMTP_PASSWORD_REF"
+        ],
+        "notes": [
+          "Placeholder-safe test profile."
+        ],
+        "decisionStatus": "candidate",
+        "blockerNotes": []
+      }
+    },
+    {
+      "name": "provider config with real-looking secret blocked",
+      "expect": "error",
+      "value": {
+        "providerKey": "bad-provider",
+        "providerType": "hosted-mailbox",
+        "displayName": "Bad Provider",
+        "status": "candidate",
+        "supportedCapabilities": [
+          "smtpSubmission"
+        ],
+        "configRefs": {
+          "smtpProfileRef": "BAD_PROVIDER_SMTP_PROFILE_REF",
+          "smtpPasswordRef": "plain-text-password"
+        },
+        "requiredDnsRecords": [
+          { "recordRef": "BAD_PROVIDER_MX_RECORDS_REF", "type": "MX", "status": "provider-docs-required" }
+        ],
+        "requiredSecretsRefs": [
+          "SMTP_PASSWORD=plain-text-password"
+        ],
+        "notes": [
+          "Synthetic invalid fixture only."
+        ],
+        "decisionStatus": "candidate",
+        "blockerNotes": []
+      }
+    }
+  ],
+  "domainSettingsCases": [
+    {
+      "name": "Ice domain email settings template validation",
+      "expect": "ok",
+      "file": "deployment/email/ice-domain-email-settings.template.json"
+    }
+  ],
+  "mailboxManifestCases": [
+    {
+      "name": "valid mailbox manifest",
+      "expect": "ok",
+      "file": "deployment/email/mailbox-alias-manifest.template.json"
+    },
+    {
+      "name": "mailbox manifest with invalid domain blocked",
+      "expect": "error",
+      "value": {
+        "schemaVersion": "email-readiness.mailbox-alias-manifest.v1",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "iceskatingrinkrentals.com",
+        "status": "proposed/pending-provider-decision",
+        "catchAll": {
+          "policy": "disabled-by-default",
+          "status": "proposed/pending-provider-decision",
+          "inboundHandling": "disabled",
+          "notes": []
+        },
+        "mailboxes": [
+          {
+            "address": "contact@example.invalid",
+            "status": "proposed/pending-provider-decision",
+            "role": "public-contact",
+            "displayName": "Invalid Domain Contact",
+            "purpose": "Invalid fixture.",
+            "inboundHandling": "route later",
+            "outboundAllowed": true,
+            "publicDisplayAllowed": "pending-approval",
+            "usedByForms": true,
+            "usedByLeadNotifications": false,
+            "usedByAutoresponders": false,
+            "migrationRequired": false,
+            "notes": []
+          }
+        ],
+        "aliases": [],
+        "forwards": [],
+        "notes": []
+      }
+    }
+  ],
+  "smtpConfigCases": [
+    {
+      "name": "valid SMTP config using refs only",
+      "expect": "ok",
+      "file": "deployment/email/smtp-submission-config.template.json"
+    },
+    {
+      "name": "SMTP config with literal password blocked",
+      "expect": "error",
+      "value": {
+        "schemaVersion": "email-readiness.smtp-submission-config.v1",
+        "providerKey": "example-hosted",
+        "smtpHostRef": "EXAMPLE_SMTP_HOST_REF",
+        "smtpPortRef": "EXAMPLE_SMTP_PORT_REF",
+        "smtpUsernameRef": "EXAMPLE_SMTP_USERNAME_REF",
+        "smtpPasswordRef": "plain-text-password",
+        "smtpSecureModeRef": "EXAMPLE_SMTP_SECURE_MODE_REF",
+        "defaultFromAddressRef": "EXAMPLE_DEFAULT_FROM_ADDRESS_REF",
+        "defaultReplyToAddressRef": "EXAMPLE_DEFAULT_REPLY_TO_ADDRESS_REF",
+        "bounceAddressRef": "EXAMPLE_BOUNCE_ADDRESS_REF",
+        "notificationFromAddressRef": "EXAMPLE_NOTIFICATION_FROM_ADDRESS_REF",
+        "autoresponderFromAddressRef": "EXAMPLE_AUTORESPONDER_FROM_ADDRESS_REF",
+        "dailySendLimitRef": "EXAMPLE_DAILY_SEND_LIMIT_REF",
+        "enabled": false,
+        "dryRunOnly": true,
+        "notes": [
+          "Synthetic invalid fixture only."
+        ]
+      }
+    }
+  ],
+  "leadNotificationTemplateCases": [
+    {
+      "name": "valid lead notification template",
+      "expect": "ok",
+      "file": "deployment/email/lead-notification-template.ice.json"
+    },
+    {
+      "name": "template with unsupported variable warned",
+      "expect": "warning",
+      "value": {
+        "schemaVersion": "email-readiness.lead-notification-template.v1",
+        "templateKey": "bad-template-unsupported-variable",
+        "name": "Bad Template Unsupported Variable",
+        "channel": "email",
+        "status": "draft",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "formKey": "default-quote-request",
+        "leadType": "quote-request",
+        "recipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+        "fromAddressRef": "ICE_RINK_RENTALS_NOTIFICATION_FROM_ADDRESS_REF",
+        "replyToStrategy": "submitter_email_when_valid_else_default_reply_to_ref",
+        "subjectTemplate": "New request from {{lead.fullName}}",
+        "textBodyTemplate": "Unsupported internal note: {{lead.privateNotes}}",
+        "htmlBodyTemplate": "<p>{{lead.fullName}}</p>",
+        "variables": {
+          "lead.fullName": "Name"
+        },
+        "allowedVariables": [
+          "lead.fullName"
+        ],
+        "noSecretGuardrails": [
+          "Refs only."
+        ],
+        "notes": []
+      }
+    }
+  ],
+  "autoresponderTemplateCases": [
+    {
+      "name": "valid autoresponder template",
+      "expect": "ok",
+      "file": "deployment/email/autoresponder-template.ice.json"
+    }
+  ],
+  "outboundLogCases": [
+    {
+      "name": "outbound log contract shape",
+      "expect": "ok",
+      "value": {
+        "id": "email-log-id",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "providerKey": "pending-provider-decision",
+        "templateKey": "ice-lead-notification-default",
+        "messageType": "lead-notification",
+        "relatedEntityType": "FormEntry",
+        "relatedEntityId": "form-entry-id",
+        "formEntryId": "form-entry-id",
+        "recipientEmailHash": "sha256:placeholder",
+        "recipientEmailSummary": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+        "recipientEmail": "",
+        "fromAddressRef": "ICE_RINK_RENTALS_NOTIFICATION_FROM_ADDRESS_REF",
+        "replyToAddressRef": "ICE_RINK_RENTALS_DEFAULT_REPLY_TO_ADDRESS_REF",
+        "subjectPreview": "New ice rink quote request",
+        "status": "dry-run",
+        "providerMessageId": "",
+        "errorCode": "",
+        "errorMessageSafe": "",
+        "createdAt": "2026-05-28T00:00:00Z",
+        "sentAt": "",
+        "failedAt": "",
+        "retryCount": 0,
+        "metadata": {
+          "dryRunOnly": true,
+          "source": "fixture"
+        }
+      }
+    }
+  ],
+  "checklistCases": [
+    {
+      "name": "DNS readiness checklist required sections",
+      "expect": "ok",
+      "file": "deployment/email/dns-readiness-checklist.md",
+      "requiredText": [
+        "MX Records",
+        "SPF TXT",
+        "DKIM TXT Or CNAME",
+        "DMARC TXT",
+        "Optional MTA-STS",
+        "Optional TLS-RPT",
+        "Optional Autodiscover/Autoconfig",
+        "Mail Host A Record",
+        "Reverse DNS / PTR For Self-Hosted Mail",
+        "TTL And Cutover Timing",
+        "Bluehost Preservation Rules",
+        "Cloudflare And Azure DNS Warnings"
+      ]
+    },
+    {
+      "name": "SPF DKIM DMARC checklist required sections",
+      "expect": "ok",
+      "file": "deployment/email/spf-dkim-dmarc-checklist.md",
+      "requiredText": [
+        "SPF",
+        "DKIM",
+        "DMARC",
+        "Required Tests",
+        "SPF lookup count",
+        "DMARC TXT record",
+        "DKIM public record"
+      ]
+    }
+  ]
+}

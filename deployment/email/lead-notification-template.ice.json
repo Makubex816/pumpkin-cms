@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "email-readiness.lead-notification-template.v1",
+  "templateKey": "ice-lead-notification-default",
+  "name": "Ice Lead Notification Default",
+  "channel": "email",
+  "status": "draft",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "formKey": "default-quote-request",
+  "leadType": "quote-request",
+  "recipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+  "fromAddressRef": "ICE_RINK_RENTALS_NOTIFICATION_FROM_ADDRESS_REF",
+  "replyToStrategy": "submitter_email_when_valid_else_default_reply_to_ref",
+  "subjectTemplate": "New ice rink quote request: {{lead.fullName}} - {{lead.eventCity}}, {{lead.eventState}}",
+  "textBodyTemplate": "A new quote request was submitted for IceSkatingRinkRentals.com.\n\nName: {{lead.fullName}}\nEmail: {{lead.email}}\nPhone: {{lead.phone}}\nEvent city/state: {{lead.eventCity}}, {{lead.eventState}}\nEvent date or range: {{lead.eventDateOrDateRange}}\nEvent type: {{lead.eventType}}\nVenue setting: {{lead.venueSetting}}\nEstimated attendance: {{lead.estimatedAttendance}}\nMessage: {{lead.message}}\n\nFormEntry ID: {{formEntry.id}}\nSubmitted at: {{formEntry.submittedAt}}\nSource page: {{formEntry.sourcePage}}\n\nReview the lead in Pumpkin Lead Inbox. Do not rely on this email as the source of truth.",
+  "htmlBodyTemplate": "<p>A new quote request was submitted for IceSkatingRinkRentals.com.</p><table><tr><th align=\"left\">Name</th><td>{{lead.fullName}}</td></tr><tr><th align=\"left\">Email</th><td>{{lead.email}}</td></tr><tr><th align=\"left\">Phone</th><td>{{lead.phone}}</td></tr><tr><th align=\"left\">Event city/state</th><td>{{lead.eventCity}}, {{lead.eventState}}</td></tr><tr><th align=\"left\">Event date or range</th><td>{{lead.eventDateOrDateRange}}</td></tr><tr><th align=\"left\">Event type</th><td>{{lead.eventType}}</td></tr><tr><th align=\"left\">Venue setting</th><td>{{lead.venueSetting}}</td></tr><tr><th align=\"left\">Estimated attendance</th><td>{{lead.estimatedAttendance}}</td></tr><tr><th align=\"left\">Message</th><td>{{lead.message}}</td></tr></table><p>FormEntry ID: {{formEntry.id}}<br>Submitted at: {{formEntry.submittedAt}}<br>Source page: {{formEntry.sourcePage}}</p><p>Review the lead in Pumpkin Lead Inbox. Do not rely on this email as the source of truth.</p>",
+  "variables": {
+    "lead.fullName": "Submitter name from sanitized FormEntry formData.",
+    "lead.email": "Submitter email from sanitized FormEntry formData.",
+    "lead.phone": "Submitter phone from sanitized FormEntry formData.",
+    "lead.eventCity": "Event city from sanitized FormEntry formData.",
+    "lead.eventState": "Event state from sanitized FormEntry formData.",
+    "lead.eventDateOrDateRange": "Event date/range from sanitized FormEntry formData.",
+    "lead.eventType": "Event type from sanitized FormEntry formData.",
+    "lead.venueSetting": "Venue setting from sanitized FormEntry formData.",
+    "lead.estimatedAttendance": "Estimated attendance from sanitized FormEntry formData.",
+    "lead.message": "Message from sanitized FormEntry formData.",
+    "formEntry.id": "Pumpkin FormEntry id.",
+    "formEntry.submittedAt": "Submission timestamp.",
+    "formEntry.sourcePage": "Source page or page slug."
+  },
+  "allowedVariables": [
+    "lead.fullName",
+    "lead.email",
+    "lead.phone",
+    "lead.eventCity",
+    "lead.eventState",
+    "lead.eventDateOrDateRange",
+    "lead.eventType",
+    "lead.venueSetting",
+    "lead.estimatedAttendance",
+    "lead.message",
+    "formEntry.id",
+    "formEntry.submittedAt",
+    "formEntry.sourcePage"
+  ],
+  "noSecretGuardrails": [
+    "Do not include SMTP credentials, provider tokens, mailbox passwords, DKIM private keys, or raw API keys in template variables.",
+    "Do not include full raw email payloads in outbound logs.",
+    "Use FormEntry id and safe lead fields only."
+  ],
+  "notes": [
+    "Draft only. No real email is sent by this template.",
+    "Pumpkin Lead Inbox remains the source of truth for submitted forms."
+  ]
+}

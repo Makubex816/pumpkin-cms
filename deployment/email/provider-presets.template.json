@@ -1,0 +1,535 @@
+{
+  "schemaVersion": "email-readiness.provider-presets.v1",
+  "purpose": "Provider-agnostic candidate profiles for Pumpkin email readiness. These profiles contain refs and checklist metadata only; they do not select a provider or store credentials.",
+  "allowedProviderTypes": [
+    "hosted-mailbox",
+    "forwarding-only",
+    "self-hosted-mail",
+    "smtp-relay",
+    "legacy-provider"
+  ],
+  "allowedStatuses": [
+    "candidate",
+    "selected",
+    "configured",
+    "blocked",
+    "retired"
+  ],
+  "allowedCapabilities": [
+    "mailboxHosting",
+    "aliases",
+    "forwarding",
+    "imap",
+    "smtpSubmission",
+    "webmail",
+    "outboundRelay",
+    "inboundRouting",
+    "dkim",
+    "dmarc",
+    "spf",
+    "migration",
+    "catchAll"
+  ],
+  "presets": [
+    {
+      "providerKey": "purelymail",
+      "providerType": "hosted-mailbox",
+      "displayName": "Purelymail",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "accountRef": "EMAIL_PROVIDER_PURELYMAIL_ACCOUNT_REF",
+        "adminConsoleRef": "EMAIL_PROVIDER_PURELYMAIL_ADMIN_CONSOLE_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_PURELYMAIL_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "PURELYMAIL_MX_RECORDS_REF", "type": "MX", "status": "provider-docs-required" },
+        { "recordRef": "PURELYMAIL_SPF_TXT_REF", "type": "TXT", "status": "provider-docs-required" },
+        { "recordRef": "PURELYMAIL_DKIM_RECORDS_REF", "type": "TXT_OR_CNAME", "status": "provider-docs-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "PURELYMAIL_SMTP_USERNAME_REF",
+        "PURELYMAIL_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Candidate only. Do not create mailboxes or store credentials in repo.",
+        "Use provider docs during final DNS checklist review."
+      ],
+      "decisionStatus": "candidate-for-low-cost-hosted-mailbox",
+      "blockerNotes": []
+    },
+    {
+      "providerKey": "cloudflare-email-routing",
+      "providerType": "forwarding-only",
+      "displayName": "Cloudflare Email Routing",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "aliases",
+        "forwarding",
+        "inboundRouting",
+        "spf"
+      ],
+      "configRefs": {
+        "zoneRef": "CLOUDFLARE_ZONE_REF",
+        "routingRulesRef": "CLOUDFLARE_EMAIL_ROUTING_RULES_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "CLOUDFLARE_EMAIL_ROUTING_MX_RECORDS_REF", "type": "MX", "status": "provider-docs-required" },
+        { "recordRef": "CLOUDFLARE_EMAIL_ROUTING_SPF_TXT_REF", "type": "TXT", "status": "provider-docs-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [],
+      "notes": [
+        "Forwarding-only candidate. It does not provide mailbox hosting, IMAP, webmail, or SMTP submission by itself.",
+        "Would require a separate outbound SMTP provider if Pumpkin sends email from the domain."
+      ],
+      "decisionStatus": "candidate-for-forwarding-only",
+      "blockerNotes": [
+        "No hosted mailbox or SMTP submission capability in this preset."
+      ]
+    },
+    {
+      "providerKey": "migadu",
+      "providerType": "hosted-mailbox",
+      "displayName": "Migadu",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "accountRef": "EMAIL_PROVIDER_MIGADU_ACCOUNT_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_MIGADU_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "MIGADU_MX_RECORDS_REF", "type": "MX", "status": "provider-docs-required" },
+        { "recordRef": "MIGADU_SPF_TXT_REF", "type": "TXT", "status": "provider-docs-required" },
+        { "recordRef": "MIGADU_DKIM_RECORDS_REF", "type": "TXT_OR_CNAME", "status": "provider-docs-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "MIGADU_SMTP_USERNAME_REF",
+        "MIGADU_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Candidate only. Preserve placeholder refs until the provider decision is approved."
+      ],
+      "decisionStatus": "candidate-for-hosted-mailbox",
+      "blockerNotes": []
+    },
+    {
+      "providerKey": "mxroute",
+      "providerType": "hosted-mailbox",
+      "displayName": "MXroute",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "accountRef": "EMAIL_PROVIDER_MXROUTE_ACCOUNT_REF",
+        "controlPanelRef": "EMAIL_PROVIDER_MXROUTE_CONTROL_PANEL_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_MXROUTE_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "MXROUTE_MX_RECORDS_REF", "type": "MX", "status": "provider-docs-required" },
+        { "recordRef": "MXROUTE_SPF_TXT_REF", "type": "TXT", "status": "provider-docs-required" },
+        { "recordRef": "MXROUTE_DKIM_RECORDS_REF", "type": "TXT_OR_CNAME", "status": "provider-docs-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "MXROUTE_SMTP_USERNAME_REF",
+        "MXROUTE_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Candidate only. Exact DNS and SMTP values must come from the selected service panel later."
+      ],
+      "decisionStatus": "candidate-for-hosted-mailbox",
+      "blockerNotes": []
+    },
+    {
+      "providerKey": "google-workspace",
+      "providerType": "hosted-mailbox",
+      "displayName": "Google Workspace",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "workspaceAccountRef": "EMAIL_PROVIDER_GOOGLE_WORKSPACE_ACCOUNT_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_GOOGLE_WORKSPACE_SMTP_PROFILE_REF",
+        "oauthClientRef": "EMAIL_PROVIDER_GOOGLE_WORKSPACE_OAUTH_CLIENT_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "GOOGLE_WORKSPACE_MX_RECORDS_REF", "type": "MX", "status": "provider-docs-required" },
+        { "recordRef": "GOOGLE_WORKSPACE_SPF_TXT_REF", "type": "TXT", "status": "provider-docs-required" },
+        { "recordRef": "GOOGLE_WORKSPACE_DKIM_RECORDS_REF", "type": "TXT", "status": "provider-docs-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "GOOGLE_WORKSPACE_SMTP_USERNAME_REF",
+        "GOOGLE_WORKSPACE_APP_PASSWORD_REF_OR_OAUTH_SECRET_REF"
+      ],
+      "notes": [
+        "Candidate only. OAuth/app-password decision remains outside the repo."
+      ],
+      "decisionStatus": "candidate-for-hosted-mailbox",
+      "blockerNotes": []
+    },
+    {
+      "providerKey": "bluehost-legacy",
+      "providerType": "legacy-provider",
+      "displayName": "Bluehost Legacy Email",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "accountRef": "EMAIL_PROVIDER_BLUEHOST_LEGACY_ACCOUNT_REF",
+        "controlPanelRef": "EMAIL_PROVIDER_BLUEHOST_LEGACY_CONTROL_PANEL_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_BLUEHOST_LEGACY_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "BLUEHOST_LEGACY_MX_RECORDS_REF", "type": "MX", "status": "preserve-until-cutover" },
+        { "recordRef": "BLUEHOST_LEGACY_SPF_TXT_REF", "type": "TXT", "status": "provider-docs-required" },
+        { "recordRef": "BLUEHOST_LEGACY_DKIM_RECORDS_REF", "type": "TXT_OR_CNAME", "status": "provider-docs-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "BLUEHOST_LEGACY_SMTP_USERNAME_REF",
+        "BLUEHOST_LEGACY_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Legacy candidate and preservation reference only.",
+        "Do not modify Bluehost or DNS from Pumpkin readiness tooling."
+      ],
+      "decisionStatus": "candidate-for-legacy-preservation-or-migration",
+      "blockerNotes": []
+    },
+    {
+      "providerKey": "mailcow",
+      "providerType": "self-hosted-mail",
+      "displayName": "Mailcow",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "hostRef": "EMAIL_PROVIDER_MAILCOW_HOST_REF",
+        "adminPanelRef": "EMAIL_PROVIDER_MAILCOW_ADMIN_PANEL_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_MAILCOW_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "MAILCOW_MX_RECORDS_REF", "type": "MX", "status": "self-hosted-required" },
+        { "recordRef": "MAILCOW_MAIL_HOST_A_RECORD_REF", "type": "A_OR_AAAA", "status": "self-hosted-required" },
+        { "recordRef": "MAILCOW_REVERSE_DNS_PTR_REF", "type": "PTR", "status": "self-hosted-required" },
+        { "recordRef": "MAILCOW_SPF_TXT_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "MAILCOW_DKIM_RECORDS_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "MAILCOW_ADMIN_PASSWORD_REF",
+        "MAILCOW_SMTP_USERNAME_REF",
+        "MAILCOW_SMTP_PASSWORD_REF",
+        "MAILCOW_API_KEY_REF"
+      ],
+      "notes": [
+        "Self-hosted candidate. Requires server hardening, backups, deliverability monitoring, PTR, and abuse handling."
+      ],
+      "decisionStatus": "candidate-for-self-hosted-mail",
+      "blockerNotes": [
+        "Self-hosted mail requires operational ownership beyond DNS records."
+      ]
+    },
+    {
+      "providerKey": "mail-in-a-box",
+      "providerType": "self-hosted-mail",
+      "displayName": "Mail-in-a-Box",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration"
+      ],
+      "configRefs": {
+        "hostRef": "EMAIL_PROVIDER_MAIL_IN_A_BOX_HOST_REF",
+        "adminPanelRef": "EMAIL_PROVIDER_MAIL_IN_A_BOX_ADMIN_PANEL_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_MAIL_IN_A_BOX_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "MAIL_IN_A_BOX_MX_RECORDS_REF", "type": "MX", "status": "self-hosted-required" },
+        { "recordRef": "MAIL_IN_A_BOX_MAIL_HOST_A_RECORD_REF", "type": "A_OR_AAAA", "status": "self-hosted-required" },
+        { "recordRef": "MAIL_IN_A_BOX_REVERSE_DNS_PTR_REF", "type": "PTR", "status": "self-hosted-required" },
+        { "recordRef": "MAIL_IN_A_BOX_SPF_TXT_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "MAIL_IN_A_BOX_DKIM_RECORDS_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "MAIL_IN_A_BOX_ADMIN_PASSWORD_REF",
+        "MAIL_IN_A_BOX_SMTP_USERNAME_REF",
+        "MAIL_IN_A_BOX_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Self-hosted candidate. Requires operational mailbox, DNS, TLS, deliverability, backup, and monitoring ownership."
+      ],
+      "decisionStatus": "candidate-for-self-hosted-mail",
+      "blockerNotes": [
+        "Self-hosted mail requires reverse DNS and ongoing server maintenance."
+      ]
+    },
+    {
+      "providerKey": "mailu",
+      "providerType": "self-hosted-mail",
+      "displayName": "Mailu",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "hostRef": "EMAIL_PROVIDER_MAILU_HOST_REF",
+        "adminPanelRef": "EMAIL_PROVIDER_MAILU_ADMIN_PANEL_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_MAILU_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "MAILU_MX_RECORDS_REF", "type": "MX", "status": "self-hosted-required" },
+        { "recordRef": "MAILU_MAIL_HOST_A_RECORD_REF", "type": "A_OR_AAAA", "status": "self-hosted-required" },
+        { "recordRef": "MAILU_REVERSE_DNS_PTR_REF", "type": "PTR", "status": "self-hosted-required" },
+        { "recordRef": "MAILU_SPF_TXT_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "MAILU_DKIM_RECORDS_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "MAILU_ADMIN_PASSWORD_REF",
+        "MAILU_SMTP_USERNAME_REF",
+        "MAILU_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Self-hosted candidate. No server or mailbox is created by this readiness layer."
+      ],
+      "decisionStatus": "candidate-for-self-hosted-mail",
+      "blockerNotes": [
+        "Self-hosted mail deliverability depends on IP reputation and PTR alignment."
+      ]
+    },
+    {
+      "providerKey": "modoboa",
+      "providerType": "self-hosted-mail",
+      "displayName": "Modoboa",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "hostRef": "EMAIL_PROVIDER_MODOBOA_HOST_REF",
+        "adminPanelRef": "EMAIL_PROVIDER_MODOBOA_ADMIN_PANEL_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_MODOBOA_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "MODOBOA_MX_RECORDS_REF", "type": "MX", "status": "self-hosted-required" },
+        { "recordRef": "MODOBOA_MAIL_HOST_A_RECORD_REF", "type": "A_OR_AAAA", "status": "self-hosted-required" },
+        { "recordRef": "MODOBOA_REVERSE_DNS_PTR_REF", "type": "PTR", "status": "self-hosted-required" },
+        { "recordRef": "MODOBOA_SPF_TXT_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "MODOBOA_DKIM_RECORDS_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "MODOBOA_ADMIN_PASSWORD_REF",
+        "MODOBOA_SMTP_USERNAME_REF",
+        "MODOBOA_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Self-hosted candidate. Keep all admin, API, and SMTP values outside the repo."
+      ],
+      "decisionStatus": "candidate-for-self-hosted-mail",
+      "blockerNotes": [
+        "Self-hosted operations must be approved before DNS cutover."
+      ]
+    },
+    {
+      "providerKey": "stalwart",
+      "providerType": "self-hosted-mail",
+      "displayName": "Stalwart",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration",
+        "catchAll"
+      ],
+      "configRefs": {
+        "hostRef": "EMAIL_PROVIDER_STALWART_HOST_REF",
+        "adminPanelRef": "EMAIL_PROVIDER_STALWART_ADMIN_PANEL_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_STALWART_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "STALWART_MX_RECORDS_REF", "type": "MX", "status": "self-hosted-required" },
+        { "recordRef": "STALWART_MAIL_HOST_A_RECORD_REF", "type": "A_OR_AAAA", "status": "self-hosted-required" },
+        { "recordRef": "STALWART_REVERSE_DNS_PTR_REF", "type": "PTR", "status": "self-hosted-required" },
+        { "recordRef": "STALWART_SPF_TXT_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "STALWART_DKIM_RECORDS_REF", "type": "TXT", "status": "self-hosted-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "STALWART_ADMIN_PASSWORD_REF",
+        "STALWART_SMTP_USERNAME_REF",
+        "STALWART_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Self-hosted candidate. JMAP or webhook ingestion can be evaluated later without storing secrets in repo."
+      ],
+      "decisionStatus": "candidate-for-self-hosted-mail",
+      "blockerNotes": [
+        "Self-hosted option requires server, DNS, PTR, TLS, monitoring, and backup approval."
+      ]
+    },
+    {
+      "providerKey": "custom",
+      "providerType": "smtp-relay",
+      "displayName": "Custom Provider",
+      "status": "candidate",
+      "supportedCapabilities": [
+        "smtpSubmission",
+        "outboundRelay",
+        "spf",
+        "dkim",
+        "dmarc"
+      ],
+      "configRefs": {
+        "providerDocsRef": "EMAIL_PROVIDER_CUSTOM_DOCS_REF",
+        "smtpProfileRef": "EMAIL_PROVIDER_CUSTOM_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "CUSTOM_PROVIDER_SPF_TXT_REF", "type": "TXT", "status": "provider-docs-required" },
+        { "recordRef": "CUSTOM_PROVIDER_DKIM_RECORDS_REF", "type": "TXT_OR_CNAME", "status": "provider-docs-required" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "domain-policy-required" }
+      ],
+      "requiredSecretsRefs": [
+        "CUSTOM_SMTP_USERNAME_REF",
+        "CUSTOM_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Use when the selected provider is not represented by a named preset.",
+        "Must be reviewed before enabling outbound email."
+      ],
+      "decisionStatus": "fallback-candidate",
+      "blockerNotes": [
+        "Capabilities and DNS requirements must be verified against provider documentation."
+      ]
+    }
+  ]
+}

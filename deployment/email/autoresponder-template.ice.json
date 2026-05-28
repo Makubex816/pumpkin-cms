@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "email-readiness.autoresponder-template.v1",
+  "templateKey": "ice-quote-request-autoresponder-default",
+  "name": "Ice Quote Request Autoresponder Default",
+  "channel": "email",
+  "status": "draft",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "formKey": "default-quote-request",
+  "leadType": "quote-request",
+  "subjectTemplate": "We received your ice rink rental request",
+  "textBodyTemplate": "Hi {{lead.fullName}},\n\nThanks for contacting IceSkatingRinkRentals.com. We received your quote request and will review the event details you shared.\n\nRequest summary:\nEvent city/state: {{lead.eventCity}}, {{lead.eventState}}\nEvent date or range: {{lead.eventDateOrDateRange}}\nEvent type: {{lead.eventType}}\nVenue setting: {{lead.venueSetting}}\n\nReference: {{formEntry.id}}\n\nThis message is a draft autoresponder template and should only be enabled after the email provider, DNS, consent policy, and sending approval are complete.",
+  "htmlBodyTemplate": "<p>Hi {{lead.fullName}},</p><p>Thanks for contacting IceSkatingRinkRentals.com. We received your quote request and will review the event details you shared.</p><p><strong>Request summary</strong><br>Event city/state: {{lead.eventCity}}, {{lead.eventState}}<br>Event date or range: {{lead.eventDateOrDateRange}}<br>Event type: {{lead.eventType}}<br>Venue setting: {{lead.venueSetting}}</p><p>Reference: {{formEntry.id}}</p><p>This message is a draft autoresponder template and should only be enabled after the email provider, DNS, consent policy, and sending approval are complete.</p>",
+  "variables": {
+    "lead.fullName": "Submitter name from sanitized FormEntry formData.",
+    "lead.eventCity": "Event city from sanitized FormEntry formData.",
+    "lead.eventState": "Event state from sanitized FormEntry formData.",
+    "lead.eventDateOrDateRange": "Event date/range from sanitized FormEntry formData.",
+    "lead.eventType": "Event type from sanitized FormEntry formData.",
+    "lead.venueSetting": "Venue setting from sanitized FormEntry formData.",
+    "formEntry.id": "Pumpkin FormEntry id."
+  },
+  "allowedVariables": [
+    "lead.fullName",
+    "lead.eventCity",
+    "lead.eventState",
+    "lead.eventDateOrDateRange",
+    "lead.eventType",
+    "lead.venueSetting",
+    "formEntry.id"
+  ],
+  "fromAddressRef": "ICE_RINK_RENTALS_AUTORESPONDER_FROM_ADDRESS_REF",
+  "replyToAddressRef": "ICE_RINK_RENTALS_DEFAULT_REPLY_TO_ADDRESS_REF",
+  "enabled": false,
+  "dryRunOnly": true,
+  "consentRequired": true,
+  "notes": [
+    "Draft and dry-run-only until provider selection and explicit approval.",
+    "Do not send if FormEntry consentAccepted is false.",
+    "Do not treat this autoresponder as proof that the lead was fulfilled."
+  ]
+}

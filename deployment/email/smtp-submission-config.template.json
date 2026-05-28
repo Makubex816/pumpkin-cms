@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "email-readiness.smtp-submission-config.v1",
+  "providerKey": "pending-provider-decision",
+  "smtpHostRef": "ICE_RINK_RENTALS_SMTP_HOST_REF",
+  "smtpPortRef": "ICE_RINK_RENTALS_SMTP_PORT_REF",
+  "smtpUsernameRef": "ICE_RINK_RENTALS_SMTP_USERNAME_REF",
+  "smtpPasswordRef": "ICE_RINK_RENTALS_SMTP_PASSWORD_REF",
+  "smtpSecureModeRef": "ICE_RINK_RENTALS_SMTP_SECURE_MODE_REF",
+  "defaultFromAddressRef": "ICE_RINK_RENTALS_DEFAULT_FROM_ADDRESS_REF",
+  "defaultReplyToAddressRef": "ICE_RINK_RENTALS_DEFAULT_REPLY_TO_ADDRESS_REF",
+  "bounceAddressRef": "ICE_RINK_RENTALS_BOUNCE_ADDRESS_REF",
+  "notificationFromAddressRef": "ICE_RINK_RENTALS_NOTIFICATION_FROM_ADDRESS_REF",
+  "autoresponderFromAddressRef": "ICE_RINK_RENTALS_AUTORESPONDER_FROM_ADDRESS_REF",
+  "dailySendLimitRef": "ICE_RINK_RENTALS_DAILY_SEND_LIMIT_REF",
+  "enabled": false,
+  "dryRunOnly": true,
+  "notes": [
+    "Refs only. Do not store SMTP host, username, password, app password, OAuth secret, or provider token in this file.",
+    "Outbound email sending remains disabled until provider selection, DNS verification, SMTP credentials in secure storage, and explicit approval."
+  ]
+}

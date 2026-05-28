@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "email-readiness.domain-settings.v1",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "providerKey": "pending-provider-decision",
+  "providerStatus": "candidate",
+  "mxStatus": "not-configured",
+  "spfStatus": "not-configured",
+  "dkimStatus": "not-configured",
+  "dmarcStatus": "not-configured",
+  "smtpStatus": "disabled",
+  "inboundStatus": "not-configured",
+  "outboundStatus": "dry-run-only",
+  "mailboxManifestRef": "deployment/email/mailbox-alias-manifest.template.json",
+  "smtpConfigRef": "deployment/email/smtp-submission-config.template.json",
+  "notificationTemplateRefs": [
+    "deployment/email/lead-notification-template.ice.json"
+  ],
+  "autoresponderTemplateRefs": [
+    "deployment/email/autoresponder-template.ice.json"
+  ],
+  "migrationStatus": "not-needed-for-ice-initial-launch",
+  "cutoverStatus": "blocked-until-provider-selected-and-dns-approved",
+  "notes": [
+    "IceSkatingRinkRentals.com is the primary launch focus.",
+    "No final provider is selected in this template.",
+    "No SMTP credentials, DNS records, mailboxes, or provider accounts are configured by this file.",
+    "RollerRinkRentals.com remains paused."
+  ]
+}
