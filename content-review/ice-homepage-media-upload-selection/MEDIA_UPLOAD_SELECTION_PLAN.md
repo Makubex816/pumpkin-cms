@@ -1,25 +1,24 @@
 # Media Upload Selection Plan
 
-## Decision
+## Plan
 
-This run remains manifest-only. Real MediaAsset creation is blocked until raw media files are present and a safe authenticated local-dev upload/selection path is explicitly available without protected config.
+1. Use the five official PNGs in `content-review/ice-homepage-media-input/`.
+2. Upload each file through the authenticated Pumpkin admin media endpoint when a safe local admin session is available.
+3. Preserve tenant/site identity as `ice-rink-rentals` / `ice-rink-rentals`.
+4. Copy real returned MediaAsset IDs into the homepage media candidate only after records exist.
+5. Do not update CMS Page or Theme records in this phase.
 
-## Required Workflow
+## Current Binding Plan
 
-1. Place approved source files in `content-review/ice-homepage-media-input/`.
-2. Use the MediaAsset upload workflow for tenant `ice-rink-rentals` and siteKey `ice-rink-rentals`.
-3. Create or select MediaAsset records with alt text, usage type, checksum, dimensions, title, caption, and tags from the manifest.
-4. Bind real MediaAsset IDs into the homepage candidate.
-5. Run .NET page contract, media, design-system, form, Tailwind/navigation, unsafe content, placeholder, route/canonical, and secret scans.
-6. Run admin import/export preflight before any CMS write.
+| Slot | Source file | Usage | Source found | MediaAsset ID | Status |
+| --- | --- | --- | --- | --- | --- |
+| site-logo-primary | IceSkatingRinkRentalsLogo.png | logo | yes | null | blocked-missing-safe-admin-auth |
+| homepage-hero-image | WinterFestIceRinkRentals.png | hero | yes | null | blocked-missing-safe-admin-auth |
+| homepage-corporate-event-image | CorporateIceRinkRentalEvent.png | card | yes | null | blocked-missing-safe-admin-auth |
+| homepage-setup-logistics-image | IceRinkRentalsSetup.png | inline | yes | null | blocked-missing-safe-admin-auth |
+| homepage-holiday-shopping-center-image | HolidayIceRink.png | card | yes | null | blocked-missing-safe-admin-auth |
+| homepage-open-graph-image | WinterFestIceRinkRentals.png | og-image | yes | null | blocked-missing-safe-admin-auth |
 
-## Slot Summary
+## Current Blocker
 
-| Slot | Source file | Status | Binding status | MediaAsset ID | Blocks CMS import | Blocks staging | Blocks production |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| site-logo-primary | IceSkatingRinkRentalsLogo.png | needs-upload | blocked-missing-source-file | null | yes | yes | yes |
-| homepage-hero-image | WinterFestIceRinkRentals.png | needs-upload | blocked-missing-source-file | null | yes | yes | yes |
-| homepage-corporate-event-image | CorporateIceRinkRentalEvent.png | needs-upload | blocked-missing-source-file | null | no | yes | yes |
-| homepage-setup-logistics-image | IceRinkRentalsSetup.png | needs-upload | blocked-missing-source-file | null | no | yes | yes |
-| homepage-holiday-shopping-center-image | HolidayIceRink.png | needs-upload | blocked-missing-source-file | null | no | yes | yes |
-| homepage-open-graph-image | WinterFestIceRinkRentals.png | needs-upload | blocked-missing-source-file | null | yes | yes | yes |
+`blocked-missing-safe-admin-auth`: Raw files are present, but the real MediaAsset upload endpoint requires authenticated admin JWT/API access. No protected config or token values were read or printed.

@@ -1,17 +1,18 @@
 # Ice Homepage Media Upload Selection
 
-This package is for IceSkatingRinkRentals.com only. RollerRinkRentals.com remains paused.
+This folder contains the refreshed homepage media upload/selection package for IceSkatingRinkRentals.com.
 
-This is a review and upload-selection handoff package. It does not import the homepage into CMS, does not update CMS Page or Theme records, does not upload media, does not regenerate static output, and does not deploy.
+RollerRinkRentals.com remains paused.
 
-The preferred homepage candidate source was:
+## Result
 
-`content-review/ice-homepage-phase8c14b-normalized/proposed-homepage.normalizer-verified.json`
+- Raw PNG files detected: 5 of 5
+- Upload attempted: no
+- Upload skipped: yes
+- MediaAsset records created: 0
+- Real MediaAsset IDs bound: 0
+- Homepage candidate created: yes
 
-The local raw media source folder checked was:
+Upload was skipped because real MediaAsset creation requires authenticated admin upload/API access, and no safe auth token or protected config access was available.
 
-`content-review/ice-homepage-media-input/`
-
-Result: folder missing; 0 of 5 expected files found.
-
-Because no safe upload was performed, every homepage MediaAsset reference remains `null`. The package is ready for human review of the upload/selection plan, but it is not CMS-import-ready.
+The PNG files under `content-review/ice-homepage-media-input/` are local input assets only. Do not stage or commit them.

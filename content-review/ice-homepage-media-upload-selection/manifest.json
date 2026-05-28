@@ -1,66 +1,130 @@
 {
-  "schemaVersion": "homepage-media-upload-selection-output-manifest.v1",
+  "schemaVersion": "homepage-media-upload-selection-output-manifest.v2",
   "phase": "homepage-media-upload-selection",
-  "createdAt": "2026-05-27T00:00:00Z",
+  "createdAt": "2026-05-28T01:18:51.154Z",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
   "domain": "iceskatingrinkrentals.com",
   "sourceStatus": {
-    "schemaVersion": "homepage-media-upload-selection-source-status.v1",
+    "schemaVersion": "homepage-media-upload-selection-source-status.v2",
     "phase": "homepage-media-upload-selection",
-    "createdAt": "2026-05-27T00:00:00Z",
+    "createdAt": "2026-05-28T01:18:51.154Z",
     "tenantId": "ice-rink-rentals",
     "siteKey": "ice-rink-rentals",
     "domain": "iceskatingrinkrentals.com",
     "sourceFolder": "content-review/ice-homepage-media-input",
-    "sourceFolderExists": false,
+    "sourceFolderExists": true,
     "expectedFiles": [
-      {
-        "fileName": "CorporateIceRinkRentalEvent.png",
-        "expectedPath": "content-review/ice-homepage-media-input/CorporateIceRinkRentalEvent.png",
-        "present": false,
-        "details": null
-      },
-      {
-        "fileName": "HolidayIceRink.png",
-        "expectedPath": "content-review/ice-homepage-media-input/HolidayIceRink.png",
-        "present": false,
-        "details": null
-      },
-      {
-        "fileName": "IceRinkRentalsSetup.png",
-        "expectedPath": "content-review/ice-homepage-media-input/IceRinkRentalsSetup.png",
-        "present": false,
-        "details": null
-      },
       {
         "fileName": "IceSkatingRinkRentalsLogo.png",
         "expectedPath": "content-review/ice-homepage-media-input/IceSkatingRinkRentalsLogo.png",
-        "present": false,
-        "details": null
+        "present": true,
+        "details": {
+          "sizeBytes": 1627660,
+          "width": 1448,
+          "height": 1086,
+          "sha256": "0d1f970f0411e0778405f0a9cce316f0c7affca36e27576d4ebef751782f075b",
+          "detectedMimeType": "image/png"
+        }
       },
       {
         "fileName": "WinterFestIceRinkRentals.png",
         "expectedPath": "content-review/ice-homepage-media-input/WinterFestIceRinkRentals.png",
-        "present": false,
-        "details": null
+        "present": true,
+        "details": {
+          "sizeBytes": 3607110,
+          "width": 1672,
+          "height": 941,
+          "sha256": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+          "detectedMimeType": "image/png"
+        }
+      },
+      {
+        "fileName": "CorporateIceRinkRentalEvent.png",
+        "expectedPath": "content-review/ice-homepage-media-input/CorporateIceRinkRentalEvent.png",
+        "present": true,
+        "details": {
+          "sizeBytes": 3685341,
+          "width": 1672,
+          "height": 941,
+          "sha256": "18e985ca59bd67b3f1d74a1a3841a273081b8f8a9ddb97d67dc6ff233e559a2d",
+          "detectedMimeType": "image/png"
+        }
+      },
+      {
+        "fileName": "HolidayIceRink.png",
+        "expectedPath": "content-review/ice-homepage-media-input/HolidayIceRink.png",
+        "present": true,
+        "details": {
+          "sizeBytes": 3866376,
+          "width": 1672,
+          "height": 941,
+          "sha256": "973ce769137773ecb68c439a192ae7bb96f7be2365a591c651c3fcc746c0f853",
+          "detectedMimeType": "image/png"
+        }
+      },
+      {
+        "fileName": "IceRinkRentalsSetup.png",
+        "expectedPath": "content-review/ice-homepage-media-input/IceRinkRentalsSetup.png",
+        "present": true,
+        "details": {
+          "sizeBytes": 3545952,
+          "width": 1448,
+          "height": 1086,
+          "sha256": "113d218572e45a8744673e3b86e2ea7d2e75dfacfcd8a0756a767f59c5ad3f40",
+          "detectedMimeType": "image/png"
+        }
       }
     ],
-    "discoveredFiles": [],
-    "sourceFileCountFound": 0,
-    "expectedFileCountFound": 0,
-    "uploadFeasibility": "blocked_missing_raw_media_input_folder_or_files",
+    "discoveredFiles": [
+      "CorporateIceRinkRentalEvent.png",
+      "HolidayIceRink.png",
+      "IceRinkRentalsSetup.png",
+      "IceSkatingRinkRentalsLogo.png",
+      "WinterFestIceRinkRentals.png"
+    ],
+    "sourceFileCountFound": 5,
+    "expectedFileCountFound": 5,
+    "uploadFeasibility": "blocked-missing-safe-admin-auth",
     "uploadAttempted": false,
-    "uploadSkippedReason": "Raw media files were not present in the local media input folder; continuing with manifest-only upload and selection prep.",
+    "uploadSkippedReason": "Raw files are present, but the real MediaAsset upload endpoint requires authenticated admin JWT/API access. No protected config or token values were read or printed.",
     "protectedConfigRead": false,
     "secretsPrinted": false,
     "cmsPageRecordsChanged": false,
     "cmsThemeRecordsChanged": false,
     "mediaAssetRecordsCreated": false,
+    "mediaAssetRecordCount": 0,
+    "inputLocationCorrection": {
+      "performed": true,
+      "reason": "The start-state PNGs were untracked in the media upload selection output folder. They were moved into the requested raw-input folder so output files stay manifest-only.",
+      "fromFolder": "content-review/ice-homepage-media-upload-selection",
+      "toFolder": "content-review/ice-homepage-media-input",
+      "rawFilesRemainUntracked": true
+    },
     "rollerStatus": "paused"
   },
+  "uploadFeasibility": {
+    "result": "blocked-missing-safe-admin-auth",
+    "localMediaFilesPresent": true,
+    "localDevStorageCanBeUsedWithoutProtectedConfig": true,
+    "azureOrCloudUploadRequired": false,
+    "protectedConfigReadRequired": false,
+    "cmsPageRecordsWouldBeModified": false,
+    "cmsThemeRecordsWouldBeModified": false,
+    "tenantSafeForIce": true,
+    "authenticationRequired": true,
+    "authenticationAvailableWithoutProtectedSecrets": false,
+    "uploadAttempted": false,
+    "uploadSkipped": true,
+    "uploadSkippedReason": "Raw files are present, but the real MediaAsset upload endpoint requires authenticated admin JWT/API access. No protected config or token values were read or printed.",
+    "mediaAssetRecordsCreated": false,
+    "mediaAssetRecordCount": 0,
+    "blockers": [
+      "authenticated-admin-jwt-not-available-without-reading-or-printing-protected-secrets",
+      "real-mediaasset-record-creation-requires-admin-api-and-database-service"
+    ]
+  },
   "sourceCandidate": "content-review/ice-homepage-phase8c14b-normalized/proposed-homepage.normalizer-verified.json",
-  "previousManifestOnlyPackage": "content-review/ice-homepage-phase8c15-media-binding/",
   "outputs": [
     "README.md",
     "MEDIA_SOURCE_STATUS.md",
@@ -76,12 +140,17 @@
   "readiness": {
     "readyForHumanReview": true,
     "readyForCmsImport": false,
-    "readyForLocalCmsDraftImport": false,
+    "readyForLocalCmsDraftImport": "maybe-with-explicit-authorization-and-preflight",
     "readyForStaticRegeneration": false,
     "readyForProductionIndexing": false,
     "cmsImportReason": "Not CMS-import-ready until real MediaAsset IDs, business values, human approval, and admin import/export preflight are complete.",
-    "localPreviewReason": "Local CMS draft import still needs explicit authorization and a preflight decision about unresolved media.",
-    "productionReason": "Production requires CMS import, fresh static regeneration, Azure default-host staging review, form smoke tests, and final cutover approval."
+    "localPreviewReason": "Possible only with explicit authorization and a decision to allow unresolved mediaAssetId placeholders.",
+    "productionReason": "Production requires CMS import, fresh static regeneration, staging review, media URL verification, form smoke tests, and final cutover approval."
+  },
+  "bindingSummary": {
+    "bindingCount": 6,
+    "realMediaAssetIdsBound": 0,
+    "cmsImportBlockingSlots": 6
   },
   "rollerStatus": "paused"
 }

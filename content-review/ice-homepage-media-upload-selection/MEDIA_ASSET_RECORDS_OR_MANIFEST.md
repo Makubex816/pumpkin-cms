@@ -1,20 +1,15 @@
 # MediaAsset Records Or Manifest
 
-MediaAsset records created in this phase: none.
+No CMS MediaAsset records were created.
 
-No upload was attempted. No CMS Page records were changed. No live CMS records were changed.
+Creation was blocked by `blocked-missing-safe-admin-auth`.
 
-The authoritative manifest-only records are in:
+The manifest contains proposed record payload metadata only. These are not real database records and must not be bound as MediaAsset IDs.
 
-- `homepage-media-upload-manifest.json`
-- `homepage-mediaasset-bindings.json`
-
-Each proposed record keeps:
-
-- `mediaAssetId: null`
-- `publicUrl: null`
-- `thumbnailUrl: null`
-- `storageProvider: pending`
-- `status: needs-upload`
-
-These are proposed records only and must not be treated as existing CMS MediaAsset records.
+| Source file | Usage type | Proposed asset id | Safe file name | Real MediaAsset ID | Status |
+| --- | --- | --- | --- | --- | --- |
+| IceSkatingRinkRentalsLogo.png | icon | ice-rink-rentals-ice-skating-rink-rentals-logo-0d1f970f0411 | ice-skating-rink-rentals-logo-0d1f970f0411.png | null | not-created |
+| WinterFestIceRinkRentals.png | hero | ice-rink-rentals-winter-fest-ice-rink-rentals-324b1b89777d | winter-fest-ice-rink-rentals-324b1b89777d.png | null | not-created |
+| CorporateIceRinkRentalEvent.png | card | ice-rink-rentals-corporate-ice-rink-rental-event-18e985ca59bd | corporate-ice-rink-rental-event-18e985ca59bd.png | null | not-created |
+| HolidayIceRink.png | card | ice-rink-rentals-holiday-ice-rink-973ce7691377 | holiday-ice-rink-973ce7691377.png | null | not-created |
+| IceRinkRentalsSetup.png | inline | ice-rink-rentals-ice-rink-rentals-setup-113d218572e4 | ice-rink-rentals-setup-113d218572e4.png | null | not-created |
