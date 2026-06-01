@@ -69,6 +69,41 @@
         "decisionStatus": "candidate",
         "blockerNotes": []
       }
+    },
+    {
+      "name": "valid Microsoft 365 provider config",
+      "expect": "ok",
+      "file": "deployment/email/provider-microsoft-365-exchange-online-plan1.template.json"
+    },
+    {
+      "name": "invalid Microsoft 365 provider config with literal client secret blocked",
+      "expect": "error",
+      "value": {
+        "providerKey": "microsoft-365-exchange-online-plan1",
+        "providerType": "hosted-mailbox",
+        "displayName": "Microsoft 365 Exchange Online Plan 1",
+        "status": "selected-not-configured",
+        "supportedCapabilities": [
+          "mailboxHosting",
+          "graphSendMail",
+          "smtpSubmission"
+        ],
+        "configRefs": {
+          "clientSecretRef": "literal-client-secret",
+          "smtpPasswordRef": "MICROSOFT_365_SMTP_PASSWORD_REF"
+        },
+        "requiredDnsRecords": [
+          { "recordRef": "MICROSOFT_365_MX_RECORD_REF", "type": "MX", "status": "pending-admin-center-value" }
+        ],
+        "requiredSecretsRefs": [
+          "MICROSOFT_365_CLIENT_SECRET=literal-client-secret"
+        ],
+        "notes": [
+          "Synthetic invalid Microsoft 365 fixture only."
+        ],
+        "decisionStatus": "selected-not-configured",
+        "blockerNotes": []
+      }
     }
   ],
   "domainSettingsCases": [
@@ -76,6 +111,11 @@
       "name": "Ice domain email settings template validation",
       "expect": "ok",
       "file": "deployment/email/ice-domain-email-settings.template.json"
+    },
+    {
+      "name": "valid Ice Microsoft 365 domain settings",
+      "expect": "ok",
+      "file": "deployment/email/ice-domain-email-settings.microsoft365.template.json"
     }
   ],
   "mailboxManifestCases": [
@@ -83,6 +123,11 @@
       "name": "valid mailbox manifest",
       "expect": "ok",
       "file": "deployment/email/mailbox-alias-manifest.template.json"
+    },
+    {
+      "name": "valid Microsoft 365 mailbox manifest",
+      "expect": "ok",
+      "file": "deployment/email/mailbox-alias-manifest.ice.microsoft365.template.json"
     },
     {
       "name": "mailbox manifest with invalid domain blocked",
@@ -153,9 +198,47 @@
       }
     }
   ],
+  "appSendingConfigCases": [
+    {
+      "name": "valid Microsoft 365 app sending config with refs only",
+      "expect": "ok",
+      "file": "deployment/email/microsoft-365-app-sending-config.template.json"
+    },
+    {
+      "name": "invalid Microsoft 365 app sending config with literal client secret blocked",
+      "expect": "error",
+      "value": {
+        "schemaVersion": "email-readiness.microsoft-365-app-sending-config.v1",
+        "providerKey": "microsoft-365-exchange-online-plan1",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "iceskatingrinkrentals.com",
+        "preferredStrategy": "graphSendMail",
+        "graphSendMail": {
+          "enabledRef": "MICROSOFT_365_GRAPH_SEND_ENABLED_REF",
+          "tenantIdRef": "MICROSOFT_365_TENANT_ID_REF",
+          "clientIdRef": "MICROSOFT_365_CLIENT_ID_REF",
+          "clientSecretRef": "literal-client-secret",
+          "fromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
+          "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
+          "status": "not-configured"
+        },
+        "smtpAuthFallback": {
+          "enabledRef": "MICROSOFT_365_SMTP_AUTH_ENABLED_REF",
+          "hostRef": "MICROSOFT_365_SMTP_HOST_REF",
+          "portRef": "MICROSOFT_365_SMTP_PORT_REF",
+          "usernameRef": "MICROSOFT_365_SMTP_USERNAME_REF",
+          "passwordRef": "MICROSOFT_365_SMTP_PASSWORD_REF",
+          "status": "not-configured"
+        },
+        "dryRunOnly": true,
+        "realSendingEnabled": false
+      }
+    }
+  ],
   "leadNotificationTemplateCases": [
     {
-      "name": "valid lead notification template",
+      "name": "valid selected-provider notification template",
       "expect": "ok",
       "file": "deployment/email/lead-notification-template.ice.json"
     },
@@ -193,7 +276,7 @@
   ],
   "autoresponderTemplateCases": [
     {
-      "name": "valid autoresponder template",
+      "name": "valid selected-provider autoresponder template",
       "expect": "ok",
       "file": "deployment/email/autoresponder-template.ice.json"
     }
@@ -206,7 +289,7 @@
         "id": "email-log-id",
         "tenantId": "ice-rink-rentals",
         "siteKey": "ice-rink-rentals",
-        "providerKey": "pending-provider-decision",
+        "providerKey": "microsoft-365-exchange-online-plan1",
         "templateKey": "ice-lead-notification-default",
         "messageType": "lead-notification",
         "relatedEntityType": "FormEntry",
@@ -215,11 +298,12 @@
         "recipientEmailHash": "sha256:placeholder",
         "recipientEmailSummary": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
         "recipientEmail": "",
-        "fromAddressRef": "ICE_RINK_RENTALS_NOTIFICATION_FROM_ADDRESS_REF",
-        "replyToAddressRef": "ICE_RINK_RENTALS_DEFAULT_REPLY_TO_ADDRESS_REF",
+        "fromAddressRef": "MICROSOFT_365_NOTIFICATION_FROM_ADDRESS_REF",
+        "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
         "subjectPreview": "New ice rink quote request",
         "status": "dry-run",
         "providerMessageId": "",
+        "graphMessageId": "",
         "errorCode": "",
         "errorMessageSafe": "",
         "createdAt": "2026-05-28T00:00:00Z",
@@ -228,7 +312,8 @@
         "retryCount": 0,
         "metadata": {
           "dryRunOnly": true,
-          "source": "fixture"
+          "source": "fixture",
+          "appSendingStrategy": "graph-preferred"
         }
       }
     }
@@ -265,6 +350,22 @@
         "SPF lookup count",
         "DMARC TXT record",
         "DKIM public record"
+      ]
+    },
+    {
+      "name": "Microsoft 365 DNS checklist required sections",
+      "expect": "ok",
+      "file": "deployment/email/microsoft-365-dns-readiness-checklist.md",
+      "requiredText": [
+        "Domain Verification",
+        "MX Record",
+        "SPF TXT",
+        "DKIM CNAME",
+        "DMARC TXT",
+        "Autodiscover",
+        "TTL And Cutover",
+        "Bluehost And Other Domains",
+        "include:spf.protection.outlook.com"
       ]
     }
   ]

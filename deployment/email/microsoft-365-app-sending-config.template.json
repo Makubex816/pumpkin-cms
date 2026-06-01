@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "email-readiness.microsoft-365-app-sending-config.v1",
+  "providerKey": "microsoft-365-exchange-online-plan1",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "preferredStrategy": "graphSendMail",
+  "graphSendMail": {
+    "enabledRef": "MICROSOFT_365_GRAPH_SEND_ENABLED_REF",
+    "tenantIdRef": "MICROSOFT_365_TENANT_ID_REF",
+    "clientIdRef": "MICROSOFT_365_CLIENT_ID_REF",
+    "clientSecretRef": "MICROSOFT_365_CLIENT_SECRET_REF",
+    "fromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
+    "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
+    "permissionsRequired": [
+      "Mail.Send or equivalent, to be confirmed during setup"
+    ],
+    "status": "not-configured",
+    "notes": [
+      "Preferred future Pumpkin app-sending path.",
+      "Use Microsoft Graph SendMail after app registration, least-privilege review, and secure runtime secret storage.",
+      "Do not store tenant id, client id, client secret, access token, refresh token, or certificate private key values in repo."
+    ]
+  },
+  "smtpAuthFallback": {
+    "enabledRef": "MICROSOFT_365_SMTP_AUTH_ENABLED_REF",
+    "hostRef": "MICROSOFT_365_SMTP_HOST_REF",
+    "portRef": "MICROSOFT_365_SMTP_PORT_REF",
+    "usernameRef": "MICROSOFT_365_SMTP_USERNAME_REF",
+    "passwordRef": "MICROSOFT_365_SMTP_PASSWORD_REF",
+    "status": "not-configured",
+    "notes": [
+      "SMTP AUTH is an optional fallback only.",
+      "SMTP AUTH must be explicitly verified and enabled before use.",
+      "Do not store mailbox passwords, app passwords, or SMTP passwords in repo."
+    ]
+  },
+  "dryRunOnly": true,
+  "realSendingEnabled": false,
+  "notes": [
+    "No real email is sent by this template.",
+    "No Microsoft 365 resources, app registrations, secrets, users, mailboxes, or DNS records are created by this file.",
+    "RollerRinkRentals.com remains paused."
+  ]
+}

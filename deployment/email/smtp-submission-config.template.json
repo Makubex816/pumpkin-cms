@@ -1,21 +1,32 @@
 {
   "schemaVersion": "email-readiness.smtp-submission-config.v1",
-  "providerKey": "pending-provider-decision",
-  "smtpHostRef": "ICE_RINK_RENTALS_SMTP_HOST_REF",
-  "smtpPortRef": "ICE_RINK_RENTALS_SMTP_PORT_REF",
-  "smtpUsernameRef": "ICE_RINK_RENTALS_SMTP_USERNAME_REF",
-  "smtpPasswordRef": "ICE_RINK_RENTALS_SMTP_PASSWORD_REF",
-  "smtpSecureModeRef": "ICE_RINK_RENTALS_SMTP_SECURE_MODE_REF",
-  "defaultFromAddressRef": "ICE_RINK_RENTALS_DEFAULT_FROM_ADDRESS_REF",
-  "defaultReplyToAddressRef": "ICE_RINK_RENTALS_DEFAULT_REPLY_TO_ADDRESS_REF",
-  "bounceAddressRef": "ICE_RINK_RENTALS_BOUNCE_ADDRESS_REF",
-  "notificationFromAddressRef": "ICE_RINK_RENTALS_NOTIFICATION_FROM_ADDRESS_REF",
-  "autoresponderFromAddressRef": "ICE_RINK_RENTALS_AUTORESPONDER_FROM_ADDRESS_REF",
-  "dailySendLimitRef": "ICE_RINK_RENTALS_DAILY_SEND_LIMIT_REF",
+  "providerKey": "microsoft-365-exchange-online-plan1",
+  "selectedProviderKey": "microsoft-365-exchange-online-plan1",
+  "providerStatus": "selected-not-configured",
+  "applicationSendingStrategy": "graph-preferred-smtp-auth-fallback-only-if-enabled",
+  "graphConfigRef": "deployment/email/microsoft-365-app-sending-config.template.json",
+  "smtpHostRef": "MICROSOFT_365_SMTP_HOST_REF",
+  "smtpPortRef": "MICROSOFT_365_SMTP_PORT_REF",
+  "smtpUsernameRef": "MICROSOFT_365_SMTP_USERNAME_REF",
+  "smtpPasswordRef": "MICROSOFT_365_SMTP_PASSWORD_REF",
+  "smtpSecureModeRef": "MICROSOFT_365_SMTP_SECURE_MODE_REF",
+  "defaultFromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
+  "defaultReplyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
+  "bounceAddressRef": "MICROSOFT_365_BOUNCE_ADDRESS_REF",
+  "notificationFromAddressRef": "MICROSOFT_365_NOTIFICATION_FROM_ADDRESS_REF",
+  "autoresponderFromAddressRef": "MICROSOFT_365_AUTORESPONDER_FROM_ADDRESS_REF",
+  "dailySendLimitRef": "MICROSOFT_365_DAILY_SEND_LIMIT_REF",
   "enabled": false,
   "dryRunOnly": true,
+  "genericProviderSupport": {
+    "contractStillProviderAgnostic": true,
+    "providerKeyCanBeChangedLater": true,
+    "allRuntimeValuesRemainRefs": true
+  },
   "notes": [
-    "Refs only. Do not store SMTP host, username, password, app password, OAuth secret, or provider token in this file.",
-    "Outbound email sending remains disabled until provider selection, DNS verification, SMTP credentials in secure storage, and explicit approval."
+    "Microsoft 365 Exchange Online Plan 1 is selected for Ice, but SMTP sending remains disabled and dry-run-only.",
+    "Graph/OAuth is the preferred future app-sending path. SMTP AUTH is a fallback only if explicitly verified and enabled later.",
+    "Refs only. Do not store SMTP host, username, password, app password, OAuth secret, Microsoft token, or provider token value in this file.",
+    "Outbound email sending remains disabled until Microsoft 365 setup, DNS verification, secure runtime configuration, dry-run validation, and explicit approval."
   ]
 }

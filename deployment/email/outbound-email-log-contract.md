@@ -11,7 +11,7 @@ This model is a contract for future implementation. No database container is cre
   "id": "email-log-id",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
-  "providerKey": "pending-provider-decision",
+  "providerKey": "microsoft-365-exchange-online-plan1",
   "templateKey": "ice-lead-notification-default",
   "messageType": "lead-notification",
   "relatedEntityType": "FormEntry",
@@ -20,20 +20,22 @@ This model is a contract for future implementation. No database container is cre
   "recipientEmailHash": "sha256-or-provider-safe-hash",
   "recipientEmailSummary": "admin mailbox ref or masked recipient",
   "recipientEmail": "",
-  "fromAddressRef": "ICE_RINK_RENTALS_NOTIFICATION_FROM_ADDRESS_REF",
-  "replyToAddressRef": "ICE_RINK_RENTALS_DEFAULT_REPLY_TO_ADDRESS_REF",
+  "fromAddressRef": "MICROSOFT_365_NOTIFICATION_FROM_ADDRESS_REF",
+  "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
   "subjectPreview": "New ice rink quote request: Example...",
   "status": "dry-run",
   "providerMessageId": "",
+  "graphMessageId": "",
   "errorCode": "",
   "errorMessageSafe": "",
-  "createdAt": "2026-05-28T00:00:00Z",
+  "createdAt": "2026-06-01T00:00:00Z",
   "sentAt": "",
   "failedAt": "",
   "retryCount": 0,
   "metadata": {
     "dryRunOnly": true,
-    "source": "email-readiness-contract"
+    "source": "email-readiness-contract",
+    "appSendingStrategy": "graph-preferred"
   }
 }
 ```
@@ -43,7 +45,7 @@ This model is a contract for future implementation. No database container is cre
 - `id`: unique log id.
 - `tenantId`: tenant id.
 - `siteKey`: site key.
-- `providerKey`: selected provider key, or `pending-provider-decision` before setup.
+- `providerKey`: selected provider key. For Ice this is `microsoft-365-exchange-online-plan1`.
 - `templateKey`: template used.
 - `messageType`: `lead-notification`, `autoresponder`, `system-alert`, or future safe value.
 - `relatedEntityType`: source entity such as `FormEntry`.
@@ -57,11 +59,22 @@ This model is a contract for future implementation. No database container is cre
 - `subjectPreview`: safe truncated subject preview.
 - `status`: `queued`, `dry-run`, `sent`, `failed`, `suppressed`, or `blocked`.
 - `providerMessageId`: provider id if one is returned after real sending.
+- `graphMessageId`: Microsoft Graph message id or safe Graph message reference when available after real sending.
 - `errorCode`: provider or internal safe error code.
 - `errorMessageSafe`: sanitized non-secret error message.
 - `createdAt`, `sentAt`, `failedAt`: timestamps.
 - `retryCount`: integer retry count.
 - `metadata`: safe structured metadata only.
+
+## Microsoft 365 Compatibility
+
+For Microsoft 365 Exchange Online Plan 1:
+
+- Graph SendMail is the preferred future app-sending path.
+- SMTP AUTH fallback, if ever enabled, still uses the same safe status and error fields.
+- `graphMessageId` or `providerMessageId` may be recorded only after real sending is approved.
+- Safe provider metadata can record `graph`, `smtp-auth-fallback`, or `dry-run` strategy values.
+- Raw Graph request/response payloads must not be logged by default.
 
 ## Privacy Decision
 
@@ -73,9 +86,11 @@ Full recipient email may be stored only after a privacy/retention decision becau
 
 - Do not log SMTP passwords.
 - Do not log provider API tokens.
-- Do not log OAuth secrets or app passwords.
+- Do not log Microsoft tenant secrets.
+- Do not log Microsoft Graph access tokens or refresh tokens.
+- Do not log OAuth client secrets or app passwords.
+- Do not log certificate private keys.
 - Do not log DKIM private keys.
 - Do not log raw RFC 822 messages.
 - Do not log full HTML/text payloads unless a future policy explicitly allows a sanitized preview.
 - Sanitize provider errors before storage.
-

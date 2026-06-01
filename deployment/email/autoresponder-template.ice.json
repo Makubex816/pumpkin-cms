@@ -6,6 +6,8 @@
   "status": "draft",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
+  "providerKey": "microsoft-365-exchange-online-plan1",
+  "providerStatus": "selected-not-configured",
   "formKey": "default-quote-request",
   "leadType": "quote-request",
   "subjectTemplate": "We received your ice rink rental request",
@@ -29,13 +31,14 @@
     "lead.venueSetting",
     "formEntry.id"
   ],
-  "fromAddressRef": "ICE_RINK_RENTALS_AUTORESPONDER_FROM_ADDRESS_REF",
-  "replyToAddressRef": "ICE_RINK_RENTALS_DEFAULT_REPLY_TO_ADDRESS_REF",
+  "fromAddressRef": "MICROSOFT_365_AUTORESPONDER_FROM_ADDRESS_REF",
+  "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
   "enabled": false,
   "dryRunOnly": true,
   "consentRequired": true,
   "notes": [
-    "Draft and dry-run-only until provider selection and explicit approval.",
+    "Draft, disabled, and dry-run-only until Microsoft 365 setup and explicit sending approval.",
+    "Graph/OAuth is the preferred future app-sending path; SMTP AUTH is fallback only if enabled later.",
     "Do not send if FormEntry consentAccepted is false.",
     "Do not treat this autoresponder as proof that the lead was fulfilled."
   ]

@@ -4,12 +4,17 @@
   "name": "Ice Lead Notification Default",
   "channel": "email",
   "status": "draft",
+  "enabled": false,
+  "dryRunOnly": true,
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
+  "providerKey": "microsoft-365-exchange-online-plan1",
+  "providerStatus": "selected-not-configured",
   "formKey": "default-quote-request",
   "leadType": "quote-request",
   "recipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
-  "fromAddressRef": "ICE_RINK_RENTALS_NOTIFICATION_FROM_ADDRESS_REF",
+  "fromAddressRef": "MICROSOFT_365_NOTIFICATION_FROM_ADDRESS_REF",
+  "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
   "replyToStrategy": "submitter_email_when_valid_else_default_reply_to_ref",
   "subjectTemplate": "New ice rink quote request: {{lead.fullName}} - {{lead.eventCity}}, {{lead.eventState}}",
   "textBodyTemplate": "A new quote request was submitted for IceSkatingRinkRentals.com.\n\nName: {{lead.fullName}}\nEmail: {{lead.email}}\nPhone: {{lead.phone}}\nEvent city/state: {{lead.eventCity}}, {{lead.eventState}}\nEvent date or range: {{lead.eventDateOrDateRange}}\nEvent type: {{lead.eventType}}\nVenue setting: {{lead.venueSetting}}\nEstimated attendance: {{lead.estimatedAttendance}}\nMessage: {{lead.message}}\n\nFormEntry ID: {{formEntry.id}}\nSubmitted at: {{formEntry.submittedAt}}\nSource page: {{formEntry.sourcePage}}\n\nReview the lead in Pumpkin Lead Inbox. Do not rely on this email as the source of truth.",
@@ -50,7 +55,8 @@
     "Use FormEntry id and safe lead fields only."
   ],
   "notes": [
-    "Draft only. No real email is sent by this template.",
+    "Draft, disabled, and dry-run-only until Microsoft 365 setup and explicit sending approval.",
+    "Graph/OAuth is the preferred future app-sending path; SMTP AUTH is fallback only if enabled later.",
     "Pumpkin Lead Inbox remains the source of truth for submitted forms."
   ]
 }

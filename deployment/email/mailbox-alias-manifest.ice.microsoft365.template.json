@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "email-readiness.mailbox-alias-manifest.v1",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "providerKey": "microsoft-365-exchange-online-plan1",
+  "status": "selected-not-configured",
+  "catchAll": {
+    "policy": "disabled-by-default",
+    "status": "not-created",
+    "inboundHandling": "Do not assume catch-all support for Microsoft 365 launch. Keep disabled unless spam, routing, and licensing policy are explicitly approved.",
+    "notes": [
+      "Catch-all is not part of the initial Ice launch plan.",
+      "No catch-all address is created by this manifest."
+    ]
+  },
+  "mailboxes": [
+    {
+      "address": "contact@iceskatingrinkrentals.com",
+      "type": "primary licensed mailbox candidate",
+      "status": "proposed",
+      "providerSetupStatus": "pending-provider-setup",
+      "creationStatus": "not-created",
+      "role": "primary-customer-contact-inbox",
+      "displayName": "Ice Skating Rink Rentals Contact",
+      "purpose": "Primary customer contact inbox and first licensed mailbox candidate for the Ice domain.",
+      "inboundHandling": "yes",
+      "outboundAllowed": true,
+      "outboundPolicy": "yes-after-provider-setup-and-sending-identity-verification",
+      "publicDisplayAllowed": "undecided",
+      "usedByForms": true,
+      "usedByLeadNotifications": true,
+      "usedByAutoresponders": false,
+      "migrationRequired": "no-known-existing-mailbox",
+      "notes": [
+        "Not created.",
+        "Candidate for the first paid Exchange Online Plan 1 mailbox.",
+        "Public display remains undecided."
+      ]
+    }
+  ],
+  "aliases": [
+    {
+      "address": "quotes@iceskatingrinkrentals.com",
+      "type": "alias candidate",
+      "status": "proposed",
+      "providerSetupStatus": "pending-provider-setup",
+      "creationStatus": "not-created",
+      "role": "quote-request-alias",
+      "displayName": "Ice Skating Rink Rentals Quotes",
+      "purpose": "Quote request alias routed to the approved human/admin mailbox.",
+      "inboundHandling": "yes",
+      "outboundAllowed": "verify-before-use",
+      "publicDisplayAllowed": false,
+      "usedByForms": true,
+      "usedByLeadNotifications": true,
+      "usedByAutoresponders": false,
+      "migrationRequired": "no-known-existing-mailbox",
+      "notes": [
+        "Not created.",
+        "Alias outbound/send-as behavior must be verified before use."
+      ]
+    },
+    {
+      "address": "admin@iceskatingrinkrentals.com",
+      "type": "alias or separate mailbox candidate",
+      "status": "proposed",
+      "providerSetupStatus": "pending-provider-setup",
+      "creationStatus": "not-created",
+      "role": "internal-admin-address",
+      "displayName": "Ice Skating Rink Rentals Admin",
+      "purpose": "Internal admin address for lead notifications or administrative routing.",
+      "inboundHandling": "yes",
+      "outboundAllowed": "verify-before-use",
+      "publicDisplayAllowed": false,
+      "usedByForms": false,
+      "usedByLeadNotifications": true,
+      "usedByAutoresponders": false,
+      "migrationRequired": "no-known-existing-mailbox",
+      "notes": [
+        "Not created.",
+        "Decide alias versus separate licensed mailbox before provider setup."
+      ]
+    },
+    {
+      "address": "no-reply@iceskatingrinkrentals.com",
+      "type": "alias or sending identity candidate",
+      "status": "proposed",
+      "providerSetupStatus": "pending-provider-setup",
+      "creationStatus": "not-created",
+      "role": "autoresponder-no-reply-sender",
+      "displayName": "Ice Skating Rink Rentals No Reply",
+      "purpose": "Optional autoresponder/no-reply sender if approved.",
+      "inboundHandling": "no-or-monitored-bounce-policy-needed",
+      "outboundAllowed": "verify-before-use",
+      "publicDisplayAllowed": false,
+      "usedByForms": false,
+      "usedByLeadNotifications": false,
+      "usedByAutoresponders": true,
+      "migrationRequired": "no-known-existing-mailbox",
+      "notes": [
+        "Not created.",
+        "No-reply sending behavior must be verified before production.",
+        "Prefer monitored reply-to behavior unless no-reply is explicitly approved."
+      ]
+    }
+  ],
+  "forwards": [],
+  "notes": [
+    "This manifest proposes addresses only. It does not create Microsoft 365 users, mailboxes, aliases, groups, forwards, or sending identities.",
+    "Aliases may not behave like independent sending identities unless configured and approved in Exchange Online.",
+    "Pumpkin Lead Inbox remains the source of truth for form leads.",
+    "Email notifications are secondary delivery."
+  ]
+}

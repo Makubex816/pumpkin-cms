@@ -1,6 +1,6 @@
 {
   "schemaVersion": "email-readiness.provider-presets.v1",
-  "purpose": "Provider-agnostic candidate profiles for Pumpkin email readiness. These profiles contain refs and checklist metadata only; they do not select a provider or store credentials.",
+  "purpose": "Provider-agnostic profiles for Pumpkin email readiness. Microsoft 365 Exchange Online Plan 1 is selected-not-configured for Ice; all profiles contain refs and checklist metadata only and store no credentials.",
   "allowedProviderTypes": [
     "hosted-mailbox",
     "forwarding-only",
@@ -11,6 +11,7 @@
   "allowedStatuses": [
     "candidate",
     "selected",
+    "selected-not-configured",
     "configured",
     "blocked",
     "retired"
@@ -21,6 +22,7 @@
     "forwarding",
     "imap",
     "smtpSubmission",
+    "graphSendMail",
     "webmail",
     "outboundRelay",
     "inboundRouting",
@@ -31,6 +33,60 @@
     "catchAll"
   ],
   "presets": [
+    {
+      "providerKey": "microsoft-365-exchange-online-plan1",
+      "providerType": "hosted-mailbox",
+      "displayName": "Microsoft 365 Exchange Online Plan 1",
+      "status": "selected-not-configured",
+      "supportedCapabilities": [
+        "mailboxHosting",
+        "aliases",
+        "forwarding",
+        "imap",
+        "smtpSubmission",
+        "graphSendMail",
+        "webmail",
+        "outboundRelay",
+        "inboundRouting",
+        "dkim",
+        "dmarc",
+        "spf",
+        "migration"
+      ],
+      "configRefs": {
+        "providerStatusRef": "MICROSOFT_365_PROVIDER_STATUS",
+        "tenantIdRef": "MICROSOFT_365_TENANT_ID_REF",
+        "clientIdRef": "MICROSOFT_365_CLIENT_ID_REF",
+        "clientSecretRef": "MICROSOFT_365_CLIENT_SECRET_REF",
+        "graphSendEnabledRef": "MICROSOFT_365_GRAPH_SEND_ENABLED_REF",
+        "smtpAuthEnabledRef": "MICROSOFT_365_SMTP_AUTH_ENABLED_REF",
+        "smtpProfileRef": "MICROSOFT_365_SMTP_PROFILE_REF"
+      },
+      "requiredDnsRecords": [
+        { "recordRef": "MICROSOFT_365_DOMAIN_VERIFICATION_TXT_REF", "type": "TXT", "status": "pending-admin-center-value" },
+        { "recordRef": "MICROSOFT_365_MX_RECORD_REF", "type": "MX", "status": "pending-admin-center-value" },
+        { "recordRef": "MICROSOFT_365_SPF_TXT_REF", "type": "TXT", "status": "pending-dns-review" },
+        { "recordRef": "MICROSOFT_365_DKIM_CNAME_RECORDS_REF", "type": "CNAME", "status": "pending-admin-center-value" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "pending-policy-decision" }
+      ],
+      "requiredSecretsRefs": [
+        "MICROSOFT_365_TENANT_ID_REF",
+        "MICROSOFT_365_CLIENT_ID_REF",
+        "MICROSOFT_365_CLIENT_SECRET_REF",
+        "MICROSOFT_365_SMTP_USERNAME_REF",
+        "MICROSOFT_365_SMTP_PASSWORD_REF"
+      ],
+      "notes": [
+        "Selected for Ice but not configured.",
+        "Graph/OAuth is the preferred future app-sending path.",
+        "SMTP AUTH is a fallback only if explicitly enabled and verified later.",
+        "Do not create Microsoft 365 resources or store credentials in repo."
+      ],
+      "decisionStatus": "selected-not-configured-for-ice-launch",
+      "blockerNotes": [
+        "Microsoft 365 purchase/setup, domain verification, mailbox creation, DNS records, Graph app registration, and secure runtime config remain incomplete."
+      ]
+    },
     {
       "providerKey": "purelymail",
       "providerType": "hosted-mailbox",

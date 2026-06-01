@@ -26,10 +26,10 @@
   "migrationStatus": "not-required-for-ice-new-domain-unless-existing-mailboxes-are-later-found",
   "cutoverStatus": "not-started",
   "notes": [
-    "IceSkatingRinkRentals.com is the primary launch focus.",
-    "Microsoft 365 Exchange Online Plan 1 is selected but not configured.",
-    "No SMTP credentials, Graph credentials, DNS records, mailboxes, aliases, users, or provider accounts are configured by this file.",
-    "Use deployment/email/ice-domain-email-settings.microsoft365.template.json for the Microsoft 365-specific selected-provider variant.",
+    "IceSkatingRinkRentals.com currently has no configured domain email.",
+    "Other managed domains may need separate Bluehost or legacy-provider migration planning.",
+    "No DNS records have been changed.",
+    "No Microsoft 365 users, mailboxes, aliases, Graph app credentials, SMTP credentials, or provider resources are configured by this file.",
     "RollerRinkRentals.com remains paused."
   ],
   "readiness": {

@@ -12,13 +12,14 @@ const PROVIDER_KEY_PATTERN = /^[a-z0-9][a-z0-9-]{1,80}$/;
 const DOMAIN_PATTERN = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/;
 const EMAIL_PATTERN = /^[^@\s]+@([^@\s]+)$/;
 const PROVIDER_TYPES = new Set(['hosted-mailbox', 'forwarding-only', 'self-hosted-mail', 'smtp-relay', 'legacy-provider']);
-const PROVIDER_STATUSES = new Set(['candidate', 'selected', 'configured', 'blocked', 'retired']);
+const PROVIDER_STATUSES = new Set(['candidate', 'selected', 'selected-not-configured', 'configured', 'blocked', 'retired']);
 const PROVIDER_CAPABILITIES = new Set([
   'mailboxHosting',
   'aliases',
   'forwarding',
   'imap',
   'smtpSubmission',
+  'graphSendMail',
   'webmail',
   'outboundRelay',
   'inboundRouting',
@@ -30,7 +31,7 @@ const PROVIDER_CAPABILITIES = new Set([
 ]);
 const EMAIL_LOG_STATUSES = new Set(['queued', 'dry-run', 'sent', 'failed', 'suppressed', 'blocked']);
 const TEMPLATE_STATUSES = new Set(['draft', 'active']);
-const TARGETED_SECRET_ASSIGNMENT = /\b(?:SMTP_PASSWORD|EMAIL_PASSWORD|DKIM_PRIVATE_KEY|SENDGRID_API_KEY|MAILGUN_API_KEY|POSTMARK_API_TOKEN|PURELYMAIL_PASSWORD|GOOGLE_APP_PASSWORD|MXROUTE_PASSWORD|MIGADU_PASSWORD|MAILCOW_API_KEY)\b\s*[:=]\s*[^<\s]+/i;
+const TARGETED_SECRET_ASSIGNMENT = /\b(?:SMTP_PASSWORD|EMAIL_PASSWORD|DKIM_PRIVATE_KEY|SENDGRID_API_KEY|MAILGUN_API_KEY|POSTMARK_API_TOKEN|PURELYMAIL_PASSWORD|GOOGLE_APP_PASSWORD|MXROUTE_PASSWORD|MIGADU_PASSWORD|MAILCOW_API_KEY|MICROSOFT_365_CLIENT_SECRET|MICROSOFT_365_SMTP_PASSWORD|MICROSOFT_365_REFRESH_TOKEN|MICROSOFT_365_ACCESS_TOKEN|MICROSOFT_GRAPH_ACCESS_TOKEN|MICROSOFT_GRAPH_REFRESH_TOKEN|AZURE_CLIENT_SECRET|OAUTH_CLIENT_SECRET|CERTIFICATE_PRIVATE_KEY)\b\s*[:=]\s*[^<\s]+/i;
 const PRIVATE_KEY_PATTERN = /-----BEGIN [A-Z ]*PRIVATE KEY-----/;
 const BEARER_PATTERN = /\bBearer\s+[A-Za-z0-9._~-]{16,}/i;
 
@@ -42,6 +43,7 @@ runCases('providerConfigCases', validateProviderConfig);
 runCases('domainSettingsCases', validateDomainSettings);
 runCases('mailboxManifestCases', validateMailboxManifest);
 runCases('smtpConfigCases', validateSmtpConfig);
+runCases('appSendingConfigCases', validateAppSendingConfig);
 runCases('leadNotificationTemplateCases', (value) => validateTemplate(value, 'lead-notification-template'));
 runCases('autoresponderTemplateCases', (value) => validateTemplate(value, 'autoresponder-template'));
 runCases('outboundLogCases', validateOutboundLog);
@@ -67,6 +69,7 @@ function validateProviderPresetFile() {
     error(result, 'providerPresets.presets', 'provider-presets.template.json must include presets.', 'provider-presets.presets');
   } else {
     const requiredKeys = new Set([
+      'microsoft-365-exchange-online-plan1',
       'purelymail',
       'cloudflare-email-routing',
       'migadu',
@@ -155,6 +158,9 @@ function validateDomainSettings(value) {
   requiredString(result, value.siteKey, 'domain.siteKey', 'domain.siteKey');
   validateDomain(result, value.domain, 'domain.domain');
   requiredString(result, value.providerKey, 'domain.providerKey', 'domain.providerKey');
+  if (stringValue(value.selectedProviderKey) && !PROVIDER_KEY_PATTERN.test(stringValue(value.selectedProviderKey))) {
+    error(result, 'domain.selectedProviderKey', 'selectedProviderKey must be a lowercase slug.', 'domain.selectedProviderKey');
+  }
   requiredString(result, value.providerStatus, 'domain.providerStatus', 'domain.providerStatus');
 
   [
@@ -171,6 +177,7 @@ function validateDomainSettings(value) {
 
   validateFileRef(result, value.mailboxManifestRef, 'domain.mailboxManifestRef');
   validateFileRef(result, value.smtpConfigRef, 'domain.smtpConfigRef');
+  if (stringValue(value.graphConfigRef)) validateFileRef(result, value.graphConfigRef, 'domain.graphConfigRef');
   validateFileRefArray(result, value.notificationTemplateRefs, 'domain.notificationTemplateRefs');
   validateFileRefArray(result, value.autoresponderTemplateRefs, 'domain.autoresponderTemplateRefs');
   scanSecretLike(result, value, 'domain');
@@ -232,6 +239,61 @@ function validateSmtpConfig(value) {
   }
 
   scanSecretLike(result, value, 'smtp');
+  return result;
+}
+
+function validateAppSendingConfig(value) {
+  const result = resultBag();
+  if (!isRecord(value)) {
+    error(result, 'appSending.shape', 'App sending config must be an object.', 'appSending');
+    return result;
+  }
+
+  requiredString(result, value.providerKey, 'appSending.providerKey', 'appSending.providerKey');
+  requiredString(result, value.tenantId, 'appSending.tenantId', 'appSending.tenantId');
+  requiredString(result, value.siteKey, 'appSending.siteKey', 'appSending.siteKey');
+  validateDomain(result, value.domain, 'appSending.domain');
+
+  if (stringValue(value.preferredStrategy) !== 'graphSendMail') {
+    error(result, 'appSending.preferredStrategy', 'Microsoft 365 app sending should prefer graphSendMail.', 'appSending.preferredStrategy');
+  }
+
+  if (!isRecord(value.graphSendMail)) {
+    error(result, 'appSending.graphSendMail', 'graphSendMail config is required.', 'appSending.graphSendMail');
+  } else {
+    [
+      'enabledRef',
+      'tenantIdRef',
+      'clientIdRef',
+      'clientSecretRef',
+      'fromAddressRef',
+      'replyToAddressRef',
+    ].forEach((field) => validateSafeRef(result, value.graphSendMail[field], `appSending.graphSendMail.${field}`));
+    requiredString(result, value.graphSendMail.status, 'appSending.graphSendMail.status', 'appSending.graphSendMail.status');
+  }
+
+  if (!isRecord(value.smtpAuthFallback)) {
+    error(result, 'appSending.smtpAuthFallback', 'smtpAuthFallback config is required.', 'appSending.smtpAuthFallback');
+  } else {
+    [
+      'enabledRef',
+      'hostRef',
+      'portRef',
+      'usernameRef',
+      'passwordRef',
+    ].forEach((field) => validateSafeRef(result, value.smtpAuthFallback[field], `appSending.smtpAuthFallback.${field}`));
+    requiredString(result, value.smtpAuthFallback.status, 'appSending.smtpAuthFallback.status', 'appSending.smtpAuthFallback.status');
+  }
+
+  if (value.dryRunOnly !== true) {
+    error(result, 'appSending.dryRunOnly', 'App sending config must remain dryRunOnly in readiness templates.', 'appSending.dryRunOnly');
+  }
+
+  if (value.realSendingEnabled !== false) {
+    error(result, 'appSending.realSendingEnabled', 'Real sending must remain disabled in readiness templates.', 'appSending.realSendingEnabled');
+  }
+
+  scanSecretLike(result, value, 'appSending');
   return result;
 }
 
