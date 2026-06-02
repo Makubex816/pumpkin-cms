@@ -34,7 +34,10 @@ Use this checklist manually from Outlook and an external mailbox. Do not send em
 
 ## Result
 
-- Status: pending manual verification.
+- Status: passed by manual human verification.
+- Manual outbound test: passed.
+- Manual inbound reply test: passed.
+- Tested mailbox: `contact@iceskatingrinkrentals.com`.
 - Evidence location: use `EMAIL_TEST_RESULTS_TEMPLATE.md`.
 
 Do not include credentials, tokens, private headers containing secrets, or full raw message payloads in this repo.

@@ -62,6 +62,7 @@ bdf073a Add Phase 8C.11C .NET page contract alignment
 - Primary mailbox/user: `contact@iceskatingrinkrentals.com`.
 - DNS host: Bluehost.
 - Verification TXT added outside code: `@ TXT MS=ms13281863`.
+- Manual Outlook access, outbound sending, and inbound reply tests are now confirmed as passed for `contact@iceskatingrinkrentals.com`.
 - Pumpkin real SMTP/Graph sending remains disabled and dry-run-only.
 - MX/DNS production confidence remains pending manual verification.
 
@@ -76,7 +77,7 @@ bdf073a Add Phase 8C.11C .NET page contract alignment
 - confirm license/storage status
 - confirm the user can send and receive
 
-No login is attempted from code.
+No login is attempted from code. Manual Outlook access is now recorded as passed in `EMAIL_TEST_RESULTS_CONFIRMED.md`.
 
 ## Inbound/Outbound Test Checklist Summary
 
@@ -91,7 +92,7 @@ No login is attempted from code.
 - inspect visible SPF/DKIM/DMARC results
 - confirm display name and future reply routing policy
 
-No email is sent from Pumpkin code.
+No email is sent from Pumpkin code. Manual outbound and inbound reply tests are now recorded as passed in `EMAIL_TEST_RESULTS_CONFIRMED.md`.
 
 ## DNS Verification Checklist Summary
 
@@ -163,7 +164,7 @@ CMS/page import impact: no direct CMS change.
 
 ## What Remains Before Public Email Display On Site
 
-- Complete mailbox operational verification.
+- Keep mailbox operational monitoring active.
 - Confirm monitoring ownership for `contact@iceskatingrinkrentals.com`.
 - Approve spam handling and reply expectations.
 - Decide whether to display no email, contact-page-only email, sitewide email, or obfuscated/email link later.
@@ -201,7 +202,7 @@ Manually complete the Outlook access checklist and inbound/outbound email tests 
 
 ## Final Decision
 
-- Microsoft mailbox operational verification: pending manual tests.
+- Microsoft mailbox operational verification: confirmed.
 - Pumpkin real email sending: not ready.
 - Public email display: under review.
 - MX/DNS production confidence: pending manual verification.

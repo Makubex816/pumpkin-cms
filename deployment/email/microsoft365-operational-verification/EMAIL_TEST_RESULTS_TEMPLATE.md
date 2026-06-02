@@ -77,3 +77,12 @@ Use this template to record manual verification results. Do not store passwords,
 - Public email display:
 - MX/DNS production confidence:
 - Next action:
+
+## Privacy And Evidence Rules
+
+- Do not include message content.
+- Do not include external email addresses.
+- Do not include full raw headers.
+- Do not include screenshots.
+- Do not include personal details.
+- Do not include passwords, MFA codes, recovery codes, OAuth secrets, app passwords, SMTP passwords, DKIM private keys, provider tokens, or connection strings.

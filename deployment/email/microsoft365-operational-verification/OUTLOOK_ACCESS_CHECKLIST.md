@@ -23,7 +23,8 @@ Mailbox/user:
 
 ## Result
 
-- Status: pending manual verification.
+- Status: passed by manual human verification.
+- Confirmed mailbox: `contact@iceskatingrinkrentals.com`.
 - Evidence location: use `EMAIL_TEST_RESULTS_TEMPLATE.md` or an approved private operations note.
 
 Do not paste passwords, MFA codes, recovery codes, app passwords, OAuth secrets, or session tokens into this repo.

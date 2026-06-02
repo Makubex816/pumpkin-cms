@@ -7,6 +7,7 @@ Current intended runtime posture:
 - `EMAIL_PROVIDER_KEY=microsoft-365-exchange-online-plan-1`
 - `EMAIL_SEND_MODE=dry-run`
 - Real send disabled.
+- Manual Microsoft mailbox access/send/receive is confirmed, but Pumpkin application sending is separate and remains not configured.
 
 These are expected values or refs only. Do not commit real runtime secrets.
 
@@ -31,6 +32,8 @@ These are expected values or refs only. Do not commit real runtime secrets.
 ## Current Decision
 
 - Pumpkin real email sending: not ready.
+- Pumpkin app send status: dry-run/not-configured.
+- Real SMTP/Graph send status: not-ready.
 - Lead notifications: draft/dry-run only.
 - Autoresponders: draft/dry-run only.
 - Outbound log contract: documented, implementation readiness still required before real send.

@@ -5,6 +5,7 @@ This file records the public email display decision for IceSkatingRinkRentals.co
 ## Current Known State
 
 - `contact@iceskatingrinkrentals.com` exists or is intended as the primary Microsoft 365 mailbox/user.
+- Manual Outlook access, outbound send, and inbound reply tests are confirmed working for `contact@iceskatingrinkrentals.com`.
 - Public email display is still under review.
 - Form-first contact remains recommended.
 - Phone display decision remains separate.
