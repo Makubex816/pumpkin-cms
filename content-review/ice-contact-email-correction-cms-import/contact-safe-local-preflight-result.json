@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "pumpkin-contact-safe-local-preflight-result.v1",
+  "createdAt": "2026-06-02T18:54:56.958Z",
+  "input": "content-review/ice-contact-email-correction-cms-import/contact-cms-import-candidate.json",
+  "nonMutating": true,
+  "route": "/contact",
+  "checks": {
+    "pageShape": "pass",
+    "designSystem": "pass",
+    "defaultForm": "pass",
+    "media": "pass",
+    "tailwindNavigation": "pass",
+    "routeCanonical": "pass",
+    "emailPolicy": "pass",
+    "unsafeHtmlCssFormMediaEmail": "pass"
+  },
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "readiness": {
+    "readyForHumanReview": true,
+    "readyForLocalCmsDraftImport": true,
+    "readyForCmsImport": false,
+    "readyForStaticRegeneration": false,
+    "readyForProductionIndexing": false
+  }
+}

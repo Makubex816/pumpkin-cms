@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "pumpkin-homepage-contact-email-correction-reference-decision.v1",
+  "createdAt": "2026-06-02T18:54:56.958Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "candidateReviewed": "content-review/ice-contact-email-correction-input/extracted/ice-homepage-phase8l-email-corrected/ice-homepage.phase8l.full.json",
+  "currentSafeHomepageCandidate": "content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+  "decision": {
+    "homepageWriteAttempted": false,
+    "homepageWriteApprovedByScope": true,
+    "safeCorrectionDeltaFound": false,
+    "reason": "Current local homepage draft already records the selected mailbox policy safely; uploaded homepage package remains reference-only because it is foreign WordPress-form-shaped, includes public mailto fallbacks, and includes service-area wording outside this run."
+  },
+  "packageSignals": {
+    "selectedMailboxOccurrences": 19,
+    "oldMailboxOccurrences": 0,
+    "mailtoOccurrences": 5,
+    "cf7Occurrences": 33,
+    "containsEastCoastWording": true
+  },
+  "currentSafeCandidateSignals": {
+    "selectedMailboxPolicyPresent": true,
+    "publicMailtoPresent": false,
+    "cf7RuntimePresent": true,
+    "mediaAssetIdsPresent": true
+  },
+  "rollerStatus": "paused"
+}

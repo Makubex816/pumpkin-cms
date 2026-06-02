@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "pumpkin-ice-contact-email-correction-cms-import-manifest.v1",
+  "createdAt": "2026-06-02T18:54:56.958Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "inputPackage": "content-review/ice-contact-email-correction-input/ice-site-contact-email-correction-pack.zip",
+  "outputFolder": "content-review/ice-contact-email-correction-cms-import",
+  "selectedCandidates": {
+    "contact": "content-review/ice-contact-email-correction-cms-import/contact-cms-import-candidate.json",
+    "homepage": "content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+    "homepageDecision": "content-review/ice-contact-email-correction-cms-import/homepage-correction-reference-decision.json"
+  },
+  "adminAuth": {
+    "source": "PRESENT_TEMP_FILE",
+    "validation": "VALID",
+    "tempFileDeleted": true,
+    "jwtPrinted": false
+  },
+  "importPerformed": true,
+  "homepageUpdatePerformed": false,
+  "homepageUpdateSkippedReason": "Skipped homepage CMS write: current local homepage draft already records the selected mailbox policy safely, while the uploaded homepage package is foreign WordPress-form-shaped, includes public mailto fallbacks, and includes service-area wording that remains outside this run.",
+  "contactImportPerformed": true,
+  "contactImportMode": "update-existing-contact",
+  "contactImportEndpoint": "PUT /api/admin/pages/ice-rink-rentals/contact?changeSource=json_import",
+  "checks": {
+    "apiReachable": "pass",
+    "jsonParseValidation": "pass",
+    "contactSafeLocalPreflight": "pass",
+    "contactDotnetContract": "pass",
+    "homepageDotnetContract": "pass",
+    "homepageReferenceImportPreflight": "pass",
+    "pageIntakeNormalizerFixtureValidation": "pass",
+    "designSystemFixtureValidation": "pass",
+    "tailwindNavigationFixtureValidation": "pass",
+    "defaultFormFixtureValidation": "pass",
+    "mediaFixtureValidation": "pass",
+    "unsafeHtmlCssFormMediaEmailScan": "pass",
+    "targetedSecretScan": "pass",
+    "frontendPreview": "pass"
+  },
+  "contactReadbackVerification": {
+    "tenantId": true,
+    "pageSlugContact": true,
+    "workflowDraft": true,
+    "reviewNeedsReview": true,
+    "notPublished": true,
+    "notProductionApproved": true,
+    "selectedMailboxPresent": true,
+    "oldMailboxAbsent": true,
+    "mailtoAbsent": true,
+    "cf7Absent": true,
+    "formBlockPresent": true,
+    "defaultQuoteRequest": true,
+    "staticEndpointRef": true,
+    "leadRecipientRef": true
+  },
+  "untouched": {
+    "serviceAreasUnchanged": true,
+    "themesUnchanged": true
+  },
+  "safety": {
+    "serviceAreasChanged": false,
+    "themesChanged": false,
+    "rollerTouched": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "dnsProviderEmailActionPerformed": false,
+    "protectedConfigRead": false
+  },
+  "blockers": [],
+  "warnings": [],
+  "errors": [],
+  "apiCalls": [
+    "GET /api/admin/pages?tenantId=ice-rink-rentals",
+    "GET /api/admin/pages/ice-rink-rentals/home",
+    "GET /api/admin/pages/ice-rink-rentals/contact",
+    "GET /api/admin/pages/ice-rink-rentals/service-areas",
+    "GET /api/admin/themes/ice-rink-rentals",
+    "PUT /api/admin/pages/ice-rink-rentals/contact?changeSource=json_import",
+    "GET /api/admin/pages/ice-rink-rentals/contact",
+    "GET /api/admin/pages/ice-rink-rentals/home",
+    "GET /api/admin/pages/ice-rink-rentals/service-areas",
+    "GET /api/admin/themes/ice-rink-rentals"
+  ],
+  "rollerStatus": "paused",
+  "frontendPreview": {
+    "/": {
+      "reachable": true,
+      "status": 200,
+      "containsIceSignal": true,
+      "containsContactSignal": true,
+      "url": "http://localhost:3002/"
+    },
+    "/contact": {
+      "reachable": true,
+      "status": 200,
+      "containsIceSignal": true,
+      "containsContactSignal": true,
+      "url": "http://localhost:3002/contact"
+    }
+  }
+}

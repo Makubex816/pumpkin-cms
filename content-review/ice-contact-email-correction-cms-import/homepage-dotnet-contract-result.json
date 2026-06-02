@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "status": 0,
+  "stdoutJson": {
+    "Command": "validate-page",
+    "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-homepage-business-contact-policy\\HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+    "GeneratedAt": "2026-06-02T18:54:57.4126271Z",
+    "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+    "Ok": true,
+    "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "Pages": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+        "PageId": "ice-rink-rentals-home-phase8c14-normalized-candidate",
+        "PageSlug": "home",
+        "TenantId": "ice-rink-rentals",
+        "DotNetDeserialized": true,
+        "RoundTripOk": true,
+        "BlockCount": 10,
+        "BlockTypes": [
+          "Hero",
+          "TrustBar",
+          "CardGrid",
+          "customHtml",
+          "HowItWorks",
+          "customHtml",
+          "customHtml",
+          "FAQ",
+          "formBlock",
+          "PrimaryCTA"
+        ],
+        "ErrorCount": 0,
+        "WarningCount": 5
+      }
+    ],
+    "FormDefinitions": [],
+    "MediaRequirements": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+        "RequirementCount": 6,
+        "BlockerCount": 0
+      }
+    ],
+    "Errors": [],
+    "Warnings": [
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"reviewMetadata\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"mediaRequirements\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"designSystem\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"templatePurpose\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"contentPackageVersion\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json"
+      }
+    ]
+  },
+  "stderr": "",
+  "command": "dotnet tools/dotnet-page-contract/bin/Debug/net10.0/Pumpkin.PageContractTool.dll validate-page --path content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+  "noBuildUsed": true
+}
