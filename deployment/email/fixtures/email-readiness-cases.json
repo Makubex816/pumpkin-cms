@@ -73,16 +73,16 @@
     {
       "name": "valid Microsoft 365 provider config",
       "expect": "ok",
-      "file": "deployment/email/provider-microsoft-365-exchange-online-plan1.template.json"
+      "file": "deployment/email/provider-microsoft-365-exchange-online-plan-1.template.json"
     },
     {
       "name": "invalid Microsoft 365 provider config with literal client secret blocked",
       "expect": "error",
       "value": {
-        "providerKey": "microsoft-365-exchange-online-plan1",
+        "providerKey": "microsoft-365-exchange-online-plan-1",
         "providerType": "hosted-mailbox",
         "displayName": "Microsoft 365 Exchange Online Plan 1",
-        "status": "selected-not-configured",
+        "status": "selected-for-ice",
         "supportedCapabilities": [
           "mailboxHosting",
           "graphSendMail",
@@ -101,7 +101,7 @@
         "notes": [
           "Synthetic invalid Microsoft 365 fixture only."
         ],
-        "decisionStatus": "selected-not-configured",
+        "decisionStatus": "selected-for-ice",
         "blockerNotes": []
       }
     }
@@ -209,7 +209,7 @@
       "expect": "error",
       "value": {
         "schemaVersion": "email-readiness.microsoft-365-app-sending-config.v1",
-        "providerKey": "microsoft-365-exchange-online-plan1",
+        "providerKey": "microsoft-365-exchange-online-plan-1",
         "tenantId": "ice-rink-rentals",
         "siteKey": "ice-rink-rentals",
         "domain": "iceskatingrinkrentals.com",
@@ -289,7 +289,7 @@
         "id": "email-log-id",
         "tenantId": "ice-rink-rentals",
         "siteKey": "ice-rink-rentals",
-        "providerKey": "microsoft-365-exchange-online-plan1",
+        "providerKey": "microsoft-365-exchange-online-plan-1",
         "templateKey": "ice-lead-notification-default",
         "messageType": "lead-notification",
         "relatedEntityType": "FormEntry",
@@ -298,7 +298,7 @@
         "recipientEmailHash": "sha256:placeholder",
         "recipientEmailSummary": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
         "recipientEmail": "",
-        "fromAddressRef": "MICROSOFT_365_NOTIFICATION_FROM_ADDRESS_REF",
+        "fromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
         "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
         "subjectPreview": "New ice rink quote request",
         "status": "dry-run",

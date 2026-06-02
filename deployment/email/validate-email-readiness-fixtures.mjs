@@ -12,7 +12,7 @@ const PROVIDER_KEY_PATTERN = /^[a-z0-9][a-z0-9-]{1,80}$/;
 const DOMAIN_PATTERN = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/;
 const EMAIL_PATTERN = /^[^@\s]+@([^@\s]+)$/;
 const PROVIDER_TYPES = new Set(['hosted-mailbox', 'forwarding-only', 'self-hosted-mail', 'smtp-relay', 'legacy-provider']);
-const PROVIDER_STATUSES = new Set(['candidate', 'selected', 'selected-not-configured', 'configured', 'blocked', 'retired']);
+const PROVIDER_STATUSES = new Set(['candidate', 'selected', 'selected-not-configured', 'selected-for-ice', 'configured', 'blocked', 'retired']);
 const PROVIDER_CAPABILITIES = new Set([
   'mailboxHosting',
   'aliases',
@@ -69,7 +69,7 @@ function validateProviderPresetFile() {
     error(result, 'providerPresets.presets', 'provider-presets.template.json must include presets.', 'provider-presets.presets');
   } else {
     const requiredKeys = new Set([
-      'microsoft-365-exchange-online-plan1',
+      'microsoft-365-exchange-online-plan-1',
       'purelymail',
       'cloudflare-email-routing',
       'migadu',

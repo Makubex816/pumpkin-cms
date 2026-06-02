@@ -11,7 +11,7 @@ This model is a contract for future implementation. No database container is cre
   "id": "email-log-id",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
-  "providerKey": "microsoft-365-exchange-online-plan1",
+  "providerKey": "microsoft-365-exchange-online-plan-1",
   "templateKey": "ice-lead-notification-default",
   "messageType": "lead-notification",
   "relatedEntityType": "FormEntry",
@@ -20,7 +20,7 @@ This model is a contract for future implementation. No database container is cre
   "recipientEmailHash": "sha256-or-provider-safe-hash",
   "recipientEmailSummary": "admin mailbox ref or masked recipient",
   "recipientEmail": "",
-  "fromAddressRef": "MICROSOFT_365_NOTIFICATION_FROM_ADDRESS_REF",
+  "fromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
   "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
   "subjectPreview": "New ice rink quote request: Example...",
   "status": "dry-run",
@@ -45,7 +45,7 @@ This model is a contract for future implementation. No database container is cre
 - `id`: unique log id.
 - `tenantId`: tenant id.
 - `siteKey`: site key.
-- `providerKey`: selected provider key. For Ice this is `microsoft-365-exchange-online-plan1`.
+- `providerKey`: selected provider key. For Ice this is `microsoft-365-exchange-online-plan-1`.
 - `templateKey`: template used.
 - `messageType`: `lead-notification`, `autoresponder`, `system-alert`, or future safe value.
 - `relatedEntityType`: source entity such as `FormEntry`.

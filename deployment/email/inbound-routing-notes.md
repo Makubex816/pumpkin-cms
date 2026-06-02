@@ -2,7 +2,7 @@
 
 Pumpkin's first email phase keeps form leads and mailbox email separate.
 
-Microsoft 365 Exchange Online Plan 1 is selected for Ice, but it is not configured. No users, mailboxes, aliases, DNS records, or inbound ingestion are created in this phase.
+Microsoft 365 Exchange Online Plan 1 is selected for Ice and partially set up outside code. Plan 1 has been purchased, the selected mailbox/user is `contact@iceskatingrinkrentals.com`, and the Microsoft 365 verification TXT record was added at Bluehost. No Microsoft 365 users, mailboxes, aliases, DNS records, or inbound ingestion are created by this repo.
 
 ## Current Architecture
 
@@ -15,7 +15,7 @@ Microsoft 365 Exchange Online Plan 1 is selected for Ice, but it is not configur
 
 ## Exchange Online Receives Direct Email
 
-After Microsoft 365 setup and DNS cutover, direct email to public addresses such as `contact@iceskatingrinkrentals.com` or `quotes@iceskatingrinkrentals.com` should be received by the Exchange Online mailbox or approved alias routing.
+After Microsoft 365 setup and MX cutover, direct email to public addresses such as `contact@iceskatingrinkrentals.com` or `quotes@iceskatingrinkrentals.com` should be received by the Exchange Online mailbox or approved alias routing.
 
 Pumpkin does not ingest mailbox replies in this phase.
 
@@ -28,12 +28,12 @@ Pumpkin does not ingest mailbox replies in this phase.
 
 ## Aliases And Routing
 
-Recommended Ice addresses remain proposed only:
+Current Ice address state:
 
-- `contact@iceskatingrinkrentals.com`
-- `quotes@iceskatingrinkrentals.com`
-- `admin@iceskatingrinkrentals.com`
-- `no-reply@iceskatingrinkrentals.com`
+- `contact@iceskatingrinkrentals.com`: selected primary mailbox/user, setup status in progress.
+- `quotes@iceskatingrinkrentals.com`: proposed alias, pending Microsoft 365 admin setup.
+- `admin@iceskatingrinkrentals.com`: proposed alias or separate mailbox candidate, pending Microsoft 365 admin setup.
+- `no-reply@iceskatingrinkrentals.com`: proposed alias or sending identity candidate, pending Microsoft 365 admin setup.
 
 Aliases that route to the same human/admin mailbox can be created later after Microsoft 365 setup is approved. This readiness layer does not create them.
 

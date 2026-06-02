@@ -2,29 +2,32 @@
 
 Pumpkin can support hosted mailbox providers, forwarding-only providers, self-hosted mail, SMTP relays, and legacy providers without hard-coding credentials or DNS values.
 
-For IceSkatingRinkRentals.com, the selected provider is now Microsoft 365 Exchange Online Plan 1.
+For IceSkatingRinkRentals.com, the selected provider is Microsoft 365 Exchange Online Plan 1.
 
-- Selected provider key: `microsoft-365-exchange-online-plan1`
-- Selected provider status: `selected-not-configured`
+- Selected provider key: `microsoft-365-exchange-online-plan-1`
+- Selected provider status: `selected`
 - Provider type: `hosted-mailbox`
+- DNS host: Bluehost
+- Domain verification status: `txt-record-added`
+- Primary mailbox/user: `contact@iceskatingrinkrentals.com`
 - Application email strategy: Microsoft 365-compatible, Graph/OAuth-ready first, SMTP AUTH fallback only if explicitly enabled later
-- Ready for provider setup: yes
+- Ready for provider decision: yes
 - Ready for real SMTP/Graph sending: no
 - Ready for MX cutover: no
 - Ready for production DNS changes: no
 
 RollerRinkRentals.com remains paused.
 
-The canonical placeholder-safe comparison presets live in `provider-presets.template.json`. The selected Microsoft 365 profile lives in `provider-microsoft-365-exchange-online-plan1.template.json`.
+The canonical placeholder-safe comparison presets live in `provider-presets.template.json`. The selected Microsoft 365 profile lives in `provider-microsoft-365-exchange-online-plan-1.template.json`.
 
 ## Provider Configuration Contract
 
 Each provider profile supports:
 
-- `providerKey`: stable lowercase key such as `microsoft-365-exchange-online-plan1`, `purelymail`, `cloudflare-email-routing`, or `custom`.
+- `providerKey`: stable lowercase key such as `microsoft-365-exchange-online-plan-1`, `purelymail`, `cloudflare-email-routing`, or `custom`.
 - `providerType`: `hosted-mailbox`, `forwarding-only`, `self-hosted-mail`, `smtp-relay`, or `legacy-provider`.
 - `displayName`: human-readable provider label.
-- `status`: `candidate`, `selected`, `selected-not-configured`, `configured`, `blocked`, or `retired`.
+- `status`: `candidate`, `selected`, `selected-not-configured`, `selected-for-ice`, `configured`, `blocked`, or `retired`.
 - `supportedCapabilities`: subset of `mailboxHosting`, `aliases`, `forwarding`, `imap`, `smtpSubmission`, `graphSendMail`, `webmail`, `outboundRelay`, `inboundRouting`, `dkim`, `dmarc`, `spf`, `migration`, and `catchAll`.
 - `capabilities`: optional provider-specific capability detail map.
 - `configRefs`: object of non-secret refs only.
@@ -38,9 +41,9 @@ Never store real SMTP host credentials, mailbox passwords, provider API tokens, 
 
 ## Selected Provider For Ice
 
-| Provider key | Type | Status | Main fit | Important note |
+| Provider key | Type | Status | Main fit | Current setup note |
 | --- | --- | --- | --- | --- |
-| `microsoft-365-exchange-online-plan1` | hosted-mailbox | selected-not-configured | Hosted Exchange mailbox, Outlook/webmail, aliases, inbound routing, SPF/DKIM/DMARC, Microsoft Graph SendMail path | Per-user mailbox licensing. Not configured. No DNS, users, mailboxes, aliases, credentials, or test sends are created in this phase. |
+| `microsoft-365-exchange-online-plan-1` | hosted-mailbox | selected-for-ice | Hosted Exchange mailbox, Outlook/webmail, aliases, inbound routing, SPF/DKIM/DMARC, Microsoft Graph SendMail path | Plan purchased. Bluehost TXT verification record `@ TXT MS=ms13281863` added outside code. MX/SPF/DKIM/DMARC and real sending are not ready. |
 
 Microsoft Graph/OAuth is the preferred future application email path for Pumpkin notifications and autoresponders. SMTP AUTH is an optional fallback only if explicitly verified and enabled later.
 
@@ -66,7 +69,8 @@ These providers remain reference alternatives only and are not the selected Ice 
 ## Decision Rules
 
 - Pumpkin may track many `candidate` profiles at once.
-- Ice has one selected provider: `microsoft-365-exchange-online-plan1`.
+- Ice has one selected provider: `microsoft-365-exchange-online-plan-1`.
+- `selected-for-ice` means the provider is chosen for Ice and has partial setup state documented.
 - `selected-not-configured` means the provider is chosen, but account setup, domain verification, mailbox creation, DNS, secure runtime secrets, and tests are not complete.
 - `configured` means DNS, secure secrets, Graph/SMTP setup, mailbox manifest, and tests have been completed outside the repo.
 - `blocked` means the provider cannot satisfy the required launch capability without another service.
@@ -78,7 +82,7 @@ Good:
 
 ```json
 {
-  "providerKey": "microsoft-365-exchange-online-plan1",
+  "providerKey": "microsoft-365-exchange-online-plan-1",
   "clientSecretRef": "MICROSOFT_365_CLIENT_SECRET_REF",
   "smtpPasswordRef": "MICROSOFT_365_SMTP_PASSWORD_REF"
 }
@@ -94,4 +98,4 @@ Bad:
 }
 ```
 
-Refs identify where a value will be supplied later by secure runtime configuration. They are not the values themselves.
+Refs identify where a value will be supplied later by secure runtime configuration. They are not the values themselves. The Microsoft verification TXT value `MS=ms13281863` is not a credential and may be documented as a public DNS setup value.

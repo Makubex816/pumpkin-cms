@@ -1,6 +1,6 @@
 {
   "schemaVersion": "email-readiness.provider-presets.v1",
-  "purpose": "Provider-agnostic profiles for Pumpkin email readiness. Microsoft 365 Exchange Online Plan 1 is selected-not-configured for Ice; all profiles contain refs and checklist metadata only and store no credentials.",
+  "purpose": "Provider-agnostic profiles for Pumpkin email readiness. Microsoft 365 Exchange Online Plan 1 is selected-for-ice and partially set up through Bluehost TXT verification; all profiles contain refs and checklist metadata only and store no credentials.",
   "allowedProviderTypes": [
     "hosted-mailbox",
     "forwarding-only",
@@ -12,6 +12,7 @@
     "candidate",
     "selected",
     "selected-not-configured",
+    "selected-for-ice",
     "configured",
     "blocked",
     "retired"
@@ -34,10 +35,21 @@
   ],
   "presets": [
     {
-      "providerKey": "microsoft-365-exchange-online-plan1",
+      "providerKey": "microsoft-365-exchange-online-plan-1",
       "providerType": "hosted-mailbox",
       "displayName": "Microsoft 365 Exchange Online Plan 1",
-      "status": "selected-not-configured",
+      "status": "selected-for-ice",
+      "providerStatus": "selected",
+      "dnsHost": "Bluehost",
+      "domainVerificationStatus": "txt-record-added",
+      "domainVerificationRecord": {
+        "type": "TXT",
+        "hostName": "@",
+        "txtValue": "MS=ms13281863",
+        "ttl": "3600 / Bluehost 4 Hours",
+        "status": "added-at-bluehost",
+        "safeToDocument": true
+      },
       "supportedCapabilities": [
         "mailboxHosting",
         "aliases",
@@ -53,38 +65,59 @@
         "spf",
         "migration"
       ],
+      "capabilities": {
+        "smtpSubmission": "subject-to-microsoft-tenant-policy",
+        "outboundRelay": "through-approved-microsoft-send-path"
+      },
       "configRefs": {
+        "emailProviderKeyRef": "EMAIL_PROVIDER_KEY",
+        "emailSendModeRef": "EMAIL_SEND_MODE",
         "providerStatusRef": "MICROSOFT_365_PROVIDER_STATUS",
         "tenantIdRef": "MICROSOFT_365_TENANT_ID_REF",
         "clientIdRef": "MICROSOFT_365_CLIENT_ID_REF",
         "clientSecretRef": "MICROSOFT_365_CLIENT_SECRET_REF",
+        "fromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
+        "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
         "graphSendEnabledRef": "MICROSOFT_365_GRAPH_SEND_ENABLED_REF",
         "smtpAuthEnabledRef": "MICROSOFT_365_SMTP_AUTH_ENABLED_REF",
-        "smtpProfileRef": "MICROSOFT_365_SMTP_PROFILE_REF"
+        "smtpHostRef": "MICROSOFT_365_SMTP_HOST_REF",
+        "smtpPortRef": "MICROSOFT_365_SMTP_PORT_REF",
+        "smtpUsernameRef": "MICROSOFT_365_SMTP_USERNAME_REF",
+        "smtpPasswordRef": "MICROSOFT_365_SMTP_PASSWORD_REF"
       },
       "requiredDnsRecords": [
-        { "recordRef": "MICROSOFT_365_DOMAIN_VERIFICATION_TXT_REF", "type": "TXT", "status": "pending-admin-center-value" },
+        { "recordRef": "MICROSOFT_365_DOMAIN_VERIFICATION_TXT_REF", "type": "TXT", "status": "added-at-bluehost", "hostName": "@", "safePublicValue": "MS=ms13281863", "ttl": "3600 / Bluehost 4 Hours" },
         { "recordRef": "MICROSOFT_365_MX_RECORD_REF", "type": "MX", "status": "pending-admin-center-value" },
         { "recordRef": "MICROSOFT_365_SPF_TXT_REF", "type": "TXT", "status": "pending-dns-review" },
-        { "recordRef": "MICROSOFT_365_DKIM_CNAME_RECORDS_REF", "type": "CNAME", "status": "pending-admin-center-value" },
-        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "pending-policy-decision" }
+        { "recordRef": "MICROSOFT_365_DKIM_CNAME_OR_TXT_RECORDS_REF", "type": "CNAME_OR_TXT", "status": "pending-admin-center-value" },
+        { "recordRef": "DOMAIN_DMARC_TXT_REF", "type": "TXT", "status": "pending-policy-decision" },
+        { "recordRef": "MICROSOFT_365_AUTODISCOVER_CNAME_REF", "type": "CNAME", "status": "pending-if-required" }
       ],
       "requiredSecretsRefs": [
         "MICROSOFT_365_TENANT_ID_REF",
         "MICROSOFT_365_CLIENT_ID_REF",
         "MICROSOFT_365_CLIENT_SECRET_REF",
+        "MICROSOFT_365_FROM_ADDRESS_REF",
+        "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
+        "MICROSOFT_365_GRAPH_SEND_ENABLED_REF",
+        "MICROSOFT_365_SMTP_AUTH_ENABLED_REF",
+        "MICROSOFT_365_SMTP_HOST_REF",
+        "MICROSOFT_365_SMTP_PORT_REF",
         "MICROSOFT_365_SMTP_USERNAME_REF",
         "MICROSOFT_365_SMTP_PASSWORD_REF"
       ],
       "notes": [
-        "Selected for Ice but not configured.",
+        "Selected for Ice and partially set up outside code.",
+        "Microsoft 365 Exchange Online Plan 1 has been purchased.",
+        "The Microsoft 365 verification TXT record @ TXT MS=ms13281863 was added at Bluehost outside this repo.",
+        "The selected mailbox/user is contact@iceskatingrinkrentals.com.",
         "Graph/OAuth is the preferred future app-sending path.",
         "SMTP AUTH is a fallback only if explicitly enabled and verified later.",
         "Do not create Microsoft 365 resources or store credentials in repo."
       ],
-      "decisionStatus": "selected-not-configured-for-ice-launch",
+      "decisionStatus": "selected-for-ice-partial-provider-setup",
       "blockerNotes": [
-        "Microsoft 365 purchase/setup, domain verification, mailbox creation, DNS records, Graph app registration, and secure runtime config remain incomplete."
+        "MX, SPF, DKIM, DMARC, any required Autodiscover record, Graph app registration, and secure runtime config remain incomplete."
       ]
     },
     {

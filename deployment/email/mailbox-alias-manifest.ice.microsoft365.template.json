@@ -3,8 +3,10 @@
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
   "domain": "iceskatingrinkrentals.com",
-  "providerKey": "microsoft-365-exchange-online-plan1",
-  "status": "selected-not-configured",
+  "providerKey": "microsoft-365-exchange-online-plan-1",
+  "providerStatus": "selected",
+  "dnsHost": "Bluehost",
+  "status": "partial-provider-setup",
   "catchAll": {
     "policy": "disabled-by-default",
     "status": "not-created",
@@ -18,24 +20,24 @@
     {
       "address": "contact@iceskatingrinkrentals.com",
       "type": "primary licensed mailbox candidate",
-      "status": "proposed",
-      "providerSetupStatus": "pending-provider-setup",
-      "creationStatus": "not-created",
+      "status": "in-progress",
+      "providerSetupStatus": "in-progress",
+      "creationStatus": "planned/created-in-microsoft-365-admin-center",
       "role": "primary-customer-contact-inbox",
       "displayName": "Ice Skating Rink Rentals Contact",
       "purpose": "Primary customer contact inbox and first licensed mailbox candidate for the Ice domain.",
       "inboundHandling": "yes",
       "outboundAllowed": true,
       "outboundPolicy": "yes-after-provider-setup-and-sending-identity-verification",
-      "publicDisplayAllowed": "undecided",
+      "publicDisplayAllowed": "under-review",
       "usedByForms": true,
       "usedByLeadNotifications": true,
       "usedByAutoresponders": false,
       "migrationRequired": "no-known-existing-mailbox",
       "notes": [
-        "Not created.",
-        "Candidate for the first paid Exchange Online Plan 1 mailbox.",
-        "Public display remains undecided."
+        "Selected mailbox/user from the real-world Microsoft 365 setup state.",
+        "Use in-progress wording until mailbox creation is verified in Microsoft 365 admin center.",
+        "Form-first remains recommended and public email display remains under review."
       ]
     }
   ],
@@ -44,7 +46,7 @@
       "address": "quotes@iceskatingrinkrentals.com",
       "type": "alias candidate",
       "status": "proposed",
-      "providerSetupStatus": "pending-provider-setup",
+      "providerSetupStatus": "pending-microsoft-365-admin-setup",
       "creationStatus": "not-created",
       "role": "quote-request-alias",
       "displayName": "Ice Skating Rink Rentals Quotes",
@@ -65,7 +67,7 @@
       "address": "admin@iceskatingrinkrentals.com",
       "type": "alias or separate mailbox candidate",
       "status": "proposed",
-      "providerSetupStatus": "pending-provider-setup",
+      "providerSetupStatus": "pending-microsoft-365-admin-setup",
       "creationStatus": "not-created",
       "role": "internal-admin-address",
       "displayName": "Ice Skating Rink Rentals Admin",
@@ -86,7 +88,7 @@
       "address": "no-reply@iceskatingrinkrentals.com",
       "type": "alias or sending identity candidate",
       "status": "proposed",
-      "providerSetupStatus": "pending-provider-setup",
+      "providerSetupStatus": "pending-microsoft-365-admin-setup",
       "creationStatus": "not-created",
       "role": "autoresponder-no-reply-sender",
       "displayName": "Ice Skating Rink Rentals No Reply",
@@ -107,8 +109,10 @@
   ],
   "forwards": [],
   "notes": [
-    "This manifest proposes addresses only. It does not create Microsoft 365 users, mailboxes, aliases, groups, forwards, or sending identities.",
+    "This manifest documents the selected primary mailbox/user and proposed aliases only. It does not create Microsoft 365 users, mailboxes, aliases, groups, forwards, or sending identities.",
     "Aliases may not behave like independent sending identities unless configured and approved in Exchange Online.",
+    "Form-first remains recommended. Email provider setup does not automatically mean email should be public on the website.",
+    "Public email display is still under review and should not be forced into CMS page content by this readiness update.",
     "Pumpkin Lead Inbox remains the source of truth for form leads.",
     "Email notifications are secondary delivery."
   ]

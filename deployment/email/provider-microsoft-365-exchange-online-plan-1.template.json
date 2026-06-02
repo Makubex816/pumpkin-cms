@@ -1,9 +1,10 @@
 {
-  "schemaVersion": "email-readiness.provider-config.v1",
-  "providerKey": "microsoft-365-exchange-online-plan1",
+  "schemaVersion": "email-readiness.provider-config.v2",
+  "providerKey": "microsoft-365-exchange-online-plan-1",
   "providerType": "hosted-mailbox",
   "displayName": "Microsoft 365 Exchange Online Plan 1",
-  "status": "selected-not-configured",
+  "status": "selected-for-ice",
+  "providerStatus": "selected",
   "selectedFor": [
     {
       "tenantId": "ice-rink-rentals",
@@ -11,6 +12,19 @@
       "domain": "iceskatingrinkrentals.com"
     }
   ],
+  "dnsHost": "Bluehost",
+  "domainVerification": {
+    "status": "txt-record-added",
+    "hostName": "@",
+    "txtValue": "MS=ms13281863",
+    "ttl": "3600 / Bluehost 4 Hours",
+    "addedAtDnsHost": "Bluehost",
+    "safeToDocument": true,
+    "notes": [
+      "This Microsoft 365 domain verification TXT value is not a credential.",
+      "Documented from user-provided setup state only; no DNS lookup or DNS change was performed by code."
+    ]
+  },
   "supportedCapabilities": [
     "mailboxHosting",
     "aliases",
@@ -31,10 +45,10 @@
     "aliases": true,
     "forwarding": true,
     "imap": "provider-supported",
-    "smtpSubmission": "possible-requires-policy-config-verification",
+    "smtpSubmission": "subject-to-microsoft-tenant-policy",
     "graphSendMail": "preferred-future-app-sending-path",
     "webmail": true,
-    "outboundRelay": true,
+    "outboundRelay": "through-approved-microsoft-send-path",
     "inboundRouting": true,
     "dkim": true,
     "dmarc": true,
@@ -43,14 +57,16 @@
     "catchAll": "not-assumed"
   },
   "configRefs": {
+    "emailProviderKeyRef": "EMAIL_PROVIDER_KEY",
+    "emailSendModeRef": "EMAIL_SEND_MODE",
     "providerStatusRef": "MICROSOFT_365_PROVIDER_STATUS",
     "tenantIdRef": "MICROSOFT_365_TENANT_ID_REF",
     "clientIdRef": "MICROSOFT_365_CLIENT_ID_REF",
     "clientSecretRef": "MICROSOFT_365_CLIENT_SECRET_REF",
     "fromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
     "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
-    "notificationFromAddressRef": "MICROSOFT_365_NOTIFICATION_FROM_ADDRESS_REF",
-    "autoresponderFromAddressRef": "MICROSOFT_365_AUTORESPONDER_FROM_ADDRESS_REF",
+    "notificationFromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
+    "autoresponderFromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
     "graphSendEnabledRef": "MICROSOFT_365_GRAPH_SEND_ENABLED_REF",
     "smtpAuthEnabledRef": "MICROSOFT_365_SMTP_AUTH_ENABLED_REF",
     "smtpHostRef": "MICROSOFT_365_SMTP_HOST_REF",
@@ -62,7 +78,10 @@
     {
       "recordRef": "MICROSOFT_365_DOMAIN_VERIFICATION_TXT_REF",
       "type": "TXT",
-      "status": "pending-admin-center-value"
+      "status": "added-at-bluehost",
+      "hostName": "@",
+      "safePublicValue": "MS=ms13281863",
+      "ttl": "3600 / Bluehost 4 Hours"
     },
     {
       "recordRef": "MICROSOFT_365_MX_RECORD_REF",
@@ -75,8 +94,8 @@
       "status": "pending-dns-review"
     },
     {
-      "recordRef": "MICROSOFT_365_DKIM_CNAME_RECORDS_REF",
-      "type": "CNAME",
+      "recordRef": "MICROSOFT_365_DKIM_CNAME_OR_TXT_RECORDS_REF",
+      "type": "CNAME_OR_TXT",
       "status": "pending-admin-center-value"
     },
     {
@@ -87,31 +106,50 @@
     {
       "recordRef": "MICROSOFT_365_AUTODISCOVER_CNAME_REF",
       "type": "CNAME",
-      "status": "pending-admin-center-value"
+      "status": "pending-if-required"
     }
   ],
   "requiredSecretsRefs": [
     "MICROSOFT_365_TENANT_ID_REF",
     "MICROSOFT_365_CLIENT_ID_REF",
     "MICROSOFT_365_CLIENT_SECRET_REF",
+    "MICROSOFT_365_FROM_ADDRESS_REF",
+    "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
+    "MICROSOFT_365_GRAPH_SEND_ENABLED_REF",
+    "MICROSOFT_365_SMTP_AUTH_ENABLED_REF",
+    "MICROSOFT_365_SMTP_HOST_REF",
+    "MICROSOFT_365_SMTP_PORT_REF",
     "MICROSOFT_365_SMTP_USERNAME_REF",
     "MICROSOFT_365_SMTP_PASSWORD_REF"
   ],
-  "decisionStatus": "selected-not-configured-for-ice-launch",
+  "decisionStatus": "selected-for-ice-partial-provider-setup",
+  "setupStatus": {
+    "planPurchased": true,
+    "dnsHost": "Bluehost",
+    "domainVerificationStatus": "txt-record-added",
+    "mailboxSetupStatus": "in-progress",
+    "primaryMailbox": "contact@iceskatingrinkrentals.com",
+    "realSmtpSendingStatus": "not-ready",
+    "mxCutoverStatus": "not-ready",
+    "productionDnsStatus": "not-ready"
+  },
   "blockerNotes": [
-    "Microsoft 365 account, domain verification, mailbox setup, DNS records, Graph app registration, and secure runtime config are not complete.",
-    "SMTP AUTH is only a fallback and must be explicitly verified or enabled before use.",
+    "MX, SPF, DKIM, DMARC, and any required Autodiscover records are not ready for cutover.",
+    "Graph app registration and secure runtime refs are not configured.",
+    "SMTP AUTH remains optional and disabled unless explicitly enabled later.",
     "No real sending is allowed until dry-run validation, DNS authentication, and user approval are complete."
   ],
   "notes": [
     "Placeholder-safe Microsoft 365 Exchange Online Plan 1 profile for IceSkatingRinkRentals.com.",
+    "Microsoft 365 Plan 1 has been purchased and Bluehost verification TXT was added by the user outside code.",
     "Graph/OAuth is the preferred future Pumpkin app-sending path.",
     "No real tenant id, client id, client secret, mailbox password, app password, refresh token, access token, DKIM private key, DNS secret, or SMTP credential is stored here.",
     "No Microsoft 365 users, mailboxes, aliases, DNS records, or provider resources are created by this file.",
     "RollerRinkRentals.com remains paused."
   ],
   "readiness": {
-    "readyForProviderSetup": true,
+    "readyForProviderDecision": true,
+    "domainVerificationTxtAdded": true,
     "readyForRealSmtpOrGraphSending": false,
     "readyForMxCutover": false,
     "readyForProductionDnsChanges": false

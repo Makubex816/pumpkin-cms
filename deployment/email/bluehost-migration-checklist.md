@@ -2,7 +2,7 @@
 
 Use this checklist when moving a managed domain from Bluehost or another legacy provider to a selected provider.
 
-IceSkatingRinkRentals.com currently has no known email setup yet, so migration is easier for Ice. Microsoft 365 Exchange Online Plan 1 is selected for Ice, but no provider setup, mailbox creation, DNS change, MX cutover, or email migration happens in this phase.
+IceSkatingRinkRentals.com currently has no known prior email setup, so no IMAP mailbox migration is required unless a mailbox is later discovered. Microsoft 365 Exchange Online Plan 1 is selected for Ice, the verification TXT record was added at Bluehost outside code, and no MX cutover or email migration happens in this phase.
 
 Other managed domains may continue using Bluehost or another existing email provider. Do not change other domains' MX records unless a separate domain-specific migration is explicitly approved.
 
@@ -25,6 +25,7 @@ Other managed domains may continue using Bluehost or another existing email prov
 - [ ] Keep old provider active during overlap.
 - [ ] Do not cancel Bluehost or legacy email during DNS transition.
 - [ ] Do not change other domains' MX records during the Ice Microsoft 365 setup.
+- [ ] For Ice, document that `@ TXT MS=ms13281863` was added at Bluehost outside code.
 - [ ] Record login/admin access requirements without committing credentials.
 
 ## Prepare Selected Provider
@@ -69,7 +70,7 @@ Other managed domains may continue using Bluehost or another existing email prov
 ## Pumpkin-Specific Checks
 
 - [ ] Domain settings point to the selected provider key.
-- [ ] For Ice, selected provider key is `microsoft-365-exchange-online-plan1`.
+- [ ] For Ice, selected provider key is `microsoft-365-exchange-online-plan-1`.
 - [ ] SMTP config remains refs only in repo.
 - [ ] Real Graph/OAuth and SMTP secrets live only in approved secure runtime config.
 - [ ] Lead notification template is reviewed.

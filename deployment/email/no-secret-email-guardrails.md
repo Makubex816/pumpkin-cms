@@ -64,6 +64,8 @@ Use these names as blocked value patterns when scanning changed files:
 
 Pattern names may appear in guardrail docs and validator code. Values must not.
 
+The Microsoft 365 verification TXT value `MS=ms13281863` is not a credential and may be documented as a public DNS setup value.
+
 ## Validator Behavior
 
 `validate-email-readiness-fixtures.mjs` blocks:

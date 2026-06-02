@@ -8,12 +8,12 @@
   "dryRunOnly": true,
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
-  "providerKey": "microsoft-365-exchange-online-plan1",
-  "providerStatus": "selected-not-configured",
+  "providerKey": "microsoft-365-exchange-online-plan-1",
+  "providerStatus": "selected",
   "formKey": "default-quote-request",
   "leadType": "quote-request",
   "recipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
-  "fromAddressRef": "MICROSOFT_365_NOTIFICATION_FROM_ADDRESS_REF",
+  "fromAddressRef": "MICROSOFT_365_FROM_ADDRESS_REF",
   "replyToAddressRef": "MICROSOFT_365_REPLY_TO_ADDRESS_REF",
   "replyToStrategy": "submitter_email_when_valid_else_default_reply_to_ref",
   "subjectTemplate": "New ice rink quote request: {{lead.fullName}} - {{lead.eventCity}}, {{lead.eventState}}",
@@ -56,6 +56,7 @@
   ],
   "notes": [
     "Draft, disabled, and dry-run-only until Microsoft 365 setup and explicit sending approval.",
+    "The selected primary mailbox/user is contact@iceskatingrinkrentals.com, represented only through refs here.",
     "Graph/OAuth is the preferred future app-sending path; SMTP AUTH is fallback only if enabled later.",
     "Pumpkin Lead Inbox remains the source of truth for submitted forms."
   ]

@@ -1,6 +1,10 @@
 {
   "schemaVersion": "email-readiness.microsoft-365-app-sending-config.v1",
-  "providerKey": "microsoft-365-exchange-online-plan1",
+  "providerKey": "microsoft-365-exchange-online-plan-1",
+  "emailProviderKeyRef": "EMAIL_PROVIDER_KEY",
+  "emailProviderKeyExpectedValue": "microsoft-365-exchange-online-plan-1",
+  "emailSendModeRef": "EMAIL_SEND_MODE",
+  "emailSendModeExpectedValue": "dry-run",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
   "domain": "iceskatingrinkrentals.com",
@@ -35,10 +39,13 @@
       "Do not store mailbox passwords, app passwords, or SMTP passwords in repo."
     ]
   },
+  "strategy": "prefer-microsoft-365-approved-modern-send-integration-where-practical",
   "dryRunOnly": true,
   "realSendingEnabled": false,
   "notes": [
     "No real email is sent by this template.",
+    "EMAIL_PROVIDER_KEY should resolve to microsoft-365-exchange-online-plan-1 outside the repo.",
+    "EMAIL_SEND_MODE should remain dry-run until explicit sending approval.",
     "No Microsoft 365 resources, app registrations, secrets, users, mailboxes, or DNS records are created by this file.",
     "RollerRinkRentals.com remains paused."
   ]
