@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "ice-homepage-local-cms-preview-manifest.v1",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "createdAt": "2026-06-02T13:33:00Z",
+  "scope": "homepage-only-local-cms-preview",
+  "selectedHomepageCandidate": "content-review/ice-homepage-media-upload-selection/proposed-homepage.media-selected-candidate.json",
+  "fallbackCandidates": [
+    "content-review/ice-homepage-phase8c14b-normalized/proposed-homepage.normalizer-verified.json",
+    "content-review/ice-homepage-phase8c14-validated/proposed-homepage.normalized-candidate.json"
+  ],
+  "localServices": {
+    "pumpkinApi": {
+      "port": 5064,
+      "status": "listening",
+      "safeHttpStatus": 200
+    },
+    "admin": {
+      "port": 3000,
+      "status": "listening",
+      "safeHttpStatus": 200
+    },
+    "adminAlternate": {
+      "port": 3001,
+      "status": "no-listener"
+    },
+    "icePublicFrontend": {
+      "port": 3002,
+      "status": "listening",
+      "homeStatus": 200,
+      "contactStatus": 200,
+      "serviceAreasStatus": 404
+    },
+    "staticFormEndpoint": {
+      "port": 7072,
+      "status": "no-listener"
+    }
+  },
+  "candidateValidation": {
+    "jsonParse": "passed",
+    "dotNetPageContract": "passed-not-cms-import-ready",
+    "dotNetPackageContract": "passed-not-cms-import-ready",
+    "designSystem": "passed",
+    "defaultForm": "passed",
+    "media": "passed-with-expected-warning-coverage",
+    "tailwindNavigation": "passed",
+    "pageIntakeNormalizer": "passed",
+    "unsafeScan": "passed",
+    "placeholderAudit": "passed-safe-unresolved-media",
+    "routeCanonicalAudit": "passed",
+    "formMappingAudit": "passed"
+  },
+  "candidateFacts": {
+    "pageSlug": "home",
+    "route": "/",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/",
+    "isPublished": false,
+    "workflowStatus": "normalizer_verified_review_only",
+    "blockCount": 10,
+    "formBlockCount": 1,
+    "formKey": "default-quote-request",
+    "mediaRequirementCount": 6,
+    "unresolvedMediaRequirementCount": 6,
+    "realMediaAssetIdsBound": 0
+  },
+  "adminImportExportPreflight": {
+    "status": "not-run",
+    "reason": "No standalone non-secret CLI preflight was available; authenticated admin UI/session would be required.",
+    "blocking": true
+  },
+  "importResult": {
+    "homepageImportPerformed": false,
+    "reason": "Admin import/export preflight did not run and CMS-import readiness blockers remain.",
+    "cmsPageRecordsChanged": false,
+    "cmsThemeRecordsChanged": false,
+    "mediaAssetRecordsChanged": false,
+    "contactPageChanged": false,
+    "serviceAreasPageChanged": false,
+    "productionApproved": false
+  },
+  "localPreview": {
+    "currentHomeUrl": "http://localhost:3002/",
+    "newCandidateVisible": false,
+    "reason": "Candidate was not imported into local CMS and no file-preview route was used."
+  },
+  "noGoConfirmations": {
+    "staticPackagesRegenerated": false,
+    "deploymentPerformed": false,
+    "dnsChanged": false,
+    "emailSent": false,
+    "protectedConfigTouched": false,
+    "rollerAdvanced": false
+  },
+  "rollerStatus": "paused"
+}
+
