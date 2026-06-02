@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "pumpkin.ice.homepage.mediaasset-bound.manifest.v1",
+  "generatedAt": "2026-06-02T14:15:29.198Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "route": "/",
+  "sourceCandidate": "content-review/ice-homepage-media-upload-selection/proposed-homepage.media-selected-candidate.json",
+  "boundCandidate": "content-review/ice-homepage-mediaasset-bound/proposed-homepage.mediaasset-bound-candidate.json",
+  "boundPackage": "content-review/ice-homepage-mediaasset-bound/homepage-mediaasset-bound-package.json",
+  "bindings": "content-review/ice-homepage-mediaasset-bound/homepage-mediaasset-bindings.json",
+  "importPreflightResult": "content-review/ice-homepage-mediaasset-bound/homepage-mediaasset-bound-import-preflight-result.json",
+  "files": [
+    "content-review/ice-homepage-mediaasset-bound/README.md",
+    "content-review/ice-homepage-mediaasset-bound/MEDIA_UPLOAD_RESULT.md",
+    "content-review/ice-homepage-mediaasset-bound/MEDIA_ASSET_RECORDS.md",
+    "content-review/ice-homepage-mediaasset-bound/MEDIA_BINDING_RESULT.md",
+    "content-review/ice-homepage-mediaasset-bound/HOMEPAGE_MEDIAASSET_BOUND_DECISION.md",
+    "content-review/ice-homepage-mediaasset-bound/homepage-mediaasset-bindings.json",
+    "content-review/ice-homepage-mediaasset-bound/proposed-homepage.mediaasset-bound-candidate.json",
+    "content-review/ice-homepage-mediaasset-bound/homepage-mediaasset-bound-package.json",
+    "content-review/ice-homepage-mediaasset-bound/homepage-mediaasset-bound-import-preflight-result.json",
+    "content-review/ice-homepage-mediaasset-bound/manifest.json"
+  ],
+  "uploadResult": {
+    "apiReachable": true,
+    "adminAuthStatus": "MISSING",
+    "rawMediaFolderExists": false,
+    "uploadAttempted": false,
+    "mediaAssetRecordsCreated": 0,
+    "mediaAssetRecordsReused": 0,
+    "realMediaAssetIdsBound": 0,
+    "blocker": "Missing raw media input folder and missing safe admin JWT auth."
+  },
+  "safety": {
+    "cmsPageRecordsChanged": false,
+    "cmsThemeRecordsChanged": false,
+    "contactOrServiceAreaPagesChanged": false,
+    "staticPackagesRegenerated": false,
+    "azureUpload": false,
+    "cloudflareOrDnsChanged": false,
+    "microsoft365Changed": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "rawMediaFilesStaged": false,
+    "rollerStatus": "paused"
+  },
+  "readiness": {
+    "readyForHumanReview": true,
+    "readyForLocalCmsDraftImport": false,
+    "readyForCmsImport": false,
+    "readyForStaticRegeneration": false,
+    "readyForProductionIndexing": false
+  }
+}
+

@@ -1,0 +1,1210 @@
+{
+  "schemaVersion": "homepage-mediaasset-bound-package.v1",
+  "phase": "homepage-mediaasset-creation-binding",
+  "createdAt": "2026-06-02T14:15:29.198Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "sourceCandidate": "content-review/ice-homepage-media-upload-selection/proposed-homepage.media-selected-candidate.json",
+  "pageFiles": [
+    {
+      "file": "proposed-homepage.mediaasset-bound-candidate.json",
+      "pageSlug": "home",
+      "tenantId": "ice-rink-rentals",
+      "status": "mediaasset-bound-candidate-blocked-no-real-assets"
+    }
+  ],
+  "pages": [
+    {
+      "path": "proposed-homepage.mediaasset-bound-candidate.json",
+      "pageSlug": "home",
+      "tenantId": "ice-rink-rentals",
+      "status": "mediaasset-bound-candidate-blocked-no-real-assets"
+    }
+  ],
+  "pageCandidatePath": "content-review/ice-homepage-mediaasset-bound/proposed-homepage.mediaasset-bound-candidate.json",
+  "bindingsPath": "content-review/ice-homepage-mediaasset-bound/homepage-mediaasset-bindings.json",
+  "mediaAssetCreation": {
+    "uploadAttempted": false,
+    "mediaAssetRecordsCreated": 0,
+    "mediaAssetRecordsReused": 0,
+    "realMediaAssetIdsBound": 0,
+    "blocker": "Missing raw media input folder and missing safe admin JWT auth.",
+    "cmsPageRecordsChanged": false,
+    "cmsThemeRecordsChanged": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false
+  },
+  "page": {
+    "schemaVersion": "pumpkin-page-intake-normalizer-verified.v1",
+    "contentPackageVersion": "phase8c14b.normalizer-verified.v1",
+    "templatePurpose": "page_intake_normalizer_verified_before_cms_import",
+    "id": "ice-rink-rentals-home-phase8c14-normalized-candidate",
+    "PageId": "ice-rink-rentals-home-phase8c14-normalized-candidate",
+    "tenantId": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "route": "/",
+    "path": "/",
+    "slug": "home",
+    "pageSlug": "home",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/",
+    "PageVersion": 3,
+    "Layout": "default",
+    "reviewMetadata": {
+      "phase": "8C.14B",
+      "status": "normalizer_verified_not_cms_import_ready",
+      "approvedForCmsImport": false,
+      "approvedForProduction": false,
+      "sourcePhase": "8C.14",
+      "sourceFile": "ice-homepage.phase8k.full.json",
+      "notes": [
+        "Verified by the reusable page intake normalizer.",
+        "Output is validated through the .NET Page/block contract before CMS import can be considered.",
+        "RollerRinkRentals.com remains paused."
+      ],
+      "sourceInputType": "pumpkin-page-json",
+      "mediaUploadSelectionStatus": {
+        "phase": "homepage-media-upload-selection",
+        "updatedAt": "2026-05-28T01:18:51.154Z",
+        "sourceFilesFound": 5,
+        "expectedFiles": 5,
+        "uploadAttempted": false,
+        "mediaAssetRecordsCreated": false,
+        "realMediaAssetIdsBound": 0,
+        "status": "blocked-missing-safe-admin-auth",
+        "notes": "Official PNGs are present and audited; real MediaAsset creation is blocked because authenticated admin upload is unavailable without protected secrets."
+      }
+    },
+    "MetaData": {
+      "category": "rentals",
+      "product": "portable ice rink",
+      "keyword": "portable ice skating rink rentals",
+      "pageType": "home",
+      "title": "Portable Ice Skating Rink Rentals | IceSkatingRinkRentals.com",
+      "description": "Rent a portable ice skating rink for private events, corporate activations, holiday festivals, schools, shopping centers, and event route planning.",
+      "createdAt": "2026-05-26T00:00:00Z",
+      "updatedAt": "2026-05-27T00:00:00Z",
+      "author": "Ice Skating Rink Rentals Team",
+      "language": "en-us",
+      "market": "us"
+    },
+    "searchData": {
+      "state": "",
+      "city": "",
+      "metro": "",
+      "county": "",
+      "keyword": "portable ice skating rink rentals",
+      "focusKeyword": "portable ice skating rink rentals",
+      "secondaryKeywords": [
+        "mobile ice skating rink rental",
+        "ice rink rentals",
+        "holiday ice rink rental",
+        "corporate ice rink rental",
+        "synthetic ice rink rental",
+        "event ice skating rink rental"
+      ],
+      "tags": [
+        "portable ice rink rentals",
+        "temporary ice rink rentals",
+        "winter event rentals",
+        "holiday activations"
+      ],
+      "contentSummary": "Normalized homepage candidate from Phase 8C.14 proposed package covering portable ice rink rental use cases, setup planning, FAQs, media slots, and quote form intent.",
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "customHtml",
+        "HowItWorks",
+        "customHtml",
+        "customHtml",
+        "FAQ",
+        "formBlock",
+        "PrimaryCTA"
+      ]
+    },
+    "template": {
+      "templateKey": "home",
+      "templateVersion": "8C.14-normalized",
+      "layoutVariant": "design-system-rich-homepage-with-formBlock",
+      "contentModelVersion": "2026-05",
+      "reviewPackage": "ice-homepage-phase8c14-validated"
+    },
+    "workflow": {
+      "status": "normalizer_verified_review_only",
+      "reviewStatus": "needs_human_review",
+      "approvedForPublish": false,
+      "approvedBy": "",
+      "approvedAt": "",
+      "lastEditedBy": "codex_phase8c14b_page_intake_normalizer",
+      "lastEditedAt": "2026-05-27T00:00:00Z",
+      "approvedForImport": false,
+      "approvedForProduction": false
+    },
+    "staticPublishing": {
+      "staticEligible": false,
+      "needsRebuild": true,
+      "lastSnapshotAt": "",
+      "lastStaticBuildAt": "",
+      "lastDeployedAt": "",
+      "contentHash": "",
+      "lastPublishedContentHash": "",
+      "deploymentStatus": "review_only_not_imported_not_deployed"
+    },
+    "seo": {
+      "metaTitle": "Portable Ice Skating Rink Rentals | IceSkatingRinkRentals.com",
+      "metaDescription": "Rent a portable ice skating rink for private events, corporate activations, holiday festivals, schools, shopping centers, and event route planning.",
+      "keywords": [
+        "mobile ice skating rink rental",
+        "ice rink rentals",
+        "holiday ice rink rental",
+        "corporate ice rink rental",
+        "synthetic ice rink rental",
+        "event ice skating rink rental"
+      ],
+      "focusKeyword": "portable ice skating rink rentals",
+      "secondaryKeywords": [
+        "mobile ice skating rink rental",
+        "ice rink rentals",
+        "holiday ice rink rental",
+        "corporate ice rink rental",
+        "synthetic ice rink rental",
+        "event ice skating rink rental"
+      ],
+      "robots": "noindex, nofollow",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/",
+      "alternateUrls": [],
+      "schemaRecommendations": [
+        "WebSite schema after brand identity approval",
+        "Organization or LocalBusiness schema only after legal/business display name and public contact policy are approved",
+        "Service schema after service-area and primary-region wording are approved",
+        "FAQ schema only for visible homepage FAQs after copy approval"
+      ],
+      "structuredData": [],
+      "openGraph": {
+        "og:title": "Portable Ice Skating Rink Rentals | IceSkatingRinkRentals.com",
+        "og:description": "Rent a portable ice skating rink for private events, corporate activations, holiday festivals, schools, shopping centers, and event route planning.",
+        "og:type": "website",
+        "og:url": "https://iceskatingrinkrentals.com/",
+        "og:image": "",
+        "og:image:alt": "Portable ice skating rink rental for a winter event",
+        "og:site_name": "IceSkatingRinkRentals.com",
+        "og:locale": "en_US",
+        "og:image:requirementRef": "homepage-open-graph-image"
+      },
+      "twitterCard": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Portable Ice Rink Rentals for Events | Ice Skating Rink Rentals",
+        "twitter:description": "Plan a portable ice rink rental for seasonal events, schools, municipalities, venues, corporate programs, and holiday activations.",
+        "twitter:image": "",
+        "twitter:site": "",
+        "twitter:creator": ""
+      }
+    },
+    "openGraph": {
+      "title": "Portable Ice Skating Rink Rentals | IceSkatingRinkRentals.com",
+      "description": "Rent a portable ice skating rink for private events, corporate activations, holiday festivals, schools, shopping centers, and event route planning.",
+      "url": "https://iceskatingrinkrentals.com/",
+      "image": null,
+      "imageAlt": "Portable ice skating rink rental for a winter event",
+      "imageRequirementRef": "homepage-open-graph-image"
+    },
+    "media": {
+      "featuredImage": {
+        "requiredMediaSlotId": "homepage-hero-image",
+        "mediaRequirementRef": "homepage-hero-image",
+        "mediaAssetId": null,
+        "assetId": null,
+        "publicUrl": null,
+        "url": null,
+        "alt": "Guests skating on a festive outdoor ice rink surrounded by holiday lights at a winter festival",
+        "title": "Winter Festival Ice Rink Rental",
+        "caption": "A portable ice rink creates a festive centerpiece for winter events and holiday celebrations.",
+        "source": "official_homepage_media_input_pending_mediaasset_upload",
+        "licenseStatus": "owned",
+        "usageStatus": "needs_review",
+        "usageType": "hero",
+        "status": "needs-upload",
+        "blocker": true,
+        "width": 1672,
+        "height": 941,
+        "focalPointX": null,
+        "focalPointY": null,
+        "decorative": false,
+        "notes": "Official raw media is present locally, but no real MediaAsset id or public URL is bound because authenticated MediaAsset creation was not available.",
+        "description": "Outdoor winter festival scene with guests skating on a portable ice rink surrounded by warm holiday lights and event activity.",
+        "checksum": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+        "originalFileName": "WinterFestIceRinkRentals.png",
+        "safeFileName": "winter-fest-ice-rink-rentals-324b1b89777d.png",
+        "tags": [
+          "homepage-hero",
+          "winter-festival",
+          "holiday-event",
+          "portable-ice-rink",
+          "community-event"
+        ]
+      },
+      "heroImage": {
+        "requiredMediaSlotId": "homepage-hero-image",
+        "mediaRequirementRef": "homepage-hero-image",
+        "mediaAssetId": null,
+        "assetId": null,
+        "publicUrl": null,
+        "url": null,
+        "alt": "Guests skating on a festive outdoor ice rink surrounded by holiday lights at a winter festival",
+        "title": "Winter Festival Ice Rink Rental",
+        "caption": "A portable ice rink creates a festive centerpiece for winter events and holiday celebrations.",
+        "source": "official_homepage_media_input_pending_mediaasset_upload",
+        "licenseStatus": "owned",
+        "usageStatus": "needs_review",
+        "usageType": "hero",
+        "status": "needs-upload",
+        "blocker": true,
+        "width": 1672,
+        "height": 941,
+        "focalPointX": null,
+        "focalPointY": null,
+        "decorative": false,
+        "notes": "Official raw media is present locally, but no real MediaAsset id or public URL is bound because authenticated MediaAsset creation was not available.",
+        "description": "Outdoor winter festival scene with guests skating on a portable ice rink surrounded by warm holiday lights and event activity.",
+        "checksum": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+        "originalFileName": "WinterFestIceRinkRentals.png",
+        "safeFileName": "winter-fest-ice-rink-rentals-324b1b89777d.png",
+        "tags": [
+          "homepage-hero",
+          "winter-festival",
+          "holiday-event",
+          "portable-ice-rink",
+          "community-event"
+        ]
+      },
+      "localImage": {
+        "requiredMediaSlotId": "homepage-corporate-event-image",
+        "mediaRequirementRef": "homepage-corporate-event-image",
+        "mediaAssetId": null,
+        "assetId": null,
+        "publicUrl": null,
+        "url": null,
+        "alt": "Corporate guests skating and networking around a temporary outdoor ice rink at an evening event",
+        "title": "Corporate Ice Rink Rental Event",
+        "caption": "Portable ice rink rental setup for corporate events, holiday parties, and branded winter activations.",
+        "source": "official_homepage_media_input_pending_mediaasset_upload",
+        "licenseStatus": "owned",
+        "usageStatus": "needs_review",
+        "usageType": "card",
+        "status": "needs-upload",
+        "blocker": true,
+        "width": 1672,
+        "height": 941,
+        "focalPointX": null,
+        "focalPointY": null,
+        "decorative": false,
+        "notes": "Official raw media is present locally, but no real MediaAsset id or public URL is bound because authenticated MediaAsset creation was not available.",
+        "description": "Evening corporate event with a temporary ice rink, professional guests, warm lighting, and outdoor reception atmosphere.",
+        "checksum": "18e985ca59bd67b3f1d74a1a3841a273081b8f8a9ddb97d67dc6ff233e559a2d",
+        "originalFileName": "CorporateIceRinkRentalEvent.png",
+        "safeFileName": "corporate-ice-rink-rental-event-18e985ca59bd.png",
+        "tags": [
+          "corporate-event",
+          "event-activation",
+          "portable-ice-rink",
+          "winter-event",
+          "company-party"
+        ]
+      },
+      "closingImage": {
+        "requiredMediaSlotId": "homepage-holiday-shopping-center-image",
+        "mediaRequirementRef": "homepage-holiday-shopping-center-image",
+        "mediaAssetId": null,
+        "assetId": null,
+        "publicUrl": null,
+        "url": null,
+        "alt": "Families and children skating on a portable ice rink at an outdoor holiday shopping center",
+        "title": "Holiday Ice Rink Rental",
+        "caption": "Temporary ice rink attraction for holiday shopping centers, seasonal markets, and family-friendly events.",
+        "source": "official_homepage_media_input_pending_mediaasset_upload",
+        "licenseStatus": "owned",
+        "usageStatus": "needs_review",
+        "usageType": "card",
+        "status": "needs-upload",
+        "blocker": true,
+        "width": 1672,
+        "height": 941,
+        "focalPointX": null,
+        "focalPointY": null,
+        "decorative": false,
+        "notes": "Official raw media is present locally, but no real MediaAsset id or public URL is bound because authenticated MediaAsset creation was not available.",
+        "description": "Holiday ice rink rental at an outdoor retail center with families, children, seasonal lighting, and festive activity.",
+        "checksum": "973ce769137773ecb68c439a192ae7bb96f7be2365a591c651c3fcc746c0f853",
+        "originalFileName": "HolidayIceRink.png",
+        "safeFileName": "holiday-ice-rink-973ce7691377.png",
+        "tags": [
+          "holiday-rink",
+          "shopping-center",
+          "family-event",
+          "seasonal-attraction",
+          "portable-ice-rink"
+        ]
+      },
+      "openGraphImage": {
+        "requiredMediaSlotId": "homepage-open-graph-image",
+        "mediaRequirementRef": "homepage-open-graph-image",
+        "mediaAssetId": null,
+        "assetId": null,
+        "publicUrl": null,
+        "url": null,
+        "alt": "Guests skating on a festive portable ice rink at a winter event",
+        "title": "Winter Festival Ice Rink Rental Open Graph Image",
+        "caption": "Open Graph candidate derived from the official winter festival ice rink rental image.",
+        "source": "official_homepage_media_input_pending_mediaasset_upload",
+        "licenseStatus": "owned",
+        "usageStatus": "needs_review",
+        "usageType": "og-image",
+        "status": "needs-upload",
+        "blocker": true,
+        "width": 1672,
+        "height": 941,
+        "focalPointX": null,
+        "focalPointY": null,
+        "decorative": false,
+        "notes": "Official raw media is present locally, but no real MediaAsset id or public URL is bound because authenticated MediaAsset creation was not available.",
+        "description": "Outdoor winter festival scene with guests skating on a portable ice rink surrounded by warm holiday lights and event activity.",
+        "checksum": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+        "originalFileName": "WinterFestIceRinkRentals.png",
+        "safeFileName": "winter-fest-ice-rink-rentals-324b1b89777d.png",
+        "tags": [
+          "homepage-hero",
+          "winter-festival",
+          "holiday-event",
+          "portable-ice-rink",
+          "community-event"
+        ]
+      }
+    },
+    "designSystem": {
+      "version": "phase8c5-phase8c14-homepage-normalized",
+      "tenantId": "ice-rink-rentals",
+      "domain": "iceskatingrinkrentals.com",
+      "themeTokenReferences": [
+        "--cms-colors-primary",
+        "--cms-colors-accent",
+        "--cms-colors-ink",
+        "--cms-spacing-section",
+        "--cms-container-widths-wide",
+        "--cms-border-radius-card",
+        "--cms-shadows-card"
+      ],
+      "approvedClasses": [
+        "cms-copy",
+        "cms-layout",
+        "cms-panel",
+        "cms-eyebrow",
+        "section-premium-hero",
+        "section-split-feature",
+        "section-trust-band",
+        "section-event-card-grid",
+        "section-table-comparison",
+        "section-final-cta",
+        "ice-hero-grid",
+        "ice-proof-row",
+        "ice-proof-item",
+        "ice-event-grid",
+        "ice-event-card",
+        "ice-check-list",
+        "ice-process-note",
+        "ice-service-teaser",
+        "ice-cta-link"
+      ],
+      "sectionVariantsUsed": [
+        "premium-hero",
+        "trust-band",
+        "event-card-grid",
+        "split-feature",
+        "table-comparison",
+        "faq-panel",
+        "quote-form-panel",
+        "final-cta"
+      ],
+      "customHtmlProfilesUsed": [
+        "layout-rich",
+        "marketing-rich",
+        "table-rich"
+      ],
+      "sectionScopedCss": [
+        "home-proposed-setup",
+        "home-proposed-use-cases",
+        "home-service-areas-teaser"
+      ],
+      "approvedClassesUsed": [
+        "cms-copy",
+        "cms-layout",
+        "cms-eyebrow",
+        "cms-panel",
+        "ice-check-list",
+        "ice-event-grid",
+        "ice-event-card",
+        "ice-service-teaser",
+        "ice-cta-link",
+        "ice-planning-table",
+        "ice-quote-grid",
+        "ice-response-note"
+      ],
+      "tailwindDependencyStatus": "semantic_classes_only_no_arbitrary_tailwind_utilities"
+    },
+    "ContentData": {
+      "ContentBlocks": [
+        {
+          "type": "Hero",
+          "content": {
+            "type": "Main",
+            "headline": "Portable ice skating rink rentals for unforgettable events",
+            "subheadline": "Bring a polished skating attraction to private parties, winter festivals, schools, municipalities, shopping centers, resorts, brand activations, and corporate gatherings. We help plan the rink footprint, guest flow, support items, add-ons, and event details around your surface and schedule.",
+            "backgroundImage": "",
+            "backgroundImageAltText": "",
+            "mainImage": "",
+            "mainImageAltText": "Portable ice skating rink at a festive evening winter event with guests skating under string lights",
+            "mainImageRequirementRef": "homepage-hero-image",
+            "buttonText": "Request a Quote",
+            "buttonLink": "#quote-form",
+            "secondaryButtonText": "View Service Areas",
+            "secondaryButtonLink": "/service-areas"
+          }
+        },
+        {
+          "type": "TrustBar",
+          "content": {
+            "items": [
+              {
+                "icon": "Sparkles",
+                "title": "Holiday Events",
+                "text": "Festivals & markets",
+                "alt": "Holiday Events"
+              },
+              {
+                "icon": "Sparkles",
+                "title": "Corporate Activations",
+                "text": "Brand & VIP experiences",
+                "alt": "Corporate Activations"
+              },
+              {
+                "icon": "Sparkles",
+                "title": "Portable Setup",
+                "text": "Built around your venue",
+                "alt": "Portable Setup"
+              }
+            ]
+          }
+        },
+        {
+          "type": "CardGrid",
+          "content": {
+            "title": "Where our mobile rinks fit best",
+            "subtitle": "A portable rink can become the centerpiece of a single-day celebration, a multi-day holiday attraction, or a branded destination experience.",
+            "layout": "grid-3",
+            "cards": [
+              {
+                "title": "Holiday festivals & winter markets",
+                "description": "Create a must-visit seasonal attraction with a real skating experience, strong photo moments, and built-in crowd energy.",
+                "image": "",
+                "imageRequirementRef": "homepage-hero-image",
+                "image-alt": "Holiday festival ice rink with guests skating under warm lights",
+                "icon": "Sparkles",
+                "link": "/service-areas",
+                "alt": "Holiday festival ice rink with guests skating under warm lights"
+              },
+              {
+                "title": "Corporate events & brand activations",
+                "description": "Reward employees, entertain clients, launch a product, or create a premium winter experience that feels memorable and shareable.",
+                "image": "",
+                "imageRequirementRef": "homepage-corporate-event-image",
+                "image-alt": "Corporate event with a portable ice rink in an outdoor plaza",
+                "icon": "Building2",
+                "link": "/contact",
+                "alt": "Corporate event with a portable ice rink in an outdoor plaza"
+              },
+              {
+                "title": "Schools, towns & community events",
+                "description": "Bring families together with a safe, organized attraction that supports school traditions, community pride, and winter programming.",
+                "image": "",
+                "imageRequirementRef": "homepage-holiday-shopping-center-image",
+                "image-alt": "Community and retail ice rink event with families skating",
+                "icon": "Users",
+                "link": "/contact",
+                "alt": "Community and retail ice rink event with families skating"
+              }
+            ]
+          }
+        },
+        {
+          "type": "customHtml",
+          "content": {
+            "id": "home-proposed-setup",
+            "label": "Rental options and setup planning",
+            "html": "<section class=\"cms-layout ice-quote-grid\"><div><p class=\"cms-eyebrow\">Rental planning</p><h2>Built around your event, venue, and guest flow</h2><p>Every rental starts with the practical details: where the rink will sit, how guests will enter and exit, where skates and benches belong, how the event will be staffed, and which upgrades help the experience feel complete.</p><p><a class=\"ice-cta-link\" href=\"/contact\">Request planning guidance</a></p></div><aside class=\"cms-panel\"><h3>Planning topics</h3><ul class=\"ice-check-list\"><li>Rink-size planning for your available surface and attendance</li><li>Indoor or outdoor venue review based on surface, access, and event needs</li><li>Skates, skating aids, benches, and guest-support conversations</li><li>Lighting, music, signage, snow-effect, and holiday atmosphere options</li><li>Staffing and operations planning for smoother guest flow</li><li>Package support for events that need additional rental items</li></ul></aside></section>",
+            "container": "wide",
+            "allowedProfile": "layout-rich",
+            "sectionVariant": "split-feature",
+            "css": "[data-section-id='home-proposed-setup'] .ice-quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem; background: var(--cms-backgrounds-frost); border-radius: var(--cms-border-radius-card); }\n[data-section-id='home-proposed-setup'] .cms-eyebrow { color: var(--cms-colors-primary); font-weight: 700; }\n[data-section-id='home-proposed-setup'] .ice-check-list { display: grid; gap: 0.5rem; padding-left: 1rem; }",
+            "sanitize": true,
+            "review": {
+              "status": "needs_human_review"
+            },
+            "validation": {
+              "expected": "no blocking errors"
+            }
+          }
+        },
+        {
+          "type": "HowItWorks",
+          "content": {
+            "title": "How the mobile rink rental process works",
+            "steps": [
+              {
+                "title": "Tell us about your event",
+                "text": "Share your date, city, venue type, available surface, expected attendance, and the kind of experience you want to create.",
+                "image": "",
+                "alt": "Tell us about your event"
+              },
+              {
+                "title": "We recommend the right setup",
+                "text": "We review rink size, access, guest flow, rental window, support equipment, and add-on options that fit your venue.",
+                "image": "",
+                "alt": "We recommend the right setup"
+              },
+              {
+                "title": "We coordinate the details",
+                "text": "Delivery timing, setup needs, staffing conversations, skates, benches, lighting, music, and other details are planned before event day.",
+                "image": "",
+                "alt": "We coordinate the details"
+              },
+              {
+                "title": "You host a standout attraction",
+                "text": "Guests arrive to a polished skating experience built to keep the line moving, photos happening, and the event feeling special.",
+                "image": "",
+                "alt": "You host a standout attraction"
+              }
+            ]
+          }
+        },
+        {
+          "type": "customHtml",
+          "content": {
+            "id": "home-proposed-use-cases",
+            "label": "Corporate and public-space use cases",
+            "html": "<section class=\"cms-copy\"><h2>Event settings the proposed package supports</h2><div class=\"ice-event-grid\"><article class=\"ice-event-card\"><h3>Perfect for corporate and VIP experiences</h3><p>A mobile rink gives companies, venues, sponsors, and brands a high-impact attraction that feels premium, interactive, and different from the typical event setup.</p></article><article class=\"ice-event-card\"><h3>Designed for public spaces and holiday foot traffic</h3><p>For shopping centers, mixed-use developments, resorts, hotels, downtown districts, and community destinations, an ice rink can anchor the season and give visitors a reason to stay longer.</p></article><article class=\"ice-event-card\"><h3>Service-area review</h3><p>Availability and region wording still need approval before this content can be treated as final customer-facing launch copy.</p></article></div></section>",
+            "container": "wide",
+            "allowedProfile": "marketing-rich",
+            "sectionVariant": "event-card-grid",
+            "css": "[data-section-id='home-proposed-use-cases'] .ice-event-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }\n[data-section-id='home-proposed-use-cases'] .ice-event-card { padding: 1.25rem; background: var(--cms-colors-surface); border: 1px solid var(--cms-colors-border); border-radius: var(--cms-border-radius-card); }",
+            "sanitize": true,
+            "review": {
+              "status": "needs_human_review"
+            },
+            "validation": {
+              "expected": "no blocking errors"
+            }
+          }
+        },
+        {
+          "type": "customHtml",
+          "content": {
+            "id": "home-service-areas-teaser",
+            "label": "Service areas teaser",
+            "html": "<section class=\"cms-copy ice-service-teaser\"><h2>Serving event routes across the East Coast</h2><p>Use the Service Areas page to understand the coverage-review model. Final primary service area and primary region wording remain unresolved until approved.</p><p><a class=\"ice-cta-link\" href=\"/service-areas\">View service area planning</a></p></section>",
+            "container": "standard",
+            "allowedProfile": "marketing-rich",
+            "sectionVariant": "split-feature",
+            "css": "[data-section-id='home-service-areas-teaser'] .ice-service-teaser { padding: 1.5rem; background: var(--cms-colors-surface); border: 1px solid var(--cms-colors-border); border-radius: var(--cms-border-radius-card); }",
+            "sanitize": true,
+            "review": {
+              "status": "needs_human_review"
+            },
+            "validation": {
+              "expected": "no blocking errors"
+            }
+          }
+        },
+        {
+          "type": "FAQ",
+          "content": {
+            "title": "Frequently asked questions",
+            "subtitle": "A few clear answers before the quote request.",
+            "layout": "accordion",
+            "items": [
+              {
+                "question": "Can the rink be set up outdoors?",
+                "answer": "Yes. Portable rink setups can be reviewed for outdoor use when the surface, access, weather plan, and event layout are appropriate."
+              },
+              {
+                "question": "Do you offer skates and support equipment?",
+                "answer": "Yes. Skate sizing, skating aids, benches, support items, and guest-flow needs can be included in the quote conversation."
+              },
+              {
+                "question": "Is this a good fit for corporate events?",
+                "answer": "Absolutely. Mobile rinks work well for employee appreciation, client entertainment, brand activations, holiday parties, and VIP experiences."
+              },
+              {
+                "question": "How do I get a quote?",
+                "answer": "Send your event date, city, venue, estimated attendance, available space, and rental goals. We will review availability and recommend the right setup."
+              }
+            ]
+          }
+        },
+        {
+          "type": "formBlock",
+          "content": {
+            "id": "homepage-quote-form",
+            "label": "Homepage ice quote request form",
+            "formKey": "default-quote-request",
+            "variant": "quote-form-panel",
+            "heading": "Request an ice skating rink rental quote",
+            "intro": "Share the date, city, venue, guest count, and event goals. We will help review the best rink setup, support items, and availability for your event.",
+            "submitLabel": "Submit Quote Request",
+            "successMessage": "Thank you. Your ice skating rink rental request has been sent. We will review your event details and follow up shortly.",
+            "errorMessage": "Unable to submit this quote request right now. Please try again.",
+            "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+            "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+            "sourcePage": "/",
+            "review": {
+              "status": "needs_human_review",
+              "notes": "Mapped from CF7 intent into Pumpkin formBlock/default-quote-request. No CF7 shortcode or raw form markup is preserved."
+            },
+            "validation": {
+              "expected": "visible default-quote-request formBlock with non-secret endpoint and lead recipient refs"
+            }
+          }
+        },
+        {
+          "type": "PrimaryCTA",
+          "content": {
+            "title": "Ready to bring ice skating to your event?",
+            "description": "Tell us where and when you want to host your rink, and we will help you map out the best setup, support items, and rental path.",
+            "buttonText": "Request a Quote",
+            "buttonLink": "#quote-form",
+            "secondaryText": "Checking coverage first?",
+            "secondaryLinkText": "View Service Areas",
+            "secondaryLink": "/service-areas",
+            "backgroundImage": "",
+            "mainImage": "",
+            "alt": "Portable ice rink rental quote request"
+          }
+        }
+      ]
+    },
+    "contentRelationships": {
+      "isHub": true,
+      "hubPageSlug": "",
+      "topicCluster": "portable-ice-skating-rink-rentals",
+      "relatedHubs": [],
+      "spokePriority": 0
+    },
+    "linking": {
+      "hubPage": "",
+      "parentPage": "",
+      "relatedPages": [
+        "/contact",
+        "/service-areas"
+      ],
+      "requiredLinks": [
+        "/contact",
+        "/service-areas"
+      ],
+      "breadcrumbTrail": [
+        "/"
+      ]
+    },
+    "schemaControls": {
+      "enableWebPageSchema": true,
+      "enableBreadcrumbSchema": false,
+      "enableFAQSchema": true,
+      "enableServiceSchema": false,
+      "schemaWarnings": [
+        "Service schema should remain disabled until final service-area language and business identity are approved."
+      ]
+    },
+    "serviceSchema": {
+      "serviceName": "Portable Ice Rink Rentals",
+      "serviceType": "Event Rental Service",
+      "serviceCategory": "Portable rink rental",
+      "productsOffered": [
+        {
+          "name": "Portable ice rink rental planning",
+          "type": "Service",
+          "description": "Review-only service description for portable ice rink rental planning and quote intake.",
+          "url": "https://iceskatingrinkrentals.com/",
+          "category": "event rentals",
+          "isPrimary": true,
+          "displayOrder": 1
+        }
+      ],
+      "areasServed": [],
+      "audience": [
+        "event planners",
+        "municipal recreation teams",
+        "school and campus event teams",
+        "venue operators",
+        "corporate event producers"
+      ],
+      "eventTypes": [
+        "holiday activation",
+        "school event",
+        "municipal event",
+        "corporate event",
+        "private celebration"
+      ],
+      "schemaOutputMode": "disabled_until_review",
+      "publicSchemaEnabled": false,
+      "notes": "Service schema remains disabled until service-area wording and media/business identity are approved."
+    },
+    "fulfillment": {
+      "fulfillmentStatus": "research_only_until_provider_confirmed",
+      "primaryPartnerAvailable": false,
+      "manualReviewRequired": true,
+      "providerResearchCompleted": false,
+      "topProviderCount": 0,
+      "leadRoutingMode": "manual_review_then_provider_match",
+      "publicDisclosureRequired": true,
+      "confirmedServiceStates": [],
+      "extendedStatesPossible": []
+    },
+    "googleAds": {
+      "eligible": false,
+      "finalUrl": "",
+      "landingPageType": "home",
+      "campaignTheme": "portable_ice_rink_rentals",
+      "conversionGoals": [
+        "quote_cta_click"
+      ],
+      "notes": "Not marked ads-ready during review-only template phase."
+    },
+    "formConfig": {
+      "formId": "ice-homepage-quote-routing",
+      "formType": "quote_request",
+      "conversionGoal": "homepage_quote_form_submit",
+      "routingMode": "manual_review_then_provider_match",
+      "domainRoutingKey": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+      "recipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+      "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+      "replyToMode": "submitter_email",
+      "emailSubjectTemplate": "Portable ice rink rental inquiry",
+      "thankYouUrl": "/",
+      "thankYouMessage": "Thanks. Your ice rink rental request has been received for review.",
+      "consentRequired": true,
+      "requiresConsent": true,
+      "spamProtectionEnabled": true,
+      "spamProtectionRequired": true,
+      "mailtoFallbackEnabled": false,
+      "normalizedFieldMap": {
+        "name": "name",
+        "email": "email",
+        "phone": "phone",
+        "eventLocation": "eventLocation",
+        "eventDate": "eventDate",
+        "message": "message"
+      }
+    },
+    "leadCapture": {
+      "formId": "ice-homepage-quote-routing",
+      "formType": "quote_request",
+      "conversionGoal": "quote_cta_click",
+      "routingMode": "manual_review_then_provider_match",
+      "recipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+      "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+      "requiresConsent": true,
+      "spamProtectionRequired": true
+    },
+    "domainRouting": {
+      "domain": "iceskatingrinkrentals.com",
+      "brandName": "IceSkatingRinkRentals.com",
+      "publicContactEmail": "",
+      "quoteRequestEmail": "",
+      "supportEmail": "",
+      "replyToEmail": "",
+      "fromName": "IceSkatingRinkRentals.com",
+      "fromEmail": "",
+      "contactPageSlug": "contact",
+      "primaryPhone": "",
+      "mailtoLinksEnabled": false,
+      "defaultLeadRoutingMode": "manual_review_then_provider_match",
+      "defaultRecipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+      "staticFormEndpointKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+      "emailProvider": "not_configured_in_template",
+      "emailProviderStatus": "requires_review",
+      "mxStatus": "not_checked_in_template",
+      "spfStatus": "not_checked_in_template",
+      "dkimStatus": "not_checked_in_template",
+      "dmarcStatus": "not_checked_in_template",
+      "notes": "Proposed package contained public phone/email values, but they remain unapproved and were not applied to final domain routing."
+    },
+    "pageQuality": {
+      "status": "needs_human_review",
+      "score": null,
+      "uniqueValueReason": "Homepage gives event planners a clear portable rink rental planning path, safe service-area language, and direct quote routing without unsupported city or provider claims.",
+      "buyerIntent": "portable ice rink rental planning and quote request",
+      "landingPageType": "home",
+      "launchNotes": "Phase 8C.14 normalized homepage candidate requires media upload/selection, business-value approval, human approval, and admin import/export preflight before CMS import.",
+      "warnings": [
+        "Placeholders remain unresolved.",
+        "Media assets are not selected.",
+        "Service-area claims are intentionally not finalized.",
+        "Reviewer approval is required before CMS import."
+      ],
+      "blockingIssues": [
+        "Not approved for CMS import.",
+        "Not approved for production publishing."
+      ],
+      "lastCheckedAt": "2026-05-26T00:00:00Z"
+    },
+    "isPublished": false,
+    "publishedAt": null,
+    "includeInSitemap": false,
+    "previousSlugs": [],
+    "redirects": [],
+    "sitemapPriority": 1,
+    "sitemapChangeFrequency": "weekly",
+    "importCandidateStatus": {
+      "readyForHumanReview": true,
+      "readyForCmsImport": false,
+      "readyForProductionIndexing": false,
+      "blockersBeforeCmsImport": [
+        "approved MediaAsset records are still required",
+        "public phone/email remain unresolved or must be intentionally omitted",
+        "primary service-area wording remains unresolved",
+        "human approvals are not recorded",
+        "admin import/export preflight has not been run against this candidate"
+      ],
+      "blockersBeforeProduction": [
+        "CMS import approval and write are not complete",
+        "fresh static regeneration is required after any CMS write",
+        "Azure/default-host staging validation is required",
+        "form behavior, schema, sitemap, robots, and canonical output must be verified"
+      ]
+    },
+    "mediaRequirements": [
+      {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "iceskatingrinkrentals.com",
+        "requiredMediaSlotId": "site-logo-primary",
+        "intendedUsageType": "logo",
+        "page": "global-theme-homepage-reference",
+        "sectionId": "site-header-footer-branding",
+        "sourceFile": "content-review/ice-homepage-media-input/IceSkatingRinkRentalsLogo.png",
+        "optimizedSourceFile": null,
+        "recommendedAspectRatio": "wide logo crop",
+        "recommendedDimensions": "1448x1086 official source",
+        "requiredAltText": "Ice Rink Rentals logo with ice skate and snowflake graphic",
+        "suggestedFilename": "ice-skating-rink-rentals-logo-0d1f970f0411.png",
+        "requiredBeforeCmsImport": true,
+        "requiredBeforeStaging": true,
+        "requiredBeforeProduction": true,
+        "notes": "Raw official media file is present and validated locally. Bind only after a real tenant-scoped MediaAsset record exists.",
+        "mediaAssetId": null,
+        "publicUrl": null,
+        "status": "needs-upload",
+        "uploadStatus": "not_uploaded_blocked_missing_safe_admin_auth",
+        "blocker": true,
+        "sourcePolicy": "official local input only; not a public URL and not a committed MediaAsset",
+        "sourceMetadata": {
+          "fileName": "IceSkatingRinkRentalsLogo.png",
+          "extension": ".png",
+          "mimeType": "image/png",
+          "sizeBytes": 1627660,
+          "width": 1448,
+          "height": 1086,
+          "sha256": "0d1f970f0411e0778405f0a9cce316f0c7affca36e27576d4ebef751782f075b",
+          "safeFileName": true
+        },
+        "optimizedMetadata": null,
+        "mediaAssetUsageType": "icon",
+        "title": "Ice Rink Rentals Logo",
+        "caption": "Official Ice Rink Rentals brand logo.",
+        "description": "Brand logo for Ice Rink Rentals, used for site identity, header branding, and structured media references.",
+        "tags": [
+          "logo",
+          "brand",
+          "ice-rink-rentals",
+          "identity"
+        ],
+        "assetId": null,
+        "proposedAssetId": "ice-rink-rentals-ice-skating-rink-rentals-logo-0d1f970f0411",
+        "thumbnailUrl": null
+      },
+      {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "iceskatingrinkrentals.com",
+        "requiredMediaSlotId": "homepage-hero-image",
+        "intendedUsageType": "hero",
+        "page": "/",
+        "sectionId": "homepage-hero",
+        "sourceFile": "content-review/ice-homepage-media-input/WinterFestIceRinkRentals.png",
+        "optimizedSourceFile": null,
+        "recommendedAspectRatio": "16:9 or 1.78:1",
+        "recommendedDimensions": "1672x941 official source",
+        "requiredAltText": "Guests skating on a festive outdoor ice rink surrounded by holiday lights at a winter festival",
+        "suggestedFilename": "winter-fest-ice-rink-rentals-324b1b89777d.png",
+        "requiredBeforeCmsImport": true,
+        "requiredBeforeStaging": true,
+        "requiredBeforeProduction": true,
+        "notes": "Raw official media file is present and validated locally. Bind only after a real tenant-scoped MediaAsset record exists.",
+        "mediaAssetId": null,
+        "publicUrl": null,
+        "status": "needs-upload",
+        "uploadStatus": "not_uploaded_blocked_missing_safe_admin_auth",
+        "blocker": true,
+        "sourcePolicy": "official local input only; not a public URL and not a committed MediaAsset",
+        "sourceMetadata": {
+          "fileName": "WinterFestIceRinkRentals.png",
+          "extension": ".png",
+          "mimeType": "image/png",
+          "sizeBytes": 3607110,
+          "width": 1672,
+          "height": 941,
+          "sha256": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+          "safeFileName": true
+        },
+        "optimizedMetadata": null,
+        "mediaAssetUsageType": "hero",
+        "title": "Winter Festival Ice Rink Rental",
+        "caption": "A portable ice rink creates a festive centerpiece for winter events and holiday celebrations.",
+        "description": "Outdoor winter festival scene with guests skating on a portable ice rink surrounded by warm holiday lights and event activity.",
+        "tags": [
+          "homepage-hero",
+          "winter-festival",
+          "holiday-event",
+          "portable-ice-rink",
+          "community-event"
+        ],
+        "assetId": null,
+        "proposedAssetId": "ice-rink-rentals-winter-fest-ice-rink-rentals-324b1b89777d",
+        "thumbnailUrl": null
+      },
+      {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "iceskatingrinkrentals.com",
+        "requiredMediaSlotId": "homepage-corporate-event-image",
+        "intendedUsageType": "card",
+        "page": "/",
+        "sectionId": "event-types",
+        "sourceFile": "content-review/ice-homepage-media-input/CorporateIceRinkRentalEvent.png",
+        "optimizedSourceFile": null,
+        "recommendedAspectRatio": "16:9 or 1.78:1",
+        "recommendedDimensions": "1672x941 official source",
+        "requiredAltText": "Corporate guests skating and networking around a temporary outdoor ice rink at an evening event",
+        "suggestedFilename": "corporate-ice-rink-rental-event-18e985ca59bd.png",
+        "requiredBeforeCmsImport": true,
+        "requiredBeforeStaging": true,
+        "requiredBeforeProduction": true,
+        "notes": "Raw official media file is present and validated locally. Bind only after a real tenant-scoped MediaAsset record exists.",
+        "mediaAssetId": null,
+        "publicUrl": null,
+        "status": "needs-upload",
+        "uploadStatus": "not_uploaded_blocked_missing_safe_admin_auth",
+        "blocker": true,
+        "sourcePolicy": "official local input only; not a public URL and not a committed MediaAsset",
+        "sourceMetadata": {
+          "fileName": "CorporateIceRinkRentalEvent.png",
+          "extension": ".png",
+          "mimeType": "image/png",
+          "sizeBytes": 3685341,
+          "width": 1672,
+          "height": 941,
+          "sha256": "18e985ca59bd67b3f1d74a1a3841a273081b8f8a9ddb97d67dc6ff233e559a2d",
+          "safeFileName": true
+        },
+        "optimizedMetadata": null,
+        "mediaAssetUsageType": "card",
+        "title": "Corporate Ice Rink Rental Event",
+        "caption": "Portable ice rink rental setup for corporate events, holiday parties, and branded winter activations.",
+        "description": "Evening corporate event with a temporary ice rink, professional guests, warm lighting, and outdoor reception atmosphere.",
+        "tags": [
+          "corporate-event",
+          "event-activation",
+          "portable-ice-rink",
+          "winter-event",
+          "company-party"
+        ],
+        "assetId": null,
+        "proposedAssetId": "ice-rink-rentals-corporate-ice-rink-rental-event-18e985ca59bd",
+        "thumbnailUrl": null
+      },
+      {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "iceskatingrinkrentals.com",
+        "requiredMediaSlotId": "homepage-setup-logistics-image",
+        "intendedUsageType": "inline",
+        "page": "/",
+        "sectionId": "rental-options",
+        "sourceFile": "content-review/ice-homepage-media-input/IceRinkRentalsSetup.png",
+        "optimizedSourceFile": null,
+        "recommendedAspectRatio": "4:3 or flexible inline crop",
+        "recommendedDimensions": "1448x1086 official source",
+        "requiredAltText": "Portable ice rink setup with white safety barriers and skate aids before an outdoor event",
+        "suggestedFilename": "ice-rink-rentals-setup-113d218572e4.png",
+        "requiredBeforeCmsImport": true,
+        "requiredBeforeStaging": true,
+        "requiredBeforeProduction": true,
+        "notes": "Raw official media file is present and validated locally. Bind only after a real tenant-scoped MediaAsset record exists.",
+        "mediaAssetId": null,
+        "publicUrl": null,
+        "status": "needs-upload",
+        "uploadStatus": "not_uploaded_blocked_missing_safe_admin_auth",
+        "blocker": true,
+        "sourcePolicy": "official local input only; not a public URL and not a committed MediaAsset",
+        "sourceMetadata": {
+          "fileName": "IceRinkRentalsSetup.png",
+          "extension": ".png",
+          "mimeType": "image/png",
+          "sizeBytes": 3545952,
+          "width": 1448,
+          "height": 1086,
+          "sha256": "113d218572e45a8744673e3b86e2ea7d2e75dfacfcd8a0756a767f59c5ad3f40",
+          "safeFileName": true
+        },
+        "optimizedMetadata": null,
+        "mediaAssetUsageType": "inline",
+        "title": "Portable Ice Rink Setup",
+        "caption": "Portable rink setup showing temporary panels, rink surface, safety barriers, and event-ready layout.",
+        "description": "Setup view of a portable ice rink rental with white barriers, rink flooring, skate aids, and outdoor event preparation.",
+        "tags": [
+          "setup",
+          "logistics",
+          "rink-installation",
+          "portable-rink",
+          "event-prep"
+        ],
+        "assetId": null,
+        "proposedAssetId": "ice-rink-rentals-ice-rink-rentals-setup-113d218572e4",
+        "thumbnailUrl": null
+      },
+      {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "iceskatingrinkrentals.com",
+        "requiredMediaSlotId": "homepage-holiday-shopping-center-image",
+        "intendedUsageType": "card",
+        "page": "/",
+        "sectionId": "public-holiday-events",
+        "sourceFile": "content-review/ice-homepage-media-input/HolidayIceRink.png",
+        "optimizedSourceFile": null,
+        "recommendedAspectRatio": "16:9 or 1.78:1",
+        "recommendedDimensions": "1672x941 official source",
+        "requiredAltText": "Families and children skating on a portable ice rink at an outdoor holiday shopping center",
+        "suggestedFilename": "holiday-ice-rink-973ce7691377.png",
+        "requiredBeforeCmsImport": true,
+        "requiredBeforeStaging": true,
+        "requiredBeforeProduction": true,
+        "notes": "Raw official media file is present and validated locally. Bind only after a real tenant-scoped MediaAsset record exists.",
+        "mediaAssetId": null,
+        "publicUrl": null,
+        "status": "needs-upload",
+        "uploadStatus": "not_uploaded_blocked_missing_safe_admin_auth",
+        "blocker": true,
+        "sourcePolicy": "official local input only; not a public URL and not a committed MediaAsset",
+        "sourceMetadata": {
+          "fileName": "HolidayIceRink.png",
+          "extension": ".png",
+          "mimeType": "image/png",
+          "sizeBytes": 3866376,
+          "width": 1672,
+          "height": 941,
+          "sha256": "973ce769137773ecb68c439a192ae7bb96f7be2365a591c651c3fcc746c0f853",
+          "safeFileName": true
+        },
+        "optimizedMetadata": null,
+        "mediaAssetUsageType": "card",
+        "title": "Holiday Ice Rink Rental",
+        "caption": "Temporary ice rink attraction for holiday shopping centers, seasonal markets, and family-friendly events.",
+        "description": "Holiday ice rink rental at an outdoor retail center with families, children, seasonal lighting, and festive activity.",
+        "tags": [
+          "holiday-rink",
+          "shopping-center",
+          "family-event",
+          "seasonal-attraction",
+          "portable-ice-rink"
+        ],
+        "assetId": null,
+        "proposedAssetId": "ice-rink-rentals-holiday-ice-rink-973ce7691377",
+        "thumbnailUrl": null
+      },
+      {
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "iceskatingrinkrentals.com",
+        "requiredMediaSlotId": "homepage-open-graph-image",
+        "intendedUsageType": "og-image",
+        "page": "/",
+        "sectionId": "seo-open-graph",
+        "sourceFile": "content-review/ice-homepage-media-input/WinterFestIceRinkRentals.png",
+        "optimizedSourceFile": null,
+        "recommendedAspectRatio": "1.91:1",
+        "recommendedDimensions": "1672x941 official source",
+        "requiredAltText": "Guests skating on a festive portable ice rink at a winter event",
+        "suggestedFilename": "winter-fest-ice-rink-rentals-324b1b89777d.png",
+        "requiredBeforeCmsImport": true,
+        "requiredBeforeStaging": true,
+        "requiredBeforeProduction": true,
+        "notes": "Raw official media file is present and validated locally. Bind only after a real tenant-scoped MediaAsset record exists.",
+        "mediaAssetId": null,
+        "publicUrl": null,
+        "status": "needs-upload",
+        "uploadStatus": "not_uploaded_blocked_missing_safe_admin_auth",
+        "blocker": true,
+        "sourcePolicy": "official local input only; not a public URL and not a committed MediaAsset",
+        "sourceMetadata": {
+          "fileName": "WinterFestIceRinkRentals.png",
+          "extension": ".png",
+          "mimeType": "image/png",
+          "sizeBytes": 3607110,
+          "width": 1672,
+          "height": 941,
+          "sha256": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+          "safeFileName": true
+        },
+        "optimizedMetadata": null,
+        "mediaAssetUsageType": "og-image",
+        "title": "Winter Festival Ice Rink Rental Open Graph Image",
+        "caption": "Open Graph candidate derived from the official winter festival ice rink rental image.",
+        "description": "Outdoor winter festival scene with guests skating on a portable ice rink surrounded by warm holiday lights and event activity.",
+        "tags": [
+          "homepage-hero",
+          "winter-festival",
+          "holiday-event",
+          "portable-ice-rink",
+          "community-event"
+        ],
+        "assetId": null,
+        "proposedAssetId": "ice-rink-rentals-winter-fest-ice-rink-rentals-324b1b89777d",
+        "thumbnailUrl": null
+      }
+    ],
+    "normalizerMetadata": {
+      "phase": "8C.14B",
+      "tool": "tools/page-intake-normalizer/normalize-page-intake.mjs",
+      "input": "content-review/ice-homepage-phase8c14-validated/proposed-homepage.normalized-candidate.json",
+      "outputPolicy": "Generated or validated through .NET Page/block classes before CMS import consideration.",
+      "rollerStatus": "paused",
+      "stateCityGenerationPolicy": {
+        "routePattern": "/state-city",
+        "examples": [
+          "/fl-orlando",
+          "/ny-new-york",
+          "/pa-philadelphia"
+        ],
+        "lowercase": true,
+        "hyphenSeparated": true,
+        "stateFirstCitySecond": true,
+        "requiresDotNetPageClasses": true,
+        "requiresNormalizer": true,
+        "requiresDesignMediaFormTailwindNavigationStaticValidation": true,
+        "createdCityPageInThisPhase": false,
+        "notes": "Future city/location pages must not be generated from loose JSON or TypeScript-only objects."
+      },
+      "blockers": []
+    }
+  }
+}
