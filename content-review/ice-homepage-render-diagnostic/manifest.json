@@ -1,0 +1,408 @@
+{
+  "schemaVersion": "1.0",
+  "createdAt": "2026-06-02T19:53:53.516Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "diagnosticOnly": true,
+  "writesPerformed": false,
+  "protectedConfigRead": false,
+  "rollerStatus": "paused",
+  "startGitStatus": [
+    "Untracked input artifacts were present under content-review/ice-contact-email-correction-input/, including the uploaded ZIP and extracted files.",
+    "No raw homepage media PNGs were staged by this diagnostic run.",
+    "No CMS Page, Theme, MediaAsset, deployment, DNS, Azure, Cloudflare, Microsoft 365, or Bluehost writes were performed."
+  ],
+  "startGitLog": [
+    "c60217f Add Ice contact local draft import report",
+    "2d8bb45 Add Ice homepage local draft import report",
+    "892dccb Add Ice homepage local draft import auth blocker report",
+    "9b7bcad Add Ice homepage business contact policy package",
+    "dfe4f90 Bind Ice homepage MediaAsset records",
+    "faf5986 Add Ice homepage MediaAsset binding blocker report",
+    "895f914 Add safe local homepage import preflight runner",
+    "c6e6382 Add Ice homepage local CMS preview readiness report",
+    "2ecd323 Update Microsoft 365 operational verification docs",
+    "9f31719 Record confirmed Microsoft 365 mailbox verification",
+    "10393b7 Add Microsoft 365 operational email verification package"
+  ],
+  "serviceProbe": {
+    "api": {
+      "url": "http://localhost:5064",
+      "reachable": true,
+      "status": 200
+    },
+    "admin": {
+      "url": "http://localhost:3000",
+      "reachable": true,
+      "status": 200
+    },
+    "iceFrontend": {
+      "url": "http://localhost:3002",
+      "reachable": true,
+      "status": 200,
+      "bytes": 34129
+    },
+    "iceContact": {
+      "url": "http://localhost:3002/contact",
+      "reachable": true,
+      "status": 200,
+      "bytes": 48799
+    }
+  },
+  "authProbe": {
+    "envJwt": "MISSING",
+    "tempJwt": "MISSING",
+    "adminReadAttempted": false,
+    "reason": "No admin JWT was available. Protected config was not read.",
+    "safeRecheck": {
+      "checkedAt": "2026-06-02T15:55:13.2239384-04:00",
+      "environmentVariables": {
+        "JWT": "MISSING",
+        "ADMIN_JWT": "MISSING",
+        "PUMPKIN_ADMIN_JWT": "MISSING",
+        "PUMPKIN_CMS_ADMIN_JWT": "MISSING",
+        "TEMP_JWT": "MISSING"
+      },
+      "tempFiles": {
+        "content-review/temp-admin-jwt.txt": "MISSING",
+        "content-review/admin-jwt.txt": "MISSING",
+        ".tmp/admin-jwt.txt": "MISSING",
+        "tmp/admin-jwt.txt": "MISSING"
+      },
+      "note": "Only presence was checked. No token value or protected config was read."
+    }
+  },
+  "publicApiProbe": {
+    "pagesEndpoint": {
+      "url": "http://localhost:5064/api/pages/ice-rink-rentals/home",
+      "status": 400,
+      "result": "API key is required"
+    },
+    "sitemapEndpoint": {
+      "url": "http://localhost:5064/api/tenant/ice-rink-rentals/sitemap",
+      "status": 400,
+      "result": "API key is required"
+    }
+  },
+  "sources": {
+    "importedReadback": "content-review/ice-homepage-local-draft-import/homepage-local-draft-imported-readback.json",
+    "selectedCandidate": "content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+    "boundCandidate": "content-review/ice-homepage-mediaasset-bound/proposed-homepage.mediaasset-bound-candidate.json",
+    "normalizedCandidate": "content-review/ice-homepage-phase8c14-validated/proposed-homepage.normalized-candidate.json",
+    "homepageImportReport": "PUMPKIN_ICE_HOMEPAGE_LOCAL_DRAFT_IMPORT_REPORT.md",
+    "contactCorrectionReport": "PUMPKIN_ICE_CONTACT_EMAIL_CORRECTION_CMS_IMPORT_REPORT.md",
+    "mediaAssetRecords": "content-review/ice-homepage-mediaasset-bound/MEDIA_ASSET_RECORDS.md"
+  },
+  "summaries": {
+    "importedDraft": {
+      "label": "Current imported local draft readback root page",
+      "sourcePath": "content-review/ice-homepage-local-draft-import/homepage-local-draft-imported-readback.json",
+      "exists": true,
+      "pageId": "ice-rink-rentals-home",
+      "pageSlug": "home",
+      "route": null,
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": null,
+      "reviewStatus": null,
+      "blockCount": 10,
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "customHtml",
+        "HowItWorks",
+        "customHtml",
+        "customHtml",
+        "FAQ",
+        "formBlock",
+        "PrimaryCTA"
+      ],
+      "heroHeadline": "Portable ice skating rink rentals for unforgettable events",
+      "mediaUrlCount": 3,
+      "mediaUrls": [
+        "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+        "/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png"
+      ],
+      "publicUrlCount": 4,
+      "mediaAssetIdCount": 0,
+      "assetIdCount": 0,
+      "imgTagCount": 0,
+      "includesWinterFestAsset": true,
+      "includesCorporateAsset": true,
+      "includesHolidayAsset": true,
+      "includesSetupAsset": false,
+      "includesDefaultQuoteRequest": true,
+      "includesHomepageQuoteForm": true
+    },
+    "selectedCandidate": {
+      "label": "Selected business-ready candidate",
+      "sourcePath": "content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+      "exists": true,
+      "pageId": "ice-rink-rentals-home-phase8c14-normalized-candidate",
+      "pageSlug": "home",
+      "route": "/",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": null,
+      "reviewStatus": null,
+      "blockCount": 10,
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "customHtml",
+        "HowItWorks",
+        "customHtml",
+        "customHtml",
+        "FAQ",
+        "formBlock",
+        "PrimaryCTA"
+      ],
+      "heroHeadline": "Portable ice skating rink rentals for unforgettable events",
+      "mediaUrlCount": 5,
+      "mediaUrls": [
+        "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+        "/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png",
+        "/media/ice-rink-rentals/2026/06/iceskatingrinkrentalslogo-0d1f970f0411.png",
+        "/media/ice-rink-rentals/2026/06/icerinkrentalssetup-113d218572e4.png"
+      ],
+      "publicUrlCount": 6,
+      "mediaAssetIdCount": 0,
+      "assetIdCount": 0,
+      "imgTagCount": 0,
+      "includesWinterFestAsset": true,
+      "includesCorporateAsset": true,
+      "includesHolidayAsset": true,
+      "includesSetupAsset": true,
+      "includesDefaultQuoteRequest": true,
+      "includesHomepageQuoteForm": true
+    },
+    "boundCandidate": {
+      "label": "MediaAsset-bound candidate",
+      "sourcePath": "content-review/ice-homepage-mediaasset-bound/proposed-homepage.mediaasset-bound-candidate.json",
+      "exists": true,
+      "pageId": "ice-rink-rentals-home-phase8c14-normalized-candidate",
+      "pageSlug": "home",
+      "route": "/",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": null,
+      "reviewStatus": null,
+      "blockCount": 10,
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "customHtml",
+        "HowItWorks",
+        "customHtml",
+        "customHtml",
+        "FAQ",
+        "formBlock",
+        "PrimaryCTA"
+      ],
+      "heroHeadline": "Portable ice skating rink rentals for unforgettable events",
+      "mediaUrlCount": 5,
+      "mediaUrls": [
+        "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+        "/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png",
+        "/media/ice-rink-rentals/2026/06/iceskatingrinkrentalslogo-0d1f970f0411.png",
+        "/media/ice-rink-rentals/2026/06/icerinkrentalssetup-113d218572e4.png"
+      ],
+      "publicUrlCount": 6,
+      "mediaAssetIdCount": 0,
+      "assetIdCount": 0,
+      "imgTagCount": 0,
+      "includesWinterFestAsset": true,
+      "includesCorporateAsset": true,
+      "includesHolidayAsset": true,
+      "includesSetupAsset": true,
+      "includesDefaultQuoteRequest": true,
+      "includesHomepageQuoteForm": true
+    },
+    "normalizedCandidate": {
+      "label": "Phase 8C.14 normalized candidate",
+      "sourcePath": "content-review/ice-homepage-phase8c14-validated/proposed-homepage.normalized-candidate.json",
+      "exists": true,
+      "pageId": "ice-rink-rentals-home-phase8c14-normalized-candidate",
+      "pageSlug": "home",
+      "route": "/",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": null,
+      "reviewStatus": null,
+      "blockCount": 10,
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "customHtml",
+        "HowItWorks",
+        "customHtml",
+        "customHtml",
+        "FAQ",
+        "formBlock",
+        "PrimaryCTA"
+      ],
+      "heroHeadline": "Portable ice skating rink rentals for unforgettable events",
+      "mediaUrlCount": 0,
+      "mediaUrls": [],
+      "publicUrlCount": 1,
+      "mediaAssetIdCount": 0,
+      "assetIdCount": 0,
+      "imgTagCount": 0,
+      "includesWinterFestAsset": true,
+      "includesCorporateAsset": true,
+      "includesHolidayAsset": true,
+      "includesSetupAsset": true,
+      "includesDefaultQuoteRequest": true,
+      "includesHomepageQuoteForm": true
+    }
+  },
+  "frontendProbe": {
+    "url": "http://localhost:3002/",
+    "status": 200,
+    "bytes": 34129,
+    "title": "Portable Ice Rink Rentals for Events",
+    "description": "Portable ice rink rentals for events, schools, towns, corporate parties, and holiday activations.",
+    "probes": {
+      "redesignedTitle": false,
+      "oldSimpleTitle": true,
+      "winterFestAsset": false,
+      "corporateAsset": false,
+      "holidayAsset": false,
+      "setupAsset": false,
+      "mediaPath": false,
+      "imgTags": false,
+      "requestPlanningGuidance": false,
+      "builtAroundYourEvent": false,
+      "homepageQuoteForm": false,
+      "defaultQuoteRequest": false
+    },
+    "imgTagCount": 0,
+    "mediaPathCount": 0
+  },
+  "mediaUrlAudit": {
+    "note": "The imported rich draft currently references three unique page media URLs; the five MediaAsset records exist in the prior MediaAsset binding report.",
+    "currentDraftUniqueMediaUrls": [
+      "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+      "/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+      "/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png"
+    ],
+    "apiHostResults": [
+      {
+        "url": "http://localhost:5064/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "status": 200,
+        "contentType": "image/png",
+        "result": "available from API local media host"
+      },
+      {
+        "url": "http://localhost:5064/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+        "status": 200,
+        "contentType": "image/png",
+        "result": "available from API local media host"
+      },
+      {
+        "url": "http://localhost:5064/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png",
+        "status": 200,
+        "contentType": "image/png",
+        "result": "available from API local media host"
+      }
+    ],
+    "frontendHostResults": [
+      {
+        "url": "http://localhost:3002/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "status": 404,
+        "contentType": "text/html",
+        "result": "not served by Next frontend host"
+      },
+      {
+        "url": "http://localhost:3002/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+        "status": 404,
+        "contentType": "text/html",
+        "result": "not served by Next frontend host"
+      },
+      {
+        "url": "http://localhost:3002/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png",
+        "status": 404,
+        "contentType": "text/html",
+        "result": "not served by Next frontend host"
+      }
+    ],
+    "nextConfigFinding": "apps/ice-rink-web/next.config.js does not define a /media rewrite or proxy to the API media host."
+  },
+  "rendererAudit": {
+    "contentSource": "apps/ice-rink-web/src/lib/content-source.ts uses fetchPage(site, slug) for non-static rendering.",
+    "pumpkinApiClient": "apps/ice-rink-web/src/lib/pumpkin-api.ts fetches /api/pages/{tenantId}/{slug} with the site API key and revalidate: 60.",
+    "publicApiContract": "apps/pumpkin-api/Program.cs documents this route as a published-page-by-slug endpoint.",
+    "rendererSupport": "PageRenderer delegates to PolishedBlocks and BlockViewRenderer. PolishedBlocks supports Hero, TrustBar, CardGrid, HowItWorks, FAQ, PrimaryCTA, Contact, and formBlock. Hero media renders as CSS background, not an img tag.",
+    "mediaProxy": "apps/ice-rink-web/next.config.js does not define a /media rewrite or proxy to the API media host."
+  },
+  "rootCause": {
+    "primary": "E - public frontend is rendering the published/simple homepage, while the redesigned homepage exists only as a local CMS draft.",
+    "secondary": "D - local /media paths are available on the API host but 404 on the frontend host because the frontend has no /media proxy/rewrite.",
+    "notPrimary": [
+      "A - wrong candidate imported: no. The import report selected HOMEPAGE_BUSINESS_READY_CANDIDATE.json and the readback root page matches the rich candidate shape.",
+      "B - candidate lacks renderable media refs: no for the imported draft. It contains Hero.content.mainImage and media URLs.",
+      "C - renderer lacks all support: partial only. It supports the main polished block types and Hero mainImage, but customHtml falls back and relative media URLs still need hosting/proxy support.",
+      "F - cache only: unlikely as the main cause. The frontend fetches a published page endpoint; revalidate caching can delay updates but cannot make an unpublished draft appear.",
+      "G - contact correction homepage skip: not causal. That package intentionally skipped homepage writes and did not overwrite the earlier rich draft."
+    ]
+  },
+  "recommendedFixes": [
+    "For local review, add or use a local-only authenticated draft preview path so Ice can render the draft homepage without publishing it.",
+    "Do not re-import the homepage just to solve this symptom; the selected rich homepage is already represented in the local draft readback artifact.",
+    "Before any public publishing/cutover, decide how frontend media URLs resolve. A local Next rewrite from /media/:path* to the Pumpkin API media host is the narrowest development fix.",
+    "Keep CMS Page and Theme writes paused until the user explicitly authorizes a draft preview/import/publish step.",
+    "Keep RollerRinkRentals.com paused."
+  ],
+  "readiness": {
+    "readyForHumanReview": "yes, as a diagnostic package",
+    "readyForCmsImport": "no, diagnostic only; no import authorized in this run",
+    "readyForLocalPreview": "blocked until a draft preview path or approved draft render mode is used; media proxy/rewrite also needed for image display on the frontend host",
+    "readyForStaticRegeneration": "no",
+    "readyForProductionIndexing": "no"
+  },
+  "blockers": {
+    "localPreview": [
+      "Frontend route / uses the public published page endpoint, not an admin/draft endpoint.",
+      "Relative /media URLs 404 on localhost:3002 without a media rewrite/proxy or frontend-served local media."
+    ],
+    "cmsImport": [
+      "Diagnostic run did not authorize any CMS write.",
+      "Final human approval and any local import preflight must be explicit before another write."
+    ],
+    "production": [
+      "Homepage is not approved/published for production.",
+      "Static regeneration and indexing remain intentionally blocked.",
+      "Production media URL strategy and public image availability must be verified first."
+    ]
+  },
+  "requiredOutputs": [
+    "README.md",
+    "CURRENT_CMS_HOMEPAGE_AUDIT.md",
+    "IMPORTED_CANDIDATE_COMPARISON.md",
+    "FRONTEND_RENDER_AUDIT.md",
+    "MEDIA_URL_AUDIT.md",
+    "RENDERER_SUPPORT_AUDIT.md",
+    "ROOT_CAUSE_DECISION.md",
+    "RECOMMENDED_FIX_PLAN.md",
+    "manifest.json",
+    "PUMPKIN_ICE_HOMEPAGE_RENDER_DIAGNOSTIC_REPORT.md"
+  ],
+  "checks": {
+    "planned": [
+      "JSON parse validation",
+      "git diff --check",
+      "direct trailing whitespace scan",
+      "protected config/workflow/generated/raw media check",
+      "targeted secret scan",
+      "no staged files check"
+    ]
+  }
+}
