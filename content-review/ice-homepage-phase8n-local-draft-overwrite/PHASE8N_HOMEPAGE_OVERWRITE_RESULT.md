@@ -1,25 +1,25 @@
 # Phase 8N Homepage Overwrite Result
 
-Overwrite performed: no
+Overwrite performed: yes
 
 Endpoint/tool used:
 
 ```text
-not-used
+PUT /api/admin/pages/ice-rink-rentals/home
 ```
 
-Blocked before CMS write:
+Change source requested: `phase8n_homepage_scaffold_import`
 
-- Admin auth validated as VALID and the temp JWT file was deleted after loading.
-- Current homepage snapshot was saved.
-- The script stopped because the one-off pre-write guard treated /service-areas HTTP 404 as unsafe.
-- That blocker has been corrected: /service-areas HTTP 404 is expected-not-found baseline for this project state.
-- No homepage PUT was attempted, so no revision/readback increment exists for this run.
+HTTP status: 200
 
-Retry requirement:
+Revision/rollback handling:
 
-- Save a fresh valid JWT to the allowed temp file.
-- Rerun with /service-areas 404 treated as an unchanged expected-not-found baseline.
-- Verify /service-areas remains 404 after the homepage-only overwrite if 404 was the captured baseline.
+- Before revision: 6
+- After revision: 7
+- Revision incremented: yes
+- Rollback metadata exists: yes
+- Readback change source: `manual_unknown`
+
+Post-write verification status: failed due current .NET Page model serialization dropping Phase 8N production-render metadata fields.
 
 No production approval, publish, static regeneration, deployment, DNS/provider/email action, Theme write, MediaAsset write, contact page write, service-area page write, or Roller work was performed.

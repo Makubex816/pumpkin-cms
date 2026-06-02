@@ -1,21 +1,31 @@
 {
-  "schemaVersion": "pumpkin-ice-homepage-phase8n-local-draft-overwrite.v1",
-  "createdAt": "2026-06-02T21:58:25.899Z",
+  "schemaVersion": "pumpkin-ice-homepage-phase8n-local-draft-overwrite.v2",
+  "createdAt": "2026-06-02T22:27:44.825Z",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
   "domain": "iceskatingrinkrentals.com",
   "selectedCandidatePath": "content-review/ice-homepage-phase8n-crm-scaffold-validated/HOMEPAGE_PHASE8N_NORMALIZED_CANDIDATE.json",
+  "correctedGuard": {
+    "helper": "tools/phase8n-homepage-overwrite/untouched-route-guard.mjs",
+    "serviceAreasPolicy": "HTTP 404 accepted as expected-not-found baseline and must remain 404 if observed"
+  },
+  "startState": {
+    "gitStatusShort": "",
+    "gitLog": "34eef51 Fix Phase 8N homepage overwrite route guard\ne2d150b Add Ice homepage Phase 8N scaffold validation package\ne465511 Add Ice homepage draft preview and production rendering support\n631c899 Add Ice homepage render diagnostic report\nc60217f Add Ice contact local draft import report\n2d8bb45 Add Ice homepage local draft import report\n892dccb Add Ice homepage local draft import auth blocker report\n9b7bcad Add Ice homepage business contact policy package\ndfe4f90 Bind Ice homepage MediaAsset records\nfaf5986 Add Ice homepage MediaAsset binding blocker report\n895f914 Add safe local homepage import preflight runner\nc6e6382 Add Ice local preview readiness package"
+  },
   "apiReachability": {
     "url": "http://localhost:5064",
-    "status": "reachable",
+    "reachable": true,
     "httpStatus": 200
   },
   "adminAuth": {
-    "tempFileStatus": "PRESENT",
+    "processEnvStatus": "MISSING",
+    "tempFileStatusBeforeLoad": "PRESENT",
+    "source": "temp-file",
     "status": "VALID",
     "tempFileDeleted": true,
-    "validationHttpStatus": 200,
-    "jwtPrintedStatus": false
+    "jwtPrintedStatus": false,
+    "validationHttpStatus": 200
   },
   "validation": {
     "jsonParse": "passed",
@@ -30,25 +40,32 @@
     "pageIntakeNormalizer": "passed",
     "unsafeScan": "passed",
     "routeCanonicalAudit": "passed",
-    "targetedSecretScan": "[redacted]"
+    "targetedSecretScan": "passed"
+  },
+  "baseline": {
+    "contact": {
+      "route": "/contact",
+      "accepted": true,
+      "status": 200,
+      "state": "reachable",
+      "hash": "17eff8ca8dd73e51f1f87a44e614d57a4d79929d7d8f954e1a59e5a10bca543a",
+      "blocker": null
+    },
+    "serviceAreas": {
+      "route": "/service-areas",
+      "accepted": true,
+      "status": 404,
+      "state": "expected-not-found",
+      "hash": null
+    },
+    "blockers": []
   },
   "importResult": {
-    "performed": false,
-    "endpointUsed": null,
-    "mode": "update-existing-homepage",
-    "blockedBeforeWrite": true,
-    "blocker": "Prior one-off guard incorrectly treated /service-areas HTTP 404 as unsafe and stopped before CMS write. Corrected behavior accepts /service-areas 404 as expected-not-found baseline for homepage-only overwrite.",
-    "patchRunWritePerformed": false
-  },
-  "guardCorrection": {
-    "status": "corrected",
-    "helper": "tools/phase8n-homepage-overwrite/untouched-route-guard.mjs",
-    "contactPolicy": "must be HTTP 200 before overwrite and unchanged after overwrite",
-    "serviceAreasPolicy": "HTTP 404 is accepted as expected-not-found baseline while /service-areas has not been imported",
-    "serviceAreas404BlocksHomepageOverwrite": false,
-    "unexpectedTransportFailuresBlock": true,
-    "postOverwriteRequirement": "/service-areas must match captured baseline, including still 404 if baseline was 404",
-    "cmsWritePerformedInPatchRun": false
+    "performed": true,
+    "endpointUsed": "PUT /api/admin/pages/ice-rink-rentals/home",
+    "changeSourceRequested": "phase8n_homepage_scaffold_import",
+    "httpStatus": 200,
+    "verificationStatus": "failed-post-write-contract-metadata-checks"
   },
   "summaries": {
     "beforeHomepage": {
@@ -63,33 +80,85 @@
       "workflowStatus": "draft",
       "reviewStatus": "needs_review",
       "approvedForPublish": false,
-      "productionApproved": null,
-      "publishApproved": null,
+      "productionApproved": false,
+      "publishApproved": false,
       "staticNeedsRebuild": true,
       "staticEligible": false,
+      "deploymentStatus": "review_only_not_imported_not_deployed",
       "revisionNumber": 6,
       "currentRevisionId": "ice-rink-rentals-home:rev-6",
       "rollbackAvailable": true,
+      "lastChangeSource": "json_import",
       "blockCount": 10,
-      "blockTypes": [
-        "Hero",
-        "TrustBar",
-        "CardGrid",
-        "customHtml",
-        "HowItWorks",
-        "customHtml",
-        "customHtml",
-        "FAQ",
-        "formBlock",
-        "PrimaryCTA"
-      ],
-      "variants": [
-        "split-feature",
-        "event-card-grid",
-        "split-feature"
-      ],
+      "blockTypes": [],
       "mediaAssetIds": [
-        "ice-rink-rentals-default"
+        "corporateicerinkrentalevent-18e985ca59bd",
+        "holidayicerink-973ce7691377",
+        "winterfesticerinkrentals-324b1b89777d"
+      ],
+      "selectedMailbox": "",
+      "publicEmailDisplayPolicy": "",
+      "publicContactEmail": ""
+    },
+    "updatedHomepageResponse": {
+      "found": true,
+      "id": "ice-rink-rentals-home",
+      "pageId": "ice-rink-rentals-home",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "home",
+      "pageVersion": 11,
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "approvedForPublish": false,
+      "productionApproved": false,
+      "publishApproved": false,
+      "staticNeedsRebuild": true,
+      "staticEligible": false,
+      "deploymentStatus": "not_generated",
+      "revisionNumber": 7,
+      "currentRevisionId": "ice-rink-rentals-home:rev-7",
+      "rollbackAvailable": true,
+      "lastChangeSource": "manual_unknown",
+      "blockCount": 9,
+      "blockTypes": [],
+      "mediaAssetIds": [
+        "corporateicerinkrentalevent-18e985ca59bd",
+        "holidayicerink-973ce7691377",
+        "winterfesticerinkrentals-324b1b89777d"
+      ],
+      "selectedMailbox": "",
+      "publicEmailDisplayPolicy": "",
+      "publicContactEmail": ""
+    },
+    "afterHomepage": {
+      "found": true,
+      "id": "ice-rink-rentals-home",
+      "pageId": "ice-rink-rentals-home",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "home",
+      "pageVersion": 11,
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "approvedForPublish": false,
+      "productionApproved": false,
+      "publishApproved": false,
+      "staticNeedsRebuild": true,
+      "staticEligible": false,
+      "deploymentStatus": "not_generated",
+      "revisionNumber": 7,
+      "currentRevisionId": "ice-rink-rentals-home:rev-7",
+      "rollbackAvailable": true,
+      "lastChangeSource": "manual_unknown",
+      "blockCount": 9,
+      "blockTypes": [],
+      "mediaAssetIds": [
+        "corporateicerinkrentalevent-18e985ca59bd",
+        "holidayicerink-973ce7691377",
+        "winterfesticerinkrentals-324b1b89777d"
       ],
       "selectedMailbox": "",
       "publicEmailDisplayPolicy": "",
@@ -97,18 +166,42 @@
     }
   },
   "verification": {
-    "routeHome": "not-checked-no-write",
-    "workflowDraft": "not-checked-no-write",
-    "revisionIncremented": "not-checked-no-write",
-    "rollbackMetadataExists": "not-checked-no-write",
-    "requiredVariantsPresent": "not-checked-no-write",
-    "mediaAssetIdsPresent": "not-checked-no-write",
-    "selectedMailboxCorrect": "not-checked-no-write",
-    "publicEmailPolicyPreserved": "not-checked-no-write",
-    "contactUntouchedByThisRun": true,
-    "serviceAreasUntouchedByThisRun": true,
-    "themeUntouchedByThisRun": true,
-    "note": "No CMS write was attempted, so contact/service/theme were not modified by this run. Post-import readback verification was not applicable."
+    "routeHome": true,
+    "workflowDraft": true,
+    "productionApprovalFalse": true,
+    "pageVersionIncremented": true,
+    "revisionIncremented": true,
+    "rollbackMetadataExists": true,
+    "requiredVariantsPresent": false,
+    "mediaAssetIdsPresent": false,
+    "selectedMailboxCorrect": false,
+    "publicEmailPolicyFormFirst": false,
+    "publicContactEmailHidden": true,
+    "contactUnchanged": true,
+    "serviceAreasUnchanged": true,
+    "serviceAreasBaselineState": "expected-not-found",
+    "serviceAreasAfterState": "expected-not-found",
+    "themeUnchanged": true,
+    "requiredMediaIds": [
+      "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+      "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+      "ice-rink-rentals-holidayicerink-973ce7691377",
+      "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+      "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+    ],
+    "revision": {
+      "beforeRevisionNumber": 6,
+      "afterRevisionNumber": 7,
+      "beforeCurrentRevisionId": "ice-rink-rentals-home:rev-6",
+      "afterCurrentRevisionId": "ice-rink-rentals-home:rev-7"
+    },
+    "blockers": [
+      "Required production-render variants missing.",
+      "Required MediaAsset IDs missing.",
+      "Selected mailbox field missing from active readback.",
+      "Public email display policy missing from active readback."
+    ],
+    "frontendPreviewProbedAfterFailure": true
   },
   "frontendPreview": {
     "reachable": true,
@@ -119,19 +212,26 @@
   "publicRoute": {
     "reachable": true,
     "status": 200,
-    "length": 34091,
+    "length": 34129,
     "containsIce": true
   },
   "blockers": [
-    "Fresh valid temp JWT required for a separate overwrite retry.",
-    "Homepage readback, revision, and rollback verification remain pending until a separate authorized write occurs."
+    "Admin PUT succeeded and created homepage revision 7, but post-write verification failed because canonical .NET Page models stripped Phase 8N sectionVariant markers from active blocks.",
+    "Active readback did not preserve full tenant-prefixed MediaAsset IDs or logo/setup media metadata fields; only supported PageMedia assetId/url values remain.",
+    "Active readback did not preserve selectedMailbox/publicEmailDisplayPolicy fields; publicContactEmail remains hidden and no email action occurred.",
+    "A follow-up model/contract fix is required before this draft should be treated as Phase 8N production-render compatible."
   ],
   "apiCalls": [
     "GET /api/admin/pages?tenantId=ice-rink-rentals",
     "GET /api/admin/pages/ice-rink-rentals/home",
     "GET /api/admin/pages/ice-rink-rentals/contact",
     "GET /api/admin/pages/ice-rink-rentals/service-areas",
-    "GET /api/admin/themes/ice-rink-rentals"
+    "GET /api/admin/themes/ice-rink-rentals",
+    "PUT /api/admin/pages/ice-rink-rentals/home?changeSource=phase8n_homepage_scaffold_import",
+    "GET /api/admin/pages/ice-rink-rentals/home after overwrite",
+    "GET /api/admin/pages/ice-rink-rentals/contact after overwrite",
+    "GET /api/admin/pages/ice-rink-rentals/service-areas after overwrite",
+    "GET /api/admin/themes/ice-rink-rentals after overwrite"
   ],
   "safety": {
     "contactPageChanged": false,
@@ -146,21 +246,15 @@
   },
   "hashes": {
     "beforeContact": "17eff8ca8dd73e51f1f87a44e614d57a4d79929d7d8f954e1a59e5a10bca543a",
-    "beforeService": null,
-    "beforeThemes": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e"
+    "beforeServiceAreas": null,
+    "beforeThemes": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e",
+    "afterContact": "17eff8ca8dd73e51f1f87a44e614d57a4d79929d7d8f954e1a59e5a10bca543a",
+    "afterServiceAreas": null,
+    "afterThemes": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e"
   },
-  "outputFiles": [
-    "README.md",
-    "PRE_IMPORT_VALIDATION.md",
-    "CURRENT_HOMEPAGE_BEFORE_PHASE8N.md",
-    "PHASE8N_HOMEPAGE_OVERWRITE_RESULT.md",
-    "PHASE8N_HOMEPAGE_READBACK.md",
-    "FRONTEND_PREVIEW_CHECKLIST.md",
-    "UNTOUCHED_ROUTES_VERIFICATION.md",
-    "CORRECTED_UNTOUCHED_ROUTE_GUARD.md",
-    "REMAINING_BLOCKERS.md",
-    "current-homepage-before-phase8n.snapshot.json",
-    "phase8n-homepage-readback.json",
-    "manifest.json"
-  ]
+  "modelContractLimitations": {
+    "sectionVariants": "The admin update endpoint deserialized the candidate into .NET Page/block classes and the active readback no longer includes Phase 8N sectionVariant markers.",
+    "mediaAssetIds": "The active readback preserves supported PageMedia assetId/url values for hero/corporate/holiday images, but full tenant-prefixed mediaAssetId fields and extra logo/setup media slots are not persisted by the current canonical PageMedia model.",
+    "emailPolicy": "The active readback keeps publicContactEmail hidden and mailto disabled, but selectedMailbox/publicEmailDisplayPolicy fields are not persisted by the current PageDomainRouting model."
+  }
 }

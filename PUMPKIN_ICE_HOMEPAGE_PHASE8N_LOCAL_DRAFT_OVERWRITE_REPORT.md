@@ -1,26 +1,21 @@
 # Pumpkin Ice Homepage Phase 8N Local Draft Overwrite Report
 
-Created: 2026-06-02T21:58:25.899Z
-
-Updated: 2026-06-02T18:10:39.9257683-04:00
+Created: 2026-06-02T22:27:44.825Z
 
 ## Scope
 
 Primary focus: IceSkatingRinkRentals.com. RollerRinkRentals.com remains paused.
 
-Authorized action from the prior run: overwrite the local CMS homepage draft for route `/` only with the Phase 8N normalized homepage candidate.
-
-This patch run did not perform the homepage overwrite. It only corrected the untouched-route guard documentation and added a reusable non-mutating helper so `/service-areas` HTTP 404 is accepted as an expected unchanged baseline for the next homepage-only retry.
-
-No `/`, `/contact`, `/service-areas`, Theme, MediaAsset, static generation, deployment, DNS, email/provider, protected config, or Roller action was performed in this patch run.
+Authorized action: overwrite local CMS homepage draft route `/` only with the Phase 8N normalized homepage candidate. No `/contact`, `/service-areas`, Theme, MediaAsset, static generation, deployment, DNS, email/provider, protected config, or Roller action was performed.
 
 ## Start State
 
-Git status at the original overwrite attempt was clean. At the start of this patch run, the prior Phase 8N overwrite blocker docs were uncommitted, and `content-review/ice-homepage-phase8n-crm-scaffold-validated/phase8n-import-preflight-result.json` was modified from the prior validation rerun.
+Git status at start: clean
 
 Recent log:
 
 ```text
+34eef51 Fix Phase 8N homepage overwrite route guard
 e2d150b Add Ice homepage Phase 8N scaffold validation package
 e465511 Add Ice homepage draft preview and production rendering support
 631c899 Add Ice homepage render diagnostic report
@@ -31,32 +26,34 @@ c60217f Add Ice contact local draft import report
 dfe4f90 Bind Ice homepage MediaAsset records
 faf5986 Add Ice homepage MediaAsset binding blocker report
 895f914 Add safe local homepage import preflight runner
-c6e6382 Add Ice homepage local CMS preview readiness report
-0b7345f Add Ice local preview readiness package
+c6e6382 Add Ice local preview readiness package
 ```
 
 Selected candidate: `content-review/ice-homepage-phase8n-crm-scaffold-validated/HOMEPAGE_PHASE8N_NORMALIZED_CANDIDATE.json`
 
-## Prior Authenticated Attempt
+API reachability: reachable, HTTP 200
 
-- API reachability: reachable, HTTP 200
-- Admin auth status: VALID
-- Temp JWT deleted after loading: yes
-- JWT printed: no
-- Current homepage snapshot saved: `content-review/ice-homepage-phase8n-local-draft-overwrite/current-homepage-before-phase8n.snapshot.json`
-- Overwrite performed: no
+Admin auth status: VALID
 
-The prior run stopped before CMS write because its one-off pre-write guard treated `/service-areas` HTTP 404 as unsafe. That was overly strict for the current Ice project state because `/service-areas` has not been imported yet.
+Temp JWT deleted after loading: yes
 
-Corrected interpretation: `/service-areas` HTTP 404 is an accepted `expected-not-found` baseline for this homepage-only overwrite. It must be captured before the overwrite and verified unchanged afterward, including still 404 if that was the baseline.
+JWT printed: no
 
-## Validation Results From Prior Attempt
+## Corrected Untouched-Route Baseline
+
+- `/contact` baseline: reachable
+- `/contact` unchanged after overwrite: yes
+- `/service-areas` baseline: expected-not-found
+- `/service-areas` 404 accepted as expected baseline: yes
+- `/service-areas` unchanged after overwrite: yes
+
+## Validation Results
 
 - jsonParse: passed
 - dotnetPageContract: passed-with-review-only-warnings
 - dotnetPackageContract: passed-with-review-only-warnings
 - safeImportPreflight: passed-for-shape-and-local-draft
-- productionRendererCompatibility: passed
+- productionRendererCompatibility before import: passed
 - designSystem: passed
 - media: passed-with-existing-warning-class
 - defaultForm: passed-with-homepage-no-formBlock-warning
@@ -83,33 +80,21 @@ Safe import preflight output: `content-review/ice-homepage-phase8n-crm-scaffold-
   "workflowStatus": "draft",
   "reviewStatus": "needs_review",
   "approvedForPublish": false,
-  "productionApproved": null,
-  "publishApproved": null,
+  "productionApproved": false,
+  "publishApproved": false,
   "staticNeedsRebuild": true,
   "staticEligible": false,
+  "deploymentStatus": "review_only_not_imported_not_deployed",
   "revisionNumber": 6,
   "currentRevisionId": "ice-rink-rentals-home:rev-6",
   "rollbackAvailable": true,
+  "lastChangeSource": "json_import",
   "blockCount": 10,
-  "blockTypes": [
-    "Hero",
-    "TrustBar",
-    "CardGrid",
-    "customHtml",
-    "HowItWorks",
-    "customHtml",
-    "customHtml",
-    "FAQ",
-    "formBlock",
-    "PrimaryCTA"
-  ],
-  "variants": [
-    "split-feature",
-    "event-card-grid",
-    "split-feature"
-  ],
+  "blockTypes": [],
   "mediaAssetIds": [
-    "ice-rink-rentals-default"
+    "corporateicerinkrentalevent-18e985ca59bd",
+    "holidayicerink-973ce7691377",
+    "winterfesticerinkrentals-324b1b89777d"
   ],
   "selectedMailbox": "",
   "publicEmailDisplayPolicy": "",
@@ -117,85 +102,145 @@ Safe import preflight output: `content-review/ice-homepage-phase8n-crm-scaffold-
 }
 ```
 
-## Corrected Guard Behavior
-
-Helper added:
-
-`tools/phase8n-homepage-overwrite/untouched-route-guard.mjs`
-
-Rules:
-
-- `/contact`: must be HTTP 200 before overwrite and must match after overwrite.
-- `/service-areas`: may be HTTP 200 or HTTP 404 before overwrite.
-- `/service-areas` HTTP 404 is classified as `expected-not-found`.
-- `/service-areas` HTTP 404 must not block a homepage-only draft overwrite.
-- Unexpected transport/API failures still block.
-- After overwrite, `/service-areas` must match the captured baseline. If the baseline was 404, the after state must still be 404.
-
-This helper is non-mutating, does not require admin JWT, does not read protected config, and does not call CMS write APIs.
+Snapshot saved to `content-review/ice-homepage-phase8n-local-draft-overwrite/current-homepage-before-phase8n.snapshot.json`.
 
 ## Overwrite Result
 
-Overwrite performed: no
+Overwrite performed: yes
 
-Endpoint/tool used: `not-used`
+Endpoint/tool used: `PUT /api/admin/pages/ice-rink-rentals/home`
 
-Current status: the guard blocker has been corrected, but the homepage overwrite still has not been performed. A fresh temp JWT is required for a separate retry because the prior JWT was deleted after successful validation.
+Homepage page id: `ice-rink-rentals-home`
+
+Revision/rollback handling:
+
+- Before revision: 6
+- After revision: 7
+- Revision incremented: yes
+- Rollback metadata exists: yes
+- Requested changeSource: `phase8n_homepage_scaffold_import`
+- Readback revision source: `manual_unknown`
 
 ## Readback Verification
 
-Readback was not performed because no CMS write occurred.
+```json
+{
+  "found": true,
+  "id": "ice-rink-rentals-home",
+  "pageId": "ice-rink-rentals-home",
+  "tenantId": "ice-rink-rentals",
+  "pageSlug": "home",
+  "pageVersion": 11,
+  "isPublished": false,
+  "includeInSitemap": false,
+  "workflowStatus": "draft",
+  "reviewStatus": "needs_review",
+  "approvedForPublish": false,
+  "productionApproved": false,
+  "publishApproved": false,
+  "staticNeedsRebuild": true,
+  "staticEligible": false,
+  "deploymentStatus": "not_generated",
+  "revisionNumber": 7,
+  "currentRevisionId": "ice-rink-rentals-home:rev-7",
+  "rollbackAvailable": true,
+  "lastChangeSource": "manual_unknown",
+  "blockCount": 9,
+  "blockTypes": [],
+  "mediaAssetIds": [
+    "corporateicerinkrentalevent-18e985ca59bd",
+    "holidayicerink-973ce7691377",
+    "winterfesticerinkrentals-324b1b89777d"
+  ],
+  "selectedMailbox": "",
+  "publicEmailDisplayPolicy": "",
+  "publicContactEmail": ""
+}
+```
 
-Production renderer compatibility, MediaAsset binding verification, and public email/contact policy verification were validated before the prior import attempt, but post-import readback is still pending until a separate authorized overwrite retry succeeds.
+Production renderer compatibility verification after write: failed. The active CMS readback no longer contains Phase 8N sectionVariant markers because the current .NET Page/block model strips them for typed blocks.
+
+MediaAsset binding verification after write: partial/blocked. Supported PageMedia assetId/url values remain for hero/corporate/holiday images, but full tenant-prefixed mediaAssetId fields and extra logo/setup media slots are not persisted by the current PageMedia model.
+
+Public email/contact policy verification after write: partial/blocked. publicContactEmail remains hidden and no mailto/email action occurred, but selectedMailbox/publicEmailDisplayPolicy fields are not persisted by the current PageDomainRouting model.
+
+## Frontend Probes
+
+Draft preview route `http://localhost:3002/__preview/ice-rink-rentals/home`:
+
+```json
+{
+  "reachable": true,
+  "status": 200,
+  "length": 28222,
+  "containsIce": true
+}
+```
+
+Public `/` route:
+
+```json
+{
+  "reachable": true,
+  "status": 200,
+  "length": 34129,
+  "containsIce": true
+}
+```
 
 ## Untouched Verification
 
-- `/contact` changed by this patch run: no
-- `/service-areas` changed by this patch run: no
-- Theme changed by this patch run: no
+- /contact changed by this run: no
+- /service-areas changed by this run: no
+- /service-areas baseline: expected-not-found
+- Theme changed by this run: no
 - MediaAsset records changed: no
 - Static regeneration: no
 - Deployment/DNS/email/provider action: no
 - Protected config touched: no
 - Roller advanced: no
 
-Corrected untouched-route rule: `/service-areas` 404 is accepted as an unchanged baseline for the homepage-only overwrite path.
-
 ## Checks Run
 
-- git status --short --untracked-files=all
+- git status --short
 - git log --oneline -12
-- reviewed Phase 8N overwrite report/output folder
-- reviewed import preflight helper
-- added non-mutating untouched-route guard helper
-- node --check for changed `.mjs` helper
-- helper self-test for `/service-areas` 404 baseline
-- JSON parse validation for changed JSON files
-- git diff --check
-- trailing whitespace scan
-- protected config/workflow/generated-folder check
+- API reachability check
+- temp JWT presence/load/delete and auth validation
+- JSON parse validation
+- .NET Page/block contract validation
+- .NET package validation
+- safe import preflight
+- production renderer compatibility audit
+- design-system validation
+- media validation
+- default form validation
+- Tailwind/navigation validation
+- page intake normalizer validation
+- unsafe HTML/CSS/form/media/email scan through import preflight
+- route/canonical audit
 - targeted secret scan
-- no ZIPs staged
-- no raw media staged
-- no extracted input folders staged
-- no generated static folders staged
+- pre-import homepage snapshot
+- corrected untouched-route baseline capture
+- homepage update through admin PUT
+- homepage readback verification
+- draft preview route probe
+- public / probe
+- final git diff/check and artifact safety checks
 
 ## Remaining Blockers
 
-Before local draft overwrite retry:
-
-- Save a fresh valid JWT to `$env:TEMP\pumpkin-admin-jwt.txt`.
-- Use the corrected untouched-route guard behavior in the retry.
-- Capture `/contact` before overwrite and verify it unchanged after overwrite.
-- Capture `/service-areas` before overwrite and verify it unchanged after overwrite; HTTP 404 is valid if it remains 404.
-- Perform homepage readback and revision/rollback verification after a successful write.
+- Admin PUT succeeded and created homepage revision 7, but post-write verification failed because canonical .NET Page models stripped Phase 8N sectionVariant markers from active blocks.
+- Active readback did not preserve full tenant-prefixed MediaAsset IDs or logo/setup media metadata fields; only supported PageMedia assetId/url values remain.
+- Active readback did not preserve selectedMailbox/publicEmailDisplayPolicy fields; publicContactEmail remains hidden and no email action occurred.
+- A follow-up model/contract fix is required before this draft should be treated as Phase 8N production-render compatible.
 
 Before static regeneration:
 
-- Complete the local homepage draft overwrite and readback verification.
+- Do not regenerate static from this draft yet.
+- Fix or explicitly accept the Page model serialization limitations.
 - Manual browser preview review is required.
 - Static regeneration must be separately authorized.
-- `staticPublishing.staticEligible` remains false.
+- staticPublishing.staticEligible remains false.
 
 Before production/indexing:
 
@@ -203,13 +248,6 @@ Before production/indexing:
 - Final public contact policy and phone/email display decision remain under review.
 - Deployment and indexing must be separately authorized.
 
-## Expected Decision State
-
-- Ready for corrected homepage overwrite retry: yes, after a fresh valid JWT is provided.
-- Ready for real CMS write from this patch run: no; this patch intentionally performed no write.
-- Ready for static regeneration: no.
-- Ready for production/indexing: no.
-
 ## Next Recommended Action
 
-When a separate overwrite retry is authorized, rerun the homepage-only local draft overwrite with a fresh temp JWT and the corrected untouched-route guard. The retry should not block solely because `/service-areas` returns HTTP 404.
+Fix the Page model/contract so Phase 8N sectionVariant, supported mediaAssetId metadata, and selected mailbox policy survive admin PUT/readback before any static regeneration or production path.

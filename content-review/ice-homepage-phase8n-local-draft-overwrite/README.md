@@ -6,8 +6,7 @@ Homepage-only local draft overwrite for IceSkatingRinkRentals.com using the Phas
 - API: reachable
 - Admin auth: VALID
 - Temp JWT deleted after load: yes
-- Overwrite performed: no
-- Endpoint: `not-used`
-- Guard correction: `/service-areas` HTTP 404 is accepted as `expected-not-found` baseline for the next homepage-only retry.
-- Helper: `tools/phase8n-homepage-overwrite/untouched-route-guard.mjs`
+- Overwrite performed: yes
+- Endpoint: `PUT /api/admin/pages/ice-rink-rentals/home`
+- /service-areas 404 policy: accepted as expected-not-found baseline
 - RollerRinkRentals.com: paused

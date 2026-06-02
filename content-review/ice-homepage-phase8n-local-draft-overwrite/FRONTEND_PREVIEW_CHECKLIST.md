@@ -1,6 +1,6 @@
 # Frontend Preview Checklist
 
-Draft preview route probe:
+Draft preview route: `http://localhost:3002/__preview/ice-rink-rentals/home`
 
 ```json
 {
@@ -11,15 +11,15 @@ Draft preview route probe:
 }
 ```
 
-Public / route probe:
+Public route: `http://localhost:3002/`
 
 ```json
 {
   "reachable": true,
   "status": 200,
-  "length": 34091,
+  "length": 34129,
   "containsIce": true
 }
 ```
 
-Manual browser review is still required. The preview route page loads locally; draft content still requires a browser session token in the preview UI.
+Both probes returned HTTP 200, but manual browser review remains required. The readback currently lacks Phase 8N sectionVariant markers, so this draft should not be treated as production-render compatible until the model/contract issue is fixed.
