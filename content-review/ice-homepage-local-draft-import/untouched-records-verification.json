@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "pumpkin-untouched-records-verification.v1",
+  "createdAt": "2026-06-02T18:27:07.448Z",
+  "tenantId": "ice-rink-rentals",
+  "contact": {
+    "beforeHash": "a10869473fcd0818e278ee075e622b005b12a49dc8f2fb65fa119c5cf43e7b0c",
+    "afterHash": "a10869473fcd0818e278ee075e622b005b12a49dc8f2fb65fa119c5cf43e7b0c",
+    "untouched": true,
+    "existedBefore": true,
+    "existsAfter": true
+  },
+  "serviceAreas": {
+    "beforeHash": null,
+    "afterHash": null,
+    "untouched": true,
+    "existedBefore": false,
+    "existsAfter": false
+  },
+  "themes": {
+    "beforeHash": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e",
+    "afterHash": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e",
+    "untouched": true,
+    "readStatus": "fetched"
+  }
+}

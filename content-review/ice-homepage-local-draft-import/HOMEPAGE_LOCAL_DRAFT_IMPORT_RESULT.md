@@ -1,29 +1,24 @@
 # Homepage Local Draft Import Result
 
-Import performed: no
+Import performed: yes
 
-Reason:
-
-```text
-Admin authentication was missing from both allowed sources.
-```
-
-Allowed auth sources checked:
-
-- `PUMPKIN_ADMIN_JWT`: `MISSING`
-- `$env:TEMP\pumpkin-admin-jwt.txt`: `MISSING`
-
-No CMS write endpoint was called. The intended write endpoint, if auth had been valid and an existing homepage was found, was:
+Endpoint/tool used:
 
 ```text
 PUT /api/admin/pages/ice-rink-rentals/home?changeSource=json_import
 ```
 
-If no homepage record existed, the create endpoint would have been considered only for route `/` / slug `home`:
+Homepage page id:
 
 ```text
-POST /api/admin/pages/ice-rink-rentals
+ice-rink-rentals-home
 ```
 
-No Page, Theme, MediaAsset, contact page, service-area page, static package, deployment, DNS, provider, or email action occurred.
+Revision/rollback handling:
 
+- Existing homepage found before import: yes
+- Rollback available after import: yes
+- Revision number after import: 6
+- Static needsRebuild after import: true
+
+No production approval, static regeneration, deployment, DNS/provider/email action, Theme write, MediaAsset write, contact page write, or service-area page write was performed.

@@ -1,8 +1,6 @@
 # Pre-Import Validation
 
-Validation was run before any CMS write.
-
-## Results
+Validation was run before the CMS write.
 
 | Check | Result |
 | --- | --- |
@@ -19,18 +17,4 @@ Validation was run before any CMS write.
 | Placeholder/route/canonical audit | passed |
 | Targeted secret scan | passed |
 
-## Local Draft Import Classification
-
-Safe preflight result:
-
-- `preflight-valid-for-shape`: true
-- `preflight-valid-for-local-draft-import`: true
-- `preflight-valid-for-CMS-import`: false
-- `preflight-valid-for-production`: false
-
-CMS import, static regeneration, and production remain blocked by approval and public contact policy gates.
-
-## Blocking State
-
-No validation error blocked local draft import. The import was blocked later by missing admin authentication before any CMS write.
-
+Safe preflight local draft import blockers: none.

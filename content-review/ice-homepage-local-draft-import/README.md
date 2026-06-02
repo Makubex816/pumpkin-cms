@@ -2,14 +2,7 @@
 
 Date: June 2, 2026
 
-This folder records the authorized homepage-only local CMS draft import attempt for IceSkatingRinkRentals.com.
-
-The import was not performed because admin authentication was missing from both allowed sources:
-
-- `PUMPKIN_ADMIN_JWT` process environment variable
-- `$env:TEMP\pumpkin-admin-jwt.txt`
-
-No CMS Page, Theme, MediaAsset, contact page, service-area page, static package, deployment, DNS, provider, or email action was performed. RollerRinkRentals.com remains paused.
+This folder records the completed homepage-only local CMS draft import for IceSkatingRinkRentals.com.
 
 Selected candidate:
 
@@ -17,3 +10,15 @@ Selected candidate:
 content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json
 ```
 
+Import result:
+
+- Admin auth: VALID
+- Import performed: yes
+- Endpoint used: `PUT /api/admin/pages/ice-rink-rentals/home?changeSource=json_import`
+- Homepage page id: `ice-rink-rentals-home`
+- Readback performed: yes
+- Contact page changed: no
+- Service-area page changed: no
+- Theme records changed: no
+- Static regeneration/deployment/DNS/email/provider actions: none
+- RollerRinkRentals.com: paused

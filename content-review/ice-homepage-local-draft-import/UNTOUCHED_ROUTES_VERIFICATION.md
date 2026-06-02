@@ -1,14 +1,16 @@
 # Untouched Routes Verification
 
-No CMS write endpoint was called because admin authentication was missing.
+Verification source:
 
-Therefore:
+```text
+content-review/ice-homepage-local-draft-import/untouched-records-verification.json
+```
 
-- `/contact` was not updated.
-- `/service-areas` was not updated.
-- `/state-city` was not created.
-- Theme records were not updated.
-- MediaAsset records were not updated.
+Results:
 
-Authenticated before/after route comparison was not possible because admin auth was missing.
+- /contact changed: no
+- /service-areas changed: no
+- Theme records changed: no
+- /state-city created: no
 
+Only the homepage route / slug `home` was written.

@@ -1,14 +1,21 @@
 {
-  "schemaVersion": "pumpkin-homepage-before-import-snapshot.v1",
-  "createdAt": "2026-06-02T18:27:06.849Z",
+  "schemaVersion": "pumpkin-homepage-local-draft-import-result.v1",
+  "createdAt": "2026-06-02T18:27:07.448Z",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
-  "route": "/",
-  "pageSlug": "home",
-  "snapshotStatus": "fetched",
-  "adminAuthStatus": "VALID",
-  "cmsWriteAttempted": false,
-  "pageSummary": {
+  "selectedCandidatePath": "content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+  "adminAuth": {
+    "source": "PRESENT_TEMP_FILE",
+    "validation": "VALID",
+    "tempFileDeleted": true,
+    "jwtPrinted": false
+  },
+  "importPerformed": true,
+  "importMode": "update-existing-homepage",
+  "endpointUsed": "PUT /api/admin/pages/ice-rink-rentals/home?changeSource=json_import",
+  "beforeHomeFound": true,
+  "homepagePageId": "ice-rink-rentals-home",
+  "beforeSummary": {
     "id": "ice-rink-rentals-home",
     "pageId": "ice-rink-rentals-home",
     "tenantId": "ice-rink-rentals",
@@ -372,224 +379,56 @@
     "includeInSitemap": true,
     "updatedAt": "2026-05-22T17:15:23.3867074Z"
   },
-  "page": {
+  "afterSummary": {
     "id": "ice-rink-rentals-home",
-    "PageId": "ice-rink-rentals-home",
+    "pageId": "ice-rink-rentals-home",
     "tenantId": "ice-rink-rentals",
+    "siteKey": "",
+    "route": "",
+    "path": "",
+    "slug": "",
     "pageSlug": "home",
-    "PageVersion": 9,
-    "Layout": "default",
-    "MetaData": {
-      "category": "Rentals",
-      "product": "portable ice rink",
-      "keyword": "portable ice rink rentals",
-      "pageType": "Home",
-      "title": "Portable Ice Rink Rentals for Events",
-      "description": "Portable ice rink rentals for events, schools, towns, corporate parties, and holiday activations.",
-      "createdAt": "2026-05-13T01:47:30.1244098Z",
-      "updatedAt": "2026-05-22T17:15:23.3867074Z",
-      "author": "Pumpkin CMS",
-      "language": "en-us",
-      "market": "US"
-    },
-    "searchData": {
-      "state": "",
-      "city": "",
-      "metro": "",
-      "county": "",
-      "keyword": "portable ice rink rentals",
-      "tags": [
-        "ice rink rentals",
-        "portable ice rink",
-        "holiday activations"
-      ],
-      "contentSummary": "Portable ice rink rental planning and quote support.",
-      "blockTypes": [
-        "Hero"
-      ]
-    },
-    "ContentData": {
-      "ContentBlocks": [
-        {
-          "type": "Hero",
-          "content": {
-            "type": "Main",
-            "headline": "Portable Ice Rink Rentals for Events",
-            "subheadline": "Portable rink rentals for events, schools, towns, corporate parties, and holiday activations.",
-            "backgroundImage": "",
-            "backgroundImageAltText": "",
-            "mainImage": "",
-            "mainImageAltText": "",
-            "buttonText": "Get a Quote",
-            "buttonLink": "/contact"
-          }
-        }
-      ]
-    },
-    "contentRelationships": {
-      "isHub": false,
-      "hubPageSlug": "",
-      "topicCluster": "ice-rink-rentals",
-      "relatedHubs": [],
-      "spokePriority": 0
-    },
-    "seo": {
-      "metaTitle": "Portable Ice Rink Rentals for Events",
-      "metaDescription": "Portable ice rink rentals for events, schools, towns, corporate parties, and holiday activations.",
-      "keywords": [
-        "portable ice rink rentals",
-        "ice rink rentals"
-      ],
-      "robots": "index, follow",
-      "canonicalUrl": "https://iceskatingrinkrentals.com/",
-      "alternateUrls": [],
-      "structuredData": [],
-      "openGraph": {
-        "og:title": "Portable Ice Rink Rentals for Events",
-        "og:description": "Portable ice rink rentals for events, schools, towns, corporate parties, and holiday activations.",
-        "og:type": "website",
-        "og:url": "https://iceskatingrinkrentals.com/",
-        "og:image": "",
-        "og:image:alt": "",
-        "og:site_name": "Ice Skating Rink Rentals",
-        "og:locale": "en_US"
-      },
-      "twitterCard": {
-        "twitter:card": "summary_large_image",
-        "twitter:title": "Portable Ice Rink Rentals for Events",
-        "twitter:description": "Portable ice rink rentals for events, schools, towns, corporate parties, and holiday activations.",
-        "twitter:image": "",
-        "twitter:site": "",
-        "twitter:creator": ""
-      }
-    },
-    "isPublished": true,
-    "publishedAt": "2026-05-13T01:47:30.1244098Z",
-    "includeInSitemap": true,
-    "previousSlugs": [],
-    "redirects": [],
-    "sitemapChangeFrequency": "",
-    "media": {
-      "featuredImage": {
-        "assetId": "",
-        "url": "",
-        "alt": "",
-        "title": "",
-        "caption": "",
-        "source": "",
-        "licenseStatus": "needs_review",
-        "usageStatus": "needs_review",
-        "decorative": false
-      },
-      "heroImage": {
-        "assetId": "",
-        "url": "",
-        "alt": "",
-        "title": "",
-        "caption": "",
-        "source": "",
-        "licenseStatus": "needs_review",
-        "usageStatus": "needs_review",
-        "decorative": false
-      },
-      "localImage": {
-        "assetId": "",
-        "url": "",
-        "alt": "",
-        "title": "",
-        "caption": "",
-        "source": "",
-        "licenseStatus": "needs_review",
-        "usageStatus": "needs_review",
-        "decorative": false
-      },
-      "closingImage": {
-        "assetId": "",
-        "url": "",
-        "alt": "",
-        "title": "",
-        "caption": "",
-        "source": "",
-        "licenseStatus": "needs_review",
-        "usageStatus": "needs_review",
-        "decorative": false
-      },
-      "openGraphImage": {
-        "url": "",
-        "alt": ""
-      }
-    },
-    "fulfillment": {
-      "fulfillmentStatus": "research_only_until_provider_confirmed",
-      "primaryPartnerAvailable": false,
-      "manualReviewRequired": true,
-      "providerResearchCompleted": false,
-      "topProviderCount": 0,
-      "leadRoutingMode": "manual_review_then_provider_match",
-      "publicDisclosureRequired": true,
-      "confirmedServiceStates": [],
-      "extendedStatesPossible": []
-    },
-    "googleAds": {
-      "eligible": false,
-      "finalUrl": "",
-      "landingPageType": "",
-      "campaignTheme": "",
-      "conversionGoals": [],
-      "notes": "",
-      "policyRisk": "unknown",
-      "bridgePageRisk": "unknown",
-      "requiresDisclosure": true
-    },
-    "pageQuality": {
-      "status": "needs_review",
-      "warnings": [],
-      "blockingIssues": [],
-      "lastCheckedAt": "2026-05-19T19:46:29.742Z",
-      "uniqueValueReason": "",
-      "buyerIntent": "",
-      "landingPageType": "",
-      "launchNotes": "Phase 7C: source metadata repaired; manual approval remains required before production cutover."
-    },
+    "canonicalUrl": "https://iceskatingrinkrentals.com/",
     "workflow": {
-      "status": "published",
+      "status": "draft",
       "reviewStatus": "needs_review",
       "approvedForPublish": false,
       "approvedBy": "",
       "approvedAt": "",
-      "lastEditedBy": "phase7c-repair",
-      "lastEditedAt": "2026-05-22T17:15:23.152Z"
+      "lastEditedBy": "admin@pumpkincms.io",
+      "lastEditedAt": "2026-06-02T18:27:07.0024636Z"
     },
+    "pageVersion": 10,
     "revision": {
-      "currentRevisionId": "ice-rink-rentals-home:rev-5",
-      "revisionNumber": 5,
-      "revisionLabel": "",
-      "lastSnapshotAt": "2026-05-22T17:15:23.152Z",
-      "lastRevisionAt": "2026-05-22T17:15:23.152Z",
-      "lastRevisionBy": "phase7c-repair",
+      "currentRevisionId": "ice-rink-rentals-home:rev-6",
+      "revisionNumber": 6,
+      "revisionLabel": "homepage-local-draft-import",
+      "lastSnapshotAt": "2026-06-02T18:27:07.0024636Z",
+      "lastRevisionAt": "2026-06-02T18:27:07.0024636Z",
+      "lastRevisionBy": "admin@pumpkincms.io",
       "rollbackAvailable": true,
       "rollbackNotes": "Latest pre-update snapshot is available for rollback.",
-      "lastChangeSummary": "Phase 7C page-quality source repair",
-      "lastChangedBy": "phase7c-repair",
-      "lastChangeSource": "metadata_repair",
-      "lastChangeAt": "2026-05-22T17:15:23.152Z",
+      "lastChangeSummary": "Homepage-only local draft import for Ice review",
+      "lastChangedBy": "admin@pumpkincms.io",
+      "lastChangeSource": "json_import",
+      "lastChangeAt": "2026-06-02T18:27:07.0024636Z",
       "latestSnapshot": {
-        "revisionId": "ice-rink-rentals-home:rev-4",
+        "revisionId": "ice-rink-rentals-home:rev-5",
         "tenantId": "ice-rink-rentals",
         "pageId": "ice-rink-rentals-home",
         "pageSlug": "home",
-        "pageVersion": 8,
-        "revisionNumber": 4,
-        "snapshotAt": "2026-05-22T17:15:23.152Z",
-        "changeSource": "metadata_repair",
-        "changeSummary": "Phase 7C page-quality source repair",
-        "changedBy": "phase7c-repair",
+        "pageVersion": 9,
+        "revisionNumber": 5,
+        "snapshotAt": "2026-06-02T18:27:07.0024636Z",
+        "changeSource": "json_import",
+        "changeSummary": "Homepage-only local draft import for Ice review",
+        "changedBy": "admin@pumpkincms.io",
         "page": {
           "id": "ice-rink-rentals-home",
           "PageId": "ice-rink-rentals-home",
           "tenantId": "ice-rink-rentals",
           "pageSlug": "home",
-          "PageVersion": 8,
+          "PageVersion": 9,
           "Layout": "default",
           "MetaData": {
             "category": "Rentals",
@@ -599,7 +438,7 @@
             "title": "Portable Ice Rink Rentals for Events",
             "description": "Portable ice rink rentals for events, schools, towns, corporate parties, and holiday activations.",
             "createdAt": "2026-05-13T01:47:30.1244098Z",
-            "updatedAt": "2026-05-19T19:46:29.755206Z",
+            "updatedAt": "2026-05-22T17:15:23.3867074Z",
             "author": "Pumpkin CMS",
             "language": "en-us",
             "market": "US"
@@ -737,8 +576,8 @@
             "manualReviewRequired": true,
             "providerResearchCompleted": false,
             "topProviderCount": 0,
-            "leadRoutingMode": "unmet_demand_followup",
-            "publicDisclosureRequired": false,
+            "leadRoutingMode": "manual_review_then_provider_match",
+            "publicDisclosureRequired": true,
             "confirmedServiceStates": [],
             "extendedStatesPossible": []
           },
@@ -751,7 +590,7 @@
             "notes": "",
             "policyRisk": "unknown",
             "bridgePageRisk": "unknown",
-            "requiresDisclosure": false
+            "requiresDisclosure": true
           },
           "pageQuality": {
             "status": "needs_review",
@@ -761,33 +600,33 @@
             "uniqueValueReason": "",
             "buyerIntent": "",
             "landingPageType": "",
-            "launchNotes": ""
+            "launchNotes": "Phase 7C: source metadata repaired; manual approval remains required before production cutover."
           },
           "workflow": {
-            "status": "draft",
+            "status": "published",
             "reviewStatus": "needs_review",
             "approvedForPublish": false,
             "approvedBy": "",
             "approvedAt": "",
-            "lastEditedBy": "admin@pumpkincms.io",
-            "lastEditedAt": "2026-05-19T19:46:29.7552060Z"
+            "lastEditedBy": "phase7c-repair",
+            "lastEditedAt": "2026-05-22T17:15:23.152Z"
           },
           "revision": {
-            "currentRevisionId": "ice-rink-rentals-home:rev-4",
-            "revisionNumber": 4,
+            "currentRevisionId": "ice-rink-rentals-home:rev-5",
+            "revisionNumber": 5,
             "revisionLabel": "",
-            "lastSnapshotAt": "2026-05-19T19:46:29.7552060Z",
-            "lastRevisionAt": "2026-05-19T19:46:29.7552060Z",
-            "lastRevisionBy": "admin@pumpkincms.io",
+            "lastSnapshotAt": "2026-05-22T17:15:23.152Z",
+            "lastRevisionAt": "2026-05-22T17:15:23.152Z",
+            "lastRevisionBy": "phase7c-repair",
             "rollbackAvailable": true,
             "rollbackNotes": "Latest pre-update snapshot is available for rollback.",
-            "lastChangeSummary": "Metadata repair: workflow, template, pageQuality, formConfig, staticPublishing, linking, fulfillmentGoogleAds, media, schemaControls",
-            "lastChangedBy": "admin@pumpkincms.io",
+            "lastChangeSummary": "Phase 7C page-quality source repair",
+            "lastChangedBy": "phase7c-repair",
             "lastChangeSource": "metadata_repair",
-            "lastChangeAt": "2026-05-19T19:46:29.7552060Z"
+            "lastChangeAt": "2026-05-22T17:15:23.152Z"
           },
           "staticPublishing": {
-            "staticEligible": false,
+            "staticEligible": true,
             "needsRebuild": true,
             "lastSnapshotAt": "",
             "lastStaticBuildAt": "",
@@ -851,20 +690,20 @@
           },
           "formDefinitions": [],
           "domainRouting": {
-            "domain": "",
-            "brandName": "",
+            "domain": "iceskatingrinkrentals.com",
+            "brandName": "Ice Skating Rink Rentals",
             "publicContactEmail": "",
             "quoteRequestEmail": "",
             "supportEmail": "",
             "replyToEmail": "",
             "fromName": "",
             "fromEmail": "",
-            "contactPageSlug": "",
+            "contactPageSlug": "contact",
             "primaryPhone": "",
             "mailtoLinksEnabled": false,
-            "defaultLeadRoutingMode": "",
-            "defaultRecipientGroup": "",
-            "staticFormEndpointKey": "",
+            "defaultLeadRoutingMode": "manual_review_then_provider_match",
+            "defaultRecipientGroup": "local_admin",
+            "staticFormEndpointKey": "ice-rink-rentals-default",
             "emailProvider": "",
             "emailProviderStatus": "",
             "mxStatus": "",
@@ -891,105 +730,55 @@
       }
     },
     "staticPublishing": {
-      "staticEligible": true,
+      "staticEligible": false,
       "needsRebuild": true,
       "lastSnapshotAt": "",
       "lastStaticBuildAt": "",
       "lastDeployedAt": "",
       "contentHash": "",
       "lastPublishedContentHash": "",
-      "deploymentStatus": "not_deployed"
+      "deploymentStatus": "review_only_not_imported_not_deployed"
     },
-    "template": {
-      "templateKey": "home",
-      "templateVersion": "1",
-      "layoutVariant": "default",
-      "contentModelVersion": "1"
-    },
-    "linking": {
-      "hubPage": "",
-      "parentPage": "",
-      "relatedPages": [],
-      "requiredLinks": [],
-      "breadcrumbTrail": [
-        "home"
-      ]
-    },
-    "schemaControls": {
-      "enableWebPageSchema": true,
-      "enableBreadcrumbSchema": true,
-      "enableFAQSchema": true,
-      "enableServiceSchema": true,
-      "schemaWarnings": []
-    },
-    "serviceSchema": {
-      "serviceName": "",
-      "serviceType": "",
-      "serviceCategory": "",
-      "productsOffered": [],
-      "areasServed": [],
-      "audience": [],
-      "eventTypes": [],
-      "schemaOutputMode": "",
-      "publicSchemaEnabled": false,
-      "notes": ""
-    },
-    "formConfig": {
-      "formId": "",
-      "formType": "not_configured",
-      "conversionGoal": "",
-      "routingMode": "not_configured",
-      "domainRoutingKey": "",
-      "replyToMode": "",
-      "emailSubjectTemplate": "",
-      "mailtoFallbackEnabled": false,
-      "thankYouUrl": "",
-      "thankYouMessage": "",
-      "recipientGroup": "",
-      "staticFormEndpointKey": "",
-      "normalizedFieldMap": {},
-      "requiresConsent": true,
-      "consentRequired": true,
-      "spamProtectionRequired": true,
-      "spamProtectionEnabled": false
-    },
-    "formDefinitions": [],
-    "domainRouting": {
-      "domain": "iceskatingrinkrentals.com",
-      "brandName": "Ice Skating Rink Rentals",
-      "publicContactEmail": "",
-      "quoteRequestEmail": "",
-      "supportEmail": "",
-      "replyToEmail": "",
-      "fromName": "",
-      "fromEmail": "",
-      "contactPageSlug": "contact",
-      "primaryPhone": "",
-      "mailtoLinksEnabled": false,
-      "defaultLeadRoutingMode": "manual_review_then_provider_match",
-      "defaultRecipientGroup": "local_admin",
-      "staticFormEndpointKey": "ice-rink-rentals-default",
-      "emailProvider": "",
-      "emailProviderStatus": "",
-      "mxStatus": "",
-      "spfStatus": "",
-      "dkimStatus": "",
-      "dmarcStatus": "",
-      "notes": ""
-    },
-    "importProvenance": {
-      "lastImportBatchId": "",
-      "sourceFile": "",
-      "sourceRow": "",
-      "externalId": "",
-      "lockedFields": [],
-      "overwriteBehavior": "warn"
-    },
-    "deploymentHooks": {
-      "deploymentId": "",
-      "buildId": "",
-      "buildWarningCount": 0,
-      "publishSource": ""
-    }
+    "isPublished": false,
+    "includeInSitemap": false,
+    "updatedAt": "2026-06-02T18:27:07.0024636Z"
+  },
+  "verification": {
+    "routeHome": true,
+    "pageSlugHome": true,
+    "tenantId": true,
+    "siteKeyCompatible": true,
+    "notPublished": true,
+    "workflowDraft": true,
+    "notProductionApproved": true,
+    "mediaAssetIdsPresent": true,
+    "contactPolicyPresent": true,
+    "publicEmailHidden": true,
+    "publicPhoneEmpty": true,
+    "contactUntouched": true,
+    "serviceAreasUntouched": true,
+    "themesUntouched": true,
+    "needsRebuild": true,
+    "staticEligibleConservative": true,
+    "rollbackAvailableOrCreated": true,
+    "pageMediaAssetIdsPresent": true,
+    "pageMediaAssetIdContract": "Page.media.*.assetId stores MediaAsset.assetId values; tenant-scoped MediaAsset record ids remain documented in the source candidate mediaRequirements."
+  },
+  "frontendPreview": {
+    "reachable": true,
+    "status": 200,
+    "textSample": "<!DOCTYPE html><html lang=\"en\" class=\"__variable_f367f3\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1780424827141\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1780424827141\"/><script src=\"/_next/static/chunks/main-app.js?v=1780424827141\" async=\"\"></script><script src=\"/_next/static/",
+    "containsLikelyHomepage": true
+  },
+  "safety": {
+    "contactPageChanged": false,
+    "serviceAreasPageChanged": false,
+    "themeRecordsChanged": false,
+    "mediaAssetsChangedByThisRun": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "dnsProviderEmailActionPerformed": false,
+    "protectedConfigRead": false,
+    "rollerStatus": "paused"
   }
 }

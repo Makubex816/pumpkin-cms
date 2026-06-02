@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
   "phase": "ice-homepage-local-draft-import",
-  "createdAt": "2026-06-02T18:20:00Z",
+  "createdAt": "2026-06-02T18:27:07.453Z",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
   "domain": "iceskatingrinkrentals.com",
@@ -11,9 +11,9 @@
     "status": "reachable"
   },
   "adminAuth": {
-    "status": "MISSING",
-    "envVar": "MISSING",
-    "tempFile": "MISSING",
+    "status": "VALID",
+    "source": "PRESENT_TEMP_FILE",
+    "tempFileDeleted": true,
     "jwtPrinted": false
   },
   "validation": {
@@ -31,10 +31,37 @@
     "targetedSecretScan": "passed"
   },
   "importResult": {
-    "performed": false,
-    "blocked": true,
-    "blocker": "admin-auth-missing",
-    "cmsWriteEndpointsCalled": []
+    "performed": true,
+    "mode": "update-existing-homepage",
+    "endpointUsed": "PUT /api/admin/pages/ice-rink-rentals/home?changeSource=json_import",
+    "homepagePageId": "ice-rink-rentals-home"
+  },
+  "verification": {
+    "routeHome": true,
+    "pageSlugHome": true,
+    "tenantId": true,
+    "siteKeyCompatible": true,
+    "notPublished": true,
+    "workflowDraft": true,
+    "notProductionApproved": true,
+    "mediaAssetIdsPresent": true,
+    "contactPolicyPresent": true,
+    "publicEmailHidden": true,
+    "publicPhoneEmpty": true,
+    "contactUntouched": true,
+    "serviceAreasUntouched": true,
+    "themesUntouched": true,
+    "needsRebuild": true,
+    "staticEligibleConservative": true,
+    "rollbackAvailableOrCreated": true,
+    "pageMediaAssetIdsPresent": true,
+    "pageMediaAssetIdContract": "Page.media.*.assetId stores MediaAsset.assetId values; tenant-scoped MediaAsset record ids remain documented in the source candidate mediaRequirements."
+  },
+  "frontendPreview": {
+    "reachable": true,
+    "status": 200,
+    "textSample": "<!DOCTYPE html><html lang=\"en\" class=\"__variable_f367f3\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1780424827141\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1780424827141\"/><script src=\"/_next/static/chunks/main-app.js?v=1780424827141\" async=\"\"></script><script src=\"/_next/static/",
+    "containsLikelyHomepage": true
   },
   "outputFiles": [
     "README.md",
@@ -49,27 +76,26 @@
     "current-homepage-before-import.snapshot.json",
     "homepage-local-draft-imported-readback.json",
     "homepage-local-draft-preflight-result.json",
+    "homepage-local-draft-import-result.json",
+    "untouched-records-verification.json",
     "manifest.json"
   ],
   "safety": {
-    "noCmsPageRecordsChanged": true,
-    "noCmsThemeRecordsChanged": true,
-    "noMediaAssetsChanged": true,
-    "noContactPageChanged": true,
-    "noServiceAreaPageChanged": true,
-    "noStateCityPageCreated": true,
-    "noStaticRegeneration": true,
-    "noDeployment": true,
-    "noDnsProviderEmailAction": true,
-    "noProtectedConfigRead": true,
+    "contactPageChanged": false,
+    "serviceAreasPageChanged": false,
+    "themeRecordsChanged": false,
+    "mediaAssetsChangedByThisRun": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "dnsProviderEmailActionPerformed": false,
+    "protectedConfigRead": false,
     "rollerStatus": "paused"
   },
   "readiness": {
-    "homepageLocalDraftImport": "blocked-admin-auth-missing",
-    "homepageLocalPreview": "not-ready-no-import",
+    "homepageLocalDraftImport": "complete",
+    "homepageLocalPreview": "ready-for-manual-browser-review",
     "cmsProductionImportApproval": "no",
     "staticRegeneration": "no",
     "productionIndexing": "no"
   }
 }
-
