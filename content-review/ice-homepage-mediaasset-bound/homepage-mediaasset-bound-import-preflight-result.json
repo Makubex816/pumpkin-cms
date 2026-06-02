@@ -1,6 +1,6 @@
 {
   "schemaVersion": "pumpkin-import-preflight-result.v1",
-  "generatedAt": "2026-06-02T14:17:31.657Z",
+  "generatedAt": "2026-06-02T17:51:35.671Z",
   "tool": {
     "name": "pumpkin-import-preflight",
     "path": "tools/import-preflight/import-preflight.mjs",
@@ -118,42 +118,8 @@
     },
     {
       "check": "media-requirements",
-      "status": "warning",
-      "message": "6 media requirement(s) remain unresolved.",
-      "category": "media",
-      "field": "mediaRequirements",
-      "details": [
-        {
-          "title": "Ice Rink Rentals Logo",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Winter Festival Ice Rink Rental",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Corporate Ice Rink Rental Event",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Portable Ice Rink Setup",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Holiday Ice Rink Rental",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Winter Festival Ice Rink Rental Open Graph Image",
-          "status": "needs-upload",
-          "usageType": ""
-        }
-      ]
+      "status": "passed",
+      "message": "Required media requirements have MediaAsset ids."
     },
     {
       "check": "business-approval-audit",
@@ -176,11 +142,10 @@
     {
       "check": "dotnet-page-contract",
       "status": "warning",
-      "message": "The .NET contract returned 6 warning(s).",
+      "message": "The .NET contract returned 5 warning(s).",
       "category": "dotnet",
       "field": "candidate",
       "details": [
-        "mediaRequirements.unresolved",
         "page.reviewOnlyField"
       ]
     }
@@ -216,7 +181,7 @@
       "default-quote-request"
     ],
     "mediaRequirementCount": 6,
-    "unresolvedMediaRequirementCount": 6
+    "unresolvedMediaRequirementCount": 0
   },
   "issues": [
     {
@@ -242,171 +207,18 @@
     },
     {
       "severity": "warning",
-      "check": "media-requirements",
-      "category": "media",
-      "field": "mediaRequirements",
-      "message": "6 media requirement(s) remain unresolved.",
-      "details": [
-        {
-          "title": "Ice Rink Rentals Logo",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Winter Festival Ice Rink Rental",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Corporate Ice Rink Rental Event",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Portable Ice Rink Setup",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Holiday Ice Rink Rental",
-          "status": "needs-upload",
-          "usageType": ""
-        },
-        {
-          "title": "Winter Festival Ice Rink Rental Open Graph Image",
-          "status": "needs-upload",
-          "usageType": ""
-        }
-      ]
-    },
-    {
-      "severity": "warning",
       "check": "dotnet-page-contract",
       "category": "dotnet",
       "field": "candidate",
-      "message": "The .NET contract returned 6 warning(s).",
+      "message": "The .NET contract returned 5 warning(s).",
       "details": [
-        "mediaRequirements.unresolved",
         "page.reviewOnlyField"
       ]
     }
   ],
   "blockers": {
-    "localDraftImport": [
-      {
-        "check": "media-requirements",
-        "category": "media",
-        "field": "mediaRequirements",
-        "message": "6 required media requirement(s) have no MediaAsset id; local draft import needs explicit unresolved-media approval.",
-        "details": [
-          {
-            "title": "Ice Rink Rentals Logo",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Winter Festival Ice Rink Rental",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Corporate Ice Rink Rental Event",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Portable Ice Rink Setup",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Holiday Ice Rink Rental",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Winter Festival Ice Rink Rental Open Graph Image",
-            "status": "needs-upload",
-            "usageType": ""
-          }
-        ]
-      }
-    ],
+    "localDraftImport": [],
     "cmsImport": [
-      {
-        "check": "focused-home-contract",
-        "category": "media",
-        "field": "media.heroImage.url",
-        "message": "Required homepage media slot heroImage has no public URL."
-      },
-      {
-        "check": "focused-home-contract",
-        "category": "media",
-        "field": "media.heroImage.assetId",
-        "message": "Required homepage media slot heroImage has no MediaAsset id."
-      },
-      {
-        "check": "focused-home-contract",
-        "category": "media",
-        "field": "media.localImage.url",
-        "message": "Required homepage media slot localImage has no public URL."
-      },
-      {
-        "check": "focused-home-contract",
-        "category": "media",
-        "field": "media.localImage.assetId",
-        "message": "Required homepage media slot localImage has no MediaAsset id."
-      },
-      {
-        "check": "focused-home-contract",
-        "category": "media",
-        "field": "media.closingImage.url",
-        "message": "Required homepage media slot closingImage has no public URL."
-      },
-      {
-        "check": "focused-home-contract",
-        "category": "media",
-        "field": "media.closingImage.assetId",
-        "message": "Required homepage media slot closingImage has no MediaAsset id."
-      },
-      {
-        "check": "media-requirements",
-        "category": "media",
-        "field": "mediaRequirements",
-        "message": "6 required media requirement(s) have no MediaAsset id.",
-        "details": [
-          {
-            "title": "Ice Rink Rentals Logo",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Winter Festival Ice Rink Rental",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Corporate Ice Rink Rental Event",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Portable Ice Rink Setup",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Holiday Ice Rink Rental",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Winter Festival Ice Rink Rental Open Graph Image",
-            "status": "needs-upload",
-            "usageType": ""
-          }
-        ]
-      },
       {
         "check": "approval",
         "category": "workflow",
@@ -450,44 +262,6 @@
     ],
     "staticRegeneration": [
       {
-        "check": "media-requirements",
-        "category": "media",
-        "field": "mediaRequirements",
-        "message": "Static regeneration needs approved MediaAsset-backed media or an explicit placeholder policy.",
-        "details": [
-          {
-            "title": "Ice Rink Rentals Logo",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Winter Festival Ice Rink Rental",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Corporate Ice Rink Rental Event",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Portable Ice Rink Setup",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Holiday Ice Rink Rental",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Winter Festival Ice Rink Rental Open Graph Image",
-            "status": "needs-upload",
-            "usageType": ""
-          }
-        ]
-      },
-      {
         "check": "business-values",
         "category": "serviceSchema",
         "field": "serviceSchema.areasServed",
@@ -501,44 +275,6 @@
       }
     ],
     "production": [
-      {
-        "check": "media-requirements",
-        "category": "media",
-        "field": "mediaRequirements",
-        "message": "Production requires approved MediaAsset-backed images and public URLs.",
-        "details": [
-          {
-            "title": "Ice Rink Rentals Logo",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Winter Festival Ice Rink Rental",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Corporate Ice Rink Rental Event",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Portable Ice Rink Setup",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Holiday Ice Rink Rental",
-            "status": "needs-upload",
-            "usageType": ""
-          },
-          {
-            "title": "Winter Festival Ice Rink Rental Open Graph Image",
-            "status": "needs-upload",
-            "usageType": ""
-          }
-        ]
-      },
       {
         "check": "approval",
         "category": "workflow",
@@ -589,28 +325,27 @@
     "ok": true,
     "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
     "errorCount": 0,
-    "warningCount": 6,
+    "warningCount": 5,
     "warningCodes": [
-      "mediaRequirements.unresolved",
       "page.reviewOnlyField"
     ],
     "mediaRequirements": [
       {
         "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-mediaasset-bound/proposed-homepage.mediaasset-bound-candidate.json",
         "RequirementCount": 6,
-        "BlockerCount": 6
+        "BlockerCount": 0
       }
     ]
   },
   "classification": {
     "preflight-valid-for-shape": true,
-    "preflight-valid-for-local-draft-import": "conditional-with-explicit-unresolved-media-and-review-approval",
+    "preflight-valid-for-local-draft-import": true,
     "preflight-valid-for-CMS-import": false,
     "preflight-valid-for-production": false
   },
   "decisions": {
     "shape": "valid",
-    "localDraftImport": "conditional",
+    "localDraftImport": "valid",
     "cmsImport": "blocked",
     "staticRegeneration": "blocked",
     "production": "blocked"

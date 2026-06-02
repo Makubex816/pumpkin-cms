@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "pumpkin.ice.homepage.mediaasset-bound.manifest.v1",
-  "generatedAt": "2026-06-02T14:15:29.198Z",
+  "schemaVersion": "pumpkin.ice.homepage.mediaasset-bound.manifest.v2",
+  "generatedAt": "2026-06-02T17:51:01.047Z",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
   "domain": "iceskatingrinkrentals.com",
@@ -24,34 +24,40 @@
   ],
   "uploadResult": {
     "apiReachable": true,
-    "adminAuthStatus": "MISSING",
-    "rawMediaFolderExists": false,
-    "uploadAttempted": false,
-    "mediaAssetRecordsCreated": 0,
+    "adminAuthStatus": "PRESENT",
+    "rawMediaFolderExists": true,
+    "uploadAttempted": true,
+    "mediaAssetRecordsCreated": 5,
     "mediaAssetRecordsReused": 0,
-    "realMediaAssetIdsBound": 0,
-    "blocker": "Missing raw media input folder and missing safe admin JWT auth."
+    "realMediaAssetIdsBound": 6,
+    "blocker": ""
   },
   "safety": {
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
     "cmsPageRecordsChanged": false,
     "cmsThemeRecordsChanged": false,
     "contactOrServiceAreaPagesChanged": false,
-    "staticPackagesRegenerated": false,
     "azureUpload": false,
     "cloudflareOrDnsChanged": false,
     "microsoft365Changed": false,
+    "bluehostChanged": false,
     "emailSent": false,
-    "protectedConfigRead": false,
-    "secretsPrinted": false,
-    "rawMediaFilesStaged": false,
-    "rollerStatus": "paused"
+    "staticPackagesRegenerated": false,
+    "rollerStatus": "paused",
+    "apiEndpointsCalled": [
+      "GET /api/admin/ice-rink-rentals/media-assets",
+      "POST /api/admin/ice-rink-rentals/media-assets/upload",
+      "POST /api/admin/ice-rink-rentals/media-assets/upload",
+      "POST /api/admin/ice-rink-rentals/media-assets/upload",
+      "POST /api/admin/ice-rink-rentals/media-assets/upload",
+      "POST /api/admin/ice-rink-rentals/media-assets/upload",
+      "GET /api/admin/ice-rink-rentals/media-assets/{id}",
+      "GET /api/admin/ice-rink-rentals/media-assets/{id}",
+      "GET /api/admin/ice-rink-rentals/media-assets/{id}",
+      "GET /api/admin/ice-rink-rentals/media-assets/{id}",
+      "GET /api/admin/ice-rink-rentals/media-assets/{id}"
+    ]
   },
-  "readiness": {
-    "readyForHumanReview": true,
-    "readyForLocalCmsDraftImport": false,
-    "readyForCmsImport": false,
-    "readyForStaticRegeneration": false,
-    "readyForProductionIndexing": false
-  }
+  "readiness": {}
 }
-

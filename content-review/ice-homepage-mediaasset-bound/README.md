@@ -1,23 +1,19 @@
 # Ice Homepage MediaAsset Binding
 
-This folder records the June 2, 2026 attempt to create/select real local MediaAsset records for the five official Ice homepage media files and bind them into the homepage candidate.
+This folder records the authenticated local MediaAsset creation/reuse and homepage binding package for IceSkatingRinkRentals.com.
 
 ## Result
 
 - API reachable: yes
-- Admin auth: missing
-- Raw media folder: missing at `content-review/ice-homepage-media-input/`
-- Upload attempted: no
-- MediaAsset records created: 0
+- Admin auth: PRESENT and VALID
+- Temp JWT file deleted after load: yes
+- Temp JWT final status: MISSING
+- Raw media files valid: 5 of 5
+- Upload attempted: yes
+- MediaAsset records created: 5
 - MediaAsset records reused: 0
-- Real MediaAsset IDs bound: 0
-- Homepage candidate copied forward: yes, unchanged media IDs remain null
+- Real MediaAsset requirement bindings: 6
 - CMS Page records changed: no
 - CMS Theme records changed: no
 
-## Blocker
-
-The expected raw PNG files are not present in the requested local input folder, and no safe admin JWT is available. The existing upload endpoint requires JWT authentication.
-
 RollerRinkRentals.com remains paused.
-

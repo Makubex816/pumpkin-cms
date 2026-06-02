@@ -2,51 +2,33 @@
 
 ## Source Status
 
-Expected folder: `content-review/ice-homepage-media-input/`
+Raw source folder: `content-review/ice-homepage-media-input/`
 
-Current result: folder missing.
-
-Expected files:
-
-- `CorporateIceRinkRentalEvent.png`: missing
-- `HolidayIceRink.png`: missing
-- `IceRinkRentalsSetup.png`: missing
-- `IceSkatingRinkRentalsLogo.png`: missing
-- `WinterFestIceRinkRentals.png`: missing
-
-The exact filenames were also searched under the repo and parent workspace; no matches were found.
+- `IceSkatingRinkRentalsLogo.png`: valid-local-input, 1448x1086, 1627660 bytes
+- `WinterFestIceRinkRentals.png`: valid-local-input, 1672x941, 3607110 bytes
+- `CorporateIceRinkRentalEvent.png`: valid-local-input, 1672x941, 3685341 bytes
+- `HolidayIceRink.png`: valid-local-input, 1672x941, 3866376 bytes
+- `IceRinkRentalsSetup.png`: valid-local-input, 1448x1086, 3545952 bytes
 
 ## API/Auth Status
 
 - Pumpkin API `http://localhost:5064`: reachable
-- `PUMPKIN_ADMIN_JWT`: missing
-- `$env:TEMP\pumpkin-admin-jwt.txt`: missing
-- Unauthenticated media asset list request: HTTP 401
+- Admin JWT: PRESENT and VALID
+- Temp JWT file deleted after load: yes
+- Temp JWT final status: MISSING
 
 No token values were printed. No protected config was read.
 
-## Upload Method Reviewed
+## Upload Method
 
-The safe existing upload path is:
+`POST /api/admin/ice-rink-rentals/media-assets/upload`
 
-```text
-POST /api/admin/{tenantId}/media-assets/upload
-```
+The endpoint validates the upload, stores through local-dev media storage, and creates a sanitized MediaAsset record. Follow-up metadata refresh used the existing authenticated MediaAsset PATCH endpoint.
 
-The endpoint:
+## Upload Summary
 
-- requires JWT authorization
-- enforces tenant authorization
-- validates JPEG/PNG/WebP MIME and extension
-- blocks SVG uploads
-- computes SHA-256 checksum
-- builds a safe filename
-- reads image dimensions
-- stores through `IMediaStorageService`
-- defaults to `local-dev` storage when no provider override is configured
-- creates a sanitized MediaAsset record
-
-## Decision
-
-Upload was not attempted. MediaAsset creation is blocked until the five raw PNG files are present and safe admin auth is available.
-
+- Upload attempted: yes
+- Records created: 5
+- Records reused: 0
+- Records patched for official metadata: 5
+- Upload skipped reason: none
