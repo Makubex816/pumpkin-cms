@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "ice-local-preview-readiness-manifest.v1",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "createdAt": "2026-06-02T00:00:00Z",
+  "scope": "local-runtime-preview-readiness",
+  "cmsPageRecordsChanged": false,
+  "cmsThemeRecordsChanged": false,
+  "mediaAssetRecordsCreated": false,
+  "productionStaticPackagesRegenerated": false,
+  "deploymentPerformed": false,
+  "emailSent": false,
+  "protectedConfigRead": false,
+  "services": [
+    {
+      "key": "pumpkin-api",
+      "folder": "apps/pumpkin-api",
+      "startCommand": "dotnet run",
+      "expectedUrl": "http://localhost:5064",
+      "responsibility": "Pumpkin CMS API, pages, themes, form entries, admin endpoints, MediaAsset endpoints",
+      "runtimeCheck": {
+        "method": "GET",
+        "url": "http://localhost:5064/",
+        "result": "timeout",
+        "listenerStatus": "no-listener"
+      }
+    },
+    {
+      "key": "admin",
+      "folder": "apps/admin",
+      "startCommand": "npm run dev",
+      "expectedUrl": "http://localhost:3000",
+      "responsibility": "Authenticated CMS admin, import/export, media library, lead inbox",
+      "runtimeCheck": {
+        "method": "GET",
+        "url": "http://localhost:3000/",
+        "result": "timeout",
+        "listenerStatus": "no-listener"
+      }
+    },
+    {
+      "key": "ice-rink-web",
+      "folder": "apps/ice-rink-web",
+      "startCommand": "npm run dev",
+      "expectedUrl": "http://localhost:3002",
+      "responsibility": "Ice public runtime renderer",
+      "runtimeCheck": {
+        "method": "GET",
+        "urls": [
+          "http://localhost:3002/",
+          "http://localhost:3002/contact",
+          "http://localhost:3002/service-areas"
+        ],
+        "result": "timeout",
+        "listenerStatus": "no-listener"
+      }
+    },
+    {
+      "key": "static-form-endpoint",
+      "folder": "deployment/static-azure/forms/static-form-endpoint",
+      "startCommand": "npm run start:local",
+      "expectedUrl": "http://localhost:7072/api/contact",
+      "responsibility": "Local-only static form endpoint foundation",
+      "runtimeCheck": {
+        "method": "GET",
+        "url": "http://localhost:7072/api/contact",
+        "result": "timeout",
+        "listenerStatus": "no-listener"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "path": "/",
+      "url": "http://localhost:3002/",
+      "currentPreviewSource": "CMS runtime page if available, otherwise Ice fallback home",
+      "newCandidateVisibleWithoutImport": false
+    },
+    {
+      "path": "/contact",
+      "url": "http://localhost:3002/contact",
+      "currentPreviewSource": "CMS runtime page if available, otherwise Ice fallback contact",
+      "status": "contact page work remains on hold"
+    },
+    {
+      "path": "/service-areas",
+      "url": "http://localhost:3002/service-areas",
+      "currentPreviewSource": "CMS runtime page only; no fallback service-areas page found",
+      "status": "service-area page work remains on hold"
+    }
+  ],
+  "homepageCandidate": {
+    "primaryCandidate": "content-review/ice-homepage-phase8c14b-normalized/proposed-homepage.normalizer-verified.json",
+    "mediaSelectedCandidate": "content-review/ice-homepage-media-upload-selection/proposed-homepage.media-selected-candidate.json",
+    "dotNetContractValid": true,
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForLocalCmsDraftImport": "not without explicit authorization and preflight",
+    "previewableWithoutCmsImport": false,
+    "realMediaAssetIdsBound": 0
+  },
+  "runtimeChecks": {
+    "httpChecksAttempted": true,
+    "safeNonMutatingOnly": true,
+    "portsChecked": [
+      5064,
+      3000,
+      3002,
+      7072
+    ],
+    "listenersFound": 0
+  },
+  "microsoft365Status": {
+    "provider": "Microsoft 365 Exchange Online Plan 1",
+    "mailbox": "contact@iceskatingrinkrentals.com",
+    "manualMailboxVerification": "confirmed in existing report",
+    "pumpkinAppSending": "dry-run/not-configured",
+    "publicEmailDisplay": "under-review"
+  },
+  "rollerStatus": "paused"
+}
+
