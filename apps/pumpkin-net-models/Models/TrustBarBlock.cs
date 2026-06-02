@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -13,8 +14,17 @@ public class TrustBarBlock : HtmlBlockBase
 
 public class TrustBarContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
+    [JsonPropertyName("variant")]
+    public string Variant { get; set; } = string.Empty;
+
     [JsonPropertyName("items")]
     public List<TrustBarItem> Items { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class TrustBarItem
@@ -30,4 +40,7 @@ public class TrustBarItem
 
     [JsonPropertyName("alt")]
     public string Alt { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }

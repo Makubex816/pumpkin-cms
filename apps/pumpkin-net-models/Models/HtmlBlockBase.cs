@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -10,6 +11,9 @@ public abstract class HtmlBlockBase : IHtmlBlock
 
     [JsonPropertyName("content")]
     public abstract object Content { get; set; }
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 /// <summary>

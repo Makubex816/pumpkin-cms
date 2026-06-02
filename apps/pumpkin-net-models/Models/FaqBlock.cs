@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -13,6 +14,12 @@ public class FaqBlock : HtmlBlockBase
 
 public class FaqContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
+    [JsonPropertyName("variant")]
+    public string Variant { get; set; } = string.Empty;
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
 
@@ -24,6 +31,9 @@ public class FaqContent
 
     [JsonPropertyName("items")]
     public List<FaqItem> Items { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class FaqItem
@@ -33,4 +43,7 @@ public class FaqItem
 
     [JsonPropertyName("answer")]
     public string Answer { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }

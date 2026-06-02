@@ -99,6 +99,38 @@ static class PageContractValidator
     private static readonly JsonSerializerOptions ContractJsonOptions = PageJsonConverter.GetDefaultOptions();
     private static readonly HashSet<string> SupportedBlockTypes = HtmlBlockFactory.GetSupportedBlockTypes().ToHashSet(StringComparer.Ordinal);
     private static readonly string[] PageFileSuffixes = { ".import-candidate.json", ".page.json", ".json" };
+    private static readonly HashSet<string> ProductionPersistenceFieldNames = new(StringComparer.Ordinal)
+    {
+        "sectionVariant",
+        "variant",
+        "mediaAssetId",
+        "assetId",
+        "publicUrl",
+        "requiredMediaSlotId",
+        "mediaRequirementRef",
+        "usageType",
+        "status",
+        "alt",
+        "title",
+        "caption",
+        "description",
+        "meta",
+        "businessDisplayName",
+        "publicEmailDisplayPolicy",
+        "selectedMailbox",
+        "selectedMailboxMetadata",
+        "selectedEmailProvider",
+        "pumpkinAppSendStatus",
+        "leadRecipientRef",
+        "staticEndpointRef"
+    };
+    private static readonly string[] ProductionPersistencePathPrefixes =
+    {
+        "$.ContentData.ContentBlocks[",
+        "$.media.",
+        "$.domainRouting.",
+        "$.formConfig."
+    };
 
     public static readonly JsonSerializerOptions ReportJsonOptions = new()
     {
@@ -368,6 +400,7 @@ static class PageContractValidator
 
             var roundTrip = ValidatePageRoundTrip(page, pageFile, report);
             pageSummary.RoundTripOk = roundTrip;
+            pageSummary.ProductionFieldPersistenceOk = ValidateProductionFieldPersistence(pageJson, page, pageFile, report);
 
             ValidateMediaRequirements(pageJson, pageFile, report);
 
@@ -466,6 +499,131 @@ static class PageContractValidator
         }
 
         return true;
+    }
+
+    private static bool ValidateProductionFieldPersistence(JsonObject originalJson, Page page, string pageFile, ContractReport report)
+    {
+        var canonicalJson = PageJsonConverter.ToJson(page);
+        if (string.IsNullOrWhiteSpace(canonicalJson))
+        {
+            report.AddError("productionFieldPersistence.serialize", "Page failed .NET canonical serialization for persistence comparison.", pageFile);
+            return false;
+        }
+
+        JsonNode? roundTripJson;
+        try
+        {
+            roundTripJson = JsonNode.Parse(canonicalJson);
+        }
+        catch (JsonException ex)
+        {
+            report.AddError("productionFieldPersistence.parse", $"Canonical JSON failed persistence parse: {ex.Message}", pageFile);
+            return false;
+        }
+
+        var checks = new List<PersistenceCheck>();
+        CollectPersistenceChecks(originalJson, roundTripJson, "$", checks);
+        var missing = checks.Where(check => !check.Ok).Take(25).ToList();
+        if (missing.Count > 0)
+        {
+            foreach (var check in missing)
+            {
+                report.AddError(
+                    "productionFieldPersistence.strip",
+                    $"Field \"{check.FieldName}\" changed or was stripped during .NET Page/block round trip.",
+                    pageFile,
+                    check.Path);
+            }
+
+            var remaining = checks.Count(check => !check.Ok) - missing.Count;
+            if (remaining > 0)
+            {
+                report.AddError(
+                    "productionFieldPersistence.strip",
+                    $"{remaining} additional production persistence field(s) changed or were stripped during .NET Page/block round trip.",
+                    pageFile);
+            }
+
+            return false;
+        }
+
+        if (checks.Count > 0)
+        {
+            report.AddWarning(
+                "productionFieldPersistence.checked",
+                $"Verified {checks.Count} production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+                pageFile);
+        }
+
+        return true;
+    }
+
+    private static void CollectPersistenceChecks(JsonNode? originalNode, JsonNode? roundTripNode, string path, List<PersistenceCheck> checks)
+    {
+        if (originalNode is JsonObject originalObject)
+        {
+            var roundTripObject = roundTripNode as JsonObject;
+            foreach (var property in originalObject)
+            {
+                var childPath = $"{path}.{property.Key}";
+                var originalChild = property.Value;
+                var roundTripChild = roundTripObject != null && roundTripObject.TryGetPropertyValue(property.Key, out var candidate)
+                    ? candidate
+                    : null;
+
+                if (ShouldCheckProductionPersistencePath(childPath) &&
+                    ProductionPersistenceFieldNames.Contains(property.Key) &&
+                    HasComparablePersistenceValue(originalChild))
+                {
+                    checks.Add(new PersistenceCheck(
+                        childPath,
+                        property.Key,
+                        JsonNode.DeepEquals(originalChild, roundTripChild)));
+                }
+
+                CollectPersistenceChecks(originalChild, roundTripChild, childPath, checks);
+            }
+
+            return;
+        }
+
+        if (originalNode is JsonArray originalArray)
+        {
+            var roundTripArray = roundTripNode as JsonArray;
+            for (var index = 0; index < originalArray.Count; index++)
+            {
+                var originalChild = originalArray[index];
+                var roundTripChild = roundTripArray != null && index < roundTripArray.Count ? roundTripArray[index] : null;
+                CollectPersistenceChecks(originalChild, roundTripChild, $"{path}[{index}]", checks);
+            }
+        }
+    }
+
+    private static bool HasComparablePersistenceValue(JsonNode? node)
+    {
+        if (node == null)
+            return false;
+
+        if (node is JsonValue value)
+        {
+            if (value.TryGetValue<string>(out var stringValue))
+                return !string.IsNullOrWhiteSpace(stringValue);
+
+            return true;
+        }
+
+        if (node is JsonArray array)
+            return array.Count > 0;
+
+        if (node is JsonObject obj)
+            return obj.Count > 0;
+
+        return false;
+    }
+
+    private static bool ShouldCheckProductionPersistencePath(string path)
+    {
+        return ProductionPersistencePathPrefixes.Any(prefix => path.StartsWith(prefix, StringComparison.Ordinal));
     }
 
     private static void ValidateMediaRequirements(JsonObject json, string file, ContractReport report)
@@ -671,11 +829,14 @@ sealed class PageContractSummary
     public string TenantId { get; set; } = string.Empty;
     public bool DotNetDeserialized { get; set; }
     public bool RoundTripOk { get; set; }
+    public bool ProductionFieldPersistenceOk { get; set; }
     public int BlockCount { get; set; }
     public List<string> BlockTypes { get; set; } = new();
     public int ErrorCount { get; set; }
     public int WarningCount { get; set; }
 }
+
+sealed record PersistenceCheck(string Path, string FieldName, bool Ok);
 
 sealed class FormContractSummary
 {

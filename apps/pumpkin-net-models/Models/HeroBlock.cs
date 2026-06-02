@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -13,6 +14,9 @@ public class HeroBlock : HtmlBlockBase
 
 public class HeroContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
     [JsonPropertyName("type")]
     public string Type { get; set; } = "Main";
 
@@ -39,4 +43,7 @@ public class HeroContent
 
     [JsonPropertyName("buttonLink")]
     public string ButtonLink { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -170,8 +171,20 @@ public class PageRedirect
 
 public class PageImageAsset
 {
+    [JsonPropertyName("mediaAssetId")]
+    public string MediaAssetId { get; set; } = string.Empty;
+
     [JsonPropertyName("assetId")]
     public string AssetId { get; set; } = string.Empty;
+
+    [JsonPropertyName("requiredMediaSlotId")]
+    public string RequiredMediaSlotId { get; set; } = string.Empty;
+
+    [JsonPropertyName("mediaRequirementRef")]
+    public string MediaRequirementRef { get; set; } = string.Empty;
+
+    [JsonPropertyName("publicUrl")]
+    public string PublicUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("url")]
     public string Url { get; set; } = string.Empty;
@@ -185,6 +198,9 @@ public class PageImageAsset
     [JsonPropertyName("caption")]
     public string Caption { get; set; } = string.Empty;
 
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
+
     [JsonPropertyName("source")]
     public string Source { get; set; } = string.Empty;
 
@@ -193,6 +209,18 @@ public class PageImageAsset
 
     [JsonPropertyName("usageStatus")]
     public string UsageStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("usageType")]
+    public string UsageType { get; set; } = string.Empty;
+
+    [JsonPropertyName("status")]
+    public string Status { get; set; } = string.Empty;
+
+    [JsonPropertyName("tags")]
+    public List<string> Tags { get; set; } = new();
+
+    [JsonPropertyName("blocker")]
+    public bool? Blocker { get; set; }
 
     [JsonPropertyName("width")]
     public int? Width { get; set; }
@@ -208,15 +236,69 @@ public class PageImageAsset
 
     [JsonPropertyName("decorative")]
     public bool Decorative { get; set; } = false;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class PageOpenGraphImage
 {
+    [JsonPropertyName("mediaAssetId")]
+    public string MediaAssetId { get; set; } = string.Empty;
+
+    [JsonPropertyName("assetId")]
+    public string AssetId { get; set; } = string.Empty;
+
+    [JsonPropertyName("requiredMediaSlotId")]
+    public string RequiredMediaSlotId { get; set; } = string.Empty;
+
+    [JsonPropertyName("mediaRequirementRef")]
+    public string MediaRequirementRef { get; set; } = string.Empty;
+
+    [JsonPropertyName("publicUrl")]
+    public string PublicUrl { get; set; } = string.Empty;
+
     [JsonPropertyName("url")]
     public string Url { get; set; } = string.Empty;
 
     [JsonPropertyName("alt")]
     public string Alt { get; set; } = string.Empty;
+
+    [JsonPropertyName("title")]
+    public string Title { get; set; } = string.Empty;
+
+    [JsonPropertyName("caption")]
+    public string Caption { get; set; } = string.Empty;
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
+
+    [JsonPropertyName("source")]
+    public string Source { get; set; } = string.Empty;
+
+    [JsonPropertyName("licenseStatus")]
+    public string LicenseStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("usageStatus")]
+    public string UsageStatus { get; set; } = string.Empty;
+
+    [JsonPropertyName("usageType")]
+    public string UsageType { get; set; } = string.Empty;
+
+    [JsonPropertyName("status")]
+    public string Status { get; set; } = string.Empty;
+
+    [JsonPropertyName("tags")]
+    public List<string> Tags { get; set; } = new();
+
+    [JsonPropertyName("width")]
+    public int? Width { get; set; }
+
+    [JsonPropertyName("height")]
+    public int? Height { get; set; }
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class PageMedia
@@ -235,6 +317,30 @@ public class PageMedia
 
     [JsonPropertyName("openGraphImage")]
     public PageOpenGraphImage OpenGraphImage { get; set; } = new();
+
+    [JsonPropertyName("logo")]
+    public PageImageAsset Logo { get; set; } = new();
+
+    [JsonPropertyName("setupImage")]
+    public PageImageAsset SetupImage { get; set; } = new();
+
+    [JsonPropertyName("hero")]
+    public PageImageAsset Hero { get; set; } = new();
+
+    [JsonPropertyName("corporate")]
+    public PageImageAsset Corporate { get; set; } = new();
+
+    [JsonPropertyName("holiday")]
+    public PageImageAsset Holiday { get; set; } = new();
+
+    [JsonPropertyName("setup")]
+    public PageImageAsset Setup { get; set; } = new();
+
+    [JsonPropertyName("sourceMediaManifest")]
+    public string SourceMediaManifest { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class PageFulfillment
@@ -674,8 +780,20 @@ public class PageDomainRouting
     [JsonPropertyName("brandName")]
     public string BrandName { get; set; } = string.Empty;
 
+    [JsonPropertyName("businessDisplayName")]
+    public string BusinessDisplayName { get; set; } = string.Empty;
+
     [JsonPropertyName("publicContactEmail")]
     public string PublicContactEmail { get; set; } = string.Empty;
+
+    [JsonPropertyName("publicEmailDisplayPolicy")]
+    public string PublicEmailDisplayPolicy { get; set; } = string.Empty;
+
+    [JsonPropertyName("selectedMailbox")]
+    public string SelectedMailbox { get; set; } = string.Empty;
+
+    [JsonPropertyName("selectedMailboxMetadata")]
+    public string SelectedMailboxMetadata { get; set; } = string.Empty;
 
     [JsonPropertyName("quoteRequestEmail")]
     public string QuoteRequestEmail { get; set; } = string.Empty;
@@ -710,8 +828,20 @@ public class PageDomainRouting
     [JsonPropertyName("staticFormEndpointKey")]
     public string StaticFormEndpointKey { get; set; } = string.Empty;
 
+    [JsonPropertyName("leadRecipientRef")]
+    public string LeadRecipientRef { get; set; } = string.Empty;
+
+    [JsonPropertyName("staticEndpointRef")]
+    public string StaticEndpointRef { get; set; } = string.Empty;
+
     [JsonPropertyName("emailProvider")]
     public string EmailProvider { get; set; } = string.Empty;
+
+    [JsonPropertyName("selectedEmailProvider")]
+    public string SelectedEmailProvider { get; set; } = string.Empty;
+
+    [JsonPropertyName("pumpkinAppSendStatus")]
+    public string PumpkinAppSendStatus { get; set; } = string.Empty;
 
     [JsonPropertyName("emailProviderStatus")]
     public string EmailProviderStatus { get; set; } = string.Empty;
@@ -730,6 +860,9 @@ public class PageDomainRouting
 
     [JsonPropertyName("notes")]
     public string Notes { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class PageImportProvenance

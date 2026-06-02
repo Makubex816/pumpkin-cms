@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -13,11 +14,20 @@ public class LocalProTipsBlock : HtmlBlockBase
 
 public class LocalProTipsContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
+    [JsonPropertyName("variant")]
+    public string Variant { get; set; } = string.Empty;
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
 
     [JsonPropertyName("items")]
     public List<ProTipItem> Items { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class ProTipItem
@@ -33,4 +43,7 @@ public class ProTipItem
 
     [JsonPropertyName("text")]
     public string Text { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -13,6 +14,12 @@ public class ContactBlock : HtmlBlockBase
 
 public class ContactContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
+    [JsonPropertyName("variant")]
+    public string Variant { get; set; } = string.Empty;
+
     [JsonPropertyName("id")]
     public string Id { get; set; } = string.Empty;
 
@@ -42,6 +49,9 @@ public class ContactContent
 
     [JsonPropertyName("socialLinks")]
     public List<SocialLink> SocialLinks { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class FormField
@@ -69,6 +79,9 @@ public class FormField
 
     [JsonPropertyName("options")]
     public List<string> Options { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class SocialLink
@@ -81,4 +94,7 @@ public class SocialLink
 
     [JsonPropertyName("icon")]
     public string Icon { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }

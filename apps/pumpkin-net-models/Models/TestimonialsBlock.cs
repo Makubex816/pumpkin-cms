@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -13,6 +14,12 @@ public class TestimonialsBlock : HtmlBlockBase
 
 public class TestimonialsContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
+    [JsonPropertyName("variant")]
+    public string Variant { get; set; } = string.Empty;
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
 
@@ -24,6 +31,9 @@ public class TestimonialsContent
 
     [JsonPropertyName("items")]
     public List<TestimonialItem> Items { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class TestimonialItem
@@ -39,4 +49,7 @@ public class TestimonialItem
 
     [JsonPropertyName("rating")]
     public double Rating { get; set; } = 5.0;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -13,6 +14,12 @@ public class PrimaryCtaBlock : HtmlBlockBase
 
 public class PrimaryCtaContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
+    [JsonPropertyName("variant")]
+    public string Variant { get; set; } = string.Empty;
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
 
@@ -42,4 +49,7 @@ public class PrimaryCtaContent
 
     [JsonPropertyName("alt")]
     public string Alt { get; set; } = string.Empty;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -12,6 +13,9 @@ public class FormBlock : HtmlBlockBase
 
 public class FormBlockContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
     [JsonPropertyName("id")]
     public string Id { get; set; } = string.Empty;
 
@@ -53,4 +57,7 @@ public class FormBlockContent
 
     [JsonPropertyName("validation")]
     public Dictionary<string, object> Validation { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }

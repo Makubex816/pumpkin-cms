@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace pumpkin_net_models.Models;
@@ -13,8 +14,14 @@ public class BreadcrumbsBlock : HtmlBlockBase
 
 public class BreadcrumbsContent
 {
+    [JsonPropertyName("sectionVariant")]
+    public string SectionVariant { get; set; } = string.Empty;
+
     [JsonPropertyName("items")]
     public List<BreadcrumbItem> Items { get; set; } = new();
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
 
 public class BreadcrumbItem
@@ -27,4 +34,7 @@ public class BreadcrumbItem
 
     [JsonPropertyName("current")]
     public bool Current { get; set; } = false;
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 }
