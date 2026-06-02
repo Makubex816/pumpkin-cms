@@ -949,7 +949,7 @@ function buildPackage(candidate, candidatePath, mediaRequirements, formMappings,
 }
 
 function runDotNetValidation(command, targetPath) {
-  const args = ['run', '--project', DOTNET_TOOL_PROJECT, '--', command, '--path', targetPath];
+  const args = ['run', '--no-build', '--project', DOTNET_TOOL_PROJECT, '--', command, '--path', targetPath];
   const result = spawnSync('dotnet', args, {
     cwd: repoRoot,
     encoding: 'utf8',

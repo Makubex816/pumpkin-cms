@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "pumpkin.ice.homepage.import-preflight.manifest.v1",
+  "generatedAt": "2026-06-02T13:50:45.902Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "route": "/",
+  "sourceCandidate": "content-review/ice-homepage-media-upload-selection/proposed-homepage.media-selected-candidate.json",
+  "preflightTool": "tools/import-preflight/import-preflight.mjs",
+  "preflightResult": "content-review/ice-homepage-import-preflight/homepage-import-preflight-result.json",
+  "files": [
+    "content-review/ice-homepage-import-preflight/README.md",
+    "content-review/ice-homepage-import-preflight/HOMEPAGE_IMPORT_PREFLIGHT_RESULT.md",
+    "content-review/ice-homepage-import-preflight/HOMEPAGE_IMPORT_PREFLIGHT_BLOCKERS.md",
+    "content-review/ice-homepage-import-preflight/HOMEPAGE_DRAFT_IMPORT_DECISION.md",
+    "content-review/ice-homepage-import-preflight/homepage-import-preflight-result.json",
+    "content-review/ice-homepage-import-preflight/manifest.json"
+  ],
+  "safety": {
+    "nonMutating": true,
+    "requiresAdminJwt": false,
+    "readsProtectedConfig": false,
+    "callsLiveWriteApis": false,
+    "mutatesCmsData": false,
+    "sendsEmail": false,
+    "touchesMediaRecords": false,
+    "updatesCmsPages": false,
+    "updatesCmsThemes": false,
+    "regeneratesStaticPackages": false,
+    "deploys": false
+  },
+  "classification": {
+    "preflightValidForShape": true,
+    "preflightValidForLocalDraftImport": "conditional-with-explicit-unresolved-media-and-review-approval",
+    "preflightValidForCmsImport": false,
+    "preflightValidForProduction": false
+  },
+  "decisions": {
+    "shape": "valid",
+    "localDraftImport": "conditional",
+    "cmsImport": "blocked",
+    "staticRegeneration": "blocked",
+    "production": "blocked"
+  },
+  "rollerStatus": "paused"
+}
