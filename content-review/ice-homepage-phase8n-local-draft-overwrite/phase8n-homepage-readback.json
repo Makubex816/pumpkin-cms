@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "pumpkin-phase8n-homepage-readback.v1",
+  "createdAt": "2026-06-02T21:59:34.000Z",
+  "status": "not-performed",
+  "reason": "Prior one-off guard treated /service-areas HTTP 404 as unsafe and stopped before CMS write. Corrected behavior accepts /service-areas 404 as expected-not-found baseline for homepage-only overwrite. Fresh JWT is required for a separate retry.",
+  "cmsWritePerformed": false,
+  "jwtPrinted": false,
+  "rollerStatus": "paused"
+}

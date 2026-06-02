@@ -1,6 +1,6 @@
 {
   "schemaVersion": "pumpkin-import-preflight-result.v1",
-  "generatedAt": "2026-06-02T21:40:38.892Z",
+  "generatedAt": "2026-06-02T21:54:12.202Z",
   "tool": {
     "name": "pumpkin-import-preflight",
     "path": "tools/import-preflight/import-preflight.mjs",
