@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "pumpkin-homepage-before-import-snapshot.v1",
+  "createdAt": "2026-06-02T18:20:00Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/",
+  "pageSlug": "home",
+  "snapshotStatus": "not-fetched",
+  "reason": "Admin authentication was missing before CMS read/write.",
+  "adminAuthStatus": "MISSING",
+  "cmsWriteAttempted": false,
+  "page": null
+}
+

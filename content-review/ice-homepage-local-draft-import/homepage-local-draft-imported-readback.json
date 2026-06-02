@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "pumpkin-homepage-local-draft-readback.v1",
+  "createdAt": "2026-06-02T18:20:00Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/",
+  "pageSlug": "home",
+  "readbackStatus": "not-performed",
+  "reason": "Homepage local draft import was blocked by missing admin authentication.",
+  "adminAuthStatus": "MISSING",
+  "importPerformed": false,
+  "page": null
+}
+

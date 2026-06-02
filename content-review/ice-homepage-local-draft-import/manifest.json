@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "ice-homepage-local-draft-import",
+  "createdAt": "2026-06-02T18:20:00Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "selectedCandidatePath": "content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+  "apiReachability": {
+    "url": "http://localhost:5064",
+    "status": "reachable"
+  },
+  "adminAuth": {
+    "status": "MISSING",
+    "envVar": "MISSING",
+    "tempFile": "MISSING",
+    "jwtPrinted": false
+  },
+  "validation": {
+    "jsonParse": "passed",
+    "dotnetPageContract": "passed",
+    "dotnetPackageContract": "passed",
+    "safeImportPreflight": "passed-for-shape-and-local-draft",
+    "designSystem": "passed",
+    "media": "passed-with-existing-warning-class",
+    "defaultForm": "passed",
+    "tailwindNavigation": "passed",
+    "pageIntakeNormalizer": "passed",
+    "unsafeScan": "passed",
+    "placeholderRouteCanonicalAudit": "passed",
+    "targetedSecretScan": "passed"
+  },
+  "importResult": {
+    "performed": false,
+    "blocked": true,
+    "blocker": "admin-auth-missing",
+    "cmsWriteEndpointsCalled": []
+  },
+  "outputFiles": [
+    "README.md",
+    "SELECTED_HOMEPAGE_CANDIDATE.md",
+    "PRE_IMPORT_VALIDATION.md",
+    "CURRENT_HOMEPAGE_BEFORE_IMPORT.md",
+    "HOMEPAGE_LOCAL_DRAFT_IMPORT_RESULT.md",
+    "HOMEPAGE_READBACK_VERIFICATION.md",
+    "HOMEPAGE_FRONTEND_PREVIEW_CHECKLIST.md",
+    "UNTOUCHED_ROUTES_VERIFICATION.md",
+    "REMAINING_BLOCKERS.md",
+    "current-homepage-before-import.snapshot.json",
+    "homepage-local-draft-imported-readback.json",
+    "homepage-local-draft-preflight-result.json",
+    "manifest.json"
+  ],
+  "safety": {
+    "noCmsPageRecordsChanged": true,
+    "noCmsThemeRecordsChanged": true,
+    "noMediaAssetsChanged": true,
+    "noContactPageChanged": true,
+    "noServiceAreaPageChanged": true,
+    "noStateCityPageCreated": true,
+    "noStaticRegeneration": true,
+    "noDeployment": true,
+    "noDnsProviderEmailAction": true,
+    "noProtectedConfigRead": true,
+    "rollerStatus": "paused"
+  },
+  "readiness": {
+    "homepageLocalDraftImport": "blocked-admin-auth-missing",
+    "homepageLocalPreview": "not-ready-no-import",
+    "cmsProductionImportApproval": "no",
+    "staticRegeneration": "no",
+    "productionIndexing": "no"
+  }
+}
+
