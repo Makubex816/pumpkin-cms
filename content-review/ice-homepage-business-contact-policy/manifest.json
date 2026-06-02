@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "homepage-business-contact-policy",
+  "createdAt": "2026-06-02T18:30:00Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "sourceCandidate": "content-review/ice-homepage-mediaasset-bound/proposed-homepage.mediaasset-bound-candidate.json",
+  "sourcePackage": "content-review/ice-homepage-mediaasset-bound/homepage-mediaasset-bound-package.json",
+  "outputFiles": [
+    "README.md",
+    "BUSINESS_VALUES_RESOLUTION.md",
+    "PHONE_NUMBER_AUDIT.md",
+    "EMAIL_DISPLAY_POLICY_DECISION.md",
+    "SERVICE_AREA_WORDING_REVIEW.md",
+    "HOMEPAGE_IMPORT_APPROVAL_GATE.md",
+    "HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+    "homepage-business-ready-package.json",
+    "manifest.json",
+    "homepage-business-ready-import-preflight-result.json"
+  ],
+  "decisions": {
+    "businessDisplayName": "Ice Rink Rentals",
+    "serviceAreaInternalValue": "United States",
+    "serviceAreaScope": "domestic USA",
+    "futureCityPageRouteFormat": "/state-city",
+    "selectedPrimaryMailbox": "contact@iceskatingrinkrentals.com",
+    "publicEmailDisplayPolicy": "form-first-under-review",
+    "publicPhonePolicy": "unresolved-needs-approved-phone-or-omit-decision"
+  },
+  "readiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForLocalCmsDraftImport": "maybe-after-user-authorized-local-draft-import-and-approval-gate-review",
+    "readyForStaticRegeneration": false,
+    "readyForProductionIndexing": false,
+    "blockers": [
+      "Final phone number or approved no-public-phone decision is unresolved.",
+      "Public email display policy is under review; form-first is recommended for launch.",
+      "Customer-facing service-area wording needs user confirmation.",
+      "Human approval and import approval are not recorded.",
+      "No static regeneration or production deployment is authorized."
+    ]
+  },
+  "safety": {
+    "noCmsPageRecordsChanged": true,
+    "noCmsThemeRecordsChanged": true,
+    "noMediaAssetsCreatedOrModified": true,
+    "noProtectedConfigRead": true,
+    "noRealEmailSent": true,
+    "rollerStatus": "paused"
+  },
+  "rollerStatus": "paused",
+  "validation": {
+    "jsonParse": "passed",
+    "dotnetValidatePage": "passed: ok true, errors 0, warnings 5 review-only metadata",
+    "dotnetValidatePackage": "passed: ok true, pageFileCount 1, errors 0",
+    "importPreflight": "passed for shape/local draft, CMS import blocked by approval and phone/public-email policy",
+    "focusedAudit": "passed route/canonical/form/media/public-email/phone/package checks",
+    "fixtureValidators": "passed design, default form, media, Tailwind/navigation, page intake normalizer fixtures"
+  }
+}
