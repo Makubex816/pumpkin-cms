@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "pumpkin-phase8n-crm-scaffold-validation-manifest.v1",
+  "createdAt": "2026-06-02T21:39:43.147Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "inputZip": "content-review/ice-homepage-phase8n-crm-scaffold-input/ice-homepage-phase8n-crm-scaffold.zip",
+  "extractedFolder": "content-review/ice-homepage-phase8n-crm-scaffold-input/extracted/ice-homepage-phase8n-crm-scaffold",
+  "selectedCandidate": "content-review/ice-homepage-phase8n-crm-scaffold-input/extracted/ice-homepage-phase8n-crm-scaffold/ice-homepage.phase8n.crm-scaffold.full.json",
+  "outputs": [
+    "README.md",
+    "PACKAGE_INVENTORY.md",
+    "HOMEPAGE_CANDIDATE_AUDIT.md",
+    "CURRENT_DRAFT_COMPARISON.md",
+    "MEDIA_BINDING_REVIEW.md",
+    "PRODUCTION_RENDERER_COMPATIBILITY.md",
+    "IMPORT_PREFLIGHT_RESULT.md",
+    "HOMEPAGE_PHASE8N_NORMALIZED_CANDIDATE.json",
+    "HOMEPAGE_PHASE8N_IMPORT_PACKAGE.json",
+    "manifest.json",
+    "phase8n-import-preflight-result.json",
+    "normalizer-validation/README.md",
+    "normalizer-validation/NORMALIZER_RUN_REPORT.md",
+    "normalizer-validation/HOMEPAGE_NORMALIZATION_RESULT.md",
+    "normalizer-validation/proposed-homepage.normalizer-verified.json",
+    "normalizer-validation/homepage-normalizer-verified-package.json",
+    "normalizer-validation/manifest.json"
+  ],
+  "candidateSummary": {
+    "selected": "content-review/ice-homepage-phase8n-crm-scaffold-input/extracted/ice-homepage-phase8n-crm-scaffold/ice-homepage.phase8n.crm-scaffold.full.json",
+    "reason": "Package manifest primaryJson; complete homepage scaffold for route / with Ice tenant/site and CRM scaffold metadata.",
+    "normalization": "Mapped package blocks into Pumpkin ContentData.ContentBlocks production renderer variants.",
+    "sourceBlockCount": 8,
+    "normalizedBlockCount": 9,
+    "normalizedVariants": [
+      "heroMedia",
+      "trustBand",
+      "mediaUseCaseGrid",
+      "splitFeature",
+      "processSteps",
+      "planningTopics",
+      "serviceAreaTeaser",
+      "faqAccordion",
+      "finalCta"
+    ],
+    "mediaAssetIds": [
+      "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+      "ice-rink-rentals-holidayicerink-973ce7691377",
+      "ice-rink-rentals-home",
+      "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+      "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+      "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+    ]
+  },
+  "currentComparison": {
+    "source": "content-review/ice-homepage-local-draft-import/homepage-local-draft-imported-readback.json",
+    "authReadbackAttempted": false,
+    "authReadbackStatus": "skipped_missing_admin_auth",
+    "currentDraftAvailableFromArtifact": true,
+    "currentBlockSummary": [],
+    "normalizedBlockSummary": [
+      {
+        "id": "homepage-hero-media",
+        "type": "Hero",
+        "variant": "heroMedia"
+      },
+      {
+        "id": "homepage-trust-band",
+        "type": "TrustBar",
+        "variant": "trustBand"
+      },
+      {
+        "id": "homepage-use-case-media-grid",
+        "type": "CardGrid",
+        "variant": "mediaUseCaseGrid"
+      },
+      {
+        "id": "homepage-split-feature-setup",
+        "type": "CardGrid",
+        "variant": "splitFeature"
+      },
+      {
+        "id": "homepage-process-steps",
+        "type": "HowItWorks",
+        "variant": "processSteps"
+      },
+      {
+        "id": "homepage-planning-topics",
+        "type": "CardGrid",
+        "variant": "planningTopics"
+      },
+      {
+        "id": "homepage-service-area-teaser",
+        "type": "ServiceAreaMap",
+        "variant": "serviceAreaTeaser"
+      },
+      {
+        "id": "homepage-faq-accordion",
+        "type": "FAQ",
+        "variant": "faqAccordion"
+      },
+      {
+        "id": "homepage-final-cta",
+        "type": "PrimaryCTA",
+        "variant": "finalCta"
+      }
+    ],
+    "differences": [
+      "Phase 8N normalized candidate uses only production-renderer variants; prior artifact includes customHtml/formBlock sections.",
+      "Phase 8N homepage CTAs route to /contact and does not embed a homepage form.",
+      "Phase 8N includes setup/logistics media in both media grid and split feature.",
+      "Phase 8N keeps public email and phone hidden, with selected mailbox as metadata only.",
+      "Phase 8N uses domestic United States service-area wording and does not create city pages."
+    ]
+  },
+  "rendererCompatibility": {
+    "requiredVariants": [
+      "heroMedia",
+      "trustBand",
+      "mediaUseCaseGrid",
+      "splitFeature",
+      "processSteps",
+      "planningTopics",
+      "serviceAreaTeaser",
+      "faqAccordion",
+      "finalCta"
+    ],
+    "presentVariants": [
+      "heroMedia",
+      "trustBand",
+      "mediaUseCaseGrid",
+      "splitFeature",
+      "processSteps",
+      "planningTopics",
+      "serviceAreaTeaser",
+      "faqAccordion",
+      "finalCta"
+    ],
+    "customHtmlBlocks": 0,
+    "formBlockCount": 0,
+    "route": "/",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/",
+    "finalCta": "/contact"
+  },
+  "cmsWritesPerformed": false,
+  "blockedCmsOverwriteReason": "admin auth missing from PUMPKIN_ADMIN_JWT and allowed temp JWT file",
+  "safety": {
+    "contactTouched": false,
+    "serviceAreasTouched": false,
+    "themeTouched": false,
+    "mediaAssetRecordsTouched": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "rollerStatus": "paused"
+  },
+  "validation": {
+    "jsonParse": "passed",
+    "dotNetPageContract": "passed-with-review-only-warnings",
+    "dotNetPackageContract": "passed-with-review-only-warnings",
+    "importPreflightShape": "passed",
+    "importPreflightLocalDraft": "passed",
+    "importPreflightCmsImport": "blocked",
+    "importPreflightProduction": "blocked",
+    "defaultFormWarning": "homepage-has-no-formBlock-by-design"
+  },
+  "currentDraftComparison": {
+    "source": "content-review/ice-homepage-local-draft-import/homepage-local-draft-imported-readback.json",
+    "authenticatedReadback": "skipped_missing_admin_auth",
+    "publicApiProbe": "HTTP 400 for unauthenticated page endpoint",
+    "previousBlockCount": 10,
+    "normalizedBlockCount": 9
+  },
+  "cmsDraftOverwrite": {
+    "attempted": false,
+    "performed": false,
+    "blocker": "admin auth missing"
+  }
+}

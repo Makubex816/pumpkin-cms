@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "pumpkin-page-intake-normalizer-manifest.v1",
+  "phase": "8C.14B",
+  "createdAt": "2026-05-27T00:00:00Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "input": "content-review/ice-homepage-phase8n-crm-scaffold-validated/HOMEPAGE_PHASE8N_NORMALIZED_CANDIDATE.json",
+  "secondaryInput": null,
+  "outputs": [
+    "README.md",
+    "NORMALIZER_RUN_REPORT.md",
+    "HOMEPAGE_NORMALIZATION_RESULT.md",
+    "proposed-homepage.normalizer-verified.json",
+    "homepage-normalizer-verified-package.json",
+    "manifest.json"
+  ],
+  "readiness": {
+    "readyForHumanReview": true,
+    "readyForCmsImport": false,
+    "readyForLocalCmsDraftImport": "possible_with_user_authorization",
+    "readyForStaticRegeneration": false,
+    "readyForProductionIndexing": false,
+    "cmsImportReason": "Still requires media/business values, human approval, and admin import/export preflight before CMS import.",
+    "blockersBeforeCmsImport": [
+      "Final media, business values, human approval, and admin import/export preflight are required."
+    ]
+  },
+  "dotNetValidation": {
+    "ok": true,
+    "exitCode": 0,
+    "command": "validate-page",
+    "targetPath": "content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json",
+    "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "errors": [],
+    "warnings": [
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"reviewMetadata\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"mediaRequirements\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"designSystem\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"templatePurpose\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"contentPackageVersion\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      }
+    ],
+    "pages": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json",
+        "PageId": "ice-rink-rentals-home",
+        "PageSlug": "home",
+        "TenantId": "ice-rink-rentals",
+        "DotNetDeserialized": true,
+        "RoundTripOk": true,
+        "BlockCount": 9,
+        "BlockTypes": [
+          "Hero",
+          "TrustBar",
+          "CardGrid",
+          "CardGrid",
+          "HowItWorks",
+          "CardGrid",
+          "ServiceAreaMap",
+          "FAQ",
+          "PrimaryCTA"
+        ],
+        "ErrorCount": 0,
+        "WarningCount": 5
+      }
+    ],
+    "packageOk": true,
+    "packageReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "packageErrors": [],
+    "packageWarnings": [
+      {
+        "Severity": "warning",
+        "Code": "package.themeDesignSystem",
+        "Message": "No themeDesignSystemRecommendation was included in the package.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/homepage-normalizer-verified-package.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "package.formDefinitions",
+        "Message": "Package has no inline formDefinitions array.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/homepage-normalizer-verified-package.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"reviewMetadata\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"mediaRequirements\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"designSystem\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"templatePurpose\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"contentPackageVersion\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/normalizer-validation/proposed-homepage.normalizer-verified.json"
+      }
+    ]
+  },
+  "secondaryDotNetValidation": null,
+  "blockers": []
+}
