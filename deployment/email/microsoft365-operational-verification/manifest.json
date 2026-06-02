@@ -19,6 +19,21 @@
     "pumpkinRealSendingEnabled": false,
     "emailSendMode": "dry-run"
   },
+  "confirmedManualVerification": {
+    "testType": "manual-human-verification",
+    "testedMailbox": "contact@iceskatingrinkrentals.com",
+    "outlookAccessStatus": "passed",
+    "manualOutboundStatus": "passed",
+    "manualInboundStatus": "passed",
+    "manualMailboxOperationalStatus": "confirmed",
+    "codeBasedSendPerformed": false,
+    "credentialsStored": false,
+    "secretsDocumented": false,
+    "messageContentDocumented": false,
+    "externalEmailAddressesDocumented": false,
+    "headersDocumented": false,
+    "screenshotsDocumented": false
+  },
   "files": [
     {
       "path": "deployment/email/microsoft365-operational-verification/README.md",
@@ -51,13 +66,23 @@
     {
       "path": "deployment/email/microsoft365-operational-verification/EMAIL_TEST_RESULTS_TEMPLATE.md",
       "purpose": "Manual test result capture template."
+    },
+    {
+      "path": "deployment/email/microsoft365-operational-verification/EMAIL_TEST_RESULTS_CONFIRMED.md",
+      "purpose": "User-confirmed manual mailbox verification results without secrets or personal details."
     }
   ],
   "readiness": {
-    "microsoftMailboxOperationalVerification": "pending-manual-tests",
+    "microsoftMailboxOperationalVerification": "confirmed",
+    "outlookAccessStatus": "passed",
+    "manualOutboundStatus": "passed",
+    "manualInboundStatus": "passed",
     "pumpkinRealEmailSending": "not-ready",
+    "pumpkinAppSendStatus": "dry-run/not-configured",
+    "realSmtpGraphSendStatus": "not-ready",
     "publicEmailDisplay": "under-review",
-    "mxDnsProductionConfidence": "pending-manual-verification",
+    "productionDnsConfidence": "pending-dns-spf-dkim-dmarc-final-review",
+    "mxDnsProductionConfidence": "pending-dns-spf-dkim-dmarc-final-review",
     "cmsPageImportImpact": "no-direct-cms-change"
   },
   "noGoConfirmations": [

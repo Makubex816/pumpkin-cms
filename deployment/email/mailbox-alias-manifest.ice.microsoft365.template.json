@@ -23,6 +23,10 @@
       "status": "in-progress",
       "providerSetupStatus": "in-progress",
       "creationStatus": "planned/created-in-microsoft-365-admin-center",
+      "manualMailboxOperationalStatus": "confirmed",
+      "outlookAccessStatus": "passed",
+      "manualOutboundStatus": "passed",
+      "manualInboundStatus": "passed",
       "role": "primary-customer-contact-inbox",
       "displayName": "Ice Skating Rink Rentals Contact",
       "purpose": "Primary customer contact inbox and first licensed mailbox candidate for the Ice domain.",
@@ -36,7 +40,8 @@
       "migrationRequired": "no-known-existing-mailbox",
       "notes": [
         "Selected mailbox/user from the real-world Microsoft 365 setup state.",
-        "Use in-progress wording until mailbox creation is verified in Microsoft 365 admin center.",
+        "Manual Outlook access, outbound send, and inbound reply tests are user-confirmed as passed.",
+        "Pumpkin app sending remains dry-run/not-configured.",
         "Form-first remains recommended and public email display remains under review."
       ]
     }
