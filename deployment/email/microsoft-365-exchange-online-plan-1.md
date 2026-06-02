@@ -93,3 +93,11 @@ Still required before receiving or sending production mail:
 - inbound and outbound test plan
 
 No MX cutover has occurred. No production DNS change is ready.
+
+## Operational Verification Package
+
+Manual Outlook access, inbound/outbound message testing, DNS verification, Pumpkin app-send readiness, Graph-vs-SMTP decision, and public email display policy are tracked in:
+
+`deployment/email/microsoft365-operational-verification/`
+
+These checklists do not log in from code, send email from Pumpkin, change DNS, store credentials, update CMS records, regenerate static packages, deploy, or touch RollerRinkRentals.com.

@@ -38,6 +38,7 @@ RollerRinkRentals.com remains paused.
 - `microsoft-365-app-sending-config.template.json` records Graph/OAuth-first app sending placeholders with SMTP AUTH fallback disabled.
 - `dns-readiness-checklist.md` covers generic MX, SPF, DKIM, DMARC, optional hardening records, TTL/cutover timing, Bluehost preservation, and Cloudflare/Azure warnings.
 - `microsoft-365-dns-readiness-checklist.md` covers Microsoft 365 DNS readiness without making DNS changes.
+- `microsoft365-operational-verification/` contains manual Outlook, inbound/outbound, DNS, Pumpkin app-send, Graph-vs-SMTP, public display, and test-results checklists.
 - `spf-dkim-dmarc-checklist.md` is the pre-cutover authentication checklist.
 - `lead-notification-template.ice.json` is the internal lead notification template draft.
 - `autoresponder-template.ice.json` is the customer autoresponder template draft.
@@ -62,6 +63,7 @@ The validator only reads committed JSON fixtures and templates. It performs no D
 
 - Ready for provider decision: yes
 - Domain verification TXT added: yes
+- Microsoft mailbox operational verification: pending manual tests
 - Ready for real SMTP/Graph sending: no
 - Ready for MX cutover: no
 - Ready for production DNS changes: no

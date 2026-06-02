@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "email-readiness.microsoft365-operational-verification.v1",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "providerKey": "microsoft-365-exchange-online-plan-1",
+  "providerDisplayName": "Microsoft 365 Exchange Online Plan 1",
+  "dnsHost": "Bluehost",
+  "primaryMailbox": "contact@iceskatingrinkrentals.com",
+  "knownSetupState": {
+    "microsoft365SetupScreenEmailReady": true,
+    "verificationTxtRecordAdded": true,
+    "verificationTxtRecord": {
+      "hostName": "@",
+      "txtValue": "MS=ms13281863",
+      "status": "added-at-bluehost",
+      "safeToDocument": true
+    },
+    "pumpkinRealSendingEnabled": false,
+    "emailSendMode": "dry-run"
+  },
+  "files": [
+    {
+      "path": "deployment/email/microsoft365-operational-verification/README.md",
+      "purpose": "Operational verification package overview."
+    },
+    {
+      "path": "deployment/email/microsoft365-operational-verification/OUTLOOK_ACCESS_CHECKLIST.md",
+      "purpose": "Manual Outlook mailbox access checks."
+    },
+    {
+      "path": "deployment/email/microsoft365-operational-verification/INBOUND_OUTBOUND_TEST_CHECKLIST.md",
+      "purpose": "Manual inbound/outbound message tests."
+    },
+    {
+      "path": "deployment/email/microsoft365-operational-verification/DNS_RECORD_VERIFICATION_CHECKLIST.md",
+      "purpose": "Manual Microsoft 365 DNS verification checks."
+    },
+    {
+      "path": "deployment/email/microsoft365-operational-verification/PUMPKIN_APP_SEND_READINESS_CHECKLIST.md",
+      "purpose": "Pumpkin app-send readiness blockers."
+    },
+    {
+      "path": "deployment/email/microsoft365-operational-verification/MICROSOFT_365_GRAPH_VS_SMTP_DECISION.md",
+      "purpose": "Graph vs SMTP AUTH decision guidance."
+    },
+    {
+      "path": "deployment/email/microsoft365-operational-verification/EMAIL_PUBLIC_DISPLAY_POLICY.md",
+      "purpose": "Public email display policy options."
+    },
+    {
+      "path": "deployment/email/microsoft365-operational-verification/EMAIL_TEST_RESULTS_TEMPLATE.md",
+      "purpose": "Manual test result capture template."
+    }
+  ],
+  "readiness": {
+    "microsoftMailboxOperationalVerification": "pending-manual-tests",
+    "pumpkinRealEmailSending": "not-ready",
+    "publicEmailDisplay": "under-review",
+    "mxDnsProductionConfidence": "pending-manual-verification",
+    "cmsPageImportImpact": "no-direct-cms-change"
+  },
+  "noGoConfirmations": [
+    "No real email is sent from code.",
+    "No credentials are committed.",
+    "No DNS is changed by code.",
+    "No CMS records are changed.",
+    "No static packages are regenerated.",
+    "No Azure, Cloudflare, or Bluehost changes are made by code.",
+    "RollerRinkRentals.com remains paused."
+  ]
+}
