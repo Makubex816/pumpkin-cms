@@ -46,7 +46,16 @@ public static class DesignSystemGuard
         "faq-panel",
         "media-feature",
         "table-comparison",
-        "final-cta"
+        "final-cta",
+        "heroMedia",
+        "trustBand",
+        "mediaUseCaseGrid",
+        "splitFeature",
+        "processSteps",
+        "planningTopics",
+        "serviceAreaTeaser",
+        "faqAccordion",
+        "finalCta"
     };
 
     private static readonly HashSet<string> Providers = new(StringComparer.Ordinal)

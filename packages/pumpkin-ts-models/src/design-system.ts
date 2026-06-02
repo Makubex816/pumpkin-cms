@@ -44,6 +44,15 @@ export const SECTION_VARIANTS = [
   'media-feature',
   'table-comparison',
   'final-cta',
+  'heroMedia',
+  'trustBand',
+  'mediaUseCaseGrid',
+  'splitFeature',
+  'processSteps',
+  'planningTopics',
+  'serviceAreaTeaser',
+  'faqAccordion',
+  'finalCta',
 ] as const;
 
 export type SectionVariant = typeof SECTION_VARIANTS[number];

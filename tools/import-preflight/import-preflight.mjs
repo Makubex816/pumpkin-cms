@@ -43,12 +43,32 @@ const sectionVariants = new Set([
   'media-feature',
   'table-comparison',
   'final-cta',
+  'heroMedia',
+  'trustBand',
+  'mediaUseCaseGrid',
+  'splitFeature',
+  'processSteps',
+  'planningTopics',
+  'serviceAreaTeaser',
+  'faqAccordion',
+  'finalCta',
 ]);
 const formBlockVariants = new Set(['quote-form-panel', 'contact-card', 'inline-contact', 'compact-contact']);
 const knownDefaultFormKeys = new Set(['default-contact', 'default-quote-request']);
 const allowedClassPrefixes = ['cms-', 'section-', 'card-', 'cta-', 'trust-', 'grid-', 'media-', 'rich-', 'ice-'];
 const requiredHomeBlocks = ['Hero', 'TrustBar', 'CardGrid', 'HowItWorks', 'FAQ', 'PrimaryCTA'];
 const requiredHomeMediaSlots = ['heroImage', 'localImage', 'closingImage'];
+const requiredProductionHomeVariants = [
+  'heroMedia',
+  'trustBand',
+  'mediaUseCaseGrid',
+  'splitFeature',
+  'processSteps',
+  'planningTopics',
+  'serviceAreaTeaser',
+  'faqAccordion',
+  'finalCta',
+];
 const protectedPathPattern = /(^|[/\\])(\.env\.local|appsettings\.Development\.json|\.github[/\\]workflows|\.next|node_modules|\.static-artifacts|\.static-content-snapshots|\.static-release-dry-runs)([/\\]|$)/i;
 const rawMediaPattern = /\.(zip|png|jpe?g|gif|webp|mp4|mov|avi|psd|ai)$/i;
 const secretPatterns = [
@@ -155,6 +175,7 @@ function main() {
     report.candidate = summarizeCandidate(page);
     validateBasicImportShape(report, page, tenantId, siteKey, route);
     validateKnownBlocks(report, page);
+    validateProductionHomepageSections(report, page, rawJson);
     validateCustomHtmlAndEmbeds(report, page);
     validateFocusedHomeContract(report, page);
     validateFormReferences(report, page);
@@ -380,6 +401,52 @@ function validateKnownBlocks(report, page) {
 
   if (!report.issues.some((issue) => issue.check === 'known-block-types' && issue.severity === 'error')) {
     pass(report, 'known-block-types', 'All block types are known to the local import preflight.');
+  }
+}
+
+function validateProductionHomepageSections(report, page, rawJson) {
+  const templateKey = stringValue(getPath(page, 'template.templateKey'));
+  const candidateStatus = stringValue(page.importCandidateStatus);
+  const shouldValidate = templateKey === 'ice-homepage-production-renderer-v1' || candidateStatus === 'production-render-candidate';
+  if (!shouldValidate) return;
+
+  const blocks = getBlocks(page);
+  const variants = blocks.map((block) => stringValue(getPath(block, 'content.sectionVariant') || getPath(block, 'content.variant') || getPath(block, 'content.type'))).filter(Boolean);
+  const missing = requiredProductionHomeVariants.filter((variant) => !variants.includes(variant));
+  if (missing.length > 0) {
+    fail(report, 'production-home-sections', `Production homepage variants are missing: ${missing.join(', ')}.`, 'blocks', 'ContentData.ContentBlocks', missing);
+  } else {
+    pass(report, 'production-home-sections', 'All production homepage section variants are present.');
+  }
+
+  if (blocks.some((block) => stringValue(block.type) === 'customHtml')) {
+    fail(report, 'production-home-sections', 'Production-render candidate must not depend on customHtml sections.', 'blocks', 'ContentData.ContentBlocks');
+  }
+
+  const hero = blocks.find((block) => stringValue(getPath(block, 'content.sectionVariant')) === 'heroMedia');
+  const heroImage = isRecord(getPath(hero, 'content.media')) ? getPath(hero, 'content.media') : {};
+  if (!isSafeLocalMediaImage(heroImage)) {
+    fail(report, 'production-media-placement', 'heroMedia requires a local /media image with alt text and MediaAsset id.', 'media', 'Hero.content.media');
+  }
+
+  const grid = blocks.find((block) => stringValue(getPath(block, 'content.sectionVariant')) === 'mediaUseCaseGrid');
+  const cards = Array.isArray(getPath(grid, 'content.cards')) ? getPath(grid, 'content.cards') : [];
+  if (cards.length < 3) {
+    fail(report, 'production-media-placement', 'mediaUseCaseGrid must contain at least three image cards.', 'media', 'CardGrid.content.cards');
+  }
+  const badCards = cards.filter((card) => !isSafeLocalMediaImage(isRecord(card) ? card.media || card : null));
+  if (badCards.length > 0) {
+    fail(report, 'production-media-placement', 'Every mediaUseCaseGrid card must have a local /media image, alt text, and MediaAsset id.', 'media', 'CardGrid.content.cards', { badCardCount: badCards.length });
+  }
+
+  if (/East Coast/i.test(rawJson)) {
+    fail(report, 'production-service-area-copy', 'Production homepage copy must not include East Coast wording without approval.', 'content', 'payload');
+  } else {
+    pass(report, 'production-service-area-copy', 'Service-area copy contains no East Coast wording.');
+  }
+
+  if (!report.issues.some((issue) => ['production-home-sections', 'production-media-placement', 'production-service-area-copy'].includes(issue.check) && issue.severity === 'error')) {
+    pass(report, 'production-media-placement', 'Production homepage media placement contract passed.');
   }
 }
 
@@ -645,6 +712,14 @@ function isSafeUrl(value) {
   if (/^https:\/\//i.test(trimmed)) return true;
   if (/^http:\/\/localhost(?::\d+)?\//i.test(trimmed)) return true;
   return false;
+}
+
+function isSafeLocalMediaImage(value) {
+  if (!isRecord(value)) return false;
+  const url = stringValue(value.publicUrl || value.url || value.src || value.image);
+  const alt = stringValue(value.alt || value.altText || value['image-alt'] || value.imageAlt);
+  const mediaAssetId = stringValue(value.mediaAssetId || value.assetId);
+  return url.startsWith('/media/ice-rink-rentals/') && Boolean(alt && mediaAssetId);
 }
 
 function runDotNetContract(inputPath) {

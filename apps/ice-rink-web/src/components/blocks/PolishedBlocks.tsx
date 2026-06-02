@@ -42,6 +42,12 @@ type CmsBlock = IHtmlBlock & {
   enabled?: boolean;
   content: CmsContent;
 };
+type CmsImage = {
+  src: string;
+  alt: string;
+  caption: string;
+  mediaAssetId: string;
+};
 
 export interface ContactSubmitPayload {
   formId: string;
@@ -118,6 +124,41 @@ function getBlockContent(block: CmsBlock): CmsContent {
   return block.content ?? {};
 }
 
+function getSectionVariant(block: CmsBlock): string {
+  const content = getBlockContent(block);
+  return getString(content.sectionVariant) || getString(content.variant) || getString(content.type);
+}
+
+function isVariant(block: CmsBlock, variant: string): boolean {
+  return getSectionVariant(block) === variant;
+}
+
+function getImage(value: unknown): CmsImage {
+  if (!value || typeof value !== 'object') {
+    return { src: '', alt: '', caption: '', mediaAssetId: '' };
+  }
+
+  const image = value as CmsContent;
+  return {
+    src: getString(image.publicUrl) || getString(image.url) || getString(image.src),
+    alt: getString(image.alt) || getString(image.altText),
+    caption: getString(image.caption),
+    mediaAssetId: getString(image.mediaAssetId) || getString(image.assetId),
+  };
+}
+
+function getBlockMedia(content: CmsContent, fallbackUrlKey = 'mainImage'): CmsImage {
+  const image = getImage(content.media || content.image || content.featuredImage);
+  if (image.src) return image;
+
+  return {
+    src: getString(content[fallbackUrlKey]) || getString(content.backgroundImage),
+    alt: getString(content[`${fallbackUrlKey}AltText`]) || getString(content.alt) || getString(content.imageAlt),
+    caption: getString(content.caption),
+    mediaAssetId: getString(content.mediaAssetId) || getString(content.assetId) || getString(content[`${fallbackUrlKey}MediaAssetId`]),
+  };
+}
+
 function getCardGridColumns(layout: string, count: number): string {
   if (layout.includes('2') || count === 2) {
     return 'md:grid-cols-2';
@@ -147,16 +188,27 @@ export function renderPolishedBlock({
 }: PolishedBlockProps): React.ReactNode | null {
   switch (block.type) {
     case 'Hero':
+      if (isVariant(block, 'heroMedia')) return <IceHeroMediaSection block={block} />;
       return <PolishedHeroBlock block={block} />;
     case 'TrustBar':
+      if (isVariant(block, 'trustBand')) return <IceTrustBandSection block={block} />;
       return <PolishedTrustBarBlock block={block} />;
     case 'CardGrid':
+      if (isVariant(block, 'mediaUseCaseGrid')) return <IceMediaUseCaseGridSection block={block} />;
+      if (isVariant(block, 'splitFeature')) return <IceSplitFeatureSection block={block} />;
+      if (isVariant(block, 'planningTopics')) return <IcePlanningTopicsSection block={block} />;
       return <PolishedCardGridBlock block={block} />;
     case 'HowItWorks':
+      if (isVariant(block, 'processSteps')) return <IceProcessStepsSection block={block} />;
       return <PolishedHowItWorksBlock block={block} />;
     case 'FAQ':
+      if (isVariant(block, 'faqAccordion')) return <IceFaqAccordionSection block={block} />;
       return <PolishedFAQBlock block={block} />;
+    case 'ServiceAreaMap':
+      if (isVariant(block, 'serviceAreaTeaser')) return <IceServiceAreaTeaserSection block={block} />;
+      return null;
     case 'PrimaryCTA':
+      if (isVariant(block, 'finalCta')) return <IceFinalCtaSection block={block} />;
       return <PolishedPrimaryCTABlock block={block} />;
     case 'Contact':
       return <PolishedContactBlock block={block} pageSlug={pageSlug} onSubmit={onContactSubmit} />;
@@ -174,6 +226,285 @@ export function renderPolishedBlock({
     default:
       return null;
   }
+}
+
+export function IceHeroMediaSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const image = getBlockMedia(content);
+  const primaryCta = isRecord(content.primaryCta) ? content.primaryCta : {};
+  const secondaryCta = isRecord(content.secondaryCta) ? content.secondaryCta : {};
+  const buttonText = getString(primaryCta.label) || getString(content.buttonText);
+  const buttonLink = getString(primaryCta.href) || getString(content.buttonLink, '/contact');
+  const secondaryButtonText = getString(secondaryCta.label) || getString(content.secondaryButtonText);
+  const secondaryButtonLink = getString(secondaryCta.href) || getString(content.secondaryButtonLink, '/service-areas');
+
+  return (
+    <div className="ice-section ice-section--hero">
+      <div className="cms-container cms-container-wide">
+        <div>
+          {getString(content.eyebrow) && <p className="ice-eyebrow">{getString(content.eyebrow)}</p>}
+          <h1 className="ice-heading">{getString(content.headline)}</h1>
+          {getString(content.subheadline) && <p className="ice-copy">{getString(content.subheadline)}</p>}
+          {(buttonText || secondaryButtonText) && (
+            <div className="ice-button-row">
+              {buttonText && (
+                <a className="ice-button ice-button--primary" href={buttonLink}>
+                  {buttonText}
+                  <ArrowRight className="ice-button__icon" aria-hidden="true" />
+                </a>
+              )}
+              {secondaryButtonText && (
+                <a className="ice-button ice-button--secondary" href={secondaryButtonLink}>
+                  {secondaryButtonText}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+        {image.src && (
+          <figure className="ice-media">
+            <img className="ice-media__image" src={image.src} alt={image.alt || getString(content.headline)} />
+            {image.caption && <figcaption>{image.caption}</figcaption>}
+          </figure>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function IceTrustBandSection({ block }: { block: CmsBlock }) {
+  const items = getArray<CmsContent>(getBlockContent(block).items);
+  if (!items.length) return null;
+
+  return (
+    <div className="ice-section ice-section--cards">
+      <div className="cms-container cms-container-wide">
+        <div className="ice-grid ice-grid--4">
+          {items.map((item, index) => {
+            const Icon = getIcon(item.icon);
+            return (
+              <article className="ice-card ice-card--feature" key={`${getString(item.title, 'Trust item')}-${index}`}>
+                <Icon className="ice-card__icon" aria-hidden="true" />
+                <h2>{getString(item.title)}</h2>
+                {getString(item.text) && <p>{getString(item.text)}</p>}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IceMediaUseCaseGridSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const cards = getArray<CmsContent>(content.cards);
+
+  return (
+    <div className="ice-section ice-section--media">
+      <div className="cms-container cms-container-wide">
+        <div className="ice-section__intro">
+          {getString(content.eyebrow) && <p className="ice-eyebrow">{getString(content.eyebrow)}</p>}
+          <h2 className="ice-heading">{getString(content.title)}</h2>
+          {getString(content.subtitle) && <p className="ice-copy">{getString(content.subtitle)}</p>}
+        </div>
+        <div className="ice-grid ice-grid--3">
+          {cards.map((card, index) => {
+            const image = getImage(card.media || card.image);
+            return (
+              <article className="ice-card ice-card--media" key={`${getString(card.title, 'Use case')}-${index}`}>
+                {image.src && (
+                  <figure className="ice-media">
+                    <img className="ice-media__image" src={image.src} alt={image.alt || getString(card.title)} />
+                  </figure>
+                )}
+                <div>
+                  <h3>{getString(card.title)}</h3>
+                  <p>{getString(card.description)}</p>
+                  {getString(card.ctaHref) && getString(card.ctaLabel) && (
+                    <a href={getString(card.ctaHref)} className="ice-card__link">
+                      {getString(card.ctaLabel)}
+                      <ArrowRight className="ice-button__icon" aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IceSplitFeatureSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const image = getBlockMedia(content, 'image');
+  const bullets = getArray<unknown>(content.bullets).map((item) => getString(item)).filter(Boolean);
+
+  return (
+    <div className="ice-section ice-section--cards">
+      <div className="cms-container cms-container-wide">
+        <div className="ice-grid ice-grid--2">
+          {image.src && (
+            <figure className="ice-media">
+              <img className="ice-media__image" src={image.src} alt={image.alt || getString(content.title)} />
+              {image.caption && <figcaption>{image.caption}</figcaption>}
+            </figure>
+          )}
+          <article className="ice-card ice-card--feature">
+            {getString(content.eyebrow) && <p className="ice-eyebrow">{getString(content.eyebrow)}</p>}
+            <h2>{getString(content.title)}</h2>
+            <p>{getString(content.description)}</p>
+            {bullets.length > 0 && (
+              <ul className="ice-list">
+                {bullets.map((bullet) => (
+                  <li key={bullet}>
+                    <CheckCircle2 className="ice-list__icon" aria-hidden="true" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </article>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IceProcessStepsSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const steps = getArray<CmsContent>(content.steps);
+
+  return (
+    <div className="ice-section ice-section--process">
+      <div className="cms-container cms-container-wide">
+        <div className="ice-section__intro">
+          {getString(content.eyebrow) && <p className="ice-eyebrow">{getString(content.eyebrow)}</p>}
+          <h2 className="ice-heading">{getString(content.title)}</h2>
+          {getString(content.subtitle) && <p className="ice-copy">{getString(content.subtitle)}</p>}
+        </div>
+        <div className="ice-grid ice-grid--4">
+          {steps.map((step, index) => (
+            <article className="ice-card ice-card--feature" key={`${getString(step.title, 'Step')}-${index}`}>
+              <div className="ice-step-number">{index + 1}</div>
+              <h3>{getString(step.title)}</h3>
+              <p>{getString(step.text)}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IcePlanningTopicsSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const topics = getArray<CmsContent | string>(content.topics);
+
+  return (
+    <div className="ice-section ice-section--planning">
+      <div className="cms-container cms-container-wide">
+        <div className="ice-grid ice-grid--2">
+          <div>
+            {getString(content.eyebrow) && <p className="ice-eyebrow">{getString(content.eyebrow)}</p>}
+            <h2 className="ice-heading">{getString(content.title)}</h2>
+            {getString(content.subtitle) && <p className="ice-copy">{getString(content.subtitle)}</p>}
+          </div>
+          <div className="ice-grid ice-grid--2">
+            {topics.map((topic, index) => {
+              const label = typeof topic === 'string' ? topic : getString(topic.title || topic.label);
+              const description = typeof topic === 'string' ? '' : getString(topic.description);
+              return (
+                <article className="ice-card ice-card--feature" key={`${label || 'Topic'}-${index}`}>
+                  <h3>{label}</h3>
+                  {description && <p>{description}</p>}
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IceServiceAreaTeaserSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const buttonText = getString(content.buttonText, 'View service areas');
+  const buttonLink = getString(content.buttonLink, '/service-areas');
+
+  return (
+    <div className="ice-section ice-section--service-area">
+      <div className="cms-container cms-container-wide">
+        <article className="ice-card ice-card--feature">
+          {getString(content.eyebrow) && <p className="ice-eyebrow">{getString(content.eyebrow)}</p>}
+          <h2>{getString(content.title)}</h2>
+          <p>{getString(content.description)}</p>
+          <a className="ice-button ice-button--secondary" href={buttonLink}>
+            {buttonText}
+            <ArrowRight className="ice-button__icon" aria-hidden="true" />
+          </a>
+        </article>
+      </div>
+    </div>
+  );
+}
+
+export function IceFaqAccordionSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const items = getArray<CmsContent>(content.items);
+
+  return (
+    <div className="ice-section ice-section--faq">
+      <div className="cms-container cms-container-standard">
+        <div className="ice-section__intro">
+          <h2 className="ice-heading">{getString(content.title)}</h2>
+          {getString(content.subtitle) && <p className="ice-copy">{getString(content.subtitle)}</p>}
+        </div>
+        <div className="ice-faq-list">
+          {items.map((item, index) => (
+            <details className="ice-card ice-card--feature" key={`${getString(item.question, 'Question')}-${index}`} open={index === 0}>
+              <summary>
+                <span>{getString(item.question)}</span>
+                <HelpCircle className="ice-card__icon" aria-hidden="true" />
+              </summary>
+              <p>{getString(item.answer)}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IceFinalCtaSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const buttonText = getString(content.buttonText);
+  const buttonLink = getString(content.buttonLink, '/contact');
+
+  return (
+    <div className="ice-section ice-section--cta">
+      <div className="cms-container cms-container-wide">
+        <div>
+          {getString(content.eyebrow) && <p className="ice-eyebrow">{getString(content.eyebrow)}</p>}
+          <h2 className="ice-heading">{getString(content.title)}</h2>
+          {getString(content.description) && <p className="ice-copy">{getString(content.description)}</p>}
+        </div>
+        {buttonText && (
+          <a className="ice-button ice-button--primary" href={buttonLink}>
+            {buttonText}
+            <ArrowRight className="ice-button__icon" aria-hidden="true" />
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function isRecord(value: unknown): value is CmsContent {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value));
 }
 
 export function PolishedHeroBlock({ block }: { block: CmsBlock }) {

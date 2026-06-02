@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "createdAt": "2026-06-02T21:21:15.522Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "outputFolder": "content-review/ice-homepage-production-render-candidate",
+  "sourceCandidate": "content-review/ice-homepage-business-contact-policy/HOMEPAGE_BUSINESS_READY_CANDIDATE.json",
+  "candidate": "homepage-production-render-candidate.json",
+  "package": "homepage-production-render-package.json",
+  "validationOutputs": [
+    "homepage-production-render-import-preflight-result.json",
+    "normalizer-validation/README.md",
+    "normalizer-validation/NORMALIZER_RUN_REPORT.md",
+    "normalizer-validation/HOMEPAGE_NORMALIZATION_RESULT.md",
+    "normalizer-validation/proposed-homepage.normalizer-verified.json",
+    "normalizer-validation/homepage-normalizer-verified-package.json",
+    "normalizer-validation/manifest.json"
+  ],
+  "rendererVariants": [
+    "heroMedia",
+    "trustBand",
+    "mediaUseCaseGrid",
+    "splitFeature",
+    "processSteps",
+    "planningTopics",
+    "serviceAreaTeaser",
+    "faqAccordion",
+    "finalCta"
+  ],
+  "mediaAssetIds": [
+    "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+    "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+    "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+    "ice-rink-rentals-holidayicerink-973ce7691377",
+    "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+  ],
+  "cmsWritesPerformed": false,
+  "cmsPageRecordsChanged": false,
+  "cmsThemeRecordsChanged": false,
+  "mediaAssetRecordsChangedInThisPhase": false,
+  "staticGenerationPerformed": false,
+  "deploymentPerformed": false,
+  "rollerStatus": "paused"
+}

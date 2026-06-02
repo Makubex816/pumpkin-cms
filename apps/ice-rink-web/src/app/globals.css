@@ -269,6 +269,191 @@
     @apply font-bold text-sky-700 underline underline-offset-4 hover:text-sky-900;
   }
 
+  .ice-section {
+    @apply w-full px-0 py-10 sm:py-12 md:py-16;
+  }
+
+  .ice-section .cms-container {
+    @apply mx-auto px-4 sm:px-6 md:px-8;
+  }
+
+  .ice-section--hero {
+    @apply overflow-hidden border-b border-sky-100 bg-slate-50;
+  }
+
+  .ice-section--hero .cms-container {
+    @apply grid grid-cols-1 items-center gap-7 py-10 sm:py-12 md:grid-cols-[minmax(0,0.92fr)_minmax(280px,1.08fr)] md:gap-10 md:py-14;
+  }
+
+  .ice-section--media,
+  .ice-section--faq {
+    @apply bg-white;
+  }
+
+  .ice-section--cards,
+  .ice-section--planning {
+    @apply bg-slate-50;
+  }
+
+  .ice-section--process {
+    @apply bg-sky-50;
+  }
+
+  .ice-section--service-area {
+    @apply bg-emerald-50;
+  }
+
+  .ice-section--cta {
+    @apply bg-slate-950 text-white;
+  }
+
+  .ice-section--cta .cms-container {
+    @apply flex flex-col gap-5 md:flex-row md:items-center md:justify-between;
+  }
+
+  .ice-section__intro {
+    @apply mb-7 max-w-3xl md:mb-9;
+  }
+
+  .ice-grid {
+    @apply grid grid-cols-1 gap-4;
+  }
+
+  .ice-grid--2 {
+    @apply md:grid-cols-2;
+  }
+
+  .ice-grid--3 {
+    @apply md:grid-cols-3;
+  }
+
+  .ice-grid--4 {
+    @apply sm:grid-cols-2 lg:grid-cols-4;
+  }
+
+  .ice-card {
+    @apply rounded-lg border border-slate-200 bg-white p-5 shadow-sm;
+  }
+
+  .ice-card--feature {
+    @apply flex flex-col gap-3;
+  }
+
+  .ice-card--media {
+    @apply overflow-hidden p-0;
+  }
+
+  .ice-card--media > div {
+    @apply p-5;
+  }
+
+  .ice-card h2,
+  .ice-card h3 {
+    @apply text-lg font-extrabold leading-tight text-slate-950;
+  }
+
+  .ice-card p {
+    @apply text-sm leading-6 text-slate-600;
+  }
+
+  .ice-card__icon {
+    @apply h-6 w-6 text-sky-700;
+  }
+
+  .ice-card__link {
+    @apply mt-3 inline-flex w-fit items-center text-sm font-bold text-sky-700 hover:text-sky-900;
+  }
+
+  .ice-media {
+    @apply overflow-hidden rounded-lg border border-slate-200 bg-slate-100 shadow-sm;
+  }
+
+  .ice-media__image {
+    @apply block aspect-[4/3] h-auto w-full object-cover;
+  }
+
+  .ice-section--hero .ice-media__image {
+    @apply aspect-[16/10] md:aspect-[4/3];
+  }
+
+  .ice-media figcaption {
+    @apply bg-white px-4 py-3 text-sm leading-6 text-slate-600;
+  }
+
+  .ice-eyebrow {
+    @apply mb-3 text-xs font-extrabold uppercase tracking-wider text-sky-700;
+  }
+
+  .ice-heading {
+    @apply text-balance text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl md:text-5xl;
+  }
+
+  .ice-section--cta .ice-heading,
+  .ice-section--cta .ice-copy,
+  .ice-section--cta .ice-eyebrow {
+    @apply text-white;
+  }
+
+  .ice-copy {
+    @apply mt-4 max-w-3xl text-base leading-7 text-slate-700 md:text-lg;
+  }
+
+  .ice-button-row {
+    @apply mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap;
+  }
+
+  .ice-button {
+    @apply inline-flex min-h-11 w-fit items-center justify-center rounded-full px-5 py-3 text-sm font-extrabold transition focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2;
+  }
+
+  .ice-button--primary {
+    @apply bg-sky-700 text-white shadow-lg shadow-sky-900/15 hover:bg-sky-800;
+  }
+
+  .ice-button--secondary {
+    @apply border border-sky-200 bg-white text-sky-800 shadow-sm hover:border-sky-300 hover:bg-sky-50;
+  }
+
+  .ice-section--cta .ice-button--primary {
+    @apply bg-white text-sky-800 hover:bg-sky-50 focus:ring-white focus:ring-offset-slate-950;
+  }
+
+  .ice-button__icon {
+    @apply ml-2 h-4 w-4;
+  }
+
+  .ice-list {
+    @apply mt-2 space-y-2;
+  }
+
+  .ice-list li {
+    @apply flex gap-2 text-sm leading-6 text-slate-700;
+  }
+
+  .ice-list__icon {
+    @apply mt-0.5 h-5 w-5 shrink-0 text-emerald-600;
+  }
+
+  .ice-step-number {
+    @apply flex h-10 w-10 items-center justify-center rounded-full bg-sky-700 text-sm font-extrabold text-white;
+  }
+
+  .ice-faq-list {
+    @apply space-y-3;
+  }
+
+  .ice-faq-list summary {
+    @apply flex cursor-pointer list-none items-start justify-between gap-4 text-left text-base font-extrabold text-slate-950;
+  }
+
+  .ice-faq-list summary::-webkit-details-marker {
+    @apply hidden;
+  }
+
+  .ice-faq-list details[open] {
+    @apply border-sky-200 bg-sky-50;
+  }
+
   .prose h2 {
     @apply text-2xl font-bold text-slate-950 mt-8 mb-4;
   }
