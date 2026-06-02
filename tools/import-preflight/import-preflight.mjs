@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { tmpdir } from 'os';
 import path from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
@@ -178,6 +179,7 @@ function main() {
     validateProductionHomepageSections(report, page, rawJson);
     validateCustomHtmlAndEmbeds(report, page);
     validateFocusedHomeContract(report, page);
+    validatePhase8nPersistenceFields(report, page);
     validateFormReferences(report, page);
     validateMediaRequirements(report, page);
     validateBusinessAndApprovalState(report, page);
@@ -190,6 +192,9 @@ function main() {
   report.dotNetContract = dotNetResult.summary;
   if (dotNetResult.ok) {
     pass(report, 'dotnet-page-contract', 'The .NET Page/block contract accepted the candidate.', { readinessDecision: dotNetResult.summary.readinessDecision });
+    if (dotNetResult.summary.productionFieldPersistenceAvailable === false) {
+      warn(report, 'dotnet-page-contract', 'The .NET contract did not report production field persistence; rebuild the contract tool before CMS writes.', 'dotnet', 'productionFieldPersistence');
+    }
     if (dotNetResult.summary.warningCount > 0) {
       warn(report, 'dotnet-page-contract', `The .NET contract returned ${dotNetResult.summary.warningCount} warning(s).`, 'dotnet', 'candidate', dotNetResult.summary.warningCodes);
     }
@@ -533,6 +538,60 @@ function validateFocusedHomeContract(report, page) {
   });
 }
 
+function validatePhase8nPersistenceFields(report, page) {
+  const templateKey = stringValue(getPath(page, 'template.templateKey'));
+  const candidateStatus = stringValue(page.importCandidateStatus);
+  const shouldValidate = templateKey === 'ice-homepage-production-renderer-v1' || candidateStatus === 'production-render-candidate';
+  if (!shouldValidate) return;
+
+  const requiredFields = [
+    ['domainRouting.selectedMailbox', getPath(page, 'domainRouting.selectedMailbox')],
+    ['domainRouting.publicEmailDisplayPolicy', getPath(page, 'domainRouting.publicEmailDisplayPolicy')],
+    ['media.logo.mediaAssetId', getPath(page, 'media.logo.mediaAssetId')],
+    ['media.setupImage.mediaAssetId', getPath(page, 'media.setupImage.mediaAssetId')],
+    ['media.openGraphImage.mediaAssetId', getPath(page, 'media.openGraphImage.mediaAssetId')],
+  ];
+
+  const requiredMediaSlots = ['featuredImage', 'heroImage', 'localImage', 'closingImage'];
+  requiredMediaSlots.forEach((slot) => {
+    requiredFields.push([`media.${slot}.mediaAssetId`, getPath(page, `media.${slot}.mediaAssetId`) || getPath(page, `media.${slot}.assetId`)]);
+  });
+
+  const blocks = getBlocks(page);
+  requiredProductionHomeVariants.forEach((variant) => {
+    const block = blocks.find((item) => stringValue(getPath(item, 'content.sectionVariant')) === variant);
+    requiredFields.push([`ContentData.ContentBlocks.${variant}.content.sectionVariant`, getPath(block, 'content.sectionVariant')]);
+  });
+
+  const missing = requiredFields.filter(([, value]) => !stringValue(value)).map(([field]) => field);
+  if (missing.length > 0) {
+    fail(report, 'phase8n-contract-persistence', `Phase 8N persistence-sensitive fields are missing: ${missing.join(', ')}.`, 'contract', 'candidate', missing);
+    return;
+  }
+
+  const mediaIds = findValuesByKey(page, 'mediaAssetId').filter(Boolean);
+  const nonTenantMediaIds = mediaIds.filter((value) => !value.startsWith('ice-rink-rentals-'));
+  if (nonTenantMediaIds.length > 0) {
+    fail(report, 'phase8n-contract-persistence', 'Phase 8N MediaAsset IDs must remain tenant-prefixed.', 'media', 'mediaAssetId', nonTenantMediaIds);
+    return;
+  }
+
+  pass(report, 'phase8n-contract-persistence', 'Phase 8N production fields are present for .NET/API persistence validation.');
+}
+
+function findValuesByKey(value, key) {
+  if (Array.isArray(value)) {
+    return value.flatMap((item) => findValuesByKey(item, key));
+  }
+
+  if (!isRecord(value)) return [];
+
+  return Object.entries(value).flatMap(([entryKey, entryValue]) => {
+    const nested = findValuesByKey(entryValue, key);
+    return entryKey === key && typeof entryValue === 'string' ? [entryValue, ...nested] : nested;
+  });
+}
+
 function validateFormReferences(report, page) {
   const blocks = getBlocks(page);
   const formBlocks = blocks.filter((block) => stringValue(block.type) === 'formBlock');
@@ -728,7 +787,28 @@ function runDotNetContract(inputPath) {
     return { ok: false, summary: { available: false, reason: 'Project not found.' } };
   }
 
-  const result = spawnSync('dotnet', ['run', '--no-build', '--project', project, '--', 'validate-page', '--path', inputPath], {
+  const buildDir = path.join(tmpdir(), 'pumpkin-import-preflight-page-contract-build');
+  const buildResult = spawnSync('dotnet', ['build', project, '-o', buildDir], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+    timeout: 120000,
+  });
+
+  if (buildResult.status !== 0) {
+    return {
+      ok: false,
+      summary: {
+        available: true,
+        buildOk: false,
+        buildExitCode: buildResult.status,
+        stdoutPreview: (buildResult.stdout || '').slice(0, 1000),
+        stderrPreview: (buildResult.stderr || '').slice(0, 1000),
+      },
+    };
+  }
+
+  const toolDll = path.join(buildDir, 'Pumpkin.PageContractTool.dll');
+  const result = spawnSync('dotnet', [toolDll, 'validate-page', '--path', inputPath], {
     cwd: repoRoot,
     encoding: 'utf8',
     timeout: 120000,
@@ -756,12 +836,15 @@ function runDotNetContract(inputPath) {
     ok: result.status === 0 && parsed.Ok === true,
     summary: {
       available: true,
+      buildOk: true,
       exitCode: result.status,
       ok: parsed.Ok === true,
       readinessDecision: parsed.ReadinessDecision || '',
       errorCount: Array.isArray(parsed.Errors) ? parsed.Errors.length : 0,
       warningCount: Array.isArray(parsed.Warnings) ? parsed.Warnings.length : 0,
       warningCodes: Array.isArray(parsed.Warnings) ? Array.from(new Set(parsed.Warnings.map((item) => item.Code).filter(Boolean))).sort() : [],
+      productionFieldPersistenceOk: Array.isArray(parsed.Pages) ? parsed.Pages.every((item) => item.ProductionFieldPersistenceOk !== false) : null,
+      productionFieldPersistenceAvailable: Array.isArray(parsed.Pages) ? parsed.Pages.some((item) => Object.prototype.hasOwnProperty.call(item, 'ProductionFieldPersistenceOk')) : false,
       mediaRequirements: parsed.MediaRequirements || [],
     },
   };

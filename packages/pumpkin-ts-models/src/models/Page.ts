@@ -138,27 +138,54 @@ export interface PageRedirect {
  * Reusable image asset metadata for page-level media slots
  */
 export interface PageImageAsset {
+  mediaAssetId?: string;
   assetId: string;
+  requiredMediaSlotId?: string;
+  mediaRequirementRef?: string;
+  publicUrl?: string;
   url: string;
   alt: string;
   title: string;
   caption: string;
+  description?: string;
   source: string;
   licenseStatus: string;
   usageStatus: string;
+  usageType?: string;
+  status?: string;
+  tags?: string[];
+  blocker?: boolean | null;
   width: number | null;
   height: number | null;
   focalPointX: number | null;
   focalPointY: number | null;
   decorative: boolean;
+  [key: string]: unknown;
 }
 
 /**
  * Compact Open Graph image metadata for exports and quality checks
  */
 export interface PageOpenGraphImage {
+  mediaAssetId?: string;
+  assetId?: string;
+  requiredMediaSlotId?: string;
+  mediaRequirementRef?: string;
+  publicUrl?: string;
   url: string;
   alt: string;
+  title?: string;
+  caption?: string;
+  description?: string;
+  source?: string;
+  licenseStatus?: string;
+  usageStatus?: string;
+  usageType?: string;
+  status?: string;
+  tags?: string[];
+  width?: number | null;
+  height?: number | null;
+  [key: string]: unknown;
 }
 
 /**
@@ -170,6 +197,14 @@ export interface PageMedia {
   localImage: PageImageAsset;
   closingImage: PageImageAsset;
   openGraphImage: PageOpenGraphImage;
+  logo?: PageImageAsset;
+  setupImage?: PageImageAsset;
+  hero?: PageImageAsset;
+  corporate?: PageImageAsset;
+  holiday?: PageImageAsset;
+  setup?: PageImageAsset;
+  sourceMediaManifest?: string;
+  [key: string]: unknown;
 }
 
 /**
@@ -412,7 +447,11 @@ export interface PageFormConfig {
 export interface PageDomainRouting {
   domain: string;
   brandName: string;
+  businessDisplayName?: string;
   publicContactEmail: string;
+  publicEmailDisplayPolicy?: string;
+  selectedMailbox?: string;
+  selectedMailboxMetadata?: string;
   quoteRequestEmail: string;
   supportEmail: string;
   replyToEmail: string;
@@ -424,13 +463,18 @@ export interface PageDomainRouting {
   defaultLeadRoutingMode: string;
   defaultRecipientGroup: string;
   staticFormEndpointKey: string;
+  leadRecipientRef?: string;
+  staticEndpointRef?: string;
   emailProvider: string;
+  selectedEmailProvider?: string;
+  pumpkinAppSendStatus?: string;
   emailProviderStatus: string;
   mxStatus: string;
   spfStatus: string;
   dkimStatus: string;
   dmarcStatus: string;
   notes: string;
+  [key: string]: unknown;
 }
 
 /**

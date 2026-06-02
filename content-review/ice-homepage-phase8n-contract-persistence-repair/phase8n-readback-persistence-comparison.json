@@ -1,0 +1,626 @@
+{
+  "schemaVersion": "pumpkin.phase8n.contract-persistence.v1",
+  "generatedAt": "2026-06-02T23:12:31.132Z",
+  "tool": {
+    "path": "tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs",
+    "nonMutating": true,
+    "readsProtectedConfig": false,
+    "writesCmsData": false,
+    "sendsEmail": false,
+    "deploys": false
+  },
+  "candidate": {
+    "path": "content-review/ice-homepage-phase8n-crm-scaffold-validated/HOMEPAGE_PHASE8N_NORMALIZED_CANDIDATE.json",
+    "persistenceFieldCount": 170,
+    "requiredPhase8nMissing": [],
+    "nonTenantMediaAssetIds": []
+  },
+  "readback": {
+    "path": "content-review/ice-homepage-phase8n-local-draft-overwrite/phase8n-homepage-readback.json",
+    "status": "drift-detected",
+    "driftCount": 128,
+    "drift": [
+      {
+        "path": "$.media.featuredImage.requiredMediaSlotId",
+        "fieldName": "requiredMediaSlotId",
+        "expected": "homepage-hero-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.featuredImage.mediaRequirementRef",
+        "fieldName": "mediaRequirementRef",
+        "expected": "homepage-hero-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.featuredImage.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "actual": null
+      },
+      {
+        "path": "$.media.featuredImage.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.featuredImage.usageType",
+        "fieldName": "usageType",
+        "expected": "hero",
+        "actual": null
+      },
+      {
+        "path": "$.media.featuredImage.status",
+        "fieldName": "status",
+        "expected": "mediaasset-bound",
+        "actual": null
+      },
+      {
+        "path": "$.media.heroImage.requiredMediaSlotId",
+        "fieldName": "requiredMediaSlotId",
+        "expected": "homepage-hero-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.heroImage.mediaRequirementRef",
+        "fieldName": "mediaRequirementRef",
+        "expected": "homepage-hero-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.heroImage.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "actual": null
+      },
+      {
+        "path": "$.media.heroImage.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.heroImage.usageType",
+        "fieldName": "usageType",
+        "expected": "hero",
+        "actual": null
+      },
+      {
+        "path": "$.media.heroImage.status",
+        "fieldName": "status",
+        "expected": "mediaasset-bound",
+        "actual": null
+      },
+      {
+        "path": "$.media.localImage.requiredMediaSlotId",
+        "fieldName": "requiredMediaSlotId",
+        "expected": "homepage-corporate-event-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.localImage.mediaRequirementRef",
+        "fieldName": "mediaRequirementRef",
+        "expected": "homepage-corporate-event-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.localImage.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "actual": null
+      },
+      {
+        "path": "$.media.localImage.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.localImage.usageType",
+        "fieldName": "usageType",
+        "expected": "card",
+        "actual": null
+      },
+      {
+        "path": "$.media.localImage.status",
+        "fieldName": "status",
+        "expected": "mediaasset-bound",
+        "actual": null
+      },
+      {
+        "path": "$.media.closingImage.requiredMediaSlotId",
+        "fieldName": "requiredMediaSlotId",
+        "expected": "homepage-holiday-shopping-center-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.closingImage.mediaRequirementRef",
+        "fieldName": "mediaRequirementRef",
+        "expected": "homepage-holiday-shopping-center-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.closingImage.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-holidayicerink-973ce7691377",
+        "actual": null
+      },
+      {
+        "path": "$.media.closingImage.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.closingImage.usageType",
+        "fieldName": "usageType",
+        "expected": "card",
+        "actual": null
+      },
+      {
+        "path": "$.media.closingImage.status",
+        "fieldName": "status",
+        "expected": "mediaasset-bound",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.requiredMediaSlotId",
+        "fieldName": "requiredMediaSlotId",
+        "expected": "homepage-open-graph-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.mediaRequirementRef",
+        "fieldName": "mediaRequirementRef",
+        "expected": "homepage-open-graph-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.assetId",
+        "fieldName": "assetId",
+        "expected": "winterfesticerinkrentals-324b1b89777d",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.title",
+        "fieldName": "title",
+        "expected": "Winter Festival Ice Rink Rental",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.caption",
+        "fieldName": "caption",
+        "expected": "A portable ice rink creates a festive centerpiece for winter events and holiday celebrations.",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.usageType",
+        "fieldName": "usageType",
+        "expected": "og-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.openGraphImage.status",
+        "fieldName": "status",
+        "expected": "mediaasset-bound",
+        "actual": null
+      },
+      {
+        "path": "$.media.logo.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "actual": null
+      },
+      {
+        "path": "$.media.logo.assetId",
+        "fieldName": "assetId",
+        "expected": "iceskatingrinkrentalslogo-0d1f970f0411",
+        "actual": null
+      },
+      {
+        "path": "$.media.logo.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/iceskatingrinkrentalslogo-0d1f970f0411.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.logo.alt",
+        "fieldName": "alt",
+        "expected": "Ice Rink Rentals logo with ice skate and snowflake graphic",
+        "actual": null
+      },
+      {
+        "path": "$.media.logo.title",
+        "fieldName": "title",
+        "expected": "Ice Rink Rentals Logo",
+        "actual": null
+      },
+      {
+        "path": "$.media.logo.caption",
+        "fieldName": "caption",
+        "expected": "Primary logo for Ice Rink Rentals.",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.requiredMediaSlotId",
+        "fieldName": "requiredMediaSlotId",
+        "expected": "homepage-setup-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.mediaRequirementRef",
+        "fieldName": "mediaRequirementRef",
+        "expected": "homepage-setup-image",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.assetId",
+        "fieldName": "assetId",
+        "expected": "icerinkrentalssetup-113d218572e4",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/icerinkrentalssetup-113d218572e4.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.alt",
+        "fieldName": "alt",
+        "expected": "Portable ice rink setup with white safety barriers and skate aids before an outdoor event",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.title",
+        "fieldName": "title",
+        "expected": "Portable Ice Rink Setup",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.caption",
+        "fieldName": "caption",
+        "expected": "Portable rink setup showing temporary panels, rink surface, safety barriers, and event-ready layout.",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.usageType",
+        "fieldName": "usageType",
+        "expected": "card",
+        "actual": null
+      },
+      {
+        "path": "$.media.setupImage.status",
+        "fieldName": "status",
+        "expected": "mediaasset-bound",
+        "actual": null
+      },
+      {
+        "path": "$.media.hero.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "actual": null
+      },
+      {
+        "path": "$.media.hero.assetId",
+        "fieldName": "assetId",
+        "expected": "winterfesticerinkrentals-324b1b89777d",
+        "actual": null
+      },
+      {
+        "path": "$.media.hero.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.hero.alt",
+        "fieldName": "alt",
+        "expected": "Guests skating on a festive outdoor ice rink surrounded by holiday lights at a winter festival",
+        "actual": null
+      },
+      {
+        "path": "$.media.hero.title",
+        "fieldName": "title",
+        "expected": "Winter Festival Portable Ice Rink",
+        "actual": null
+      },
+      {
+        "path": "$.media.hero.caption",
+        "fieldName": "caption",
+        "expected": "Featured hero image for portable ice rink rentals at holiday and winter events.",
+        "actual": null
+      },
+      {
+        "path": "$.media.corporate.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "actual": null
+      },
+      {
+        "path": "$.media.corporate.assetId",
+        "fieldName": "assetId",
+        "expected": "corporateicerinkrentalevent-18e985ca59bd",
+        "actual": null
+      },
+      {
+        "path": "$.media.corporate.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.corporate.alt",
+        "fieldName": "alt",
+        "expected": "Corporate guests skating and networking around a temporary outdoor ice rink at an evening event",
+        "actual": null
+      },
+      {
+        "path": "$.media.corporate.title",
+        "fieldName": "title",
+        "expected": "Corporate Ice Rink Rental Event",
+        "actual": null
+      },
+      {
+        "path": "$.media.corporate.caption",
+        "fieldName": "caption",
+        "expected": "Corporate and VIP event use case image.",
+        "actual": null
+      },
+      {
+        "path": "$.media.holiday.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-holidayicerink-973ce7691377",
+        "actual": null
+      },
+      {
+        "path": "$.media.holiday.assetId",
+        "fieldName": "assetId",
+        "expected": "holidayicerink-973ce7691377",
+        "actual": null
+      },
+      {
+        "path": "$.media.holiday.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.holiday.alt",
+        "fieldName": "alt",
+        "expected": "Families and children skating on a portable ice rink at an outdoor holiday shopping center",
+        "actual": null
+      },
+      {
+        "path": "$.media.holiday.title",
+        "fieldName": "title",
+        "expected": "Holiday Shopping Center Ice Rink",
+        "actual": null
+      },
+      {
+        "path": "$.media.holiday.caption",
+        "fieldName": "caption",
+        "expected": "Holiday and public-space use case image.",
+        "actual": null
+      },
+      {
+        "path": "$.media.setup.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "actual": null
+      },
+      {
+        "path": "$.media.setup.assetId",
+        "fieldName": "assetId",
+        "expected": "icerinkrentalssetup-113d218572e4",
+        "actual": null
+      },
+      {
+        "path": "$.media.setup.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/icerinkrentalssetup-113d218572e4.png",
+        "actual": null
+      },
+      {
+        "path": "$.media.setup.alt",
+        "fieldName": "alt",
+        "expected": "Portable ice rink setup with white safety barriers and skate aids before an outdoor event",
+        "actual": null
+      },
+      {
+        "path": "$.media.setup.title",
+        "fieldName": "title",
+        "expected": "Portable Ice Rink Setup",
+        "actual": null
+      },
+      {
+        "path": "$.media.setup.caption",
+        "fieldName": "caption",
+        "expected": "Setup and logistics planning image.",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[0].content.sectionVariant",
+        "fieldName": "sectionVariant",
+        "expected": "heroMedia",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[0].content.media.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[0].content.media.assetId",
+        "fieldName": "assetId",
+        "expected": "winterfesticerinkrentals-324b1b89777d",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[0].content.media.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[0].content.media.alt",
+        "fieldName": "alt",
+        "expected": "Guests skating on a festive outdoor ice rink surrounded by holiday lights at a winter festival",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[0].content.media.title",
+        "fieldName": "title",
+        "expected": "Winter festival portable ice rink rental",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[0].content.media.caption",
+        "fieldName": "caption",
+        "expected": "Featured hero image for portable ice rink rentals at holiday and winter events.",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[1].content.sectionVariant",
+        "fieldName": "sectionVariant",
+        "expected": "trustBand",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[1].content.title",
+        "fieldName": "title",
+        "expected": "A mobile rink attraction for private, public, and business events",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.sectionVariant",
+        "fieldName": "sectionVariant",
+        "expected": "mediaUseCaseGrid",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[0].media.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[0].media.assetId",
+        "fieldName": "assetId",
+        "expected": "corporateicerinkrentalevent-18e985ca59bd",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[0].media.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[0].media.alt",
+        "fieldName": "alt",
+        "expected": "Corporate guests skating and networking around a temporary outdoor ice rink at an evening event",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[0].media.title",
+        "fieldName": "title",
+        "expected": "Corporate Ice Rink Rental Event",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[0].media.caption",
+        "fieldName": "caption",
+        "expected": "Corporate and VIP event use case image.",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[0].mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[1].media.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-holidayicerink-973ce7691377",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[1].media.assetId",
+        "fieldName": "assetId",
+        "expected": "holidayicerink-973ce7691377",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[1].media.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[1].media.alt",
+        "fieldName": "alt",
+        "expected": "Families and children skating on a portable ice rink at an outdoor holiday shopping center",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[1].media.title",
+        "fieldName": "title",
+        "expected": "Holiday Shopping Center Ice Rink",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[1].media.caption",
+        "fieldName": "caption",
+        "expected": "Holiday and public-space use case image.",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[1].mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-holidayicerink-973ce7691377",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[2].media.mediaAssetId",
+        "fieldName": "mediaAssetId",
+        "expected": "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[2].media.assetId",
+        "fieldName": "assetId",
+        "expected": "icerinkrentalssetup-113d218572e4",
+        "actual": null
+      },
+      {
+        "path": "$.ContentData.ContentBlocks[2].content.cards[2].media.publicUrl",
+        "fieldName": "publicUrl",
+        "expected": "/media/ice-rink-rentals/2026/06/icerinkrentalssetup-113d218572e4.png",
+        "actual": null
+      }
+    ]
+  },
+  "decision": "contract-persistence-check-passed"
+}

@@ -4,6 +4,7 @@
 export interface IHtmlBlock {
     type: string;
     content: Record<string, any>;
+    [key: string]: unknown;
 }
 /**
  * Generic HTML block for unknown or custom block types

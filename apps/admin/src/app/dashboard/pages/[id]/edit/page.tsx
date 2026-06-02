@@ -280,19 +280,51 @@ function formatJson(value: unknown) {
 
 function emptyImageAsset() {
   return {
+    mediaAssetId: '',
     assetId: '',
+    requiredMediaSlotId: '',
+    mediaRequirementRef: '',
+    publicUrl: '',
     url: '',
     alt: '',
     title: '',
     caption: '',
+    description: '',
     source: '',
     licenseStatus: '',
     usageStatus: '',
+    usageType: '',
+    status: '',
+    tags: [] as string[],
+    blocker: null as boolean | null,
     width: null as number | null,
     height: null as number | null,
     focalPointX: null as number | null,
     focalPointY: null as number | null,
     decorative: false,
+  }
+}
+
+function emptyOpenGraphImage() {
+  return {
+    mediaAssetId: '',
+    assetId: '',
+    requiredMediaSlotId: '',
+    mediaRequirementRef: '',
+    publicUrl: '',
+    url: '',
+    alt: '',
+    title: '',
+    caption: '',
+    description: '',
+    source: '',
+    licenseStatus: '',
+    usageStatus: '',
+    usageType: '',
+    status: '',
+    tags: [] as string[],
+    width: null as number | null,
+    height: null as number | null,
   }
 }
 
@@ -326,11 +358,14 @@ function emptyAreaServed() {
 
 function getPageMedia(page: Page) {
   return {
+    ...(page.media || {}),
     featuredImage: { ...emptyImageAsset(), ...page.media?.featuredImage },
     heroImage: { ...emptyImageAsset(), ...page.media?.heroImage },
     localImage: { ...emptyImageAsset(), ...page.media?.localImage },
     closingImage: { ...emptyImageAsset(), ...page.media?.closingImage },
     openGraphImage: {
+      ...emptyOpenGraphImage(),
+      ...(page.media?.openGraphImage || {}),
       url: page.media?.openGraphImage?.url || page.seo?.openGraph?.['og:image'] || '',
       alt: page.media?.openGraphImage?.alt || page.seo?.openGraph?.['og:image:alt'] || '',
     },
@@ -342,7 +377,9 @@ type ImageAssetDraft = ReturnType<typeof emptyImageAsset>
 function imageAssetFromMediaAsset(asset: MediaAsset, current: ImageAssetDraft): ImageAssetDraft {
   return {
     ...current,
+    mediaAssetId: asset.id || current.mediaAssetId,
     assetId: getMediaAssetReference(asset),
+    publicUrl: getMediaAssetPublicUrl(asset) || current.publicUrl,
     url: getMediaAssetPublicUrl(asset) || current.url,
     alt: getMediaAssetAltText(asset) || current.alt,
     title: asset.title || current.title,
@@ -573,9 +610,14 @@ function getPageDomainRouting(page: Page) {
   const domainRouting = toRecord(page.domainRouting)
 
   return {
+    ...domainRouting,
     domain: stringValue(domainRouting.domain),
     brandName: stringValue(domainRouting.brandName),
+    businessDisplayName: stringValue(domainRouting.businessDisplayName),
     publicContactEmail: stringValue(domainRouting.publicContactEmail),
+    publicEmailDisplayPolicy: stringValue(domainRouting.publicEmailDisplayPolicy),
+    selectedMailbox: stringValue(domainRouting.selectedMailbox),
+    selectedMailboxMetadata: stringValue(domainRouting.selectedMailboxMetadata),
     quoteRequestEmail: stringValue(domainRouting.quoteRequestEmail),
     supportEmail: stringValue(domainRouting.supportEmail),
     replyToEmail: stringValue(domainRouting.replyToEmail),
@@ -587,7 +629,11 @@ function getPageDomainRouting(page: Page) {
     defaultLeadRoutingMode: stringValue(domainRouting.defaultLeadRoutingMode),
     defaultRecipientGroup: stringValue(domainRouting.defaultRecipientGroup),
     staticFormEndpointKey: stringValue(domainRouting.staticFormEndpointKey),
+    leadRecipientRef: stringValue(domainRouting.leadRecipientRef),
+    staticEndpointRef: stringValue(domainRouting.staticEndpointRef),
     emailProvider: stringValue(domainRouting.emailProvider),
+    selectedEmailProvider: stringValue(domainRouting.selectedEmailProvider),
+    pumpkinAppSendStatus: stringValue(domainRouting.pumpkinAppSendStatus),
     emailProviderStatus: stringValue(domainRouting.emailProviderStatus),
     mxStatus: stringValue(domainRouting.mxStatus),
     spfStatus: stringValue(domainRouting.spfStatus),
@@ -935,19 +981,23 @@ function collectPageImageWarnings(page: Page) {
   const media = getPageMedia(page)
 
   Object.entries(media).forEach(([slot, asset]) => {
-    if ('url' in asset && asset.url && !asset.alt && !('decorative' in asset && asset.decorative)) {
+    const image = toRecord(asset)
+    const url = stringValue(image.url)
+    if (!url) return
+
+    if (!stringValue(image.alt) && image.decorative !== true) {
       warnings.push(`${slot}.alt is missing while ${slot}.url is set.`)
     }
 
-    if ('url' in asset && asset.url && 'source' in asset && !asset.source) {
+    if ('source' in image && !stringValue(image.source)) {
       warnings.push(`${slot}.source is missing while ${slot}.url is set.`)
     }
 
-    if ('url' in asset && asset.url && 'licenseStatus' in asset && !asset.licenseStatus) {
+    if ('licenseStatus' in image && !stringValue(image.licenseStatus)) {
       warnings.push(`${slot}.licenseStatus is missing while ${slot}.url is set.`)
     }
 
-    if ('url' in asset && asset.url && 'usageStatus' in asset && !asset.usageStatus) {
+    if ('usageStatus' in image && !stringValue(image.usageStatus)) {
       warnings.push(`${slot}.usageStatus is missing while ${slot}.url is set.`)
     }
   })
@@ -1700,6 +1750,7 @@ export default function PageStructuredEditor() {
           ...media,
           [slot]: {
             ...media[slot],
+            mediaAssetId: '',
             assetId: '',
           },
         },
@@ -1708,24 +1759,40 @@ export default function PageStructuredEditor() {
   }
 
   const applyOpenGraphMediaAsset = (asset: MediaAsset) => {
-    updatePageState((current) => ({
-      ...current,
-      media: {
-        ...getPageMedia(current),
-        openGraphImage: {
-          url: getMediaAssetPublicUrl(asset),
-          alt: getMediaAssetAltText(asset),
+    updatePageState((current) => {
+      const media = getPageMedia(current)
+      const openGraphImage = media.openGraphImage
+
+      return {
+        ...current,
+        media: {
+          ...media,
+          openGraphImage: {
+            ...openGraphImage,
+            mediaAssetId: asset.id || openGraphImage.mediaAssetId,
+            assetId: getMediaAssetReference(asset),
+            publicUrl: getMediaAssetPublicUrl(asset),
+            url: getMediaAssetPublicUrl(asset),
+            alt: getMediaAssetAltText(asset),
+            title: asset.title || openGraphImage.title,
+            caption: asset.caption || openGraphImage.caption,
+            source: asset.credit || asset.source || openGraphImage.source,
+            licenseStatus: asset.licenseStatus || openGraphImage.licenseStatus,
+            usageStatus: asset.usageStatus || openGraphImage.usageStatus,
+            width: asset.width ?? openGraphImage.width,
+            height: asset.height ?? openGraphImage.height,
+          },
         },
-      },
-      seo: {
-        ...current.seo,
-        openGraph: {
-          ...current.seo.openGraph,
-          'og:image': getMediaAssetPublicUrl(asset),
-          'og:image:alt': getMediaAssetAltText(asset),
+        seo: {
+          ...current.seo,
+          openGraph: {
+            ...current.seo.openGraph,
+            'og:image': getMediaAssetPublicUrl(asset),
+            'og:image:alt': getMediaAssetAltText(asset),
+          },
         },
-      },
-    }))
+      }
+    })
   }
 
   const updateWorkflowField = (field: WorkflowStringField, value: string) => {

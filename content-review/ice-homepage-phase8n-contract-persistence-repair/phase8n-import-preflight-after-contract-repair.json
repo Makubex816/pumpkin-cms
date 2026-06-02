@@ -1,6 +1,6 @@
 {
   "schemaVersion": "pumpkin-import-preflight-result.v1",
-  "generatedAt": "2026-06-02T22:19:07.335Z",
+  "generatedAt": "2026-06-02T23:08:02.750Z",
   "tool": {
     "name": "pumpkin-import-preflight",
     "path": "tools/import-preflight/import-preflight.mjs",
@@ -106,6 +106,11 @@
       "message": "Required homepage import fields are present."
     },
     {
+      "check": "phase8n-contract-persistence",
+      "status": "passed",
+      "message": "Phase 8N production fields are present for .NET/API persistence validation."
+    },
+    {
       "check": "default-form",
       "status": "warning",
       "message": "Homepage has no formBlock.",
@@ -138,11 +143,12 @@
     {
       "check": "dotnet-page-contract",
       "status": "warning",
-      "message": "The .NET contract returned 5 warning(s).",
+      "message": "The .NET contract returned 6 warning(s).",
       "category": "dotnet",
       "field": "candidate",
       "details": [
-        "page.reviewOnlyField"
+        "page.reviewOnlyField",
+        "productionFieldPersistence.checked"
       ]
     }
   ],
@@ -189,9 +195,10 @@
       "check": "dotnet-page-contract",
       "category": "dotnet",
       "field": "candidate",
-      "message": "The .NET contract returned 5 warning(s).",
+      "message": "The .NET contract returned 6 warning(s).",
       "details": [
-        "page.reviewOnlyField"
+        "page.reviewOnlyField",
+        "productionFieldPersistence.checked"
       ]
     }
   ],
@@ -272,14 +279,18 @@
   ],
   "dotNetContract": {
     "available": true,
+    "buildOk": true,
     "exitCode": 0,
     "ok": true,
     "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
     "errorCount": 0,
-    "warningCount": 5,
+    "warningCount": 6,
     "warningCodes": [
-      "page.reviewOnlyField"
+      "page.reviewOnlyField",
+      "productionFieldPersistence.checked"
     ],
+    "productionFieldPersistenceOk": true,
+    "productionFieldPersistenceAvailable": true,
     "mediaRequirements": [
       {
         "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-homepage-phase8n-crm-scaffold-validated/HOMEPAGE_PHASE8N_NORMALIZED_CANDIDATE.json",

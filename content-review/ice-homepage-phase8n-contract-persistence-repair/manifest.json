@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "pumpkin.phase8n.contract-persistence-repair.manifest.v1",
+  "generatedAt": "2026-06-02T19:08:02-04:00",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "route": "/",
+  "nonMutating": true,
+  "cmsWritesPerformed": false,
+  "themeWritesPerformed": false,
+  "mediaAssetWritesPerformed": false,
+  "staticRegenerationPerformed": false,
+  "deploymentPerformed": false,
+  "rollerStatus": "paused",
+  "candidatePath": "content-review/ice-homepage-phase8n-crm-scaffold-validated/HOMEPAGE_PHASE8N_NORMALIZED_CANDIDATE.json",
+  "readbackComparedPath": "content-review/ice-homepage-phase8n-local-draft-overwrite/phase8n-homepage-readback.json",
+  "outputs": [
+    "README.md",
+    "STRIPPED_FIELDS_AUDIT.md",
+    "CONTRACT_REPAIR_SUMMARY.md",
+    "DOTNET_TS_ALIGNMENT.md",
+    "ROUNDTRIP_VALIDATION.md",
+    "IMPORT_PREFLIGHT_REPAIR.md",
+    "NEXT_REIMPORT_PLAN.md",
+    "phase8n-import-preflight-after-contract-repair.json",
+    "phase8n-readback-persistence-comparison.json"
+  ],
+  "decision": {
+    "readyForProviderDecision": "not-applicable",
+    "readyForHomepageDraftReimport": "yes-with-user-authorization-and-admin-auth",
+    "readyForStaticRegeneration": "no",
+    "readyForProductionIndexing": "no"
+  }
+}

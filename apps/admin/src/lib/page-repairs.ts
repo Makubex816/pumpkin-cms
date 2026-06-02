@@ -405,9 +405,25 @@ function repairMedia(page: Page) {
     localImage: createDefaultImage(),
     closingImage: createDefaultImage(),
     openGraphImage: {
+      mediaAssetId: '',
+      assetId: '',
+      requiredMediaSlotId: '',
+      mediaRequirementRef: '',
+      publicUrl: '',
       url: '',
       alt: '',
-    },
+      title: '',
+      caption: '',
+      description: '',
+      source: '',
+      licenseStatus: 'needs_review',
+      usageStatus: 'needs_review',
+      usageType: '',
+      status: '',
+      tags: [],
+      width: null,
+      height: null,
+    } as PageMedia['openGraphImage'],
     ...(page.media || {}),
   }
 
@@ -434,6 +450,7 @@ function repairMedia(page: Page) {
   })
 
   media.openGraphImage = {
+    ...(media.openGraphImage || {}),
     url: media.openGraphImage?.url || '',
     alt: media.openGraphImage?.alt || '',
   }
@@ -559,20 +576,29 @@ function createDefaultStaticPublishing(page: Page) {
 
 function createDefaultImage(): PageImageAsset {
   return {
+    mediaAssetId: '',
     assetId: '',
+    requiredMediaSlotId: '',
+    mediaRequirementRef: '',
+    publicUrl: '',
     url: '',
     alt: '',
     title: '',
     caption: '',
+    description: '',
     source: '',
     licenseStatus: 'needs_review',
     usageStatus: 'needs_review',
+    usageType: '',
+    status: '',
+    tags: [],
+    blocker: null,
     width: null,
     height: null,
     focalPointX: null,
     focalPointY: null,
     decorative: false,
-  }
+  } as PageImageAsset
 }
 
 function inferTemplateKey(page: Page) {
