@@ -294,6 +294,9 @@ export type PageChangeSource =
   | 'cms_snapshot'
   | 'metadata_repair'
   | 'form_builder'
+  | 'updated_home_contact_package_import'
+  | 'post_repair_updated_home_contact_import'
+  | 'ppec_home_contact_repair_import'
   | 'manual_unknown';
 
 /**
