@@ -1,0 +1,47 @@
+{
+  "task": "ice-ppec-logo-contrast-fix",
+  "generatedAt": "2026-06-03",
+  "site": "IceSkatingRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "previewUrl": "http://localhost:3002/__preview/ice-rink-rentals/home",
+  "filesChanged": [
+    "apps/ice-rink-web/src/components/blocks/PolishedBlocks.tsx",
+    "apps/ice-rink-web/src/app/globals.css"
+  ],
+  "classesUpdated": [
+    "ppec-partner-logo-wrap",
+    "ppec-partner-logo-well",
+    "ppec-partner-logo",
+    "ppec-partner-logo-missing"
+  ],
+  "cssIntent": {
+    "outerCard": "Keep soft white/lavender card treatment.",
+    "innerWell": "Use dark purple bg-violet-950 contrast surface behind the white/transparent PPEC logo.",
+    "imageFit": "Keep logo object-fit contain with centered padded layout."
+  },
+  "guardrails": {
+    "imageGeneration": false,
+    "imageFileModified": false,
+    "newMediaAssets": false,
+    "cmsWrites": false,
+    "themeWrites": false,
+    "staticGeneration": false,
+    "deployment": false,
+    "dnsEmailProviderAzureCloudflareBluehostChanges": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "typeCheck": "pass",
+    "nodeCheck": "pass",
+    "gitDiffCheck": "pass",
+    "trailingWhitespaceScan": "pass",
+    "targetedSecretScan": "pass",
+    "protectedGeneratedRawArtifactPathCheck": "pass"
+  },
+  "readiness": {
+    "readyForManualFrontendReview": true,
+    "acceptanceExpected": "PPEC logo is visible on a dark purple inner well instead of white-on-white."
+  }
+}
+

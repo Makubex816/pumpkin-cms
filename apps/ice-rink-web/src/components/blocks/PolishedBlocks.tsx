@@ -310,11 +310,13 @@ export function IcePpecPartnerBandSection({ block }: { block: CmsBlock }) {
 
           <div className="ppec-partner-card">
             <div className="ppec-partner-logo-wrap">
-              {logo.src ? (
-                <img className="ppec-partner-logo" src={logo.src} alt={logo.alt || `${partnerName} logo`} />
-              ) : (
-                <span className="ppec-partner-logo-missing">{partnerName}</span>
-              )}
+              <div className="ppec-partner-logo-well">
+                {logo.src ? (
+                  <img className="ppec-partner-logo" src={logo.src} alt={logo.alt || `${partnerName} logo`} />
+                ) : (
+                  <span className="ppec-partner-logo-missing">{partnerName}</span>
+                )}
+              </div>
             </div>
             <p className="ppec-partner-card-label">{displayRole}</p>
             <p className="ppec-partner-card-name">{partnerName}</p>
