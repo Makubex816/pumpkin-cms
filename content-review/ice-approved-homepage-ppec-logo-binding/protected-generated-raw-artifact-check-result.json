@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T16:31:51.083Z",
+  "protectedHits": [],
+  "generatedHits": [],
+  "expectedUntrackedInputFolder": true,
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": " M apps/pumpkin-api/Program.cs\n M apps/pumpkin-api/Services/MediaAssetSanitizer.cs\n?? PUMPKIN_ICE_APPROVED_HOMEPAGE_PPEC_LOGO_BINDING_REPORT.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/CONTACT_PAGE_SETUP.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/EMAIL_CORRECTION_NOTES.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/corporate.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/hero.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/holiday.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected",
+    "stderrPreview": ""
+  }
+}

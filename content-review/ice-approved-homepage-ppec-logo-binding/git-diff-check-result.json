@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T16:31:51.023Z",
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "",
+    "stderrPreview": "warning: in the working copy of 'apps/pumpkin-api/Program.cs', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'apps/pumpkin-api/Services/MediaAssetSanitizer.cs', LF will be replaced by CRLF the next time Git touches it\n"
+  },
+  "stdout": "",
+  "stderr": "warning: in the working copy of 'apps/pumpkin-api/Program.cs', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'apps/pumpkin-api/Services/MediaAssetSanitizer.cs', LF will be replaced by CRLF the next time Git touches it"
+}

@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "assetCount": 4,
+  "referenceCount": 6,
+  "warningCount": 3,
+  "warningCodes": [
+    "media-validation-warning"
+  ],
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "{\n  \"ok\": true,\n  \"assetCount\": 4,\n  \"referenceCount\": 6,\n  \"warningCount\": 3,\n  \"warningCodes\": [\n    \"media-validation-warning\"\n  ]\n}\n",
+    "stderrPreview": ""
+  }
+}

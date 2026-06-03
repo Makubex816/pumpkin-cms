@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "pumpkin.phase8n.contract-persistence.v1",
+  "generatedAt": "2026-06-03T16:31:25.610Z",
+  "tool": {
+    "path": "tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs",
+    "nonMutating": true,
+    "readsProtectedConfig": false,
+    "writesCmsData": false,
+    "sendsEmail": false,
+    "deploys": false
+  },
+  "candidate": {
+    "path": "content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+    "persistenceFieldCount": 301,
+    "requiredPhase8nMissing": [],
+    "nonTenantMediaAssetIds": []
+  },
+  "readback": {
+    "status": "skipped",
+    "reason": "No --readback file was provided.",
+    "driftCount": 0,
+    "drift": []
+  },
+  "decision": "contract-persistence-check-passed",
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "{\n  \"schemaVersion\": \"pumpkin.phase8n.contract-persistence.v1\",\n  \"generatedAt\": \"2026-06-03T16:31:25.610Z\",\n  \"tool\": {\n    \"path\": \"tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs\",\n    \"nonMutating\": true,\n    \"readsProtectedConfig\": false,\n    \"writesCmsData\": false,\n    \"sendsEmail\": false,\n    \"deploys\": false\n  },\n  \"candidate\": {\n    \"path\": \"content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json\",\n    \"persistenceFieldCount\": 301,\n    \"requiredPhase8nMissing\": [],\n    \"nonTenantMediaAssetIds\": []\n  },\n  \"readback\": {\n    \"status\": \"skipped\",\n    \"reason\": \"No --readback file was provided.\",\n    \"driftCount\": 0,\n    \"drift\": []\n  },\n  \"decision\": \"contract-persistence-check-passed\"\n}\n",
+    "stderrPreview": ""
+  },
+  "ok": true
+}

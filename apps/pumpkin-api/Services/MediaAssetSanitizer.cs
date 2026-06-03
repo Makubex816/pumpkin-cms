@@ -42,7 +42,8 @@ public static class MediaAssetSanitizer
         "icon",
         "background",
         "inline",
-        "document"
+        "document",
+        "partner-logo"
     };
 
     private static readonly HashSet<string> AllowedStorageProviders = new(StringComparer.Ordinal)

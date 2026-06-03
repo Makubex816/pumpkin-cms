@@ -1,0 +1,316 @@
+{
+  "schemaVersion": "pumpkin-import-preflight-result.v1",
+  "generatedAt": "2026-06-03T16:31:13.461Z",
+  "tool": {
+    "name": "pumpkin-import-preflight",
+    "path": "tools/import-preflight/import-preflight.mjs",
+    "mode": "preflight-only",
+    "nonMutating": true,
+    "requiresAdminJwt": false,
+    "readsProtectedConfig": false,
+    "callsLiveWriteApis": false,
+    "mutatesCmsData": false,
+    "sendsEmail": false,
+    "touchesMediaRecords": false
+  },
+  "input": {
+    "path": "content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+    "tenantId": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "route": "/"
+  },
+  "checks": [
+    {
+      "check": "json-parse",
+      "status": "passed",
+      "message": "JSON parse succeeded."
+    },
+    {
+      "check": "secret-scan",
+      "status": "passed",
+      "message": "No high-confidence secret-looking values found."
+    },
+    {
+      "check": "tenant",
+      "status": "passed",
+      "message": "Candidate tenantId matches \"ice-rink-rentals\"."
+    },
+    {
+      "check": "site-key",
+      "status": "passed",
+      "message": "Candidate siteKey is compatible with \"ice-rink-rentals\"."
+    },
+    {
+      "check": "slug",
+      "status": "passed",
+      "message": "pageSlug \"home\" is route-safe."
+    },
+    {
+      "check": "route",
+      "status": "passed",
+      "message": "Candidate slug matches route \"/\"."
+    },
+    {
+      "check": "content-blocks",
+      "status": "passed",
+      "message": "ContentData.ContentBlocks contains 13 block(s)."
+    },
+    {
+      "check": "publishing-state",
+      "status": "passed",
+      "message": "isPublished is false."
+    },
+    {
+      "check": "sitemap-state",
+      "status": "passed",
+      "message": "includeInSitemap is false."
+    },
+    {
+      "check": "canonical",
+      "status": "passed",
+      "message": "Canonical path matches candidate route."
+    },
+    {
+      "check": "required-blocks",
+      "status": "passed",
+      "message": "Required homepage block types are present."
+    },
+    {
+      "check": "known-block-types",
+      "status": "passed",
+      "message": "All block types are known to the local import preflight."
+    },
+    {
+      "check": "production-home-sections",
+      "status": "passed",
+      "message": "All production homepage section variants are present."
+    },
+    {
+      "check": "production-service-area-copy",
+      "status": "passed",
+      "message": "East Coast wording is limited to the Party Pros East Coast partner brand name."
+    },
+    {
+      "check": "production-media-placement",
+      "status": "passed",
+      "message": "Production homepage media placement contract passed."
+    },
+    {
+      "check": "rich-block-safety",
+      "status": "passed",
+      "message": "customHtml/trustedEmbed/formBlock focused checks passed."
+    },
+    {
+      "check": "focused-home-contract",
+      "status": "passed",
+      "message": "Required homepage import fields are present."
+    },
+    {
+      "check": "phase8n-contract-persistence",
+      "status": "passed",
+      "message": "Phase 8N production fields are present for .NET/API persistence validation."
+    },
+    {
+      "check": "updated-home-contact-persistence",
+      "status": "passed",
+      "message": "Updated home/contact persistence-sensitive fields are present before .NET round-trip validation."
+    },
+    {
+      "check": "default-form",
+      "status": "passed",
+      "message": "Default form references are safe and non-secret."
+    },
+    {
+      "check": "media-requirements",
+      "status": "passed",
+      "message": "Required media requirements have MediaAsset ids."
+    },
+    {
+      "check": "business-approval-audit",
+      "status": "passed",
+      "message": "Business value and approval blockers were classified."
+    },
+    {
+      "check": "unsafe-payload-scan",
+      "status": "passed",
+      "message": "No unsafe HTML/CSS/form/media/email markers found."
+    },
+    {
+      "check": "dotnet-page-contract",
+      "status": "passed",
+      "message": "The .NET Page/block contract accepted the candidate.",
+      "details": {
+        "readinessDecision": "dotnet-contract-valid-not-cms-import-ready"
+      }
+    },
+    {
+      "check": "dotnet-page-contract",
+      "status": "warning",
+      "message": "The .NET contract returned 6 warning(s).",
+      "category": "dotnet",
+      "field": "candidate",
+      "details": [
+        "page.reviewOnlyField",
+        "productionFieldPersistence.checked",
+        "updatedHomeContactPersistence.checked"
+      ]
+    }
+  ],
+  "candidate": {
+    "tenantId": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "pageSlug": "home",
+    "route": "/",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/",
+    "isPublished": false,
+    "includeInSitemap": false,
+    "workflowStatus": "draft",
+    "approvedForPublish": false,
+    "approvedForImport": false,
+    "staticEligible": false,
+    "needsRebuild": true,
+    "blockCount": 13,
+    "blockTypes": [
+      "Hero",
+      "TrustBar",
+      "CardGrid",
+      "HowItWorks",
+      "CardGrid",
+      "CardGrid",
+      "CardGrid",
+      "CardGrid",
+      "ServiceAreaMap",
+      "PrimaryCTA",
+      "FAQ",
+      "formBlock",
+      "PrimaryCTA"
+    ],
+    "formBlockCount": 1,
+    "formKeys": [
+      "default-quote-request"
+    ],
+    "mediaRequirementCount": 7,
+    "unresolvedMediaRequirementCount": 0
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "check": "dotnet-page-contract",
+      "category": "dotnet",
+      "field": "candidate",
+      "message": "The .NET contract returned 6 warning(s).",
+      "details": [
+        "page.reviewOnlyField",
+        "productionFieldPersistence.checked",
+        "updatedHomeContactPersistence.checked"
+      ]
+    }
+  ],
+  "blockers": {
+    "localDraftImport": [],
+    "cmsImport": [
+      {
+        "check": "approval",
+        "category": "workflow",
+        "field": "workflow.approvedForImport",
+        "message": "workflow.approvedForImport is not true."
+      },
+      {
+        "check": "approval",
+        "category": "workflow",
+        "field": "workflow.reviewStatus",
+        "message": "Human approval is not recorded."
+      },
+      {
+        "check": "business-values",
+        "category": "domainRouting",
+        "field": "domainRouting.publicContactEmail",
+        "message": "Public email display policy remains unresolved or intentionally hidden."
+      }
+    ],
+    "staticRegeneration": [
+      {
+        "check": "static-publishing",
+        "category": "staticPublishing",
+        "field": "staticPublishing.staticEligible",
+        "message": "staticPublishing.staticEligible is not true."
+      }
+    ],
+    "production": [
+      {
+        "check": "approval",
+        "category": "workflow",
+        "field": "workflow.approvedForPublish",
+        "message": "workflow.approvedForPublish is not true."
+      },
+      {
+        "check": "approval",
+        "category": "workflow",
+        "field": "workflow.reviewStatus",
+        "message": "Human approval is not recorded."
+      },
+      {
+        "check": "business-values",
+        "category": "domainRouting",
+        "field": "domainRouting.publicContactEmail",
+        "message": "Public email display policy remains unresolved."
+      },
+      {
+        "check": "static-publishing",
+        "category": "staticPublishing",
+        "field": "staticPublishing.staticEligible",
+        "message": "staticPublishing.staticEligible is not true."
+      }
+    ]
+  },
+  "differencesFromAdminApiPreflight": [
+    "Does not fetch current CMS pages, so same-slug update/create collision behavior is not proven.",
+    "Does not create server-side revision snapshots or ImportRun history.",
+    "Does not call SavePageAsync/UpdatePageAsync and therefore does not prove database persistence.",
+    "Mirrors admin/API validation categories locally without requiring admin JWT, tenant API key, or protected config."
+  ],
+  "dotNetContract": {
+    "available": true,
+    "buildOk": true,
+    "exitCode": 0,
+    "ok": true,
+    "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "errorCount": 0,
+    "warningCount": 6,
+    "warningCodes": [
+      "page.reviewOnlyField",
+      "productionFieldPersistence.checked",
+      "updatedHomeContactPersistence.checked"
+    ],
+    "productionFieldPersistenceOk": true,
+    "productionFieldPersistenceAvailable": true,
+    "updatedHomeContactPersistenceOk": true,
+    "mediaRequirements": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+        "RequirementCount": 7,
+        "BlockerCount": 0
+      }
+    ]
+  },
+  "classification": {
+    "preflight-valid-for-shape": true,
+    "preflight-valid-for-local-draft-import": true,
+    "preflight-valid-for-CMS-import": false,
+    "preflight-valid-for-production": false
+  },
+  "decisions": {
+    "shape": "valid",
+    "localDraftImport": "valid",
+    "cmsImport": "blocked",
+    "staticRegeneration": "blocked",
+    "production": "blocked"
+  },
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "{\n  \"schemaVersion\": \"pumpkin-import-preflight-result.v1\",\n  \"generatedAt\": \"2026-06-03T16:31:13.461Z\",\n  \"tool\": {\n    \"name\": \"pumpkin-import-preflight\",\n    \"path\": \"tools/import-preflight/import-preflight.mjs\",\n    \"mode\": \"preflight-only\",\n    \"nonMutating\": true,\n    \"requiresAdminJwt\": false,\n    \"readsProtectedConfig\": false,\n    \"callsLiveWriteApis\": false,\n    \"mutatesCmsData\": false,\n    \"sendsEmail\": false,\n    \"touchesMediaRecords\": false\n  },\n  \"input\": {\n    \"path\": \"content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json\",\n    \"tenantId\": \"ice-rink-rentals\",\n    \"siteKey\": \"ice-rink-rentals\",\n    \"route\": \"/\"\n  },\n  \"checks\": [\n    {\n      \"check\": \"json-parse\",\n      \"status\": \"passed\",\n      \"message\": \"JSON parse succeeded.\"\n    },\n    {\n      \"check\": \"secret-scan\",\n      \"status\": \"passed\",\n      \"message\": \"No high-confidence secret-looking values found.\"\n    },\n    {\n      \"check\": \"tenant\",\n      \"st",
+    "stderrPreview": ""
+  },
+  "ok": true
+}

@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T16:31:51.128Z",
+  "results": {
+    "json-parse-validation-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/json-parse-validation-result.json"
+    },
+    "homepage-import-preflight-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/homepage-import-preflight-result.json"
+    },
+    "dotnet-page-contract-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/dotnet-page-contract-result.json"
+    },
+    "contract-persistence-validation-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/contract-persistence-validation-result.json"
+    },
+    "design-system-validation-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/design-system-validation-result.json"
+    },
+    "media-validation-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/media-validation-result.json"
+    },
+    "tailwind-navigation-validation-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/tailwind-navigation-validation-result.json"
+    },
+    "page-intake-normalizer-validation-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/page-intake-normalizer-validation-result.json"
+    },
+    "unsafe-scan-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/unsafe-scan-result.json"
+    },
+    "contactus-scan-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/contactus-scan-result.json"
+    },
+    "targeted-secret-scan-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/targeted-secret-scan-result.json"
+    },
+    "git-diff-check-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/git-diff-check-result.json"
+    },
+    "trailing-whitespace-scan-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/trailing-whitespace-scan-result.json"
+    },
+    "protected-generated-raw-artifact-check-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/protected-generated-raw-artifact-check-result.json"
+    },
+    "staged-raw-artifact-check-result.json": {
+      "ok": true,
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/staged-raw-artifact-check-result.json"
+    }
+  }
+}

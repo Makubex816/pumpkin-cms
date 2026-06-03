@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "passed": 28,
+  "failed": 0,
+  "failures": [],
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "{\n  \"ok\": true,\n  \"passed\": 28,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+    "stderrPreview": ""
+  }
+}
