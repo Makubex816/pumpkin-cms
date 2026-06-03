@@ -54,6 +54,9 @@ const sectionVariants = new Set([
   'faqAccordion',
   'finalCta',
   'partnerCta',
+  'ppecPartnerBand',
+  'partnerBrandBand',
+  'partnerResourceCta',
 ]);
 const formBlockVariants = new Set(['quote-form-panel', 'contact-card', 'inline-contact', 'compact-contact']);
 const knownDefaultFormKeys = new Set(['default-contact', 'default-quote-request']);

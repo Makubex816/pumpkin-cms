@@ -232,6 +232,9 @@ const fallbackThemeTemplate: Theme = {
       serviceAreaTeaser: { variant: 'serviceAreaTeaser', label: 'Service area teaser', className: 'ice-section ice-section--service-area' },
       faqAccordion: { variant: 'faqAccordion', label: 'FAQ accordion', className: 'ice-section ice-section--faq' },
       finalCta: { variant: 'finalCta', label: 'Final CTA', className: 'ice-section ice-section--cta' },
+      ppecPartnerBand: { variant: 'ppecPartnerBand', label: 'PPEC partner band', className: 'ice-section ice-section--ppec-partner' },
+      partnerBrandBand: { variant: 'partnerBrandBand', label: 'Partner brand band', className: 'ice-section ice-section--ppec-partner' },
+      partnerResourceCta: { variant: 'partnerResourceCta', label: 'Partner resource CTA', className: 'ice-section ice-section--ppec-partner' },
     },
   },
   menu: [
