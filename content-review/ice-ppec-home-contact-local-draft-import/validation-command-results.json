@@ -1,0 +1,110 @@
+{
+  "jsonParse": [
+    {
+      "file": "content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json",
+      "ok": true
+    },
+    {
+      "file": "content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+      "ok": true
+    },
+    {
+      "file": "content-review/ice-ppec-home-contact-repair/UPDATED_HOME_CONTACT_WITH_PPEC_PACKAGE.json",
+      "ok": true
+    },
+    {
+      "file": "content-review/ice-ppec-home-contact-local-draft-import/homepage-ppec-import-preflight-result.json",
+      "ok": true
+    },
+    {
+      "file": "content-review/ice-ppec-home-contact-local-draft-import/contact-ppec-import-preflight-result.json",
+      "ok": true
+    },
+    {
+      "file": "content-review/ice-ppec-home-contact-local-draft-import/dotnet-updated-home-contact-ppec-pre-import-result.json",
+      "ok": true
+    }
+  ],
+  "preflight": {
+    "homepage": {
+      "shape": true,
+      "localDraftImport": true,
+      "cmsImport": false,
+      "production": false,
+      "warningCount": 2,
+      "errors": []
+    },
+    "contact": {
+      "shape": true,
+      "localDraftImport": true,
+      "cmsImport": false,
+      "production": false,
+      "warningCount": 1,
+      "errors": []
+    }
+  },
+  "dotnetPreImport": {
+    "ok": true,
+    "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "pages": [
+      {
+        "pageSlug": "home",
+        "roundTripOk": true,
+        "productionFieldPersistenceOk": true,
+        "updatedHomeContactPersistenceOk": true,
+        "errorCount": 0,
+        "warningCount": 6
+      },
+      {
+        "pageSlug": "contact",
+        "roundTripOk": true,
+        "productionFieldPersistenceOk": true,
+        "updatedHomeContactPersistenceOk": true,
+        "errorCount": 0,
+        "warningCount": 6
+      }
+    ]
+  },
+  "fixtures": {
+    "designSystem": {
+      "ok": true,
+      "passed": 28,
+      "failed": 0
+    },
+    "media": {
+      "ok": true,
+      "assetCount": 4,
+      "referenceCount": 6,
+      "warningCount": 3
+    },
+    "defaultForm": {
+      "ok": true,
+      "passed": 21,
+      "failed": 0
+    },
+    "tailwindNavigation": {
+      "ok": true,
+      "checkedNavigationRoutes": [
+        "/",
+        "/service-areas",
+        "/contact"
+      ],
+      "failures": []
+    },
+    "pageIntakeNormalizer": {
+      "ok": true,
+      "passed": 16,
+      "failed": 0
+    }
+  },
+  "unsafeRouteSecretScan": {
+    "ok": true,
+    "unsafeIssues": [],
+    "routeIssues": [],
+    "secretIssues": 0
+  },
+  "ppecCandidatesDifferFromPriorReadback": {
+    "checked": true,
+    "differs": true
+  }
+}

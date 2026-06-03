@@ -1,0 +1,148 @@
+﻿{
+  "Command": "validate-updated-home-contact",
+  "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-ppec-home-contact-repair\\UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json;C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-ppec-home-contact-repair\\UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+  "GeneratedAt": "2026-06-03T14:56:29.1328072Z",
+  "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+  "Ok": true,
+  "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+  "Pages": [
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json",
+      "PageId": "ice-rink-rentals-home",
+      "PageSlug": "home",
+      "TenantId": "ice-rink-rentals",
+      "DotNetDeserialized": true,
+      "RoundTripOk": true,
+      "ProductionFieldPersistenceOk": true,
+      "UpdatedHomeContactPersistenceOk": true,
+      "BlockCount": 10,
+      "BlockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "CardGrid",
+        "HowItWorks",
+        "CardGrid",
+        "PrimaryCTA",
+        "ServiceAreaMap",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "ErrorCount": 0,
+      "WarningCount": 6
+    },
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+      "PageId": "ice-rink-rentals-contact",
+      "PageSlug": "contact",
+      "TenantId": "ice-rink-rentals",
+      "DotNetDeserialized": true,
+      "RoundTripOk": true,
+      "ProductionFieldPersistenceOk": true,
+      "UpdatedHomeContactPersistenceOk": true,
+      "BlockCount": 10,
+      "BlockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "formBlock",
+        "HowItWorks",
+        "CardGrid",
+        "CardGrid",
+        "PrimaryCTA",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "ErrorCount": 0,
+      "WarningCount": 6
+    }
+  ],
+  "FormDefinitions": [],
+  "MediaRequirements": [
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json",
+      "RequirementCount": 6,
+      "BlockerCount": 0
+    },
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+      "RequirementCount": 6,
+      "BlockerCount": 0
+    }
+  ],
+  "Errors": [],
+  "Warnings": [
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022reviewMetadata\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022mediaRequirements\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022templatePurpose\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022contentPackageVersion\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "productionFieldPersistence.checked",
+      "Message": "Verified 200 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "updatedHomeContactPersistence.checked",
+      "Message": "Verified 200 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022reviewMetadata\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022mediaRequirements\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022templatePurpose\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022contentPackageVersion\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "productionFieldPersistence.checked",
+      "Message": "Verified 201 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "updatedHomeContactPersistence.checked",
+      "Message": "Verified 205 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json"
+    }
+  ]
+}

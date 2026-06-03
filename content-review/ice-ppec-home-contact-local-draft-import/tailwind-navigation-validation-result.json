@@ -1,0 +1,34 @@
+﻿{
+  "ok": true,
+  "checkedCssSelectors": 37,
+  "checkedNavigationRoutes": [
+    "/",
+    "/service-areas",
+    "/contact"
+  ],
+  "importCandidateClassCount": 20,
+  "classes": [
+    "cms-copy",
+    "cms-eyebrow",
+    "cms-layout",
+    "cms-panel",
+    "ice-alias-note",
+    "ice-area-card",
+    "ice-area-grid",
+    "ice-check-list",
+    "ice-city-note",
+    "ice-cta-link",
+    "ice-details-list",
+    "ice-event-card",
+    "ice-event-grid",
+    "ice-hero-grid",
+    "ice-planning-table",
+    "ice-privacy-note",
+    "ice-quote-grid",
+    "ice-region-list",
+    "ice-response-note",
+    "ice-service-teaser"
+  ],
+  "warnings": [],
+  "failures": []
+}
