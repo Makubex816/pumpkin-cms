@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "pumpkin-updated-home-contact-intake-manifest.v1",
+  "generatedAt": "2026-06-03T00:09:56.470Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "sourceZip": "content-review/ice-updated-home-contact-input/ice-site-phase10a-pumpkin-ppec-rewrite-pack.zip",
+  "extractedFolder": "content-review/ice-updated-home-contact-input/extracted/ice-site-phase10a-pumpkin-ppec-rewrite-pack",
+  "rawInputCommitPolicy": "do-not-stage-or-commit",
+  "outputs": [
+    "PACKAGE_INVENTORY.md",
+    "HOMEPAGE_CANDIDATE_AUDIT.md",
+    "CONTACT_CANDIDATE_AUDIT.md",
+    "UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json",
+    "UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
+    "UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json",
+    "CURRENT_DRAFT_COMPARISON.md",
+    "MEDIA_BINDING_REVIEW.md",
+    "FORM_ROUTING_REVIEW.md",
+    "PRODUCTION_RENDERER_COMPATIBILITY.md",
+    "IMPORT_PREFLIGHT_RESULT.md",
+    "README.md",
+    "manifest.json",
+    "homepage-import-preflight-result.json",
+    "contact-import-preflight-result.json",
+    "dotnet-page-contract-result.json"
+  ],
+  "routesIncluded": [
+    "/",
+    "/contact"
+  ],
+  "routesExcluded": [
+    "/service-areas",
+    "/state-city"
+  ],
+  "rollerStatus": "paused",
+  "safety": {
+    "cmsWritesPerformed": false,
+    "apiWriteCallsPerformed": false,
+    "jwtUsed": false,
+    "themeRecordsChanged": false,
+    "mediaAssetRecordsChanged": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "protectedConfigRead": false,
+    "imageGenerationUsed": false,
+    "imageRenderingUsed": false
+  },
+  "mediaAssetIds": [
+    "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+    "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+    "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+    "ice-rink-rentals-holidayicerink-973ce7691377",
+    "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+  ],
+  "validation": {
+    "jsonParse": "passed",
+    "dotnetPageContract": {
+      "ok": true,
+      "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+      "pageCount": 2,
+      "errors": 0,
+      "warnings": 11,
+      "productionFieldPersistenceOk": true
+    },
+    "homepageImportPreflight": {
+      "shape": true,
+      "localDraftImport": true,
+      "cmsImport": false,
+      "production": false
+    },
+    "contactImportPreflight": {
+      "shape": true,
+      "localDraftImport": true,
+      "cmsImport": false,
+      "production": false
+    },
+    "fixtureValidators": {
+      "defaultForms": "passed 21/21",
+      "media": "passed with 3 existing fixture warnings",
+      "pageIntakeNormalizer": "passed 16/16",
+      "contractAlignment": "passed"
+    },
+    "safetyScans": {
+      "unsafeHtmlCssFormMediaEmail": "passed",
+      "targetedSecrets": "passed",
+      "gitDiffCheck": "passed",
+      "trailingWhitespace": "passed",
+      "rawProtectedStagedPath": "passed"
+    }
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "Command": "validate-package",
+  "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-updated-home-contact-validated",
+  "GeneratedAt": "2026-06-03T00:13:36.2797090Z",
+  "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+  "Ok": true,
+  "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+  "Package": {
+    "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json",
+    "TenantId": "ice-rink-rentals",
+    "SiteKey": "ice-rink-rentals",
+    "Domain": "iceskatingrinkrentals.com",
+    "PageFileCount": 2
+  },
+  "Pages": [
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json",
+      "PageId": "ice-rink-rentals-home",
+      "PageSlug": "home",
+      "TenantId": "ice-rink-rentals",
+      "DotNetDeserialized": true,
+      "RoundTripOk": true,
+      "ProductionFieldPersistenceOk": true,
+      "BlockCount": 10,
+      "BlockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "CardGrid",
+        "HowItWorks",
+        "CardGrid",
+        "PrimaryCTA",
+        "ServiceAreaMap",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "ErrorCount": 0,
+      "WarningCount": 5
+    },
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
+      "PageId": "ice-rink-rentals-contact",
+      "PageSlug": "contact",
+      "TenantId": "ice-rink-rentals",
+      "DotNetDeserialized": true,
+      "RoundTripOk": true,
+      "ProductionFieldPersistenceOk": true,
+      "BlockCount": 10,
+      "BlockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "formBlock",
+        "HowItWorks",
+        "CardGrid",
+        "CardGrid",
+        "PrimaryCTA",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "ErrorCount": 0,
+      "WarningCount": 5
+    }
+  ],
+  "FormDefinitions": [
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json",
+      "FormKey": "default-quote-request",
+      "TenantId": "ice-rink-rentals",
+      "FieldCount": 12,
+      "HiddenFieldCount": 4,
+      "ErrorCount": 0,
+      "WarningCount": 0
+    }
+  ],
+  "MediaRequirements": [
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json",
+      "RequirementCount": 12,
+      "BlockerCount": 0
+    },
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json",
+      "RequirementCount": 6,
+      "BlockerCount": 0
+    },
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
+      "RequirementCount": 6,
+      "BlockerCount": 0
+    }
+  ],
+  "StateCityGenerationPolicy": {
+    "RoutePattern": "/state-city",
+    "Examples": [
+      "/fl-orlando",
+      "/ny-new-york",
+      "/pa-philadelphia"
+    ],
+    "RequiresDotNetPageClasses": true,
+    "CreatedPageInThisPhase": false,
+    "Notes": "Future city/location page generation must create Page and block objects through pumpkin-net-models, then pass this .NET contract tool, TypeScript validators, static validation, and import preflight."
+  },
+  "Errors": [],
+  "Warnings": [
+    {
+      "Severity": "warning",
+      "Code": "package.themeDesignSystem",
+      "Message": "No themeDesignSystemRecommendation was included in the package.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022reviewMetadata\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022mediaRequirements\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022templatePurpose\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022contentPackageVersion\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "productionFieldPersistence.checked",
+      "Message": "Verified 200 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022reviewMetadata\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022mediaRequirements\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022templatePurpose\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \u0022contentPackageVersion\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "productionFieldPersistence.checked",
+      "Message": "Verified 198 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json"
+    }
+  ]
+}
