@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-06-03T22:37:08.010Z",
+  "ok": true,
+  "checks": {
+    "routeServiceAreas": true,
+    "liveStatePreserved": true,
+    "workflowLivePreserved": true,
+    "productionApprovedPreserved": true,
+    "publishApprovedPreserved": true,
+    "rollbackMetadataPresent": true,
+    "regionBlockFound": true,
+    "sixCardsPresent": true,
+    "sixthCardTextExact": true,
+    "expectedPriorCardsPresent": true,
+    "noUnsupportedLocalClaims": true,
+    "selectedMailboxPreserved": true,
+    "publicEmailDisplayPolicyPreserved": true,
+    "noLegacyMailbox": true,
+    "ppecLogoPersists": true,
+    "mediaIdsUnchanged": true,
+    "noStateCityCreated": true
+  },
+  "failed": []
+}

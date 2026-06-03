@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "checks": {
+    "httpOk": true,
+    "routeServiceAreas": true,
+    "livePublishedState": true,
+    "workflowPublishedApproved": true,
+    "productionApprovedPreserved": true,
+    "publishApprovedPreserved": true,
+    "revisionIncrementedOrRollback": true,
+    "rollbackMetadataExists": true,
+    "regionBlockFound": true,
+    "sixRegionCards": true,
+    "sixthCardTitle": true,
+    "sixthCardBody": true,
+    "noUnsupportedLocalClaims": true,
+    "ppecLogoPersists": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "noLegacyMailbox": true,
+    "noStateCityCreated": true
+  },
+  "failed": [],
+  "untouched": {
+    "homepageUnchanged": true,
+    "contactUnchanged": true,
+    "themeUnchanged": true,
+    "mediaAssetsUnchanged": true
+  }
+}

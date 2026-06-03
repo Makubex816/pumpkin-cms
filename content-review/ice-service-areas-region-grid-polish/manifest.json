@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "pumpkin.ice.service-areas-region-grid-polish.v1",
+  "generatedAt": "2026-06-03T22:37:07.734Z",
+  "site": "IceSkatingRinkRentals.com",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/service-areas",
+  "branch": "feature/admin-page-editor-import-export",
+  "outputFolder": "content-review/ice-service-areas-region-grid-polish",
+  "rootReport": "PUMPKIN_ICE_SERVICE_AREAS_REGION_GRID_POLISH_REPORT.md",
+  "candidate": "content-review/ice-service-areas-region-grid-polish/SERVICE_AREAS_REGION_GRID_POLISHED_CANDIDATE.json",
+  "readbackAfter": "content-review/ice-service-areas-region-grid-polish/service-areas-readback-after-region-grid-polish.json",
+  "updatePerformed": true,
+  "validationOk": true,
+  "readbackOk": true,
+  "regionGrid": {
+    "blockId": "regional-request-planning",
+    "beforeCount": 5,
+    "afterCount": 6,
+    "beforeTitles": [
+      "Northeast and Mid-Atlantic",
+      "Southeast",
+      "Midwest",
+      "South and central U.S.",
+      "Mountain West and West Coast"
+    ],
+    "afterTitles": [
+      "Northeast and Mid-Atlantic",
+      "Southeast",
+      "Midwest",
+      "South and central U.S.",
+      "Mountain West and West Coast",
+      "Quote review by request"
+    ],
+    "expectedFiveCardsFound": true,
+    "sixthCardAdded": true,
+    "sixthCardNormalized": false,
+    "unsupportedLocalClaims": false
+  },
+  "untouched": {
+    "homepageUnchanged": true,
+    "contactUnchanged": true,
+    "themeUnchanged": true,
+    "mediaAssetsUnchanged": true
+  },
+  "routes": {
+    "serviceAreasPublic": {
+      "url": "http://localhost:3002/service-areas",
+      "reachable": true,
+      "status": 200,
+      "length": 112760
+    },
+    "homepage": {
+      "url": "http://localhost:3002/",
+      "reachable": true,
+      "status": 200,
+      "length": 178963
+    },
+    "contact": {
+      "url": "http://localhost:3002/contact",
+      "reachable": true,
+      "status": 200,
+      "length": 48761
+    }
+  },
+  "auth": {
+    "presence": "PRESENT",
+    "validation": "VALID",
+    "tokenPrinted": false,
+    "tempJwtFinalStatus": "MISSING"
+  },
+  "safety": {
+    "serviceAreasWrites": 1,
+    "homepageWrite": false,
+    "contactWrite": false,
+    "stateCityCreated": false,
+    "themeWrite": false,
+    "mediaAssetWrite": false,
+    "staticGeneration": false,
+    "deployment": false,
+    "dnsEmailProviderChange": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false,
+    "imageGeneration": false,
+    "imageModification": false
+  },
+  "blockers": []
+}

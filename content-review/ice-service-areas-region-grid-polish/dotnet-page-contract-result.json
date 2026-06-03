@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-06-03T22:37:20.118Z",
+  "ok": true,
+  "publish": {
+    "ok": true,
+    "status": 0,
+    "signal": null,
+    "stdout": "  Determining projects to restore...\r\n  Restored C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\apps\\pumpkin-net-models\\pumpkin-net-models.csproj (in 71 ms).\r\n  pumpkin-net-models -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-service-areas-region-grid-contract-43864-1780526234161\\bin\\Debug\\net10.0\\pumpkin-net-models.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-service-areas-region-grid-contract-43864-1780526234161\\bin\\Debug\\net10.0\\Pumpkin.PageContractTool.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-service-areas-region-grid-contract-43864-1780526234161\\publish\\\r\n",
+    "stderr": ""
+  },
+  "validate": {
+    "ok": true,
+    "status": 0,
+    "signal": null,
+    "stdout": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-service-areas-region-grid-polish\\\\SERVICE_AREAS_REGION_GRID_POLISHED_CANDIDATE.json\",\r\n  \"GeneratedAt\": \"2026-06-03T22:37:19.8759544Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-service-areas-region-grid-polish/SERVICE_AREAS_REGION_GRID_POLISHED_CANDIDATE.json\",\r\n      \"PageId\": \"ice-rink-rentals-service-areas\",\r\n      \"PageSlug\": \"service-areas\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"BlockCount\": 9,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"PrimaryCTA\",\r\n        \"CardGrid\",\r\n        \"FAQ\",\r\n        \"PrimaryCTA\"\r\n      ],\r\n      \"ErrorCount\": 0,\r\n      \"WarningCount\": 1\r\n    }\r\n  ],\r\n  \"FormDefinitions\": [],\r\n  \"MediaRequirements\": [],\r\n  \"Errors\": [],\r\n  \"Warnings\": [\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"productionFieldPersistence.checked\",\r\n      \"Message\": \"Verified 160 production renderer/media/email-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-service-areas-region-grid-polish/SERVICE_AREAS_REGION_GRID_POLISHED_CANDIDATE.json\"\r\n    }\r\n  ]\r\n}\r\n",
+    "stderr": ""
+  },
+  "parsed": {
+    "Command": "validate-page",
+    "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-service-areas-region-grid-polish\\SERVICE_AREAS_REGION_GRID_POLISHED_CANDIDATE.json",
+    "GeneratedAt": "2026-06-03T22:37:19.8759544Z",
+    "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+    "Ok": true,
+    "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "Pages": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-service-areas-region-grid-polish/SERVICE_AREAS_REGION_GRID_POLISHED_CANDIDATE.json",
+        "PageId": "ice-rink-rentals-service-areas",
+        "PageSlug": "service-areas",
+        "TenantId": "ice-rink-rentals",
+        "DotNetDeserialized": true,
+        "RoundTripOk": true,
+        "ProductionFieldPersistenceOk": true,
+        "BlockCount": 9,
+        "BlockTypes": [
+          "Hero",
+          "TrustBar",
+          "CardGrid",
+          "HowItWorks",
+          "CardGrid",
+          "PrimaryCTA",
+          "CardGrid",
+          "FAQ",
+          "PrimaryCTA"
+        ],
+        "ErrorCount": 0,
+        "WarningCount": 1
+      }
+    ],
+    "FormDefinitions": [],
+    "MediaRequirements": [],
+    "Errors": [],
+    "Warnings": [
+      {
+        "Severity": "warning",
+        "Code": "productionFieldPersistence.checked",
+        "Message": "Verified 160 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-service-areas-region-grid-polish/SERVICE_AREAS_REGION_GRID_POLISHED_CANDIDATE.json"
+      }
+    ]
+  }
+}
