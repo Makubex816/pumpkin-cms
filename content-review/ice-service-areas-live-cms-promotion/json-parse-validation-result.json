@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-06-03T22:16:10.555Z",
+  "ok": true,
+  "results": [
+    {
+      "path": "content-review/ice-service-areas-live-cms-promotion/service-areas-remove-secondary-hero-cta-draft-candidate.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-service-areas-live-cms-promotion/SERVICE_AREAS_APPROVED_LIVE_CANDIDATE.json",
+      "ok": true
+    }
+  ]
+}

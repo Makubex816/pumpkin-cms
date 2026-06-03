@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "pumpkin.ice.service-areas-live-cms-promotion.v1",
+  "generatedAt": "2026-06-03T22:16:10.296Z",
+  "site": "IceSkatingRinkRentals.com",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/service-areas",
+  "branch": "feature/admin-page-editor-import-export",
+  "outputFolder": "content-review/ice-service-areas-live-cms-promotion",
+  "rootReport": "PUMPKIN_ICE_SERVICE_AREAS_LIVE_CMS_PROMOTION_REPORT.md",
+  "candidate": "content-review/ice-service-areas-live-cms-promotion/SERVICE_AREAS_APPROVED_LIVE_CANDIDATE.json",
+  "draftUpdatePerformed": true,
+  "livePromotionPerformed": true,
+  "validationOk": true,
+  "readbackOk": true,
+  "untouched": {
+    "homepageUnchanged": true,
+    "contactUnchanged": true,
+    "themeUnchanged": true,
+    "mediaAssetsUnchanged": true
+  },
+  "routes": {
+    "serviceAreasPublic": {
+      "url": "http://localhost:3002/service-areas",
+      "reachable": true,
+      "status": 200,
+      "length": 111854
+    },
+    "serviceAreasPreview": {
+      "url": "http://localhost:3002/__preview/ice-rink-rentals/service-areas",
+      "reachable": true,
+      "status": 200,
+      "length": 28923
+    },
+    "homepage": {
+      "url": "http://localhost:3002/",
+      "reachable": true,
+      "status": 200,
+      "length": 178963
+    },
+    "contact": {
+      "url": "http://localhost:3002/contact",
+      "reachable": true,
+      "status": 200,
+      "length": 48760
+    }
+  },
+  "auth": {
+    "presence": "PRESENT",
+    "validation": "VALID",
+    "tokenPrinted": false,
+    "tempJwtFinalStatus": "MISSING"
+  },
+  "safety": {
+    "serviceAreasWrites": 2,
+    "homepageWrite": false,
+    "contactWrite": false,
+    "stateCityCreated": false,
+    "themeWrite": false,
+    "mediaAssetWrite": false,
+    "staticGeneration": false,
+    "azureDeploy": false,
+    "dnsCloudflareMicrosoft365BluehostEmailProviderChange": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}

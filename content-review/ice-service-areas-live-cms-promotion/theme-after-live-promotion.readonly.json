@@ -1,0 +1,117 @@
+{
+  "themes": [
+    {
+      "id": "ice-rink-rentals-default",
+      "themeId": "ice-rink-rentals-default",
+      "tenantId": "ice-rink-rentals",
+      "name": "Ice Rink Rentals Default",
+      "description": "Local development theme for Ice Skating Rink Rentals",
+      "isActive": true,
+      "header": {
+        "logoUrl": "",
+        "logoAlt": "Ice Skating Rink Rentals",
+        "sticky": true,
+        "ctaText": "Get a Quote",
+        "ctaUrl": "/contact",
+        "ctaTarget": "_self",
+        "classNames": {}
+      },
+      "footer": {
+        "copyright": "Copyright 2026 Ice Skating Rink Rentals",
+        "description": "Portable ice rink rental planning for events, schools, towns, corporate parties, and holiday activations.",
+        "classNames": {}
+      },
+      "blockStyles": {
+        "Hero": {
+          "section": "relative overflow-hidden bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-100 px-6 py-20 md:px-10 md:py-28",
+          "container": "mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2",
+          "eyebrow": "mb-5 inline-flex rounded-full border border-sky-200 bg-white/80 px-4 py-2 text-xs font-bold uppercase tracking-wide text-sky-700 shadow-sm",
+          "headline": "text-4xl font-black tracking-tight text-slate-950 md:text-6xl",
+          "subheadline": "mt-6 max-w-2xl text-lg leading-8 text-slate-700",
+          "button": "mt-8 inline-flex rounded-full bg-sky-700 px-7 py-4 text-sm font-bold text-white shadow-lg transition hover:bg-sky-800",
+          "image": "rounded-3xl shadow-2xl"
+        },
+        "TrustBar": {
+          "section": "bg-white px-6 py-12 md:px-10",
+          "container": "mx-auto grid max-w-6xl gap-6 md:grid-cols-4",
+          "item": "rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm",
+          "title": "text-lg font-black text-slate-950",
+          "text": "mt-2 text-sm leading-6 text-slate-600"
+        },
+        "CardGrid": {
+          "section": "bg-slate-50 px-6 py-16 md:px-10",
+          "container": "mx-auto max-w-6xl",
+          "grid": "mt-8 grid gap-6 md:grid-cols-3",
+          "card": "rounded-3xl border border-slate-200 bg-white p-7 shadow-sm",
+          "title": "text-xl font-black text-slate-950",
+          "text": "mt-3 text-sm leading-6 text-slate-600"
+        },
+        "FAQ": {
+          "section": "bg-white px-6 py-16 md:px-10",
+          "container": "mx-auto max-w-4xl",
+          "item": "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm",
+          "question": "text-lg font-black text-slate-950",
+          "answer": "mt-3 text-sm leading-7 text-slate-600"
+        },
+        "PrimaryCTA": {
+          "section": "bg-sky-800 px-6 py-16 text-white md:px-10",
+          "container": "mx-auto max-w-5xl text-center",
+          "headline": "text-3xl font-black md:text-5xl",
+          "text": "mx-auto mt-5 max-w-2xl text-base leading-7 text-sky-100",
+          "button": "mt-8 inline-flex rounded-full bg-white px-7 py-4 text-sm font-bold text-sky-800 shadow-lg"
+        }
+      },
+      "menu": [
+        {
+          "label": "Rentals",
+          "url": "/ice-rink-rentals",
+          "target": "_self",
+          "icon": "",
+          "order": 1,
+          "isVisible": true,
+          "children": []
+        },
+        {
+          "label": "Events",
+          "url": "/events-holiday-activations",
+          "target": "_self",
+          "icon": "",
+          "order": 2,
+          "isVisible": true,
+          "children": []
+        },
+        {
+          "label": "Service Areas",
+          "url": "/service-areas",
+          "target": "_self",
+          "icon": "",
+          "order": 3,
+          "isVisible": true,
+          "children": []
+        },
+        {
+          "label": "FAQ",
+          "url": "/ice-rink-rentals#faq",
+          "target": "_self",
+          "icon": "",
+          "order": 4,
+          "isVisible": true,
+          "children": []
+        },
+        {
+          "label": "Contact",
+          "url": "/contact",
+          "target": "_self",
+          "icon": "",
+          "order": 5,
+          "isVisible": true,
+          "children": []
+        }
+      ],
+      "createdAt": "2026-05-13T01:47:30.1244098Z",
+      "updatedAt": "2026-05-13T01:47:30.1244098Z"
+    }
+  ],
+  "count": 1,
+  "tenantId": "ice-rink-rentals"
+}

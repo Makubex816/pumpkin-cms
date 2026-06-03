@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "checks": {
+    "httpOk": true,
+    "routeServiceAreas": true,
+    "livePublishedState": true,
+    "workflowPublishedApproved": true,
+    "staticNeedsRebuildTrue": true,
+    "revisionIncrementedOrRollback": true,
+    "rollbackMetadataExists": true,
+    "heroSecondaryRemoved": true,
+    "mainCtaRemains": true,
+    "ppecLogoPersists": true,
+    "officialMediaIdsPersist": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "noLegacyMailbox": true,
+    "noUnsupportedEastCoastClaim": true,
+    "noStateCityCreated": true
+  },
+  "failed": [],
+  "untouched": {
+    "homepageUnchanged": true,
+    "contactUnchanged": true,
+    "themeUnchanged": true,
+    "mediaAssetsUnchanged": true
+  }
+}

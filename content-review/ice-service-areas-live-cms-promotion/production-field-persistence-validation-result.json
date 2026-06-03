@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-06-03T22:16:10.558Z",
+  "ok": true,
+  "checks": {
+    "draftRouteServiceAreas": true,
+    "draftNeedsReview": true,
+    "draftHeroSecondaryRemoved": true,
+    "liveRouteServiceAreas": true,
+    "livePublishedState": true,
+    "liveWorkflowApproved": true,
+    "staticNeedsRebuildTrue": true,
+    "mainCtaRemains": true,
+    "ppecLogoPersists": true,
+    "officialMediaIdsPersist": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "noLegacyMailbox": true,
+    "noUnsupportedEastCoastClaim": true,
+    "noStateCityCreated": true,
+    "noBase64OrRawForm": true
+  },
+  "failed": []
+}

@@ -1,0 +1,162 @@
+{
+  "generatedAt": "2026-06-03T22:16:54.268Z",
+  "ok": true,
+  "command": {
+    "ok": true,
+    "status": 0,
+    "signal": null,
+    "stdout": "{\n  \"ok\": true,\n  \"passed\": 16,\n  \"failed\": 0,\n  \"results\": [\n    {\n      \"name\": \"valid Pumpkin page JSON\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"partial page JSON normalized to scaffold\",\n      \"inputType\": \"partial-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"malformed JSON blocked\",\n      \"inputType\": \"unknown-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 1,\n      \"warningCount\": 0,\n      \"dotNetOk\": null\n    },\n    {\n      \"name\": \"foreign builder JSON normalized\",\n      \"inputType\": \"foreign-builder-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"HTML fragment mapped to customHtml\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"unsafe HTML blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 5,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"CF7 reference mapped to formBlock\",\n      \"inputType\": \"cf7-package-reference\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"raw form HTML blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 8,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"media manifest mapped to MediaAsset requirements\",\n      \"inputType\": \"media-manifest\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"base64 image blocked\",\n      \"inputType\": \"media-manifest\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 2,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"raw Tailwind utility class blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 9,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"safe semantic classes allowed\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"future state-city route valid\",\n      \"inputType\": \"partial-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 1,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"bad city route blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 3,\n      \"warningCount\": 1,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"unknown block type blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 5,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \".NET contract failure blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 3,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  "parsed": {
+    "ok": true,
+    "passed": 16,
+    "failed": 0,
+    "results": [
+      {
+        "name": "valid Pumpkin page JSON",
+        "inputType": "pumpkin-page-json",
+        "expected": "ok",
+        "ok": true,
+        "errorCount": 0,
+        "warningCount": 0,
+        "dotNetOk": true
+      },
+      {
+        "name": "partial page JSON normalized to scaffold",
+        "inputType": "partial-page-json",
+        "expected": "ok",
+        "ok": true,
+        "errorCount": 0,
+        "warningCount": 0,
+        "dotNetOk": true
+      },
+      {
+        "name": "malformed JSON blocked",
+        "inputType": "unknown-json",
+        "expected": "error",
+        "ok": true,
+        "errorCount": 1,
+        "warningCount": 0,
+        "dotNetOk": null
+      },
+      {
+        "name": "foreign builder JSON normalized",
+        "inputType": "foreign-builder-json",
+        "expected": "ok",
+        "ok": true,
+        "errorCount": 0,
+        "warningCount": 0,
+        "dotNetOk": true
+      },
+      {
+        "name": "HTML fragment mapped to customHtml",
+        "inputType": "html-fragment",
+        "expected": "ok",
+        "ok": true,
+        "errorCount": 0,
+        "warningCount": 0,
+        "dotNetOk": true
+      },
+      {
+        "name": "unsafe HTML blocked",
+        "inputType": "html-fragment",
+        "expected": "error",
+        "ok": true,
+        "errorCount": 5,
+        "warningCount": 0,
+        "dotNetOk": false
+      },
+      {
+        "name": "CF7 reference mapped to formBlock",
+        "inputType": "cf7-package-reference",
+        "expected": "ok",
+        "ok": true,
+        "errorCount": 0,
+        "warningCount": 0,
+        "dotNetOk": true
+      },
+      {
+        "name": "raw form HTML blocked",
+        "inputType": "html-fragment",
+        "expected": "error",
+        "ok": true,
+        "errorCount": 8,
+        "warningCount": 0,
+        "dotNetOk": false
+      },
+      {
+        "name": "media manifest mapped to MediaAsset requirements",
+        "inputType": "media-manifest",
+        "expected": "ok",
+        "ok": true,
+        "errorCount": 0,
+        "warningCount": 0,
+        "dotNetOk": true
+      },
+      {
+        "name": "base64 image blocked",
+        "inputType": "media-manifest",
+        "expected": "error",
+        "ok": true,
+        "errorCount": 2,
+        "warningCount": 0,
+        "dotNetOk": true
+      },
+      {
+        "name": "raw Tailwind utility class blocked",
+        "inputType": "html-fragment",
+        "expected": "error",
+        "ok": true,
+        "errorCount": 9,
+        "warningCount": 0,
+        "dotNetOk": false
+      },
+      {
+        "name": "safe semantic classes allowed",
+        "inputType": "html-fragment",
+        "expected": "ok",
+        "ok": true,
+        "errorCount": 0,
+        "warningCount": 0,
+        "dotNetOk": true
+      },
+      {
+        "name": "future state-city route valid",
+        "inputType": "partial-page-json",
+        "expected": "ok",
+        "ok": true,
+        "errorCount": 0,
+        "warningCount": 1,
+        "dotNetOk": true
+      },
+      {
+        "name": "bad city route blocked",
+        "inputType": "pumpkin-page-json",
+        "expected": "error",
+        "ok": true,
+        "errorCount": 3,
+        "warningCount": 1,
+        "dotNetOk": false
+      },
+      {
+        "name": "unknown block type blocked",
+        "inputType": "pumpkin-page-json",
+        "expected": "error",
+        "ok": true,
+        "errorCount": 5,
+        "warningCount": 0,
+        "dotNetOk": false
+      },
+      {
+        "name": ".NET contract failure blocked",
+        "inputType": "pumpkin-page-json",
+        "expected": "error",
+        "ok": true,
+        "errorCount": 3,
+        "warningCount": 0,
+        "dotNetOk": false
+      }
+    ]
+  }
+}

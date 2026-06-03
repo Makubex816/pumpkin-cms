@@ -1,0 +1,6 @@
+{
+  "generatedAt": "2026-06-03T22:16:10.565Z",
+  "ok": true,
+  "skipped": true,
+  "reason": "No formBlock exists on /service-areas; CTAs route to /contact."
+}
