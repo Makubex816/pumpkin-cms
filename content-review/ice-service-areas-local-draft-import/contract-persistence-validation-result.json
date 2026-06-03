@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-06-03T21:10:03.992Z",
+  "schemaVersion": "pumpkin.phase8n.contract-persistence.v1",
+  "tool": {
+    "path": "tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs",
+    "nonMutating": true,
+    "readsProtectedConfig": false,
+    "writesCmsData": false,
+    "sendsEmail": false,
+    "deploys": false
+  },
+  "candidate": {
+    "path": "content-review/ice-service-areas-validated/SERVICE_AREAS_NORMALIZED_CANDIDATE.json",
+    "persistenceFieldCount": 140,
+    "requiredPhase8nMissing": [],
+    "nonTenantMediaAssetIds": []
+  },
+  "readback": {
+    "status": "skipped",
+    "reason": "No --readback file was provided.",
+    "driftCount": 0,
+    "drift": []
+  },
+  "decision": "contract-persistence-check-passed",
+  "ok": true,
+  "command": {
+    "status": 0,
+    "signal": null,
+    "stdout": "{\n  \"schemaVersion\": \"pumpkin.phase8n.contract-persistence.v1\",\n  \"generatedAt\": \"2026-06-03T21:10:03.992Z\",\n  \"tool\": {\n    \"path\": \"tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs\",\n    \"nonMutating\": true,\n    \"readsProtectedConfig\": false,\n    \"writesCmsData\": false,\n    \"sendsEmail\": false,\n    \"deploys\": false\n  },\n  \"candidate\": {\n    \"path\": \"content-review/ice-service-areas-validated/SERVICE_AREAS_NORMALIZED_CANDIDATE.json\",\n    \"persistenceFieldCount\": 140,\n    \"requiredPhase8nMissing\": [],\n    \"nonTenantMediaAssetIds\": []\n  },\n  \"readback\": {\n    \"status\": \"skipped\",\n    \"reason\": \"No --readback file was provided.\",\n    \"driftCount\": 0,\n    \"drift\": []\n  },\n  \"decision\": \"contract-persistence-check-passed\"\n}\n",
+    "stderr": ""
+  }
+}

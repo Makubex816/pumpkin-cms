@@ -1,0 +1,24 @@
+{
+  "checked": true,
+  "results": {
+    "serviceAreas": {
+      "url": "http://localhost:3002/service-areas",
+      "reachable": true,
+      "status": 404,
+      "length": 9671,
+      "marker": false
+    },
+    "homepagePreview": {
+      "url": "http://localhost:3002/__preview/ice-rink-rentals/home",
+      "reachable": true,
+      "status": 200,
+      "length": 28660
+    },
+    "contact": {
+      "url": "http://localhost:3002/contact",
+      "reachable": true,
+      "status": 200,
+      "length": 48798
+    }
+  }
+}
