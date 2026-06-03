@@ -1,0 +1,26 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:12:48.218Z",
+  "checks": {
+    "tenantId": true,
+    "siteKey": true,
+    "pageSlug": true,
+    "route": true,
+    "canonical": true,
+    "draft": true,
+    "needsReview": true,
+    "productionApprovedFalse": true,
+    "publishApprovedFalse": true,
+    "staticNeedsRebuild": true,
+    "ppecMediaAssetId": true,
+    "selectedMailbox": true,
+    "publicEmailPolicy": true,
+    "noLegacyMailbox": true,
+    "noServingEastCoastClaim": true,
+    "noFakePhone": true,
+    "noRawWordPressRuntime": true,
+    "noBase64Images": true,
+    "noRandomExternalImages": true
+  },
+  "failed": []
+}

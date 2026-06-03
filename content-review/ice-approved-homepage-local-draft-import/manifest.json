@@ -1,0 +1,351 @@
+{
+  "schemaVersion": "pumpkin.ice.approved-homepage.local-draft-import.v1",
+  "generatedAt": "2026-06-03T17:12:47.754Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "selectedCandidatePath": "content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+  "selectedPackagePath": "content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_PACKAGE.json",
+  "outputFolder": "content-review/ice-approved-homepage-local-draft-import",
+  "rootReport": "PUMPKIN_ICE_APPROVED_HOMEPAGE_LOCAL_DRAFT_IMPORT_REPORT.md",
+  "start": {
+    "gitStatusShort": "?? PUMPKIN_ICE_APPROVED_HOMEPAGE_LOCAL_DRAFT_IMPORT_REPORT.md\n?? content-review/ice-approved-homepage-local-draft-import/",
+    "gitLogOneline12": "9261c43 Bind approved PPEC logo MediaAsset\n3cc5202 Convert approved Ice homepage Phase 8K to Phase 10A candidate\n89ca42e Add Ice approved homepage conversion missing input report\nefcdb24 Add Ice page import change sources\n48d72e7 Add Ice PPEC home contact local draft import report\ndb5cb73 Repair Ice PPEC home contact candidates\nf853b44 Add Ice updated home contact post repair reimport report\n4dc63e7 Repair updated Ice home contact contract persistence\n2c0b20c Add Ice updated home contact local draft import report\n7206de9 Add admin auth diagnostic tooling\n6eae0c9 Add Ice updated home contact draft import auth blocker report\n2f4bb29 Add Ice updated home contact package intake",
+    "dirtyGate": {
+      "ok": true,
+      "entryCount": 2,
+      "blockingEntries": [],
+      "allowedOnlyThisRunOutputs": true
+    },
+    "api": {
+      "checked": true,
+      "reachable": true,
+      "status": 200
+    },
+    "frontend": {
+      "checked": true,
+      "reachable": true,
+      "status": 200
+    },
+    "candidateExists": true,
+    "packageExists": true
+  },
+  "auth": {
+    "envStatus": "MISSING",
+    "tempInitialStatus": "PRESENT",
+    "loadedFrom": "temp",
+    "validation": "VALID",
+    "tokenPrinted": false,
+    "tempDeletedAfterSuccess": true,
+    "tempRetainedOnFailure": false,
+    "tempFinalStatus": "MISSING",
+    "validationHttpStatus": 200
+  },
+  "validation": {
+    "run": true,
+    "results": {
+      "json-parse-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/json-parse-validation-result.json"
+      },
+      "route-canonical-audit-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/route-canonical-audit-result.json"
+      },
+      "unsafe-scan-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/unsafe-scan-result.json"
+      },
+      "contactus-scan-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/contactus-scan-result.json"
+      },
+      "targeted-secret-scan-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/targeted-secret-scan-result.json"
+      },
+      "homepage-import-preflight-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/homepage-import-preflight-result.json"
+      },
+      "dotnet-page-contract-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/dotnet-page-contract-result.json"
+      },
+      "contract-persistence-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/contract-persistence-validation-result.json"
+      },
+      "design-system-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/design-system-validation-result.json"
+      },
+      "media-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/media-validation-result.json"
+      },
+      "tailwind-navigation-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/tailwind-navigation-validation-result.json"
+      },
+      "page-intake-normalizer-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/page-intake-normalizer-validation-result.json"
+      }
+    },
+    "blockers": []
+  },
+  "baselines": {
+    "captured": true,
+    "homepage": {
+      "ok": true,
+      "status": 200,
+      "state": "reachable",
+      "hash": "9997cf7877902cca260968a035476d83b9d4619039320c186608a1fe23e90ea9"
+    },
+    "contact": {
+      "ok": true,
+      "status": 200,
+      "state": "reachable",
+      "hash": "41c20e93dca913da63c045bd704e8dbb51fd5afcf4075d123a080ce0de45d4ed"
+    },
+    "serviceAreas": {
+      "ok": true,
+      "status": 404,
+      "state": "expected-not-found",
+      "hash": "ee42bfb381db06ded9827fd83663a95c1994343967d7826b11aecefa1a4f5118"
+    },
+    "theme": {
+      "ok": true,
+      "status": 200,
+      "state": "reachable",
+      "hash": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e"
+    },
+    "mediaAssets": {
+      "ok": true,
+      "status": 200,
+      "state": "reachable",
+      "hash": "22ed9e04ea47df15462b5440359dd69371ada62b60ccaa5682ab19e1a32dbb68"
+    },
+    "blockers": []
+  },
+  "import": {
+    "performed": true,
+    "skippedReason": "",
+    "endpoint": "PUT /api/admin/pages/ice-rink-rentals/home?changeSource=approved_phase8k_to_phase10a_homepage_import",
+    "changeSource": "approved_phase8k_to_phase10a_homepage_import",
+    "httpStatus": 200,
+    "result": {
+      "found": true,
+      "id": "ice-rink-rentals-home",
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "",
+      "pageSlug": "home",
+      "route": "",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "productionApproved": false,
+      "publishApproved": false,
+      "needsRebuild": true,
+      "staticEligible": false,
+      "revisionNumber": 13,
+      "rollbackAvailable": true,
+      "lastChangeSource": "manual_unknown",
+      "mediaAssetIds": [
+        "corporateicerinkrentalevent-18e985ca59bd",
+        "holidayicerink-973ce7691377",
+        "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "ice-rink-rentals-holidayicerink-973ce7691377",
+        "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "ice-rink-rentals-ppec-wordmark-card-d28c10b570d1",
+        "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "icerinkrentalssetup-113d218572e4",
+        "iceskatingrinkrentalslogo-0d1f970f0411",
+        "ppec-wordmark-card-d28c10b570d1",
+        "winterfesticerinkrentals-324b1b89777d"
+      ],
+      "selectedMailbox": "contact@iceskatingrinkrentals.com",
+      "publicEmailDisplayPolicy": "form-first-under-review"
+    }
+  },
+  "readback": {
+    "performed": true,
+    "homepage": {
+      "found": true,
+      "id": "ice-rink-rentals-home",
+      "tenantId": "ice-rink-rentals",
+      "siteKey": "",
+      "pageSlug": "home",
+      "route": "",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "productionApproved": false,
+      "publishApproved": false,
+      "needsRebuild": true,
+      "staticEligible": false,
+      "revisionNumber": 13,
+      "rollbackAvailable": true,
+      "lastChangeSource": "manual_unknown",
+      "mediaAssetIds": [
+        "corporateicerinkrentalevent-18e985ca59bd",
+        "holidayicerink-973ce7691377",
+        "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "ice-rink-rentals-holidayicerink-973ce7691377",
+        "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "ice-rink-rentals-ppec-wordmark-card-d28c10b570d1",
+        "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "icerinkrentalssetup-113d218572e4",
+        "iceskatingrinkrentalslogo-0d1f970f0411",
+        "ppec-wordmark-card-d28c10b570d1",
+        "winterfesticerinkrentals-324b1b89777d"
+      ],
+      "selectedMailbox": "contact@iceskatingrinkrentals.com",
+      "publicEmailDisplayPolicy": "form-first-under-review"
+    },
+    "verification": {
+      "route": true,
+      "draftNeedsReview": true,
+      "productionApprovedFalse": true,
+      "publishApprovedFalse": true,
+      "revisionIncrementedOrRollbackExists": true,
+      "approvedPhase8kContentPersisted": true,
+      "ppecSectionPersisted": true,
+      "ppecLogoPersisted": true,
+      "ppecCopyCtaPersisted": true,
+      "noGenericServingEastCoastClaim": true,
+      "mediaAssetIdsOfficial": true,
+      "productionFieldsPersist": true,
+      "selectedMailbox": true,
+      "publicEmailDisplayPolicy": true,
+      "noLegacyMailbox": true,
+      "formBlockPresent": true
+    },
+    "blockers": []
+  },
+  "untouched": {
+    "contact": {
+      "label": "contact",
+      "verified": true,
+      "before": {
+        "ok": true,
+        "status": 200,
+        "state": "reachable",
+        "hash": "41c20e93dca913da63c045bd704e8dbb51fd5afcf4075d123a080ce0de45d4ed"
+      },
+      "after": {
+        "ok": true,
+        "status": 200,
+        "state": "reachable",
+        "hash": "41c20e93dca913da63c045bd704e8dbb51fd5afcf4075d123a080ce0de45d4ed"
+      },
+      "blocker": ""
+    },
+    "serviceAreas": {
+      "label": "serviceAreas",
+      "verified": true,
+      "before": {
+        "ok": true,
+        "status": 404,
+        "state": "expected-not-found",
+        "hash": "ee42bfb381db06ded9827fd83663a95c1994343967d7826b11aecefa1a4f5118"
+      },
+      "after": {
+        "ok": true,
+        "status": 404,
+        "state": "expected-not-found",
+        "hash": "ee42bfb381db06ded9827fd83663a95c1994343967d7826b11aecefa1a4f5118"
+      },
+      "blocker": ""
+    },
+    "theme": {
+      "label": "theme",
+      "verified": true,
+      "before": {
+        "ok": true,
+        "status": 200,
+        "state": "reachable",
+        "hash": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e"
+      },
+      "after": {
+        "ok": true,
+        "status": 200,
+        "state": "reachable",
+        "hash": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e"
+      },
+      "blocker": ""
+    },
+    "mediaAssets": {
+      "label": "mediaAssets",
+      "verified": true,
+      "before": {
+        "ok": true,
+        "status": 200,
+        "state": "reachable",
+        "hash": "22ed9e04ea47df15462b5440359dd69371ada62b60ccaa5682ab19e1a32dbb68"
+      },
+      "after": {
+        "ok": true,
+        "status": 200,
+        "state": "reachable",
+        "hash": "22ed9e04ea47df15462b5440359dd69371ada62b60ccaa5682ab19e1a32dbb68"
+      },
+      "blocker": ""
+    }
+  },
+  "frontend": {
+    "preview": {
+      "checked": true,
+      "reachable": true,
+      "status": 200
+    },
+    "publicRoute": {
+      "checked": true,
+      "reachable": true,
+      "status": 200
+    }
+  },
+  "hygiene": {
+    "results": {
+      "git-diff-check-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/git-diff-check-result.json"
+      },
+      "protected-generated-raw-artifact-check-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/protected-generated-raw-artifact-check-result.json"
+      },
+      "staged-raw-artifact-check-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/staged-raw-artifact-check-result.json"
+      },
+      "trailing-whitespace-scan-result.json": {
+        "ok": true,
+        "path": "content-review/ice-approved-homepage-local-draft-import/trailing-whitespace-scan-result.json"
+      }
+    },
+    "blockers": []
+  },
+  "guardrails": [
+    "Homepage route / only.",
+    "Local CMS only.",
+    "Draft/needs_review only.",
+    "No /contact update.",
+    "No /service-areas update.",
+    "No /state-city creation.",
+    "No Theme record update.",
+    "No MediaAsset record update.",
+    "No static regeneration.",
+    "No deploy, DNS, email provider, Azure, Cloudflare, or Bluehost action.",
+    "No email sent.",
+    "No protected config read or modified.",
+    "No secrets, JWTs, tokens, credentials, connection strings, SMTP secrets, storage keys, or provider credentials printed.",
+    "Roller remains paused."
+  ],
+  "blockers": [],
+  "success": true
+}

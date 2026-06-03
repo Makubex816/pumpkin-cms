@@ -1,0 +1,101 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:13:00.733Z",
+  "publish": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "  Determining projects to restore...\r\n  Restored C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\tools\\dotnet-page-contract\\Pumpkin.PageContractTool.csproj (in 101 ms).\r\n  pumpkin-net-models -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-home-import-contract-14068-1780506774514\\bin\\Debug\\net10.0\\pumpkin-net-models.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-home-import-contract-14068-1780506774514\\bin\\Debug\\net10.0\\Pumpkin.PageContractTool.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-home-import-contract-14068-1780506774514\\publish\\\r\n",
+    "stderrPreview": ""
+  },
+  "validate": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-approved-homepage-ppec-logo-binding\\\\APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json\",\r\n  \"GeneratedAt\": \"2026-06-03T17:13:00.4538199Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json\",\r\n      \"PageId\": \"ice-rink-rentals-home\",\r\n      \"PageSlug\": \"home\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"UpdatedHomeContactPersistenceOk\": true,\r\n      \"BlockCount\": 13,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"C",
+    "stderrPreview": ""
+  },
+  "parsed": {
+    "Command": "validate-page",
+    "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-approved-homepage-ppec-logo-binding\\APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+    "GeneratedAt": "2026-06-03T17:13:00.4538199Z",
+    "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+    "Ok": true,
+    "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "Pages": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+        "PageId": "ice-rink-rentals-home",
+        "PageSlug": "home",
+        "TenantId": "ice-rink-rentals",
+        "DotNetDeserialized": true,
+        "RoundTripOk": true,
+        "ProductionFieldPersistenceOk": true,
+        "UpdatedHomeContactPersistenceOk": true,
+        "BlockCount": 13,
+        "BlockTypes": [
+          "Hero",
+          "TrustBar",
+          "CardGrid",
+          "HowItWorks",
+          "CardGrid",
+          "CardGrid",
+          "CardGrid",
+          "CardGrid",
+          "ServiceAreaMap",
+          "PrimaryCTA",
+          "FAQ",
+          "formBlock",
+          "PrimaryCTA"
+        ],
+        "ErrorCount": 0,
+        "WarningCount": 6
+      }
+    ],
+    "FormDefinitions": [],
+    "MediaRequirements": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+        "RequirementCount": 7,
+        "BlockerCount": 0
+      }
+    ],
+    "Errors": [],
+    "Warnings": [
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"reviewMetadata\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"mediaRequirements\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"templatePurpose\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"contentPackageVersion\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "productionFieldPersistence.checked",
+        "Message": "Verified 304 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "updatedHomeContactPersistence.checked",
+        "Message": "Verified 304 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json"
+      }
+    ]
+  }
+}

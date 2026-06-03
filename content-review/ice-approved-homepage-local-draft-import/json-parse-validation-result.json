@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:12:48.216Z",
+  "results": [
+    {
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_PACKAGE.json",
+      "ok": true
+    }
+  ]
+}

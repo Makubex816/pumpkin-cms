@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:13:27.233Z",
+  "stagedRawMediaOrZipHits": [],
+  "stagedExtractedInputHits": [],
+  "stagedStaticArtifactHits": [],
+  "stagedCount": 0,
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "",
+    "stderrPreview": ""
+  }
+}

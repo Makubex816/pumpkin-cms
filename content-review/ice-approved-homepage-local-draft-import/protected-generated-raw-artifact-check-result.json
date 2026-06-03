@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:13:27.191Z",
+  "protectedHits": [],
+  "generatedHits": [],
+  "rawInputFolderPresent": false,
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "?? PUMPKIN_ICE_APPROVED_HOMEPAGE_LOCAL_DRAFT_IMPORT_REPORT.md\n?? content-review/ice-approved-homepage-local-draft-import/AUTH_LIFECYCLE_RESULT.md\n?? content-review/ice-approved-homepage-local-draft-import/BASELINE_SNAPSHOTS.md\n?? content-review/ice-approved-homepage-local-draft-import/FRONTEND_PREVIEW_CHECKLIST.md\n?? content-review/ice-approved-homepage-local-draft-import/HOMEPAGE_IMPORT_RESULT.md\n?? content-review/ice-approved-homepage-local-draft-import/HOMEPAGE_READBACK_VERIFICATION.md\n?? content-review/ice-approved-homepage-local-draft-import/PPEC_LOGO_PERSISTENCE_VERIFICATION.md\n?? content-review/ice-approved-homepage-local-draft-import/PRE_IMPORT_VALIDATION.md\n?? content-review/ice-approved-homepage-local-draft-import/README.md\n?? content-review/ice-approved-homepage-local-draft-import/REMAINING_BLOCKERS.md\n?? content-review/ice-approved-homepage-local-draft-import/UNTOUCHED_ROUTES_VERIFICATION.md\n?? content-review/ice-approved-homepage-local-draft-import/contact-before-approved-import.snapshot.json\n?? content-review/ice-approved-homepage-local-draft-import/contactus-scan-result.json\n?? content-review/ice-approved-homepage-local-draft-import/contract-persistence-validation-re",
+    "stderrPreview": ""
+  }
+}
