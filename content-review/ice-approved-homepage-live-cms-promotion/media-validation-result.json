@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-06-03T20:14:22.377Z",
+  "ok": true,
+  "command": {
+    "ok": true,
+    "exitCode": 0,
+    "stdout": "{\n  \"ok\": true,\n  \"assetCount\": 4,\n  \"referenceCount\": 6,\n  \"warningCount\": 3,\n  \"warningCodes\": [\n    \"media-validation-warning\"\n  ]\n}\n",
+    "stderr": "",
+    "signal": null
+  },
+  "parsed": {
+    "ok": true,
+    "assetCount": 4,
+    "referenceCount": 6,
+    "warningCount": 3,
+    "warningCodes": [
+      "media-validation-warning"
+    ]
+  }
+}

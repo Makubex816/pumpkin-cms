@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-06-03T20:14:09.995Z",
+  "ok": true,
+  "results": [
+    {
+      "path": "content-review/ice-approved-homepage-live-cms-promotion/homepage-live-cms-promotion-candidate.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-ppec-first-banner-copy-update/homepage-readback-after-first-ppec-banner-copy-update.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-ppec-logo-replacement/homepage-readback-after-logo-replacement.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-ppec-visual-brand-repair/manifest.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-approved-homepage-local-draft-import/homepage-readback-after-approved-import.json",
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-06-03T20:14:09.995Z",
+  "ok": true,
+  "artifacts": [
+    {
+      "path": "content-review/ice-ppec-first-banner-copy-update/homepage-readback-after-first-ppec-banner-copy-update.json",
+      "exists": true,
+      "parseOk": true
+    },
+    {
+      "path": "content-review/ice-ppec-logo-replacement/homepage-readback-after-logo-replacement.json",
+      "exists": true,
+      "parseOk": true
+    },
+    {
+      "path": "content-review/ice-ppec-visual-brand-repair/manifest.json",
+      "exists": true,
+      "parseOk": true
+    },
+    {
+      "path": "content-review/ice-approved-homepage-local-draft-import/homepage-readback-after-approved-import.json",
+      "exists": true,
+      "parseOk": true
+    }
+  ],
+  "failed": []
+}

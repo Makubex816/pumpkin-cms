@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-06-03T20:14:22.195Z",
+  "ok": true,
+  "publish": {
+    "ok": true,
+    "exitCode": 0,
+    "stdout": "  Determining projects to restore...\r\n  Restored C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\tools\\dotnet-page-contract\\Pumpkin.PageContractTool.csproj (in 98 ms).\r\n  pumpkin-net-models -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-live-cms-promotion-contract-30904-1780517656096\\bin\\Debug\\net10.0\\pumpkin-net-models.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-live-cms-promotion-contract-30904-1780517656096\\bin\\Debug\\net10.0\\Pumpkin.PageContractTool.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-live-cms-promotion-contract-30904-1780517656096\\publish\\\r\n",
+    "stderr": "",
+    "signal": null
+  },
+  "validate": {
+    "ok": true,
+    "exitCode": 0,
+    "stdout": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-approved-homepage-live-cms-promotion\\\\homepage-live-cms-promotion-candidate.json\",\r\n  \"GeneratedAt\": \"2026-06-03T20:14:21.9006808Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-live-cms-promotion/homepage-live-cms-promotion-candidate.json\",\r\n      \"PageId\": \"ice-rink-rentals-home\",\r\n      \"PageSlug\": \"home\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"UpdatedHomeContactPersistenceOk\": true,\r\n      \"BlockCount\": 13,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"ServiceAreaMap\",\r\n        \"PrimaryCTA\",\r\n        \"FAQ\",\r\n        \"formBlock\",\r\n        \"PrimaryCTA\"\r\n      ],\r\n      \"ErrorCount\": 0,\r\n      \"WarningCount\": 2\r\n    }\r\n  ],\r\n  \"FormDefinitions\": [],\r\n  \"MediaRequirements\": [],\r\n  \"Errors\": [],\r\n  \"Warnings\": [\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"productionFieldPersistence.checked\",\r\n      \"Message\": \"Verified 311 production renderer/media/email-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-live-cms-promotion/homepage-live-cms-promotion-candidate.json\"\r\n    },\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"updatedHomeContactPersistence.checked\",\r\n      \"Message\": \"Verified 311 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-live-cms-promotion/homepage-live-cms-promotion-candidate.json\"\r\n    }\r\n  ]\r\n}\r\n",
+    "stderr": "",
+    "signal": null
+  },
+  "parsed": {
+    "Command": "validate-page",
+    "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-approved-homepage-live-cms-promotion\\homepage-live-cms-promotion-candidate.json",
+    "GeneratedAt": "2026-06-03T20:14:21.9006808Z",
+    "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+    "Ok": true,
+    "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "Pages": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-live-cms-promotion/homepage-live-cms-promotion-candidate.json",
+        "PageId": "ice-rink-rentals-home",
+        "PageSlug": "home",
+        "TenantId": "ice-rink-rentals",
+        "DotNetDeserialized": true,
+        "RoundTripOk": true,
+        "ProductionFieldPersistenceOk": true,
+        "UpdatedHomeContactPersistenceOk": true,
+        "BlockCount": 13,
+        "BlockTypes": [
+          "Hero",
+          "TrustBar",
+          "CardGrid",
+          "HowItWorks",
+          "CardGrid",
+          "CardGrid",
+          "CardGrid",
+          "CardGrid",
+          "ServiceAreaMap",
+          "PrimaryCTA",
+          "FAQ",
+          "formBlock",
+          "PrimaryCTA"
+        ],
+        "ErrorCount": 0,
+        "WarningCount": 2
+      }
+    ],
+    "FormDefinitions": [],
+    "MediaRequirements": [],
+    "Errors": [],
+    "Warnings": [
+      {
+        "Severity": "warning",
+        "Code": "productionFieldPersistence.checked",
+        "Message": "Verified 311 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-live-cms-promotion/homepage-live-cms-promotion-candidate.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "updatedHomeContactPersistence.checked",
+        "Message": "Verified 311 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-live-cms-promotion/homepage-live-cms-promotion-candidate.json"
+      }
+    ]
+  }
+}

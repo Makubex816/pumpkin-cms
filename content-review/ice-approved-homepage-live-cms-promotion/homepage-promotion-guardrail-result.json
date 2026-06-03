@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-06-03T20:14:10.005Z",
+  "ok": true,
+  "checks": {
+    "onlyLifecycleFieldsChanged": true,
+    "routeHome": true,
+    "liveCmsState": true,
+    "workflowPublishedApproved": true,
+    "approvalMetadataRecorded": true,
+    "staticNeedsRebuildTrue": true,
+    "ppecLogoIdPersists": true,
+    "exactPpecEyebrow": true,
+    "exactPpecHeadline": true,
+    "exactPpecBody": true,
+    "exactPpecPrimaryCta": true,
+    "exactPpecSecondaryCta": true,
+    "ppecForbiddenTermsAbsent": true,
+    "selectedMailboxPersists": true,
+    "publicEmailPolicyPersists": true,
+    "noLegacyMailbox": true,
+    "officialHomepageMediaIdsUnchanged": true,
+    "noContactRouteChangeInPayload": true
+  },
+  "failed": [],
+  "forbiddenHits": [],
+  "activeSourceMedia": [
+    "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+    "ice-rink-rentals-holidayicerink-973ce7691377",
+    "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+    "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+    "ice-rink-rentals-partyproseastcoastlogo-cfd1fc9f60ae",
+    "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+  ],
+  "activeCandidateMedia": [
+    "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+    "ice-rink-rentals-holidayicerink-973ce7691377",
+    "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+    "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+    "ice-rink-rentals-partyproseastcoastlogo-cfd1fc9f60ae",
+    "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+  ]
+}

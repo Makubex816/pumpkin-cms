@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-06-03T20:14:10.006Z",
+  "ok": true,
+  "checks": {
+    "isPublishedChangedToTrue": true,
+    "includeInSitemapChangedToTrue": true,
+    "publishedAtCreatedOrPreserved": true,
+    "workflowStatusSupported": true,
+    "reviewStatusApproved": true,
+    "approvedForPublishTrue": true,
+    "approvalMetadataPresent": true,
+    "staticEligibleTrue": true,
+    "staticNeedsRebuildTrue": true,
+    "unsupportedProductionApprovedNotInvented": true,
+    "unsupportedPublishApprovedNotInvented": true
+  },
+  "failed": []
+}
