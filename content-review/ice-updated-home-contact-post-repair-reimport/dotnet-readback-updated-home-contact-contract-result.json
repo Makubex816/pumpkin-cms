@@ -1,0 +1,89 @@
+{
+  "Command": "validate-updated-home-contact",
+  "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-updated-home-contact-post-repair-reimport\\homepage-readback-after-post-repair-import.json;C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-updated-home-contact-post-repair-reimport\\contact-readback-after-post-repair-import.json",
+  "GeneratedAt": "2026-06-03T02:40:27.7076130Z",
+  "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+  "Ok": true,
+  "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+  "Pages": [
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-post-repair-reimport/homepage-readback-after-post-repair-import.json",
+      "PageId": "ice-rink-rentals-home",
+      "PageSlug": "home",
+      "TenantId": "ice-rink-rentals",
+      "DotNetDeserialized": true,
+      "RoundTripOk": true,
+      "ProductionFieldPersistenceOk": true,
+      "UpdatedHomeContactPersistenceOk": true,
+      "BlockCount": 10,
+      "BlockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "CardGrid",
+        "HowItWorks",
+        "CardGrid",
+        "PrimaryCTA",
+        "ServiceAreaMap",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "ErrorCount": 0,
+      "WarningCount": 2
+    },
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-post-repair-reimport/contact-readback-after-post-repair-import.json",
+      "PageId": "ice-rink-rentals-contact",
+      "PageSlug": "contact",
+      "TenantId": "ice-rink-rentals",
+      "DotNetDeserialized": true,
+      "RoundTripOk": true,
+      "ProductionFieldPersistenceOk": true,
+      "UpdatedHomeContactPersistenceOk": true,
+      "BlockCount": 10,
+      "BlockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "formBlock",
+        "HowItWorks",
+        "CardGrid",
+        "CardGrid",
+        "PrimaryCTA",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "ErrorCount": 0,
+      "WarningCount": 2
+    }
+  ],
+  "FormDefinitions": [],
+  "MediaRequirements": [],
+  "Errors": [],
+  "Warnings": [
+    {
+      "Severity": "warning",
+      "Code": "productionFieldPersistence.checked",
+      "Message": "Verified 200 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-post-repair-reimport/homepage-readback-after-post-repair-import.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "updatedHomeContactPersistence.checked",
+      "Message": "Verified 200 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-post-repair-reimport/homepage-readback-after-post-repair-import.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "productionFieldPersistence.checked",
+      "Message": "Verified 201 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-post-repair-reimport/contact-readback-after-post-repair-import.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "updatedHomeContactPersistence.checked",
+      "Message": "Verified 205 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-updated-home-contact-post-repair-reimport/contact-readback-after-post-repair-import.json"
+    }
+  ]
+}

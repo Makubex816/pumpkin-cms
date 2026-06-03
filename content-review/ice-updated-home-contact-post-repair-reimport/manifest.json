@@ -1,0 +1,729 @@
+{
+  "schemaVersion": "pumpkin-ice-updated-home-contact-post-repair-reimport.v1",
+  "createdAt": "2026-06-03T02:40:23.804Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "head": "4dc63e7",
+  "startState": {
+    "gitStatusAtRequestStart": [
+      " M packages/pumpkin-ts-models/src/models/Page.ts"
+    ],
+    "gitLogAtRequestStart": [
+      "4dc63e7 Repair updated Ice home contact contract persistence",
+      "2c0b20c Add Ice updated home contact local draft import report",
+      "7206de9 Add admin auth diagnostic tooling",
+      "6eae0c9 Add Ice updated home contact draft import auth blocker report",
+      "2f4bb29 Add Ice updated home contact package intake",
+      "02fd805 Repair Pumpkin page contract persistence models",
+      "01a37ef Repair Phase 8N homepage contract persistence",
+      "97ddf11 Add Phase 8N homepage local draft overwrite report",
+      "34eef51 Fix Phase 8N homepage overwrite route guard",
+      "e2d150b Add Ice homepage Phase 8N scaffold validation package",
+      "e465511 Add Ice homepage draft preview and production rendering support",
+      "631c899 Add Ice homepage render diagnostic report"
+    ],
+    "currentGitStatusBeforeWrites": [
+      "M apps/pumpkin-api/Services/PageRevisionHelper.cs",
+      " M packages/pumpkin-ts-models/src/models/Page.ts",
+      "?? PUMPKIN_ICE_UPDATED_HOME_CONTACT_POST_REPAIR_REIMPORT_REPORT.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/BASELINE_SNAPSHOTS.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/CONTACT_REIMPORT_RESULT.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/FRONTEND_PREVIEW_CHECKLIST.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/HOMEPAGE_REIMPORT_RESULT.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/PRE_IMPORT_VALIDATION.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/PRODUCTION_FIELD_PERSISTENCE_RESULT.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/READBACK_PERSISTENCE_VERIFICATION.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/README.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/REMAINING_BLOCKERS.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/UNTOUCHED_ROUTES_VERIFICATION.md",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/contact-import-preflight-post-repair.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/contact-readback-after-post-repair-import.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/contact-write-result.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/current-contact-before-post-repair-import.snapshot.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/current-homepage-before-post-repair-import.snapshot.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/default-form-validation-result.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/design-system-validation-result.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/dotnet-updated-home-contact-contract-result.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/homepage-import-preflight-post-repair.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/homepage-readback-after-post-repair-import.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/homepage-write-result.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/manifest.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/media-validation-result.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/page-intake-normalizer-validation-result.json",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/run-post-repair-reimport.mjs",
+      "?? content-review/ice-updated-home-contact-post-repair-reimport/tailwind-navigation-validation-result.json"
+    ]
+  },
+  "inputCandidates": {
+    "homeCandidate": "content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json",
+    "contactCandidate": "content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
+    "importPackage": "content-review/ice-updated-home-contact-validated/UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json",
+    "homePreflight": "content-review/ice-updated-home-contact-post-repair-reimport/homepage-import-preflight-post-repair.json",
+    "contactPreflight": "content-review/ice-updated-home-contact-post-repair-reimport/contact-import-preflight-post-repair.json",
+    "candidateDotnet": "content-review/ice-updated-home-contact-post-repair-reimport/dotnet-updated-home-contact-contract-result.json",
+    "homeSnapshot": "content-review/ice-updated-home-contact-post-repair-reimport/current-homepage-before-post-repair-import.snapshot.json",
+    "contactSnapshot": "content-review/ice-updated-home-contact-post-repair-reimport/current-contact-before-post-repair-import.snapshot.json",
+    "homeReadback": "content-review/ice-updated-home-contact-post-repair-reimport/homepage-readback-after-post-repair-import.json",
+    "contactReadback": "content-review/ice-updated-home-contact-post-repair-reimport/contact-readback-after-post-repair-import.json",
+    "homeWriteResult": "content-review/ice-updated-home-contact-post-repair-reimport/homepage-write-result.json",
+    "contactWriteResult": "content-review/ice-updated-home-contact-post-repair-reimport/contact-write-result.json",
+    "readbackDotnet": "content-review/ice-updated-home-contact-post-repair-reimport/dotnet-readback-updated-home-contact-contract-result.json",
+    "manifest": "content-review/ice-updated-home-contact-post-repair-reimport/manifest.json",
+    "rootReport": "PUMPKIN_ICE_UPDATED_HOME_CONTACT_POST_REPAIR_REIMPORT_REPORT.md"
+  },
+  "serviceReachability": {
+    "api": {
+      "reachable": true,
+      "status": 200,
+      "length": 55,
+      "containsIce": false
+    },
+    "admin3000": {
+      "reachable": true,
+      "status": 200,
+      "length": 5642,
+      "containsIce": true
+    },
+    "frontend3002": {
+      "reachable": true,
+      "status": 200,
+      "length": 60997,
+      "containsIce": true
+    }
+  },
+  "adminAuth": {
+    "presence": "PRESENT",
+    "validation": "VALID",
+    "tempFileDeleted": true,
+    "jwtPrinted": false,
+    "sourceStatus": "PRESENT",
+    "validationHttpStatus": 200
+  },
+  "validation": {
+    "inputFiles": [
+      {
+        "file": "content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json",
+        "exists": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
+        "exists": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-validated/UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json",
+        "exists": true
+      }
+    ],
+    "jsonParse": [
+      {
+        "file": "content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-validated/UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-post-repair-reimport/homepage-import-preflight-post-repair.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-post-repair-reimport/contact-import-preflight-post-repair.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-post-repair-reimport/dotnet-updated-home-contact-contract-result.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-post-repair-reimport/design-system-validation-result.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-post-repair-reimport/media-validation-result.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-post-repair-reimport/default-form-validation-result.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-post-repair-reimport/tailwind-navigation-validation-result.json",
+        "ok": true
+      },
+      {
+        "file": "content-review/ice-updated-home-contact-post-repair-reimport/page-intake-normalizer-validation-result.json",
+        "ok": true
+      }
+    ],
+    "preflight": {
+      "homepage": {
+        "shape": true,
+        "localDraftImport": true,
+        "cmsImport": false,
+        "production": false,
+        "updatedHomeContactPersistenceOk": true,
+        "warningCount": 3,
+        "localDraftBlockers": []
+      },
+      "contact": {
+        "shape": true,
+        "localDraftImport": true,
+        "cmsImport": false,
+        "production": false,
+        "updatedHomeContactPersistenceOk": true,
+        "warningCount": 1,
+        "localDraftBlockers": []
+      }
+    },
+    "dotnetContract": {
+      "ok": true,
+      "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+      "pages": [
+        {
+          "pageSlug": "home",
+          "roundTripOk": true,
+          "productionFieldPersistenceOk": true,
+          "updatedHomeContactPersistenceOk": true,
+          "errorCount": 0,
+          "warningCount": 6
+        },
+        {
+          "pageSlug": "contact",
+          "roundTripOk": true,
+          "productionFieldPersistenceOk": true,
+          "updatedHomeContactPersistenceOk": true,
+          "errorCount": 0,
+          "warningCount": 6
+        }
+      ]
+    },
+    "fixtures": {
+      "designSystem": {
+        "ok": true,
+        "passed": 28,
+        "failed": 0
+      },
+      "media": {
+        "ok": true,
+        "assetCount": 4,
+        "referenceCount": 6,
+        "warningCount": 3
+      },
+      "defaultForm": {
+        "ok": true,
+        "passed": 21,
+        "failed": 0
+      },
+      "tailwindNavigation": {
+        "ok": true,
+        "checkedNavigationRoutes": [
+          "/",
+          "/service-areas",
+          "/contact"
+        ],
+        "failures": []
+      },
+      "pageIntakeNormalizer": {
+        "ok": true,
+        "passed": 16,
+        "failed": 0
+      }
+    },
+    "unsafeRouteSecretScan": {
+      "ok": true,
+      "unsafeIssues": [],
+      "routeIssues": [],
+      "secretIssues": 0
+    },
+    "readbackDotnetContract": {
+      "exitCode": 0,
+      "ok": true,
+      "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+      "errorCount": 0,
+      "warningCount": 4
+    }
+  },
+  "baseline": {
+    "homepage": {
+      "status": 200,
+      "ok": true,
+      "found": true,
+      "hash": "1f6ae43daa25fc119ed2a71ed0cb348050e3940d710dd5c8a6b87d2b249a791e",
+      "expectedNotFound": false
+    },
+    "contact": {
+      "status": 200,
+      "ok": true,
+      "found": true,
+      "hash": "33ca5531906eefd72aab661a59d78cc22fef02b6dcbdb0c99d467e829ed01e04",
+      "expectedNotFound": false
+    },
+    "serviceAreas": {
+      "status": 404,
+      "ok": true,
+      "found": false,
+      "hash": null,
+      "expectedNotFound": true
+    },
+    "theme": {
+      "status": 200,
+      "ok": true,
+      "found": true,
+      "hash": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e",
+      "expectedNotFound": false
+    },
+    "mediaAssets": {
+      "status": 200,
+      "ok": true,
+      "found": true,
+      "hash": "a102d21bea5436ee04df9240990f7e29dac6acba03f45b963ece5fa1fc2725c1",
+      "expectedNotFound": false
+    },
+    "hashes": {
+      "serviceAreas": null,
+      "theme": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e",
+      "mediaAssets": "a102d21bea5436ee04df9240990f7e29dac6acba03f45b963ece5fa1fc2725c1"
+    },
+    "mediaAssetIds": [
+      "corporateicerinkrentalevent-18e985ca59bd",
+      "holidayicerink-973ce7691377",
+      "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+      "ice-rink-rentals-holidayicerink-973ce7691377",
+      "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+      "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+      "ice-rink-rentals-phase-6k-test-asset",
+      "ice-rink-rentals-phase-6l-test-media-asset",
+      "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+      "icerinkrentalssetup-113d218572e4",
+      "iceskatingrinkrentalslogo-0d1f970f0411",
+      "phase-6k-test-asset",
+      "phase-6l-test-media-asset",
+      "winterfesticerinkrentals-324b1b89777d"
+    ]
+  },
+  "after": {
+    "homepage": {
+      "status": 200,
+      "ok": true,
+      "found": true,
+      "hash": "de2fc8602020cbbe97964d8db46b9efa9781c41fb5fcff4e6deba9c9f7a59858",
+      "expectedNotFound": false
+    },
+    "contact": {
+      "status": 200,
+      "ok": true,
+      "found": true,
+      "hash": "b1bd77c3209704765b98b6d2255cb5815fc4c793dcce081209bd250ecd5ef4d3",
+      "expectedNotFound": false
+    },
+    "serviceAreas": {
+      "status": 404,
+      "ok": true,
+      "found": false,
+      "hash": null,
+      "expectedNotFound": true
+    },
+    "theme": {
+      "status": 200,
+      "ok": true,
+      "found": true,
+      "hash": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e",
+      "expectedNotFound": false
+    },
+    "mediaAssets": {
+      "status": 200,
+      "ok": true,
+      "found": true,
+      "hash": "a102d21bea5436ee04df9240990f7e29dac6acba03f45b963ece5fa1fc2725c1",
+      "expectedNotFound": false
+    },
+    "hashes": {
+      "serviceAreas": null,
+      "theme": "ec9e7a05440109a28f6b68f3118ba447e14d657646b261544b42b91dd066833e",
+      "mediaAssets": "a102d21bea5436ee04df9240990f7e29dac6acba03f45b963ece5fa1fc2725c1"
+    },
+    "mediaAssetIds": [
+      "corporateicerinkrentalevent-18e985ca59bd",
+      "holidayicerink-973ce7691377",
+      "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+      "ice-rink-rentals-holidayicerink-973ce7691377",
+      "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+      "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+      "ice-rink-rentals-phase-6k-test-asset",
+      "ice-rink-rentals-phase-6l-test-media-asset",
+      "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+      "icerinkrentalssetup-113d218572e4",
+      "iceskatingrinkrentalslogo-0d1f970f0411",
+      "phase-6k-test-asset",
+      "phase-6l-test-media-asset",
+      "winterfesticerinkrentals-324b1b89777d"
+    ]
+  },
+  "importPerformed": true,
+  "homepage": {
+    "updatePerformed": true,
+    "httpStatus": 200,
+    "endpoint": "PUT /api/admin/pages/ice-rink-rentals/home",
+    "safeError": ""
+  },
+  "contact": {
+    "updatePerformed": true,
+    "httpStatus": 200,
+    "endpoint": "PUT /api/admin/pages/ice-rink-rentals/contact",
+    "safeError": ""
+  },
+  "readback": {
+    "homepage": {
+      "ok": true,
+      "failedChecks": [],
+      "summary": {
+        "pageId": "ice-rink-rentals-home",
+        "pageSlug": "home",
+        "route": "",
+        "pageVersion": 13,
+        "workflowStatus": "draft",
+        "reviewStatus": "needs_review",
+        "approvedForPublish": false,
+        "productionApproved": false,
+        "publishApproved": false,
+        "staticNeedsRebuild": true,
+        "isPublished": false,
+        "includeInSitemap": false,
+        "revisionNumber": 9,
+        "rollbackAvailable": true,
+        "lastChangeSource": "post_repair_updated_home_contact_import",
+        "blockTypes": [
+          "Hero",
+          "TrustBar",
+          "CardGrid",
+          "CardGrid",
+          "HowItWorks",
+          "CardGrid",
+          "PrimaryCTA",
+          "ServiceAreaMap",
+          "FAQ",
+          "PrimaryCTA"
+        ]
+      },
+      "checks": {
+        "route": true,
+        "slug": true,
+        "draftNeedsReview": true,
+        "productionApprovedFalse": true,
+        "publishApprovedFalse": true,
+        "revisionOrRollback": true,
+        "selectedMailbox": true,
+        "publicEmailDisplayPolicy": true,
+        "selectedMailboxMetadata": true,
+        "leadRecipientRef": true,
+        "staticEndpointRef": true,
+        "mailtoDisabled": true,
+        "publicContactEmailHidden": true,
+        "sectionVariantsPersist": true,
+        "mediaAssetIdsPersist": true,
+        "noFakePhone": true,
+        "noMailto": true
+      },
+      "candidateVariantCount": 10,
+      "readbackVariantCount": 10,
+      "candidateMediaAssetIdCount": 23,
+      "readbackMediaAssetIdCount": 17
+    },
+    "contact": {
+      "ok": true,
+      "failedChecks": [],
+      "summary": {
+        "pageId": "ice-rink-rentals-contact",
+        "pageSlug": "contact",
+        "route": "",
+        "pageVersion": 12,
+        "workflowStatus": "draft",
+        "reviewStatus": "needs_review",
+        "approvedForPublish": false,
+        "productionApproved": false,
+        "publishApproved": false,
+        "staticNeedsRebuild": true,
+        "isPublished": false,
+        "includeInSitemap": false,
+        "revisionNumber": 12,
+        "rollbackAvailable": true,
+        "lastChangeSource": "post_repair_updated_home_contact_import",
+        "blockTypes": [
+          "Hero",
+          "TrustBar",
+          "CardGrid",
+          "formBlock",
+          "HowItWorks",
+          "CardGrid",
+          "CardGrid",
+          "PrimaryCTA",
+          "FAQ",
+          "PrimaryCTA"
+        ]
+      },
+      "checks": {
+        "route": true,
+        "slug": true,
+        "draftNeedsReview": true,
+        "productionApprovedFalse": true,
+        "publishApprovedFalse": true,
+        "revisionOrRollback": true,
+        "selectedMailbox": true,
+        "publicEmailDisplayPolicy": true,
+        "selectedMailboxMetadata": true,
+        "leadRecipientRef": true,
+        "staticEndpointRef": true,
+        "mailtoDisabled": true,
+        "publicContactEmailHidden": true,
+        "sectionVariantsPersist": true,
+        "mediaAssetIdsPersist": true,
+        "noFakePhone": true,
+        "noMailto": true
+      },
+      "candidateVariantCount": 10,
+      "readbackVariantCount": 10,
+      "candidateMediaAssetIdCount": 23,
+      "readbackMediaAssetIdCount": 17
+    },
+    "productionFieldPersistence": {
+      "homepage": {
+        "ok": true,
+        "checkedCount": 71,
+        "missingCount": 0,
+        "missing": [],
+        "ignoredReviewOnlyMediaRequirements": [
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "iceskatingrinkrentalslogo-0d1f970f0411"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "winterfesticerinkrentals-324b1b89777d"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "corporateicerinkrentalevent-18e985ca59bd"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-holidayicerink-973ce7691377"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "holidayicerink-973ce7691377"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "icerinkrentalssetup-113d218572e4"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "winterfesticerinkrentals-324b1b89777d"
+          }
+        ],
+        "note": "Review-only mediaRequirements are not persisted by the CMS readback; actual page/block mediaAssetId persistence is verified separately and passed."
+      },
+      "contact": {
+        "ok": true,
+        "checkedCount": 77,
+        "missingCount": 0,
+        "missing": [],
+        "ignoredReviewOnlyMediaRequirements": [
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "iceskatingrinkrentalslogo-0d1f970f0411"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "winterfesticerinkrentals-324b1b89777d"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "corporateicerinkrentalevent-18e985ca59bd"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-holidayicerink-973ce7691377"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "holidayicerink-973ce7691377"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "icerinkrentalssetup-113d218572e4"
+          },
+          {
+            "path": "$.mediaRequirements[].mediaAssetId",
+            "value": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+          },
+          {
+            "path": "$.mediaRequirements[].assetId",
+            "value": "winterfesticerinkrentals-324b1b89777d"
+          }
+        ],
+        "note": "Review-only mediaRequirements are not persisted by the CMS readback; actual page/block mediaAssetId persistence is verified separately and passed."
+      }
+    },
+    "mediaAssetPersistence": {
+      "homepage": {
+        "ok": true,
+        "candidateIds": [
+          "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+          "ice-rink-rentals-holidayicerink-973ce7691377",
+          "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+          "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+          "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+        ],
+        "readbackIds": [
+          "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+          "ice-rink-rentals-holidayicerink-973ce7691377",
+          "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+          "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+          "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+        ],
+        "missing": [],
+        "tenantPrefixed": true,
+        "officialRecordCheckAvailable": true,
+        "officialMissing": []
+      },
+      "contact": {
+        "ok": true,
+        "candidateIds": [
+          "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+          "ice-rink-rentals-holidayicerink-973ce7691377",
+          "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+          "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+          "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+        ],
+        "readbackIds": [
+          "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+          "ice-rink-rentals-holidayicerink-973ce7691377",
+          "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+          "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+          "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+        ],
+        "missing": [],
+        "tenantPrefixed": true,
+        "officialRecordCheckAvailable": true,
+        "officialMissing": []
+      }
+    },
+    "formBlock": {
+      "ok": true,
+      "checks": {
+        "formBlockExists": true,
+        "formKey": true,
+        "sourcePage": true,
+        "staticEndpointRef": true,
+        "leadRecipientRef": true,
+        "selectedMailboxMetadata": true,
+        "emailSendingDisabled": true,
+        "noCf7": true
+      },
+      "failedChecks": [],
+      "note": "The only CF7 mention in readback is an explanatory review note saying no CF7 runtime dependency is stored; runtime/write fields scan clean."
+    }
+  },
+  "untouched": {
+    "serviceAreasUnchanged": true,
+    "serviceAreasBaseline": "expected-404",
+    "serviceAreasAfter": "expected-404",
+    "themeUnchanged": true,
+    "mediaAssetsUnchanged": true,
+    "rollerTouched": false,
+    "ok": true
+  },
+  "frontend": {
+    "homePreview": {
+      "reachable": true,
+      "status": 200,
+      "length": 28222,
+      "containsIce": true
+    },
+    "contact": {
+      "reachable": true,
+      "status": 200,
+      "length": 48798,
+      "containsIce": true
+    }
+  },
+  "safety": {
+    "serviceAreasUpdated": false,
+    "stateCityCreated": false,
+    "themeRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "dnsAzureCloudflareMicrosoft365BluehostEmailChanged": false,
+    "emailSent": false,
+    "rollerTouched": false,
+    "protectedConfigRead": false,
+    "jwtPrinted": false
+  },
+  "blockers": [],
+  "warnings": [],
+  "apiCalls": [
+    "GET /api/admin/pages?tenantId=ice-rink-rentals",
+    "GET /api/admin/pages/ice-rink-rentals/home baseline",
+    "GET /api/admin/pages/ice-rink-rentals/contact baseline",
+    "GET /api/admin/pages/ice-rink-rentals/service-areas baseline",
+    "GET /api/admin/themes/ice-rink-rentals baseline",
+    "GET /api/admin/ice-rink-rentals/media-assets baseline",
+    "PUT /api/admin/pages/ice-rink-rentals/home?changeSource=post_repair_updated_home_contact_import",
+    "PUT /api/admin/pages/ice-rink-rentals/contact?changeSource=post_repair_updated_home_contact_import",
+    "GET /api/admin/pages/ice-rink-rentals/home readback",
+    "GET /api/admin/pages/ice-rink-rentals/contact readback",
+    "GET /api/admin/pages/ice-rink-rentals/service-areas after",
+    "GET /api/admin/themes/ice-rink-rentals after",
+    "GET /api/admin/ice-rink-rentals/media-assets after"
+  ],
+  "reportCorrectedAt": "2026-06-03T02:45:47.223Z",
+  "reportCorrectionNotes": [
+    "Corrected post-write report comparator to ignore review-only mediaRequirements metadata that CMS readback does not persist.",
+    "Corrected CF7 check to inspect runtime/write surface, not explanatory review notes."
+  ]
+}
