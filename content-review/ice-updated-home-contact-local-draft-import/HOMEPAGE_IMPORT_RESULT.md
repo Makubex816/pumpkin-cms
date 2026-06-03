@@ -1,9 +1,13 @@
 # Homepage Import Result
 
-- Import performed: no
-- Reason: admin auth INVALID
-- Endpoint: not used
+- Import performed: yes
+- Endpoint: `PUT /api/admin/pages/ice-rink-rentals/home?changeSource=updated_home_contact_package_import`
+- HTTP status: 200
 - Requested changeSource: `updated_home_contact_package_import`
-- Draft/readback verification: not performed
+- Readback changeSource: `manual_unknown`
+- Before revision: 7
+- After revision: 8
+- Rollback metadata exists: yes
+- Workflow: draft/needs_review
 - Production/publish approved: no
-- Static regeneration: no
+- Static needs rebuild: yes

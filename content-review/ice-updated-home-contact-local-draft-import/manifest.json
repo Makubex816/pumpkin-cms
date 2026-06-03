@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "pumpkin-ice-updated-home-contact-local-draft-import.v1",
-  "createdAt": "2026-06-03T00:49:51.984Z",
+  "schemaVersion": "pumpkin-ice-updated-home-contact-local-draft-import.v2",
+  "createdAt": "2026-06-03T01:15:04.245Z",
   "tenantId": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
   "domain": "iceskatingrinkrentals.com",
@@ -11,9 +11,8 @@
   },
   "startState": {
     "branch": "feature/admin-page-editor-import-export",
-    "gitStatusAtStart": "dirty-generated-retry-from-auth-blocked-run",
-    "gitStatusAtStartCapturedBeforeGeneratedOutputs": false,
-    "gitLog": "2f4bb29 Add Ice updated home contact package intake\n02fd805 Repair Pumpkin page contract persistence models\n01a37ef Repair Phase 8N homepage contract persistence\n97ddf11 Add Phase 8N homepage local draft overwrite report\n34eef51 Fix Phase 8N homepage overwrite route guard\ne2d150b Add Ice homepage Phase 8N scaffold validation package\ne465511 Add Ice homepage draft preview and production rendering support\n631c899 Add Ice homepage render diagnostic report\nc60217f Add Ice contact local draft import report\n2d8bb45 Add Ice homepage local draft import report\n892dccb Add Ice homepage local draft import auth blocker report\n9b7bcad Add Ice homepage business contact policy package"
+    "gitStatusAtStart": "M content-review/ice-updated-home-contact-local-draft-import/PRE_IMPORT_VALIDATION.md\n M content-review/ice-updated-home-contact-local-draft-import/contact-import-preflight-result.json\n M content-review/ice-updated-home-contact-local-draft-import/dotnet-page-contract-result.json\n M content-review/ice-updated-home-contact-local-draft-import/homepage-import-preflight-result.json\n M content-review/ice-updated-home-contact-local-draft-import/pre-import-validation-run.json",
+    "gitLog": "7206de9 Add admin auth diagnostic tooling\n6eae0c9 Add Ice updated home contact draft import auth blocker report\n2f4bb29 Add Ice updated home contact package intake\n02fd805 Repair Pumpkin page contract persistence models\n01a37ef Repair Phase 8N homepage contract persistence\n97ddf11 Add Phase 8N homepage local draft overwrite report\n34eef51 Fix Phase 8N homepage overwrite route guard\ne2d150b Add Ice homepage Phase 8N scaffold validation package\ne465511 Add Ice homepage draft preview and production rendering support\n631c899 Add Ice homepage render diagnostic report\nc60217f Add Ice contact local draft import report\n2d8bb45 Add Ice homepage local draft import report"
   },
   "apiReachability": {
     "reachable": true,
@@ -23,14 +22,16 @@
   "adminAuth": {
     "processEnv": "MISSING",
     "tempJwtFileBeforeLoad": "PRESENT",
-    "validation": "INVALID",
     "tempJwtDeletedAfterLoad": true,
-    "jwtPrinted": false,
-    "validationStatus": 401
+    "validation": "VALID",
+    "tokenPrinted": false,
+    "validationStatus": 200,
+    "verifiedTenantId": "ice-rink-rentals",
+    "verifiedRole": "SuperAdmin"
   },
   "validation": {
     "ok": true,
-    "generatedAt": "2026-06-03T00:33:46.191Z",
+    "generatedAt": "2026-06-03T01:10:38.161Z",
     "blockers": [],
     "checks": {
       "jsonParse": "passed",
@@ -51,66 +52,326 @@
       "dotnetBuild": "passed",
       "dotnetPageContractHomepage": "passed",
       "dotnetPageContractContact": "passed",
-      "dotnetPackageContract": "passed"
-    },
-    "routeCanonicalAudit": {
-      "ok": true,
-      "errors": [],
-      "includedRoutes": [
-        "/",
-        "/contact"
+      "dotnetPackageContract": "passed",
+      "productionFieldPersistenceValidation": "passed"
+    }
+  },
+  "baseline": {
+    "homepage": {
+      "found": true,
+      "pageId": "ice-rink-rentals-home",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "home",
+      "route": "/",
+      "pageVersion": 11,
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "approvedForPublish": false,
+      "productionApproved": false,
+      "publishApproved": false,
+      "staticNeedsRebuild": true,
+      "staticEligible": false,
+      "deploymentStatus": "not_generated",
+      "revisionNumber": 7,
+      "currentRevisionId": "ice-rink-rentals-home:rev-7",
+      "rollbackAvailable": true,
+      "lastChangeSource": "manual_unknown",
+      "lastChangeSummary": "Phase 8N homepage-only local draft overwrite; no publish, static generation, theme, media, contact, or service-area write.",
+      "blockCount": 9,
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "CardGrid",
+        "HowItWorks",
+        "CardGrid",
+        "ServiceAreaMap",
+        "FAQ",
+        "PrimaryCTA"
       ],
-      "excludedRoutes": [
-        "/service-areas",
-        "/state-city"
+      "selectedMailbox": "",
+      "publicEmailDisplayPolicy": "",
+      "publicContactEmail": ""
+    },
+    "contact": {
+      "found": true,
+      "pageId": "ice-rink-rentals-contact",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "contact",
+      "route": "/contact",
+      "pageVersion": 10,
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "approvedForPublish": false,
+      "productionApproved": false,
+      "publishApproved": false,
+      "staticNeedsRebuild": true,
+      "staticEligible": false,
+      "deploymentStatus": "local_cms_draft_review_only_not_static_regenerated",
+      "revisionNumber": 10,
+      "currentRevisionId": "ice-rink-rentals-contact:rev-10",
+      "rollbackAvailable": true,
+      "lastChangeSource": "json_import",
+      "lastChangeSummary": "Ice contact/email correction local draft import",
+      "blockCount": 6,
+      "blockTypes": [
+        "Hero",
+        "customHtml",
+        "formBlock",
+        "customHtml",
+        "FAQ",
+        "PrimaryCTA"
       ],
-      "routeMentionsInExclusionMetadataAccepted": true
+      "selectedMailbox": "",
+      "publicEmailDisplayPolicy": "",
+      "publicContactEmail": ""
     },
-    "defaultFormCandidateValidation": {
+    "serviceAreas": {
+      "route": "/service-areas",
       "ok": true,
-      "formBlockCount": 1,
-      "errors": []
+      "status": 404,
+      "state": "404-not-found",
+      "hash": null
     },
-    "mediaCandidateValidation": {
+    "theme": {
+      "name": "themes",
       "ok": true,
-      "requiredMediaIds": [
+      "status": 200,
+      "count": 1,
+      "hash": "3d87c84bf9535a74c1d533b02f355fd05a86d766071997380371e254017b4593"
+    },
+    "mediaAssets": {
+      "name": "mediaAssets",
+      "ok": true,
+      "status": 200,
+      "count": 7,
+      "hash": "41d14288fe17628ee33a34b882c6f95e5797ed7b67f64529176b7ed4eec74f30"
+    },
+    "mediaAssetRecordsRequiredPresent": {
+      "allPresent": true,
+      "missing": [],
+      "availableRequiredIds": [
         "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
         "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
         "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
         "ice-rink-rentals-holidayicerink-973ce7691377",
         "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
       ],
-      "mediaIds": [
-        "corporateicerinkrentalevent-18e985ca59bd",
-        "holidayicerink-973ce7691377",
-        "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
-        "ice-rink-rentals-holidayicerink-973ce7691377",
-        "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
-        "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
-        "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
-        "icerinkrentalssetup-113d218572e4",
-        "iceskatingrinkrentalslogo-0d1f970f0411",
-        "winterfesticerinkrentals-324b1b89777d"
-      ],
-      "missingMedia": []
+      "mediaAssetCount": 7
     }
   },
-  "baseline": {},
   "importResult": {
-    "performed": false,
+    "performed": true,
     "requestedChangeSource": "updated_home_contact_package_import",
-    "homepage": {},
-    "contact": {}
+    "homepage": {
+      "ok": true,
+      "status": 200,
+      "pageSlug": "home",
+      "pageId": "ice-rink-rentals-home",
+      "safeError": "",
+      "endpoint": "PUT /api/admin/pages/ice-rink-rentals/home?changeSource=updated_home_contact_package_import"
+    },
+    "contact": {
+      "ok": true,
+      "status": 200,
+      "pageSlug": "contact",
+      "pageId": "ice-rink-rentals-contact",
+      "safeError": "",
+      "endpoint": "PUT /api/admin/pages/ice-rink-rentals/contact?changeSource=updated_home_contact_package_import"
+    }
   },
-  "readback": {},
-  "verification": {},
-  "frontendPreview": {},
+  "readback": {
+    "homepage": {
+      "found": true,
+      "pageId": "ice-rink-rentals-home",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "home",
+      "route": "/",
+      "pageVersion": 12,
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "approvedForPublish": false,
+      "productionApproved": false,
+      "publishApproved": false,
+      "staticNeedsRebuild": true,
+      "staticEligible": false,
+      "deploymentStatus": "not_generated",
+      "revisionNumber": 8,
+      "currentRevisionId": "ice-rink-rentals-home:rev-8",
+      "rollbackAvailable": true,
+      "lastChangeSource": "manual_unknown",
+      "lastChangeSummary": "Homepage local draft update from updated home/contact package.",
+      "blockCount": 10,
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "CardGrid",
+        "HowItWorks",
+        "CardGrid",
+        "PrimaryCTA",
+        "ServiceAreaMap",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "selectedMailbox": "",
+      "publicEmailDisplayPolicy": "",
+      "publicContactEmail": ""
+    },
+    "contact": {
+      "found": true,
+      "pageId": "ice-rink-rentals-contact",
+      "tenantId": "ice-rink-rentals",
+      "pageSlug": "contact",
+      "route": "/contact",
+      "pageVersion": 11,
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "approvedForPublish": false,
+      "productionApproved": false,
+      "publishApproved": false,
+      "staticNeedsRebuild": true,
+      "staticEligible": false,
+      "deploymentStatus": "not_generated",
+      "revisionNumber": 11,
+      "currentRevisionId": "ice-rink-rentals-contact:rev-11",
+      "rollbackAvailable": true,
+      "lastChangeSource": "manual_unknown",
+      "lastChangeSummary": "Contact local draft update from updated home/contact package.",
+      "blockCount": 10,
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "formBlock",
+        "HowItWorks",
+        "CardGrid",
+        "CardGrid",
+        "PrimaryCTA",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "selectedMailbox": "",
+      "publicEmailDisplayPolicy": "",
+      "publicContactEmail": ""
+    },
+    "serviceAreas": {
+      "route": "/service-areas",
+      "ok": true,
+      "status": 404,
+      "state": "404-not-found",
+      "hash": null
+    },
+    "theme": {
+      "name": "themes",
+      "ok": true,
+      "status": 200,
+      "count": 1,
+      "hash": "3d87c84bf9535a74c1d533b02f355fd05a86d766071997380371e254017b4593"
+    },
+    "mediaAssets": {
+      "name": "mediaAssets",
+      "ok": true,
+      "status": 200,
+      "count": 7,
+      "hash": "41d14288fe17628ee33a34b882c6f95e5797ed7b67f64529176b7ed4eec74f30"
+    }
+  },
+  "verification": {
+    "homepageRoute": true,
+    "contactRoute": true,
+    "homepageDraftNeedsReview": true,
+    "contactDraftNeedsReview": true,
+    "homepageProductionFalse": true,
+    "contactProductionFalse": true,
+    "homepageStaticNeedsRebuild": true,
+    "contactStaticNeedsRebuild": true,
+    "homepageRevisionIncremented": true,
+    "contactRevisionIncremented": true,
+    "homepageRollbackMetadataExists": true,
+    "contactRollbackMetadataExists": true,
+    "requestedChangeSource": "updated_home_contact_package_import",
+    "homepageReadbackChangeSource": "manual_unknown",
+    "contactReadbackChangeSource": "manual_unknown",
+    "homepageRequestedChangeSourcePersisted": false,
+    "contactRequestedChangeSourcePersisted": false,
+    "homepageMediaIdsPresentInPage": false,
+    "homepageRequiredMediaAssetRecordsExist": true,
+    "productionRenderFieldsPersist": false,
+    "mediaAssetsUnchanged": true,
+    "contactFormBlockExists": true,
+    "contactFormKey": true,
+    "contactSourcePage": true,
+    "contactStaticEndpointRef": true,
+    "contactLeadRecipientRef": true,
+    "selectedMailboxPresent": false,
+    "publicEmailFormFirstUnderReview": false,
+    "publicEmailHidden": true,
+    "serviceAreasUnchanged": true,
+    "serviceAreasBaselineState": "404-not-found",
+    "serviceAreasAfterState": "404-not-found",
+    "themeUnchanged": true,
+    "mediaAssetsRequired": [
+      "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+      "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+      "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+      "ice-rink-rentals-holidayicerink-973ce7691377",
+      "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+    ],
+    "mediaAssetsInHomepage": [
+      "corporateicerinkrentalevent-18e985ca59bd",
+      "holidayicerink-973ce7691377",
+      "winterfesticerinkrentals-324b1b89777d"
+    ],
+    "mediaAssetRecordPresence": {
+      "allPresent": true,
+      "missing": [],
+      "availableRequiredIds": [
+        "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "ice-rink-rentals-holidayicerink-973ce7691377",
+        "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+      ],
+      "mediaAssetCount": 7
+    },
+    "blockers": [
+      "Homepage required MediaAsset IDs missing from page.",
+      "Production-render fields did not persist.",
+      "Selected mailbox missing.",
+      "Public email display policy mismatch."
+    ]
+  },
+  "frontendPreview": {
+    "homePreview": {
+      "reachable": true,
+      "status": 200,
+      "length": 28222,
+      "containsIceSignal": true,
+      "containsContactSignal": true
+    },
+    "contactPublic": {
+      "reachable": true,
+      "status": 200,
+      "length": 48798,
+      "containsIceSignal": true,
+      "containsContactSignal": true
+    }
+  },
   "checks": {
     "gitDiffCheck": {
       "ok": true,
       "status": 0,
       "stdout": "",
-      "stderr": "",
+      "stderr": "warning: in the working copy of 'PUMPKIN_ICE_UPDATED_HOME_CONTACT_LOCAL_DRAFT_IMPORT_REPORT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/BASELINE_SNAPSHOTS.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/CONTACT_IMPORT_RESULT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/FRONTEND_PREVIEW_CHECKLIST.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/HOMEPAGE_IMPORT_RESULT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/PRE_IMPORT_VALIDATION.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/READBACK_VERIFICATION.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/REMAINING_BLOCKERS.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/UNTOUCHED_ROUTES_VERIFICATION.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/contact-import-preflight-result.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/contact-readback-after-import.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/current-contact-before-import.snapshot.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/current-homepage-before-import.snapshot.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/dotnet-page-contract-result.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/homepage-import-preflight-result.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/homepage-readback-after-import.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/manifest.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'content-review/ice-updated-home-contact-local-draft-import/pre-import-validation-run.json', LF will be replaced by CRLF the next time Git touches it\n",
       "command": "git diff --check"
     },
     "gitDiffCachedCheck": {
@@ -128,25 +389,25 @@
       "ok": true,
       "findings": [],
       "status": [
-        "?? PUMPKIN_ICE_UPDATED_HOME_CONTACT_LOCAL_DRAFT_IMPORT_REPORT.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/BASELINE_SNAPSHOTS.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/CONTACT_IMPORT_RESULT.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/FRONTEND_PREVIEW_CHECKLIST.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/HOMEPAGE_IMPORT_RESULT.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/PRE_IMPORT_VALIDATION.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/READBACK_VERIFICATION.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/README.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/REMAINING_BLOCKERS.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/UNTOUCHED_ROUTES_VERIFICATION.md",
-        "?? content-review/ice-updated-home-contact-local-draft-import/contact-import-preflight-result.json",
-        "?? content-review/ice-updated-home-contact-local-draft-import/contact-readback-after-import.json",
-        "?? content-review/ice-updated-home-contact-local-draft-import/current-contact-before-import.snapshot.json",
-        "?? content-review/ice-updated-home-contact-local-draft-import/current-homepage-before-import.snapshot.json",
-        "?? content-review/ice-updated-home-contact-local-draft-import/dotnet-page-contract-result.json",
-        "?? content-review/ice-updated-home-contact-local-draft-import/homepage-import-preflight-result.json",
-        "?? content-review/ice-updated-home-contact-local-draft-import/homepage-readback-after-import.json",
-        "?? content-review/ice-updated-home-contact-local-draft-import/manifest.json",
-        "?? content-review/ice-updated-home-contact-local-draft-import/pre-import-validation-run.json"
+        " M PUMPKIN_ICE_UPDATED_HOME_CONTACT_LOCAL_DRAFT_IMPORT_REPORT.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/BASELINE_SNAPSHOTS.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/CONTACT_IMPORT_RESULT.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/FRONTEND_PREVIEW_CHECKLIST.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/HOMEPAGE_IMPORT_RESULT.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/PRE_IMPORT_VALIDATION.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/READBACK_VERIFICATION.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/README.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/REMAINING_BLOCKERS.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/UNTOUCHED_ROUTES_VERIFICATION.md",
+        " M content-review/ice-updated-home-contact-local-draft-import/contact-import-preflight-result.json",
+        " M content-review/ice-updated-home-contact-local-draft-import/contact-readback-after-import.json",
+        " M content-review/ice-updated-home-contact-local-draft-import/current-contact-before-import.snapshot.json",
+        " M content-review/ice-updated-home-contact-local-draft-import/current-homepage-before-import.snapshot.json",
+        " M content-review/ice-updated-home-contact-local-draft-import/dotnet-page-contract-result.json",
+        " M content-review/ice-updated-home-contact-local-draft-import/homepage-import-preflight-result.json",
+        " M content-review/ice-updated-home-contact-local-draft-import/homepage-readback-after-import.json",
+        " M content-review/ice-updated-home-contact-local-draft-import/manifest.json",
+        " M content-review/ice-updated-home-contact-local-draft-import/pre-import-validation-run.json"
       ]
     },
     "targetedSecretScanFinal": {
@@ -173,32 +434,27 @@
     "protectedConfigReadOrModified": false,
     "rollerStatus": "paused"
   },
-  "apiCalls": [
-    "GET /api/admin/pages?tenantId=ice-rink-rentals"
+  "warnings": [
+    "Requested custom changeSource did not persist exactly; current API normalized it. reviewMetadata.localDraftImport records the requested source."
   ],
   "blockers": [
-    "Admin auth invalid; stopped before CMS writes."
+    "Homepage required MediaAsset IDs missing from page.",
+    "Production-render fields did not persist.",
+    "Selected mailbox missing.",
+    "Public email display policy mismatch."
   ],
-  "warnings": [],
-  "requiredOutputFiles": [
-    "manifest.json",
-    "pre-import-validation-run.json",
-    "homepage-import-preflight-result.json",
-    "contact-import-preflight-result.json",
-    "dotnet-page-contract-result.json",
-    "current-homepage-before-import.snapshot.json",
-    "current-contact-before-import.snapshot.json",
-    "homepage-readback-after-import.json",
-    "contact-readback-after-import.json",
-    "README.md",
-    "PRE_IMPORT_VALIDATION.md",
-    "BASELINE_SNAPSHOTS.md",
-    "HOMEPAGE_IMPORT_RESULT.md",
-    "CONTACT_IMPORT_RESULT.md",
-    "READBACK_VERIFICATION.md",
-    "UNTOUCHED_ROUTES_VERIFICATION.md",
-    "FRONTEND_PREVIEW_CHECKLIST.md",
-    "REMAINING_BLOCKERS.md",
-    "PUMPKIN_ICE_UPDATED_HOME_CONTACT_LOCAL_DRAFT_IMPORT_REPORT.md"
+  "apiCalls": [
+    "GET /api/admin/pages/ice-rink-rentals/home before import",
+    "GET /api/admin/pages/ice-rink-rentals/contact before import",
+    "GET /api/admin/pages/ice-rink-rentals/service-areas before import",
+    "GET /api/admin/themes/ice-rink-rentals before import",
+    "GET /api/admin/ice-rink-rentals/media-assets before import",
+    "PUT /api/admin/pages/ice-rink-rentals/home?changeSource=updated_home_contact_package_import",
+    "PUT /api/admin/pages/ice-rink-rentals/contact?changeSource=updated_home_contact_package_import",
+    "GET /api/admin/pages/ice-rink-rentals/home after import",
+    "GET /api/admin/pages/ice-rink-rentals/contact after import",
+    "GET /api/admin/pages/ice-rink-rentals/service-areas after import",
+    "GET /api/admin/themes/ice-rink-rentals after import",
+    "GET /api/admin/ice-rink-rentals/media-assets after import"
   ]
 }

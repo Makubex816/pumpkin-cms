@@ -2,14 +2,25 @@
 
 Run blockers:
 
-- Admin auth invalid; stopped before CMS writes.
+These are readback persistence mismatches after successful local CMS writes.
 
-Before retrying local draft import:
+- Homepage required MediaAsset IDs missing from page.
+- Production-render fields did not persist.
+- Selected mailbox missing.
+- Public email display policy mismatch.
 
-- Provide a fresh valid admin JWT through `PUMPKIN_ADMIN_JWT` or `$env:TEMP\pumpkin-admin-jwt.txt`.
-- Re-run the guarded import; the temp JWT file has already been deleted after loading.
+Warnings:
 
-Before static regeneration or production/indexing:
+- Requested custom changeSource did not persist exactly; current API normalized it. reviewMetadata.localDraftImport records the requested source.
 
-- Complete successful local draft import/readback first.
-- Static regeneration, production approval, deployment, DNS/email/provider changes, and Roller work remain out of scope.
+Before static regeneration:
+
+- Manual browser preview review is still required.
+- Static regeneration must be separately authorized.
+- Pages remain draft/needs_review with production and publish approval false.
+
+Before production/indexing:
+
+- Human production approval is still required.
+- Publishing/indexing/deploy work must be separately authorized.
+- DNS, email/provider, Azure, Cloudflare, Bluehost, and Roller work remain out of scope.

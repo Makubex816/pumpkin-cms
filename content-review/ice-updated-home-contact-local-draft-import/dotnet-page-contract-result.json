@@ -2,7 +2,7 @@
   "homepage": {
     "Command": "validate-page",
     "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-updated-home-contact-validated\\UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json",
-    "GeneratedAt": "2026-06-03T00:34:20.2491700Z",
+    "GeneratedAt": "2026-06-03T01:11:15.0447564Z",
     "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
     "Ok": true,
     "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
@@ -77,7 +77,7 @@
   "contact": {
     "Command": "validate-page",
     "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-updated-home-contact-validated\\UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
-    "GeneratedAt": "2026-06-03T00:34:20.5108859Z",
+    "GeneratedAt": "2026-06-03T01:11:15.3037489Z",
     "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
     "Ok": true,
     "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
@@ -152,7 +152,7 @@
   "package": {
     "Command": "validate-package",
     "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-updated-home-contact-validated",
-    "GeneratedAt": "2026-06-03T00:34:20.8107724Z",
+    "GeneratedAt": "2026-06-03T01:11:15.6000950Z",
     "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
     "Ok": true,
     "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",

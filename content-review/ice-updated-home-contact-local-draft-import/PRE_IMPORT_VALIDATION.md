@@ -1,6 +1,6 @@
 # Pre-Import Validation
 
-Generated: 2026-06-03T00:33:46.191Z
+Generated: 2026-06-03T01:10:38.161Z
 
 Overall result: passed
 
@@ -23,6 +23,7 @@ Overall result: passed
 - dotnetPageContractHomepage: passed
 - dotnetPageContractContact: passed
 - dotnetPackageContract: passed
+- productionFieldPersistenceValidation: passed
 
 Blockers:
 - None

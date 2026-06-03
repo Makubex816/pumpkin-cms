@@ -1,9 +1,10 @@
 # Untouched Routes Verification
 
-No CMS write was performed after auth failed.
-
-- /service-areas write performed: no
-- Theme write performed: no
-- MediaAsset write performed: no
-- Static regeneration/deploy/DNS/email/provider action: no
-- Roller advanced: no
+- /service-areas before: 404-not-found HTTP 404
+- /service-areas after: 404-not-found
+- /service-areas unchanged or still 404: yes
+- Theme unchanged: yes
+- MediaAsset records unchanged: yes
+- No Theme write was performed.
+- No MediaAsset write was performed.
+- No service-area write was performed.

@@ -3,9 +3,9 @@
 Local CMS draft import for IceSkatingRinkRentals.com homepage and contact page.
 
 - Routes updated: / and /contact
-- Admin auth: INVALID
+- Admin auth: VALID
 - Temp JWT deleted after loading: yes
-- Import performed: no
+- Import performed: yes
 - Production approved: no
 - Publish approved: no
 - Static regeneration/deploy/DNS/email/provider action: no
