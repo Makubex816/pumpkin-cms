@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "pumpkin-auth-blocked-local-draft-import-placeholder.v1",
+  "createdAt": "2026-06-03T00:51:02.117Z",
+  "kind": "contact-readback-after-import",
+  "status": "not-captured",
+  "reason": "Admin auth INVALID; stopped before CMS baseline snapshot/readback/write.",
+  "adminAuthStatus": "INVALID",
+  "cmsWritePerformed": false,
+  "productionApproved": false,
+  "publishApproved": false,
+  "staticRegenerationPerformed": false,
+  "rollerStatus": "paused"
+}

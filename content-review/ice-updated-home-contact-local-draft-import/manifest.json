@@ -1,0 +1,204 @@
+{
+  "schemaVersion": "pumpkin-ice-updated-home-contact-local-draft-import.v1",
+  "createdAt": "2026-06-03T00:49:51.984Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "selectedCandidates": {
+    "homepage": "content-review/ice-updated-home-contact-validated/UPDATED_HOMEPAGE_NORMALIZED_CANDIDATE.json",
+    "contact": "content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
+    "package": "content-review/ice-updated-home-contact-validated/UPDATED_HOME_CONTACT_IMPORT_PACKAGE.json"
+  },
+  "startState": {
+    "branch": "feature/admin-page-editor-import-export",
+    "gitStatusAtStart": "dirty-generated-retry-from-auth-blocked-run",
+    "gitStatusAtStartCapturedBeforeGeneratedOutputs": false,
+    "gitLog": "2f4bb29 Add Ice updated home contact package intake\n02fd805 Repair Pumpkin page contract persistence models\n01a37ef Repair Phase 8N homepage contract persistence\n97ddf11 Add Phase 8N homepage local draft overwrite report\n34eef51 Fix Phase 8N homepage overwrite route guard\ne2d150b Add Ice homepage Phase 8N scaffold validation package\ne465511 Add Ice homepage draft preview and production rendering support\n631c899 Add Ice homepage render diagnostic report\nc60217f Add Ice contact local draft import report\n2d8bb45 Add Ice homepage local draft import report\n892dccb Add Ice homepage local draft import auth blocker report\n9b7bcad Add Ice homepage business contact policy package"
+  },
+  "apiReachability": {
+    "reachable": true,
+    "status": 200,
+    "url": "http://localhost:5064"
+  },
+  "adminAuth": {
+    "processEnv": "MISSING",
+    "tempJwtFileBeforeLoad": "PRESENT",
+    "validation": "INVALID",
+    "tempJwtDeletedAfterLoad": true,
+    "jwtPrinted": false,
+    "validationStatus": 401
+  },
+  "validation": {
+    "ok": true,
+    "generatedAt": "2026-06-03T00:33:46.191Z",
+    "blockers": [],
+    "checks": {
+      "jsonParse": "passed",
+      "pageContractLocalShape": "passed",
+      "unsafeHtmlCssFormMediaEmailScan": "passed",
+      "routeCanonicalAudit": "passed",
+      "defaultFormCandidateValidation": "passed",
+      "mediaCandidateValidation": "passed",
+      "targetedSecretScan": "passed",
+      "safeImportPreflightHomepage": "passed",
+      "safeImportPreflightContact": "passed",
+      "designSystemValidation": "passed",
+      "tailwindNavigationValidation": "passed",
+      "mediaFixtureValidation": "passed",
+      "defaultFormFixtureValidation": "passed",
+      "pageIntakeNormalizerValidation": "passed",
+      "contractAlignmentValidation": "passed",
+      "dotnetBuild": "passed",
+      "dotnetPageContractHomepage": "passed",
+      "dotnetPageContractContact": "passed",
+      "dotnetPackageContract": "passed"
+    },
+    "routeCanonicalAudit": {
+      "ok": true,
+      "errors": [],
+      "includedRoutes": [
+        "/",
+        "/contact"
+      ],
+      "excludedRoutes": [
+        "/service-areas",
+        "/state-city"
+      ],
+      "routeMentionsInExclusionMetadataAccepted": true
+    },
+    "defaultFormCandidateValidation": {
+      "ok": true,
+      "formBlockCount": 1,
+      "errors": []
+    },
+    "mediaCandidateValidation": {
+      "ok": true,
+      "requiredMediaIds": [
+        "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "ice-rink-rentals-holidayicerink-973ce7691377",
+        "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+      ],
+      "mediaIds": [
+        "corporateicerinkrentalevent-18e985ca59bd",
+        "holidayicerink-973ce7691377",
+        "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "ice-rink-rentals-holidayicerink-973ce7691377",
+        "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "icerinkrentalssetup-113d218572e4",
+        "iceskatingrinkrentalslogo-0d1f970f0411",
+        "winterfesticerinkrentals-324b1b89777d"
+      ],
+      "missingMedia": []
+    }
+  },
+  "baseline": {},
+  "importResult": {
+    "performed": false,
+    "requestedChangeSource": "updated_home_contact_package_import",
+    "homepage": {},
+    "contact": {}
+  },
+  "readback": {},
+  "verification": {},
+  "frontendPreview": {},
+  "checks": {
+    "gitDiffCheck": {
+      "ok": true,
+      "status": 0,
+      "stdout": "",
+      "stderr": "",
+      "command": "git diff --check"
+    },
+    "gitDiffCachedCheck": {
+      "ok": true,
+      "status": 0,
+      "stdout": "",
+      "stderr": "",
+      "command": "git diff --cached --check"
+    },
+    "trailingWhitespaceScan": {
+      "ok": true,
+      "findings": []
+    },
+    "protectedGeneratedRawArtifactPathCheck": {
+      "ok": true,
+      "findings": [],
+      "status": [
+        "?? PUMPKIN_ICE_UPDATED_HOME_CONTACT_LOCAL_DRAFT_IMPORT_REPORT.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/BASELINE_SNAPSHOTS.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/CONTACT_IMPORT_RESULT.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/FRONTEND_PREVIEW_CHECKLIST.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/HOMEPAGE_IMPORT_RESULT.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/PRE_IMPORT_VALIDATION.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/READBACK_VERIFICATION.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/README.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/REMAINING_BLOCKERS.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/UNTOUCHED_ROUTES_VERIFICATION.md",
+        "?? content-review/ice-updated-home-contact-local-draft-import/contact-import-preflight-result.json",
+        "?? content-review/ice-updated-home-contact-local-draft-import/contact-readback-after-import.json",
+        "?? content-review/ice-updated-home-contact-local-draft-import/current-contact-before-import.snapshot.json",
+        "?? content-review/ice-updated-home-contact-local-draft-import/current-homepage-before-import.snapshot.json",
+        "?? content-review/ice-updated-home-contact-local-draft-import/dotnet-page-contract-result.json",
+        "?? content-review/ice-updated-home-contact-local-draft-import/homepage-import-preflight-result.json",
+        "?? content-review/ice-updated-home-contact-local-draft-import/homepage-readback-after-import.json",
+        "?? content-review/ice-updated-home-contact-local-draft-import/manifest.json",
+        "?? content-review/ice-updated-home-contact-local-draft-import/pre-import-validation-run.json"
+      ]
+    },
+    "targetedSecretScanFinal": {
+      "ok": true,
+      "findings": []
+    },
+    "noZipRawMediaExtractedStaticArtifactsStaged": {
+      "ok": true,
+      "findings": [],
+      "staged": []
+    },
+    "requiredJsonParse": {
+      "ok": true,
+      "findings": []
+    }
+  },
+  "safety": {
+    "serviceAreasChanged": false,
+    "themeRecordsChanged": false,
+    "mediaAssetRecordsChanged": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "dnsEmailProviderActionPerformed": false,
+    "protectedConfigReadOrModified": false,
+    "rollerStatus": "paused"
+  },
+  "apiCalls": [
+    "GET /api/admin/pages?tenantId=ice-rink-rentals"
+  ],
+  "blockers": [
+    "Admin auth invalid; stopped before CMS writes."
+  ],
+  "warnings": [],
+  "requiredOutputFiles": [
+    "manifest.json",
+    "pre-import-validation-run.json",
+    "homepage-import-preflight-result.json",
+    "contact-import-preflight-result.json",
+    "dotnet-page-contract-result.json",
+    "current-homepage-before-import.snapshot.json",
+    "current-contact-before-import.snapshot.json",
+    "homepage-readback-after-import.json",
+    "contact-readback-after-import.json",
+    "README.md",
+    "PRE_IMPORT_VALIDATION.md",
+    "BASELINE_SNAPSHOTS.md",
+    "HOMEPAGE_IMPORT_RESULT.md",
+    "CONTACT_IMPORT_RESULT.md",
+    "READBACK_VERIFICATION.md",
+    "UNTOUCHED_ROUTES_VERIFICATION.md",
+    "FRONTEND_PREVIEW_CHECKLIST.md",
+    "REMAINING_BLOCKERS.md",
+    "PUMPKIN_ICE_UPDATED_HOME_CONTACT_LOCAL_DRAFT_IMPORT_REPORT.md"
+  ]
+}
