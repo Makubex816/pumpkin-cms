@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "pumpkin.cross-page-media-slot-plan.v1",
+  "generatedAt": "2026-06-03T20:54:23.205Z",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "routesReviewed": [
+    "/",
+    "/contact",
+    "/service-areas"
+  ],
+  "planningOnly": true,
+  "cmsWrites": false,
+  "mediaAssetWrites": false,
+  "imageGenerationUsed": false,
+  "imagesModified": false,
+  "staticRegenerated": false,
+  "deploymentPerformed": false,
+  "rollerTouched": false,
+  "protectedConfigRead": false,
+  "optionalCandidatesCreated": [],
+  "sourcePresence": [
+    {
+      "key": "homepage",
+      "path": "content-review/ice-approved-homepage-live-cms-promotion/homepage-readback-after-live-cms-promotion.json",
+      "exists": true
+    },
+    {
+      "key": "contactReadback",
+      "path": "content-review/ice-updated-home-contact-local-draft-import/contact-readback-after-import.json",
+      "exists": true
+    },
+    {
+      "key": "contactCandidate",
+      "path": "content-review/ice-updated-home-contact-validated/UPDATED_CONTACT_NORMALIZED_CANDIDATE.json",
+      "exists": true
+    },
+    {
+      "key": "serviceAreas",
+      "path": "content-review/ice-service-areas-validated/SERVICE_AREAS_NORMALIZED_CANDIDATE.json",
+      "exists": true
+    },
+    {
+      "key": "serviceAreasImportPackage",
+      "path": "content-review/ice-service-areas-validated/SERVICE_AREAS_IMPORT_PACKAGE.json",
+      "exists": true
+    },
+    {
+      "key": "homepagePromotionReport",
+      "path": "content-review/ice-approved-homepage-live-cms-promotion/HOMEPAGE_READBACK_VERIFICATION.md",
+      "exists": true
+    },
+    {
+      "key": "contactVisualQa",
+      "path": "content-review/ice-local-visual-qa/CONTACT_PREVIEW_MARKERS.md",
+      "exists": true
+    },
+    {
+      "key": "serviceAreasMediaReview",
+      "path": "content-review/ice-service-areas-validated/MEDIA_BINDING_REVIEW.md",
+      "exists": true
+    },
+    {
+      "key": "ppecLogoResult",
+      "path": "content-review/ice-ppec-logo-replacement/PPEC_LOGO_MEDIAASSET_RESULT.md",
+      "exists": true
+    }
+  ],
+  "officialMediaAssets": {
+    "logo": {
+      "label": "Ice Rink Rentals logo",
+      "mediaAssetId": "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+      "assetId": "iceskatingrinkrentalslogo-0d1f970f0411",
+      "publicUrl": "/media/ice-rink-rentals/2026/06/iceskatingrinkrentalslogo-0d1f970f0411.png",
+      "title": "Ice Rink Rentals Logo"
+    },
+    "winter": {
+      "label": "Winter/hero",
+      "mediaAssetId": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+      "assetId": "winterfesticerinkrentals-324b1b89777d",
+      "publicUrl": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+      "title": "Winter Festival Portable Ice Rink"
+    },
+    "corporate": {
+      "label": "Corporate",
+      "mediaAssetId": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+      "assetId": "corporateicerinkrentalevent-18e985ca59bd",
+      "publicUrl": "/media/ice-rink-rentals/2026/06/corporateicerinkrentalevent-18e985ca59bd.png",
+      "title": "Corporate Ice Rink Rental Event"
+    },
+    "holiday": {
+      "label": "Holiday/shopping center",
+      "mediaAssetId": "ice-rink-rentals-holidayicerink-973ce7691377",
+      "assetId": "holidayicerink-973ce7691377",
+      "publicUrl": "/media/ice-rink-rentals/2026/06/holidayicerink-973ce7691377.png",
+      "title": "Holiday Shopping Center Ice Rink"
+    },
+    "setup": {
+      "label": "Setup/logistics",
+      "mediaAssetId": "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+      "assetId": "icerinkrentalssetup-113d218572e4",
+      "publicUrl": "/media/ice-rink-rentals/2026/06/icerinkrentalssetup-113d218572e4.png",
+      "title": "Portable Ice Rink Setup and Logistics"
+    },
+    "ppec": {
+      "label": "PPEC logo",
+      "mediaAssetId": "ice-rink-rentals-partyproseastcoastlogo-cfd1fc9f60ae",
+      "assetId": "partyproseastcoastlogo-cfd1fc9f60ae",
+      "publicUrl": "/media/ice-rink-rentals/2026/06/partyproseastcoastlogo-cfd1fc9f60ae.png",
+      "title": "Party Pros East Coast Logo"
+    }
+  },
+  "readiness": {
+    "homepageMediaReady": true,
+    "contactMediaReady": true,
+    "serviceAreasMediaReady": true,
+    "serviceAreasReadyForLocalDraftImport": true,
+    "staticProductionMediaReady": false
+  },
+  "outputFiles": [
+    "README.md",
+    "PAGE_MEDIA_INVENTORY.md",
+    "CANONICAL_MEDIA_SLOT_MAP.md",
+    "HOMEPAGE_MEDIA_SLOT_PLAN.md",
+    "CONTACT_MEDIA_SLOT_PLAN.md",
+    "SERVICE_AREAS_MEDIA_SLOT_PLAN.md",
+    "PAGE_SPECIFIC_ALT_TEXT.md",
+    "MEDIA_REUSE_DECISION.md",
+    "MISSING_MEDIA_REQUIREMENTS.md",
+    "IMPORT_READINESS_IMPACT.md",
+    "VALIDATION_RESULTS.md",
+    "manifest.json",
+    "service-areas-normalized-candidate-import-preflight-result.json",
+    "run-cross-page-media-slot-plan.mjs"
+  ],
+  "validationStatus": "completed-local-only",
+  "validationSummary": {
+    "jsonParse": "pass",
+    "changedMjsNodeCheck": "pass",
+    "mediaValidation": "pass",
+    "serviceAreasLocalImportPreflight": "pass-for-local-draft",
+    "designSystemValidation": "not-applicable-no-candidate-changed",
+    "tailwindNavigationValidation": "not-applicable-no-candidate-changed",
+    "unsafeScan": "pass-via-service-areas-import-preflight",
+    "targetedSecretScan": "pass",
+    "gitDiffCheck": "pass",
+    "trailingWhitespaceScan": "pass",
+    "protectedGeneratedRawArtifactPathCheck": "pass",
+    "zipRawExtractedStagedCheck": "pass"
+  }
+}
