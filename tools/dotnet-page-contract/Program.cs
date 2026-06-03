@@ -17,11 +17,29 @@ internal static class Program
             return 0;
         }
 
-        if (command != "validate-package" && command != "validate-page")
+        if (command != "validate-package" && command != "validate-page" && command != "validate-updated-home-contact")
         {
             Console.Error.WriteLine($"Unsupported command \"{command}\".");
             PrintHelp();
             return 2;
+        }
+
+        if (command == "validate-updated-home-contact")
+        {
+            var homePath = options.Get("home-path") ?? options.Get("home");
+            var contactPath = options.Get("contact-path") ?? options.Get("contact");
+            if (string.IsNullOrWhiteSpace(homePath) || string.IsNullOrWhiteSpace(contactPath))
+            {
+                Console.Error.WriteLine("Missing --home-path or --contact-path.");
+                PrintHelp();
+                return 2;
+            }
+
+            var pairReport = PageContractValidator.ValidateUpdatedHomeContact(
+                Path.GetFullPath(homePath),
+                Path.GetFullPath(contactPath));
+            Console.WriteLine(JsonSerializer.Serialize(pairReport, PageContractValidator.ReportJsonOptions));
+            return pairReport.Ok ? 0 : 1;
         }
 
         var targetPath = options.Get("path") ?? options.Get("p") ?? options.Positional.FirstOrDefault();
@@ -49,6 +67,9 @@ Pumpkin .NET Page Contract Tool
 Commands:
   validate-package --path <folder>  Validate an import-candidate/review package folder.
   validate-page --path <file>       Validate one page JSON file.
+  validate-updated-home-contact
+    --home-path <file> --contact-path <file>
+                                  Validate the updated Ice homepage/contact pair.
 
 The tool deserializes page JSON through pumpkin-net-models Page/block classes,
 runs API guard validation, performs a semantic JSON round trip, and reports
@@ -119,10 +140,13 @@ static class PageContractValidator
         "publicEmailDisplayPolicy",
         "selectedMailbox",
         "selectedMailboxMetadata",
+        "emailSendingEnabled",
         "selectedEmailProvider",
         "pumpkinAppSendStatus",
         "leadRecipientRef",
-        "staticEndpointRef"
+        "staticEndpointRef",
+        "formKey",
+        "sourcePage"
     };
     private static readonly string[] ProductionPersistencePathPrefixes =
     {
@@ -203,6 +227,31 @@ static class PageContractValidator
         }
 
         ValidatePageFile(pagePath, report);
+        report.FinalizeDecision();
+        return report;
+    }
+
+    public static ContractReport ValidateUpdatedHomeContact(string homePath, string contactPath)
+    {
+        var report = CreateReport("validate-updated-home-contact", $"{homePath};{contactPath}");
+
+        if (!File.Exists(homePath))
+        {
+            report.AddError("page.path", $"Homepage file not found: {homePath}", homePath);
+        }
+
+        if (!File.Exists(contactPath))
+        {
+            report.AddError("page.path", $"Contact file not found: {contactPath}", contactPath);
+        }
+
+        if (report.Errors.Count == 0)
+        {
+            ValidatePageFile(homePath, report);
+            ValidatePageFile(contactPath, report);
+            ValidateUpdatedHomeContactPair(report);
+        }
+
         report.FinalizeDecision();
         return report;
     }
@@ -401,6 +450,7 @@ static class PageContractValidator
             var roundTrip = ValidatePageRoundTrip(page, pageFile, report);
             pageSummary.RoundTripOk = roundTrip;
             pageSummary.ProductionFieldPersistenceOk = ValidateProductionFieldPersistence(pageJson, page, pageFile, report);
+            pageSummary.UpdatedHomeContactPersistenceOk = ValidateUpdatedHomeContactRequiredPersistence(pageJson, page, pageFile, report);
 
             ValidateMediaRequirements(pageJson, pageFile, report);
 
@@ -499,6 +549,100 @@ static class PageContractValidator
         }
 
         return true;
+    }
+
+    private static bool? ValidateUpdatedHomeContactRequiredPersistence(JsonObject originalJson, Page page, string pageFile, ContractReport report)
+    {
+        if (!IsUpdatedHomeContactCandidate(page))
+            return null;
+
+        var canonicalJson = PageJsonConverter.ToJson(page);
+        if (string.IsNullOrWhiteSpace(canonicalJson))
+        {
+            report.AddError("updatedHomeContactPersistence.serialize", "Page failed .NET canonical serialization for updated home/contact persistence comparison.", pageFile);
+            return false;
+        }
+
+        JsonNode? roundTripJson;
+        try
+        {
+            roundTripJson = JsonNode.Parse(canonicalJson);
+        }
+        catch (JsonException ex)
+        {
+            report.AddError("updatedHomeContactPersistence.parse", $"Canonical JSON failed updated home/contact persistence parse: {ex.Message}", pageFile);
+            return false;
+        }
+
+        var requiredPaths = new List<string>
+        {
+            "$.domainRouting.publicEmailDisplayPolicy",
+            "$.domainRouting.selectedMailbox",
+            "$.domainRouting.selectedMailboxMetadata",
+            "$.domainRouting.leadRecipientRef",
+            "$.domainRouting.staticEndpointRef",
+            "$.media.featuredImage.mediaAssetId",
+            "$.media.heroImage.mediaAssetId",
+            "$.media.localImage.mediaAssetId",
+            "$.media.closingImage.mediaAssetId",
+            "$.media.openGraphImage.mediaAssetId",
+            "$.media.logo.mediaAssetId",
+            "$.media.setupImage.mediaAssetId"
+        };
+
+        if (page.PageSlug.Equals("contact", StringComparison.OrdinalIgnoreCase))
+        {
+            requiredPaths.AddRange(new[]
+            {
+                "$.ContentData.ContentBlocks[formBlock].content.formKey",
+                "$.ContentData.ContentBlocks[formBlock].content.sourcePage",
+                "$.ContentData.ContentBlocks[formBlock].content.staticEndpointRef",
+                "$.ContentData.ContentBlocks[formBlock].content.leadRecipientRef"
+            });
+        }
+
+        var missingOriginal = requiredPaths
+            .Where(path => !HasComparablePersistenceValue(GetRequiredNode(originalJson, path)))
+            .ToList();
+        foreach (var path in missingOriginal)
+        {
+            report.AddError(
+                "updatedHomeContactPersistence.required",
+                $"Required updated home/contact field is missing before .NET round trip: {path}.",
+                pageFile,
+                path);
+        }
+
+        var checks = new List<PersistenceCheck>();
+        foreach (var path in requiredPaths)
+        {
+            var originalValue = GetRequiredNode(originalJson, path);
+            if (!HasComparablePersistenceValue(originalValue))
+                continue;
+            checks.Add(new PersistenceCheck(path, PathFieldName(path), JsonNode.DeepEquals(originalValue, GetRequiredNode(roundTripJson, path))));
+        }
+
+        CollectPersistenceChecks(originalJson, roundTripJson, "$", checks);
+        var missing = checks.Where(check => !check.Ok).DistinctBy(check => check.Path).Take(50).ToList();
+        foreach (var check in missing)
+        {
+            report.AddError(
+                "updatedHomeContactPersistence.strip",
+                $"Updated home/contact field \"{check.FieldName}\" changed or was stripped during .NET Page/block round trip.",
+                pageFile,
+                check.Path);
+        }
+
+        var ok = missingOriginal.Count == 0 && missing.Count == 0;
+        if (ok)
+        {
+            report.AddWarning(
+                "updatedHomeContactPersistence.checked",
+                $"Verified {checks.Select(check => check.Path).Distinct().Count()} updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+                pageFile);
+        }
+
+        return ok;
     }
 
     private static bool ValidateProductionFieldPersistence(JsonObject originalJson, Page page, string pageFile, ContractReport report)
@@ -624,6 +768,79 @@ static class PageContractValidator
     private static bool ShouldCheckProductionPersistencePath(string path)
     {
         return ProductionPersistencePathPrefixes.Any(prefix => path.StartsWith(prefix, StringComparison.Ordinal));
+    }
+
+    private static void ValidateUpdatedHomeContactPair(ContractReport report)
+    {
+        var home = report.Pages.FirstOrDefault(page => page.PageSlug == "home");
+        var contact = report.Pages.FirstOrDefault(page => page.PageSlug == "contact");
+        if (home == null)
+        {
+            report.AddError("updatedHomeContactPair.home", "Updated home/contact validation requires a homepage candidate with pageSlug home.", report.TargetPath);
+        }
+        if (contact == null)
+        {
+            report.AddError("updatedHomeContactPair.contact", "Updated home/contact validation requires a contact candidate with pageSlug contact.", report.TargetPath);
+        }
+        if (home?.UpdatedHomeContactPersistenceOk == false || contact?.UpdatedHomeContactPersistenceOk == false)
+        {
+            report.AddError("updatedHomeContactPair.persistence", "Homepage and contact candidates must both pass updated home/contact persistence checks.", report.TargetPath);
+        }
+    }
+
+    private static bool IsUpdatedHomeContactCandidate(Page page)
+    {
+        if (!page.TenantId.Equals("ice-rink-rentals", StringComparison.Ordinal))
+            return false;
+        if (!page.PageSlug.Equals("home", StringComparison.OrdinalIgnoreCase) &&
+            !page.PageSlug.Equals("contact", StringComparison.OrdinalIgnoreCase))
+            return false;
+
+        var templateKey = page.Template?.TemplateKey ?? string.Empty;
+        var layoutVariant = page.Template?.LayoutVariant ?? string.Empty;
+        var contentModelVersion = page.Template?.ContentModelVersion ?? string.Empty;
+        return templateKey.Contains("ice-homepage", StringComparison.OrdinalIgnoreCase) ||
+               templateKey.Equals("contact", StringComparison.OrdinalIgnoreCase) ||
+               layoutVariant.Equals("production-renderer-compatible", StringComparison.OrdinalIgnoreCase) ||
+               contentModelVersion.Contains("production-renderer-compatible", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static JsonNode? GetRequiredNode(JsonNode? node, string jsonPath)
+    {
+        if (node == null || !jsonPath.StartsWith("$.", StringComparison.Ordinal))
+            return null;
+
+        var current = node;
+        foreach (var segment in jsonPath[2..].Split('.'))
+        {
+            if (segment == "ContentData")
+            {
+                current = (current as JsonObject)?["ContentData"];
+                continue;
+            }
+
+            if (segment.StartsWith("ContentBlocks[", StringComparison.Ordinal))
+            {
+                var selector = segment["ContentBlocks[".Length..^1];
+                var array = (current as JsonObject)?["ContentBlocks"] as JsonArray;
+                current = selector == "formBlock"
+                    ? array?.OfType<JsonObject>().FirstOrDefault(item => StringValue(item["type"]) == "formBlock")
+                    : int.TryParse(selector, out var index) && array != null && index >= 0 && index < array.Count
+                        ? array[index]
+                        : null;
+                continue;
+            }
+
+            current = (current as JsonObject)?[segment];
+        }
+
+        return current;
+    }
+
+    private static string PathFieldName(string jsonPath)
+    {
+        var lastDot = jsonPath.LastIndexOf('.');
+        return lastDot >= 0 ? jsonPath[(lastDot + 1)..] : jsonPath;
     }
 
     private static void ValidateMediaRequirements(JsonObject json, string file, ContractReport report)
@@ -830,6 +1047,7 @@ sealed class PageContractSummary
     public bool DotNetDeserialized { get; set; }
     public bool RoundTripOk { get; set; }
     public bool ProductionFieldPersistenceOk { get; set; }
+    public bool? UpdatedHomeContactPersistenceOk { get; set; }
     public int BlockCount { get; set; }
     public List<string> BlockTypes { get; set; } = new();
     public int ErrorCount { get; set; }

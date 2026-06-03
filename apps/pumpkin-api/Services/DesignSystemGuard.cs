@@ -231,6 +231,8 @@ public static class DesignSystemGuard
             ValidateFormDefinition(definition, $"formDefinitions[{(page.FormDefinitions ?? new List<FormDefinition>()).IndexOf(definition)}]", result);
         }
 
+        ValidateDomainRouting(page, result);
+
         for (var index = 0; index < blocks.Count; index++)
         {
             var block = blocks[index];
@@ -261,6 +263,76 @@ public static class DesignSystemGuard
         }
 
         return result;
+    }
+
+    private static void ValidateDomainRouting(Page page, DesignSystemGuardResult result)
+    {
+        if (!string.Equals(page.TenantId, "ice-rink-rentals", StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        var pageSlug = page.PageSlug ?? string.Empty;
+        var slug = pageSlug.Equals("home", StringComparison.OrdinalIgnoreCase)
+            ? "home"
+            : pageSlug.Trim().ToLowerInvariant();
+        if (slug is not ("home" or "contact"))
+        {
+            return;
+        }
+
+        var routing = page.DomainRouting ?? new PageDomainRouting();
+        var path = "domainRouting";
+
+        if (string.IsNullOrWhiteSpace(routing.Domain))
+        {
+            Error(result, "domainRouting.domain", "Ice home/contact pages require domainRouting.domain.", $"{path}.domain");
+        }
+        else if (!routing.Domain.Equals("iceskatingrinkrentals.com", StringComparison.OrdinalIgnoreCase))
+        {
+            Error(result, "domainRouting.domain", "Ice home/contact domainRouting.domain must be iceskatingrinkrentals.com.", $"{path}.domain");
+        }
+
+        if (string.IsNullOrWhiteSpace(routing.PublicEmailDisplayPolicy))
+        {
+            Error(result, "domainRouting.publicEmailDisplayPolicy", "Ice home/contact pages require publicEmailDisplayPolicy.", $"{path}.publicEmailDisplayPolicy");
+        }
+        else if (routing.PublicEmailDisplayPolicy != "form-first-under-review")
+        {
+            Error(result, "domainRouting.publicEmailDisplayPolicy", "Ice public email policy must remain form-first-under-review before production approval.", $"{path}.publicEmailDisplayPolicy");
+        }
+
+        if (string.IsNullOrWhiteSpace(routing.SelectedMailbox))
+        {
+            Error(result, "domainRouting.selectedMailbox", "Ice home/contact pages require selectedMailbox metadata.", $"{path}.selectedMailbox");
+        }
+        else if (!routing.SelectedMailbox.Equals("contact@iceskatingrinkrentals.com", StringComparison.OrdinalIgnoreCase))
+        {
+            Error(result, "domainRouting.selectedMailbox", "Ice selectedMailbox must match the reviewed mailbox metadata.", $"{path}.selectedMailbox");
+        }
+
+        if (string.IsNullOrWhiteSpace(routing.SelectedMailboxMetadata))
+        {
+            Error(result, "domainRouting.selectedMailboxMetadata", "Ice home/contact pages require selectedMailboxMetadata.", $"{path}.selectedMailboxMetadata");
+        }
+
+        ValidateSafeReference(routing.LeadRecipientRef, "domainRouting.leadRecipientRef", $"{path}.leadRecipientRef", result);
+        ValidateSafeReference(routing.StaticEndpointRef, "domainRouting.staticEndpointRef", $"{path}.staticEndpointRef", result);
+
+        if (routing.MailtoLinksEnabled)
+        {
+            Error(result, "domainRouting.mailtoLinksEnabled", "Ice public email must stay form-first; mailto links are not approved.", $"{path}.mailtoLinksEnabled");
+        }
+
+        if (!string.IsNullOrWhiteSpace(routing.PublicContactEmail))
+        {
+            Error(result, "domainRouting.publicContactEmail", "Ice publicContactEmail must remain empty until public email display is approved.", $"{path}.publicContactEmail");
+        }
+
+        if (ContainsSecretLike(JsonSerializer.SerializeToElement(routing)))
+        {
+            Error(result, "domainRouting.secretLike", "Secret-like values are not allowed in domainRouting metadata.", path);
+        }
     }
 
     public static DesignSystemGuardResult ValidateTheme(Theme theme, string tenantId)

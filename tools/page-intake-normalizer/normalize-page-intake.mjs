@@ -26,6 +26,7 @@ const ICE_SITE_KEY = 'ice-rink-rentals';
 const ICE_DOMAIN = 'iceskatingrinkrentals.com';
 const ICE_STATIC_ENDPOINT_REF = 'ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT';
 const ICE_LEAD_RECIPIENT_REF = 'ICE_RINK_RENTALS_LEAD_RECIPIENT';
+const ICE_SELECTED_MAILBOX = 'contact@iceskatingrinkrentals.com';
 const NOW = '2026-05-27T00:00:00Z';
 
 const SUPPORTED_BLOCK_TYPES = new Set([
@@ -1148,6 +1149,9 @@ function normalizeDomainRouting(candidate) {
     domain: ICE_DOMAIN,
     brandName: candidate.domainRouting?.brandName || 'IceSkatingRinkRentals.com',
     publicContactEmail: candidate.domainRouting?.publicContactEmail || '',
+    publicEmailDisplayPolicy: candidate.domainRouting?.publicEmailDisplayPolicy || 'form-first-under-review',
+    selectedMailbox: candidate.domainRouting?.selectedMailbox || ICE_SELECTED_MAILBOX,
+    selectedMailboxMetadata: candidate.domainRouting?.selectedMailboxMetadata || ICE_SELECTED_MAILBOX,
     quoteRequestEmail: candidate.domainRouting?.quoteRequestEmail || '',
     supportEmail: candidate.domainRouting?.supportEmail || '',
     replyToEmail: candidate.domainRouting?.replyToEmail || '',
@@ -1159,9 +1163,13 @@ function normalizeDomainRouting(candidate) {
     defaultLeadRoutingMode: candidate.domainRouting?.defaultLeadRoutingMode || 'manual_review_then_provider_match',
     defaultRecipientGroup: candidate.domainRouting?.defaultRecipientGroup || ICE_LEAD_RECIPIENT_REF,
     staticFormEndpointKey: candidate.domainRouting?.staticFormEndpointKey || ICE_STATIC_ENDPOINT_REF,
+    leadRecipientRef: candidate.domainRouting?.leadRecipientRef || ICE_LEAD_RECIPIENT_REF,
+    staticEndpointRef: candidate.domainRouting?.staticEndpointRef || ICE_STATIC_ENDPOINT_REF,
     emailProvider: candidate.domainRouting?.emailProvider || 'not_configured_in_template',
+    selectedEmailProvider: candidate.domainRouting?.selectedEmailProvider || 'under-review',
+    pumpkinAppSendStatus: candidate.domainRouting?.pumpkinAppSendStatus || 'disabled_review_only',
     emailProviderStatus: candidate.domainRouting?.emailProviderStatus || 'requires_review',
-    notes: candidate.domainRouting?.notes || 'Real recipient/email routing is configured outside page JSON.',
+    notes: candidate.domainRouting?.notes || 'Selected mailbox is metadata only; public email and phone remain hidden/form-first.',
   };
 }
 

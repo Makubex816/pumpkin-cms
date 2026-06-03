@@ -20,6 +20,9 @@ public class HeroContent
     [JsonPropertyName("type")]
     public string Type { get; set; } = "Main";
 
+    [JsonPropertyName("eyebrow")]
+    public string Eyebrow { get; set; } = string.Empty;
+
     [JsonPropertyName("headline")]
     public string Headline { get; set; } = string.Empty;
 
@@ -43,6 +46,18 @@ public class HeroContent
 
     [JsonPropertyName("buttonLink")]
     public string ButtonLink { get; set; } = string.Empty;
+
+    [JsonPropertyName("media")]
+    public PageImageAsset Media { get; set; } = new();
+
+    [JsonPropertyName("primaryCta")]
+    public BlockCtaAction PrimaryCta { get; set; } = new();
+
+    [JsonPropertyName("secondaryCta")]
+    public BlockCtaAction SecondaryCta { get; set; } = new();
+
+    [JsonPropertyName("supportingPoints")]
+    public List<string> SupportingPoints { get; set; } = new();
 
     [JsonExtensionData]
     public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();

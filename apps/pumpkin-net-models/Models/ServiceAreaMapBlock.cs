@@ -20,11 +20,17 @@ public class ServiceAreaMapContent
     [JsonPropertyName("variant")]
     public string Variant { get; set; } = string.Empty;
 
+    [JsonPropertyName("eyebrow")]
+    public string Eyebrow { get; set; } = string.Empty;
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
 
     [JsonPropertyName("subtitle")]
     public string Subtitle { get; set; } = string.Empty;
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
 
     [JsonPropertyName("mapEmbedUrl")]
     public string MapEmbedUrl { get; set; } = string.Empty;
@@ -37,6 +43,18 @@ public class ServiceAreaMapContent
 
     [JsonPropertyName("nearbyCities")]
     public List<string> NearbyCities { get; set; } = new();
+
+    [JsonPropertyName("buttonText")]
+    public string ButtonText { get; set; } = string.Empty;
+
+    [JsonPropertyName("buttonLink")]
+    public string ButtonLink { get; set; } = string.Empty;
+
+    [JsonPropertyName("serviceScope")]
+    public string ServiceScope { get; set; } = string.Empty;
+
+    [JsonPropertyName("createdPageInThisRun")]
+    public bool? CreatedPageInThisRun { get; set; }
 
     [JsonExtensionData]
     public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();

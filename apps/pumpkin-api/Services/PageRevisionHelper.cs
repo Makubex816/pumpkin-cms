@@ -25,6 +25,7 @@ public static class PageRevisionHelper
         "cms_snapshot",
         "metadata_repair",
         "form_builder",
+        "updated_home_contact_package_import",
         "manual_unknown"
     };
 

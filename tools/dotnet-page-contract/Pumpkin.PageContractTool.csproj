@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\apps\pumpkin-api\pumpkin-api.csproj" />
     <ProjectReference Include="..\..\apps\pumpkin-net-models\pumpkin-net-models.csproj" />
+    <Compile Include="..\..\apps\pumpkin-api\Services\DesignSystemGuard.cs" Link="Services\DesignSystemGuard.cs" />
   </ItemGroup>
 
 </Project>

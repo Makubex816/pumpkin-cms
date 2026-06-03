@@ -20,6 +20,9 @@ public class PrimaryCtaContent
     [JsonPropertyName("variant")]
     public string Variant { get; set; } = string.Empty;
 
+    [JsonPropertyName("eyebrow")]
+    public string Eyebrow { get; set; } = string.Empty;
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
 
@@ -49,6 +52,15 @@ public class PrimaryCtaContent
 
     [JsonPropertyName("alt")]
     public string Alt { get; set; } = string.Empty;
+
+    [JsonPropertyName("external")]
+    public bool? External { get; set; }
+
+    [JsonPropertyName("rel")]
+    public string Rel { get; set; } = string.Empty;
+
+    [JsonPropertyName("notes")]
+    public string Notes { get; set; } = string.Empty;
 
     [JsonExtensionData]
     public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();

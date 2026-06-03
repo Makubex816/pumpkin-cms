@@ -20,8 +20,14 @@ public class HowItWorksContent
     [JsonPropertyName("variant")]
     public string Variant { get; set; } = string.Empty;
 
+    [JsonPropertyName("eyebrow")]
+    public string Eyebrow { get; set; } = string.Empty;
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
+
+    [JsonPropertyName("subtitle")]
+    public string Subtitle { get; set; } = string.Empty;
 
     [JsonPropertyName("steps")]
     public List<Step> Steps { get; set; } = new();

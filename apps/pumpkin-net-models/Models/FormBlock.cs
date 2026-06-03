@@ -52,6 +52,12 @@ public class FormBlockContent
     [JsonPropertyName("sourcePage")]
     public string SourcePage { get; set; } = string.Empty;
 
+    [JsonPropertyName("selectedMailboxMetadata")]
+    public string SelectedMailboxMetadata { get; set; } = string.Empty;
+
+    [JsonPropertyName("emailSendingEnabled")]
+    public bool? EmailSendingEnabled { get; set; }
+
     [JsonPropertyName("review")]
     public Dictionary<string, object> Review { get; set; } = new();
 

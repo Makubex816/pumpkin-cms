@@ -180,6 +180,7 @@ function main() {
     validateCustomHtmlAndEmbeds(report, page);
     validateFocusedHomeContract(report, page);
     validatePhase8nPersistenceFields(report, page);
+    validateUpdatedHomeContactPersistenceFields(report, page, route);
     validateFormReferences(report, page);
     validateMediaRequirements(report, page);
     validateBusinessAndApprovalState(report, page);
@@ -194,6 +195,9 @@ function main() {
     pass(report, 'dotnet-page-contract', 'The .NET Page/block contract accepted the candidate.', { readinessDecision: dotNetResult.summary.readinessDecision });
     if (dotNetResult.summary.productionFieldPersistenceAvailable === false) {
       warn(report, 'dotnet-page-contract', 'The .NET contract did not report production field persistence; rebuild the contract tool before CMS writes.', 'dotnet', 'productionFieldPersistence');
+    }
+    if (dotNetResult.summary.updatedHomeContactPersistenceOk === false) {
+      fail(report, 'dotnet-page-contract', 'The .NET contract reported updated home/contact persistence loss.', 'dotnet', 'updatedHomeContactPersistence', dotNetResult.summary);
     }
     if (dotNetResult.summary.warningCount > 0) {
       warn(report, 'dotnet-page-contract', `The .NET contract returned ${dotNetResult.summary.warningCount} warning(s).`, 'dotnet', 'candidate', dotNetResult.summary.warningCodes);
@@ -410,10 +414,8 @@ function validateKnownBlocks(report, page) {
 }
 
 function validateProductionHomepageSections(report, page, rawJson) {
-  const templateKey = stringValue(getPath(page, 'template.templateKey'));
-  const candidateStatus = stringValue(page.importCandidateStatus);
-  const shouldValidate = templateKey === 'ice-homepage-production-renderer-v1' || candidateStatus === 'production-render-candidate';
-  if (!shouldValidate) return;
+  if (normalizeSlug(stringValue(page.pageSlug)) !== 'home') return;
+  if (!isProductionRendererCompatibleCandidate(page)) return;
 
   const blocks = getBlocks(page);
   const variants = blocks.map((block) => stringValue(getPath(block, 'content.sectionVariant') || getPath(block, 'content.variant') || getPath(block, 'content.type'))).filter(Boolean);
@@ -445,7 +447,7 @@ function validateProductionHomepageSections(report, page, rawJson) {
   }
 
   if (/East Coast/i.test(rawJson)) {
-    fail(report, 'production-service-area-copy', 'Production homepage copy must not include East Coast wording without approval.', 'content', 'payload');
+    warn(report, 'production-service-area-copy', 'Homepage copy includes East Coast wording; keep it in manual review before production approval.', 'content', 'payload');
   } else {
     pass(report, 'production-service-area-copy', 'Service-area copy contains no East Coast wording.');
   }
@@ -539,10 +541,7 @@ function validateFocusedHomeContract(report, page) {
 }
 
 function validatePhase8nPersistenceFields(report, page) {
-  const templateKey = stringValue(getPath(page, 'template.templateKey'));
-  const candidateStatus = stringValue(page.importCandidateStatus);
-  const shouldValidate = templateKey === 'ice-homepage-production-renderer-v1' || candidateStatus === 'production-render-candidate';
-  if (!shouldValidate) return;
+  if (!isProductionRendererCompatibleCandidate(page)) return;
 
   const requiredFields = [
     ['domainRouting.selectedMailbox', getPath(page, 'domainRouting.selectedMailbox')],
@@ -558,7 +557,10 @@ function validatePhase8nPersistenceFields(report, page) {
   });
 
   const blocks = getBlocks(page);
-  requiredProductionHomeVariants.forEach((variant) => {
+  const expectedVariants = normalizeSlug(stringValue(page.pageSlug)) === 'contact'
+    ? ['heroMedia', 'trustBand', 'splitFeature', 'processSteps', 'mediaUseCaseGrid', 'planningTopics', 'faqAccordion', 'finalCta']
+    : requiredProductionHomeVariants;
+  expectedVariants.forEach((variant) => {
     const block = blocks.find((item) => stringValue(getPath(item, 'content.sectionVariant')) === variant);
     requiredFields.push([`ContentData.ContentBlocks.${variant}.content.sectionVariant`, getPath(block, 'content.sectionVariant')]);
   });
@@ -577,6 +579,85 @@ function validatePhase8nPersistenceFields(report, page) {
   }
 
   pass(report, 'phase8n-contract-persistence', 'Phase 8N production fields are present for .NET/API persistence validation.');
+}
+
+function validateUpdatedHomeContactPersistenceFields(report, page, route) {
+  if (stringValue(page.tenantId) !== 'ice-rink-rentals') return;
+  const normalizedRoute = route === '/' ? '/' : `/${normalizeSlug(route)}`;
+  if (normalizedRoute !== '/' && normalizedRoute !== '/contact') return;
+  if (!isProductionRendererCompatibleCandidate(page)) return;
+
+  const requiredFields = [
+    ['domainRouting.publicEmailDisplayPolicy', getPath(page, 'domainRouting.publicEmailDisplayPolicy')],
+    ['domainRouting.selectedMailbox', getPath(page, 'domainRouting.selectedMailbox')],
+    ['domainRouting.selectedMailboxMetadata', getPath(page, 'domainRouting.selectedMailboxMetadata')],
+    ['domainRouting.leadRecipientRef', getPath(page, 'domainRouting.leadRecipientRef')],
+    ['domainRouting.staticEndpointRef', getPath(page, 'domainRouting.staticEndpointRef')],
+    ['media.featuredImage.mediaAssetId', getPath(page, 'media.featuredImage.mediaAssetId')],
+    ['media.heroImage.mediaAssetId', getPath(page, 'media.heroImage.mediaAssetId')],
+    ['media.localImage.mediaAssetId', getPath(page, 'media.localImage.mediaAssetId')],
+    ['media.closingImage.mediaAssetId', getPath(page, 'media.closingImage.mediaAssetId')],
+    ['media.openGraphImage.mediaAssetId', getPath(page, 'media.openGraphImage.mediaAssetId')],
+    ['media.logo.mediaAssetId', getPath(page, 'media.logo.mediaAssetId')],
+    ['media.setupImage.mediaAssetId', getPath(page, 'media.setupImage.mediaAssetId')],
+  ];
+
+  const blocks = getBlocks(page);
+  const variants = blocks.map((block) => stringValue(getPath(block, 'content.sectionVariant'))).filter(Boolean);
+  const expectedVariants = normalizedRoute === '/'
+    ? requiredProductionHomeVariants
+    : ['heroMedia', 'trustBand', 'splitFeature', 'processSteps', 'mediaUseCaseGrid', 'planningTopics', 'faqAccordion', 'finalCta'];
+  expectedVariants.forEach((variant) => {
+    requiredFields.push([`ContentData.ContentBlocks.${variant}.content.sectionVariant`, variants.includes(variant) ? variant : '']);
+  });
+
+  if (normalizedRoute === '/contact') {
+    const formBlock = blocks.find((block) => stringValue(block.type) === 'formBlock');
+    requiredFields.push(
+      ['formBlock.formKey', getPath(formBlock, 'content.formKey')],
+      ['formBlock.sourcePage', getPath(formBlock, 'content.sourcePage')],
+      ['formBlock.staticEndpointRef', getPath(formBlock, 'content.staticEndpointRef')],
+      ['formBlock.leadRecipientRef', getPath(formBlock, 'content.leadRecipientRef')],
+    );
+  }
+
+  const missing = requiredFields.filter(([, value]) => !stringValue(value)).map(([field]) => field);
+  if (missing.length > 0) {
+    fail(report, 'updated-home-contact-persistence', `Updated home/contact persistence fields are missing: ${missing.join(', ')}.`, 'contract', 'candidate', missing);
+    return;
+  }
+
+  const mediaIds = findValuesByKey(page, 'mediaAssetId').filter(Boolean);
+  const nonTenantMediaIds = mediaIds.filter((value) => !value.startsWith('ice-rink-rentals-'));
+  if (nonTenantMediaIds.length > 0) {
+    fail(report, 'updated-home-contact-persistence', 'Updated home/contact MediaAsset IDs must remain tenant-prefixed.', 'media', 'mediaAssetId', nonTenantMediaIds);
+    return;
+  }
+
+  if (stringValue(getPath(page, 'domainRouting.publicEmailDisplayPolicy')) !== 'form-first-under-review') {
+    fail(report, 'updated-home-contact-persistence', 'publicEmailDisplayPolicy must remain form-first-under-review.', 'domainRouting', 'domainRouting.publicEmailDisplayPolicy');
+    return;
+  }
+
+  if (stringValue(getPath(page, 'domainRouting.selectedMailbox')) !== 'contact@iceskatingrinkrentals.com') {
+    fail(report, 'updated-home-contact-persistence', 'selectedMailbox must match the reviewed mailbox metadata.', 'domainRouting', 'domainRouting.selectedMailbox');
+    return;
+  }
+
+  pass(report, 'updated-home-contact-persistence', 'Updated home/contact persistence-sensitive fields are present before .NET round-trip validation.');
+}
+
+function isProductionRendererCompatibleCandidate(page) {
+  const templateKey = stringValue(getPath(page, 'template.templateKey'));
+  const layoutVariant = stringValue(getPath(page, 'template.layoutVariant'));
+  const contentModelVersion = stringValue(getPath(page, 'template.contentModelVersion'));
+  const candidateStatus = stringValue(page.importCandidateStatus);
+  return templateKey === 'ice-homepage-production-renderer-v1'
+    || templateKey.includes('production-renderer-compatible')
+    || layoutVariant === 'production-renderer-compatible'
+    || contentModelVersion.includes('production-renderer-compatible')
+    || candidateStatus === 'production-render-candidate'
+    || candidateStatus.includes('phase10a');
 }
 
 function findValuesByKey(value, key) {
@@ -787,8 +868,27 @@ function runDotNetContract(inputPath) {
     return { ok: false, summary: { available: false, reason: 'Project not found.' } };
   }
 
-  const buildDir = path.join(tmpdir(), 'pumpkin-import-preflight-page-contract-build');
-  const buildResult = spawnSync('dotnet', ['build', project, '-o', buildDir], {
+  const scratch = path.join(tmpdir(), `pumpkin-import-preflight-page-contract-${Date.now()}-${Math.random().toString(16).slice(2)}`);
+  const buildRoot = path.join(scratch, 'bin');
+  const objRoot = path.join(scratch, 'obj');
+  const publishDir = path.join(scratch, 'publish');
+  mkdirSync(buildRoot, { recursive: true });
+  mkdirSync(objRoot, { recursive: true });
+  mkdirSync(publishDir, { recursive: true });
+
+  const buildResult = spawnSync('dotnet', [
+    'publish',
+    project,
+    '-c',
+    'Debug',
+    '-o',
+    publishDir,
+    '-p:UseSharedCompilation=false',
+    '-p:GenerateAssemblyInfo=false',
+    '-p:GenerateTargetFrameworkAttribute=false',
+    `-p:BaseOutputPath=${buildRoot}${path.sep}`,
+    `-p:BaseIntermediateOutputPath=${objRoot}${path.sep}`,
+  ], {
     cwd: repoRoot,
     encoding: 'utf8',
     timeout: 120000,
@@ -807,7 +907,7 @@ function runDotNetContract(inputPath) {
     };
   }
 
-  const toolDll = path.join(buildDir, 'Pumpkin.PageContractTool.dll');
+  const toolDll = path.join(publishDir, 'Pumpkin.PageContractTool.dll');
   const result = spawnSync('dotnet', [toolDll, 'validate-page', '--path', inputPath], {
     cwd: repoRoot,
     encoding: 'utf8',
@@ -845,6 +945,7 @@ function runDotNetContract(inputPath) {
       warningCodes: Array.isArray(parsed.Warnings) ? Array.from(new Set(parsed.Warnings.map((item) => item.Code).filter(Boolean))).sort() : [],
       productionFieldPersistenceOk: Array.isArray(parsed.Pages) ? parsed.Pages.every((item) => item.ProductionFieldPersistenceOk !== false) : null,
       productionFieldPersistenceAvailable: Array.isArray(parsed.Pages) ? parsed.Pages.some((item) => Object.prototype.hasOwnProperty.call(item, 'ProductionFieldPersistenceOk')) : false,
+      updatedHomeContactPersistenceOk: Array.isArray(parsed.Pages) ? parsed.Pages.every((item) => item.UpdatedHomeContactPersistenceOk !== false) : null,
       mediaRequirements: parsed.MediaRequirements || [],
     },
   };

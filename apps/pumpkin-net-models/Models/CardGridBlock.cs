@@ -20,14 +20,32 @@ public class CardGridContent
     [JsonPropertyName("variant")]
     public string Variant { get; set; } = string.Empty;
 
+    [JsonPropertyName("eyebrow")]
+    public string Eyebrow { get; set; } = string.Empty;
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
 
     [JsonPropertyName("subtitle")]
     public string Subtitle { get; set; } = string.Empty;
 
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
+
     [JsonPropertyName("layout")]
     public string Layout { get; set; } = "grid";
+
+    [JsonPropertyName("media")]
+    public PageImageAsset Media { get; set; } = new();
+
+    [JsonPropertyName("image")]
+    public PageImageAsset Image { get; set; } = new();
+
+    [JsonPropertyName("bullets")]
+    public List<string> Bullets { get; set; } = new();
+
+    [JsonPropertyName("topics")]
+    public List<Card> Topics { get; set; } = new();
 
     [JsonPropertyName("cards")]
     public List<Card> Cards { get; set; } = new();
@@ -49,6 +67,9 @@ public class Card
 
     [JsonPropertyName("image-alt")]
     public string ImageAlt { get; set; } = string.Empty;
+
+    [JsonPropertyName("media")]
+    public PageImageAsset Media { get; set; } = new();
 
     [JsonPropertyName("icon")]
     public string Icon { get; set; } = string.Empty;
