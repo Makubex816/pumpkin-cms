@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T19:56:52.175Z",
+  "checks": {
+    "exactEyebrow": true,
+    "exactTitle": true,
+    "exactHeadline": true,
+    "exactDescription": true,
+    "exactSubtitle": true,
+    "exactPrimaryCta": true,
+    "exactSecondaryCta": true,
+    "noForbiddenCopy": true,
+    "partyProsResourceFraming": true,
+    "rinkConversationFraming": true,
+    "noIceProvidesExtrasImplication": true,
+    "secondPpecBlockUnchanged": true,
+    "mediaAssetIdsUnchanged": true,
+    "rendererVariantUnchanged": true,
+    "ppecLogoIdPreserved": true,
+    "onlyExpectedFirstBlockChanged": true,
+    "selectedMailbox": true,
+    "publicEmailPolicy": true,
+    "noLegacyMailbox": true,
+    "draftNeedsReview": true,
+    "approvalsFalse": true
+  },
+  "forbiddenHits": [],
+  "failed": []
+}
