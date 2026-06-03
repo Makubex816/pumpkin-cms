@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-06-03T20:39:52.289Z",
+  "ok": true,
+  "referenceOnlyFiles": [
+    "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/corporate.webp",
+    "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/hero.webp",
+    "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/holiday.webp",
+    "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/logo.png",
+    "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/setup.webp",
+    "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/docs/ice-service-areas.phase11b.validation-notes.md",
+    "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.full.json",
+    "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.preview.html"
+  ],
+  "note": "Preview HTML, raw assets, screenshots, WordPress, and CF7 materials are reference-only and are not included in active candidate JSON."
+}

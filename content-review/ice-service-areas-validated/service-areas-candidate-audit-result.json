@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-06-03T20:39:52.282Z",
+  "ok": true,
+  "checks": {
+    "tenantId": true,
+    "siteKey": true,
+    "route": true,
+    "slug": true,
+    "notHomepage": true,
+    "notContact": true,
+    "noStateCityCreated": true,
+    "noWordPressCf7Runtime": true,
+    "draftNeedsReview": true,
+    "approvalsFalse": true,
+    "staticNeedsRebuild": true,
+    "noRawTailwindClassFields": true
+  },
+  "failed": []
+}

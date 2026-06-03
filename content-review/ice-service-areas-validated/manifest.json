@@ -1,0 +1,387 @@
+{
+  "schemaVersion": "pumpkin.ice.service-areas.package-intake.v1",
+  "generatedAt": "2026-06-03T20:39:52.125Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/service-areas",
+  "inputZip": "content-review/ice-service-areas-input/ice-service-areas-phase11b-production-polish.zip",
+  "extractedFolder": "content-review/ice-service-areas-input/extracted",
+  "outputFolder": "content-review/ice-service-areas-validated",
+  "rootReport": "PUMPKIN_ICE_SERVICE_AREAS_PACKAGE_INTAKE_REPORT.md",
+  "start": {
+    "gitStatusShort": "?? content-review/ice-service-areas-input/ice-service-areas-phase11b-production-polish.zip",
+    "gitStatusAtRunnerStart": "?? PUMPKIN_ICE_SERVICE_AREAS_PACKAGE_INTAKE_REPORT.md\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/corporate.webp\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/hero.webp\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/holiday.webp\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/logo.png\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/setup.webp\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/docs/ice-service-areas.phase11b.image-plan.md\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/docs/ice-service-areas.phase11b.import-notes.md\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/docs/ice-service-areas.phase11b.validation-notes.md\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.content.json\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.forms-routing.json\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.full.json\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.media-manifest.json\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.preview.html\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.schema.json\n?? content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/shared/ice-rink-rentals.service-area-shared-refs.json\n?? content-review/ice-service-areas-input/ice-service-areas-phase11b-production-polish.zip\n?? content-review/ice-service-areas-validated/IMPORT_PREFLIGHT_RESULT.md\n?? content-review/ice-service-areas-validated/MEDIA_BINDING_REVIEW.md\n?? content-review/ice-service-areas-validated/PACKAGE_INVENTORY.md\n?? content-review/ice-service-areas-validated/README.md\n?? content-review/ice-service-areas-validated/ROUTE_AND_CANONICAL_REVIEW.md\n?? content-review/ice-service-areas-validated/SERVICE_AREAS_CANDIDATE_AUDIT.md\n?? content-review/ice-service-areas-validated/SERVICE_AREAS_IMPORT_PACKAGE.json\n?? content-review/ice-service-areas-validated/SERVICE_AREAS_NORMALIZED_CANDIDATE.json\n?? content-review/ice-service-areas-validated/SERVICE_AREA_WORDING_REVIEW.md\n?? content-review/ice-service-areas-validated/contactus-scan-result.json\n?? content-review/ice-service-areas-validated/contract-persistence-validation-result.json\n?? content-review/ice-service-areas-validated/default-form-validation-result.json\n?? content-review/ice-service-areas-validated/design-system-validation-result.json\n?? content-review/ice-service-areas-validated/dotnet-page-contract-result.json\n?? content-review/ice-service-areas-validated/homepage-import-preflight-result.json\n?? content-review/ice-service-areas-validated/json-parse-validation-result.json\n?? content-review/ice-service-areas-validated/manifest.json\n?? content-review/ice-service-areas-validated/media-binding-review-result.json\n?? content-review/ice-service-areas-validated/media-validation-result.json\n?? content-review/ice-service-areas-validated/page-intake-normalizer-validation-result.json\n?? content-review/ice-service-areas-validated/reference-only-scan-result.json\n?? content-review/ice-service-areas-validated/route-canonical-review-result.json\n?? content-review/ice-service-areas-validated/run-service-areas-package-intake.mjs\n?? content-review/ice-service-areas-validated/service-area-wording-review-result.json\n?? content-review/ice-service-areas-validated/service-areas-candidate-audit-result.json\n?? content-review/ice-service-areas-validated/tailwind-navigation-validation-result.json\n?? content-review/ice-service-areas-validated/targeted-secret-scan-result.json\n?? content-review/ice-service-areas-validated/unsafe-scan-result.json",
+    "gitLogOneline12": "ee8cade Finalize Ice import preflight and fallback theme updates\n9c2c42a Add Ice approved homepage live CMS promotion report\nd61e83d Update Ice PPEC first banner copy\n4d39f18 Fix PPEC logo contrast in homepage partner band\n27b46b5 Add Ice PPEC logo replacement report\n0aa27c0 Add Ice local visual QA report\n100451a Add Ice PPEC visual brand repair\na522e7c Add approved Ice homepage local draft import report\n9261c43 Bind approved PPEC logo MediaAsset\n3cc5202 Convert approved Ice homepage Phase 8K to Phase 10A candidate\n89ca42e Add Ice approved homepage conversion missing input report\nefcdb24 Add Ice page import change sources",
+    "branch": "feature/admin-page-editor-import-export",
+    "inputZipExists": true,
+    "extractedFolderExists": true,
+    "cleanExceptInput": true
+  },
+  "inventory": {
+    "ok": true,
+    "files": [
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/corporate.webp",
+        "bytes": 288286,
+        "category": "raw-media",
+        "referenceOnly": true
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/hero.webp",
+        "bytes": 246652,
+        "category": "raw-media",
+        "referenceOnly": true
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/holiday.webp",
+        "bytes": 323584,
+        "category": "raw-media",
+        "referenceOnly": true
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/logo.png",
+        "bytes": 240494,
+        "category": "raw-media",
+        "referenceOnly": true
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/setup.webp",
+        "bytes": 254136,
+        "category": "raw-media",
+        "referenceOnly": true
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/docs/ice-service-areas.phase11b.image-plan.md",
+        "bytes": 1094,
+        "category": "readme-instruction",
+        "referenceOnly": false
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/docs/ice-service-areas.phase11b.import-notes.md",
+        "bytes": 507,
+        "category": "readme-instruction",
+        "referenceOnly": false
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/docs/ice-service-areas.phase11b.validation-notes.md",
+        "bytes": 858,
+        "category": "readme-instruction",
+        "referenceOnly": true
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.content.json",
+        "bytes": 19977,
+        "category": "service-area-json",
+        "referenceOnly": false
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.forms-routing.json",
+        "bytes": 947,
+        "category": "forms-routing-json",
+        "referenceOnly": false
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.full.json",
+        "bytes": 25341,
+        "category": "service-area-json",
+        "referenceOnly": true
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.media-manifest.json",
+        "bytes": 1995,
+        "category": "media-manifest-json",
+        "referenceOnly": false
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.preview.html",
+        "bytes": 20017,
+        "category": "preview-html",
+        "referenceOnly": true
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.schema.json",
+        "bytes": 268,
+        "category": "schema-seo-json",
+        "referenceOnly": false
+      },
+      {
+        "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/shared/ice-rink-rentals.service-area-shared-refs.json",
+        "bytes": 267,
+        "category": "service-area-json",
+        "referenceOnly": false
+      }
+    ],
+    "summary": {
+      "totalFiles": 15,
+      "byCategory": {
+        "raw-media": 5,
+        "readme-instruction": 3,
+        "service-area-json": 3,
+        "forms-routing-json": 1,
+        "media-manifest-json": 1,
+        "preview-html": 1,
+        "schema-seo-json": 1
+      },
+      "serviceAreaJsonFiles": [
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.content.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.forms-routing.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.full.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.media-manifest.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.schema.json"
+      ],
+      "pagePackageJsonFiles": [
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.content.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.forms-routing.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.full.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.media-manifest.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.schema.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/shared/ice-rink-rentals.service-area-shared-refs.json"
+      ],
+      "mediaReferences": [
+        "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "ice-rink-rentals-holidayicerink-973ce7691377",
+        "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+      ],
+      "previewHtmlFiles": [
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.preview.html"
+      ],
+      "referenceOnlyFiles": [
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/corporate.webp",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/hero.webp",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/holiday.webp",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/logo.png",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/setup.webp",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/docs/ice-service-areas.phase11b.validation-notes.md",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.full.json",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.preview.html"
+      ]
+    }
+  },
+  "selectedCandidate": {
+    "path": "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/service-areas/ice-service-areas.phase11b.production-polish.full.json",
+    "reason": "Selected because it is the package full JSON for /service-areas with the correct tenant/site/routing metadata.",
+    "ok": true,
+    "blockers": []
+  },
+  "normalization": {
+    "performed": true,
+    "summary": {
+      "id": "ice-rink-rentals-service-areas",
+      "pageSlug": "service-areas",
+      "route": "/service-areas",
+      "canonicalUrl": "https://iceskatingrinkrentals.com/service-areas",
+      "isPublished": false,
+      "workflowStatus": "draft",
+      "reviewStatus": "needs_review",
+      "productionApproved": false,
+      "publishApproved": false,
+      "staticNeedsRebuild": true,
+      "blockCount": 10,
+      "blockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "HowItWorks",
+        "CardGrid",
+        "PrimaryCTA",
+        "CardGrid",
+        "ServiceAreaMap",
+        "FAQ",
+        "PrimaryCTA"
+      ],
+      "mediaAssetIds": [
+        "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "ice-rink-rentals-holidayicerink-973ce7691377",
+        "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+      ],
+      "selectedMailboxPresent": true,
+      "publicEmailDisplayPolicyPresent": true,
+      "legacyMailboxPresent": false
+    },
+    "sourceEastCoastClaimsRemoved": true,
+    "cityPagesCreated": false,
+    "cmsWrites": false
+  },
+  "validation": {
+    "ok": true,
+    "results": {
+      "json-parse-validation-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "service-areas-candidate-audit-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "service-area-wording-review-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "media-binding-review-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "route-canonical-review-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "unsafe-scan-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "reference-only-scan-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "contactus-scan-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "targeted-secret-scan-result.json": "[redacted]",
+      "homepage-import-preflight-result.json": {
+        "ok": true,
+        "failed": [],
+        "classification": {
+          "preflight-valid-for-shape": true,
+          "preflight-valid-for-local-draft-import": true,
+          "preflight-valid-for-CMS-import": false,
+          "preflight-valid-for-production": false
+        },
+        "decisions": {
+          "shape": "valid",
+          "localDraftImport": "valid",
+          "cmsImport": "blocked",
+          "staticRegeneration": "blocked",
+          "production": "blocked"
+        },
+        "skipped": false
+      },
+      "dotnet-page-contract-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "contract-persistence-validation-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "design-system-validation-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "media-validation-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "default-form-validation-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": true
+      },
+      "tailwind-navigation-validation-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      },
+      "page-intake-normalizer-validation-result.json": {
+        "ok": true,
+        "failed": [],
+        "skipped": false
+      }
+    },
+    "blockers": [],
+    "warnings": []
+  },
+  "readiness": {
+    "humanReview": true,
+    "localDraftImport": true,
+    "cmsLiveApproval": false,
+    "staticRegeneration": false,
+    "productionIndexing": false,
+    "blockers": {
+      "humanReview": [],
+      "localDraftImport": [],
+      "cmsLiveApproval": [
+        "User visual approval and explicit CMS import/live approval are still required."
+      ],
+      "staticRegeneration": [
+        "Static regeneration is out of scope and not authorized for this intake run."
+      ],
+      "productionIndexing": [
+        "Production/indexing remains blocked until CMS approval, static generation, deployment, and DNS/provider decisions are separately authorized."
+      ]
+    }
+  },
+  "hygiene": {
+    "ok": true,
+    "results": {
+      "gitDiffCheck": {
+        "ok": true,
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "",
+        "signal": null
+      },
+      "trailingWhitespaceScan": {
+        "ok": true,
+        "hits": []
+      },
+      "targetedSecretScan": "[redacted]",
+      "protectedGeneratedRawArtifactPathCheck": {
+        "ok": true,
+        "protectedHits": [],
+        "generatedHits": [],
+        "rawHits": [],
+        "allowedReferenceRaw": [
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/corporate.webp",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/hero.webp",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/holiday.webp",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/logo.png",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/setup.webp",
+          "content-review/ice-service-areas-input/ice-service-areas-phase11b-production-polish.zip"
+        ]
+      },
+      "stagedArtifactCheck": {
+        "ok": true,
+        "zipStaged": [],
+        "extractedInputStaged": [],
+        "rawMediaStaged": [],
+        "staticArtifactsStaged": []
+      }
+    },
+    "failed": []
+  },
+  "safety": {
+    "cmsRecordsWritten": false,
+    "serviceAreasImported": false,
+    "homepageUpdated": false,
+    "contactUpdated": false,
+    "stateCityCreated": false,
+    "themeRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "staticPackagesRegenerated": false,
+    "deployed": false,
+    "dnsAzureCloudflareMicrosoft365BluehostEmailProviderChanged": false,
+    "emailSent": false,
+    "rollerTouched": false,
+    "imageGenerationUsed": false,
+    "imageFilesModified": false,
+    "protectedConfigRead": false
+  },
+  "success": true
+}

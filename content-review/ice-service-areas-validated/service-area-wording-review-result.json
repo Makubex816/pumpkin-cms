@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-06-03T20:39:52.283Z",
+  "ok": true,
+  "checks": {
+    "unitedStatesScope": true,
+    "noUnsupportedEastCoastClaim": true,
+    "noFakePhone": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "noLegacyMailbox": true,
+    "noFakeEmail": true,
+    "noRawFormHtml": true,
+    "quoteCtasRouteToContact": true,
+    "futureCityPatternDocumentedOnly": true
+  },
+  "failed": []
+}

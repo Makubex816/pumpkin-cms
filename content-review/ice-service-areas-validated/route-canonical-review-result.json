@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-06-03T20:39:52.285Z",
+  "ok": true,
+  "checks": {
+    "route": true,
+    "path": true,
+    "slug": true,
+    "pageSlug": true,
+    "canonicalUrl": true,
+    "homeUnchangedByPackage": true,
+    "contactUnchangedByPackage": true,
+    "noCityPageRoutes": true
+  },
+  "failed": []
+}

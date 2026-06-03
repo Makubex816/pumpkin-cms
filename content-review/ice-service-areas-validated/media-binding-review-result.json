@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-06-03T20:39:52.284Z",
+  "ok": true,
+  "checks": {
+    "onlyOfficialMediaAssetIds": true,
+    "requiredMediaPresent": true,
+    "noInventedMediaAssetIds": true,
+    "noBase64Images": true,
+    "noExternalFakeMediaUrls": true,
+    "allActiveMediaUrlsLocal": true,
+    "altTextPresent": true
+  },
+  "failed": [],
+  "mediaAssetIds": [
+    "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+    "ice-rink-rentals-holidayicerink-973ce7691377",
+    "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+    "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+    "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+  ]
+}
