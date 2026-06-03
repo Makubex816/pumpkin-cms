@@ -1,0 +1,108 @@
+{
+  "Command": "validate-page",
+  "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-approved-homepage-conversion\\APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+  "GeneratedAt": "2026-06-03T16:15:06.7895660Z",
+  "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+  "Ok": true,
+  "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+  "Pages": [
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+      "PageId": "ice-rink-rentals-home",
+      "PageSlug": "home",
+      "TenantId": "ice-rink-rentals",
+      "DotNetDeserialized": true,
+      "RoundTripOk": true,
+      "ProductionFieldPersistenceOk": true,
+      "UpdatedHomeContactPersistenceOk": true,
+      "BlockCount": 13,
+      "BlockTypes": [
+        "Hero",
+        "TrustBar",
+        "CardGrid",
+        "HowItWorks",
+        "CardGrid",
+        "CardGrid",
+        "CardGrid",
+        "CardGrid",
+        "ServiceAreaMap",
+        "PrimaryCTA",
+        "FAQ",
+        "formBlock",
+        "PrimaryCTA"
+      ],
+      "ErrorCount": 0,
+      "WarningCount": 7
+    }
+  ],
+  "FormDefinitions": [],
+  "MediaRequirements": [
+    {
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+      "RequirementCount": 7,
+      "BlockerCount": 1
+    }
+  ],
+  "Errors": [],
+  "Warnings": [
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \"reviewMetadata\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \"mediaRequirements\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \"templatePurpose\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "page.reviewOnlyField",
+      "Message": "Root field \"contentPackageVersion\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "productionFieldPersistence.checked",
+      "Message": "Verified 259 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "updatedHomeContactPersistence.checked",
+      "Message": "Verified 259 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+    },
+    {
+      "Severity": "warning",
+      "Code": "mediaRequirements.unresolved",
+      "Message": "1 media requirement(s) still need approved MediaAsset selection before CMS-ready status.",
+      "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+    }
+  ],
+  "command": {
+    "label": ".NET Page/block contract validation",
+    "command": [
+      "dotnet",
+      "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-homepage-contract-50900-1780503301003\\publish\\Pumpkin.PageContractTool.dll",
+      "validate-page",
+      "--path",
+      ".\\content-review\\ice-approved-homepage-conversion\\APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "ok": true,
+    "allowedNonZero": true,
+    "stdoutPreview": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-approved-homepage-conversion\\\\APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json\",\r\n  \"GeneratedAt\": \"2026-06-03T16:15:06.7895660Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json\",\r\n      \"PageId\": \"ice-rink-rentals-home\",\r\n      \"PageSlug\": \"home\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"UpdatedHomeContactPersistenceOk\": true,\r\n      \"BlockCount\": 13,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n    ",
+    "stderrPreview": ""
+  },
+  "ok": true
+}

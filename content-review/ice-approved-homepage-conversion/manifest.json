@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "pumpkin-approved-homepage-conversion-manifest.v1",
+  "generatedAt": "2026-06-03T16:10:48.708Z",
+  "gitStatusAtStart": "clean except expected user-supplied input artifacts",
+  "topCommitAtStart": "89ca42e Add Ice approved homepage conversion missing input report",
+  "sourceFiles": {
+    "phase8kApproved": "content-review/ice-approved-homepage-conversion-input/extracted/phase8k/ice-homepage-phase8k-cf7-template-pack/ice-homepage.phase8k.full.json",
+    "phase10aReference": "content-review/ice-approved-homepage-conversion-input/extracted/phase10a/ice-site-phase10a-pumpkin-ppec-rewrite-pack/homepage/ice-homepage.phase8o.ppec-crm-scaffold.full.json",
+    "emailCorrectionReference": "content-review/ice-approved-homepage-conversion-input/extracted/email-correction",
+    "phase8nReference": "content-review/ice-approved-homepage-conversion-input/ice-homepage.phase8n.crm-scaffold.full.json"
+  },
+  "outputFiles": {
+    "inventory": "content-review/ice-approved-homepage-conversion/PACKAGE_INVENTORY.md",
+    "phase8kAudit": "content-review/ice-approved-homepage-conversion/PHASE8K_APPROVED_HOMEPAGE_AUDIT.md",
+    "ppecAudit": "content-review/ice-approved-homepage-conversion/PPEC_APPROVED_ASSET_STYLE_AUDIT.md",
+    "candidate": "content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+    "package": "content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PACKAGE.json",
+    "mapping": "content-review/ice-approved-homepage-conversion/PHASE8K_TO_PHASE10A_MAPPING.md",
+    "disconnect": "content-review/ice-approved-homepage-conversion/PPEC_DISCONNECT_DECISION.md",
+    "emailAudit": "content-review/ice-approved-homepage-conversion/EMAIL_CORRECTION_AUDIT.md",
+    "readiness": "content-review/ice-approved-homepage-conversion/IMPORT_READINESS_DECISION.md",
+    "nextPlan": "content-review/ice-approved-homepage-conversion/NEXT_IMPORT_PLAN.md",
+    "manifest": "content-review/ice-approved-homepage-conversion/manifest.json",
+    "readme": "content-review/ice-approved-homepage-conversion/README.md"
+  },
+  "candidateSummary": {
+    "tenantId": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "route": "/",
+    "slug": "home",
+    "blockCount": 13,
+    "blockTypes": [
+      "Hero",
+      "TrustBar",
+      "CardGrid",
+      "HowItWorks",
+      "CardGrid",
+      "CardGrid",
+      "CardGrid",
+      "CardGrid",
+      "ServiceAreaMap",
+      "PrimaryCTA",
+      "FAQ",
+      "formBlock",
+      "PrimaryCTA"
+    ],
+    "mediaRequirementCount": 7,
+    "unresolvedMediaRequirementCount": 1,
+    "selectedMailbox": "contact@iceskatingrinkrentals.com",
+    "publicEmailDisplayPolicy": "form-first-under-review"
+  },
+  "sourceInventorySummary": {
+    "extractedFileCount": 104,
+    "phase8kFileCount": 34,
+    "phase10aFileCount": 34,
+    "emailCorrectionFileCount": 36,
+    "phase8nPresent": true
+  },
+  "ppec": {
+    "iconExists": true,
+    "wordmarkExists": true,
+    "mediaAssetIdExists": false,
+    "mediaRequirementStatus": "needs-upload",
+    "url": {
+      "href": "https://partyproseastcoast.com/",
+      "source": "phase10a.partnerships.externalUrl",
+      "productionReady": true
+    },
+    "styleTokens": {
+      "ppecPurple": "#5F438F",
+      "ppecPurpleLight": "#7B5EC2",
+      "ppecHeading": "#39235F",
+      "ppecBody": "#5E526D",
+      "ppecSoftBackground": "#F5F0FF",
+      "ppecBorder": "rgba(95,67,143,.20)"
+    }
+  },
+  "validationSummary": {
+    "status": "completed_with_blockers",
+    "generatedAt": "2026-06-03T16:10:48.708Z",
+    "results": {
+      "jsonParse": {
+        "path": "content-review/ice-approved-homepage-conversion/json-parse-validation-result.json",
+        "ok": true,
+        "exitCode": null,
+        "summary": "ok"
+      },
+      "importPreflight": {
+        "path": "content-review/ice-approved-homepage-conversion/homepage-import-preflight-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "{\"preflight-valid-for-shape\":true,\"preflight-valid-for-local-draft-import\":\"conditional-with-explicit-unresolved-media-and-review-approval\",\"preflight-valid-for-CMS-import\":false,\"preflight-valid-for-production\":false}"
+      },
+      "dotnetContract": {
+        "path": "content-review/ice-approved-homepage-conversion/dotnet-page-contract-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "ok"
+      },
+      "contractPersistence": {
+        "path": "content-review/ice-approved-homepage-conversion/contract-persistence-validation-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "contract-persistence-check-passed"
+      },
+      "designSystem": {
+        "path": "content-review/ice-approved-homepage-conversion/design-system-validation-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "0 failure(s)"
+      },
+      "media": {
+        "path": "content-review/ice-approved-homepage-conversion/media-validation-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "ok"
+      },
+      "tailwindNavigation": {
+        "path": "content-review/ice-approved-homepage-conversion/tailwind-navigation-validation-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "0 failure(s)"
+      },
+      "pageIntakeNormalizer": {
+        "path": "content-review/ice-approved-homepage-conversion/page-intake-normalizer-validation-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "ok"
+      },
+      "unsafeScan": {
+        "path": "content-review/ice-approved-homepage-conversion/unsafe-scan-result.json",
+        "ok": true,
+        "exitCode": null,
+        "summary": "0 hit(s)"
+      },
+      "contactusScan": {
+        "path": "content-review/ice-approved-homepage-conversion/contactus-scan-result.json",
+        "ok": true,
+        "exitCode": null,
+        "summary": "0 hit(s)"
+      },
+      "secretScan": {
+        "path": "content-review/ice-approved-homepage-conversion/targeted-secret-scan-result.json",
+        "ok": true,
+        "exitCode": null,
+        "summary": "0 hit(s)"
+      },
+      "gitDiffCheck": {
+        "path": "content-review/ice-approved-homepage-conversion/git-diff-check-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "ok"
+      },
+      "trailingWhitespace": {
+        "path": "content-review/ice-approved-homepage-conversion/trailing-whitespace-scan-result.json",
+        "ok": true,
+        "exitCode": null,
+        "summary": "0 hit(s)"
+      },
+      "artifactPathCheck": {
+        "path": "content-review/ice-approved-homepage-conversion/protected-generated-raw-artifact-check-result.json",
+        "ok": true,
+        "exitCode": 0,
+        "summary": "ok"
+      }
+    },
+    "blockers": [
+      "importPreflight.localDraftImport: 1 required media requirement(s) have no MediaAsset id; local draft import needs explicit unresolved-media approval."
+    ],
+    "warnings": [
+      "importPreflight.cmsImport blockers: 1 required media requirement(s) have no MediaAsset id. | workflow.approvedForImport is not true. | Human approval is not recorded. | Public email display policy remains unresolved or intentionally hidden. | pageQuality.blockingIssues are present."
+    ]
+  },
+  "guardrails": [
+    "No CMS records changed.",
+    "No API writes.",
+    "No homepage import.",
+    "No contact import.",
+    "No /service-areas update.",
+    "No /state-city creation.",
+    "No Theme records changed.",
+    "No MediaAsset records changed.",
+    "No static generation.",
+    "No deploy, DNS, email provider, Azure, Cloudflare, or Bluehost action.",
+    "No email was sent.",
+    "No image generation or image tools were used.",
+    "No protected config was read or modified.",
+    "No secrets, JWTs, tokens, credentials, connection strings, SMTP secrets, storage keys, or provider credentials were printed.",
+    "Roller remains paused."
+  ]
+}

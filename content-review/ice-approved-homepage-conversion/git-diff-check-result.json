@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T16:15:32.616Z",
+  "command": {
+    "label": "git diff --check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "ok": true,
+    "allowedNonZero": true,
+    "stdoutPreview": "",
+    "stderrPreview": "warning: in the working copy of 'PUMPKIN_ICE_APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CONVERSION_REPORT.md', LF will be replaced by CRLF the next time Git touches it\n"
+  },
+  "stdout": "",
+  "stderr": "warning: in the working copy of 'PUMPKIN_ICE_APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CONVERSION_REPORT.md', LF will be replaced by CRLF the next time Git touches it"
+}

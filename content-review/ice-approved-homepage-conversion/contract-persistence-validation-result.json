@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "pumpkin.phase8n.contract-persistence.v1",
+  "generatedAt": "2026-06-03T16:15:07.128Z",
+  "tool": {
+    "path": "tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs",
+    "nonMutating": true,
+    "readsProtectedConfig": false,
+    "writesCmsData": false,
+    "sendsEmail": false,
+    "deploys": false
+  },
+  "candidate": {
+    "path": "content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+    "persistenceFieldCount": 256,
+    "requiredPhase8nMissing": [],
+    "nonTenantMediaAssetIds": []
+  },
+  "readback": {
+    "status": "skipped",
+    "reason": "No --readback file was provided.",
+    "driftCount": 0,
+    "drift": []
+  },
+  "decision": "contract-persistence-check-passed",
+  "command": {
+    "label": "production-field persistence validation",
+    "command": [
+      "node",
+      "tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs",
+      "--candidate",
+      "content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+      "--output",
+      "content-review/ice-approved-homepage-conversion/contract-persistence-validation-result.json"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "ok": true,
+    "allowedNonZero": true,
+    "stdoutPreview": "{\n  \"schemaVersion\": \"pumpkin.phase8n.contract-persistence.v1\",\n  \"generatedAt\": \"2026-06-03T16:15:07.128Z\",\n  \"tool\": {\n    \"path\": \"tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs\",\n    \"nonMutating\": true,\n    \"readsProtectedConfig\": false,\n    \"writesCmsData\": false,\n    \"sendsEmail\": false,\n    \"deploys\": false\n  },\n  \"candidate\": {\n    \"path\": \"content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json\",\n    \"persistenceFieldCount\": 256,\n    \"requiredPhase8nMissing\": [],\n    \"nonTenantMediaAssetIds\": []\n  },\n  \"readback\": {\n    \"status\": \"skipped\",\n    \"reason\": \"No --readback file was provided.\",\n    \"driftCount\": 0,\n    \"drift\": []\n  },\n  \"decision\": \"contract-persistence-check-passed\"\n}\n",
+    "stderrPreview": ""
+  },
+  "ok": true
+}

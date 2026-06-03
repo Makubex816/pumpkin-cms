@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "assetCount": 4,
+  "referenceCount": 6,
+  "warningCount": 3,
+  "warningCodes": [
+    "media-validation-warning"
+  ],
+  "command": {
+    "label": "media validation",
+    "command": [
+      "node",
+      "tools/media-validation/validate-media-fixtures.mjs"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "ok": true,
+    "allowedNonZero": false,
+    "stdoutPreview": "{\n  \"ok\": true,\n  \"assetCount\": 4,\n  \"referenceCount\": 6,\n  \"warningCount\": 3,\n  \"warningCodes\": [\n    \"media-validation-warning\"\n  ]\n}\n",
+    "stderrPreview": ""
+  }
+}

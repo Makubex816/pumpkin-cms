@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T16:14:54.695Z",
+  "files": [
+    {
+      "path": "content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PACKAGE.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-approved-homepage-conversion/manifest.json",
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "passed": 28,
+  "failed": 0,
+  "failures": [],
+  "command": {
+    "label": "design-system validation",
+    "command": [
+      "node",
+      "tools/design-system-validation/validate-fixtures.mjs"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "ok": true,
+    "allowedNonZero": false,
+    "stdoutPreview": "{\n  \"ok\": true,\n  \"passed\": 28,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+    "stderrPreview": ""
+  }
+}

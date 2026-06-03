@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T16:15:32.680Z",
+  "protectedConfigHits": [],
+  "generatedArtifactHits": [],
+  "outputRawArtifactHits": [],
+  "expectedRawInputArtifactCount": 39,
+  "expectedExtractedInputArtifactCount": 104,
+  "note": "Raw ZIP/media/extracted input artifacts are present only as supplied intake sources and must not be staged.",
+  "command": {
+    "label": "protected/generated/raw artifact path check status",
+    "command": [
+      "git",
+      "status",
+      "--short",
+      "--untracked-files=all"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "ok": true,
+    "allowedNonZero": true,
+    "stdoutPreview": " M PUMPKIN_ICE_APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CONVERSION_REPORT.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/CONTACT_PAGE_SETUP.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/EMAIL_CORRECTION_NOTES.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/corporate.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/hero.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/holiday.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/logo-iceskatingrinkrentals.png\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/originals/CorporateIceRinkRentalEvent.png\n?? content-review/ice-approved-homepage-conversion-input/",
+    "stderrPreview": ""
+  }
+}

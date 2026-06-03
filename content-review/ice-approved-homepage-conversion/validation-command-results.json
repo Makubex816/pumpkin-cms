@@ -1,0 +1,169 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T16:15:32.681Z",
+  "commands": [
+    {
+      "label": "safe import preflight",
+      "command": [
+        "node",
+        "tools/import-preflight/import-preflight.mjs",
+        "--input",
+        "content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+        "--tenant-id",
+        "ice-rink-rentals",
+        "--site-key",
+        "ice-rink-rentals",
+        "--route",
+        "/",
+        "--mode",
+        "preflight-only",
+        "--output",
+        "content-review/ice-approved-homepage-conversion/homepage-import-preflight-result.json"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": true,
+      "stdoutPreview": "{\n  \"schemaVersion\": \"pumpkin-import-preflight-result.v1\",\n  \"generatedAt\": \"2026-06-03T16:14:54.745Z\",\n  \"tool\": {\n    \"name\": \"pumpkin-import-preflight\",\n    \"path\": \"tools/import-preflight/import-preflight.mjs\",\n    \"mode\": \"preflight-only\",\n    \"nonMutating\": true,\n    \"requiresAdminJwt\": false,\n    \"readsProtectedConfig\": false,\n    \"callsLiveWriteApis\": false,\n    \"mutatesCmsData\": false,\n    \"sendsEmail\": false,\n    \"touchesMediaRecords\": false\n  },\n  \"input\": {\n    \"path\": \"content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json\",\n    \"tenantId\": \"ice-rink-rentals\",\n    \"siteKey\": \"ice-rink-rentals\",\n    \"route\": \"/\"\n  },\n  \"checks\": [\n    {\n      \"check\": \"json-parse\",\n      \"status\": \"passed\",\n      \"message\": \"JSON parse succeeded.\"\n    },\n    {\n      \"check\": \"secret-scan\",\n      \"status\": \"passed\",\n      \"message\": \"No high-confidence secret-looking values found.\"\n    },\n    {\n      \"check\": \"tenant\",\n      \"status\": \"passed\",\n      \"message\": \"Candidate tenantId matches \\\"ice-rink-rentals\\\".\"\n    },\n    {\n      \"check\": \"site-key\",\n      \"status\": \"passed\",\n      \"message\": \"Candidate siteKey is compatible with \\\"ice-rink-r",
+      "stderrPreview": ""
+    },
+    {
+      "label": ".NET contract publish",
+      "command": [
+        "dotnet",
+        "publish",
+        ".\\tools\\dotnet-page-contract\\Pumpkin.PageContractTool.csproj",
+        "-c",
+        "Debug",
+        "-o",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-homepage-contract-50900-1780503301003\\publish",
+        "-p:UseSharedCompilation=false",
+        "-p:GenerateAssemblyInfo=false",
+        "-p:GenerateTargetFrameworkAttribute=false",
+        "-p:BaseOutputPath=C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-homepage-contract-50900-1780503301003\\bin\\",
+        "-p:BaseIntermediateOutputPath=C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-homepage-contract-50900-1780503301003\\obj\\"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": false,
+      "stdoutPreview": "  Determining projects to restore...\r\n  Restored C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\tools\\dotnet-page-contract\\Pumpkin.PageContractTool.csproj (in 102 ms).\r\n  pumpkin-net-models -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-homepage-contract-50900-1780503301003\\bin\\Debug\\net10.0\\pumpkin-net-models.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-homepage-contract-50900-1780503301003\\bin\\Debug\\net10.0\\Pumpkin.PageContractTool.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-homepage-contract-50900-1780503301003\\publish\\\r\n",
+      "stderrPreview": ""
+    },
+    {
+      "label": ".NET Page/block contract validation",
+      "command": [
+        "dotnet",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-approved-homepage-contract-50900-1780503301003\\publish\\Pumpkin.PageContractTool.dll",
+        "validate-page",
+        "--path",
+        ".\\content-review\\ice-approved-homepage-conversion\\APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": true,
+      "stdoutPreview": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-approved-homepage-conversion\\\\APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json\",\r\n  \"GeneratedAt\": \"2026-06-03T16:15:06.7895660Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json\",\r\n      \"PageId\": \"ice-rink-rentals-home\",\r\n      \"PageSlug\": \"home\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"UpdatedHomeContactPersistenceOk\": true,\r\n      \"BlockCount\": 13,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n    ",
+      "stderrPreview": ""
+    },
+    {
+      "label": "production-field persistence validation",
+      "command": [
+        "node",
+        "tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs",
+        "--candidate",
+        "content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json",
+        "--output",
+        "content-review/ice-approved-homepage-conversion/contract-persistence-validation-result.json"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": true,
+      "stdoutPreview": "{\n  \"schemaVersion\": \"pumpkin.phase8n.contract-persistence.v1\",\n  \"generatedAt\": \"2026-06-03T16:15:07.128Z\",\n  \"tool\": {\n    \"path\": \"tools/phase8n-homepage-overwrite/validate-contract-persistence.mjs\",\n    \"nonMutating\": true,\n    \"readsProtectedConfig\": false,\n    \"writesCmsData\": false,\n    \"sendsEmail\": false,\n    \"deploys\": false\n  },\n  \"candidate\": {\n    \"path\": \"content-review/ice-approved-homepage-conversion/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CANDIDATE.json\",\n    \"persistenceFieldCount\": 256,\n    \"requiredPhase8nMissing\": [],\n    \"nonTenantMediaAssetIds\": []\n  },\n  \"readback\": {\n    \"status\": \"skipped\",\n    \"reason\": \"No --readback file was provided.\",\n    \"driftCount\": 0,\n    \"drift\": []\n  },\n  \"decision\": \"contract-persistence-check-passed\"\n}\n",
+      "stderrPreview": ""
+    },
+    {
+      "label": "design-system validation",
+      "command": [
+        "node",
+        "tools/design-system-validation/validate-fixtures.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": false,
+      "stdoutPreview": "{\n  \"ok\": true,\n  \"passed\": 28,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+      "stderrPreview": ""
+    },
+    {
+      "label": "media validation",
+      "command": [
+        "node",
+        "tools/media-validation/validate-media-fixtures.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": false,
+      "stdoutPreview": "{\n  \"ok\": true,\n  \"assetCount\": 4,\n  \"referenceCount\": 6,\n  \"warningCount\": 3,\n  \"warningCodes\": [\n    \"media-validation-warning\"\n  ]\n}\n",
+      "stderrPreview": ""
+    },
+    {
+      "label": "Tailwind/navigation validation",
+      "command": [
+        "node",
+        "tools/design-system-validation/validate-tailwind-navigation-fixtures.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": false,
+      "stdoutPreview": "{\n  \"ok\": true,\n  \"checkedCssSelectors\": 37,\n  \"checkedNavigationRoutes\": [\n    \"/\",\n    \"/service-areas\",\n    \"/contact\"\n  ],\n  \"importCandidateClassCount\": 20,\n  \"classes\": [\n    \"cms-copy\",\n    \"cms-eyebrow\",\n    \"cms-layout\",\n    \"cms-panel\",\n    \"ice-alias-note\",\n    \"ice-area-card\",\n    \"ice-area-grid\",\n    \"ice-check-list\",\n    \"ice-city-note\",\n    \"ice-cta-link\",\n    \"ice-details-list\",\n    \"ice-event-card\",\n    \"ice-event-grid\",\n    \"ice-hero-grid\",\n    \"ice-planning-table\",\n    \"ice-privacy-note\",\n    \"ice-quote-grid\",\n    \"ice-region-list\",\n    \"ice-response-note\",\n    \"ice-service-teaser\"\n  ],\n  \"warnings\": [],\n  \"failures\": []\n}\n",
+      "stderrPreview": ""
+    },
+    {
+      "label": "page intake normalizer validation",
+      "command": [
+        "node",
+        "tools/page-intake-normalizer/normalize-page-intake.mjs",
+        "validate-fixtures"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": false,
+      "stdoutPreview": "{\n  \"ok\": true,\n  \"passed\": 16,\n  \"failed\": 0,\n  \"results\": [\n    {\n      \"name\": \"valid Pumpkin page JSON\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"partial page JSON normalized to scaffold\",\n      \"inputType\": \"partial-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"malformed JSON blocked\",\n      \"inputType\": \"unknown-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 1,\n      \"warningCount\": 0,\n      \"dotNetOk\": null\n    },\n    {\n      \"name\": \"foreign builder JSON normalized\",\n      \"inputType\": \"foreign-builder-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"HTML fragment mapped to customHtml\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"unsafe HTML blocked\",\n      \"inputType\": \"html-fra",
+      "stderrPreview": ""
+    },
+    {
+      "label": "git diff --check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": true,
+      "stdoutPreview": "",
+      "stderrPreview": "warning: in the working copy of 'PUMPKIN_ICE_APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CONVERSION_REPORT.md', LF will be replaced by CRLF the next time Git touches it\n"
+    },
+    {
+      "label": "protected/generated/raw artifact path check status",
+      "command": [
+        "git",
+        "status",
+        "--short",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "ok": true,
+      "allowedNonZero": true,
+      "stdoutPreview": " M PUMPKIN_ICE_APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_CONVERSION_REPORT.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/CONTACT_PAGE_SETUP.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/EMAIL_CORRECTION_NOTES.md\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/corporate.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/hero.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/holiday.webp\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/logo-iceskatingrinkrentals.png\n?? content-review/ice-approved-homepage-conversion-input/extracted/email-correction/ice-contact-page-phase9b-email-corrected/assets/originals/CorporateIceRinkRentalEvent.png\n?? content-review/ice-approved-homepage-conversion-input/",
+      "stderrPreview": ""
+    }
+  ]
+}
