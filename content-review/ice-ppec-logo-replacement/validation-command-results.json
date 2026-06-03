@@ -1,0 +1,111 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T18:36:36.741Z",
+  "results": {
+    "json-parse-validation-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:35:57.677Z",
+      "exitCode": null,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "homepage-logo-replacement-validation-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:35:57.678Z",
+      "exitCode": null,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "homepage-import-preflight-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:35:57.729Z",
+      "exitCode": 0,
+      "issueCount": 1,
+      "hitCount": null
+    },
+    "dotnet-page-contract-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:10.228Z",
+      "exitCode": 0,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "contract-persistence-validation-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:10.287Z",
+      "exitCode": 0,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "design-system-validation-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:10.369Z",
+      "exitCode": 0,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "media-validation-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:10.429Z",
+      "exitCode": 0,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "tailwind-navigation-validation-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:10.499Z",
+      "exitCode": 0,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "page-intake-normalizer-validation-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:36.612Z",
+      "exitCode": 0,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "unsafe-scan-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:36.615Z",
+      "exitCode": null,
+      "issueCount": null,
+      "hitCount": 0
+    },
+    "contactus-scan-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:36.616Z",
+      "exitCode": null,
+      "issueCount": null,
+      "hitCount": 0
+    },
+    "targeted-secret-scan-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:36.617Z",
+      "exitCode": null,
+      "issueCount": null,
+      "hitCount": 0
+    },
+    "git-diff-check-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:36.669Z",
+      "exitCode": 0,
+      "issueCount": null,
+      "hitCount": null
+    },
+    "trailing-whitespace-scan-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:36.688Z",
+      "exitCode": null,
+      "issueCount": null,
+      "hitCount": 0
+    },
+    "protected-generated-raw-artifact-check-result.json": {
+      "ok": true,
+      "generatedAt": "2026-06-03T18:36:36.741Z",
+      "exitCode": null,
+      "issueCount": null,
+      "hitCount": null
+    }
+  }
+}

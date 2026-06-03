@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T18:35:57.678Z",
+  "checks": {
+    "routeHome": true,
+    "draftNeedsReview": true,
+    "approvalsFalse": true,
+    "staticNeedsRebuild": true,
+    "ppecPartnerBand": true,
+    "ppecCopyCta": true,
+    "newLogoPersists": true,
+    "activePpecSectionUsesNewLogo": true,
+    "oldLogoAbsentFromActivePpecSection": true,
+    "oldLogoAbsentEverywhere": true,
+    "selectedMailbox": true,
+    "publicEmailPolicy": true,
+    "noLegacyMailbox": true,
+    "noBase64": true,
+    "noRawFormOrRuntime": true,
+    "otherHomepageMediaIdsPreserved": true
+  },
+  "failed": []
+}

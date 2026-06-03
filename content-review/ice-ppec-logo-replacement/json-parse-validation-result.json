@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T18:35:57.677Z",
+  "files": [
+    {
+      "path": "content-review/ice-ppec-logo-replacement/APPROVED_HOMEPAGE_PPEC_LOGO_REPLACED_CANDIDATE.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-ppec-logo-replacement/APPROVED_HOMEPAGE_PPEC_LOGO_REPLACED_PACKAGE.json",
+      "ok": true
+    }
+  ]
+}

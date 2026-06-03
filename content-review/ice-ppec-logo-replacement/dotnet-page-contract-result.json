@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T18:36:10.228Z",
+  "publish": {
+    "ok": true,
+    "exitCode": 0,
+    "signal": null,
+    "stdout": "  Determining projects to restore...\r\n  Restored C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\apps\\pumpkin-net-models\\pumpkin-net-models.csproj (in 74 ms).\r\n  pumpkin-net-models -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-ppec-logo-replacement-contract-46020-1780511764064\\bin\\Debug\\net10.0\\pumpkin-net-models.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-ppec-logo-replacement-contract-46020-1780511764064\\bin\\Debug\\net10.0\\Pumpkin.PageContractTool.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-ppec-logo-replacement-contract-46020-1780511764064\\publish\\\r\n",
+    "stderr": ""
+  },
+  "validate": {
+    "ok": true,
+    "exitCode": 0,
+    "signal": null,
+    "stdout": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-ppec-logo-replacement\\\\APPROVED_HOMEPAGE_PPEC_LOGO_REPLACED_CANDIDATE.json\",\r\n  \"GeneratedAt\": \"2026-06-03T18:36:09.9443598Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-logo-replacement/APPROVED_HOMEPAGE_PPEC_LOGO_REPLACED_CANDIDATE.json\",\r\n      \"PageId\": \"ice-rink-rentals-home\",\r\n      \"PageSlug\": \"home\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"UpdatedHomeContactPersistenceOk\": true,\r\n      \"BlockCount\": 13,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"ServiceArea",
+    "stderr": ""
+  },
+  "parsed": null
+}
