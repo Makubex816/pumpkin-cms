@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:39:42.068Z",
+  "results": [
+    {
+      "path": "content-review/ice-ppec-visual-brand-repair/APPROVED_HOMEPAGE_PPEC_VISUAL_REPAIR_CANDIDATE.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-ppec-visual-brand-repair/APPROVED_HOMEPAGE_PPEC_VISUAL_REPAIR_PACKAGE.json",
+      "ok": true
+    }
+  ]
+}

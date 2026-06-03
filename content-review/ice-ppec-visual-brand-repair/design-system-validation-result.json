@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:39:54.311Z",
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "{\n  \"ok\": true,\n  \"passed\": 28,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+    "stderrPreview": ""
+  },
+  "parsed": {
+    "ok": true,
+    "passed": 28,
+    "failed": 0,
+    "failures": []
+  }
+}

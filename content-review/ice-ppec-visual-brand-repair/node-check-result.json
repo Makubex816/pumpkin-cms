@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:40:19.565Z",
+  "results": [
+    {
+      "file": "content-review/ice-ppec-visual-brand-repair/run-ppec-visual-brand-repair.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "stdoutPreview": "",
+      "stderrPreview": ""
+    },
+    {
+      "file": "tools/import-preflight/import-preflight.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "stdoutPreview": "",
+      "stderrPreview": ""
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "pumpkin.ice.ppec-visual-brand-repair.v1",
+  "generatedAt": "2026-06-03T17:39:41.655Z",
+  "start": {
+    "gitStatusShort": "M apps/ice-rink-web/src/app/globals.css\n M apps/ice-rink-web/src/components/blocks/PolishedBlocks.tsx\n M apps/ice-rink-web/src/data/fallback-theme.ts\n M tools/import-preflight/import-preflight.mjs\n?? PUMPKIN_ICE_PPEC_VISUAL_BRAND_REPAIR_REPORT.md\n?? content-review/ice-ppec-visual-brand-repair/",
+    "gitLogOneline12": "a522e7c Add approved Ice homepage local draft import report\n9261c43 Bind approved PPEC logo MediaAsset\n3cc5202 Convert approved Ice homepage Phase 8K to Phase 10A candidate\n89ca42e Add Ice approved homepage conversion missing input report\nefcdb24 Add Ice page import change sources\n48d72e7 Add Ice PPEC home contact local draft import report\ndb5cb73 Repair Ice PPEC home contact candidates\nf853b44 Add Ice updated home contact post repair reimport report\n4dc63e7 Repair updated Ice home contact contract persistence\n2c0b20c Add Ice updated home contact local draft import report\n7206de9 Add admin auth diagnostic tooling\n6eae0c9 Add Ice updated home contact draft import auth blocker report",
+    "api": {
+      "reachable": true,
+      "status": 200
+    },
+    "preview": {
+      "reachable": true,
+      "status": 200
+    }
+  },
+  "source": {
+    "candidate": "content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_CANDIDATE.json",
+    "package": "content-review/ice-approved-homepage-ppec-logo-binding/APPROVED_HOMEPAGE_PHASE8K_TO_PHASE10A_PPEC_BOUND_PACKAGE.json",
+    "ppecLogoMediaAssetId": "ice-rink-rentals-ppec-wordmark-card-d28c10b570d1"
+  },
+  "audit": {
+    "ppecBlockCount": 2,
+    "ppecBlocks": [
+      {
+        "index": 1,
+        "type": "TrustBar",
+        "sectionVariant": "trustBand",
+        "rendererVariant": "ppecPartnerBand",
+        "visualTreatment": "ppecPartnerBand",
+        "hasLogoMediaAssetId": true,
+        "buttonText": "Explore Party Pros East Coast",
+        "buttonLink": "https://partyproseastcoast.com/"
+      },
+      {
+        "index": 9,
+        "type": "PrimaryCTA",
+        "sectionVariant": "ppecPartnerBand",
+        "rendererVariant": "ppecPartnerBand",
+        "visualTreatment": "ppecPartnerBand",
+        "hasLogoMediaAssetId": true,
+        "buttonText": "Request Ice Rink Rental Info",
+        "buttonLink": "https://partyproseastcoast.com/"
+      }
+    ],
+    "ppecLogoMediaAssetExistsInCandidate": true,
+    "ppecCopyExists": true,
+    "visualMismatchRootCause": "PPEC content was present but rendered through generic TrustBar/PrimaryCTA Ice variants instead of a partner-branded renderer."
+  },
+  "repair": {
+    "rendererVariant": "ppecPartnerBand",
+    "rendererFilesChanged": [
+      "apps/ice-rink-web/src/components/blocks/PolishedBlocks.tsx",
+      "apps/ice-rink-web/src/app/globals.css",
+      "apps/ice-rink-web/src/data/fallback-theme.ts",
+      "tools/import-preflight/import-preflight.mjs"
+    ],
+    "candidateCreated": true,
+    "packageCreated": true,
+    "candidateChanges": [
+      "Kept required trustBand variant but added ppecPartnerBand renderer metadata and PPEC brand treatment.",
+      "Changed PPEC PrimaryCTA sectionVariant from generic partnerCta to ppecPartnerBand."
+    ]
+  },
+  "validation": {
+    "results": {
+      "json-parse-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/json-parse-validation-result.json"
+      },
+      "visual-repair-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/visual-repair-validation-result.json"
+      },
+      "unsafe-scan-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/unsafe-scan-result.json"
+      },
+      "contactus-scan-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/contactus-scan-result.json"
+      },
+      "targeted-secret-scan-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/targeted-secret-scan-result.json"
+      },
+      "homepage-import-preflight-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/homepage-import-preflight-result.json"
+      },
+      "dotnet-page-contract-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/dotnet-page-contract-result.json"
+      },
+      "contract-persistence-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/contract-persistence-validation-result.json"
+      },
+      "design-system-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/design-system-validation-result.json"
+      },
+      "media-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/media-validation-result.json"
+      },
+      "tailwind-navigation-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/tailwind-navigation-validation-result.json"
+      },
+      "page-intake-normalizer-validation-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/page-intake-normalizer-validation-result.json"
+      },
+      "node-check-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/node-check-result.json"
+      },
+      "ice-rink-web-type-check-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/ice-rink-web-type-check-result.json"
+      }
+    },
+    "blockers": []
+  },
+  "auth": {
+    "envStatus": "MISSING",
+    "tempInitialStatus": "PRESENT",
+    "validation": "VALID",
+    "loadedFrom": "temp",
+    "tokenPrinted": false,
+    "tempFinalStatus": "MISSING"
+  },
+  "import": {
+    "attempted": true,
+    "performed": true,
+    "skippedReason": "",
+    "httpStatus": 200
+  },
+  "postImport": {
+    "verification": {
+      "draftNeedsReview": true,
+      "approvalsFalse": true,
+      "ppecSectionPersisted": true,
+      "ppecLogoPersisted": true,
+      "ppecCopyPersisted": true,
+      "selectedMailbox": true,
+      "publicEmailPolicy": true,
+      "noLegacyMailbox": true
+    },
+    "untouched": {
+      "contact": true,
+      "serviceAreas": true,
+      "theme": true,
+      "mediaAssets": true
+    },
+    "blockers": []
+  },
+  "frontend": {
+    "checked": true,
+    "previewStatus": 200,
+    "containsPpecClass": true,
+    "containsPpecLogoUrl": false,
+    "cmsReadbackContainsPpecLogoUrl": true,
+    "note": "The /__preview route server response is the client preview shell; actual draft content is fetched in-browser with a local admin JWT."
+  },
+  "hygiene": {
+    "results": {
+      "git-diff-check-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/git-diff-check-result.json"
+      },
+      "trailing-whitespace-scan-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/trailing-whitespace-scan-result.json"
+      },
+      "protected-generated-raw-artifact-check-result.json": {
+        "ok": true,
+        "path": "content-review/ice-ppec-visual-brand-repair/protected-generated-raw-artifact-check-result.json"
+      }
+    },
+    "blockers": []
+  },
+  "blockers": [],
+  "success": true
+}

@@ -159,6 +159,34 @@ function getBlockMedia(content: CmsContent, fallbackUrlKey = 'mainImage'): CmsIm
   };
 }
 
+function getPartnerContent(content: CmsContent): CmsContent {
+  return isRecord(content.partner) ? content.partner : {};
+}
+
+function getPartnerLogo(partner: CmsContent): CmsImage {
+  return getImage(partner.logoMedia || partner.logoRequirement || partner.logo || partner.media);
+}
+
+function isPpecPartnerBlock(block: CmsBlock): boolean {
+  const content = getBlockContent(block);
+  const partner = getPartnerContent(content);
+  const partnerName = getString(partner.name);
+  return /Party Pros East Coast|PPEC/i.test(partnerName || JSON.stringify(content));
+}
+
+function getApprovedPartnerHref(content: CmsContent, partner: CmsContent): string {
+  const cta = isRecord(content.cta) ? content.cta : {};
+  const candidate =
+    getString(partner.url) ||
+    getString(content.partnerUrl) ||
+    getString(cta.href) ||
+    getString(content.buttonLink);
+  const source = getString(partner.urlSource) || getString(content.urlSource);
+  if (/^https:\/\/partyproseastcoast\.com\/?$/i.test(candidate) && source) return candidate;
+  if (candidate.startsWith('#')) return candidate;
+  return '';
+}
+
 function getCardGridColumns(layout: string, count: number): string {
   if (layout.includes('2') || count === 2) {
     return 'md:grid-cols-2';
@@ -191,6 +219,7 @@ export function renderPolishedBlock({
       if (isVariant(block, 'heroMedia')) return <IceHeroMediaSection block={block} />;
       return <PolishedHeroBlock block={block} />;
     case 'TrustBar':
+      if (isPpecPartnerBlock(block)) return <IcePpecPartnerBandSection block={block} />;
       if (isVariant(block, 'trustBand')) return <IceTrustBandSection block={block} />;
       return <PolishedTrustBarBlock block={block} />;
     case 'CardGrid':
@@ -208,6 +237,9 @@ export function renderPolishedBlock({
       if (isVariant(block, 'serviceAreaTeaser')) return <IceServiceAreaTeaserSection block={block} />;
       return null;
     case 'PrimaryCTA':
+      if (isVariant(block, 'ppecPartnerBand') || isVariant(block, 'partnerBrandBand') || isVariant(block, 'partnerResourceCta') || isPpecPartnerBlock(block)) {
+        return <IcePpecPartnerBandSection block={block} />;
+      }
       if (isVariant(block, 'finalCta')) return <IceFinalCtaSection block={block} />;
       return <PolishedPrimaryCTABlock block={block} />;
     case 'Contact':
@@ -226,6 +258,71 @@ export function renderPolishedBlock({
     default:
       return null;
   }
+}
+
+export function IcePpecPartnerBandSection({ block }: { block: CmsBlock }) {
+  const content = getBlockContent(block);
+  const partner = getPartnerContent(content);
+  const logo = getPartnerLogo(partner);
+  const cta = isRecord(content.cta) ? content.cta : {};
+  const headline = getString(content.headline) || getString(content.title, 'Planning more than the rink?');
+  const description =
+    getString(content.description) ||
+    getString(content.subtitle) ||
+    'Party Pros East Coast can help larger events discuss additional event rental equipment, entertainment ideas, and logistics around the rink experience.';
+  const contentButtonText = getString(content.buttonText);
+  const buttonText =
+    getString(content.partnerCtaLabel) ||
+    getString(cta.label) ||
+    (/Party Pros|PPEC/i.test(contentButtonText) ? contentButtonText : 'Explore Party Pros East Coast');
+  const buttonHref = getApprovedPartnerHref(content, partner);
+  const secondaryButtonText = getString(content.secondaryButtonText) || (!/Party Pros|PPEC/i.test(contentButtonText) ? contentButtonText : '');
+  const secondaryButtonLink = getString(content.secondaryButtonLink) || (!/Party Pros|PPEC/i.test(contentButtonText) ? getString(content.buttonLink) : '');
+  const partnerName = getString(partner.name, 'Party Pros East Coast');
+  const displayRole = getString(partner.displayRole, 'Event rental partner');
+
+  return (
+    <section className="ice-section ice-section--ppec-partner" aria-label="Party Pros East Coast partner resource">
+      <div className="cms-container cms-container-wide">
+        <article className="ppec-partner-band">
+          <div className="ppec-partner-copy">
+            {getString(content.eyebrow) && <p className="ppec-partner-eyebrow">{getString(content.eyebrow)}</p>}
+            <h2 className="ppec-partner-heading">{headline}</h2>
+            <p className="ppec-partner-text">{description}</p>
+            <div className="ppec-partner-cta">
+              {buttonHref ? (
+                <a className="ppec-button ppec-button--primary" href={buttonHref}>
+                  {buttonText}
+                  <ArrowRight className="ppec-button__icon" aria-hidden="true" />
+                </a>
+              ) : (
+                <span className="ppec-button ppec-button--disabled" aria-disabled="true">
+                  Partner URL needs approval
+                </span>
+              )}
+              {secondaryButtonText && secondaryButtonLink && (
+                <a className="ppec-button ppec-button--secondary" href={secondaryButtonLink}>
+                  {secondaryButtonText}
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div className="ppec-partner-card">
+            <div className="ppec-partner-logo-wrap">
+              {logo.src ? (
+                <img className="ppec-partner-logo" src={logo.src} alt={logo.alt || `${partnerName} logo`} />
+              ) : (
+                <span className="ppec-partner-logo-missing">{partnerName}</span>
+              )}
+            </div>
+            <p className="ppec-partner-card-label">{displayRole}</p>
+            <p className="ppec-partner-card-name">{partnerName}</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  );
 }
 
 export function IceHeroMediaSection({ block }: { block: CmsBlock }) {

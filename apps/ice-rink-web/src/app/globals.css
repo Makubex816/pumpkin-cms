@@ -307,6 +307,13 @@
     @apply bg-slate-950 text-white;
   }
 
+  .ice-section--ppec-partner {
+    background:
+      radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.16), transparent 28%),
+      linear-gradient(135deg, #39235f 0%, #5f438f 52%, #7b5ec2 100%);
+    color: #fff;
+  }
+
   .ice-section--cta .cms-container {
     @apply flex flex-col gap-5 md:flex-row md:items-center md:justify-between;
   }
@@ -419,6 +426,77 @@
   }
 
   .ice-button__icon {
+    @apply ml-2 h-4 w-4;
+  }
+
+  .ppec-partner-band {
+    @apply grid grid-cols-1 items-center gap-6 overflow-hidden rounded-lg border border-white/20 p-5 shadow-2xl sm:p-6 md:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.72fr)] md:gap-8 md:p-8;
+    background:
+      linear-gradient(135deg, rgba(245, 240, 255, 0.18), rgba(255, 255, 255, 0.08)),
+      rgba(57, 35, 95, 0.62);
+  }
+
+  .ppec-partner-copy {
+    @apply max-w-3xl;
+  }
+
+  .ppec-partner-eyebrow {
+    @apply mb-3 text-xs font-extrabold uppercase tracking-wider text-violet-100;
+  }
+
+  .ppec-partner-heading {
+    @apply text-balance text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl;
+  }
+
+  .ppec-partner-text {
+    @apply mt-4 max-w-2xl text-base leading-7 text-violet-50 md:text-lg;
+  }
+
+  .ppec-partner-cta {
+    @apply mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap;
+  }
+
+  .ppec-partner-card {
+    @apply rounded-lg border border-white/25 bg-violet-50 p-5 text-center shadow-xl shadow-violet-950/20;
+  }
+
+  .ppec-partner-logo-wrap {
+    @apply mx-auto flex min-h-36 items-center justify-center rounded-lg border border-violet-200 bg-white p-4 shadow-sm;
+  }
+
+  .ppec-partner-logo {
+    @apply h-auto max-h-28 w-full max-w-xs object-contain;
+  }
+
+  .ppec-partner-logo-missing {
+    @apply text-lg font-extrabold text-violet-950;
+  }
+
+  .ppec-partner-card-label {
+    @apply mt-4 text-xs font-extrabold uppercase tracking-wider text-violet-700;
+  }
+
+  .ppec-partner-card-name {
+    @apply mt-1 text-xl font-extrabold leading-tight text-violet-950;
+  }
+
+  .ppec-button {
+    @apply inline-flex min-h-12 w-fit items-center justify-center rounded-full px-6 py-3 text-sm font-extrabold transition focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-violet-900;
+  }
+
+  .ppec-button--primary {
+    @apply bg-white text-violet-900 shadow-lg shadow-violet-950/20 hover:bg-violet-50;
+  }
+
+  .ppec-button--secondary {
+    @apply border border-white/40 bg-white/10 text-white hover:bg-white/15;
+  }
+
+  .ppec-button--disabled {
+    @apply cursor-not-allowed border border-white/30 bg-white/10 text-violet-100;
+  }
+
+  .ppec-button__icon {
     @apply ml-2 h-4 w-4;
   }
 

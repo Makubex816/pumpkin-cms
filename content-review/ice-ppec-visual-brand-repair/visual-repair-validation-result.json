@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:39:42.070Z",
+  "checks": {
+    "routeHome": true,
+    "tenant": true,
+    "draftOnly": true,
+    "approvalsFalse": true,
+    "needsRebuild": true,
+    "ppecBandVariant": true,
+    "ppecLogoId": true,
+    "ppecLogoVisibleMetadata": true,
+    "ppecPurpleTreatment": true,
+    "ppecHeadline": true,
+    "ppecCta": true,
+    "selectedMailbox": true,
+    "publicEmailPolicy": true,
+    "noLegacyMailbox": true,
+    "noGenericServingEastCoast": true,
+    "noBase64": true,
+    "noRawWordPressRuntime": true
+  }
+}

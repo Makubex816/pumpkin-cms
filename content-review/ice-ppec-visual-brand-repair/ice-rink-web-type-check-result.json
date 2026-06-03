@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:40:20.908Z",
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": "\n> ice-rink-web@0.1.0 type-check\n> tsc --noEmit\n\n",
+    "stderrPreview": ""
+  }
+}

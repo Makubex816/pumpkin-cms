@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-03T17:40:21.509Z",
+  "protectedHits": [],
+  "generatedHits": [],
+  "stagedRawOrExtractedHits": [],
+  "command": {
+    "exitCode": 0,
+    "ok": true,
+    "stdoutPreview": " M apps/ice-rink-web/src/app/globals.css\n M apps/ice-rink-web/src/components/blocks/PolishedBlocks.tsx\n M apps/ice-rink-web/src/data/fallback-theme.ts\n M tools/import-preflight/import-preflight.mjs\n?? PUMPKIN_ICE_PPEC_VISUAL_BRAND_REPAIR_REPORT.md\n?? content-review/ice-ppec-visual-brand-repair/APPROVED_HOMEPAGE_PPEC_VISUAL_REPAIR_CANDIDATE.json\n?? content-review/ice-ppec-visual-brand-repair/APPROVED_HOMEPAGE_PPEC_VISUAL_REPAIR_PACKAGE.json\n?? content-review/ice-ppec-visual-brand-repair/CURRENT_PPEC_RENDER_AUDIT.md\n?? content-review/ice-ppec-visual-brand-repair/FRONTEND_PREVIEW_CHECKLIST.md\n?? content-review/ice-ppec-visual-brand-repair/IMPORT_RESULT.md\n?? content-review/ice-ppec-visual-brand-repair/PPEC_BRAND_REFERENCE_NOTES.md\n?? content-review/ice-ppec-visual-brand-repair/PPEC_CANDIDATE_REPAIR.md\n?? content-review/ice-ppec-visual-brand-repair/PPEC_RENDERER_REPAIR.md\n?? content-review/ice-ppec-visual-brand-repair/README.md\n?? content-review/ice-ppec-visual-brand-repair/REMAINING_BLOCKERS.md\n?? content-review/ice-ppec-visual-brand-repair/VALIDATION_RESULTS.md\n?? content-review/ice-ppec-visual-brand-repair/contactus-scan-result.json\n?? content-review/ice-ppec-visual-brand-repair/con",
+    "stderrPreview": ""
+  }
+}
