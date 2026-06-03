@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "pumpkin.ice.service-areas-polish.v1",
+  "generatedAt": "2026-06-03T21:53:22.566Z",
+  "site": "IceSkatingRinkRentals.com",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/service-areas",
+  "branch": "feature/admin-page-editor-import-export",
+  "outputFolder": "content-review/ice-service-areas-polish",
+  "rootReport": "PUMPKIN_ICE_SERVICE_AREAS_POLISH_REPORT.md",
+  "candidate": "content-review/ice-service-areas-polish/SERVICE_AREAS_POLISHED_CANDIDATE.json",
+  "package": "content-review/ice-service-areas-polish/SERVICE_AREAS_POLISHED_PACKAGE.json",
+  "importPerformed": true,
+  "readbackOk": true,
+  "validationOk": true,
+  "safety": {
+    "homepageWrite": false,
+    "contactWrite": false,
+    "serviceAreasWrite": true,
+    "stateCityCreated": false,
+    "themeWrite": false,
+    "mediaAssetWrite": false,
+    "staticGeneration": false,
+    "deployment": false,
+    "dnsEmailProviderAzureCloudflareBluehostChanged": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false,
+    "imageGenerationUsed": false,
+    "imageFilesModified": false,
+    "jwtPrinted": false
+  },
+  "auth": {
+    "presence": "PRESENT",
+    "validation": "VALID",
+    "tokenPrinted": false,
+    "tempJwtFinalStatus": "MISSING"
+  }
+}

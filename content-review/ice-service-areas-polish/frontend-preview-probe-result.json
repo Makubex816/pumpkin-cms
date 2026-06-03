@@ -1,0 +1,17 @@
+{
+  "checked": true,
+  "results": {
+    "preview": {
+      "url": "http://localhost:3002/__preview/ice-rink-rentals/service-areas",
+      "reachable": true,
+      "status": 200,
+      "length": 28923
+    },
+    "publicServiceAreas": {
+      "url": "http://localhost:3002/service-areas",
+      "reachable": true,
+      "status": 404,
+      "length": 9713
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-06-03T21:53:22.759Z",
+  "ok": true,
+  "checks": {
+    "route": true,
+    "path": true,
+    "slug": true,
+    "tenantId": true,
+    "siteKey": true,
+    "draftNeedsReview": true,
+    "productionApprovedFalse": true,
+    "publishApprovedFalse": true,
+    "staticNeedsRebuildTrue": true,
+    "staticEligibleFalse": true,
+    "ppecLogoBound": true,
+    "futureLocalPagesRemoved": true,
+    "noRenderedEmptyMedia": true,
+    "ctaWordingUpdated": true,
+    "noLegacyMailbox": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "noFakeMediaIds": true,
+    "noFakeUrls": true,
+    "noBase64": true,
+    "noRawFormHtml": true,
+    "noUnsupportedEastCoastClaim": true,
+    "packageIncludesCandidate": true,
+    "revisionMetadataPresent": true
+  },
+  "failed": []
+}

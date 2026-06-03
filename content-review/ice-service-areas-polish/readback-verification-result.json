@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "checks": {
+    "httpOk": true,
+    "route": true,
+    "draftNeedsReview": true,
+    "productionApprovedFalse": true,
+    "publishApprovedFalse": true,
+    "staticNeedsRebuildTrue": true,
+    "ppecLogoPersists": true,
+    "futureLocalPagesRemoved": true,
+    "stateCityRemovedFromActiveDraft": true,
+    "noRenderedEmptyMedia": true,
+    "ctaWordingUpdated": true,
+    "serviceAreasWordingPolished": true,
+    "noLegacyMailbox": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "noCandidateDriftForCoreFixes": true
+  },
+  "failed": [],
+  "untouched": {
+    "homepageUnchanged": true,
+    "contactUnchanged": true,
+    "themeUnchanged": true,
+    "mediaAssetsUnchanged": true
+  }
+}
