@@ -1,0 +1,118 @@
+{
+  "generatedAt": "2026-06-03T13:34:07.633Z",
+  "jsonParse": "passed",
+  "importPreflight": {
+    "homepage": {
+      "preflight-valid-for-shape": true,
+      "preflight-valid-for-local-draft-import": true,
+      "preflight-valid-for-CMS-import": false,
+      "preflight-valid-for-production": false
+    },
+    "contact": {
+      "preflight-valid-for-shape": true,
+      "preflight-valid-for-local-draft-import": true,
+      "preflight-valid-for-CMS-import": false,
+      "preflight-valid-for-production": false
+    },
+    "homepageIssues": [
+      "warning: default-form: Homepage has no formBlock.",
+      "warning: dotnet-page-contract: The .NET contract returned 6 warning(s)."
+    ],
+    "contactIssues": [
+      "warning: dotnet-page-contract: The .NET contract returned 6 warning(s)."
+    ]
+  },
+  "dotnetUpdatedHomeContact": {
+    "ok": true,
+    "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "pages": [
+      {
+        "file": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json",
+        "pageSlug": "home",
+        "roundTripOk": true,
+        "productionFieldPersistenceOk": true,
+        "updatedHomeContactPersistenceOk": true,
+        "errorCount": 0,
+        "warningCount": 6
+      },
+      {
+        "file": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+        "pageSlug": "contact",
+        "roundTripOk": true,
+        "productionFieldPersistenceOk": true,
+        "updatedHomeContactPersistenceOk": true,
+        "errorCount": 0,
+        "warningCount": 6
+      }
+    ]
+  },
+  "validatorFalsePositiveProbe": {
+    "partnerBrandCandidate": [
+      {
+        "check": "production-service-area-copy",
+        "status": "passed",
+        "message": "East Coast wording is limited to the Party Pros East Coast partner brand name."
+      }
+    ],
+    "genericEastCoastNegativeFixture": [
+      {
+        "check": "production-service-area-copy",
+        "status": "failed",
+        "message": "Generic East Coast service-area wording requires explicit approval before production import.",
+        "category": "content",
+        "field": "payload",
+        "details": {
+          "hasPartnerBrandName": true,
+          "hasUnapprovedEastCoastWording": true,
+          "unapprovedEastCoastMatchCount": 1
+        }
+      }
+    ]
+  },
+  "fixtureValidators": {
+    "designSystem": "passed: ok true, 28 passed, 0 failed",
+    "media": "passed: ok true, 4 assets, 6 references, 3 existing media-validation warnings",
+    "defaultForm": "passed: ok true, 21 passed, 0 failed",
+    "tailwindNavigation": "passed: ok true, 37 CSS selectors, routes /, /service-areas, /contact",
+    "pageIntakeNormalizer": "passed: ok true, 16 passed, 0 failed",
+    "typescriptModels": "passed: tsc --project packages/pumpkin-ts-models/tsconfig.json --noEmit"
+  },
+  "scans": {
+    "unsafePayload": "passed: no unsafe HTML/CSS/form/media/email markers in candidate/package files",
+    "targetedSecretScan": "passed: no high-confidence secret-looking values in candidate/package files",
+    "protectedGeneratedRawPathCheck": "passed: git status contains no protected/generated/raw artifact paths",
+    "trailingWhitespace": "passed",
+    "gitDiffCheck": "passed with LF/CRLF notices only"
+  },
+  "preview": [
+    {
+      "url": "http://localhost:3002/__preview/ice-rink-rentals/home",
+      "statusCode": 200,
+      "length": 28222,
+      "containsPartyProsEastCoast": false,
+      "containsPpec": false,
+      "note": "Raw HTML is the client-side JWT-gated draft preview shell."
+    },
+    {
+      "url": "http://localhost:3002/contact",
+      "statusCode": 200,
+      "length": 48799,
+      "containsPartyProsEastCoast": false,
+      "containsPpec": false,
+      "note": "Public contact route raw HTML, not authenticated draft readback."
+    },
+    {
+      "url": "http://localhost:5064/",
+      "statusCode": 200,
+      "length": 55,
+      "containsPartyProsEastCoast": false,
+      "containsPpec": false,
+      "note": "API root reachability only."
+    }
+  ],
+  "auth": {
+    "pumpkinAdminJwtPresent": false,
+    "tempJwtFilePresent": false,
+    "checkedWithoutPrintingToken": true
+  }
+}

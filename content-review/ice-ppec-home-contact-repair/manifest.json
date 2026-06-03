@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "pumpkin-ice-ppec-home-contact-repair-manifest.v1",
+  "generatedAt": "2026-06-03T13:24:54.567Z",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "gitStatusAtStart": [
+    "M apps/pumpkin-api/Services/PageRevisionHelper.cs",
+    " M packages/pumpkin-ts-models/src/models/Page.ts",
+    " M tools/import-preflight/import-preflight.mjs",
+    "?? content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+    "?? content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json",
+    "?? content-review/ice-ppec-home-contact-repair/UPDATED_HOME_CONTACT_WITH_PPEC_PACKAGE.json",
+    "?? content-review/ice-ppec-home-contact-repair/ppec-rg-hits.txt"
+  ],
+  "gitLogAtStart": [
+    "f853b44 Add Ice updated home contact post repair reimport report",
+    "4dc63e7 Repair updated Ice home contact contract persistence",
+    "2c0b20c Add Ice updated home contact local draft import report",
+    "7206de9 Add admin auth diagnostic tooling",
+    "6eae0c9 Add Ice updated home contact draft import auth blocker report",
+    "2f4bb29 Add Ice updated home contact package intake",
+    "02fd805 Repair Pumpkin page contract persistence models",
+    "01a37ef Repair Phase 8N homepage contract persistence",
+    "97ddf11 Add Phase 8N homepage local draft overwrite report",
+    "34eef51 Fix Phase 8N homepage overwrite route guard",
+    "e2d150b Add Ice homepage Phase 8N scaffold validation package",
+    "e465511 Add Ice homepage draft preview and production rendering support"
+  ],
+  "sourceRoots": {
+    "requested": [
+      "content-review/ice-updated-home-contact-input",
+      "content-review/ice-updated-home-contact-validated",
+      "content-review/ice-updated-home-contact-local-draft-import",
+      "content-review/ice-updated-home-contact-post-repair-reimport",
+      "content-review/ice-homepage-phase8n-crm-scaffold-validated",
+      "content-review/ice-homepage-phase8n-local-draft-overwrite"
+    ],
+    "existing": [
+      "content-review/ice-updated-home-contact-validated",
+      "content-review/ice-updated-home-contact-local-draft-import",
+      "content-review/ice-updated-home-contact-post-repair-reimport",
+      "content-review/ice-homepage-phase8n-crm-scaffold-validated",
+      "content-review/ice-homepage-phase8n-local-draft-overwrite"
+    ],
+    "missing": [
+      "content-review/ice-updated-home-contact-input"
+    ]
+  },
+  "outputs": [
+    "README.md",
+    "PPEC_SOURCE_AUDIT.md",
+    "PPEC_ROOT_CAUSE.md",
+    "PPEC_VALIDATOR_REVIEW.md",
+    "HOMEPAGE_PPEC_REPAIR.md",
+    "CONTACT_PPEC_REPAIR.md",
+    "VALIDATION_RESULTS.md",
+    "IMPORT_RESULT.md",
+    "FRONTEND_PREVIEW_CHECKLIST.md",
+    "REMAINING_BLOCKERS.md",
+    "UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json",
+    "UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+    "UPDATED_HOME_CONTACT_WITH_PPEC_PACKAGE.json",
+    "manifest.json"
+  ],
+  "candidateSummary": {
+    "homepage": {
+      "path": "content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json",
+      "ppecBlockId": "homepage-ppec-partner-cta",
+      "ppecSectionVariant": "partnerCta",
+      "ppecButtonLink": "https://partyproseastcoast.com/"
+    },
+    "contact": {
+      "path": "content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+      "ppecBlockId": "contact-ppec-partner-cta",
+      "ppecSectionVariant": "partnerCta",
+      "ppecButtonLink": "https://partyproseastcoast.com/",
+      "formBlockPreserved": true
+    }
+  },
+  "safety": {
+    "cmsWritesPerformed": false,
+    "apiWriteCallsPerformed": false,
+    "jwtUsed": false,
+    "themeRecordsChanged": false,
+    "mediaAssetRecordsChanged": false,
+    "staticRegenerationPerformed": false,
+    "deploymentPerformed": false,
+    "protectedConfigRead": false,
+    "serviceAreasUpdated": false,
+    "stateCityCreated": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "status": "passed-for-local-draft-import-candidates",
+    "jsonParse": "passed",
+    "homepagePreflightLocalDraftImport": true,
+    "contactPreflightLocalDraftImport": true,
+    "dotnetUpdatedHomeContactOk": true,
+    "genericEastCoastNegativeFixtureBlocked": true,
+    "fixtureValidators": {
+      "designSystem": "passed: ok true, 28 passed, 0 failed",
+      "media": "passed: ok true, 4 assets, 6 references, 3 existing media-validation warnings",
+      "defaultForm": "passed: ok true, 21 passed, 0 failed",
+      "tailwindNavigation": "passed: ok true, 37 CSS selectors, routes /, /service-areas, /contact",
+      "pageIntakeNormalizer": "passed: ok true, 16 passed, 0 failed",
+      "typescriptModels": "passed: tsc --project packages/pumpkin-ts-models/tsconfig.json --noEmit"
+    },
+    "scans": {
+      "unsafePayload": "passed: no unsafe HTML/CSS/form/media/email markers in candidate/package files",
+      "targetedSecretScan": "passed: no high-confidence secret-looking values in candidate/package files",
+      "protectedGeneratedRawPathCheck": "passed: git status contains no protected/generated/raw artifact paths",
+      "trailingWhitespace": "passed",
+      "gitDiffCheck": "passed with LF/CRLF notices only"
+    }
+  },
+  "importResult": {
+    "status": "not-performed-auth-missing",
+    "localCmsDraftsUpdated": false,
+    "homepageUpdated": false,
+    "contactUpdated": false,
+    "reason": "No PUMPKIN_ADMIN_JWT env var and no temp JWT file were available. Token contents were not read or printed."
+  },
+  "updatedAt": "2026-06-03T13:34:07.633Z",
+  "gitStatusAtRequestStart": [
+    " M apps/pumpkin-api/Services/PageRevisionHelper.cs",
+    " M packages/pumpkin-ts-models/src/models/Page.ts",
+    "?? content-review/ice-ppec-home-contact-repair/ppec-rg-hits.txt"
+  ],
+  "currentGitStatusAfterRepair": [
+    "M apps/pumpkin-api/Services/PageRevisionHelper.cs",
+    " M packages/pumpkin-ts-models/src/models/Page.ts",
+    " M tools/import-preflight/import-preflight.mjs",
+    "?? content-review/ice-ppec-home-contact-repair/UPDATED_CONTACT_WITH_PPEC_CANDIDATE.json",
+    "?? content-review/ice-ppec-home-contact-repair/UPDATED_HOMEPAGE_WITH_PPEC_CANDIDATE.json",
+    "?? content-review/ice-ppec-home-contact-repair/UPDATED_HOME_CONTACT_WITH_PPEC_PACKAGE.json",
+    "?? content-review/ice-ppec-home-contact-repair/contact-ppec-import-preflight-result.json",
+    "?? content-review/ice-ppec-home-contact-repair/dotnet-updated-home-contact-ppec-result.json",
+    "?? content-review/ice-ppec-home-contact-repair/frontend-preview-route-check.json",
+    "?? content-review/ice-ppec-home-contact-repair/homepage-ppec-import-preflight-result.json",
+    "?? content-review/ice-ppec-home-contact-repair/manifest.json",
+    "?? content-review/ice-ppec-home-contact-repair/ppec-rg-hits.txt",
+    "?? content-review/ice-ppec-home-contact-repair/validator-generic-east-coast-negative-fixture.json",
+    "?? content-review/ice-ppec-home-contact-repair/validator-generic-east-coast-negative-preflight-result.json"
+  ],
+  "frontendPreview": [
+    {
+      "url": "http://localhost:3002/__preview/ice-rink-rentals/home",
+      "statusCode": 200,
+      "length": 28222,
+      "containsPartyProsEastCoast": false,
+      "containsPpec": false,
+      "note": "Raw HTML is the client-side JWT-gated draft preview shell."
+    },
+    {
+      "url": "http://localhost:3002/contact",
+      "statusCode": 200,
+      "length": 48799,
+      "containsPartyProsEastCoast": false,
+      "containsPpec": false,
+      "note": "Public contact route raw HTML, not authenticated draft readback."
+    },
+    {
+      "url": "http://localhost:5064/",
+      "statusCode": 200,
+      "length": 55,
+      "containsPartyProsEastCoast": false,
+      "containsPpec": false,
+      "note": "API root reachability only."
+    }
+  ]
+}

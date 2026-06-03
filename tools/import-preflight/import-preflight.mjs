@@ -53,6 +53,7 @@ const sectionVariants = new Set([
   'serviceAreaTeaser',
   'faqAccordion',
   'finalCta',
+  'partnerCta',
 ]);
 const formBlockVariants = new Set(['quote-form-panel', 'contact-card', 'inline-contact', 'compact-contact']);
 const knownDefaultFormKeys = new Set(['default-contact', 'default-quote-request']);
@@ -446,8 +447,11 @@ function validateProductionHomepageSections(report, page, rawJson) {
     fail(report, 'production-media-placement', 'Every mediaUseCaseGrid card must have a local /media image, alt text, and MediaAsset id.', 'media', 'CardGrid.content.cards', { badCardCount: badCards.length });
   }
 
-  if (/East Coast/i.test(rawJson)) {
-    warn(report, 'production-service-area-copy', 'Homepage copy includes East Coast wording; keep it in manual review before production approval.', 'content', 'payload');
+  const eastCoastUsage = analyzeEastCoastUsage(rawJson);
+  if (eastCoastUsage.hasUnapprovedEastCoastWording) {
+    fail(report, 'production-service-area-copy', 'Generic East Coast service-area wording requires explicit approval before production import.', 'content', 'payload', eastCoastUsage);
+  } else if (eastCoastUsage.hasPartnerBrandName) {
+    pass(report, 'production-service-area-copy', 'East Coast wording is limited to the Party Pros East Coast partner brand name.');
   } else {
     pass(report, 'production-service-area-copy', 'Service-area copy contains no East Coast wording.');
   }
@@ -455,6 +459,19 @@ function validateProductionHomepageSections(report, page, rawJson) {
   if (!report.issues.some((issue) => ['production-home-sections', 'production-media-placement', 'production-service-area-copy'].includes(issue.check) && issue.severity === 'error')) {
     pass(report, 'production-media-placement', 'Production homepage media placement contract passed.');
   }
+}
+
+function analyzeEastCoastUsage(rawJson) {
+  const partnerBrandPattern = /\bParty Pros East Coast\b/gi;
+  const hasPartnerBrandName = /\bParty Pros East Coast\b/i.test(rawJson);
+  const withoutApprovedPartnerBrand = rawJson.replace(partnerBrandPattern, '');
+  const remainingEastCoastMatches = withoutApprovedPartnerBrand.match(/\bEast Coast\b/gi) || [];
+
+  return {
+    hasPartnerBrandName,
+    hasUnapprovedEastCoastWording: remainingEastCoastMatches.length > 0,
+    unapprovedEastCoastMatchCount: remainingEastCoastMatches.length,
+  };
 }
 
 function validateCustomHtmlAndEmbeds(report, page) {
