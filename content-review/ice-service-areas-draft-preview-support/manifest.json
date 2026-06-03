@@ -1,0 +1,29 @@
+{
+  "package": "ice-service-areas-draft-preview-support",
+  "createdAt": "2026-06-03",
+  "site": "IceSkatingRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "previewUrl": "http://localhost:3002/__preview/ice-rink-rentals/service-areas",
+  "publicRoute": "http://localhost:3002/service-areas",
+  "scope": [
+    "frontend draft preview route",
+    "preview alias rewrite",
+    "preview documentation"
+  ],
+  "files": [
+    "README.md",
+    "DRAFT_PREVIEW_ROUTE.md",
+    "SERVICE_AREAS_PREVIEW_BEHAVIOR.md",
+    "MEDIA_PROXY_CHECK.md",
+    "PREVIEW_SECURITY_NOTES.md",
+    "FRONTEND_REVIEW_CHECKLIST.md",
+    "VALIDATION_RESULTS.md",
+    "manifest.json"
+  ],
+  "cmsWrites": false,
+  "themeUpdates": false,
+  "mediaAssetUpdates": false,
+  "staticGeneration": false,
+  "deployment": false,
+  "rollerTouched": false
+}

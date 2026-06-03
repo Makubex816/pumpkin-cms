@@ -4,14 +4,15 @@ import React, { FormEvent, useEffect, useMemo, useState } from 'react';
 import type { Page, Theme } from 'pumpkin-ts-models';
 import { PageRenderer } from '@/components/PageRenderer';
 
-const PREVIEW_TOKEN_STORAGE_KEY = 'pumpkin_ice_homepage_preview_jwt';
-
 type LoadStatus = 'idle' | 'loading' | 'ready' | 'blocked' | 'error';
 
 interface DraftPreviewClientProps {
   apiBaseUrl: string;
   fallbackTheme: Theme;
   pageSlug: string;
+  previewScope: string;
+  publicPath: string;
+  storageKey: string;
   tenantId: string;
 }
 
@@ -25,6 +26,9 @@ export function DraftPreviewClient({
   apiBaseUrl,
   fallbackTheme,
   pageSlug,
+  previewScope,
+  publicPath,
+  storageKey,
   tenantId,
 }: DraftPreviewClientProps) {
   const [tokenInput, setTokenInput] = useState('');
@@ -44,7 +48,7 @@ export function DraftPreviewClient({
   );
 
   useEffect(() => {
-    const storedToken = window.sessionStorage.getItem(PREVIEW_TOKEN_STORAGE_KEY);
+    const storedToken = window.sessionStorage.getItem(storageKey);
     if (storedToken) {
       setTokenInput(storedToken);
       void loadDraft(storedToken);
@@ -130,10 +134,10 @@ export function DraftPreviewClient({
         setTheme(fallbackTheme);
       }
 
-      window.sessionStorage.setItem(PREVIEW_TOKEN_STORAGE_KEY, trimmedToken);
+      window.sessionStorage.setItem(storageKey, trimmedToken);
       setPage(draftPage);
       setStatus('ready');
-      setMessage('Draft preview loaded. Public / remains published-only.');
+      setMessage(`Draft preview loaded. Public ${publicPath} remains published-only.`);
     } catch {
       setStatus('error');
       setMessage('Draft preview request failed before a CMS response was received.');
@@ -146,7 +150,7 @@ export function DraftPreviewClient({
   }
 
   function clearToken() {
-    window.sessionStorage.removeItem(PREVIEW_TOKEN_STORAGE_KEY);
+    window.sessionStorage.removeItem(storageKey);
     setTokenInput('');
     setPage(null);
     setStatus('idle');
@@ -161,7 +165,7 @@ export function DraftPreviewClient({
           <div>
             <p className="font-bold uppercase tracking-[0.12em]">Local draft preview</p>
             <p>
-              Ice homepage draft only. Noindex, no static export, no CMS writes, and public /
+              {previewScope}. Noindex, no static export, no CMS writes, and public {publicPath}
               remains unchanged.
             </p>
           </div>

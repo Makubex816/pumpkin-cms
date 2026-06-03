@@ -6,7 +6,7 @@ import { resolveStaticSiteDefinition } from '@/config/sites';
 import { getFallbackTheme } from '@/data';
 
 export const metadata: Metadata = {
-  title: 'Ice Homepage Draft Preview',
+  title: 'Ice Service Areas Draft Preview',
   robots: {
     index: false,
     follow: false,
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function IceHomepageDraftPreviewPage() {
+export default function IceServiceAreasDraftPreviewPage() {
   if (!isDraftPreviewEnabled()) {
     notFound();
   }
@@ -30,10 +30,10 @@ export default function IceHomepageDraftPreviewPage() {
     <DraftPreviewClient
       apiBaseUrl={getPreviewApiBaseUrl()}
       fallbackTheme={fallbackTheme}
-      pageSlug="home"
-      previewScope="Ice homepage draft only"
-      publicPath="/"
-      storageKey="pumpkin_ice_homepage_preview_jwt"
+      pageSlug="service-areas"
+      previewScope="Ice service areas draft only"
+      publicPath="/service-areas"
+      storageKey="pumpkin_ice_service_areas_preview_jwt"
       tenantId={site.tenantId || 'ice-rink-rentals'}
     />
   );

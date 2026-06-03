@@ -35,16 +35,22 @@ const nextConfig = {
       }
     : {}),
   async rewrites() {
-    const previewRewrite = {
-      source: '/__preview/ice-rink-rentals/home',
-      destination: '/draft-preview/ice-rink-rentals/home',
-    };
+    const previewRewrites = [
+      {
+        source: '/__preview/ice-rink-rentals/home',
+        destination: '/draft-preview/ice-rink-rentals/home',
+      },
+      {
+        source: '/__preview/ice-rink-rentals/service-areas',
+        destination: '/draft-preview/ice-rink-rentals/service-areas',
+      },
+    ];
 
-    if (!isMediaProxyEnabled) return [previewRewrite];
+    if (!isMediaProxyEnabled) return previewRewrites;
 
     const pumpkinApiUrl = getPumpkinApiUrl();
     return [
-      previewRewrite,
+      ...previewRewrites,
       {
         source: '/media/ice-rink-rentals/:path*',
         destination: `${pumpkinApiUrl}/media/ice-rink-rentals/:path*`,
