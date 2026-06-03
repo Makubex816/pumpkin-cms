@@ -1,0 +1,102 @@
+{
+  "task": "ice-local-visual-qa",
+  "generatedAt": "2026-06-03",
+  "site": "IceSkatingRinkRentals.com",
+  "repo": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms",
+  "branch": "feature/admin-page-editor-import-export",
+  "rollerPaused": true,
+  "nonMutating": true,
+  "cmsWritesPerformed": false,
+  "importsPerformed": false,
+  "themeWritesPerformed": false,
+  "mediaAssetWritesPerformed": false,
+  "staticGenerationPerformed": false,
+  "deploymentPerformed": false,
+  "protectedConfigRead": false,
+  "imageToolsUsed": false,
+  "screenshotsUsed": false,
+  "localServices": [
+    {
+      "url": "http://localhost:5064",
+      "status": 200,
+      "responseLength": 55,
+      "result": "reachable"
+    },
+    {
+      "url": "http://localhost:3002",
+      "status": 200,
+      "responseLength": 34131,
+      "result": "reachable"
+    }
+  ],
+  "routes": [
+    {
+      "url": "http://localhost:3002/__preview/ice-rink-rentals/home",
+      "purpose": "local draft homepage preview",
+      "status": 200,
+      "responseLength": 28660,
+      "expected": true,
+      "manualBrowserReviewRequired": true,
+      "notes": "Client preview shell; browser needs local admin JWT to load draft payload."
+    },
+    {
+      "url": "http://localhost:3002/contact",
+      "purpose": "local contact page",
+      "status": 200,
+      "responseLength": 48799,
+      "expected": true,
+      "manualBrowserReviewRequired": true
+    },
+    {
+      "url": "http://localhost:3002/service-areas",
+      "purpose": "unchanged out-of-scope route check",
+      "status": 404,
+      "expected": true,
+      "manualBrowserReviewRequired": false
+    }
+  ],
+  "artifacts": {
+    "homepageReadback": "content-review/ice-ppec-visual-brand-repair/homepage-readback-after-ppec-visual-repair.json",
+    "contactReadback": "content-review/ice-ppec-home-contact-local-draft-import/contact-readback-after-ppec-import.json"
+  },
+  "homepageMarkers": {
+    "previewRouteHttp200": true,
+    "previewRouteIsClientShell": true,
+    "partyProsEastCoast": true,
+    "ppecPartnerSection": true,
+    "ppecLogoMediaAssetId": "ice-rink-rentals-ppec-wordmark-card-d28c10b570d1",
+    "ppecLogoPersists": true,
+    "ppecCopyCtaPersists": true,
+    "selectedMailboxPersists": "contact@iceskatingrinkrentals.com",
+    "publicEmailDisplayPolicyPersists": "form-first-under-review",
+    "contactusAbsent": true,
+    "officialHomepageMediaAssetIdsPresent": true,
+    "productionRenderVariantsPresent": true
+  },
+  "contactMarkers": {
+    "routeHttp200": true,
+    "contactContentAvailable": true,
+    "formBlockOrDefaultQuoteMarkerDetected": true,
+    "rawCf7RuntimeDetected": false,
+    "contactusAbsent": true,
+    "selectedMailboxPersists": "contact@iceskatingrinkrentals.com",
+    "publicEmailDisplayPolicyPersists": "form-first-under-review"
+  },
+  "readiness": {
+    "homepageReadyForUserVisualApproval": true,
+    "contactReadyForUserVisualApproval": true,
+    "serviceAreasUnchangedOr404": true,
+    "nextRecommendedAction": "User visual approval in the local browser."
+  },
+  "hygieneChecks": {
+    "manifestJsonParse": "pass",
+    "gitDiffCheck": "pass",
+    "trailingWhitespaceScan": "pass",
+    "protectedGeneratedRawArtifactPathCheck": "pass",
+    "targetedSecretScan": "pass",
+    "cmsWrites": "none",
+    "staticGeneration": "none",
+    "deployment": "none"
+  }
+}
+
