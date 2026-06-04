@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "checks": {
+    "formBlockPresent": true,
+    "formKey": true,
+    "sourcePage": true,
+    "staticEndpointRef": true,
+    "leadRecipientRef": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "noRealEmailSending": true,
+    "noLegacyMailbox": true
+  },
+  "failed": []
+}

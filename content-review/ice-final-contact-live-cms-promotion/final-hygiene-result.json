@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "results": {
+    "gitDiffCheck": {
+      "ok": true,
+      "status": 0,
+      "signal": null,
+      "stdout": "",
+      "stderr": ""
+    },
+    "nodeCheckRunner": {
+      "ok": true,
+      "status": 0,
+      "signal": null,
+      "stdout": "",
+      "stderr": ""
+    },
+    "trailingWhitespaceScan": {
+      "ok": true,
+      "hits": []
+    },
+    "protectedGeneratedRawArtifactPathCheck": {
+      "ok": true,
+      "protectedHits": [],
+      "generatedHits": [],
+      "rawHits": [],
+      "allowedReferenceRaw": [
+        "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/CorporateIceRinkRentalEvent.png",
+        "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/HolidayIceRink.png",
+        "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceRinkRentalsSetup.png",
+        "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceSkatingRinkRentalsLogo.png",
+        "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/WinterFestIceRinkRentals.png",
+        "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/ppec-wordmark-card-preview.png",
+        "content-review/ice-final-contact-input/ice-contact-page-phase9e-visual-pumpkin-rewrite.zip",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/corporate.webp",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/hero.webp",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/holiday.webp",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/logo.png",
+        "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/setup.webp",
+        "content-review/ice-service-areas-input/ice-service-areas-phase11b-production-polish.zip"
+      ]
+    },
+    "targetedSecretScan": "[redacted]",
+    "stagedArtifactCheck": {
+      "ok": true,
+      "stagedCount": 0,
+      "raw": [],
+      "extracted": [],
+      "statics": []
+    }
+  },
+  "failed": []
+}

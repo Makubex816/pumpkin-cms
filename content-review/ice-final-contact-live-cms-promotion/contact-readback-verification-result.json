@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "checks": {
+    "httpOk": true,
+    "routeContact": true,
+    "livePublishedState": true,
+    "workflowPublishedApproved": true,
+    "staticNeedsRebuildTrue": true,
+    "revisionIncrementedOrRollback": true,
+    "rollbackMetadataExists": true,
+    "formBlockPresent": true,
+    "formKey": true,
+    "sourcePage": true,
+    "staticEndpointRef": true,
+    "leadRecipientRef": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "mediaAssetIdsPersist": true,
+    "noLegacyMailbox": true,
+    "noRawCf7WordPress": true,
+    "noRealEmailSending": true
+  },
+  "failed": [],
+  "revision": {
+    "beforeRevision": 17,
+    "afterRevision": 18,
+    "hasRevision": true,
+    "hasRollback": true
+  }
+}

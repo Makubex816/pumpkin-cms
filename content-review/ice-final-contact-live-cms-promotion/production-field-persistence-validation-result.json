@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-06-04T02:51:06.787Z",
+  "ok": true,
+  "checks": {
+    "routeContact": true,
+    "livePublishedState": true,
+    "workflowPublishedApproved": true,
+    "approvalMetadataPresent": true,
+    "staticEligibleTrue": true,
+    "staticNeedsRebuildTrue": true,
+    "formBlockPresent": true,
+    "formKey": true,
+    "sourcePage": true,
+    "staticEndpointRef": true,
+    "leadRecipientRef": true,
+    "selectedMailbox": true,
+    "publicEmailDisplayPolicy": true,
+    "contactMediaIdsPersist": true,
+    "noLegacyMailbox": true,
+    "noRawCf7WordPress": true,
+    "noRealEmailSending": true,
+    "noStateCityCreated": true
+  },
+  "failed": []
+}
