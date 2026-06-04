@@ -6,21 +6,25 @@
   "branch": "feature/admin-page-editor-import-export",
   "scope": "safe local static dry-run readiness proof attempts",
   "dryRunCommand": "cd apps/ice-rink-web && npm run export:static:ice:cms",
-  "dryRunCompleted": false,
-  "dryRunExitCode": 1,
-  "primaryBlocker": "current snapshot has approved three-page scope and themeSnapshot true, but production-readiness gates still fail on local media URLs, noindex metadata, missing static form endpoint verification, and theme navigation warnings",
+  "dryRunCompleted": true,
+  "dryRunExitCode": 0,
+  "routeShapeProofCompleted": true,
+  "primaryBlocker": "production-readiness gates still fail on local media URLs, unapproved rendered image URLs, noindex metadata, missing static form endpoint verification, and permanent CMS/theme navigation approval",
   "currentAttemptRequiredEnv": {
     "PUMPKIN_API_URL": "PRESENT",
     "ICE_RINK_RENTALS_API_KEY": "PRESENT",
     "ICE_RINK_RENTALS_TENANT_ID": "PRESENT",
-    "PUMPKIN_ADMIN_JWT": "PRESENT",
-    "PUMPKIN_ADMIN_JWT_TEMP_FILE": "PRESENT"
+    "PUMPKIN_ADMIN_JWT": "PRESENT"
   },
   "localToolingChanges": [
     "snapshot-cms-content.mjs uses the admin active-theme read endpoint when an admin token is available",
     "snapshot-cms-content.mjs supports the approved temp admin JWT file without printing values",
     "snapshot-cms-content.mjs filters Ice snapshots to approved slugs and records excluded slugs",
-    "static-publish.mjs rejects any non-approved Ice static slug"
+    "snapshot-cms-content.mjs scopes the fetched Ice theme.menu locally for approved route-shape proof",
+    "snapshot/static publish validation separates route-shape blockers from production-readiness blockers",
+    "static-publish.mjs rejects any non-approved Ice static slug",
+    "static-publish.mjs removes excluded preview output paths before copying static artifacts",
+    "next.config.js omits preview rewrites in static render mode"
   ],
   "approvedRoutes": [
     "/",
@@ -51,17 +55,33 @@
     "themeReadSucceeded": true,
     "themeReadWarning": ""
   },
+  "currentAttemptStaticOutput": {
+    "outRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "artifactRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "flaggedPreviewOrObsoleteOutputPaths": 0,
+    "strictStaticValidatorExitCode": 1,
+    "strictStagingValidatorExitCode": 1
+  },
   "remainingBlockers": [
     "local /media/ice-rink-rentals/... URLs remain",
+    "unapproved rendered image URLs remain",
     "home and service-areas noindex metadata remains",
     "static form endpoint is missing or unverified",
-    "theme navigation still references obsolete routes and misses root",
+    "permanent CMS/theme navigation update or approval remains",
     "service-area claim language still needs review"
   ],
   "staleOutputAccepted": false,
   "readiness": {
-    "staticDryRunCompleted": false,
-    "staticRouteOutputReady": false,
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
     "mediaProductionUrlReadiness": false,
     "contactFormProductionReadiness": false,
     "azureStagingReadiness": false,

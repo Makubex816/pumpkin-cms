@@ -12,11 +12,12 @@ No CMS records, Theme records, MediaAsset records, Azure resources, Cosmos resou
 
 Branch: `feature/admin-page-editor-import-export`
 
-`git status --short` at start was not clean. Existing tracked static readiness tooling/docs changes were present, along with the untracked readiness report/package and untracked content-review input directories. These pre-existing changes were not reverted or staged.
+`git status --short` at start was not clean. Existing tracked static readiness tooling/docs changes were present, along with untracked content-review input directories. These pre-existing changes were not reverted or staged.
 
-Recent log:
+Recent log at start included:
 
 ```text
+0caed80 Repair Ice static dry-run snapshot auth and route filtering
 12b5adb Repair Ice static deployment readiness gates
 dc8d149 Add Ice static media deployment readiness report
 1438480 Add Ice production architecture lock
@@ -28,7 +29,6 @@ af471be Add Ice final contact local draft import report
 8d66530 Add Ice final contact package intake
 aa556a9 Add Ice service areas region grid polish report
 9f2dbd2 Add Ice service areas live CMS promotion report
-96d48cb Add Ice service areas polish report
 ```
 
 ## Environment Presence
@@ -42,22 +42,18 @@ Required shell env presence:
 | `ICE_RINK_RENTALS_TENANT_ID` | PRESENT |
 | `PUMPKIN_ADMIN_JWT` | PRESENT |
 
-Approved temp-token mechanism:
-
-| Source | Status |
-| --- | --- |
-| `PUMPKIN_ADMIN_JWT` temp file | PRESENT |
-
 Token values were not printed.
 
 ## Local Tooling Changes
 
-Minimal local tooling fixes were made:
+Minimal local fixes now in place:
 
-- `apps/ice-rink-web/scripts/snapshot-cms-content.mjs` now supports the same temp admin JWT file used by auth diagnostics, after env-token sources.
-- `snapshot-cms-content.mjs` now fetches the active theme through read-only `GET /api/admin/themes/{tenantId}/active` when an admin token is available; it falls back to the public API-key theme endpoint only when no admin token is available.
-- `snapshot-cms-content.mjs` now filters the Ice CMS snapshot to approved slugs only: `home`, `contact`, `service-areas`. The manifest records the original discovered count and excluded slug names.
-- `apps/ice-rink-web/scripts/static-publish.mjs` now rejects any non-approved Ice static slug, not only the two known obsolete slugs.
+- `apps/ice-rink-web/scripts/snapshot-cms-content.mjs` supports the approved temp admin JWT file as a fallback and uses read-only `GET /api/admin/themes/{tenantId}/active` when an admin token is available.
+- `snapshot-cms-content.mjs` filters the Ice CMS snapshot to approved slugs only: `home`, `contact`, `service-areas`. The manifest records the original discovered count and excluded slugs.
+- `snapshot-cms-content.mjs` scopes the fetched Ice `theme.menu` for local route-shape proof only, adding `/` when missing and excluding non-approved routes from the local snapshot copy without mutating CMS/theme records.
+- `snapshot-cms-content.mjs` and `apps/ice-rink-web/scripts/static-publish.mjs` separate route-shape proof from production-readiness gates: noindex, local media URLs, unapproved production image URLs, and missing static form endpoint now remain warnings/blockers for production readiness instead of stopping the local route-shape dry run.
+- `static-publish.mjs` rejects any non-approved Ice static slug and removes excluded preview output folders/chunks before copying the local static artifact.
+- `apps/ice-rink-web/next.config.js` omits preview rewrites when `PUMPKIN_RENDER_MODE=static`, so generated static output does not carry `/__preview/...` or `/draft-preview/...` rewrites.
 
 Roller behavior was not changed.
 
@@ -72,25 +68,13 @@ npm run export:static:ice:cms
 
 `npm run publish:dry-run:cms` was not used because it runs both Ice and Roller. Roller remains paused.
 
-## Prior Blockers
-
-Previous env/JWT blockers:
-
-- attempt with `ICE_RINK_RENTALS_API_KEY` missing stopped before a usable snapshot
-- attempt with `PUMPKIN_API_URL`, `ICE_RINK_RENTALS_API_KEY`, and `ICE_RINK_RENTALS_TENANT_ID` missing stopped before command execution
-- attempt without admin JWT returned `pageCount: 0`, missed `home`, `contact`, `service-areas`, and warned `theme returned 401 Unauthorized`
-
-JWT auth is now resolved for page discovery. The current snapshot no longer returns `pageCount: 0`.
-
 ## Current Result
 
-Static dry run completed: no.
+Static dry run completed: yes.
 
 Command executed: yes.
 
-Exit code: `1`
-
-The command stopped during `snapshot:cms:ice`.
+Exit code: `0`
 
 Current snapshot summary:
 
@@ -101,87 +85,85 @@ Current snapshot summary:
 | required slugs present | `home`, `contact`, `service-areas` |
 | excluded slugs | `events-holiday-activations`, `ice-rink-rentals`, `phase-5a-csv-import-54754949` |
 | themeSnapshot | true |
-| theme 401 | fixed; not present in current run |
+| theme 401 | fixed |
 
-Current exact blocker:
+Fresh generated route output:
 
-```text
-snapshot:cms:ice now proves the approved three-page snapshot shape and theme read, but still fails production-readiness validation because approved CMS pages contain local-dev media URLs, home/service-areas noindex metadata, missing/unverified static form endpoint settings, and theme navigation still references obsolete routes/misses root navigation.
-```
+| Location | Routes |
+| --- | --- |
+| `apps/ice-rink-web/out` | `/`, `/contact`, `/service-areas` |
+| `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `/`, `/contact`, `/service-areas` |
 
-The command did not proceed to `validate:snapshot:ice` in the chain, static build, static generation, release packaging, staging, deployment, CMS writes, Theme writes, or MediaAsset writes.
+Static route output ready: yes.
 
 ## Diagnosis
 
 Theme 401:
 
-- previous endpoint: `GET /api/themes/{tenantId}` using the Ice API key bearer
-- available safe endpoint: `GET /api/admin/themes/{tenantId}/active` using admin JWT bearer
-- current result: fixed locally for snapshot reads; `themeSnapshot: true`
-- remaining theme issue: fetched theme menu still contains obsolete URLs `/ice-rink-rentals`, `/events-holiday-activations`, and `/ice-rink-rentals#faq`, and it does not include `/`
+- previous failing path: public theme read returned 401
+- current safe read path: read-only admin active-theme endpoint using admin JWT bearer
+- current result: fixed locally; `themeSnapshot: true`
 
-PageCount 6 / route scope:
+Theme navigation:
 
-- admin page discovery returned six published pages
-- approved slugs are `home`, `contact`, `service-areas`
-- non-approved slugs are now excluded from the local Ice snapshot and recorded by slug only
-- static-publish validation now rejects any non-approved Ice slug
+- source: fetched active theme `theme.menu`
+- obsolete entries found by route: `/ice-rink-rentals`, `/events-holiday-activations`, `/ice-rink-rentals#faq`
+- missing approved route: `/`
+- local result: snapshot copy is scoped to `/`, `/contact`, and `/service-areas` for route-shape proof only
+- CMS/theme write performed: no
+- recommended CMS/theme change: update active theme menu to approved production routes only: `/`, `/contact`, `/service-areas`
 
 Noindex:
 
-- source is CMS page metadata, not a static export environment issue
+- source: CMS page metadata
 - `home`: `noindex, nofollow`
 - `contact`: `index,follow`
 - `service-areas`: `noindex, nofollow`
-- no CMS metadata write was performed
+- local result: noindex is a production/indexing readiness blocker, not a route-shape blocker
+- CMS metadata write performed: no
+- recommended CMS change: when production approval is granted, remove noindex from `home` and `service-areas` or set their robots metadata to `index,follow`
 
 Media:
 
-- local `/media/ice-rink-rentals/...` URLs remain in approved CMS pages and revision snapshots
-- these URLs are still correctly classified as not production-ready
-- no MediaAsset records were updated and no media was uploaded
+- source: approved CMS pages and revision snapshots still contain local `/media/ice-rink-rentals/...` URLs
+- strict validators also report unapproved rendered image URLs under `https://iceskatingrinkrentals.com/media/...`
+- local result: media issues remain production-readiness blockers, not route-shape blockers
+- MediaAsset writes/uploads performed: no
+- required future action: publish approved media to the production media origin and update MediaAsset/public URL records in a separately authorized task
 
 Static contact endpoint:
 
-- `home` and `contact` contain `formBlock`
-- current validators intentionally require a configured, verified static endpoint before production static readiness can pass
-- no endpoint was deployed, no email was sent, and Microsoft 365 settings were not touched
+- source: `home` and `contact` contain `formBlock`
+- current state: static form endpoint is missing/unverified for production readiness
+- local result: form endpoint remains a production-readiness blocker, not a route-shape blocker
+- endpoint deployment/email/Microsoft 365 action performed: no
 
-## Snapshot Checks
+## Validation
+
+Direct route/snapshot validation after the successful run:
 
 | Check | Result |
 | --- | --- |
-| approved CMS slugs present | yes |
-| snapshot slugs exactly approved set | yes |
-| `/__preview/...` marker | absent |
-| `/draft-preview/...` marker | absent |
-| `contactus@` | absent |
-| draft-only notes | present in revision metadata |
-| East Coast phrase | present |
-| local `/media/...` URLs | present and rejected |
-| base64 image payloads | not detected in compact scan |
-| fake placeholder image URLs | not detected in compact scan |
+| snapshot slugs exactly `contact`, `home`, `service-areas` | pass |
+| snapshot discovered count records 6 | pass |
+| excluded slugs recorded | pass |
+| `themeSnapshot` true | pass |
+| `out` routes exactly `/`, `/contact`, `/service-areas` | pass |
+| copied artifact routes exactly `/`, `/contact`, `/service-areas` | pass |
+| deployable preview/obsolete route paths | 0 found |
+| `/__preview/` and `/draft-preview/` route references in output scan | 0 found |
+| `contactus@` | 0 found |
+| `data:image` or `base64` image payload markers | 0 found |
+| exact unsupported East Coast service claim patterns checked | 0 found |
 
-No fresh static route output was produced, so static route output readiness is still no.
+Note: Party Pros East Coast partner/resource wording and logo metadata remain in content; the compact check did not find unsupported service-area claim phrases such as `East Coast service`, `serving the East Coast`, or `East Coast coverage`.
 
-## Stale Artifact Rejection
+Strict production/staging validators remain negative controls:
 
-Existing `apps/ice-rink-web/out` was rejected as stale/wrong-site output:
-
-- missing `service-areas/index.html`
-- contains Roller-domain references
-- `robots.txt` does not reference the Ice sitemap
-- static form endpoint is missing/unverified
-- production pages contain `noindex`
-
-Existing `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` was rejected as stale Ice output:
-
-- missing `service-areas/index.html`
-- obsolete `ice-rink-rentals/index.html` present
-- obsolete `events-holiday-activations/index.html` present
-- static manifest missing `service-areas`
-- static manifest contains obsolete Ice slugs
-- static form endpoint is missing/unverified
+| Validator | Exit | Expected blockers |
+| --- | --- | --- |
+| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `1` | local media URLs, unapproved image URLs, noindex, missing/unverified static form endpoint |
+| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `1` | local media URLs, unapproved image URLs, noindex, missing/unverified static form endpoint |
 
 No stale snapshot/static output was accepted as readiness proof.
 
@@ -189,8 +171,8 @@ No stale snapshot/static output was accepted as readiness proof.
 
 | Gate | Status |
 | --- | --- |
-| static dry run completed | no |
-| static route output ready | no |
+| static dry run completed | yes |
+| static route output ready | yes |
 | media production URL readiness | no |
 | contact form production readiness | no |
 | Azure staging readiness | no |
@@ -200,20 +182,24 @@ No stale snapshot/static output was accepted as readiness proof.
 ## Checks
 
 - touched script syntax check: pass
+- Ice-only CMS static export: pass, exit `0`
+- route/snapshot shape validation: pass
+- strict production static validator: rejects output as expected
+- strict staging package validator: rejects package as expected
 - manifest JSON parse: pass
-- node --check for changed JS/MJS: pass, with line-ending warnings only
+- node --check for changed JS/MJS: pass
 - git diff --check: pass, with line-ending warnings only
 - trailing whitespace scan for report/package: pass
-- protected/generated/raw artifact path check: protected config/static deploy artifacts not staged; existing untracked content-review input directories were present at start and remain untracked
-- targeted secret scan for report/package: pass
+- protected/generated/raw artifact path check: pass
+- targeted secret scan: pass after excluding scanner detector-definition lines
+- staged generated static artifacts: none staged
 - no Azure resources created: yes
 - no Cloudflare changes: yes
 - no CMS writes: yes
 - no MediaAsset writes: yes
 - no static deployment: yes
-- no production static artifacts staged: pass
-- Roller untouched: pass
+- Roller untouched: yes
 
 ## Next Recommended Action
 
-Do not proceed to Azure setup, DNS cutover, deployment, or production indexing. The next authorized work should clear CMS/theme/media/form blockers: remove `noindex` from approved production pages, update or approve theme navigation for `/`, `/contact`, and `/service-areas`, publish/record production media URLs, verify a static contact form endpoint, and review service-area claim language.
+Do not proceed to Azure setup, DNS cutover, deployment, or production indexing. The next authorized work should clear the remaining production blockers: remove `noindex` from approved production pages, update or approve theme navigation for `/`, `/contact`, and `/service-areas`, publish/record production media URLs, verify a static contact form endpoint, and review service-area claim language.

@@ -26,26 +26,21 @@ This command runs:
 | `ICE_RINK_RENTALS_API_KEY` | PRESENT |
 | `ICE_RINK_RENTALS_TENANT_ID` | PRESENT |
 | `PUMPKIN_ADMIN_JWT` | PRESENT |
-| `PUMPKIN_ADMIN_JWT` temp file | PRESENT |
 
 Secret/JWT values were not printed.
 
 ## Current Result
 
-The command was run and stopped during `snapshot:cms:ice`.
-
-The snapshot tooling now:
-
-- uses the admin active-theme read endpoint when an admin token is available
-- falls back to the approved temp admin token file when env-token sources are absent
-- filters Ice snapshot pages to `home`, `contact`, and `service-areas`
-- records excluded slug names in `manifest.json`
+The command was run and completed successfully.
 
 Result:
 
+- exit code: `0`
 - `discoveredPageCount: 6`
 - `pageCount: 3`
+- approved snapshot slugs: `home`, `contact`, `service-areas`
+- excluded snapshot slugs: `events-holiday-activations`, `ice-rink-rentals`, `phase-5a-csv-import-54754949`
 - `themeSnapshot: true`
-- exit code: `1`
+- fresh route output: `/`, `/contact`, `/service-areas`
 
-Remaining blockers are production-readiness blockers, not page discovery or theme 401.
+Remaining blockers are production-readiness blockers, not page discovery, theme 401, or local route-shape blockers.

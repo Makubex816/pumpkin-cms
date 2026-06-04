@@ -2,7 +2,9 @@
 
 ## Fresh Dry Run
 
-No fresh sitemap or robots output was produced because the Ice-only command stopped during `snapshot:cms:ice` before static build/generation.
+Fresh sitemap and robots output was produced by the successful local static export.
+
+Route-shape proof passed, but production/indexing readiness remains blocked by CMS robots metadata.
 
 ## Current CMS Metadata
 
@@ -16,12 +18,14 @@ Approved-page robots metadata in the fresh snapshot:
 
 Noindex is coming from CMS page metadata. No CMS metadata write was performed.
 
-## Existing Stale Output
+Recommended CMS metadata change: when production approval is granted, set `home` and `service-areas` robots metadata to `index,follow` or otherwise clear their noindex controls.
 
-Existing stale output was rejected and is not usable as sitemap/robots proof.
+## Strict Validator Result
+
+Strict production/staging validators still reject the generated output for noindex, along with media and form endpoint blockers.
 
 ## Readiness
 
-Sitemap/robots output ready: no.
+Sitemap/robots route output proof: yes.
 
 Production/indexing readiness: no.

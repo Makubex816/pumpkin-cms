@@ -1,35 +1,21 @@
 # Remaining Blockers
 
-## Before Static Dry Run Completion
+## Local Route-Shape Proof
 
-- Clear production media URL blockers:
-  - approved pages still use local `/media/ice-rink-rentals/...` URLs
-- Clear CMS robots metadata blockers:
-  - `home` is `noindex, nofollow`
-  - `service-areas` is `noindex, nofollow`
-- Clear static contact form endpoint blockers:
-  - endpoint is missing
-  - backend verification flag is missing
-- Clear theme navigation blockers:
-  - obsolete URLs remain in theme menu
-  - root `/` is missing from expected primary navigation
+Cleared:
 
-## Before Static Route Output Ready
-
-- Produce a fresh static output after snapshot validation passes.
-- Confirm route output is exactly:
-  - `/`
-  - `/contact`
-  - `/service-areas`
-- Confirm obsolete route folders are absent.
-- Confirm preview routes are absent.
-- Reject stale output if it still contains wrong-domain, missing-route, obsolete-route, or form-readiness failures.
+- Ice-only static command exits `0`
+- approved CMS snapshot slugs are exactly `home`, `contact`, `service-areas`
+- fresh route output is exactly `/`, `/contact`, `/service-areas`
+- preview and obsolete route folders are absent from deployable output
+- theme 401 is fixed
 
 ## Before Media Production Readiness
 
-- Publish approved media binaries to the planned Blob/Cloudflare path in a separately authorized task.
+- Publish approved media binaries to the planned production media origin in a separately authorized task.
 - Update MediaAsset production public URLs in a separately authorized CMS/media task.
 - Confirm no local `/media/...` URLs remain in snapshot or static output.
+- Confirm no unapproved rendered image URLs remain.
 
 ## Before Contact Form Production Readiness
 
@@ -39,11 +25,24 @@
 
 ## Before Production Indexing
 
-- Remove `noindex` from approved production-intended CMS pages in a separately authorized CMS metadata task.
-- Review and clear broad East Coast service-area claim language in a separately authorized CMS content task.
+- Remove `noindex` from approved production-intended CMS pages in a separately authorized CMS metadata task:
+  - `home`
+  - `service-areas`
+- Review and clear service-area claim language in a separately authorized CMS content task.
 - Regenerate and validate sitemap/robots after metadata changes.
+
+## Before Permanent Theme Navigation Readiness
+
+- Update or approve active CMS/theme navigation so production primary navigation includes only:
+  - `/`
+  - `/contact`
+  - `/service-areas`
+- Remove obsolete theme menu entries for:
+  - `/ice-rink-rentals`
+  - `/events-holiday-activations`
+  - `/ice-rink-rentals#faq`
 
 ## Before Azure Staging
 
-- Clear route, media, form, and indexing gates.
+- Clear media, form, noindex, and permanent theme navigation gates.
 - Create Azure staging resources only after explicit authorization.

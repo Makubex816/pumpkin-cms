@@ -16,7 +16,7 @@ Required CMS slugs:
 
 ## Current Snapshot
 
-The current CMS discovery returned six pages. The local Ice snapshot now filters to the approved slugs only:
+The current CMS discovery returned six pages. The local Ice snapshot filters to the approved slugs only:
 
 - `home`
 - `contact`
@@ -28,44 +28,36 @@ Excluded discovered slugs:
 - `ice-rink-rentals`
 - `phase-5a-csv-import-54754949`
 
-All three approved slugs are published, approved for publish, and included in sitemap metadata.
+All three approved slugs are published and present in the local snapshot.
 
 ## Fresh Static Output
 
-No fresh static route output was produced. The command stopped during `snapshot:cms:ice` before static build/generation.
+Fresh route output was produced by `npm run export:static:ice:cms`.
 
-Static route output ready: no.
+| Location | Routes |
+| --- | --- |
+| `apps/ice-rink-web/out` | `/`, `/contact`, `/service-areas` |
+| `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `/`, `/contact`, `/service-areas` |
 
-## Snapshot Content Checks
+Static route output ready: yes.
+
+## Output Checks
 
 | Check | Result |
 | --- | --- |
 | snapshot slugs exactly approved set | yes |
+| static output routes exactly approved set | yes |
+| copied artifact routes exactly approved set | yes |
+| deployable preview/obsolete route paths | 0 found |
+| `/__preview/` route references | 0 found |
+| `/draft-preview/` route references | 0 found |
 | `contactus@` | absent |
-| preview route markers | absent |
-| draft-only notes in revision metadata | present |
-| `noindex` on approved pages | present on `home` and `service-areas` |
-| East Coast wording | present |
-| local `/media/...` URLs | present |
-| base64 image payloads | not detected in compact scan |
-| fake placeholder image URLs | not detected in compact scan |
+| `data:image` markers | absent |
+| `base64` image payload markers | absent |
+| exact unsupported East Coast service claim patterns | absent |
 
-## Existing Stale Output
+Party Pros East Coast partner/resource wording remains in content and logo metadata; the compact check found no unsupported service-area claim phrases such as `East Coast service`, `serving the East Coast`, or `East Coast coverage`.
 
-`apps/ice-rink-web/out` was rejected as stale/wrong-site output:
+## Stale Output
 
-- missing `service-areas/index.html`
-- contains Roller-domain references
-- static form endpoint missing/unverified
-- noindex present
-
-`apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` was rejected as stale Ice output:
-
-- missing `service-areas/index.html`
-- obsolete `ice-rink-rentals/index.html` present
-- obsolete `events-holiday-activations/index.html` present
-- static manifest missing `service-areas`
-- static manifest contains obsolete Ice slugs
-- static form endpoint missing/unverified
-
-No stale output was accepted.
+No stale output was accepted. The current route proof came from the fresh successful export.

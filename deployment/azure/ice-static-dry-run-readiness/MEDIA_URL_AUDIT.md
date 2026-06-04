@@ -1,24 +1,30 @@
 # Media URL Audit
 
-## Fresh Snapshot
+## Current Snapshot And Output
 
-The current approved three-page snapshot still contains local-dev media URLs:
+The approved three-page snapshot and generated static output still contain local-dev media URLs:
 
 ```text
 /media/ice-rink-rentals/...
 ```
 
-The validator correctly classifies these as not production-ready. Expected production media origin:
+Strict validators also report unapproved rendered image URLs under:
+
+```text
+https://iceskatingrinkrentals.com/media/...
+```
+
+Expected production media origin remains:
 
 ```text
 https://media.iceskatingrinkrentals.com
 ```
 
-The compact snapshot scan did not detect base64 image payloads or fake placeholder image URLs.
+The compact output scan did not detect `data:image` markers or `base64` image payload markers.
 
-## Fresh Static Output
+## Policy Result
 
-No fresh static output was produced, so no generated media URL pass exists.
+Media URL problems do not block the local route-shape proof. They do block production media readiness, Azure staging readiness, and production deployment readiness.
 
 ## Readiness
 

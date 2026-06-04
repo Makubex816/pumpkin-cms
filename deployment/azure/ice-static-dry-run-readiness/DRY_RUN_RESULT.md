@@ -15,16 +15,17 @@ npm run export:static:ice:cms
 | 2 | no | preflight stopped because `PUMPKIN_API_URL`, `ICE_RINK_RENTALS_API_KEY`, and `ICE_RINK_RENTALS_TENANT_ID` were missing |
 | 3 | yes | exit `1`; `pageCount: 0`, missing `home`, `contact`, `service-areas`, Admin JWT not provided, theme 401 |
 | 4 | yes | exit `1`; `pageCount: 6`, required slugs present, theme 401, obsolete/extra slugs present |
+| 5 | yes | exit `1`; approved snapshot/theme read fixed, but production-readiness gates still blocked local route proof |
 
 ## Current Outcome
 
-Dry run completed: no.
+Dry run completed: yes.
 
 Command executed: yes.
 
-Exit code: `1`.
+Exit code: `0`.
 
-The command stopped during `snapshot:cms:ice`.
+The command completed `snapshot:cms:ice`, `validate:snapshot:ice`, `build:static:ice:cms`, and `static-publish.mjs generate`.
 
 Current snapshot:
 
@@ -37,10 +38,13 @@ Current snapshot:
 | themeSnapshot | true |
 | theme 401 | fixed |
 
-Blocker:
+Fresh static output:
 
-```text
-snapshot:cms:ice fails production-readiness validation because approved pages still contain local-dev media URLs, home/service-areas noindex metadata, missing/unverified static form endpoint settings, and theme navigation warnings.
-```
+| Location | Routes |
+| --- | --- |
+| `apps/ice-rink-web/out` | `/`, `/contact`, `/service-areas` |
+| `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `/`, `/contact`, `/service-areas` |
 
-The command did not proceed to static build, static generation, release packaging, staging, deployment, CMS writes, Theme writes, or MediaAsset writes.
+Strict production/staging validators still exit `1`, as expected, because production readiness remains blocked by media URLs, unapproved rendered image URLs, noindex metadata, and missing/unverified static form endpoint.
+
+No staging, deployment, CMS writes, Theme writes, MediaAsset writes, email, or Microsoft 365 actions were performed.

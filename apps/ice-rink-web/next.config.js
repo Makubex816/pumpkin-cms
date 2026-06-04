@@ -35,6 +35,8 @@ const nextConfig = {
       }
     : {}),
   async rewrites() {
+    if (isStaticRenderMode) return [];
+
     const previewRewrites = [
       {
         source: '/__preview/ice-rink-rentals/home',

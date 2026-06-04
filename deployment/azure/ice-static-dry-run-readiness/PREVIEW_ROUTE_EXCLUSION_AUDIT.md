@@ -1,18 +1,28 @@
 # Preview Route Exclusion Audit
 
-## Fresh Snapshot
+## Static Mode Fixes
 
-The compact snapshot scan did not find preview route markers for:
+Static-mode preview exclusions are now handled locally:
 
-- `/__preview/...`
-- `/draft-preview/...`
+- `next.config.js` returns no preview rewrites when `PUMPKIN_RENDER_MODE=static`
+- `static-publish.mjs` removes excluded preview output paths before copying the static artifact
+
+No CMS or preview-route source files were deleted.
 
 ## Fresh Static Output
 
-No fresh static output was produced, so there is no deployable preview-route proof from the current run.
+The fresh output route scan found no deployable preview route folders:
+
+- `/__preview/...`: absent
+- `/draft-preview/...`: absent
+
+The compact output scan found:
+
+- `/__preview/`: 0 references
+- `/draft-preview/`: 0 references
+
+`draft-preview` appears only in the static-publish manifest warning that records removed preview output paths.
 
 ## Gate Status
 
-Preview routes must remain excluded from any future deployable package.
-
-Preview route exclusion result: no fresh static-output proof; no preview marker detected in the current snapshot scan.
+Preview route exclusion result: pass for local route-shape proof.

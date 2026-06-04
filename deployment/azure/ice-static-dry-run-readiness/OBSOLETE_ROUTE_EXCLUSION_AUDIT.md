@@ -18,7 +18,7 @@ The snapshot also excluded extra non-approved slug:
 
 - `phase-5a-csv-import-54754949`
 
-Snapshot page files now contain only:
+Snapshot page files contain only:
 
 - `home`
 - `contact`
@@ -26,7 +26,7 @@ Snapshot page files now contain only:
 
 ## Theme Navigation
 
-The fetched theme still contains obsolete navigation URLs:
+The fetched active theme contains obsolete navigation URLs:
 
 - `/ice-rink-rentals`
 - `/events-holiday-activations`
@@ -34,12 +34,16 @@ The fetched theme still contains obsolete navigation URLs:
 
 It also misses `/` in primary navigation. No Theme record was changed.
 
-## Existing Stale Output
+For local route-shape proof only, the snapshot copy of `theme.menu` is scoped to:
 
-Existing stale output remains rejected where obsolete route folders are present.
+- `/`
+- `/contact`
+- `/service-areas`
 
-## Readiness
+Recommended CMS/theme change: update the active theme menu to the approved production routes only.
 
-Obsolete route exclusion ready: no fresh static-output proof yet.
+## Fresh Static Output
 
-The CMS page snapshot scope is fixed locally, but theme navigation and stale output remain blockers.
+Fresh output route checks found no deployable obsolete route folders in either `out` or the copied artifact.
+
+Obsolete route exclusion ready for local route-shape proof: yes.

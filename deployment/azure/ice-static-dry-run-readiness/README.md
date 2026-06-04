@@ -8,36 +8,37 @@ No Azure resources, Cosmos resources, Blob containers, Cloudflare DNS records, C
 
 ## Result
 
-The safe Ice-only command remains:
+The safe Ice-only command is:
 
 ```powershell
 cd apps/ice-rink-web
 npm run export:static:ice:cms
 ```
 
-Current result: exit `1`, stopped during `snapshot:cms:ice`.
+Current result: exit `0`; local route-shape dry run completed.
 
 What improved:
 
-- required env vars were present
-- admin JWT env and temp-file sources were present by status only
-- theme read no longer returns 401
-- `themeSnapshot: true`
+- theme read no longer returns 401 and `themeSnapshot: true`
 - CMS discovery still sees six pages, but local Ice snapshot output is filtered to the approved three slugs
+- local theme navigation is scoped for route-shape proof to `/`, `/contact`, and `/service-areas` without mutating CMS/theme records
+- media, form endpoint, and noindex checks are separated as production-readiness blockers instead of route-shape blockers
+- static export removes preview route output and omits preview rewrites in static mode
+- fresh `out` and copied artifact routes are exactly `/`, `/contact`, and `/service-areas`
 
-Current blocker:
+Remaining production blockers:
 
-- local `/media/...` URLs remain
+- local `/media/...` URLs and unapproved rendered image URLs remain
 - `home` and `service-areas` still have `noindex`
 - static form endpoint is missing/unverified
-- fetched theme navigation still references obsolete routes and misses `/`
+- active CMS/theme navigation still needs permanent approval/update
 
 ## Classification
 
 | Gate | Status |
 | --- | --- |
-| static dry run completed | no |
-| static route output ready | no |
+| static dry run completed | yes |
+| static route output ready | yes |
 | media production URL readiness | no |
 | contact form production readiness | no |
 | Azure staging readiness | no |

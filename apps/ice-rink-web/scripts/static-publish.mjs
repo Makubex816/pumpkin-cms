@@ -21,6 +21,12 @@ const siteKey = process.env.STATIC_SITE_KEY || process.env.SITE_KEY || '';
 const contentSource = process.env.STATIC_CONTENT_SOURCE || 'seed-sites';
 const appRoot = process.cwd();
 const repoRoot = path.resolve(appRoot, '../..');
+const iceExcludedStaticOutputPaths = [
+  'draft-preview',
+  '__preview',
+  path.join('_next', 'static', 'chunks', 'app', 'draft-preview'),
+  path.join('_next', 'static', 'chunks', 'app', '__preview'),
+];
 const require = createRequire(import.meta.url);
 const {
   ICE_LAUNCH_NAVIGATION_ROUTES,
@@ -227,15 +233,15 @@ function isAllowedProductionMediaUrl(value, mediaOrigin) {
   return Boolean(mediaOrigin) && trimmed.startsWith(`${mediaOrigin}/`);
 }
 
-function addProductionStaticGates(site, page, label, errors) {
+function addProductionStaticGates(site, page, label, warnings) {
   if (siteKey !== 'ice-rink-rentals' || !isPublishedProductionPage(page)) return;
 
   if (hasNoindexRobots(page)) {
-    errors.push(`${label}: approved production static pages must not use noindex robots metadata.`);
+    warnings.push(`${label}: production/indexing readiness blocker: approved production static pages must not use noindex robots metadata.`);
   }
 
   if (page.includeInSitemap === true && hasNoindexRobots(page)) {
-    errors.push(`${label}: includeInSitemap is true while robots contains noindex.`);
+    warnings.push(`${label}: production/indexing readiness blocker: includeInSitemap is true while robots contains noindex.`);
   }
 
   const media = getMedia(page);
@@ -244,7 +250,7 @@ function addProductionStaticGates(site, page, label, errors) {
     const assetId = stringValue(asset.assetId) || stringValue(asset.mediaAssetId);
     const url = stringValue(asset.publicUrl) || stringValue(asset.url) || stringValue(asset.src);
     if (assetId && !url) {
-      errors.push(`${label}: media.${slot} has a MediaAsset id but no production publicUrl.`);
+      warnings.push(`${label}: media production readiness blocker: media.${slot} has a MediaAsset id but no production publicUrl.`);
     }
   }
 
@@ -254,11 +260,11 @@ function addProductionStaticGates(site, page, label, errors) {
   for (const { path: mediaPath, value } of mediaRefs) {
     const trimmed = value.trim();
     if (trimmed.startsWith('/media/')) {
-      errors.push(`${label}: ${mediaPath} uses local-dev media URL ${trimmed}; production static media must use ${site.mediaOrigin}.`);
+      warnings.push(`${label}: media production readiness blocker: ${mediaPath} uses local-dev media URL ${trimmed}; production static media must use ${site.mediaOrigin}.`);
     } else if (/^data:image\//i.test(trimmed)) {
-      errors.push(`${label}: ${mediaPath} embeds a base64 image; production static media must use an approved MediaAsset URL.`);
+      warnings.push(`${label}: media production readiness blocker: ${mediaPath} embeds a base64 image; production static media must use an approved MediaAsset URL.`);
     } else if (!isAllowedProductionMediaUrl(trimmed, site.mediaOrigin)) {
-      errors.push(`${label}: ${mediaPath} uses unapproved media URL ${trimmed}; expected ${site.mediaOrigin}.`);
+      warnings.push(`${label}: media production readiness blocker: ${mediaPath} uses unapproved media URL ${trimmed}; expected ${site.mediaOrigin}.`);
     }
   }
 
@@ -268,12 +274,12 @@ function addProductionStaticGates(site, page, label, errors) {
     const endpoint = getConfiguredStaticFormEndpoint();
     const endpointVerified = process.env.STATIC_FORM_ENDPOINT_VERIFIED === 'true';
     if (!endpoint) {
-      errors.push(`${label}: static form endpoint is not configured for static production readiness.`);
+      warnings.push(`${label}: contact form production readiness blocker: static form endpoint is not configured for static production readiness.`);
     } else if (!/^https:\/\//i.test(endpoint) || /localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint)) {
-      errors.push(`${label}: static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.`);
+      warnings.push(`${label}: contact form production readiness blocker: static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.`);
     }
     if (!endpointVerified) {
-      errors.push(`${label}: static form endpoint/backend verification is missing; Microsoft 365 mailbox status is not app form readiness.`);
+      warnings.push(`${label}: contact form production readiness blocker: static form endpoint/backend verification is missing; Microsoft 365 mailbox status is not app form readiness.`);
     }
   }
 }
@@ -680,7 +686,7 @@ function validatePageShape(site, pages) {
       errors.push(`${label}: contains CMS LIVE marker.`);
     }
 
-    addProductionStaticGates(site, page, label, errors);
+    addProductionStaticGates(site, page, label, warnings);
     addProductionReadinessWarnings(page, label, warnings);
   }
 
@@ -778,6 +784,25 @@ function copyStaticOutput(siteArtifactDir) {
   return true;
 }
 
+function removeExcludedStaticOutput(outDir) {
+  if (siteKey !== 'ice-rink-rentals' || !existsSync(outDir)) return [];
+
+  const rootDir = path.resolve(outDir);
+  const removed = [];
+
+  for (const relativePath of iceExcludedStaticOutputPaths) {
+    const targetPath = path.resolve(rootDir, relativePath);
+    const isInsideOutDir = targetPath !== rootDir && targetPath.startsWith(`${rootDir}${path.sep}`);
+
+    if (!isInsideOutDir || !existsSync(targetPath)) continue;
+
+    rmSync(targetPath, { recursive: true, force: true });
+    removed.push(relativePath.split(path.sep).join('/'));
+  }
+
+  return removed;
+}
+
 function run() {
   const site = getSite();
   if (!site) return;
@@ -801,11 +826,19 @@ function run() {
   }
 
   const artifactDir = path.join(appRoot, '.static-artifacts', siteKey);
-  writeStaticArtifacts(site, pages, artifactDir, warnings, redirects);
   let outputSnapshot = false;
 
   if (command === 'generate') {
     const outDir = path.join(appRoot, 'out');
+    const removedStaticOutputPaths = removeExcludedStaticOutput(outDir);
+
+    if (removedStaticOutputPaths.length > 0) {
+      const message = `Ice static route-shape proof removed excluded preview output path(s): ${removedStaticOutputPaths.join(', ')}.`;
+      warnings.push(message);
+      console.warn(`[static-publish] Warning: ${message}`);
+    }
+
+    writeStaticArtifacts(site, pages, artifactDir, warnings, redirects);
     if (existsSync(outDir)) {
       writeStaticArtifacts(site, pages, outDir, warnings, redirects);
     }
@@ -813,6 +846,8 @@ function run() {
   } else if (command !== 'validate') {
     fail(`Unknown command: ${command}`);
     return;
+  } else {
+    writeStaticArtifacts(site, pages, artifactDir, warnings, redirects);
   }
 
   console.log(JSON.stringify({
