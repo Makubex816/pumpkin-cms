@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "pumpkin.ice.live-cms-pages-approval-lock.v1",
+  "generatedAt": "2026-06-04T03:05:00.000Z",
+  "site": "IceSkatingRinkRentals.com",
+  "tenantId": "ice-rink-rentals",
+  "branch": "feature/admin-page-editor-import-export",
+  "scope": "documentation-readiness-lock-only",
+  "cmsWrites": false,
+  "themeWrites": false,
+  "mediaAssetWrites": false,
+  "staticGeneration": false,
+  "azureDeployment": false,
+  "dnsCloudflareMicrosoft365BluehostAzureCosmosBlobEmailProviderChanges": false,
+  "emailSent": false,
+  "protectedConfigRead": false,
+  "rollerTouched": false,
+  "approvedRoutes": [
+    {
+      "route": "/",
+      "url": "http://localhost:3002/",
+      "visualApproval": true,
+      "liveCmsPublicPageState": true,
+      "httpStatus": 200,
+      "contentMarkersPresent": [
+        "Planning more than the rink?",
+        "Party Pros East Coast",
+        "Explore Party Pros East Coast"
+      ],
+      "contactusPresent": false
+    },
+    {
+      "route": "/contact",
+      "url": "http://localhost:3002/contact",
+      "visualApproval": true,
+      "liveCmsPublicPageState": true,
+      "httpStatus": 200,
+      "contentMarkersPresent": [
+        "Request an Ice Rink Rental Quote",
+        "default-quote-request",
+        "chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd"
+      ],
+      "contactusPresent": false
+    },
+    {
+      "route": "/service-areas",
+      "url": "http://localhost:3002/service-areas",
+      "visualApproval": true,
+      "liveCmsPublicPageState": true,
+      "httpStatus": 200,
+      "contentMarkersPresent": [
+        "Service Areas",
+        "Request a Quote",
+        "Portable Ice Rink"
+      ],
+      "contactusPresent": false
+    }
+  ],
+  "priorReportsReviewed": [
+    "PUMPKIN_ICE_APPROVED_HOMEPAGE_LIVE_CMS_PROMOTION_REPORT.md",
+    "PUMPKIN_ICE_PPEC_LOGO_REPLACEMENT_REPORT.md",
+    "PUMPKIN_ICE_PPEC_LOGO_CONTRAST_FIX_REPORT.md",
+    "PUMPKIN_ICE_PPEC_FIRST_BANNER_COPY_UPDATE_REPORT.md",
+    "PUMPKIN_ICE_SERVICE_AREAS_LIVE_CMS_PROMOTION_REPORT.md",
+    "PUMPKIN_ICE_SERVICE_AREAS_REGION_GRID_POLISH_REPORT.md",
+    "PUMPKIN_ICE_FINAL_CONTACT_LIVE_CMS_PROMOTION_REPORT.md"
+  ],
+  "priorFoldersReviewed": [
+    "content-review/ice-approved-homepage-live-cms-promotion/",
+    "content-review/ice-service-areas-live-cms-promotion/",
+    "content-review/ice-final-contact-live-cms-promotion/"
+  ],
+  "readinessClassification": {
+    "liveCmsVisualApproval": true,
+    "staticGenerationReady": "next-gate-not-yet-run",
+    "azureStagingReady": false,
+    "productionDnsReady": false,
+    "productionIndexingReady": false
+  },
+  "statusSummaries": {
+    "mediaAssets": "Prior page-specific MediaAsset work is visually approved; no MediaAsset records were changed by this approval lock.",
+    "contactForm": "Approved formBlock remains default-quote-request with ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT and ICE_RINK_RENTALS_LEAD_RECIPIENT references.",
+    "microsoft365Mailbox": "contact@iceskatingrinkrentals.com remains selected mailbox metadata; Microsoft 365/provider settings were not changed.",
+    "cosmosProduction": "planned, not provisioned",
+    "blobMediaProduction": "planned, not provisioned"
+  },
+  "remainingGates": {
+    "beforeAzureStaging": [
+      "Production architecture/docs/setup still needed.",
+      "Cosmos/database production plan still needed.",
+      "Blob/media production plan still needed.",
+      "Static generation has not been run."
+    ],
+    "beforeDnsCutover": [
+      "Azure staging smoke tests still needed.",
+      "DNS/Cloudflare/Microsoft 365/Bluehost/email-provider plan still needs explicit approval.",
+      "Production indexing policy still needs approval."
+    ]
+  },
+  "outputFolder": "content-review/ice-live-cms-pages-approval-lock",
+  "rootReport": "PUMPKIN_ICE_LIVE_CMS_PAGES_APPROVAL_LOCK_REPORT.md"
+}
