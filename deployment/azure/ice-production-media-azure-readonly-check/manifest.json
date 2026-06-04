@@ -1,0 +1,72 @@
+{
+  "packageName": "ice-production-media-azure-readonly-check",
+  "generatedDate": "2026-06-04",
+  "mode": "azure-readonly-discovery-only",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestExpectedCommit": "Prepare Ice production media execution approval",
+  "approvalUsed": "Azure read-only checks only for Ice production media",
+  "azureCli": {
+    "available": false,
+    "versionChecked": false,
+    "accountChecked": false,
+    "blocker": "Azure CLI is unavailable in this terminal."
+  },
+  "discovery": {
+    "subscriptionContext": "not discovered",
+    "resourceGroups": "not discovered",
+    "storageAccounts": "not discovered",
+    "staticWebApps": "not discovered",
+    "reason": "Azure CLI is unavailable in this terminal."
+  },
+  "approvedRoutes": [
+    "/",
+    "/contact",
+    "/service-areas"
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "staticOutputQualityGates": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "files": [
+    "README.md",
+    "AZURE_CLI_STATUS.md",
+    "SUBSCRIPTION_CONTEXT.md",
+    "RESOURCE_GROUP_DISCOVERY.md",
+    "STORAGE_ACCOUNT_DISCOVERY.md",
+    "EXISTING_RESOURCE_CANDIDATES.md",
+    "NEXT_APPROVAL_REQUIRED.md",
+    "REMAINING_BLOCKERS.md",
+    "manifest.json"
+  ],
+  "actionsPerformed": {
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "deployed": false,
+    "mediaUploaded": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "connectionStringsPrinted": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "rootReport": "PUMPKIN_ICE_PRODUCTION_MEDIA_AZURE_READONLY_CHECK_REPORT.md"
+}
