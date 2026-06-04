@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-06-04T02:35:25.214Z",
+  "ok": true,
+  "results": [
+    {
+      "path": "content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_PACKAGE.json",
+      "ok": true
+    }
+  ]
+}

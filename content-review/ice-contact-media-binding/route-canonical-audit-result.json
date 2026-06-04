@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-06-04T02:35:25.217Z",
+  "ok": true,
+  "checks": {
+    "tenantId": true,
+    "siteKey": true,
+    "slug": true,
+    "pageSlug": true,
+    "route": true,
+    "path": true,
+    "canonicalUrl": true,
+    "seoCanonicalUrl": true
+  },
+  "failed": []
+}

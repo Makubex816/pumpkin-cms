@@ -1,0 +1,1425 @@
+{
+  "schemaVersion": "pumpkin.ice.contact-media-binding.v1",
+  "generatedAt": "2026-06-04T02:35:24.608Z",
+  "site": "IceSkatingRinkRentals.com",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/contact",
+  "branch": "feature/admin-page-editor-import-export",
+  "outputFolder": "content-review/ice-contact-media-binding",
+  "rootReport": "PUMPKIN_ICE_CONTACT_MEDIA_BINDING_REPORT.md",
+  "files": {
+    "readme": "content-review/ice-contact-media-binding/README.md",
+    "audit": "content-review/ice-contact-media-binding/CONTACT_IMAGE_INPUT_AUDIT.md",
+    "slotPlan": "content-review/ice-contact-media-binding/CONTACT_MEDIA_SLOT_PLAN.md",
+    "mediaAssetResult": "content-review/ice-contact-media-binding/CONTACT_MEDIAASSET_RESULT.md",
+    "bindingResult": "content-review/ice-contact-media-binding/CONTACT_BINDING_RESULT.md",
+    "validationResults": "content-review/ice-contact-media-binding/VALIDATION_RESULTS.md",
+    "importResult": "content-review/ice-contact-media-binding/IMPORT_RESULT.md",
+    "readbackVerification": "content-review/ice-contact-media-binding/READBACK_VERIFICATION.md",
+    "frontendChecklist": "content-review/ice-contact-media-binding/FRONTEND_PREVIEW_CHECKLIST.md",
+    "blockers": "content-review/ice-contact-media-binding/REMAINING_BLOCKERS.md",
+    "candidate": "content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json",
+    "pkg": "content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_PACKAGE.json",
+    "manifest": "content-review/ice-contact-media-binding/manifest.json",
+    "imageAuditJson": "content-review/ice-contact-media-binding/contact-image-input-audit.json",
+    "mediaBefore": "content-review/ice-contact-media-binding/media-assets-before-contact-media-binding.snapshot.json",
+    "mediaAfter": "content-review/ice-contact-media-binding/media-assets-after-contact-media-binding.readonly.json",
+    "homepageBefore": "content-review/ice-contact-media-binding/homepage-before-contact-media-binding.snapshot.json",
+    "homepageAfter": "content-review/ice-contact-media-binding/homepage-after-contact-media-binding.readonly.json",
+    "serviceAreasBefore": "content-review/ice-contact-media-binding/service-areas-before-contact-media-binding.snapshot.json",
+    "serviceAreasAfter": "content-review/ice-contact-media-binding/service-areas-after-contact-media-binding.readonly.json",
+    "contactBefore": "content-review/ice-contact-media-binding/contact-before-contact-media-binding.snapshot.json",
+    "contactAfter": "content-review/ice-contact-media-binding/contact-readback-after-contact-media-binding.json",
+    "themeBefore": "content-review/ice-contact-media-binding/theme-before-contact-media-binding.snapshot.json",
+    "themeAfter": "content-review/ice-contact-media-binding/theme-after-contact-media-binding.readonly.json",
+    "mediaAssetApiResult": "content-review/ice-contact-media-binding/mediaasset-create-reuse-result.json",
+    "frontendProbe": "content-review/ice-contact-media-binding/frontend-preview-probe-result.json",
+    "hygiene": "content-review/ice-contact-media-binding/final-hygiene-result.json",
+    "jsonParse": "content-review/ice-contact-media-binding/json-parse-validation-result.json",
+    "dotnet": "content-review/ice-contact-media-binding/dotnet-page-contract-result.json",
+    "productionPersistence": "content-review/ice-contact-media-binding/production-field-persistence-validation-result.json",
+    "safePreflight": "content-review/ice-contact-media-binding/safe-import-preflight-result.json",
+    "designSystem": "content-review/ice-contact-media-binding/design-system-validation-result.json",
+    "mediaValidation": "content-review/ice-contact-media-binding/media-validation-result.json",
+    "defaultForm": "content-review/ice-contact-media-binding/default-form-validation-result.json",
+    "defaultFormFixtures": "content-review/ice-contact-media-binding/default-form-fixtures-validation-result.json",
+    "tailwind": "content-review/ice-contact-media-binding/tailwind-navigation-validation-result.json",
+    "normalizer": "content-review/ice-contact-media-binding/page-intake-normalizer-validation-result.json",
+    "unsafeScan": "content-review/ice-contact-media-binding/unsafe-scan-result.json",
+    "contactusScan": "content-review/ice-contact-media-binding/contactus-scan-result.json",
+    "routeCanonical": "content-review/ice-contact-media-binding/route-canonical-audit-result.json",
+    "secretScan": "[redacted]"
+  },
+  "images": {
+    "candidateExists": true,
+    "contactReadbackExists": true,
+    "audits": [
+      {
+        "filePath": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "filename": "ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "extension": ".png",
+        "sizeBytes": 2253456,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "9ab697f5d9c704a3525382f0fbec020977053f592e2d1203998717e28badaa54",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "contactQuotePlanningImage",
+        "visualDescription": "Group reviewing a rink layout plan and event images around a table.",
+        "approvedForContactPage": true,
+        "referenceOnly": false,
+        "approvalReason": "Approved contact page input: file is under contactimages and matches a planned contact slot.",
+        "matchedSlot": "contactQuotePlanningImage",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "filename": "ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "extension": ".png",
+        "sizeBytes": 2105292,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "40c9a505552d4cb278eb0912581d75566f0d717b97357c42934f0b59c2158120",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "contactSetupLogisticsImage",
+        "visualDescription": "Two event planners walking through an outdoor rink site with tablets.",
+        "approvedForContactPage": true,
+        "referenceOnly": false,
+        "approvalReason": "Approved contact page input: file is under contactimages and matches a planned contact slot.",
+        "matchedSlot": "contactSetupLogisticsImage",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "filename": "ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "extension": ".png",
+        "sizeBytes": 1923827,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "841162071dfd3c5651f6111d3f6ed84354a8c60fc94a545e8648aea31f136b0a",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "contactHeroImage",
+        "visualDescription": "Planner reviewing rink drawings and an ice rink image at a desk.",
+        "approvedForContactPage": true,
+        "referenceOnly": false,
+        "approvalReason": "Approved contact page input: file is under contactimages and matches a planned contact slot.",
+        "matchedSlot": "contactHeroImage",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/CorporateIceRinkRentalEvent.png",
+        "filename": "CorporateIceRinkRentalEvent.png",
+        "extension": ".png",
+        "sizeBytes": 3685341,
+        "width": 1672,
+        "height": 941,
+        "sha256": "18e985ca59bd67b3f1d74a1a3841a273081b8f8a9ddb97d67dc6ff233e559a2d",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "corporate event",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/HolidayIceRink.png",
+        "filename": "HolidayIceRink.png",
+        "extension": ".png",
+        "sizeBytes": 3866376,
+        "width": 1672,
+        "height": 941,
+        "sha256": "973ce769137773ecb68c439a192ae7bb96f7be2365a591c651c3fcc746c0f853",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "winter event",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-holidayicerink-973ce7691377"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceRinkRentalsSetup.png",
+        "filename": "IceRinkRentalsSetup.png",
+        "extension": ".png",
+        "sizeBytes": 3545952,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "113d218572e45a8744673e3b86e2ea7d2e75dfacfcd8a0756a767f59c5ad3f40",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "setup/logistics",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-icerinkrentalssetup-113d218572e4"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceSkatingRinkRentalsLogo.png",
+        "filename": "IceSkatingRinkRentalsLogo.png",
+        "extension": ".png",
+        "sizeBytes": 1627660,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "0d1f970f0411e0778405f0a9cce316f0c7affca36e27576d4ebef751782f075b",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "logo/reference",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/ppec-wordmark-card-preview.png",
+        "filename": "ppec-wordmark-card-preview.png",
+        "extension": ".png",
+        "sizeBytes": 21664,
+        "width": 1200,
+        "height": 420,
+        "sha256": "fb9baba33c7394fcf77b99ed927115785602d5f58632d2a792be944788a1c435",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "unspecified image input",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": null
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/WinterFestIceRinkRentals.png",
+        "filename": "WinterFestIceRinkRentals.png",
+        "extension": ".png",
+        "sizeBytes": 3607110,
+        "width": 1672,
+        "height": 941,
+        "sha256": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "winter event",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d"
+      }
+    ],
+    "approved": [
+      {
+        "filePath": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "filename": "ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "extension": ".png",
+        "sizeBytes": 2253456,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "9ab697f5d9c704a3525382f0fbec020977053f592e2d1203998717e28badaa54",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "contactQuotePlanningImage",
+        "visualDescription": "Group reviewing a rink layout plan and event images around a table.",
+        "approvedForContactPage": true,
+        "referenceOnly": false,
+        "approvalReason": "Approved contact page input: file is under contactimages and matches a planned contact slot.",
+        "matchedSlot": "contactQuotePlanningImage",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "filename": "ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "extension": ".png",
+        "sizeBytes": 2105292,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "40c9a505552d4cb278eb0912581d75566f0d717b97357c42934f0b59c2158120",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "contactSetupLogisticsImage",
+        "visualDescription": "Two event planners walking through an outdoor rink site with tablets.",
+        "approvedForContactPage": true,
+        "referenceOnly": false,
+        "approvalReason": "Approved contact page input: file is under contactimages and matches a planned contact slot.",
+        "matchedSlot": "contactSetupLogisticsImage",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d"
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "filename": "ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "extension": ".png",
+        "sizeBytes": 1923827,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "841162071dfd3c5651f6111d3f6ed84354a8c60fc94a545e8648aea31f136b0a",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "contactHeroImage",
+        "visualDescription": "Planner reviewing rink drawings and an ice rink image at a desk.",
+        "approvedForContactPage": true,
+        "referenceOnly": false,
+        "approvalReason": "Approved contact page input: file is under contactimages and matches a planned contact slot.",
+        "matchedSlot": "contactHeroImage",
+        "blockers": [],
+        "existingMediaAssetMatch": "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd"
+      }
+    ],
+    "referenceOnly": [
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/CorporateIceRinkRentalEvent.png",
+        "filename": "CorporateIceRinkRentalEvent.png",
+        "extension": ".png",
+        "sizeBytes": 3685341,
+        "width": 1672,
+        "height": 941,
+        "sha256": "18e985ca59bd67b3f1d74a1a3841a273081b8f8a9ddb97d67dc6ff233e559a2d",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "corporate event",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": null
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/HolidayIceRink.png",
+        "filename": "HolidayIceRink.png",
+        "extension": ".png",
+        "sizeBytes": 3866376,
+        "width": 1672,
+        "height": 941,
+        "sha256": "973ce769137773ecb68c439a192ae7bb96f7be2365a591c651c3fcc746c0f853",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "winter event",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": null
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceRinkRentalsSetup.png",
+        "filename": "IceRinkRentalsSetup.png",
+        "extension": ".png",
+        "sizeBytes": 3545952,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "113d218572e45a8744673e3b86e2ea7d2e75dfacfcd8a0756a767f59c5ad3f40",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "setup/logistics",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": null
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceSkatingRinkRentalsLogo.png",
+        "filename": "IceSkatingRinkRentalsLogo.png",
+        "extension": ".png",
+        "sizeBytes": 1627660,
+        "width": 1448,
+        "height": 1086,
+        "sha256": "0d1f970f0411e0778405f0a9cce316f0c7affca36e27576d4ebef751782f075b",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "logo/reference",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": null
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/ppec-wordmark-card-preview.png",
+        "filename": "ppec-wordmark-card-preview.png",
+        "extension": ".png",
+        "sizeBytes": 21664,
+        "width": 1200,
+        "height": 420,
+        "sha256": "fb9baba33c7394fcf77b99ed927115785602d5f58632d2a792be944788a1c435",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "unspecified image input",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": null
+      },
+      {
+        "filePath": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/WinterFestIceRinkRentals.png",
+        "filename": "WinterFestIceRinkRentals.png",
+        "extension": ".png",
+        "sizeBytes": 3607110,
+        "width": 1672,
+        "height": 941,
+        "sha256": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+        "mimeType": "image/png",
+        "filenameSuggestsUsage": "winter event",
+        "visualDescription": "",
+        "approvedForContactPage": false,
+        "referenceOnly": true,
+        "approvalReason": "Reference-only extracted package asset; existing official MediaAssets should be reused instead of uploading a duplicate.",
+        "matchedSlot": "",
+        "blockers": [],
+        "existingMediaAssetMatch": null
+      }
+    ],
+    "rejected": []
+  },
+  "mediaAssets": {
+    "beforeCount": 12,
+    "afterCount": 12,
+    "created": [],
+    "reused": [
+      {
+        "slot": "contactQuotePlanningImage",
+        "sourceFile": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "created": false,
+        "reused": true,
+        "id": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "assetId": "chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+        "status": "draft",
+        "publicUrl": "/media/ice-rink-rentals/2026/06/chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7.png",
+        "fileName": "ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "originalFileName": "ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "safeFileName": "chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7.png",
+        "title": "Contact Quote Planning Review",
+        "alt": "Portable ice rink setup details used to prepare an ice rink rental quote",
+        "altText": "Portable ice rink setup details used to prepare an ice rink rental quote",
+        "caption": "Event stakeholders reviewing rink layout details for a quote request.",
+        "source": "User-provided contact image input",
+        "licenseStatus": "ai_generated",
+        "usageStatus": "needs_review",
+        "usageType": "card",
+        "checksum": "9ab697f5d9c704a3525382f0fbec020977053f592e2d1203998717e28badaa54",
+        "hash": "9ab697f5d9c704a3525382f0fbec020977053f592e2d1203998717e28badaa54",
+        "storageProvider": "local-dev",
+        "sizeBytes": 2253456,
+        "width": 1448,
+        "height": 1086,
+        "mimeType": "image/png"
+      },
+      {
+        "slot": "contactSetupLogisticsImage",
+        "sourceFile": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "created": false,
+        "reused": true,
+        "id": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "assetId": "chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d",
+        "status": "draft",
+        "publicUrl": "/media/ice-rink-rentals/2026/06/chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d.png",
+        "fileName": "ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "originalFileName": "ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "safeFileName": "chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d.png",
+        "title": "Contact Setup Logistics Review",
+        "alt": "Portable ice rink setup with event site review for rental planning",
+        "altText": "Portable ice rink setup with event site review for rental planning",
+        "caption": "Outdoor site review for temporary rink setup and event logistics.",
+        "source": "User-provided contact image input",
+        "licenseStatus": "ai_generated",
+        "usageStatus": "needs_review",
+        "usageType": "card",
+        "checksum": "40c9a505552d4cb278eb0912581d75566f0d717b97357c42934f0b59c2158120",
+        "hash": "40c9a505552d4cb278eb0912581d75566f0d717b97357c42934f0b59c2158120",
+        "storageProvider": "local-dev",
+        "sizeBytes": 2105292,
+        "width": 1448,
+        "height": 1086,
+        "mimeType": "image/png"
+      },
+      {
+        "slot": "contactHeroImage",
+        "sourceFile": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "created": false,
+        "reused": true,
+        "id": "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "assetId": "chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+        "status": "draft",
+        "publicUrl": "/media/ice-rink-rentals/2026/06/chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd.png",
+        "fileName": "ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "originalFileName": "ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "safeFileName": "chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd.png",
+        "title": "Contact Quote Planning Hero",
+        "alt": "Portable ice rink rental planning image for quote requests",
+        "altText": "Portable ice rink rental planning image for quote requests",
+        "caption": "Portable ice rink quote planning for a temporary skating event.",
+        "source": "User-provided contact image input",
+        "licenseStatus": "ai_generated",
+        "usageStatus": "needs_review",
+        "usageType": "hero",
+        "checksum": "841162071dfd3c5651f6111d3f6ed84354a8c60fc94a545e8648aea31f136b0a",
+        "hash": "841162071dfd3c5651f6111d3f6ed84354a8c60fc94a545e8648aea31f136b0a",
+        "storageProvider": "local-dev",
+        "sizeBytes": 1923827,
+        "width": 1448,
+        "height": 1086,
+        "mimeType": "image/png"
+      }
+    ],
+    "readbacks": [
+      {
+        "slot": "contactQuotePlanningImage",
+        "sourceFile": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "created": false,
+        "reused": true,
+        "id": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "assetId": "chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+        "status": "draft",
+        "publicUrl": "/media/ice-rink-rentals/2026/06/chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7.png",
+        "fileName": "ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "originalFileName": "ChatGPT Image Jun 3, 2026, 01_25_32 PM.png",
+        "safeFileName": "chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7.png",
+        "title": "Contact Quote Planning Review",
+        "alt": "Portable ice rink setup details used to prepare an ice rink rental quote",
+        "altText": "Portable ice rink setup details used to prepare an ice rink rental quote",
+        "caption": "Event stakeholders reviewing rink layout details for a quote request.",
+        "source": "User-provided contact image input",
+        "licenseStatus": "ai_generated",
+        "usageStatus": "needs_review",
+        "usageType": "card",
+        "checksum": "9ab697f5d9c704a3525382f0fbec020977053f592e2d1203998717e28badaa54",
+        "hash": "9ab697f5d9c704a3525382f0fbec020977053f592e2d1203998717e28badaa54",
+        "storageProvider": "local-dev",
+        "sizeBytes": 2253456,
+        "width": 1448,
+        "height": 1086,
+        "mimeType": "image/png"
+      },
+      {
+        "slot": "contactSetupLogisticsImage",
+        "sourceFile": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "created": false,
+        "reused": true,
+        "id": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "assetId": "chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d",
+        "status": "draft",
+        "publicUrl": "/media/ice-rink-rentals/2026/06/chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d.png",
+        "fileName": "ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "originalFileName": "ChatGPT Image Jun 3, 2026, 01_26_01 PM.png",
+        "safeFileName": "chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d.png",
+        "title": "Contact Setup Logistics Review",
+        "alt": "Portable ice rink setup with event site review for rental planning",
+        "altText": "Portable ice rink setup with event site review for rental planning",
+        "caption": "Outdoor site review for temporary rink setup and event logistics.",
+        "source": "User-provided contact image input",
+        "licenseStatus": "ai_generated",
+        "usageStatus": "needs_review",
+        "usageType": "card",
+        "checksum": "40c9a505552d4cb278eb0912581d75566f0d717b97357c42934f0b59c2158120",
+        "hash": "40c9a505552d4cb278eb0912581d75566f0d717b97357c42934f0b59c2158120",
+        "storageProvider": "local-dev",
+        "sizeBytes": 2105292,
+        "width": 1448,
+        "height": 1086,
+        "mimeType": "image/png"
+      },
+      {
+        "slot": "contactHeroImage",
+        "sourceFile": "content-review/ice-final-contact-input/contactimages/ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "created": false,
+        "reused": true,
+        "id": "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+        "tenantId": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "assetId": "chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+        "status": "draft",
+        "publicUrl": "/media/ice-rink-rentals/2026/06/chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd.png",
+        "fileName": "ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "originalFileName": "ChatGPT Image Jun 3, 2026, 12_37_40 PM.png",
+        "safeFileName": "chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd.png",
+        "title": "Contact Quote Planning Hero",
+        "alt": "Portable ice rink rental planning image for quote requests",
+        "altText": "Portable ice rink rental planning image for quote requests",
+        "caption": "Portable ice rink quote planning for a temporary skating event.",
+        "source": "User-provided contact image input",
+        "licenseStatus": "ai_generated",
+        "usageStatus": "needs_review",
+        "usageType": "hero",
+        "checksum": "841162071dfd3c5651f6111d3f6ed84354a8c60fc94a545e8648aea31f136b0a",
+        "hash": "841162071dfd3c5651f6111d3f6ed84354a8c60fc94a545e8648aea31f136b0a",
+        "storageProvider": "local-dev",
+        "sizeBytes": 1923827,
+        "width": 1448,
+        "height": 1086,
+        "mimeType": "image/png"
+      }
+    ],
+    "allowedChangedIds": [],
+    "result": "completed"
+  },
+  "binding": {
+    "ok": true,
+    "slots": [
+      {
+        "slot": "contactHeroImage",
+        "mediaAssetId": "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+        "targetBlockId": "contact-hero-media"
+      },
+      {
+        "slot": "contactQuotePlanningImage",
+        "mediaAssetId": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+        "targetBlockId": "contact-quote-form-intro"
+      },
+      {
+        "slot": "contactSetupLogisticsImage",
+        "mediaAssetId": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d",
+        "targetBlockId": "about-ice-rink-rentals-contact"
+      },
+      {
+        "slot": "contactOpenGraphImage",
+        "mediaAssetId": "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+        "targetBlockId": "seo.openGraph.image"
+      }
+    ],
+    "newOrReusedIds": [
+      "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+      "ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+      "ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d"
+    ],
+    "ppecLogoPreserved": true,
+    "formPreserved": true
+  },
+  "validation": {
+    "ok": true,
+    "results": {
+      "json-parse-validation-result.json": {
+        "generatedAt": "2026-06-04T02:35:25.214Z",
+        "ok": true,
+        "results": [
+          {
+            "path": "content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json",
+            "ok": true
+          },
+          {
+            "path": "content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_PACKAGE.json",
+            "ok": true
+          }
+        ]
+      },
+      "production-field-persistence-validation-result.json": {
+        "generatedAt": "2026-06-04T02:35:25.216Z",
+        "ok": true,
+        "checks": {
+          "routeContact": true,
+          "draftNeedsReview": true,
+          "productionApprovedFalse": true,
+          "publishApprovedFalse": true,
+          "staticNeedsRebuildTrue": true,
+          "formBlockPresent": true,
+          "formKey": true,
+          "sourcePage": true,
+          "staticEndpointRef": true,
+          "leadRecipientRef": true,
+          "selectedMailbox": true,
+          "publicEmailDisplayPolicy": true,
+          "noLegacyMailbox": true,
+          "noRawCf7WordPress": true,
+          "noRealEmailSending": true,
+          "contactMediaIdsPersist": true,
+          "ppecLogoPersists": true,
+          "noStateCityCreated": true
+        },
+        "failed": []
+      },
+      "route-canonical-audit-result.json": {
+        "generatedAt": "2026-06-04T02:35:25.217Z",
+        "ok": true,
+        "checks": {
+          "tenantId": true,
+          "siteKey": true,
+          "slug": true,
+          "pageSlug": true,
+          "route": true,
+          "path": true,
+          "canonicalUrl": true,
+          "seoCanonicalUrl": true
+        },
+        "failed": []
+      },
+      "unsafe-scan-result.json": {
+        "generatedAt": "2026-06-04T02:35:25.218Z",
+        "ok": true,
+        "hits": []
+      },
+      "contactus-scan-result.json": {
+        "generatedAt": "2026-06-04T02:35:25.219Z",
+        "ok": true,
+        "hits": []
+      },
+      "targeted-secret-scan-result.json": {
+        "generatedAt": "2026-06-04T02:35:25.221Z",
+        "ok": true,
+        "hits": []
+      },
+      "default-form-validation-result.json": {
+        "generatedAt": "2026-06-04T02:35:25.222Z",
+        "ok": true,
+        "checks": {
+          "formBlockPresent": true,
+          "formKey": true,
+          "sourcePage": true,
+          "staticEndpointRef": true,
+          "leadRecipientRef": true,
+          "noRawFormHtml": true,
+          "noRealEmailSending": true
+        },
+        "failed": []
+      },
+      "safe-import-preflight-result.json": {
+        "generatedAt": "2026-06-04T02:35:25.275Z",
+        "schemaVersion": "pumpkin-import-preflight-result.v1",
+        "tool": {
+          "name": "pumpkin-import-preflight",
+          "path": "tools/import-preflight/import-preflight.mjs",
+          "mode": "preflight-only",
+          "nonMutating": true,
+          "requiresAdminJwt": false,
+          "readsProtectedConfig": false,
+          "callsLiveWriteApis": false,
+          "mutatesCmsData": false,
+          "sendsEmail": false,
+          "touchesMediaRecords": false
+        },
+        "input": {
+          "path": "content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json",
+          "tenantId": "ice-rink-rentals",
+          "siteKey": "ice-rink-rentals",
+          "route": "/contact"
+        },
+        "checks": [
+          {
+            "check": "json-parse",
+            "status": "passed",
+            "message": "JSON parse succeeded."
+          },
+          {
+            "check": "secret-scan",
+            "status": "passed",
+            "message": "No high-confidence secret-looking values found."
+          },
+          {
+            "check": "tenant",
+            "status": "passed",
+            "message": "Candidate tenantId matches \"ice-rink-rentals\"."
+          },
+          {
+            "check": "site-key",
+            "status": "passed",
+            "message": "Candidate siteKey is compatible with \"ice-rink-rentals\"."
+          },
+          {
+            "check": "slug",
+            "status": "passed",
+            "message": "pageSlug \"contact\" is route-safe."
+          },
+          {
+            "check": "route",
+            "status": "passed",
+            "message": "Candidate slug matches route \"/contact\"."
+          },
+          {
+            "check": "content-blocks",
+            "status": "passed",
+            "message": "ContentData.ContentBlocks contains 11 block(s)."
+          },
+          {
+            "check": "publishing-state",
+            "status": "passed",
+            "message": "isPublished is false."
+          },
+          {
+            "check": "sitemap-state",
+            "status": "passed",
+            "message": "includeInSitemap is false."
+          },
+          {
+            "check": "canonical",
+            "status": "passed",
+            "message": "Canonical path matches candidate route."
+          },
+          {
+            "check": "required-blocks",
+            "status": "passed",
+            "message": "Required homepage block types are present."
+          },
+          {
+            "check": "known-block-types",
+            "status": "passed",
+            "message": "All block types are known to the local import preflight."
+          },
+          {
+            "check": "rich-block-safety",
+            "status": "passed",
+            "message": "customHtml/trustedEmbed/formBlock focused checks passed."
+          },
+          {
+            "check": "focused-home-contract",
+            "status": "passed",
+            "message": "Required homepage import fields are present."
+          },
+          {
+            "check": "phase8n-contract-persistence",
+            "status": "passed",
+            "message": "Phase 8N production fields are present for .NET/API persistence validation."
+          },
+          {
+            "check": "updated-home-contact-persistence",
+            "status": "passed",
+            "message": "Updated home/contact persistence-sensitive fields are present before .NET round-trip validation."
+          },
+          {
+            "check": "default-form",
+            "status": "passed",
+            "message": "Default form references are safe and non-secret."
+          },
+          {
+            "check": "media-requirements",
+            "status": "passed",
+            "message": "Required media requirements have MediaAsset ids."
+          },
+          {
+            "check": "business-approval-audit",
+            "status": "passed",
+            "message": "Business value and approval blockers were classified."
+          },
+          {
+            "check": "unsafe-payload-scan",
+            "status": "passed",
+            "message": "No unsafe HTML/CSS/form/media/email markers found."
+          },
+          {
+            "check": "dotnet-page-contract",
+            "status": "passed",
+            "message": "The .NET Page/block contract accepted the candidate.",
+            "details": {
+              "readinessDecision": "dotnet-contract-valid-not-cms-import-ready"
+            }
+          },
+          {
+            "check": "dotnet-page-contract",
+            "status": "warning",
+            "message": "The .NET contract returned 3 warning(s).",
+            "category": "dotnet",
+            "field": "candidate",
+            "details": [
+              "page.reviewOnlyField",
+              "productionFieldPersistence.checked",
+              "updatedHomeContactPersistence.checked"
+            ]
+          }
+        ],
+        "candidate": {
+          "tenantId": "ice-rink-rentals",
+          "siteKey": "ice-rink-rentals",
+          "pageSlug": "contact",
+          "route": "/contact",
+          "canonicalUrl": "https://iceskatingrinkrentals.com/contact",
+          "isPublished": false,
+          "includeInSitemap": false,
+          "workflowStatus": "draft",
+          "approvedForPublish": false,
+          "approvedForImport": false,
+          "staticEligible": false,
+          "needsRebuild": true,
+          "blockCount": 11,
+          "blockTypes": [
+            "Hero",
+            "TrustBar",
+            "CardGrid",
+            "formBlock",
+            "CardGrid",
+            "HowItWorks",
+            "CardGrid",
+            "CardGrid",
+            "PrimaryCTA",
+            "FAQ",
+            "PrimaryCTA"
+          ],
+          "formBlockCount": 1,
+          "formKeys": [
+            "default-quote-request"
+          ],
+          "mediaRequirementCount": 9,
+          "unresolvedMediaRequirementCount": 0
+        },
+        "issues": [
+          {
+            "severity": "warning",
+            "check": "dotnet-page-contract",
+            "category": "dotnet",
+            "field": "candidate",
+            "message": "The .NET contract returned 3 warning(s).",
+            "details": [
+              "page.reviewOnlyField",
+              "productionFieldPersistence.checked",
+              "updatedHomeContactPersistence.checked"
+            ]
+          }
+        ],
+        "blockers": {
+          "localDraftImport": [],
+          "cmsImport": [
+            {
+              "check": "approval",
+              "category": "workflow",
+              "field": "workflow.approvedForImport",
+              "message": "workflow.approvedForImport is not true."
+            },
+            {
+              "check": "approval",
+              "category": "workflow",
+              "field": "workflow.reviewStatus",
+              "message": "Human approval is not recorded."
+            },
+            {
+              "check": "business-values",
+              "category": "domainRouting",
+              "field": "domainRouting.publicContactEmail",
+              "message": "Public email display policy remains unresolved or intentionally hidden."
+            }
+          ],
+          "staticRegeneration": [
+            {
+              "check": "static-publishing",
+              "category": "staticPublishing",
+              "field": "staticPublishing.staticEligible",
+              "message": "staticPublishing.staticEligible is not true."
+            }
+          ],
+          "production": [
+            {
+              "check": "approval",
+              "category": "workflow",
+              "field": "workflow.approvedForPublish",
+              "message": "workflow.approvedForPublish is not true."
+            },
+            {
+              "check": "approval",
+              "category": "workflow",
+              "field": "workflow.reviewStatus",
+              "message": "Human approval is not recorded."
+            },
+            {
+              "check": "business-values",
+              "category": "domainRouting",
+              "field": "domainRouting.publicContactEmail",
+              "message": "Public email display policy remains unresolved."
+            },
+            {
+              "check": "static-publishing",
+              "category": "staticPublishing",
+              "field": "staticPublishing.staticEligible",
+              "message": "staticPublishing.staticEligible is not true."
+            }
+          ]
+        },
+        "differencesFromAdminApiPreflight": [
+          "Does not fetch current CMS pages, so same-slug update/create collision behavior is not proven.",
+          "Does not create server-side revision snapshots or ImportRun history.",
+          "Does not call SavePageAsync/UpdatePageAsync and therefore does not prove database persistence.",
+          "Mirrors admin/API validation categories locally without requiring admin JWT, tenant API key, or protected config."
+        ],
+        "dotNetContract": {
+          "available": true,
+          "buildOk": true,
+          "exitCode": 0,
+          "ok": true,
+          "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+          "errorCount": 0,
+          "warningCount": 3,
+          "warningCodes": [
+            "page.reviewOnlyField",
+            "productionFieldPersistence.checked",
+            "updatedHomeContactPersistence.checked"
+          ],
+          "productionFieldPersistenceOk": true,
+          "productionFieldPersistenceAvailable": true,
+          "updatedHomeContactPersistenceOk": true,
+          "mediaRequirements": [
+            {
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json",
+              "RequirementCount": 9,
+              "BlockerCount": 0
+            }
+          ]
+        },
+        "classification": {
+          "preflight-valid-for-shape": true,
+          "preflight-valid-for-local-draft-import": true,
+          "preflight-valid-for-CMS-import": false,
+          "preflight-valid-for-production": false
+        },
+        "decisions": {
+          "shape": "valid",
+          "localDraftImport": "valid",
+          "cmsImport": "blocked",
+          "staticRegeneration": "blocked",
+          "production": "blocked"
+        },
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"schemaVersion\": \"pumpkin-import-preflight-result.v1\",\n  \"generatedAt\": \"2026-06-04T02:35:25.275Z\",\n  \"tool\": {\n    \"name\": \"pumpkin-import-preflight\",\n    \"path\": \"tools/import-preflight/import-preflight.mjs\",\n    \"mode\": \"preflight-only\",\n    \"nonMutating\": true,\n    \"requiresAdminJwt\": false,\n    \"readsProtectedConfig\": false,\n    \"callsLiveWriteApis\": false,\n    \"mutatesCmsData\": false,\n    \"sendsEmail\": false,\n    \"touchesMediaRecords\": false\n  },\n  \"input\": {\n    \"path\": \"content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json\",\n    \"tenantId\": \"ice-rink-rentals\",\n    \"siteKey\": \"ice-rink-rentals\",\n    \"route\": \"/contact\"\n  },\n  \"checks\": [\n    {\n      \"check\": \"json-parse\",\n      \"status\": \"passed\",\n      \"message\": \"JSON parse succeeded.\"\n    },\n    {\n      \"check\": \"secret-scan\",\n      \"status\": \"passed\",\n      \"message\": \"No high-confidence secret-looking values found.\"\n    },\n    {\n      \"check\": \"tenant\",\n      \"status\": \"passed\",\n      \"message\": \"Candidate tenantId matches \\\"ice-rink-rentals\\\".\"\n    },\n    {\n      \"check\": \"site-key\",\n      \"status\": \"passed\",\n      \"message\": \"Candidate siteKey is compatible with \\\"ice-rink-rentals\\\".\"\n    },\n    {\n      \"check\": \"slug\",\n      \"status\": \"passed\",\n      \"message\": \"pageSlug \\\"contact\\\" is route-safe.\"\n    },\n    {\n      \"check\": \"route\",\n      \"status\": \"passed\",\n      \"message\": \"Candidate slug matches route \\\"/contact\\\".\"\n    },\n    {\n      \"check\": \"content-blocks\",\n      \"status\": \"passed\",\n      \"message\": \"ContentData.ContentBlocks contains 11 block(s).\"\n    },\n    {\n      \"check\": \"publishing-state\",\n      \"status\": \"passed\",\n      \"message\": \"isPublished is false.\"\n    },\n    {\n      \"check\": \"sitemap-state\",\n      \"status\": \"passed\",\n      \"message\": \"includeInSitemap is false.\"\n    },\n    {\n      \"check\": \"canonical\",\n      \"status\": \"passed\",\n      \"message\": \"Canonical path matches candidate route.\"\n    },\n    {\n      \"check\": \"required-blocks\",\n      \"status\": \"passed\",\n      \"message\": \"Required homepage block types are present.\"\n    },\n    {\n      \"check\": \"known-block-types\",\n      \"status\": \"passed\",\n      \"message\": \"All block types are known to the local import preflight.\"\n    },\n    {\n      \"check\": \"rich-block-safety\",\n      \"status\": \"passed\",\n      \"message\": \"customHtml/trustedEmbed/formBlock focused checks passed.\"\n    },\n    {\n      \"check\": \"focused-home-contract\",\n      \"status\": \"passed\",\n      \"message\": \"Required homepage import fields are present.\"\n    },\n    {\n      \"check\": \"phase8n-contract-persistence\",\n      \"status\": \"passed\",\n      \"message\": \"Phase 8N production fields are present for .NET/API persistence validation.\"\n    },\n    {\n      \"check\": \"updated-home-contact-persistence\",\n      \"status\": \"passed\",\n      \"message\": \"Updated home/contact persistence-sensitive fields are present before .NET round-trip validation.\"\n    },\n    {\n      \"check\": \"default-form\",\n      \"status\": \"passed\",\n      \"message\": \"Default form references are safe and non-secret.\"\n    },\n    {\n      \"check\": \"media-requirements\",\n      \"status\": \"passed\",\n      \"message\": \"Required media requirements have MediaAsset ids.\"\n    },\n    {\n      \"check\": \"business-approval-audit\",\n      \"status\": \"passed\",\n      \"message\": \"Business value and approval blockers were classified.\"\n    },\n    {\n      \"check\": \"unsafe-payload-scan\",\n      \"status\": \"passed\",\n      \"message\": \"No unsafe HTML/CSS/form/media/email markers found.\"\n    },\n    {\n      \"check\": \"dotnet-page-contract\",\n      \"status\": \"passed\",\n      \"message\": \"The .NET Page/block contract accepted the candidate.\",\n      \"details\": {\n        \"readinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\"\n      }\n    },\n    {\n      \"check\": \"dotnet-page-contract\",\n      \"status\": \"warning\",\n      \"message\": \"The .NET contract returned 3 warning(s).\",\n      \"category\": \"dotnet\",\n      \"field\": \"candidate\",\n      \"details\": [\n        \"page.reviewOnlyField\",\n        \"productionFieldPersistence.checked\",\n        \"updatedHomeContactPersistence.checked\"\n      ]\n    }\n  ],\n  \"candidate\": {\n    \"tenantId\": \"ice-rink-rentals\",\n    \"siteKey\": \"ice-rink-rentals\",\n    \"pageSlug\": \"contact\",\n    \"route\": \"/contact\",\n    \"canonicalUrl\": \"https://iceskatingrinkrentals.com/contact\",\n    \"isPublished\": false,\n    \"includeInSitemap\": false,\n    \"workflowStatus\": \"draft\",\n    \"approvedForPublish\": false,\n    \"approvedForImport\": false,\n    \"staticEligible\": false,\n    \"needsRebuild\": true,\n    \"blockCount\": 11,\n    \"blockTypes\": [\n      \"Hero\",\n      \"TrustBar\",\n      \"CardGrid\",\n      \"formBlock\",\n      \"CardGrid\",\n      \"HowItWorks\",\n      \"CardGrid\",\n      \"CardGrid\",\n      \"PrimaryCTA\",\n      \"FAQ\",\n      \"PrimaryCTA\"\n    ],\n    \"formBlockCount\": 1,\n    \"formKeys\": [\n      \"default-quote-request\"\n    ],\n    \"mediaRequirementCount\": 9,\n    \"unresolvedMediaRequirementCount\": 0\n  },\n  \"issues\": [\n    {\n      \"severity\": \"warning\",\n      \"check\": \"dotnet-page-contract\",\n      \"category\": \"dotnet\",\n      \"field\": \"candidate\",\n      \"message\": \"The .NET contract returned 3 warning(s).\",\n      \"details\": [\n        \"page.reviewOnlyField\",\n        \"productionFieldPersistence.checked\",\n        \"updatedHomeContactPersistence.checked\"\n      ]\n    }\n  ],\n  \"blockers\": {\n    \"localDraftImport\": [],\n    \"cmsImport\": [\n      {\n        \"check\": \"approval\",\n        \"category\": \"workflow\",\n        \"field\": \"workflow.approvedForImport\",\n        \"message\": \"workflow.approvedForImport is not true.\"\n      },\n      {\n        \"check\": \"approval\",\n        \"category\": \"workflow\",\n        \"field\": \"workflow.reviewStatus\",\n        \"message\": \"Human approval is not recorded.\"\n      },\n      {\n        \"check\": \"business-values\",\n        \"category\": \"domainRouting\",\n        \"field\": \"domainRouting.publicContactEmail\",\n        \"message\": \"Public email display policy remains unresolved or intentionally hidden.\"\n      }\n    ],\n    \"staticRegeneration\": [\n      {\n        \"check\": \"static-publishing\",\n        \"category\": \"staticPublishing\",\n        \"field\": \"staticPublishing.staticEligible\",\n        \"message\": \"staticPublishing.staticEligible is not true.\"\n      }\n    ],\n    \"production\": [\n      {\n        \"check\": \"approval\",\n        \"category\": \"workflow\",\n        \"field\": \"workflow.approvedForPublish\",\n        \"message\": \"workflow.approvedForPublish is not true.\"\n      },\n      {\n        \"check\": \"approval\",\n        \"category\": \"workflow\",\n        \"field\": \"workflow.reviewStatus\",\n        \"message\": \"Human approval is not recorded.\"\n      },\n      {\n        \"check\": \"business-values\",\n        \"category\": \"domainRouting\",\n        \"field\": \"domainRouting.publicContactEmail\",\n        \"message\": \"Public email display policy remains unresolved.\"\n      },\n      {\n        \"check\": \"static-publishing\",\n        \"category\": \"staticPublishing\",\n        \"field\": \"staticPublishing.staticEligible\",\n        \"message\": \"staticPublishing.staticEligible is not true.\"\n      }\n    ]\n  },\n  \"differencesFromAdminApiPreflight\": [\n    \"Does not fetch current CMS pages, so same-slug update/create collision behavior is not proven.\",\n    \"Does not create server-side revision snapshots or ImportRun history.\",\n    \"Does not call SavePageAsync/UpdatePageAsync and therefore does not prove database persistence.\",\n    \"Mirrors admin/API validation categories locally without requiring admin JWT, tenant API key, or protected config.\"\n  ],\n  \"dotNetContract\": {\n    \"available\": true,\n    \"buildOk\": true,\n    \"exitCode\": 0,\n    \"ok\": true,\n    \"readinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\n    \"errorCount\": 0,\n    \"warningCount\": 3,\n    \"warningCodes\": [\n      \"page.reviewOnlyField\",\n      \"productionFieldPersistence.checked\",\n      \"updatedHomeContactPersistence.checked\"\n    ],\n    \"productionFieldPersistenceOk\": true,\n    \"productionFieldPersistenceAvailable\": true,\n    \"updatedHomeContactPersistenceOk\": true,\n    \"mediaRequirements\": [\n      {\n        \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json\",\n        \"RequirementCount\": 9,\n        \"BlockerCount\": 0\n      }\n    ]\n  },\n  \"classification\": {\n    \"preflight-valid-for-shape\": true,\n    \"preflight-valid-for-local-draft-import\": true,\n    \"preflight-valid-for-CMS-import\": false,\n    \"preflight-valid-for-production\": false\n  },\n  \"decisions\": {\n    \"shape\": \"valid\",\n    \"localDraftImport\": \"valid\",\n    \"cmsImport\": \"blocked\",\n    \"staticRegeneration\": \"blocked\",\n    \"production\": \"blocked\"\n  }\n}\n",
+          "stderr": ""
+        }
+      },
+      "dotnet-page-contract-result.json": {
+        "generatedAt": "2026-06-04T02:35:37.481Z",
+        "ok": true,
+        "publish": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "  Determining projects to restore...\r\n  Restored C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\apps\\pumpkin-net-models\\pumpkin-net-models.csproj (in 72 ms).\r\n  pumpkin-net-models -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-contact-media-contract-42100-1780540531412\\bin\\Debug\\net10.0\\pumpkin-net-models.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-contact-media-contract-42100-1780540531412\\bin\\Debug\\net10.0\\Pumpkin.PageContractTool.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-contact-media-contract-42100-1780540531412\\publish\\\r\n",
+          "stderr": ""
+        },
+        "validate": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-contact-media-binding\\\\CONTACT_MEDIA_BOUND_CANDIDATE.json\",\r\n  \"GeneratedAt\": \"2026-06-04T02:35:37.2124127Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json\",\r\n      \"PageId\": \"ice-rink-rentals-contact\",\r\n      \"PageSlug\": \"contact\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"UpdatedHomeContactPersistenceOk\": true,\r\n      \"BlockCount\": 11,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"formBlock\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"PrimaryCTA\",\r\n        \"FAQ\",\r\n        \"PrimaryCTA\"\r\n      ],\r\n      \"ErrorCount\": 0,\r\n      \"WarningCount\": 3\r\n    }\r\n  ],\r\n  \"FormDefinitions\": [],\r\n  \"MediaRequirements\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json\",\r\n      \"RequirementCount\": 9,\r\n      \"BlockerCount\": 0\r\n    }\r\n  ],\r\n  \"Errors\": [],\r\n  \"Warnings\": [\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"page.reviewOnlyField\",\r\n      \"Message\": \"Root field \\u0022mediaRequirements\\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json\"\r\n    },\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"productionFieldPersistence.checked\",\r\n      \"Message\": \"Verified 265 production renderer/media/email-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json\"\r\n    },\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"updatedHomeContactPersistence.checked\",\r\n      \"Message\": \"Verified 269 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json\"\r\n    }\r\n  ]\r\n}\r\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "Command": "validate-page",
+          "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-contact-media-binding\\CONTACT_MEDIA_BOUND_CANDIDATE.json",
+          "GeneratedAt": "2026-06-04T02:35:37.2124127Z",
+          "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+          "Ok": true,
+          "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+          "Pages": [
+            {
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json",
+              "PageId": "ice-rink-rentals-contact",
+              "PageSlug": "contact",
+              "TenantId": "ice-rink-rentals",
+              "DotNetDeserialized": true,
+              "RoundTripOk": true,
+              "ProductionFieldPersistenceOk": true,
+              "UpdatedHomeContactPersistenceOk": true,
+              "BlockCount": 11,
+              "BlockTypes": [
+                "Hero",
+                "TrustBar",
+                "CardGrid",
+                "formBlock",
+                "CardGrid",
+                "HowItWorks",
+                "CardGrid",
+                "CardGrid",
+                "PrimaryCTA",
+                "FAQ",
+                "PrimaryCTA"
+              ],
+              "ErrorCount": 0,
+              "WarningCount": 3
+            }
+          ],
+          "FormDefinitions": [],
+          "MediaRequirements": [
+            {
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json",
+              "RequirementCount": 9,
+              "BlockerCount": 0
+            }
+          ],
+          "Errors": [],
+          "Warnings": [
+            {
+              "Severity": "warning",
+              "Code": "page.reviewOnlyField",
+              "Message": "Root field \"mediaRequirements\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json"
+            },
+            {
+              "Severity": "warning",
+              "Code": "productionFieldPersistence.checked",
+              "Message": "Verified 265 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json"
+            },
+            {
+              "Severity": "warning",
+              "Code": "updatedHomeContactPersistence.checked",
+              "Message": "Verified 269 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-contact-media-binding/CONTACT_MEDIA_BOUND_CANDIDATE.json"
+            }
+          ]
+        }
+      },
+      "design-system-validation-result.json": {
+        "generatedAt": "2026-06-04T02:35:37.549Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"passed\": 28,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "passed": 28,
+          "failed": 0,
+          "failures": []
+        }
+      },
+      "media-validation-result.json": {
+        "generatedAt": "2026-06-04T02:35:37.613Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"assetCount\": 4,\n  \"referenceCount\": 6,\n  \"warningCount\": 3,\n  \"warningCodes\": [\n    \"media-validation-warning\"\n  ]\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "assetCount": 4,
+          "referenceCount": 6,
+          "warningCount": 3,
+          "warningCodes": [
+            "media-validation-warning"
+          ]
+        }
+      },
+      "default-form-fixtures-validation-result.json": {
+        "generatedAt": "2026-06-04T02:35:37.681Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"passed\": 21,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "passed": 21,
+          "failed": 0,
+          "failures": []
+        }
+      },
+      "tailwind-navigation-validation-result.json": {
+        "generatedAt": "2026-06-04T02:35:37.745Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"checkedCssSelectors\": 37,\n  \"checkedNavigationRoutes\": [\n    \"/\",\n    \"/service-areas\",\n    \"/contact\"\n  ],\n  \"importCandidateClassCount\": 20,\n  \"classes\": [\n    \"cms-copy\",\n    \"cms-eyebrow\",\n    \"cms-layout\",\n    \"cms-panel\",\n    \"ice-alias-note\",\n    \"ice-area-card\",\n    \"ice-area-grid\",\n    \"ice-check-list\",\n    \"ice-city-note\",\n    \"ice-cta-link\",\n    \"ice-details-list\",\n    \"ice-event-card\",\n    \"ice-event-grid\",\n    \"ice-hero-grid\",\n    \"ice-planning-table\",\n    \"ice-privacy-note\",\n    \"ice-quote-grid\",\n    \"ice-region-list\",\n    \"ice-response-note\",\n    \"ice-service-teaser\"\n  ],\n  \"warnings\": [],\n  \"failures\": []\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "checkedCssSelectors": 37,
+          "checkedNavigationRoutes": [
+            "/",
+            "/service-areas",
+            "/contact"
+          ],
+          "importCandidateClassCount": 20,
+          "classes": [
+            "cms-copy",
+            "cms-eyebrow",
+            "cms-layout",
+            "cms-panel",
+            "ice-alias-note",
+            "ice-area-card",
+            "ice-area-grid",
+            "ice-check-list",
+            "ice-city-note",
+            "ice-cta-link",
+            "ice-details-list",
+            "ice-event-card",
+            "ice-event-grid",
+            "ice-hero-grid",
+            "ice-planning-table",
+            "ice-privacy-note",
+            "ice-quote-grid",
+            "ice-region-list",
+            "ice-response-note",
+            "ice-service-teaser"
+          ],
+          "warnings": [],
+          "failures": []
+        }
+      },
+      "page-intake-normalizer-validation-result.json": {
+        "generatedAt": "2026-06-04T02:36:02.988Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"passed\": 16,\n  \"failed\": 0,\n  \"results\": [\n    {\n      \"name\": \"valid Pumpkin page JSON\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"partial page JSON normalized to scaffold\",\n      \"inputType\": \"partial-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"malformed JSON blocked\",\n      \"inputType\": \"unknown-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 1,\n      \"warningCount\": 0,\n      \"dotNetOk\": null\n    },\n    {\n      \"name\": \"foreign builder JSON normalized\",\n      \"inputType\": \"foreign-builder-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"HTML fragment mapped to customHtml\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"unsafe HTML blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 5,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"CF7 reference mapped to formBlock\",\n      \"inputType\": \"cf7-package-reference\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"raw form HTML blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 8,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"media manifest mapped to MediaAsset requirements\",\n      \"inputType\": \"media-manifest\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"base64 image blocked\",\n      \"inputType\": \"media-manifest\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 2,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"raw Tailwind utility class blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 9,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"safe semantic classes allowed\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"future state-city route valid\",\n      \"inputType\": \"partial-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 1,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"bad city route blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 3,\n      \"warningCount\": 1,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"unknown block type blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 5,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \".NET contract failure blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 3,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    }\n  ]\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "passed": 16,
+          "failed": 0,
+          "results": [
+            {
+              "name": "valid Pumpkin page JSON",
+              "inputType": "pumpkin-page-json",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "partial page JSON normalized to scaffold",
+              "inputType": "partial-page-json",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "malformed JSON blocked",
+              "inputType": "unknown-json",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 1,
+              "warningCount": 0,
+              "dotNetOk": null
+            },
+            {
+              "name": "foreign builder JSON normalized",
+              "inputType": "foreign-builder-json",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "HTML fragment mapped to customHtml",
+              "inputType": "html-fragment",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "unsafe HTML blocked",
+              "inputType": "html-fragment",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 5,
+              "warningCount": 0,
+              "dotNetOk": false
+            },
+            {
+              "name": "CF7 reference mapped to formBlock",
+              "inputType": "cf7-package-reference",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "raw form HTML blocked",
+              "inputType": "html-fragment",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 8,
+              "warningCount": 0,
+              "dotNetOk": false
+            },
+            {
+              "name": "media manifest mapped to MediaAsset requirements",
+              "inputType": "media-manifest",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "base64 image blocked",
+              "inputType": "media-manifest",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 2,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "raw Tailwind utility class blocked",
+              "inputType": "html-fragment",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 9,
+              "warningCount": 0,
+              "dotNetOk": false
+            },
+            {
+              "name": "safe semantic classes allowed",
+              "inputType": "html-fragment",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "future state-city route valid",
+              "inputType": "partial-page-json",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 1,
+              "dotNetOk": true
+            },
+            {
+              "name": "bad city route blocked",
+              "inputType": "pumpkin-page-json",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 3,
+              "warningCount": 1,
+              "dotNetOk": false
+            },
+            {
+              "name": "unknown block type blocked",
+              "inputType": "pumpkin-page-json",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 5,
+              "warningCount": 0,
+              "dotNetOk": false
+            },
+            {
+              "name": ".NET contract failure blocked",
+              "inputType": "pumpkin-page-json",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 3,
+              "warningCount": 0,
+              "dotNetOk": false
+            }
+          ]
+        }
+      }
+    },
+    "failed": []
+  },
+  "import": {
+    "attempted": true,
+    "performed": true,
+    "httpStatus": 200,
+    "endpoint": "PUT /api/admin/pages/ice-rink-rentals/contact?changeSource=json_import"
+  },
+  "readback": {
+    "ok": true,
+    "checks": {
+      "httpOk": true,
+      "routeContact": true,
+      "draftNeedsReview": true,
+      "formBlockPresent": true,
+      "formKey": true,
+      "sourcePage": true,
+      "staticEndpointRef": true,
+      "leadRecipientRef": true,
+      "selectedMailbox": true,
+      "publicEmailDisplayPolicy": true,
+      "mediaAssetIdsPersist": true,
+      "noLegacyMailbox": true,
+      "noRawCf7WordPress": true,
+      "noRealEmailSending": true
+    },
+    "failed": []
+  },
+  "untouched": {
+    "homepageUnchanged": true,
+    "serviceAreasUnchanged": true,
+    "themeUnchanged": true,
+    "mediaAssetsAllowedChangesOnly": true
+  },
+  "frontend": {
+    "checked": true,
+    "routes": {
+      "contactPreview": {
+        "url": "http://localhost:3002/__preview/ice-rink-rentals/contact",
+        "reachable": true,
+        "status": 200,
+        "length": 28828
+      },
+      "homepage": {
+        "url": "http://localhost:3002/",
+        "reachable": true,
+        "status": 200,
+        "length": 178963
+      },
+      "serviceAreas": {
+        "url": "http://localhost:3002/service-areas",
+        "reachable": true,
+        "status": 200,
+        "length": 112760
+      }
+    }
+  },
+  "auth": {
+    "presence": "PRESENT",
+    "validation": "VALID",
+    "tempInitialStatus": "PRESENT",
+    "tempFinalStatus": "MISSING",
+    "tokenPrinted": false
+  },
+  "safety": {
+    "contactWrites": 1,
+    "mediaAssetWrites": 0,
+    "homepageWrite": false,
+    "serviceAreasWrite": false,
+    "stateCityCreated": false,
+    "themeWrite": false,
+    "staticGeneration": false,
+    "deployment": false,
+    "dnsEmailProviderChange": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false,
+    "imageGeneration": false,
+    "imageModification": false,
+    "azureUpload": false
+  },
+  "blockers": []
+}
