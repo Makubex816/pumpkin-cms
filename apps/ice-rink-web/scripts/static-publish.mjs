@@ -6,7 +6,9 @@ import process from 'process';
 const siteDefinitions = {
   'ice-rink-rentals': {
     domain: 'iceskatingrinkrentals.com',
-    expectedSlugs: ['home', 'ice-rink-rentals', 'events-holiday-activations', 'contact'],
+    expectedSlugs: ['home', 'contact', 'service-areas'],
+    obsoleteSlugs: ['ice-rink-rentals', 'events-holiday-activations'],
+    mediaOrigin: 'https://media.iceskatingrinkrentals.com',
   },
   'roller-rink-rentals': {
     domain: 'rollerrinkrentals.com',
@@ -174,6 +176,106 @@ function generateRobotsTxt(site) {
 
 function stringValue(value) {
   return typeof value === 'string' ? value : '';
+}
+
+function isPublishedProductionPage(page) {
+  return page?.isPublished === true && page?.workflow?.approvedForPublish === true;
+}
+
+function hasNoindexRobots(page) {
+  return /\bnoindex\b/i.test(stringValue(page?.seo?.robots));
+}
+
+function getConfiguredStaticFormEndpoint() {
+  return stringValue(process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT) ||
+    stringValue(process.env.STATIC_FORM_ENDPOINT) ||
+    stringValue(process.env.NEXT_PUBLIC_STATIC_FORM_ACTION) ||
+    stringValue(process.env.STATIC_FORM_ACTION);
+}
+
+function collectStrings(value, pathLabel = 'page', output = []) {
+  if (typeof value === 'string') {
+    output.push({ path: pathLabel, value });
+    return output;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectStrings(item, `${pathLabel}[${index}]`, output));
+    return output;
+  }
+
+  if (value && typeof value === 'object') {
+    for (const [key, item] of Object.entries(value)) {
+      collectStrings(item, `${pathLabel}.${key}`, output);
+    }
+  }
+
+  return output;
+}
+
+function looksLikeMediaUrl(value) {
+  const trimmed = stringValue(value).trim();
+  if (!trimmed) return false;
+  if (trimmed.startsWith('/media/')) return true;
+  if (/^data:image\//i.test(trimmed)) return true;
+  if (/^https?:\/\/(?:[^/\s]+\.)?(?:placehold\.co|placeholder\.com|example\.(?:com|test))\b/i.test(trimmed)) return true;
+  return /^https?:\/\/[^\s?#]+\.(?:png|jpe?g|webp|gif|svg)(?:[?#][^\s]*)?$/i.test(trimmed);
+}
+
+function isAllowedProductionMediaUrl(value, mediaOrigin) {
+  const trimmed = stringValue(value).trim();
+  return Boolean(mediaOrigin) && trimmed.startsWith(`${mediaOrigin}/`);
+}
+
+function addProductionStaticGates(site, page, label, errors) {
+  if (siteKey !== 'ice-rink-rentals' || !isPublishedProductionPage(page)) return;
+
+  if (hasNoindexRobots(page)) {
+    errors.push(`${label}: approved production static pages must not use noindex robots metadata.`);
+  }
+
+  if (page.includeInSitemap === true && hasNoindexRobots(page)) {
+    errors.push(`${label}: includeInSitemap is true while robots contains noindex.`);
+  }
+
+  const media = getMedia(page);
+  for (const [slot, asset] of Object.entries(media)) {
+    if (!asset || typeof asset !== 'object') continue;
+    const assetId = stringValue(asset.assetId) || stringValue(asset.mediaAssetId);
+    const url = stringValue(asset.publicUrl) || stringValue(asset.url) || stringValue(asset.src);
+    if (assetId && !url) {
+      errors.push(`${label}: media.${slot} has a MediaAsset id but no production publicUrl.`);
+    }
+  }
+
+  const mediaRefs = collectStrings(page)
+    .filter(({ value }) => looksLikeMediaUrl(value));
+
+  for (const { path: mediaPath, value } of mediaRefs) {
+    const trimmed = value.trim();
+    if (trimmed.startsWith('/media/')) {
+      errors.push(`${label}: ${mediaPath} uses local-dev media URL ${trimmed}; production static media must use ${site.mediaOrigin}.`);
+    } else if (/^data:image\//i.test(trimmed)) {
+      errors.push(`${label}: ${mediaPath} embeds a base64 image; production static media must use an approved MediaAsset URL.`);
+    } else if (!isAllowedProductionMediaUrl(trimmed, site.mediaOrigin)) {
+      errors.push(`${label}: ${mediaPath} uses unapproved media URL ${trimmed}; expected ${site.mediaOrigin}.`);
+    }
+  }
+
+  const hasFormBlock = Array.isArray(page.ContentData?.ContentBlocks) &&
+    page.ContentData.ContentBlocks.some((block) => block.type === 'Contact' || block.type === 'formBlock');
+  if (hasFormBlock) {
+    const endpoint = getConfiguredStaticFormEndpoint();
+    const endpointVerified = process.env.STATIC_FORM_ENDPOINT_VERIFIED === 'true';
+    if (!endpoint) {
+      errors.push(`${label}: static form endpoint is not configured for static production readiness.`);
+    } else if (!/^https:\/\//i.test(endpoint) || /localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint)) {
+      errors.push(`${label}: static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.`);
+    }
+    if (!endpointVerified) {
+      errors.push(`${label}: static form endpoint/backend verification is missing; Microsoft 365 mailbox status is not app form readiness.`);
+    }
+  }
 }
 
 function getTargetKeyword(page) {
@@ -578,11 +680,27 @@ function validatePageShape(site, pages) {
       errors.push(`${label}: contains CMS LIVE marker.`);
     }
 
+    addProductionStaticGates(site, page, label, errors);
     addProductionReadinessWarnings(page, label, warnings);
   }
 
   for (const slug of site.expectedSlugs) {
     if (!slugs.has(slug)) errors.push(`Missing expected slug: ${slug}.`);
+  }
+
+  if (siteKey === 'ice-rink-rentals') {
+    const approvedSlugs = new Set(site.expectedSlugs);
+    for (const slug of slugs) {
+      if (!approvedSlugs.has(slug)) {
+        errors.push(`Non-approved Ice static slug is present in static content: ${slug}.`);
+      }
+    }
+  }
+
+  for (const slug of site.obsoleteSlugs || []) {
+    if (slugs.has(slug)) {
+      errors.push(`Obsolete Ice launch slug is still present in static content: ${slug}.`);
+    }
   }
 
   const redirects = buildRedirectManifest(site, pages, warnings);

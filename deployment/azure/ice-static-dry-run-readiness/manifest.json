@@ -1,0 +1,87 @@
+{
+  "packageName": "ice-static-dry-run-readiness",
+  "site": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "generatedAt": "2026-06-04",
+  "branch": "feature/admin-page-editor-import-export",
+  "scope": "safe local static dry-run readiness proof attempts",
+  "dryRunCommand": "cd apps/ice-rink-web && npm run export:static:ice:cms",
+  "dryRunCompleted": false,
+  "dryRunExitCode": 1,
+  "primaryBlocker": "current snapshot has approved three-page scope and themeSnapshot true, but production-readiness gates still fail on local media URLs, noindex metadata, missing static form endpoint verification, and theme navigation warnings",
+  "currentAttemptRequiredEnv": {
+    "PUMPKIN_API_URL": "PRESENT",
+    "ICE_RINK_RENTALS_API_KEY": "PRESENT",
+    "ICE_RINK_RENTALS_TENANT_ID": "PRESENT",
+    "PUMPKIN_ADMIN_JWT": "PRESENT",
+    "PUMPKIN_ADMIN_JWT_TEMP_FILE": "PRESENT"
+  },
+  "localToolingChanges": [
+    "snapshot-cms-content.mjs uses the admin active-theme read endpoint when an admin token is available",
+    "snapshot-cms-content.mjs supports the approved temp admin JWT file without printing values",
+    "snapshot-cms-content.mjs filters Ice snapshots to approved slugs and records excluded slugs",
+    "static-publish.mjs rejects any non-approved Ice static slug"
+  ],
+  "approvedRoutes": [
+    "/",
+    "/contact",
+    "/service-areas"
+  ],
+  "currentAttemptSnapshot": {
+    "discoveredPageCount": 6,
+    "pageCount": 3,
+    "publishedCount": 3,
+    "unpublishedCount": 0,
+    "themeSnapshot": true,
+    "requiredSlugsPresent": [
+      "home",
+      "contact",
+      "service-areas"
+    ],
+    "excludedSnapshotSlugs": [
+      "events-holiday-activations",
+      "ice-rink-rentals",
+      "phase-5a-csv-import-54754949"
+    ],
+    "robots": {
+      "home": "noindex, nofollow",
+      "contact": "index,follow",
+      "service-areas": "noindex, nofollow"
+    },
+    "themeReadSucceeded": true,
+    "themeReadWarning": ""
+  },
+  "remainingBlockers": [
+    "local /media/ice-rink-rentals/... URLs remain",
+    "home and service-areas noindex metadata remains",
+    "static form endpoint is missing or unverified",
+    "theme navigation still references obsolete routes and misses root",
+    "service-area claim language still needs review"
+  ],
+  "staleOutputAccepted": false,
+  "readiness": {
+    "staticDryRunCompleted": false,
+    "staticRouteOutputReady": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false
+  },
+  "actionsPerformed": {
+    "cmsWrites": false,
+    "themeWrites": false,
+    "mediaAssetWrites": false,
+    "staticDeployment": false,
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "emailSent": false,
+    "microsoft365SettingsTouched": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  },
+  "rootReport": "PUMPKIN_ICE_STATIC_DRY_RUN_READINESS_REPORT.md"
+}

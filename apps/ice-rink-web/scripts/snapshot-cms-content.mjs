@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'fs';
 import { createRequire } from 'module';
+import { tmpdir } from 'os';
 import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
@@ -9,6 +10,9 @@ const siteDefinitions = {
     domain: 'iceskatingrinkrentals.com',
     tenantEnv: 'ICE_RINK_RENTALS_TENANT_ID',
     apiKeyEnv: 'ICE_RINK_RENTALS_API_KEY',
+    expectedSlugs: ['home', 'contact', 'service-areas'],
+    obsoleteSlugs: ['ice-rink-rentals', 'events-holiday-activations'],
+    mediaOrigin: 'https://media.iceskatingrinkrentals.com',
   },
   'roller-rink-rentals': {
     domain: 'rollerrinkrentals.com',
@@ -36,6 +40,7 @@ const secretPatterns = [
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.resolve(scriptDir, '..');
 const repoRoot = path.resolve(appRoot, '../..');
+const tempAdminTokenPath = path.join(tmpdir(), 'pumpkin-admin-jwt.txt');
 const require = createRequire(import.meta.url);
 const {
   ICE_LAUNCH_NAVIGATION_ROUTES,
@@ -179,6 +184,147 @@ function getTargetKeyword(page) {
 
 function stringValue(value) {
   return typeof value === 'string' ? value : '';
+}
+
+function isPublishedProductionPage(page) {
+  return page?.isPublished === true && page?.workflow?.approvedForPublish === true;
+}
+
+function hasNoindexRobots(page) {
+  return /\bnoindex\b/i.test(stringValue(page?.seo?.robots));
+}
+
+function getConfiguredStaticFormEndpoint() {
+  return stringValue(process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT) ||
+    stringValue(process.env.STATIC_FORM_ENDPOINT) ||
+    stringValue(process.env.NEXT_PUBLIC_STATIC_FORM_ACTION) ||
+    stringValue(process.env.STATIC_FORM_ACTION);
+}
+
+function getAdminToken() {
+  const envToken = stringValue(process.env.CMS_SNAPSHOT_ADMIN_TOKEN) || stringValue(process.env.PUMPKIN_ADMIN_JWT);
+  if (envToken) return envToken;
+
+  try {
+    if (existsSync(tempAdminTokenPath)) {
+      return readFileSync(tempAdminTokenPath, 'utf8').trim();
+    }
+  } catch {
+    return '';
+  }
+
+  return '';
+}
+
+function getApprovedSnapshotSlugs(site) {
+  return site.siteKey === 'ice-rink-rentals' ? new Set(site.expectedSlugs || []) : null;
+}
+
+function applySnapshotRouteScope(site, pages, warnings) {
+  const approvedSlugs = getApprovedSnapshotSlugs(site);
+  if (!approvedSlugs) {
+    return { pages, excludedSlugs: [] };
+  }
+
+  const excludedSlugs = [];
+  const scopedPages = pages.filter((page) => {
+    const slug = getPageSlug(page);
+    if (approvedSlugs.has(slug)) return true;
+    excludedSlugs.push(slug);
+    return false;
+  });
+  const uniqueExcludedSlugs = [...new Set(excludedSlugs)].sort((a, b) => a.localeCompare(b));
+
+  if (uniqueExcludedSlugs.length > 0) {
+    warnings.push(`Ice static snapshot route scope excluded non-approved slug(s): ${uniqueExcludedSlugs.join(', ')}.`);
+  }
+
+  return { pages: scopedPages, excludedSlugs: uniqueExcludedSlugs };
+}
+
+function collectStrings(value, pathLabel = 'page', output = []) {
+  if (typeof value === 'string') {
+    output.push({ path: pathLabel, value });
+    return output;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectStrings(item, `${pathLabel}[${index}]`, output));
+    return output;
+  }
+
+  if (value && typeof value === 'object') {
+    for (const [key, item] of Object.entries(value)) {
+      collectStrings(item, `${pathLabel}.${key}`, output);
+    }
+  }
+
+  return output;
+}
+
+function looksLikeMediaUrl(value) {
+  const trimmed = stringValue(value).trim();
+  if (!trimmed) return false;
+  if (trimmed.startsWith('/media/')) return true;
+  if (/^data:image\//i.test(trimmed)) return true;
+  if (/^https?:\/\/(?:[^/\s]+\.)?(?:placehold\.co|placeholder\.com|example\.(?:com|test))\b/i.test(trimmed)) return true;
+  return /^https?:\/\/[^\s?#]+\.(?:png|jpe?g|webp|gif|svg)(?:[?#][^\s]*)?$/i.test(trimmed);
+}
+
+function isAllowedProductionMediaUrl(value, mediaOrigin) {
+  const trimmed = stringValue(value).trim();
+  return Boolean(mediaOrigin) && trimmed.startsWith(`${mediaOrigin}/`);
+}
+
+function addProductionStaticGates(site, page, label, errors) {
+  if (site.siteKey !== 'ice-rink-rentals' || !isPublishedProductionPage(page)) return;
+
+  if (hasNoindexRobots(page)) {
+    errors.push(`${label}: approved production static pages must not use noindex robots metadata.`);
+  }
+
+  if (page?.includeInSitemap === true && hasNoindexRobots(page)) {
+    errors.push(`${label}: includeInSitemap is true while robots contains noindex.`);
+  }
+
+  const media = getMedia(page);
+  for (const [slot, asset] of Object.entries(media)) {
+    if (!asset || typeof asset !== 'object') continue;
+    const assetId = stringValue(asset.assetId) || stringValue(asset.mediaAssetId);
+    const url = stringValue(asset.publicUrl) || stringValue(asset.url) || stringValue(asset.src);
+    if (assetId && !url) {
+      errors.push(`${label}: media.${slot} has a MediaAsset id but no production publicUrl.`);
+    }
+  }
+
+  const mediaRefs = collectStrings(page)
+    .filter(({ value }) => looksLikeMediaUrl(value));
+
+  for (const { path: mediaPath, value } of mediaRefs) {
+    const trimmed = value.trim();
+    if (trimmed.startsWith('/media/')) {
+      errors.push(`${label}: ${mediaPath} uses local-dev media URL ${trimmed}; production static media must use ${site.mediaOrigin}.`);
+    } else if (/^data:image\//i.test(trimmed)) {
+      errors.push(`${label}: ${mediaPath} embeds a base64 image; production static media must use an approved MediaAsset URL.`);
+    } else if (!isAllowedProductionMediaUrl(trimmed, site.mediaOrigin)) {
+      errors.push(`${label}: ${mediaPath} uses unapproved media URL ${trimmed}; expected ${site.mediaOrigin}.`);
+    }
+  }
+
+  const blocks = Array.isArray(getContentBlocks(page)) ? getContentBlocks(page) : [];
+  const hasFormBlock = blocks.some((block) => block?.type === 'Contact' || block?.type === 'formBlock');
+  if (hasFormBlock) {
+    const endpoint = getConfiguredStaticFormEndpoint();
+    const endpointVerified = process.env.STATIC_FORM_ENDPOINT_VERIFIED === 'true';
+    if (!endpoint) {
+      errors.push(`${label}: static form endpoint is not configured for static production readiness.`);
+    } else if (!/^https:\/\//i.test(endpoint) || /localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint)) {
+      errors.push(`${label}: static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.`);
+    }
+    if (!endpointVerified) {
+      errors.push(`${label}: static form endpoint/backend verification is missing; Microsoft 365 mailbox status is not app form readiness.`);
+    }
+  }
 }
 
 function getFulfillment(page) {
@@ -530,7 +676,7 @@ async function fetchAdminPages(site, adminToken) {
 }
 
 async function fetchPagesForSnapshot(site, includeUnpublished, warnings) {
-  const adminToken = process.env.CMS_SNAPSHOT_ADMIN_TOKEN || process.env.PUMPKIN_ADMIN_JWT || '';
+  const adminToken = getAdminToken();
 
   if (adminToken) {
     const pages = await fetchAdminPages(site, adminToken);
@@ -547,11 +693,18 @@ async function fetchPagesForSnapshot(site, includeUnpublished, warnings) {
 
 async function fetchTheme(site) {
   const tenantPath = encodeURIComponent(site.tenantId);
+  const adminToken = getAdminToken();
+
+  if (adminToken) {
+    const adminUrl = `${site.apiUrl}/api/admin/themes/${tenantPath}/active`;
+    return fetchJson(adminUrl, { Authorization: `Bearer ${adminToken}` }, 'admin theme', { optional: true });
+  }
+
   const url = `${site.apiUrl}/api/themes/${tenantPath}`;
   return fetchJson(url, { Authorization: `Bearer ${site.apiKey}` }, 'theme', { optional: true });
 }
 
-function writeSnapshot(site, pages, theme, warnings, includeUnpublished) {
+function writeSnapshot(site, pages, theme, warnings, includeUnpublished, scope = {}) {
   const pagesDir = path.join(site.snapshotRoot, 'pages');
   rmSync(site.snapshotRoot, { recursive: true, force: true });
   mkdirSync(pagesDir, { recursive: true });
@@ -574,6 +727,9 @@ function writeSnapshot(site, pages, theme, warnings, includeUnpublished) {
     contentSource: 'cms-snapshot',
     generatedAt: new Date().toISOString(),
     includeUnpublished,
+    discoveredPageCount: Number.isFinite(scope.discoveredPageCount) ? scope.discoveredPageCount : sortedPages.length,
+    excludedPageSlugs: Array.isArray(scope.excludedSlugs) ? scope.excludedSlugs : [],
+    approvedSnapshotSlugs: site.siteKey === 'ice-rink-rentals' ? [...site.expectedSlugs] : undefined,
     pageCount: sortedPages.length,
     publishedCount: sortedPages.filter((page) => page?.isPublished === true).length,
     unpublishedCount: sortedPages.filter((page) => page?.isPublished !== true).length,
@@ -725,7 +881,27 @@ function validateSnapshot(site, { allowUnpublished = false } = {}) {
       errors.push(`${label}: canonicalUrl must use https://${site.domain}.`);
     }
 
+    addProductionStaticGates(site, page, label, errors);
     addProductionReadinessWarnings(page, label, warnings);
+  }
+
+  for (const slug of site.expectedSlugs || []) {
+    if (!slugs.has(slug)) errors.push(`Missing expected slug: ${slug}.`);
+  }
+
+  const approvedSlugs = getApprovedSnapshotSlugs(site);
+  if (approvedSlugs) {
+    for (const slug of slugs) {
+      if (!approvedSlugs.has(slug)) {
+        errors.push(`Non-approved Ice static slug is present in CMS snapshot: ${slug}.`);
+      }
+    }
+  }
+
+  for (const slug of site.obsoleteSlugs || []) {
+    if (slugs.has(slug)) {
+      errors.push(`Obsolete Ice launch slug is still present in CMS snapshot: ${slug}.`);
+    }
   }
 
   if (pages.length === 0 && errors.length === 0) {
@@ -772,14 +948,19 @@ async function runSnapshot() {
   const site = getSiteContext({ requireApiKey: true });
   const includeUnpublished = args['include-unpublished'] === true;
   const warnings = [];
-  const pages = await fetchPagesForSnapshot(site, includeUnpublished, warnings);
+  const discoveredPages = await fetchPagesForSnapshot(site, includeUnpublished, warnings);
+  const routeScope = applySnapshotRouteScope(site, discoveredPages, warnings);
+  const pages = routeScope.pages;
   const themeResult = await fetchTheme(site);
 
   if (themeResult.warning) {
     warnings.push(themeResult.warning);
   }
 
-  const manifest = writeSnapshot(site, pages, themeResult.data, warnings, includeUnpublished);
+  const manifest = writeSnapshot(site, pages, themeResult.data, warnings, includeUnpublished, {
+    discoveredPageCount: discoveredPages.length,
+    excludedSlugs: routeScope.excludedSlugs,
+  });
   const validation = validateSnapshot(site, { allowUnpublished: includeUnpublished });
 
   console.log(JSON.stringify({
