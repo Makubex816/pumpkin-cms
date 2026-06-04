@@ -1,0 +1,55 @@
+{
+  "package": "ice-contact-draft-preview-support",
+  "createdAt": "2026-06-04",
+  "site": "IceSkatingRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "previewUrl": "http://localhost:3002/__preview/ice-rink-rentals/contact",
+  "actualRoute": "http://localhost:3002/draft-preview/ice-rink-rentals/contact",
+  "publicRoute": "http://localhost:3002/contact",
+  "scope": [
+    "frontend draft preview route",
+    "preview alias rewrite",
+    "preview documentation"
+  ],
+  "filesChanged": [
+    "apps/ice-rink-web/src/app/draft-preview/ice-rink-rentals/contact/page.tsx",
+    "apps/ice-rink-web/next.config.js",
+    "content-review/ice-contact-draft-preview-support/README.md",
+    "content-review/ice-contact-draft-preview-support/DRAFT_PREVIEW_ROUTE.md",
+    "content-review/ice-contact-draft-preview-support/CONTACT_PREVIEW_BEHAVIOR.md",
+    "content-review/ice-contact-draft-preview-support/FORM_PREVIEW_NOTES.md",
+    "content-review/ice-contact-draft-preview-support/PREVIEW_SECURITY_NOTES.md",
+    "content-review/ice-contact-draft-preview-support/FRONTEND_REVIEW_CHECKLIST.md",
+    "content-review/ice-contact-draft-preview-support/manifest.json",
+    "PUMPKIN_ICE_CONTACT_DRAFT_PREVIEW_SUPPORT_REPORT.md"
+  ],
+  "validation": {
+    "typeCheck": "passed",
+    "nodeCheckNextConfig": "passed",
+    "previewAliasProbe": {
+      "url": "http://localhost:3002/__preview/ice-rink-rentals/contact",
+      "status": 200
+    },
+    "actualPreviewProbe": {
+      "url": "http://localhost:3002/draft-preview/ice-rink-rentals/contact",
+      "status": 200
+    },
+    "publicContactProbe": {
+      "url": "http://localhost:3002/contact",
+      "status": 200
+    },
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed",
+    "stagedArtifactCheck": "passed"
+  },
+  "cmsWrites": false,
+  "themeUpdates": false,
+  "mediaAssetUpdates": false,
+  "staticGeneration": false,
+  "deployment": false,
+  "dnsEmailProviderChanges": false,
+  "protectedConfigTouched": false,
+  "rollerTouched": false
+}

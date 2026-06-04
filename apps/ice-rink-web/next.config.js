@@ -44,6 +44,10 @@ const nextConfig = {
         source: '/__preview/ice-rink-rentals/service-areas',
         destination: '/draft-preview/ice-rink-rentals/service-areas',
       },
+      {
+        source: '/__preview/ice-rink-rentals/contact',
+        destination: '/draft-preview/ice-rink-rentals/contact',
+      },
     ];
 
     if (!isMediaProxyEnabled) return previewRewrites;
