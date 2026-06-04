@@ -61,4 +61,6 @@ Strict production/staging validators still exit `1`, as expected, because produc
 
 Noindex errors and the unapproved rendered social image URL are cleared.
 
+The remaining 8 strict errors were inventoried in `REMAINING_STRICT_VALIDATOR_ERRORS.md`. The next local build gate is classified in `NEXT_LOCAL_BUILD_GATE.md` as: A. No local repairs needed; move only when production media/form setup is approved later.
+
 No staging, deployment, Theme writes, MediaAsset writes, email, or Microsoft 365 actions were performed. Only the explicitly approved active CMS metadata fields were changed.

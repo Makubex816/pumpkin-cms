@@ -34,6 +34,13 @@ Remaining production blockers:
 - static form endpoint is missing/unverified
 - active CMS/theme navigation still needs permanent approval/update
 
+Latest diagnosis-only pass:
+
+- exact remaining 8 strict validator errors are documented
+- body/media URL source fields are mapped to active page media and content-block media objects
+- static form endpoint env/config expectations are documented
+- next local build gate is classified as `A`: no local repairs needed; move only when production media/form setup is approved later
+
 Read-only repair planning docs:
 
 - `NOINDEX_REPAIR_PLAN.md`
@@ -43,6 +50,13 @@ Read-only repair planning docs:
 Applied repair result:
 
 - `CMS_METADATA_REPAIR_RESULT.md`
+
+Diagnosis docs:
+
+- `REMAINING_STRICT_VALIDATOR_ERRORS.md`
+- `BODY_MEDIA_URL_BLOCKER_AUDIT.md`
+- `STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md`
+- `NEXT_LOCAL_BUILD_GATE.md`
 
 Latest strict validator split:
 
@@ -79,4 +93,8 @@ Latest strict validator split:
 - `SOCIAL_IMAGE_URL_REPAIR_PLAN.md`
 - `STRICT_QUALITY_GATE_REPAIR_PLAN.md`
 - `CMS_METADATA_REPAIR_RESULT.md`
+- `REMAINING_STRICT_VALIDATOR_ERRORS.md`
+- `BODY_MEDIA_URL_BLOCKER_AUDIT.md`
+- `STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md`
+- `NEXT_LOCAL_BUILD_GATE.md`
 - `manifest.json`

@@ -11,10 +11,28 @@ The generated static output was produced for route-shape proof, but the strict p
 
 No endpoint value was printed.
 
+Current shell presence-only check:
+
+| Env var | Status |
+| --- | --- |
+| `NEXT_PUBLIC_STATIC_FORM_ENDPOINT` | MISSING |
+| `STATIC_FORM_ENDPOINT` | MISSING |
+| `NEXT_PUBLIC_STATIC_FORM_ACTION` | MISSING |
+| `STATIC_FORM_ACTION` | MISSING |
+| `STATIC_FORM_ENDPOINT_VERIFIED` | MISSING |
+
 Strict validator errors:
 
 - static form endpoint is not configured for production/static deploy readiness
 - static form endpoint/backend verification is missing; mailbox readiness is not app form readiness
+
+The validators read endpoint config from `NEXT_PUBLIC_STATIC_FORM_ENDPOINT`, `STATIC_FORM_ENDPOINT`, `NEXT_PUBLIC_STATIC_FORM_ACTION`, or `STATIC_FORM_ACTION`. Backend verification requires `STATIC_FORM_ENDPOINT_VERIFIED=true`.
+
+Detailed endpoint diagnosis is recorded in:
+
+```text
+deployment/azure/ice-static-dry-run-readiness/STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md
+```
 
 ## Policy Result
 

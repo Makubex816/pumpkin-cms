@@ -4,7 +4,7 @@
   "siteKey": "ice-rink-rentals",
   "generatedAt": "2026-06-04",
   "branch": "feature/admin-page-editor-import-export",
-  "scope": "safe local static dry-run readiness proof attempts and approved Ice CMS metadata repair",
+  "scope": "safe local static dry-run readiness proof attempts, approved Ice CMS metadata repair, and remaining strict blocker diagnosis",
   "dryRunCommand": "cd apps/ice-rink-web && npm run export:static:ice:cms",
   "dryRunCompleted": true,
   "dryRunExitCode": 0,
@@ -21,6 +21,35 @@
       "STRICT_QUALITY_GATE_REPAIR_PLAN.md"
     ],
     "repairResultFile": "CMS_METADATA_REPAIR_RESULT.md"
+  },
+  "latestDiagnosisPass": {
+    "mode": "local diagnosis only",
+    "checkpointCommitPresent": "4111bdd Document Ice CMS metadata repair results",
+    "docsAdded": [
+      "REMAINING_STRICT_VALIDATOR_ERRORS.md",
+      "BODY_MEDIA_URL_BLOCKER_AUDIT.md",
+      "STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md",
+      "NEXT_LOCAL_BUILD_GATE.md"
+    ],
+    "routeProofClean": true,
+    "snapshotValidatorExitCode": 0,
+    "strictStaticValidatorExitCode": 1,
+    "strictStagingValidatorExitCode": 1,
+    "strictStaticValidatorErrorCount": 8,
+    "strictStagingValidatorErrorCount": 8,
+    "noindexErrors": "cleared",
+    "unapprovedRenderedSocialImageUrlErrors": "cleared",
+    "remainingStrictErrorCategories": [
+      "local body/media URLs",
+      "missing static form endpoint",
+      "missing static form endpoint/backend verification"
+    ],
+    "nextLocalBuildGate": "A. No local repairs needed; move only when production media/form setup is approved later.",
+    "cmsWritesThisPass": false,
+    "mediaAssetWritesThisPass": false,
+    "staticDeploymentThisPass": false,
+    "protectedConfigReadThisPass": false,
+    "rollerTouchedThisPass": false
   },
   "cmsMetadataRepairResult": {
     "performed": true,
@@ -143,14 +172,62 @@
     "unapprovedRenderedImageUrls": [],
     "noindexRenderedFiles": [],
     "remainingStrictErrors": [
-      "local-dev media URL found in contact/index.html",
-      "local-dev media URL found in contact/index.txt",
-      "local-dev media URL found in index.html",
-      "local-dev media URL found in index.txt",
-      "local-dev media URL found in service-areas/index.html",
-      "local-dev media URL found in service-areas/index.txt",
-      "static form endpoint not configured",
-      "static form endpoint/backend verification missing"
+      {
+        "category": "local body/media URL",
+        "staticOutputError": "Local-dev media URL found in static output: contact/index.html",
+        "stagingPackageError": "Local-dev media URL found in staging package: contact/index.html",
+        "route": "/contact",
+        "source": "active contact page body/media objects"
+      },
+      {
+        "category": "local body/media URL",
+        "staticOutputError": "Local-dev media URL found in static output: contact/index.txt",
+        "stagingPackageError": "Local-dev media URL found in staging package: contact/index.txt",
+        "route": "/contact",
+        "source": "active contact page body/media objects"
+      },
+      {
+        "category": "local body/media URL",
+        "staticOutputError": "Local-dev media URL found in static output: index.html",
+        "stagingPackageError": "Local-dev media URL found in staging package: index.html",
+        "route": "/",
+        "source": "active home page body/media objects"
+      },
+      {
+        "category": "local body/media URL",
+        "staticOutputError": "Local-dev media URL found in static output: index.txt",
+        "stagingPackageError": "Local-dev media URL found in staging package: index.txt",
+        "route": "/",
+        "source": "active home page body/media objects"
+      },
+      {
+        "category": "local body/media URL",
+        "staticOutputError": "Local-dev media URL found in static output: service-areas/index.html",
+        "stagingPackageError": "Local-dev media URL found in staging package: service-areas/index.html",
+        "route": "/service-areas",
+        "source": "active service-areas page body/media objects"
+      },
+      {
+        "category": "local body/media URL",
+        "staticOutputError": "Local-dev media URL found in static output: service-areas/index.txt",
+        "stagingPackageError": "Local-dev media URL found in staging package: service-areas/index.txt",
+        "route": "/service-areas",
+        "source": "active service-areas page body/media objects"
+      },
+      {
+        "category": "missing static form endpoint",
+        "staticOutputError": "Static form endpoint is not configured for production/static deploy readiness.",
+        "stagingPackageError": "Static form endpoint is not configured for production/static deploy readiness.",
+        "route": "global",
+        "source": "static form endpoint environment/config"
+      },
+      {
+        "category": "missing static form endpoint/backend verification",
+        "staticOutputError": "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness.",
+        "stagingPackageError": "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness.",
+        "route": "global",
+        "source": "STATIC_FORM_ENDPOINT_VERIFIED"
+      }
     ]
   },
   "remainingBlockers": [

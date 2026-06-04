@@ -68,6 +68,14 @@ Unique local `/media/ice-rink-rentals/...` URL counts in fresh static output:
 
 The CMS source paths are page media objects and block media objects such as `page.media.*.publicUrl`, `page.media.*.url`, and `page.ContentData.ContentBlocks[*].content.*.media.publicUrl/url`. The renderer path is `apps/ice-rink-web/src/components/blocks/PolishedBlocks.tsx`, which reads `publicUrl`/`url` and emits `<img src=...>`.
 
+Detailed route/source mapping is recorded in:
+
+```text
+deployment/azure/ice-static-dry-run-readiness/BODY_MEDIA_URL_BLOCKER_AUDIT.md
+```
+
+The remaining local media URLs map to active page body/media fields and media objects with Ice `mediaAssetId` values. Clearing them would remove visible hero, card, logo, partner, setup, and section imagery, so they should remain blockers until production media origin work and MediaAsset/public URL updates are separately approved.
+
 ## Policy Result
 
 Local body/media URL problems do not block the local route-shape proof. They do block production media readiness, Azure staging readiness, and production deployment readiness.

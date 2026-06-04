@@ -18,12 +18,20 @@ Cleared:
 - Update MediaAsset production public URLs in a separately authorized CMS/media task.
 - Confirm no local `/media/...` URLs remain in snapshot or static output.
 - Keep Open Graph/Twitter social image fields empty or replace them only with approved production media URLs after media readiness work is authorized.
+- Do not clear body/media fields as a local workaround; the remaining media URLs are visible page imagery and should remain blockers until production media URLs exist.
 
 ## Before Contact Form Production Readiness
 
 - Deploy or configure a static form endpoint in a separate authorized task.
 - Verify endpoint/backend behavior.
 - Confirm form submission readiness is not inferred from mailbox readiness.
+- Set `STATIC_FORM_ENDPOINT_VERIFIED=true` only after backend verification passes.
+
+## Next Local Build Gate
+
+Classification: A. No local repairs needed; move only when production media/form setup is approved later.
+
+The remaining strict validator errors are expected. No unexpected tooling repair is required from the current local state.
 
 ## Before Production Content Approval
 

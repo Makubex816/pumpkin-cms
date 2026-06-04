@@ -19,6 +19,7 @@ Branch: `feature/admin-page-editor-import-export`
 Recent log at start included:
 
 ```text
+4111bdd Document Ice CMS metadata repair results
 cff1c1a Plan Ice static quality gate CMS repairs
 7f9c0eb Document Ice static quality gate blockers
 b55cddb Complete Ice static dry-run route proof
@@ -30,7 +31,6 @@ dc8d149 Add Ice static media deployment readiness report
 492a2a9 Add Ice final contact live CMS promotion report
 5800b86 Add Ice contact media binding report
 df01d84 Add Ice contact draft preview support
-af471be Add Ice final contact local draft import report
 ```
 
 ## Environment Presence
@@ -145,6 +145,33 @@ Static contact endpoint:
 - local result: form endpoint remains a production-readiness blocker, not a route-shape blocker
 - endpoint deployment/email/Microsoft 365 action performed: no
 
+## Remaining Strict Validator Diagnosis
+
+Latest diagnosis-only docs:
+
+- `deployment/azure/ice-static-dry-run-readiness/REMAINING_STRICT_VALIDATOR_ERRORS.md`
+- `deployment/azure/ice-static-dry-run-readiness/BODY_MEDIA_URL_BLOCKER_AUDIT.md`
+- `deployment/azure/ice-static-dry-run-readiness/STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md`
+- `deployment/azure/ice-static-dry-run-readiness/NEXT_LOCAL_BUILD_GATE.md`
+
+The remaining 8 strict errors are all expected:
+
+| Category | Count | Details |
+| --- | ---: | --- |
+| local body/media URL file errors | 6 | `index.html`, `index.txt`, `contact/index.html`, `contact/index.txt`, `service-areas/index.html`, `service-areas/index.txt` |
+| missing static form endpoint | 1 | no public static form endpoint env var is configured |
+| missing endpoint/backend verification | 1 | `STATIC_FORM_ENDPOINT_VERIFIED` is not `true` |
+
+Body/media URL diagnosis: URLs appear in active page body/content media and page media objects, not theme navigation, metadata, CSS, or generated-only files. The active snapshot media objects carry Ice `mediaAssetId` values. Clearing them would remove visible approved site imagery, so they should remain blockers until production media origin and MediaAsset/public URL work is explicitly approved.
+
+Static form diagnosis: validators read `NEXT_PUBLIC_STATIC_FORM_ENDPOINT`, `STATIC_FORM_ENDPOINT`, `NEXT_PUBLIC_STATIC_FORM_ACTION`, or `STATIC_FORM_ACTION`; backend verification requires `STATIC_FORM_ENDPOINT_VERIFIED=true`. A local placeholder/stub may be useful only for interaction experiments and must not mark production readiness yes.
+
+Next local build gate classification: `A. No local repairs needed; move only when production media/form setup is approved later.`
+
+CMS writes during this diagnosis pass: no.
+
+MediaAsset writes during this diagnosis pass: no.
+
 ## Repair Result
 
 Repair planning and result docs:
@@ -226,6 +253,8 @@ Overall production deployment readiness remains no because media, form endpoint,
 - route/snapshot shape validation: pass
 - strict production static validator: rejects output as expected
 - strict staging package validator: rejects package as expected
+- remaining strict validator errors: 8 expected errors documented
+- next local build gate: A, no local repairs needed before separately approved media/form setup
 - manifest JSON parse: pass
 - node --check for changed JS/MJS: pass
 - git diff --check: pass, with line-ending warnings only
