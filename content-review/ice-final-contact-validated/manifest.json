@@ -1,0 +1,915 @@
+{
+  "schemaVersion": "pumpkin.ice.final-contact-package-intake.v1",
+  "generatedAt": "2026-06-04T01:30:13.785Z",
+  "site": "IceSkatingRinkRentals.com",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/contact",
+  "branch": "feature/admin-page-editor-import-export",
+  "inputFolder": "content-review/ice-final-contact-input",
+  "outputFolder": "content-review/ice-final-contact-validated",
+  "rootReport": "PUMPKIN_ICE_FINAL_CONTACT_PACKAGE_INTAKE_REPORT.md",
+  "selectedCandidate": "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.full.json",
+  "normalizedCandidate": "content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+  "importPackage": "content-review/ice-final-contact-validated/CONTACT_IMPORT_PACKAGE.json",
+  "inventory": {
+    "allFiles": [
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/CorporateIceRinkRentalEvent.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/HolidayIceRink.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceRinkRentalsSetup.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceSkatingRinkRentalsLogo.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/WinterFestIceRinkRentals.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/ppec-wordmark-card-preview.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.content.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.forms-routing.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.full.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.media-manifest.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.preview.html",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.schema.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/docs/ice-contact-page.phase9e.source-rewrite-summary.md",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/docs/ice-contact-page.phase9e.visual-pumpkin-rewrite.import-notes.md",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/docs/ice-contact-page.phase9e.visual-pumpkin-rewrite.validation-notes.md",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/shared/ice-rink-rentals.contact-form-block.phase9e.json",
+      "content-review/ice-final-contact-input/ice-contact-page-phase9e-visual-pumpkin-rewrite.zip"
+    ],
+    "contactJsonFiles": [
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.content.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.forms-routing.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.full.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.media-manifest.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.schema.json"
+    ],
+    "packageJsonFiles": [
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/shared/ice-rink-rentals.contact-form-block.phase9e.json"
+    ],
+    "mediaReferences": [
+      {
+        "assetId": "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+        "usage": "logo / brand",
+        "alt": "Ice Rink Rentals logo with ice skate and snowflake graphic",
+        "title": "Ice Rink Rentals Logo",
+        "previewFile": "assets/IceSkatingRinkRentalsLogo.png"
+      },
+      {
+        "assetId": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+        "usage": "contact hero / Open Graph / event inspiration",
+        "alt": "Guests skating on a festive outdoor ice rink surrounded by holiday lights at a winter festival",
+        "title": "Winter Festival Ice Rink Rentals",
+        "previewFile": "assets/WinterFestIceRinkRentals.png"
+      },
+      {
+        "assetId": "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+        "usage": "contact hero support / setup and logistics",
+        "alt": "Portable ice rink setup with white safety barriers and skate aids before an outdoor event",
+        "title": "Portable Ice Rink Setup",
+        "previewFile": "assets/IceRinkRentalsSetup.png"
+      },
+      {
+        "assetId": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+        "usage": "corporate / VIP event planning use case",
+        "alt": "Corporate guests skating and networking around a temporary outdoor ice rink at an evening event",
+        "title": "Corporate Ice Rink Rental Event",
+        "previewFile": "assets/CorporateIceRinkRentalEvent.png"
+      },
+      {
+        "assetId": "ice-rink-rentals-holidayicerink-973ce7691377",
+        "usage": "holiday / public-space / shopping center use case",
+        "alt": "Families and children skating on a portable ice rink at an outdoor holiday shopping center",
+        "title": "Holiday Ice Rink",
+        "previewFile": "assets/HolidayIceRink.png"
+      }
+    ],
+    "formReferences": [
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.forms-routing.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/shared/ice-rink-rentals.contact-form-block.phase9e.json"
+    ],
+    "schemaSeoFiles": [
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.schema.json",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.full.json"
+    ],
+    "styleFiles": [],
+    "previewHtmlFiles": [
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/contact/ice-contact-page.phase9e.visual-pumpkin-rewrite.preview.html"
+    ],
+    "cf7WordPressReferenceFiles": [],
+    "readmeInstructionFiles": [
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/docs/ice-contact-page.phase9e.source-rewrite-summary.md",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/docs/ice-contact-page.phase9e.visual-pumpkin-rewrite.import-notes.md",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/docs/ice-contact-page.phase9e.visual-pumpkin-rewrite.validation-notes.md"
+    ],
+    "rawMediaFiles": [
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/CorporateIceRinkRentalEvent.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/HolidayIceRink.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceRinkRentalsSetup.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceSkatingRinkRentalsLogo.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/WinterFestIceRinkRentals.png",
+      "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/ppec-wordmark-card-preview.png"
+    ],
+    "zipFiles": [
+      "content-review/ice-final-contact-input/ice-contact-page-phase9e-visual-pumpkin-rewrite.zip"
+    ]
+  },
+  "normalization": {
+    "route": "/contact",
+    "pageSlug": "contact",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/contact",
+    "blockTypes": [
+      "Hero",
+      "TrustBar",
+      "CardGrid",
+      "formBlock",
+      "CardGrid",
+      "HowItWorks",
+      "CardGrid",
+      "CardGrid",
+      "PrimaryCTA",
+      "FAQ",
+      "PrimaryCTA"
+    ],
+    "formBlockPresent": true,
+    "mediaAssetIds": [
+      "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+      "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+      "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+      "ice-rink-rentals-holidayicerink-973ce7691377",
+      "ice-rink-rentals-partyproseastcoastlogo-cfd1fc9f60ae",
+      "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411"
+    ],
+    "noContactus": true,
+    "noFakePhone": true,
+    "noFakeEmail": true,
+    "noRawHtmlForm": true,
+    "noBase64": true,
+    "noExternalFakeMedia": true,
+    "ppecLogoBound": true
+  },
+  "validation": {
+    "ok": true,
+    "results": {
+      "json-parse-validation-result.json": {
+        "generatedAt": "2026-06-04T01:30:13.945Z",
+        "ok": true,
+        "results": [
+          {
+            "path": "content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+            "ok": true
+          },
+          {
+            "path": "content-review/ice-final-contact-validated/CONTACT_IMPORT_PACKAGE.json",
+            "ok": true
+          }
+        ]
+      },
+      "production-field-persistence-validation-result.json": {
+        "generatedAt": "2026-06-04T01:30:13.948Z",
+        "ok": true,
+        "checks": {
+          "tenant": true,
+          "siteKey": true,
+          "route": true,
+          "canonical": true,
+          "workflowDraftNeedsReview": true,
+          "productionPublishFalse": true,
+          "staticNeedsRebuild": true,
+          "staticNotEligible": true,
+          "businessDisplayName": true,
+          "selectedMailbox": true,
+          "publicEmailDisplayPolicy": true,
+          "publicContactEmailHidden": true,
+          "noContactus": true,
+          "noFakePhone": true,
+          "noFakeEmail": true,
+          "noRawTailwind": true,
+          "noRawCf7": true,
+          "noRawFormHtml": true,
+          "noBase64Images": true,
+          "noExternalFakeMediaUrls": true,
+          "visibleFormBlock": true,
+          "formRouting": true,
+          "variantsPresent": true,
+          "mediaIdsOfficial": true,
+          "ppecLogoBound": true,
+          "noHomepageOrServiceAreasPayload": true,
+          "noStateCityCreated": true
+        },
+        "failed": []
+      },
+      "route-canonical-validation-result.json": {
+        "generatedAt": "2026-06-04T01:30:13.949Z",
+        "ok": true,
+        "checks": {
+          "tenant": true,
+          "siteKey": true,
+          "route": true,
+          "path": true,
+          "slug": true,
+          "pageSlug": true,
+          "canonical": true,
+          "notHomepage": true,
+          "notServiceAreas": true,
+          "noStateCity": true
+        },
+        "failed": []
+      },
+      "unsafe-scan-result.json": {
+        "generatedAt": "2026-06-04T01:30:13.950Z",
+        "ok": true,
+        "hits": []
+      },
+      "contactus-scan-result.json": {
+        "generatedAt": "2026-06-04T01:30:13.951Z",
+        "ok": true,
+        "hits": []
+      },
+      "targeted-secret-scan-result.json": {
+        "generatedAt": "2026-06-04T01:30:13.953Z",
+        "ok": true,
+        "hits": []
+      },
+      "safe-import-preflight-result.json": {
+        "generatedAt": "2026-06-04T01:30:14.005Z",
+        "schemaVersion": "pumpkin-import-preflight-result.v1",
+        "tool": {
+          "name": "pumpkin-import-preflight",
+          "path": "tools/import-preflight/import-preflight.mjs",
+          "mode": "preflight-only",
+          "nonMutating": true,
+          "requiresAdminJwt": false,
+          "readsProtectedConfig": false,
+          "callsLiveWriteApis": false,
+          "mutatesCmsData": false,
+          "sendsEmail": false,
+          "touchesMediaRecords": false
+        },
+        "input": {
+          "path": "content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+          "tenantId": "ice-rink-rentals",
+          "siteKey": "ice-rink-rentals",
+          "route": "/contact"
+        },
+        "checks": [
+          {
+            "check": "json-parse",
+            "status": "passed",
+            "message": "JSON parse succeeded."
+          },
+          {
+            "check": "secret-scan",
+            "status": "passed",
+            "message": "No high-confidence secret-looking values found."
+          },
+          {
+            "check": "tenant",
+            "status": "passed",
+            "message": "Candidate tenantId matches \"ice-rink-rentals\"."
+          },
+          {
+            "check": "site-key",
+            "status": "passed",
+            "message": "Candidate siteKey is compatible with \"ice-rink-rentals\"."
+          },
+          {
+            "check": "slug",
+            "status": "passed",
+            "message": "pageSlug \"contact\" is route-safe."
+          },
+          {
+            "check": "route",
+            "status": "passed",
+            "message": "Candidate slug matches route \"/contact\"."
+          },
+          {
+            "check": "content-blocks",
+            "status": "passed",
+            "message": "ContentData.ContentBlocks contains 11 block(s)."
+          },
+          {
+            "check": "publishing-state",
+            "status": "passed",
+            "message": "isPublished is false."
+          },
+          {
+            "check": "sitemap-state",
+            "status": "passed",
+            "message": "includeInSitemap is false."
+          },
+          {
+            "check": "canonical",
+            "status": "passed",
+            "message": "Canonical path matches candidate route."
+          },
+          {
+            "check": "required-blocks",
+            "status": "passed",
+            "message": "Required homepage block types are present."
+          },
+          {
+            "check": "known-block-types",
+            "status": "passed",
+            "message": "All block types are known to the local import preflight."
+          },
+          {
+            "check": "rich-block-safety",
+            "status": "passed",
+            "message": "customHtml/trustedEmbed/formBlock focused checks passed."
+          },
+          {
+            "check": "focused-home-contract",
+            "status": "passed",
+            "message": "Required homepage import fields are present."
+          },
+          {
+            "check": "phase8n-contract-persistence",
+            "status": "passed",
+            "message": "Phase 8N production fields are present for .NET/API persistence validation."
+          },
+          {
+            "check": "updated-home-contact-persistence",
+            "status": "passed",
+            "message": "Updated home/contact persistence-sensitive fields are present before .NET round-trip validation."
+          },
+          {
+            "check": "default-form",
+            "status": "passed",
+            "message": "Default form references are safe and non-secret."
+          },
+          {
+            "check": "media-requirements",
+            "status": "passed",
+            "message": "Required media requirements have MediaAsset ids."
+          },
+          {
+            "check": "business-approval-audit",
+            "status": "passed",
+            "message": "Business value and approval blockers were classified."
+          },
+          {
+            "check": "unsafe-payload-scan",
+            "status": "passed",
+            "message": "No unsafe HTML/CSS/form/media/email markers found."
+          },
+          {
+            "check": "dotnet-page-contract",
+            "status": "passed",
+            "message": "The .NET Page/block contract accepted the candidate.",
+            "details": {
+              "readinessDecision": "dotnet-contract-valid-not-cms-import-ready"
+            }
+          },
+          {
+            "check": "dotnet-page-contract",
+            "status": "warning",
+            "message": "The .NET contract returned 3 warning(s).",
+            "category": "dotnet",
+            "field": "candidate",
+            "details": [
+              "page.reviewOnlyField",
+              "productionFieldPersistence.checked",
+              "updatedHomeContactPersistence.checked"
+            ]
+          }
+        ],
+        "candidate": {
+          "tenantId": "ice-rink-rentals",
+          "siteKey": "ice-rink-rentals",
+          "pageSlug": "contact",
+          "route": "/contact",
+          "canonicalUrl": "https://iceskatingrinkrentals.com/contact",
+          "isPublished": false,
+          "includeInSitemap": false,
+          "workflowStatus": "draft",
+          "approvedForPublish": false,
+          "approvedForImport": false,
+          "staticEligible": false,
+          "needsRebuild": true,
+          "blockCount": 11,
+          "blockTypes": [
+            "Hero",
+            "TrustBar",
+            "CardGrid",
+            "formBlock",
+            "CardGrid",
+            "HowItWorks",
+            "CardGrid",
+            "CardGrid",
+            "PrimaryCTA",
+            "FAQ",
+            "PrimaryCTA"
+          ],
+          "formBlockCount": 1,
+          "formKeys": [
+            "default-quote-request"
+          ],
+          "mediaRequirementCount": 6,
+          "unresolvedMediaRequirementCount": 0
+        },
+        "issues": [
+          {
+            "severity": "warning",
+            "check": "dotnet-page-contract",
+            "category": "dotnet",
+            "field": "candidate",
+            "message": "The .NET contract returned 3 warning(s).",
+            "details": [
+              "page.reviewOnlyField",
+              "productionFieldPersistence.checked",
+              "updatedHomeContactPersistence.checked"
+            ]
+          }
+        ],
+        "blockers": {
+          "localDraftImport": [],
+          "cmsImport": [
+            {
+              "check": "approval",
+              "category": "workflow",
+              "field": "workflow.approvedForImport",
+              "message": "workflow.approvedForImport is not true."
+            },
+            {
+              "check": "approval",
+              "category": "workflow",
+              "field": "workflow.reviewStatus",
+              "message": "Human approval is not recorded."
+            },
+            {
+              "check": "business-values",
+              "category": "domainRouting",
+              "field": "domainRouting.publicContactEmail",
+              "message": "Public email display policy remains unresolved or intentionally hidden."
+            }
+          ],
+          "staticRegeneration": [
+            {
+              "check": "static-publishing",
+              "category": "staticPublishing",
+              "field": "staticPublishing.staticEligible",
+              "message": "staticPublishing.staticEligible is not true."
+            }
+          ],
+          "production": [
+            {
+              "check": "approval",
+              "category": "workflow",
+              "field": "workflow.approvedForPublish",
+              "message": "workflow.approvedForPublish is not true."
+            },
+            {
+              "check": "approval",
+              "category": "workflow",
+              "field": "workflow.reviewStatus",
+              "message": "Human approval is not recorded."
+            },
+            {
+              "check": "business-values",
+              "category": "domainRouting",
+              "field": "domainRouting.publicContactEmail",
+              "message": "Public email display policy remains unresolved."
+            },
+            {
+              "check": "static-publishing",
+              "category": "staticPublishing",
+              "field": "staticPublishing.staticEligible",
+              "message": "staticPublishing.staticEligible is not true."
+            }
+          ]
+        },
+        "differencesFromAdminApiPreflight": [
+          "Does not fetch current CMS pages, so same-slug update/create collision behavior is not proven.",
+          "Does not create server-side revision snapshots or ImportRun history.",
+          "Does not call SavePageAsync/UpdatePageAsync and therefore does not prove database persistence.",
+          "Mirrors admin/API validation categories locally without requiring admin JWT, tenant API key, or protected config."
+        ],
+        "dotNetContract": {
+          "available": true,
+          "buildOk": true,
+          "exitCode": 0,
+          "ok": true,
+          "readinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+          "errorCount": 0,
+          "warningCount": 3,
+          "warningCodes": [
+            "page.reviewOnlyField",
+            "productionFieldPersistence.checked",
+            "updatedHomeContactPersistence.checked"
+          ],
+          "productionFieldPersistenceOk": true,
+          "productionFieldPersistenceAvailable": true,
+          "updatedHomeContactPersistenceOk": true,
+          "mediaRequirements": [
+            {
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+              "RequirementCount": 6,
+              "BlockerCount": 0
+            }
+          ]
+        },
+        "classification": {
+          "preflight-valid-for-shape": true,
+          "preflight-valid-for-local-draft-import": true,
+          "preflight-valid-for-CMS-import": false,
+          "preflight-valid-for-production": false
+        },
+        "decisions": {
+          "shape": "valid",
+          "localDraftImport": "valid",
+          "cmsImport": "blocked",
+          "staticRegeneration": "blocked",
+          "production": "blocked"
+        },
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"schemaVersion\": \"pumpkin-import-preflight-result.v1\",\n  \"generatedAt\": \"2026-06-04T01:30:14.005Z\",\n  \"tool\": {\n    \"name\": \"pumpkin-import-preflight\",\n    \"path\": \"tools/import-preflight/import-preflight.mjs\",\n    \"mode\": \"preflight-only\",\n    \"nonMutating\": true,\n    \"requiresAdminJwt\": false,\n    \"readsProtectedConfig\": false,\n    \"callsLiveWriteApis\": false,\n    \"mutatesCmsData\": false,\n    \"sendsEmail\": false,\n    \"touchesMediaRecords\": false\n  },\n  \"input\": {\n    \"path\": \"content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\",\n    \"tenantId\": \"ice-rink-rentals\",\n    \"siteKey\": \"ice-rink-rentals\",\n    \"route\": \"/contact\"\n  },\n  \"checks\": [\n    {\n      \"check\": \"json-parse\",\n      \"status\": \"passed\",\n      \"message\": \"JSON parse succeeded.\"\n    },\n    {\n      \"check\": \"secret-scan\",\n      \"status\": \"passed\",\n      \"message\": \"No high-confidence secret-looking values found.\"\n    },\n    {\n      \"check\": \"tenant\",\n      \"status\": \"passed\",\n      \"message\": \"Candidate tenantId matches \\\"ice-rink-rentals\\\".\"\n    },\n    {\n      \"check\": \"site-key\",\n      \"status\": \"passed\",\n      \"message\": \"Candidate siteKey is compatible with \\\"ice-rink-rentals\\\".\"\n    },\n    {\n      \"check\": \"slug\",\n      \"status\": \"passed\",\n      \"message\": \"pageSlug \\\"contact\\\" is route-safe.\"\n    },\n    {\n      \"check\": \"route\",\n      \"status\": \"passed\",\n      \"message\": \"Candidate slug matches route \\\"/contact\\\".\"\n    },\n    {\n      \"check\": \"content-blocks\",\n      \"status\": \"passed\",\n      \"message\": \"ContentData.ContentBlocks contains 11 block(s).\"\n    },\n    {\n      \"check\": \"publishing-state\",\n      \"status\": \"passed\",\n      \"message\": \"isPublished is false.\"\n    },\n    {\n      \"check\": \"sitemap-state\",\n      \"status\": \"passed\",\n      \"message\": \"includeInSitemap is false.\"\n    },\n    {\n      \"check\": \"canonical\",\n      \"status\": \"passed\",\n      \"message\": \"Canonical path matches candidate route.\"\n    },\n    {\n      \"check\": \"required-blocks\",\n      \"status\": \"passed\",\n      \"message\": \"Required homepage block types are present.\"\n    },\n    {\n      \"check\": \"known-block-types\",\n      \"status\": \"passed\",\n      \"message\": \"All block types are known to the local import preflight.\"\n    },\n    {\n      \"check\": \"rich-block-safety\",\n      \"status\": \"passed\",\n      \"message\": \"customHtml/trustedEmbed/formBlock focused checks passed.\"\n    },\n    {\n      \"check\": \"focused-home-contract\",\n      \"status\": \"passed\",\n      \"message\": \"Required homepage import fields are present.\"\n    },\n    {\n      \"check\": \"phase8n-contract-persistence\",\n      \"status\": \"passed\",\n      \"message\": \"Phase 8N production fields are present for .NET/API persistence validation.\"\n    },\n    {\n      \"check\": \"updated-home-contact-persistence\",\n      \"status\": \"passed\",\n      \"message\": \"Updated home/contact persistence-sensitive fields are present before .NET round-trip validation.\"\n    },\n    {\n      \"check\": \"default-form\",\n      \"status\": \"passed\",\n      \"message\": \"Default form references are safe and non-secret.\"\n    },\n    {\n      \"check\": \"media-requirements\",\n      \"status\": \"passed\",\n      \"message\": \"Required media requirements have MediaAsset ids.\"\n    },\n    {\n      \"check\": \"business-approval-audit\",\n      \"status\": \"passed\",\n      \"message\": \"Business value and approval blockers were classified.\"\n    },\n    {\n      \"check\": \"unsafe-payload-scan\",\n      \"status\": \"passed\",\n      \"message\": \"No unsafe HTML/CSS/form/media/email markers found.\"\n    },\n    {\n      \"check\": \"dotnet-page-contract\",\n      \"status\": \"passed\",\n      \"message\": \"The .NET Page/block contract accepted the candidate.\",\n      \"details\": {\n        \"readinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\"\n      }\n    },\n    {\n      \"check\": \"dotnet-page-contract\",\n      \"status\": \"warning\",\n      \"message\": \"The .NET contract returned 3 warning(s).\",\n      \"category\": \"dotnet\",\n      \"field\": \"candidate\",\n      \"details\": [\n        \"page.reviewOnlyField\",\n        \"productionFieldPersistence.checked\",\n        \"updatedHomeContactPersistence.checked\"\n      ]\n    }\n  ],\n  \"candidate\": {\n    \"tenantId\": \"ice-rink-rentals\",\n    \"siteKey\": \"ice-rink-rentals\",\n    \"pageSlug\": \"contact\",\n    \"route\": \"/contact\",\n    \"canonicalUrl\": \"https://iceskatingrinkrentals.com/contact\",\n    \"isPublished\": false,\n    \"includeInSitemap\": false,\n    \"workflowStatus\": \"draft\",\n    \"approvedForPublish\": false,\n    \"approvedForImport\": false,\n    \"staticEligible\": false,\n    \"needsRebuild\": true,\n    \"blockCount\": 11,\n    \"blockTypes\": [\n      \"Hero\",\n      \"TrustBar\",\n      \"CardGrid\",\n      \"formBlock\",\n      \"CardGrid\",\n      \"HowItWorks\",\n      \"CardGrid\",\n      \"CardGrid\",\n      \"PrimaryCTA\",\n      \"FAQ\",\n      \"PrimaryCTA\"\n    ],\n    \"formBlockCount\": 1,\n    \"formKeys\": [\n      \"default-quote-request\"\n    ],\n    \"mediaRequirementCount\": 6,\n    \"unresolvedMediaRequirementCount\": 0\n  },\n  \"issues\": [\n    {\n      \"severity\": \"warning\",\n      \"check\": \"dotnet-page-contract\",\n      \"category\": \"dotnet\",\n      \"field\": \"candidate\",\n      \"message\": \"The .NET contract returned 3 warning(s).\",\n      \"details\": [\n        \"page.reviewOnlyField\",\n        \"productionFieldPersistence.checked\",\n        \"updatedHomeContactPersistence.checked\"\n      ]\n    }\n  ],\n  \"blockers\": {\n    \"localDraftImport\": [],\n    \"cmsImport\": [\n      {\n        \"check\": \"approval\",\n        \"category\": \"workflow\",\n        \"field\": \"workflow.approvedForImport\",\n        \"message\": \"workflow.approvedForImport is not true.\"\n      },\n      {\n        \"check\": \"approval\",\n        \"category\": \"workflow\",\n        \"field\": \"workflow.reviewStatus\",\n        \"message\": \"Human approval is not recorded.\"\n      },\n      {\n        \"check\": \"business-values\",\n        \"category\": \"domainRouting\",\n        \"field\": \"domainRouting.publicContactEmail\",\n        \"message\": \"Public email display policy remains unresolved or intentionally hidden.\"\n      }\n    ],\n    \"staticRegeneration\": [\n      {\n        \"check\": \"static-publishing\",\n        \"category\": \"staticPublishing\",\n        \"field\": \"staticPublishing.staticEligible\",\n        \"message\": \"staticPublishing.staticEligible is not true.\"\n      }\n    ],\n    \"production\": [\n      {\n        \"check\": \"approval\",\n        \"category\": \"workflow\",\n        \"field\": \"workflow.approvedForPublish\",\n        \"message\": \"workflow.approvedForPublish is not true.\"\n      },\n      {\n        \"check\": \"approval\",\n        \"category\": \"workflow\",\n        \"field\": \"workflow.reviewStatus\",\n        \"message\": \"Human approval is not recorded.\"\n      },\n      {\n        \"check\": \"business-values\",\n        \"category\": \"domainRouting\",\n        \"field\": \"domainRouting.publicContactEmail\",\n        \"message\": \"Public email display policy remains unresolved.\"\n      },\n      {\n        \"check\": \"static-publishing\",\n        \"category\": \"staticPublishing\",\n        \"field\": \"staticPublishing.staticEligible\",\n        \"message\": \"staticPublishing.staticEligible is not true.\"\n      }\n    ]\n  },\n  \"differencesFromAdminApiPreflight\": [\n    \"Does not fetch current CMS pages, so same-slug update/create collision behavior is not proven.\",\n    \"Does not create server-side revision snapshots or ImportRun history.\",\n    \"Does not call SavePageAsync/UpdatePageAsync and therefore does not prove database persistence.\",\n    \"Mirrors admin/API validation categories locally without requiring admin JWT, tenant API key, or protected config.\"\n  ],\n  \"dotNetContract\": {\n    \"available\": true,\n    \"buildOk\": true,\n    \"exitCode\": 0,\n    \"ok\": true,\n    \"readinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\n    \"errorCount\": 0,\n    \"warningCount\": 3,\n    \"warningCodes\": [\n      \"page.reviewOnlyField\",\n      \"productionFieldPersistence.checked\",\n      \"updatedHomeContactPersistence.checked\"\n    ],\n    \"productionFieldPersistenceOk\": true,\n    \"productionFieldPersistenceAvailable\": true,\n    \"updatedHomeContactPersistenceOk\": true,\n    \"mediaRequirements\": [\n      {\n        \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\",\n        \"RequirementCount\": 6,\n        \"BlockerCount\": 0\n      }\n    ]\n  },\n  \"classification\": {\n    \"preflight-valid-for-shape\": true,\n    \"preflight-valid-for-local-draft-import\": true,\n    \"preflight-valid-for-CMS-import\": false,\n    \"preflight-valid-for-production\": false\n  },\n  \"decisions\": {\n    \"shape\": \"valid\",\n    \"localDraftImport\": \"valid\",\n    \"cmsImport\": \"blocked\",\n    \"staticRegeneration\": \"blocked\",\n    \"production\": \"blocked\"\n  }\n}\n",
+          "stderr": ""
+        }
+      },
+      "dotnet-page-contract-result.json": {
+        "generatedAt": "2026-06-04T01:30:26.544Z",
+        "ok": true,
+        "publish": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "  Determining projects to restore...\r\n  Restored C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\apps\\pumpkin-net-models\\pumpkin-net-models.csproj (in 76 ms).\r\n  pumpkin-net-models -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-final-contact-contract-34828-1780536620321\\bin\\Debug\\net10.0\\pumpkin-net-models.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-final-contact-contract-34828-1780536620321\\bin\\Debug\\net10.0\\Pumpkin.PageContractTool.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-final-contact-contract-34828-1780536620321\\publish\\\r\n",
+          "stderr": ""
+        },
+        "validate": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-final-contact-validated\\\\CONTACT_NORMALIZED_CANDIDATE.json\",\r\n  \"GeneratedAt\": \"2026-06-04T01:30:26.2749942Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\",\r\n      \"PageId\": \"ice-rink-rentals-contact\",\r\n      \"PageSlug\": \"contact\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"UpdatedHomeContactPersistenceOk\": true,\r\n      \"BlockCount\": 11,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"formBlock\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"PrimaryCTA\",\r\n        \"FAQ\",\r\n        \"PrimaryCTA\"\r\n      ],\r\n      \"ErrorCount\": 0,\r\n      \"WarningCount\": 3\r\n    }\r\n  ],\r\n  \"FormDefinitions\": [],\r\n  \"MediaRequirements\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\",\r\n      \"RequirementCount\": 6,\r\n      \"BlockerCount\": 0\r\n    }\r\n  ],\r\n  \"Errors\": [],\r\n  \"Warnings\": [\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"page.reviewOnlyField\",\r\n      \"Message\": \"Root field \\u0022mediaRequirements\\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\"\r\n    },\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"productionFieldPersistence.checked\",\r\n      \"Message\": \"Verified 190 production renderer/media/email-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\"\r\n    },\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"updatedHomeContactPersistence.checked\",\r\n      \"Message\": \"Verified 194 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\"\r\n    }\r\n  ]\r\n}\r\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "Command": "validate-page",
+          "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-final-contact-validated\\CONTACT_NORMALIZED_CANDIDATE.json",
+          "GeneratedAt": "2026-06-04T01:30:26.2749942Z",
+          "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+          "Ok": true,
+          "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+          "Pages": [
+            {
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+              "PageId": "ice-rink-rentals-contact",
+              "PageSlug": "contact",
+              "TenantId": "ice-rink-rentals",
+              "DotNetDeserialized": true,
+              "RoundTripOk": true,
+              "ProductionFieldPersistenceOk": true,
+              "UpdatedHomeContactPersistenceOk": true,
+              "BlockCount": 11,
+              "BlockTypes": [
+                "Hero",
+                "TrustBar",
+                "CardGrid",
+                "formBlock",
+                "CardGrid",
+                "HowItWorks",
+                "CardGrid",
+                "CardGrid",
+                "PrimaryCTA",
+                "FAQ",
+                "PrimaryCTA"
+              ],
+              "ErrorCount": 0,
+              "WarningCount": 3
+            }
+          ],
+          "FormDefinitions": [],
+          "MediaRequirements": [
+            {
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+              "RequirementCount": 6,
+              "BlockerCount": 0
+            }
+          ],
+          "Errors": [],
+          "Warnings": [
+            {
+              "Severity": "warning",
+              "Code": "page.reviewOnlyField",
+              "Message": "Root field \"mediaRequirements\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json"
+            },
+            {
+              "Severity": "warning",
+              "Code": "productionFieldPersistence.checked",
+              "Message": "Verified 190 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json"
+            },
+            {
+              "Severity": "warning",
+              "Code": "updatedHomeContactPersistence.checked",
+              "Message": "Verified 194 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+              "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json"
+            }
+          ]
+        }
+      },
+      "design-system-validation-result.json": {
+        "generatedAt": "2026-06-04T01:30:26.615Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"passed\": 28,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "passed": 28,
+          "failed": 0,
+          "failures": []
+        }
+      },
+      "media-validation-result.json": {
+        "generatedAt": "2026-06-04T01:30:26.676Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"assetCount\": 4,\n  \"referenceCount\": 6,\n  \"warningCount\": 3,\n  \"warningCodes\": [\n    \"media-validation-warning\"\n  ]\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "assetCount": 4,
+          "referenceCount": 6,
+          "warningCount": 3,
+          "warningCodes": [
+            "media-validation-warning"
+          ]
+        }
+      },
+      "default-form-validation-result.json": {
+        "generatedAt": "2026-06-04T01:30:26.754Z",
+        "ok": true,
+        "fixtures": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"passed\": 21,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "passed": 21,
+          "failed": 0,
+          "failures": []
+        },
+        "candidate": {
+          "ok": true,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "tailwind-navigation-validation-result.json": {
+        "generatedAt": "2026-06-04T01:30:26.826Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"checkedCssSelectors\": 37,\n  \"checkedNavigationRoutes\": [\n    \"/\",\n    \"/service-areas\",\n    \"/contact\"\n  ],\n  \"importCandidateClassCount\": 20,\n  \"classes\": [\n    \"cms-copy\",\n    \"cms-eyebrow\",\n    \"cms-layout\",\n    \"cms-panel\",\n    \"ice-alias-note\",\n    \"ice-area-card\",\n    \"ice-area-grid\",\n    \"ice-check-list\",\n    \"ice-city-note\",\n    \"ice-cta-link\",\n    \"ice-details-list\",\n    \"ice-event-card\",\n    \"ice-event-grid\",\n    \"ice-hero-grid\",\n    \"ice-planning-table\",\n    \"ice-privacy-note\",\n    \"ice-quote-grid\",\n    \"ice-region-list\",\n    \"ice-response-note\",\n    \"ice-service-teaser\"\n  ],\n  \"warnings\": [],\n  \"failures\": []\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "checkedCssSelectors": 37,
+          "checkedNavigationRoutes": [
+            "/",
+            "/service-areas",
+            "/contact"
+          ],
+          "importCandidateClassCount": 20,
+          "classes": [
+            "cms-copy",
+            "cms-eyebrow",
+            "cms-layout",
+            "cms-panel",
+            "ice-alias-note",
+            "ice-area-card",
+            "ice-area-grid",
+            "ice-check-list",
+            "ice-city-note",
+            "ice-cta-link",
+            "ice-details-list",
+            "ice-event-card",
+            "ice-event-grid",
+            "ice-hero-grid",
+            "ice-planning-table",
+            "ice-privacy-note",
+            "ice-quote-grid",
+            "ice-region-list",
+            "ice-response-note",
+            "ice-service-teaser"
+          ],
+          "warnings": [],
+          "failures": []
+        }
+      },
+      "page-intake-normalizer-validation-result.json": {
+        "generatedAt": "2026-06-04T01:30:53.032Z",
+        "ok": true,
+        "command": {
+          "ok": true,
+          "status": 0,
+          "signal": null,
+          "stdout": "{\n  \"ok\": true,\n  \"passed\": 16,\n  \"failed\": 0,\n  \"results\": [\n    {\n      \"name\": \"valid Pumpkin page JSON\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"partial page JSON normalized to scaffold\",\n      \"inputType\": \"partial-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"malformed JSON blocked\",\n      \"inputType\": \"unknown-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 1,\n      \"warningCount\": 0,\n      \"dotNetOk\": null\n    },\n    {\n      \"name\": \"foreign builder JSON normalized\",\n      \"inputType\": \"foreign-builder-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"HTML fragment mapped to customHtml\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"unsafe HTML blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 5,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"CF7 reference mapped to formBlock\",\n      \"inputType\": \"cf7-package-reference\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"raw form HTML blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 8,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"media manifest mapped to MediaAsset requirements\",\n      \"inputType\": \"media-manifest\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"base64 image blocked\",\n      \"inputType\": \"media-manifest\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 2,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"raw Tailwind utility class blocked\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 9,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"safe semantic classes allowed\",\n      \"inputType\": \"html-fragment\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 0,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"future state-city route valid\",\n      \"inputType\": \"partial-page-json\",\n      \"expected\": \"ok\",\n      \"ok\": true,\n      \"errorCount\": 0,\n      \"warningCount\": 1,\n      \"dotNetOk\": true\n    },\n    {\n      \"name\": \"bad city route blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 3,\n      \"warningCount\": 1,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \"unknown block type blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 5,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    },\n    {\n      \"name\": \".NET contract failure blocked\",\n      \"inputType\": \"pumpkin-page-json\",\n      \"expected\": \"error\",\n      \"ok\": true,\n      \"errorCount\": 3,\n      \"warningCount\": 0,\n      \"dotNetOk\": false\n    }\n  ]\n}\n",
+          "stderr": ""
+        },
+        "parsed": {
+          "ok": true,
+          "passed": 16,
+          "failed": 0,
+          "results": [
+            {
+              "name": "valid Pumpkin page JSON",
+              "inputType": "pumpkin-page-json",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "partial page JSON normalized to scaffold",
+              "inputType": "partial-page-json",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "malformed JSON blocked",
+              "inputType": "unknown-json",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 1,
+              "warningCount": 0,
+              "dotNetOk": null
+            },
+            {
+              "name": "foreign builder JSON normalized",
+              "inputType": "foreign-builder-json",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "HTML fragment mapped to customHtml",
+              "inputType": "html-fragment",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "unsafe HTML blocked",
+              "inputType": "html-fragment",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 5,
+              "warningCount": 0,
+              "dotNetOk": false
+            },
+            {
+              "name": "CF7 reference mapped to formBlock",
+              "inputType": "cf7-package-reference",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "raw form HTML blocked",
+              "inputType": "html-fragment",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 8,
+              "warningCount": 0,
+              "dotNetOk": false
+            },
+            {
+              "name": "media manifest mapped to MediaAsset requirements",
+              "inputType": "media-manifest",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "base64 image blocked",
+              "inputType": "media-manifest",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 2,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "raw Tailwind utility class blocked",
+              "inputType": "html-fragment",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 9,
+              "warningCount": 0,
+              "dotNetOk": false
+            },
+            {
+              "name": "safe semantic classes allowed",
+              "inputType": "html-fragment",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 0,
+              "dotNetOk": true
+            },
+            {
+              "name": "future state-city route valid",
+              "inputType": "partial-page-json",
+              "expected": "ok",
+              "ok": true,
+              "errorCount": 0,
+              "warningCount": 1,
+              "dotNetOk": true
+            },
+            {
+              "name": "bad city route blocked",
+              "inputType": "pumpkin-page-json",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 3,
+              "warningCount": 1,
+              "dotNetOk": false
+            },
+            {
+              "name": "unknown block type blocked",
+              "inputType": "pumpkin-page-json",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 5,
+              "warningCount": 0,
+              "dotNetOk": false
+            },
+            {
+              "name": ".NET contract failure blocked",
+              "inputType": "pumpkin-page-json",
+              "expected": "error",
+              "ok": true,
+              "errorCount": 3,
+              "warningCount": 0,
+              "dotNetOk": false
+            }
+          ]
+        }
+      },
+      "final-hygiene-result.json": {
+        "ok": true
+      }
+    },
+    "failed": []
+  },
+  "readiness": {
+    "readyForHumanReview": true,
+    "readyForLocalDraftImport": true,
+    "readyForCmsLiveApproval": false,
+    "readyForStaticRegeneration": false,
+    "readyForProductionIndexing": false,
+    "blockers": [
+      "CMS/live approval requires explicit user visual approval and separate authorization.",
+      "Static regeneration was not authorized.",
+      "Production/indexing was not authorized."
+    ]
+  },
+  "safety": {
+    "cmsWrites": false,
+    "homepageWrite": false,
+    "serviceAreasWrite": false,
+    "contactImport": false,
+    "stateCityCreated": false,
+    "themeWrite": false,
+    "mediaAssetWrite": false,
+    "staticGeneration": false,
+    "deployment": false,
+    "dnsAzureCloudflareMicrosoft365BluehostEmailProviderChange": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false,
+    "imageGeneration": false,
+    "imageModification": false,
+    "packageExecuted": false
+  },
+  "noCmsWrites": true
+}

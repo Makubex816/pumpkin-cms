@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-06-04T01:30:13.945Z",
+  "ok": true,
+  "results": [
+    {
+      "path": "content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+      "ok": true
+    },
+    {
+      "path": "content-review/ice-final-contact-validated/CONTACT_IMPORT_PACKAGE.json",
+      "ok": true
+    }
+  ]
+}

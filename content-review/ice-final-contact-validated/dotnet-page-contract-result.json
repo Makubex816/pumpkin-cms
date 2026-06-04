@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-06-04T01:30:26.544Z",
+  "ok": true,
+  "publish": {
+    "ok": true,
+    "status": 0,
+    "signal": null,
+    "stdout": "  Determining projects to restore...\r\n  Restored C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\apps\\pumpkin-net-models\\pumpkin-net-models.csproj (in 76 ms).\r\n  pumpkin-net-models -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-final-contact-contract-34828-1780536620321\\bin\\Debug\\net10.0\\pumpkin-net-models.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-final-contact-contract-34828-1780536620321\\bin\\Debug\\net10.0\\Pumpkin.PageContractTool.dll\r\n  Pumpkin.PageContractTool -> C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-final-contact-contract-34828-1780536620321\\publish\\\r\n",
+    "stderr": ""
+  },
+  "validate": {
+    "ok": true,
+    "status": 0,
+    "signal": null,
+    "stdout": "{\r\n  \"Command\": \"validate-page\",\r\n  \"TargetPath\": \"C:\\\\Users\\\\User\\\\Desktop\\\\PumpkinCMS\\\\pumpkin-cms\\\\content-review\\\\ice-final-contact-validated\\\\CONTACT_NORMALIZED_CANDIDATE.json\",\r\n  \"GeneratedAt\": \"2026-06-04T01:30:26.2749942Z\",\r\n  \"Rule\": \"CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.\",\r\n  \"Ok\": true,\r\n  \"ReadinessDecision\": \"dotnet-contract-valid-not-cms-import-ready\",\r\n  \"Pages\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\",\r\n      \"PageId\": \"ice-rink-rentals-contact\",\r\n      \"PageSlug\": \"contact\",\r\n      \"TenantId\": \"ice-rink-rentals\",\r\n      \"DotNetDeserialized\": true,\r\n      \"RoundTripOk\": true,\r\n      \"ProductionFieldPersistenceOk\": true,\r\n      \"UpdatedHomeContactPersistenceOk\": true,\r\n      \"BlockCount\": 11,\r\n      \"BlockTypes\": [\r\n        \"Hero\",\r\n        \"TrustBar\",\r\n        \"CardGrid\",\r\n        \"formBlock\",\r\n        \"CardGrid\",\r\n        \"HowItWorks\",\r\n        \"CardGrid\",\r\n        \"CardGrid\",\r\n        \"PrimaryCTA\",\r\n        \"FAQ\",\r\n        \"PrimaryCTA\"\r\n      ],\r\n      \"ErrorCount\": 0,\r\n      \"WarningCount\": 3\r\n    }\r\n  ],\r\n  \"FormDefinitions\": [],\r\n  \"MediaRequirements\": [\r\n    {\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\",\r\n      \"RequirementCount\": 6,\r\n      \"BlockerCount\": 0\r\n    }\r\n  ],\r\n  \"Errors\": [],\r\n  \"Warnings\": [\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"page.reviewOnlyField\",\r\n      \"Message\": \"Root field \\u0022mediaRequirements\\u0022 is review/import-candidate metadata and is not part of the canonical .NET Page model.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\"\r\n    },\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"productionFieldPersistence.checked\",\r\n      \"Message\": \"Verified 190 production renderer/media/email-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\"\r\n    },\r\n    {\r\n      \"Severity\": \"warning\",\r\n      \"Code\": \"updatedHomeContactPersistence.checked\",\r\n      \"Message\": \"Verified 194 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.\",\r\n      \"File\": \"C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json\"\r\n    }\r\n  ]\r\n}\r\n",
+    "stderr": ""
+  },
+  "parsed": {
+    "Command": "validate-page",
+    "TargetPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms\\content-review\\ice-final-contact-validated\\CONTACT_NORMALIZED_CANDIDATE.json",
+    "GeneratedAt": "2026-06-04T01:30:26.2749942Z",
+    "Rule": "CMS-ready/import-candidate/production-bound page JSON must deserialize through .NET Page/block classes and pass contract validation before CMS import or static production use.",
+    "Ok": true,
+    "ReadinessDecision": "dotnet-contract-valid-not-cms-import-ready",
+    "Pages": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+        "PageId": "ice-rink-rentals-contact",
+        "PageSlug": "contact",
+        "TenantId": "ice-rink-rentals",
+        "DotNetDeserialized": true,
+        "RoundTripOk": true,
+        "ProductionFieldPersistenceOk": true,
+        "UpdatedHomeContactPersistenceOk": true,
+        "BlockCount": 11,
+        "BlockTypes": [
+          "Hero",
+          "TrustBar",
+          "CardGrid",
+          "formBlock",
+          "CardGrid",
+          "HowItWorks",
+          "CardGrid",
+          "CardGrid",
+          "PrimaryCTA",
+          "FAQ",
+          "PrimaryCTA"
+        ],
+        "ErrorCount": 0,
+        "WarningCount": 3
+      }
+    ],
+    "FormDefinitions": [],
+    "MediaRequirements": [
+      {
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+        "RequirementCount": 6,
+        "BlockerCount": 0
+      }
+    ],
+    "Errors": [],
+    "Warnings": [
+      {
+        "Severity": "warning",
+        "Code": "page.reviewOnlyField",
+        "Message": "Root field \"mediaRequirements\" is review/import-candidate metadata and is not part of the canonical .NET Page model.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "productionFieldPersistence.checked",
+        "Message": "Verified 190 production renderer/media/email-policy field(s) through the .NET Page/block round trip.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json"
+      },
+      {
+        "Severity": "warning",
+        "Code": "updatedHomeContactPersistence.checked",
+        "Message": "Verified 194 updated home/contact renderer/media/contact-policy field(s) through the .NET Page/block round trip.",
+        "File": "C:/Users/User/Desktop/PumpkinCMS/pumpkin-cms/content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json"
+      }
+    ]
+  }
+}
