@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "pumpkin.ice.production-architecture-lock.v1",
+  "generatedAt": "2026-06-04T03:20:00.000Z",
+  "site": "IceSkatingRinkRentals.com",
+  "tenantId": "ice-rink-rentals",
+  "branch": "feature/admin-page-editor-import-export",
+  "scope": "documentation-planning-only",
+  "architecture": {
+    "website": {
+      "publicUrl": "https://iceskatingrinkrentals.com",
+      "dnsCdnProvider": "cloudflare",
+      "hostingProvider": "azure-static-web-app"
+    },
+    "media": {
+      "publicUrlPattern": "https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+      "cdnProvider": "cloudflare",
+      "storageProvider": "azure-blob"
+    },
+    "cmsData": {
+      "adminApi": "Pumpkin API/Admin",
+      "databaseProvider": "azure-cosmos-db"
+    },
+    "email": {
+      "mailboxProvider": "microsoft-365-exchange-online-plan-1",
+      "selectedMailbox": "contact@iceskatingrinkrentals.com",
+      "appSendingConfigured": false
+    }
+  },
+  "placeholdersOnly": [
+    "PUMPKIN_COSMOS_ENDPOINT_REF",
+    "PUMPKIN_COSMOS_DATABASE_REF",
+    "PUMPKIN_COSMOS_CONTAINER_REF",
+    "PUMPKIN_COSMOS_AUTH_MODE_REF",
+    "PUMPKIN_COSMOS_KEY_REF",
+    "ICE_RINK_RENTALS_TENANT_ID",
+    "ICE_RINK_RENTALS_SITE_KEY"
+  ],
+  "actionsPerformed": {
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cloudflareDnsChanged": false,
+    "deploymentPerformed": false,
+    "staticGenerationRun": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "microsoft365SettingsTouched": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  },
+  "readiness": {
+    "liveCmsVisualApproval": true,
+    "staticGeneration": "not-run-next-gate",
+    "azureResources": "not-created",
+    "cloudflareDnsCdn": "not-changed",
+    "cosmosProduction": "planned-not-provisioned",
+    "blobMediaProduction": "planned-not-provisioned",
+    "azureStagingReady": false,
+    "productionDnsReady": false,
+    "productionIndexingReady": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "ARCHITECTURE_DECISION.md",
+    "AZURE_STATIC_WEB_APP_PLAN.md",
+    "COSMOS_DB_PRODUCTION_DATA_PLAN.md",
+    "AZURE_BLOB_MEDIA_PLAN.md",
+    "CLOUDFLARE_DNS_CDN_PLAN.md",
+    "MEDIA_URL_CONTRACT.md",
+    "MEDIAASSET_PRODUCTION_FIELDS.md",
+    "CACHE_HEADERS_POLICY.md",
+    "PUBLISHING_WORKFLOW.md",
+    "CONTACT_FORM_PRODUCTION_PLAN.md",
+    "SECRETS_AND_CONFIG_GUARDRAILS.md",
+    "ROLLBACK_PLAN.md",
+    "SETUP_SEQUENCE.md",
+    "manifest.json"
+  ],
+  "rootReport": "PUMPKIN_ICE_PRODUCTION_ARCHITECTURE_LOCK_REPORT.md",
+  "rollerStatus": "paused"
+}
