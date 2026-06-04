@@ -8,6 +8,8 @@ This report records safe local static dry-run/readiness proof work for IceSkatin
 
 No CMS records, Theme records, MediaAsset records, Azure resources, Cosmos resources, Blob containers, Cloudflare DNS records, Microsoft 365 settings, email/provider settings, deployments, or Roller work occurred. No protected config was read and no secrets, API keys, JWTs, tokens, connection strings, or provider credentials were printed.
 
+Latest repair planning pass was documentation-only. Live CMS inspection was not required because the current CMS snapshot and static output already captured the active page metadata used by the latest successful export.
+
 ## Start State
 
 Branch: `feature/admin-page-editor-import-export`
@@ -144,6 +146,32 @@ Static contact endpoint:
 - local result: form endpoint remains a production-readiness blocker, not a route-shape blocker
 - endpoint deployment/email/Microsoft 365 action performed: no
 
+## Repair Plans
+
+Documentation-only repair plans were added:
+
+- `deployment/azure/ice-static-dry-run-readiness/NOINDEX_REPAIR_PLAN.md`
+- `deployment/azure/ice-static-dry-run-readiness/SOCIAL_IMAGE_URL_REPAIR_PLAN.md`
+- `deployment/azure/ice-static-dry-run-readiness/STRICT_QUALITY_GATE_REPAIR_PLAN.md`
+
+Exact CMS metadata repair proposed, pending explicit approval:
+
+| Page slug | Field | Current value | Proposed value |
+| --- | --- | --- | --- |
+| `home` | `page.seo.robots` | `noindex, nofollow` | `index,follow` |
+| `service-areas` | `page.seo.robots` | `noindex, nofollow` | `index,follow` |
+| `contact` | `page.seo.robots` | `index,follow` | no change |
+
+Exact social image repair options proposed, pending explicit approval:
+
+| Rank | Option | Summary |
+| --- | --- | --- |
+| 1 | Option A | clear/omit `home` and `service-areas` active `page.seo.openGraph.og:image` and `page.seo.twitterCard.twitter:image` until production media URLs are ready |
+| 2 | Option B | update static metadata generation to omit OG/Twitter image tags when values resolve from local `/media/...`, while keeping media production readiness `no` |
+| 3 | Option C | after media infrastructure exists, replace social image fields with `https://media.iceskatingrinkrentals.com/...` production media URLs |
+
+Recommended next write step requiring explicit approval: apply Option A and the noindex CMS metadata changes to the active `home` and `service-areas` pages only. Do not touch active `contact`; its robots and social image fields are already acceptable for this specific blocker set.
+
 ## Validation
 
 Direct route/snapshot validation after the successful run:
@@ -210,4 +238,4 @@ No stale snapshot/static output was accepted as readiness proof.
 
 ## Next Recommended Action
 
-Do not proceed to Azure setup, DNS cutover, deployment, or production indexing. The next authorized work should clear the remaining production blockers: remove `noindex` from approved production pages, update or approve theme navigation for `/`, `/contact`, and `/service-areas`, publish/record production media URLs, verify a static contact form endpoint, and review service-area claim language.
+Do not proceed to Azure setup, DNS cutover, deployment, or production indexing. The next authorized write should be explicitly scoped CMS metadata repair only: set `home` and `service-areas` `page.seo.robots` to `index,follow` and clear/omit their active Open Graph/Twitter local `/media/...` social image fields, then rerun the Ice-only export and strict validators.

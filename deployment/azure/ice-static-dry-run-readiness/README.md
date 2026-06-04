@@ -33,6 +33,12 @@ Remaining production blockers:
 - static form endpoint is missing/unverified
 - active CMS/theme navigation still needs permanent approval/update
 
+Read-only repair planning docs:
+
+- `NOINDEX_REPAIR_PLAN.md`
+- `SOCIAL_IMAGE_URL_REPAIR_PLAN.md`
+- `STRICT_QUALITY_GATE_REPAIR_PLAN.md`
+
 Latest strict validator split:
 
 - `npm run validate:snapshot:ice`: exit `0`; route/snapshot proof passes, production-readiness blockers remain warnings
@@ -64,4 +70,7 @@ Latest strict validator split:
 - `DRY_RUN_RESULT.md`
 - `REMAINING_BLOCKERS.md`
 - `NEXT_AZURE_SETUP_STEPS.md`
+- `NOINDEX_REPAIR_PLAN.md`
+- `SOCIAL_IMAGE_URL_REPAIR_PLAN.md`
+- `STRICT_QUALITY_GATE_REPAIR_PLAN.md`
 - `manifest.json`

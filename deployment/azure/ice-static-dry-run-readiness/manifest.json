@@ -11,6 +11,16 @@
   "routeShapeProofCompleted": true,
   "staticOutputQualityGatesPassed": false,
   "primaryBlocker": "production-readiness gates still fail on local media URLs, unapproved rendered image URLs, noindex metadata, missing static form endpoint verification, and permanent CMS/theme navigation approval",
+  "latestPlanningPass": {
+    "mode": "read-only",
+    "liveCmsInspectionRequired": false,
+    "evidenceSource": "latest local CMS snapshot and generated static output",
+    "repairPlanFiles": [
+      "NOINDEX_REPAIR_PLAN.md",
+      "SOCIAL_IMAGE_URL_REPAIR_PLAN.md",
+      "STRICT_QUALITY_GATE_REPAIR_PLAN.md"
+    ]
+  },
   "currentAttemptRequiredEnv": {
     "PUMPKIN_API_URL": "PRESENT",
     "ICE_RINK_RENTALS_API_KEY": "PRESENT",
@@ -107,6 +117,52 @@
     "permanent CMS/theme navigation update or approval remains",
     "service-area claim language still needs review"
   ],
+  "proposedCmsRepairsPendingApproval": {
+    "noindex": [
+      {
+        "pageSlug": "home",
+        "route": "/",
+        "field": "page.seo.robots",
+        "currentValue": "noindex, nofollow",
+        "proposedValue": "index,follow"
+      },
+      {
+        "pageSlug": "service-areas",
+        "route": "/service-areas",
+        "field": "page.seo.robots",
+        "currentValue": "noindex, nofollow",
+        "proposedValue": "index,follow"
+      }
+    ],
+    "socialImages": [
+      {
+        "pageSlug": "home",
+        "route": "/",
+        "fields": [
+          "page.seo.openGraph.og:image",
+          "page.seo.twitterCard.twitter:image"
+        ],
+        "currentValue": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "recommendedTemporaryValue": ""
+      },
+      {
+        "pageSlug": "service-areas",
+        "route": "/service-areas",
+        "fields": [
+          "page.seo.openGraph.og:image",
+          "page.seo.twitterCard.twitter:image"
+        ],
+        "currentValue": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "recommendedTemporaryValue": ""
+      }
+    ],
+    "unchangedActiveContact": {
+      "pageSlug": "contact",
+      "route": "/contact",
+      "robots": "index,follow",
+      "socialImageFields": "empty"
+    }
+  },
   "staleOutputAccepted": false,
   "readiness": {
     "staticDryRunCompleted": true,
