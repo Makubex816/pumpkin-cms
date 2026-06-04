@@ -1,14 +1,14 @@
-# Social Image URL Repair Plan
+# Social Image URL Repair Plan And Result
 
 Generated: 2026-06-04
 
 ## Scope
 
-This is a read-only planning note for IceSkatingRinkRentals.com. No CMS records or MediaAsset records were changed.
+This began as a read-only planning note for IceSkatingRinkRentals.com. The explicitly approved active CMS metadata repair has now been applied. No MediaAsset records were changed.
 
-## Current Strict Validator Finding
+## Pre-Repair Strict Validator Finding
 
-Strict validators report one unique unapproved rendered social image URL:
+Previous strict validators reported one unique unapproved rendered social image URL:
 
 ```text
 https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png
@@ -20,7 +20,7 @@ The approved production media origin is:
 https://media.iceskatingrinkrentals.com
 ```
 
-## Current Active Source Fields
+## Pre-Repair Active Source Fields
 
 | Page slug | Route | Field | Current value | Rendered result |
 | --- | --- | --- | --- | --- |
@@ -51,7 +51,7 @@ The helper `absoluteUrl(...)` converts relative image paths to the site canonica
 
 ### Option A: CMS metadata-only temporary clear
 
-Safest immediate CMS repair once explicitly approved:
+Safest immediate CMS repair after explicit approval, now applied:
 
 | Page slug | Field | From | To |
 | --- | --- | --- | --- |
@@ -62,7 +62,18 @@ Safest immediate CMS repair once explicitly approved:
 
 Do not change active `contact`; its social image fields are already empty.
 
-This removes unapproved rendered social image tags without claiming media production readiness.
+This removed unapproved rendered social image tags without claiming media production readiness.
+
+Post-repair active values:
+
+| Page slug | Route | Field | Current value | Rendered result |
+| --- | --- | --- | --- | --- |
+| `home` | `/` | `page.seo.openGraph.og:image` | empty | no rendered social image tag |
+| `home` | `/` | `page.seo.twitterCard.twitter:image` | empty | no rendered social image tag |
+| `contact` | `/contact` | `page.seo.openGraph.og:image` | empty | no rendered social image tag |
+| `contact` | `/contact` | `page.seo.twitterCard.twitter:image` | empty | no rendered social image tag |
+| `service-areas` | `/service-areas` | `page.seo.openGraph.og:image` | empty | no rendered social image tag |
+| `service-areas` | `/service-areas` | `page.seo.twitterCard.twitter:image` | empty | no rendered social image tag |
 
 ### Option B: Static metadata guard
 
@@ -84,9 +95,9 @@ Final production repair after media infrastructure exists:
 
 This requires separately authorized media infrastructure and MediaAsset/CMS work.
 
-## Recommended Next Write Step
+## Result
 
-Request explicit approval to perform Option A only:
+Option A was performed under explicit approval:
 
 ```text
 Clear home and service-areas active page SEO social image fields:
@@ -94,9 +105,11 @@ page.seo.openGraph.og:image
 page.seo.twitterCard.twitter:image
 ```
 
+Rerun strict validators no longer report the unapproved rendered social image URL.
+
 ## Actions Not Performed
 
-- no CMS write
+- approved active CMS metadata write only
 - no MediaAsset write
 - no media upload
 - no Azure, DNS, Cloudflare, deployment, email, Microsoft 365, or Roller action

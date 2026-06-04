@@ -9,13 +9,15 @@ Cleared:
 - fresh route output is exactly `/`, `/contact`, `/service-areas`
 - preview and obsolete route folders are absent from deployable output
 - theme 401 is fixed
+- `home` and `service-areas` active robots metadata is `index,follow`
+- unapproved rendered Open Graph/Twitter image URL is cleared
 
 ## Before Media Production Readiness
 
 - Publish approved media binaries to the planned production media origin in a separately authorized task.
 - Update MediaAsset production public URLs in a separately authorized CMS/media task.
 - Confirm no local `/media/...` URLs remain in snapshot or static output.
-- Confirm no unapproved rendered image URLs remain, especially the current Open Graph/Twitter image URL rendered under `https://iceskatingrinkrentals.com/media/...` instead of `https://media.iceskatingrinkrentals.com/...`.
+- Keep Open Graph/Twitter social image fields empty or replace them only with approved production media URLs after media readiness work is authorized.
 
 ## Before Contact Form Production Readiness
 
@@ -23,14 +25,10 @@ Cleared:
 - Verify endpoint/backend behavior.
 - Confirm form submission readiness is not inferred from mailbox readiness.
 
-## Before Production Indexing
+## Before Production Content Approval
 
-- Remove `noindex` from approved production-intended CMS pages in a separately authorized CMS metadata task:
-  - `home`
-  - `service-areas`
-- Confirm `apps/ice-rink-web/out/index.html` and `apps/ice-rink-web/out/service-areas/index.html` render indexable robots metadata after the CMS change.
 - Review and clear service-area claim language in a separately authorized CMS content task.
-- Regenerate and validate sitemap/robots after metadata changes.
+- Keep sitemap/robots validation in the final pre-deployment check set.
 
 ## Before Permanent Theme Navigation Readiness
 
@@ -45,5 +43,5 @@ Cleared:
 
 ## Before Azure Staging
 
-- Clear media, form, noindex, and permanent theme navigation gates.
+- Clear media, form, and permanent theme navigation gates.
 - Create Azure staging resources only after explicit authorization.

@@ -4,22 +4,78 @@
   "siteKey": "ice-rink-rentals",
   "generatedAt": "2026-06-04",
   "branch": "feature/admin-page-editor-import-export",
-  "scope": "safe local static dry-run readiness proof attempts",
+  "scope": "safe local static dry-run readiness proof attempts and approved Ice CMS metadata repair",
   "dryRunCommand": "cd apps/ice-rink-web && npm run export:static:ice:cms",
   "dryRunCompleted": true,
   "dryRunExitCode": 0,
   "routeShapeProofCompleted": true,
   "staticOutputQualityGatesPassed": false,
-  "primaryBlocker": "production-readiness gates still fail on local media URLs, unapproved rendered image URLs, noindex metadata, missing static form endpoint verification, and permanent CMS/theme navigation approval",
+  "primaryBlocker": "production-readiness gates still fail on local body/media URLs, missing static form endpoint verification, and permanent CMS/theme navigation approval",
   "latestPlanningPass": {
-    "mode": "read-only",
+    "mode": "planning complete; approved metadata repair applied",
     "liveCmsInspectionRequired": false,
     "evidenceSource": "latest local CMS snapshot and generated static output",
     "repairPlanFiles": [
       "NOINDEX_REPAIR_PLAN.md",
       "SOCIAL_IMAGE_URL_REPAIR_PLAN.md",
       "STRICT_QUALITY_GATE_REPAIR_PLAN.md"
-    ]
+    ],
+    "repairResultFile": "CMS_METADATA_REPAIR_RESULT.md"
+  },
+  "cmsMetadataRepairResult": {
+    "performed": true,
+    "pageSlugsChanged": [
+      "home",
+      "service-areas"
+    ],
+    "contactUnchanged": true,
+    "changeSource": "metadata_repair",
+    "fieldsChanged": [
+      "home.page.seo.robots",
+      "home.page.seo.openGraph.og:image",
+      "home.page.seo.twitterCard.twitter:image",
+      "service-areas.page.seo.robots",
+      "service-areas.page.seo.openGraph.og:image",
+      "service-areas.page.seo.twitterCard.twitter:image"
+    ],
+    "preWriteValues": {
+      "home": {
+        "robots": "noindex, nofollow",
+        "openGraphImage": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "twitterImage": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png"
+      },
+      "contact": {
+        "robots": "index,follow",
+        "openGraphImage": "",
+        "twitterImage": ""
+      },
+      "service-areas": {
+        "robots": "noindex, nofollow",
+        "openGraphImage": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "twitterImage": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png"
+      }
+    },
+    "postWriteValues": {
+      "home": {
+        "robots": "index,follow",
+        "openGraphImage": "",
+        "twitterImage": ""
+      },
+      "contact": {
+        "robots": "index,follow",
+        "openGraphImage": "",
+        "twitterImage": ""
+      },
+      "service-areas": {
+        "robots": "index,follow",
+        "openGraphImage": "",
+        "twitterImage": ""
+      }
+    },
+    "noindexResult": "cleared",
+    "unapprovedRenderedSocialImageUrlResult": "cleared",
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false
   },
   "currentAttemptRequiredEnv": {
     "PUMPKIN_API_URL": "PRESENT",
@@ -59,10 +115,11 @@
       "phase-5a-csv-import-54754949"
     ],
     "robots": {
-      "home": "noindex, nofollow",
+      "home": "index,follow",
       "contact": "index,follow",
-      "service-areas": "noindex, nofollow"
+      "service-areas": "index,follow"
     },
+    "activeLocalSocialImageFields": [],
     "themeReadSucceeded": true,
     "themeReadWarning": ""
   },
@@ -81,88 +138,27 @@
     "strictSnapshotValidatorExitCode": 0,
     "strictStaticValidatorExitCode": 1,
     "strictStagingValidatorExitCode": 1,
-    "strictStaticValidatorErrorCount": 22,
-    "strictStagingValidatorErrorCount": 22,
-    "unapprovedRenderedImageUrls": [
-      {
-        "url": "https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
-        "routes": [
-          "/",
-          "/service-areas"
-        ],
-        "renderedFiles": [
-          "apps/ice-rink-web/out/index.html",
-          "apps/ice-rink-web/out/index.txt",
-          "apps/ice-rink-web/out/service-areas/index.html",
-          "apps/ice-rink-web/out/service-areas/index.txt"
-        ],
-        "sourceFields": [
-          "home.page.seo.openGraph.og:image",
-          "home.page.seo.twitterCard.twitter:image",
-          "service-areas.page.seo.openGraph.og:image",
-          "service-areas.page.seo.twitterCard.twitter:image"
-        ]
-      }
-    ],
-    "noindexRenderedFiles": [
-      "apps/ice-rink-web/out/index.html",
-      "apps/ice-rink-web/out/service-areas/index.html"
+    "strictStaticValidatorErrorCount": 8,
+    "strictStagingValidatorErrorCount": 8,
+    "unapprovedRenderedImageUrls": [],
+    "noindexRenderedFiles": [],
+    "remainingStrictErrors": [
+      "local-dev media URL found in contact/index.html",
+      "local-dev media URL found in contact/index.txt",
+      "local-dev media URL found in index.html",
+      "local-dev media URL found in index.txt",
+      "local-dev media URL found in service-areas/index.html",
+      "local-dev media URL found in service-areas/index.txt",
+      "static form endpoint not configured",
+      "static form endpoint/backend verification missing"
     ]
   },
   "remainingBlockers": [
     "local /media/ice-rink-rentals/... URLs remain",
-    "unapproved rendered image URLs remain",
-    "home and service-areas noindex metadata remains",
     "static form endpoint is missing or unverified",
     "permanent CMS/theme navigation update or approval remains",
     "service-area claim language still needs review"
   ],
-  "proposedCmsRepairsPendingApproval": {
-    "noindex": [
-      {
-        "pageSlug": "home",
-        "route": "/",
-        "field": "page.seo.robots",
-        "currentValue": "noindex, nofollow",
-        "proposedValue": "index,follow"
-      },
-      {
-        "pageSlug": "service-areas",
-        "route": "/service-areas",
-        "field": "page.seo.robots",
-        "currentValue": "noindex, nofollow",
-        "proposedValue": "index,follow"
-      }
-    ],
-    "socialImages": [
-      {
-        "pageSlug": "home",
-        "route": "/",
-        "fields": [
-          "page.seo.openGraph.og:image",
-          "page.seo.twitterCard.twitter:image"
-        ],
-        "currentValue": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
-        "recommendedTemporaryValue": ""
-      },
-      {
-        "pageSlug": "service-areas",
-        "route": "/service-areas",
-        "fields": [
-          "page.seo.openGraph.og:image",
-          "page.seo.twitterCard.twitter:image"
-        ],
-        "currentValue": "/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
-        "recommendedTemporaryValue": ""
-      }
-    ],
-    "unchangedActiveContact": {
-      "pageSlug": "contact",
-      "route": "/contact",
-      "robots": "index,follow",
-      "socialImageFields": "empty"
-    }
-  },
   "staleOutputAccepted": false,
   "readiness": {
     "staticDryRunCompleted": true,
@@ -172,10 +168,12 @@
     "contactFormProductionReadiness": false,
     "azureStagingReadiness": false,
     "dnsCutoverReadiness": false,
-    "productionIndexingReadiness": false
+    "productionIndexingReadiness": true,
+    "productionIndexingReadinessBasis": "yes for the noindex validation gate only; overall production deployment remains blocked by media, form, and navigation readiness"
   },
   "actionsPerformed": {
-    "cmsWrites": false,
+    "cmsWrites": true,
+    "approvedCmsMetadataWritesOnly": true,
     "themeWrites": false,
     "mediaAssetWrites": false,
     "staticDeployment": false,

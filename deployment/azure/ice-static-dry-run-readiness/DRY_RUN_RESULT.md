@@ -25,6 +25,8 @@ Command executed: yes.
 
 Exit code: `0`.
 
+This current outcome is after the approved active CMS metadata repair for `home` and `service-areas`.
+
 The command completed `snapshot:cms:ice`, `validate:snapshot:ice`, `build:static:ice:cms`, and `static-publish.mjs generate`.
 
 Current snapshot:
@@ -37,6 +39,8 @@ Current snapshot:
 | excluded slugs | `events-holiday-activations`, `ice-rink-rentals`, `phase-5a-csv-import-54754949` |
 | themeSnapshot | true |
 | theme 401 | fixed |
+| robots metadata | `home`, `contact`, and `service-areas` all `index,follow` |
+| active OG/Twitter local social images | none |
 
 Fresh static output:
 
@@ -50,9 +54,11 @@ Validator split:
 | Validator | Exit | Result |
 | --- | ---: | --- |
 | `npm run validate:snapshot:ice` | 0 | route/snapshot validation passed; production-readiness blockers remain warnings |
-| `validate-static-output.mjs` | 1 | 22 strict production errors |
-| `validate-staging-package.mjs` | 1 | 22 strict staging package errors |
+| `validate-static-output.mjs` | 1 | 8 strict production errors |
+| `validate-staging-package.mjs` | 1 | 8 strict staging package errors |
 
-Strict production/staging validators still exit `1`, as expected, because production readiness remains blocked by media URLs, unapproved rendered image URLs, noindex metadata, and missing/unverified static form endpoint.
+Strict production/staging validators still exit `1`, as expected, because production readiness remains blocked by local body/media URLs and the missing/unverified static form endpoint.
 
-No staging, deployment, CMS writes, Theme writes, MediaAsset writes, email, or Microsoft 365 actions were performed.
+Noindex errors and the unapproved rendered social image URL are cleared.
+
+No staging, deployment, Theme writes, MediaAsset writes, email, or Microsoft 365 actions were performed. Only the explicitly approved active CMS metadata fields were changed.

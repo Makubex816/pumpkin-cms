@@ -2,13 +2,13 @@
 
 ## Current Snapshot And Output
 
-The approved three-page snapshot and generated static output still contain local-dev media URLs:
+The approved three-page snapshot and generated static output still contain local-dev body/media URLs:
 
 ```text
 /media/ice-rink-rentals/...
 ```
 
-Strict validators also report unapproved rendered image URLs under:
+Strict validators no longer report unapproved rendered Open Graph/Twitter social image URLs under:
 
 ```text
 https://iceskatingrinkrentals.com/media/...
@@ -22,15 +22,15 @@ https://media.iceskatingrinkrentals.com
 
 The compact output scan did not detect `data:image` markers or `base64` image payload markers.
 
-## Unapproved Rendered Image URL
+## Unapproved Rendered Social Image URL
 
-Strict validators report one unique unapproved rendered image URL:
+Previous strict validators reported one unique unapproved rendered social image URL:
 
 ```text
 https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png
 ```
 
-Occurrences:
+Previous occurrences:
 
 | Route | Rendered files | Metadata fields |
 | --- | --- | --- |
@@ -44,7 +44,7 @@ Source:
 - `service-areas` `page.seo.openGraph.og:image`
 - `service-areas` `page.seo.twitterCard.twitter:image`
 
-Each source field contains the local value:
+Before the CMS metadata repair, each source field contained the local value:
 
 ```text
 /media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png
@@ -52,7 +52,9 @@ Each source field contains the local value:
 
 `apps/ice-rink-web/src/lib/metadata.ts` converts relative Open Graph/Twitter image paths to absolute URLs with the site canonical domain. That produces `https://iceskatingrinkrentals.com/media/...`, which is still not the approved production media origin.
 
-This is expected local media placeholder behavior until production media URLs are published and recorded. It is a real production-readiness blocker.
+The approved active CMS metadata repair cleared those four source fields on `home` and `service-areas`. The post-repair static output no longer contains that unapproved rendered social image URL.
+
+This does not claim media production readiness. Local body/media image URLs still remain in rendered page content.
 
 ## Local Media URL Summary
 
@@ -68,7 +70,7 @@ The CMS source paths are page media objects and block media objects such as `pag
 
 ## Policy Result
 
-Media URL problems do not block the local route-shape proof. They do block production media readiness, Azure staging readiness, and production deployment readiness.
+Local body/media URL problems do not block the local route-shape proof. They do block production media readiness, Azure staging readiness, and production deployment readiness.
 
 ## Readiness
 

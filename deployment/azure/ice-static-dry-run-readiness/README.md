@@ -4,7 +4,7 @@ Generated: 2026-06-04
 
 This package records safe local static dry-run/readiness proof work for IceSkatingRinkRentals.com.
 
-No Azure resources, Cosmos resources, Blob containers, Cloudflare DNS records, CMS records, Theme records, MediaAsset records, Microsoft 365 settings, email, static deployment, protected config access, or Roller work occurred.
+Only the explicitly approved active Ice CMS metadata repair was performed for `home` and `service-areas`. No Azure resources, Cosmos resources, Blob containers, Cloudflare DNS records, Theme records, MediaAsset records, Microsoft 365 settings, email, static deployment, protected config access, or Roller work occurred.
 
 ## Result
 
@@ -24,12 +24,13 @@ What improved:
 - local theme navigation is scoped for route-shape proof to `/`, `/contact`, and `/service-areas` without mutating CMS/theme records
 - media, form endpoint, and noindex checks are separated as production-readiness blockers instead of route-shape blockers
 - static export removes preview route output and omits preview rewrites in static mode
+- approved CMS metadata repair set `home` and `service-areas` active robots to `index,follow`
+- approved CMS metadata repair cleared their active local `/media/...` Open Graph/Twitter image fields
 - fresh `out` and copied artifact routes are exactly `/`, `/contact`, and `/service-areas`
 
 Remaining production blockers:
 
-- local `/media/...` URLs and unapproved rendered image URLs remain
-- `home` and `service-areas` still have `noindex`
+- local `/media/...` body/media URLs remain
 - static form endpoint is missing/unverified
 - active CMS/theme navigation still needs permanent approval/update
 
@@ -39,11 +40,15 @@ Read-only repair planning docs:
 - `SOCIAL_IMAGE_URL_REPAIR_PLAN.md`
 - `STRICT_QUALITY_GATE_REPAIR_PLAN.md`
 
+Applied repair result:
+
+- `CMS_METADATA_REPAIR_RESULT.md`
+
 Latest strict validator split:
 
 - `npm run validate:snapshot:ice`: exit `0`; route/snapshot proof passes, production-readiness blockers remain warnings
-- `validate-static-output.mjs`: exit `1`; 22 strict production errors
-- `validate-staging-package.mjs`: exit `1`; 22 strict staging package errors
+- `validate-static-output.mjs`: exit `1`; 8 strict production errors
+- `validate-staging-package.mjs`: exit `1`; 8 strict staging package errors
 
 ## Classification
 
@@ -56,7 +61,7 @@ Latest strict validator split:
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
-| production/indexing readiness | no |
+| production/indexing readiness for noindex gate | yes |
 
 ## Files
 
@@ -73,4 +78,5 @@ Latest strict validator split:
 - `NOINDEX_REPAIR_PLAN.md`
 - `SOCIAL_IMAGE_URL_REPAIR_PLAN.md`
 - `STRICT_QUALITY_GATE_REPAIR_PLAN.md`
+- `CMS_METADATA_REPAIR_RESULT.md`
 - `manifest.json`

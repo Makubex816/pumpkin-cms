@@ -1,10 +1,10 @@
-# Noindex Repair Plan
+# Noindex Repair Plan And Result
 
 Generated: 2026-06-04
 
 ## Scope
 
-This is a read-only planning note for IceSkatingRinkRentals.com. No CMS records were changed.
+This began as a read-only planning note for IceSkatingRinkRentals.com. The explicitly approved active CMS metadata repair has now been applied for `home` and `service-areas`.
 
 ## Evidence Source
 
@@ -26,13 +26,21 @@ Metadata render path:
 2. `apps/ice-rink-web/src/app/[...slug]/page.tsx` loads slug pages and calls `buildMetadata(...)`.
 3. `apps/ice-rink-web/src/lib/metadata.ts` emits `robots: seo.robots || 'index, follow'`.
 
-## Current Active Values
+## Pre-Repair Active Values
 
 | Page slug | Route | Active source field | Current active value | Rendered result |
 | --- | --- | --- | --- | --- |
 | `home` | `/` | `page.seo.robots` | `noindex, nofollow` | `apps/ice-rink-web/out/index.html` renders `noindex, nofollow` |
 | `contact` | `/contact` | `page.seo.robots` | `index,follow` | `apps/ice-rink-web/out/contact/index.html` renders `index,follow` |
 | `service-areas` | `/service-areas` | `page.seo.robots` | `noindex, nofollow` | `apps/ice-rink-web/out/service-areas/index.html` renders `noindex, nofollow` |
+
+## Post-Repair Active Values
+
+| Page slug | Route | Active source field | Current active value | Rendered result |
+| --- | --- | --- | --- | --- |
+| `home` | `/` | `page.seo.robots` | `index,follow` | `apps/ice-rink-web/out/index.html` renders `index,follow` |
+| `contact` | `/contact` | `page.seo.robots` | `index,follow` | `apps/ice-rink-web/out/contact/index.html` renders `index,follow` |
+| `service-areas` | `/service-areas` | `page.seo.robots` | `index,follow` | `apps/ice-rink-web/out/service-areas/index.html` renders `index,follow` |
 
 ## Revision Snapshot Note
 
@@ -44,9 +52,9 @@ page.revision.latestSnapshot.page.seo.robots = noindex,nofollow
 
 The active export uses `page.seo.robots`, not the stale revision value, so the contact revision snapshot should not be touched unless a separate revision-history cleanup is explicitly approved.
 
-## Proposed CMS Repair
+## Applied CMS Repair
 
-Requires explicit approval before any CMS write:
+Applied after explicit approval:
 
 | Page slug | Field to update | From | To |
 | --- | --- | --- | --- |
@@ -65,18 +73,16 @@ No other metadata field was found to be required to prevent noindex rendering. `
 
 ## Verification After Approved Write
 
-After explicit approval and CMS metadata update:
+Completed:
 
-1. Rerun `cd apps/ice-rink-web && npm run export:static:ice:cms`.
-2. Confirm route output is still exactly `/`, `/contact`, `/service-areas`.
-3. Confirm no noindex meta appears in:
-   - `apps/ice-rink-web/out/index.html`
-   - `apps/ice-rink-web/out/service-areas/index.html`
-4. Rerun strict validators and confirm noindex errors are gone.
+1. Reran `cd apps/ice-rink-web && npm run export:static:ice:cms`; exit `0`.
+2. Confirmed route output is still exactly `/`, `/contact`, `/service-areas`.
+3. Confirmed no noindex meta appears in approved static output.
+4. Reran strict validators and confirmed noindex errors are gone.
 
 ## Actions Not Performed
 
-- no CMS write
+- approved active CMS metadata write only
 - no MediaAsset write
 - no Azure, DNS, Cloudflare, deployment, email, Microsoft 365, or Roller action
 - no protected config access

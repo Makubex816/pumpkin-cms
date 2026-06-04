@@ -6,9 +6,9 @@ Generated: 2026-06-04
 
 This report records safe local static dry-run/readiness proof work for IceSkatingRinkRentals.com.
 
-No CMS records, Theme records, MediaAsset records, Azure resources, Cosmos resources, Blob containers, Cloudflare DNS records, Microsoft 365 settings, email/provider settings, deployments, or Roller work occurred. No protected config was read and no secrets, API keys, JWTs, tokens, connection strings, or provider credentials were printed.
+Only the explicitly approved active Ice CMS metadata fields were changed for `home` and `service-areas`. No body content, titles, descriptions, slugs, routes, layout, sections, navigation, forms, Theme records, MediaAsset records, Azure resources, Cosmos resources, Blob containers, Cloudflare DNS records, Microsoft 365 settings, email/provider settings, deployments, or Roller work occurred. No protected config was read and no secrets, API keys, JWTs, tokens, connection strings, or provider credentials were printed.
 
-Latest repair planning pass was documentation-only. Live CMS inspection was not required because the current CMS snapshot and static output already captured the active page metadata used by the latest successful export.
+Latest repair pass used live CMS readback and the approved admin JWT only for the scoped Ice metadata update and verification.
 
 ## Start State
 
@@ -19,6 +19,8 @@ Branch: `feature/admin-page-editor-import-export`
 Recent log at start included:
 
 ```text
+cff1c1a Plan Ice static quality gate CMS repairs
+7f9c0eb Document Ice static quality gate blockers
 b55cddb Complete Ice static dry-run route proof
 0caed80 Repair Ice static dry-run snapshot auth and route filtering
 12b5adb Repair Ice static deployment readiness gates
@@ -29,9 +31,6 @@ dc8d149 Add Ice static media deployment readiness report
 5800b86 Add Ice contact media binding report
 df01d84 Add Ice contact draft preview support
 af471be Add Ice final contact local draft import report
-8d66530 Add Ice final contact package intake
-aa556a9 Add Ice service areas region grid polish report
-9f2dbd2 Add Ice service areas live CMS promotion report
 ```
 
 ## Environment Presence
@@ -54,7 +53,7 @@ Minimal local fixes now in place:
 - `apps/ice-rink-web/scripts/snapshot-cms-content.mjs` supports the approved temp admin JWT file as a fallback and uses read-only `GET /api/admin/themes/{tenantId}/active` when an admin token is available.
 - `snapshot-cms-content.mjs` filters the Ice CMS snapshot to approved slugs only: `home`, `contact`, `service-areas`. The manifest records the original discovered count and excluded slugs.
 - `snapshot-cms-content.mjs` scopes the fetched Ice `theme.menu` for local route-shape proof only, adding `/` when missing and excluding non-approved routes from the local snapshot copy without mutating CMS/theme records.
-- `snapshot-cms-content.mjs` and `apps/ice-rink-web/scripts/static-publish.mjs` separate route-shape proof from production-readiness gates: noindex, local media URLs, unapproved production image URLs, and missing static form endpoint now remain warnings/blockers for production readiness instead of stopping the local route-shape dry run.
+- `snapshot-cms-content.mjs` and `apps/ice-rink-web/scripts/static-publish.mjs` separate route-shape proof from production-readiness gates: noindex, local media URLs, unapproved production image URLs, and missing static form endpoint are classified as warnings/blockers for production readiness instead of stopping the local route-shape dry run.
 - `static-publish.mjs` rejects any non-approved Ice static slug and removes excluded preview output folders/chunks before copying the local static artifact.
 - `apps/ice-rink-web/next.config.js` omits preview rewrites when `PUMPKIN_RENDER_MODE=static`, so generated static output does not carry `/__preview/...` or `/draft-preview/...` rewrites.
 
@@ -89,6 +88,8 @@ Current snapshot summary:
 | excluded slugs | `events-holiday-activations`, `ice-rink-rentals`, `phase-5a-csv-import-54754949` |
 | themeSnapshot | true |
 | theme 401 | fixed |
+| robots metadata | `home`, `contact`, and `service-areas` all `index,follow` |
+| active local OG/Twitter social images | none |
 
 Fresh generated route output:
 
@@ -120,22 +121,20 @@ Noindex:
 
 - source field: CMS page `seo.robots`
 - render path: `apps/ice-rink-web/src/app/page.tsx` and `apps/ice-rink-web/src/app/[...slug]/page.tsx` call `buildMetadata(...)`, and `apps/ice-rink-web/src/lib/metadata.ts` emits `robots: seo.robots || 'index, follow'`
-- `home`: source `page.seo.robots = "noindex, nofollow"` renders `<meta name="robots" content="noindex, nofollow"/>` in `apps/ice-rink-web/out/index.html`
+- `home`: source `page.seo.robots = "index,follow"` renders `<meta name="robots" content="index,follow"/>` in `apps/ice-rink-web/out/index.html`
 - `contact`: source `page.seo.robots = "index,follow"` renders `<meta name="robots" content="index,follow"/>` in `apps/ice-rink-web/out/contact/index.html`; its revision snapshot still contains stale `noindex,nofollow`, but the active page field does not
-- `service-areas`: source `page.seo.robots = "noindex, nofollow"` renders `<meta name="robots" content="noindex, nofollow"/>` in `apps/ice-rink-web/out/service-areas/index.html`
-- local result: noindex is a production/indexing readiness blocker, not a route-shape blocker
-- local tooling fix status: no safe local tooling fix is appropriate because overriding `seo.robots` would hide a real production indexing blocker
-- CMS metadata write performed: no
-- recommended CMS change: when production approval is granted, remove noindex from `home` and `service-areas` or set their robots metadata to `index,follow`
+- `service-areas`: source `page.seo.robots = "index,follow"` renders `<meta name="robots" content="index,follow"/>` in `apps/ice-rink-web/out/service-areas/index.html`
+- local result: noindex blocker is cleared for the approved active pages
+- local tooling fix status: no override was used; active CMS metadata was repaired under explicit approval
+- stale revision manual update performed: no
 
 Media:
 
 - source: approved CMS pages and revision snapshots still contain local `/media/ice-rink-rentals/...` URLs
-- strict validators report one unique unapproved rendered image URL: `https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png`
-- rendered locations: `apps/ice-rink-web/out/index.html`, `apps/ice-rink-web/out/index.txt`, `apps/ice-rink-web/out/service-areas/index.html`, and `apps/ice-rink-web/out/service-areas/index.txt`
-- source fields: `home` and `service-areas` `page.seo.openGraph.og:image` and `page.seo.twitterCard.twitter:image` contain `/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png`; `apps/ice-rink-web/src/lib/metadata.ts` absolutizes that relative path to the site domain for Open Graph/Twitter metadata
+- strict validators no longer report the previous unapproved rendered Open Graph/Twitter image URL: `https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png`
+- repaired source fields: `home` and `service-areas` `page.seo.openGraph.og:image` and `page.seo.twitterCard.twitter:image` are now empty
 - local media URL render path: polished block rendering reads `publicUrl`/`url` from CMS media objects and renders them directly in `<img>` tags
-- local result: media issues remain production-readiness blockers, not route-shape blockers
+- local result: body/media URLs remain production-readiness blockers, not route-shape blockers
 - MediaAsset writes/uploads performed: no
 - required future action: publish approved media to the production media origin and update MediaAsset/public URL records in a separately authorized task
 
@@ -146,31 +145,30 @@ Static contact endpoint:
 - local result: form endpoint remains a production-readiness blocker, not a route-shape blocker
 - endpoint deployment/email/Microsoft 365 action performed: no
 
-## Repair Plans
+## Repair Result
 
-Documentation-only repair plans were added:
+Repair planning and result docs:
 
 - `deployment/azure/ice-static-dry-run-readiness/NOINDEX_REPAIR_PLAN.md`
 - `deployment/azure/ice-static-dry-run-readiness/SOCIAL_IMAGE_URL_REPAIR_PLAN.md`
 - `deployment/azure/ice-static-dry-run-readiness/STRICT_QUALITY_GATE_REPAIR_PLAN.md`
+- `deployment/azure/ice-static-dry-run-readiness/CMS_METADATA_REPAIR_RESULT.md`
 
-Exact CMS metadata repair proposed, pending explicit approval:
+Approved CMS metadata repair performed:
 
-| Page slug | Field | Current value | Proposed value |
+| Page slug | Field | Pre-write value | Post-write value |
 | --- | --- | --- | --- |
 | `home` | `page.seo.robots` | `noindex, nofollow` | `index,follow` |
+| `home` | `page.seo.openGraph.og:image` | `/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png` | empty |
+| `home` | `page.seo.twitterCard.twitter:image` | `/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png` | empty |
 | `service-areas` | `page.seo.robots` | `noindex, nofollow` | `index,follow` |
-| `contact` | `page.seo.robots` | `index,follow` | no change |
+| `service-areas` | `page.seo.openGraph.og:image` | `/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png` | empty |
+| `service-areas` | `page.seo.twitterCard.twitter:image` | `/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png` | empty |
+| `contact` | active metadata | `index,follow`; social image fields empty | unchanged |
 
-Exact social image repair options proposed, pending explicit approval:
+The repair used `changeSource=metadata_repair`. Readback verified `contact` was unchanged and that only the approved active metadata fields changed, aside from server-managed timestamps, page version, revision/static publishing flags, and workflow last-edited metadata.
 
-| Rank | Option | Summary |
-| --- | --- | --- |
-| 1 | Option A | clear/omit `home` and `service-areas` active `page.seo.openGraph.og:image` and `page.seo.twitterCard.twitter:image` until production media URLs are ready |
-| 2 | Option B | update static metadata generation to omit OG/Twitter image tags when values resolve from local `/media/...`, while keeping media production readiness `no` |
-| 3 | Option C | after media infrastructure exists, replace social image fields with `https://media.iceskatingrinkrentals.com/...` production media URLs |
-
-Recommended next write step requiring explicit approval: apply Option A and the noindex CMS metadata changes to the active `home` and `service-areas` pages only. Do not touch active `contact`; its robots and social image fields are already acceptable for this specific blocker set.
+No MediaAsset writes, media uploads, Theme writes, stale revision manual updates, Azure, DNS, Cloudflare, deployment, email, Microsoft 365, protected config, or Roller actions occurred.
 
 ## Validation
 
@@ -197,10 +195,14 @@ Strict production/staging validators remain negative controls:
 | Validator | Exit | Expected blockers |
 | --- | --- | --- |
 | `npm run validate:snapshot:ice` | `0` | route/snapshot validation passed; production-readiness blockers remain warnings |
-| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `1` | 22 errors: local media URLs, unapproved image URLs, noindex on `index.html` and `service-areas/index.html`, missing/unverified static form endpoint |
-| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `1` | 22 errors: local media URLs, unapproved image URLs, noindex on `index.html` and `service-areas/index.html`, missing/unverified static form endpoint |
+| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `1` | 8 errors: local body/media URLs in the three approved routes and missing/unverified static form endpoint |
+| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `1` | 8 errors: local body/media URLs in the three approved routes and missing/unverified static form endpoint |
 
 No stale snapshot/static output was accepted as readiness proof.
+
+Noindex errors: cleared.
+
+Unapproved rendered social image URL errors: cleared.
 
 ## Readiness Classification
 
@@ -213,7 +215,9 @@ No stale snapshot/static output was accepted as readiness proof.
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
-| production/indexing readiness | no |
+| production/indexing readiness for noindex gate | yes |
+
+Overall production deployment readiness remains no because media, form endpoint, and permanent theme navigation readiness are still blocked.
 
 ## Checks
 
@@ -231,11 +235,11 @@ No stale snapshot/static output was accepted as readiness proof.
 - staged generated static artifacts: none staged
 - no Azure resources created: yes
 - no Cloudflare changes: yes
-- no CMS writes: yes
+- approved active CMS metadata writes only: yes
 - no MediaAsset writes: yes
 - no static deployment: yes
 - Roller untouched: yes
 
 ## Next Recommended Action
 
-Do not proceed to Azure setup, DNS cutover, deployment, or production indexing. The next authorized write should be explicitly scoped CMS metadata repair only: set `home` and `service-areas` `page.seo.robots` to `index,follow` and clear/omit their active Open Graph/Twitter local `/media/...` social image fields, then rerun the Ice-only export and strict validators.
+Do not proceed to Azure setup, DNS cutover, deployment, or production static publication. The next authorized work should clear the remaining strict blockers: production media URLs, static form endpoint verification, and permanent active theme navigation approval/update.
