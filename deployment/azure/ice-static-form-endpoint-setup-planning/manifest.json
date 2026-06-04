@@ -1,0 +1,45 @@
+{
+  "packageName": "ice-static-form-endpoint-setup-planning",
+  "site": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "generatedAt": "2026-06-04",
+  "branch": "feature/admin-page-editor-import-export",
+  "mode": "planning-only",
+  "endpointStatus": "missing-unverified",
+  "recommendedEndpointPath": "/api/static-contact",
+  "preferredFrontendEnvVar": "NEXT_PUBLIC_STATIC_FORM_ENDPOINT",
+  "verificationEnvVar": "STATIC_FORM_ENDPOINT_VERIFIED",
+  "files": [
+    "README.md",
+    "FORM_ENDPOINT_REQUIREMENTS.md",
+    "VALIDATION_AND_SANITIZATION_REQUIREMENTS.md",
+    "ENVIRONMENT_VARIABLES_REQUIRED.md",
+    "LOCAL_TEST_PLAN.md",
+    "AZURE_FUNCTION_OR_ENDPOINT_PLANNING.md",
+    "EMAIL_DELIVERY_PLANNING.md",
+    "APPROVAL_CHECKLIST.md",
+    "REMAINING_RISKS.md",
+    "manifest.json"
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "staticOutputQualityGates": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false
+  },
+  "actionsPerformed": {
+    "endpointDeployed": false,
+    "azureResourcesCreated": false,
+    "envVarsSet": false,
+    "staticFormEndpointVerified": false,
+    "emailSent": false,
+    "microsoft365SettingsTouched": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}

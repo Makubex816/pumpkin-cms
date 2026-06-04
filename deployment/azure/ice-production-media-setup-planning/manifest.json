@@ -1,0 +1,54 @@
+{
+  "packageName": "ice-production-media-setup-planning",
+  "site": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "generatedAt": "2026-06-04",
+  "branch": "feature/admin-page-editor-import-export",
+  "mode": "planning-only",
+  "targetMediaDomain": "media.iceskatingrinkrentals.com",
+  "targetUrlPattern": "https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+  "targetBlobPathPattern": "ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+  "documentedMediaAssetIds": [
+    "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+    "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+    "ice-rink-rentals-holidayicerink-973ce7691377",
+    "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+    "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+    "ice-rink-rentals-partyproseastcoastlogo-cfd1fc9f60ae",
+    "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+    "ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+    "ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d"
+  ],
+  "files": [
+    "README.md",
+    "MEDIA_ASSET_INVENTORY.md",
+    "MEDIA_URL_TARGETS.md",
+    "AZURE_BLOB_PLANNING.md",
+    "CLOUDFLARE_MEDIA_DOMAIN_PLANNING.md",
+    "MEDIA_VALIDATION_PLAN.md",
+    "APPROVAL_CHECKLIST.md",
+    "REMAINING_RISKS.md",
+    "manifest.json"
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "staticOutputQualityGates": false,
+    "mediaProductionUrlReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false
+  },
+  "actionsPerformed": {
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "mediaUploaded": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}
