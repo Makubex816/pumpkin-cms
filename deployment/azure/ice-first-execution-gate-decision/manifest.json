@@ -1,0 +1,74 @@
+{
+  "packageName": "ice-first-execution-gate-decision",
+  "generatedDate": "2026-06-04",
+  "mode": "planning-decision-support-only",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "recommendation": {
+    "firstGate": "production-media-setup-preflight-first",
+    "selectedOption": "A",
+    "reason": "Media accounts for the larger strict-validator blocker set, affects approved visible page imagery, and is required before final production-quality static output can pass."
+  },
+  "blockerProfile": {
+    "mediaStrictValidatorErrors": 6,
+    "formStrictValidatorErrors": 2,
+    "mediaAffectsApprovedVisibleImagery": true,
+    "formRequiresEndpointEnvironmentAndEmailPlanning": true
+  },
+  "approvedRoutes": [
+    "/",
+    "/contact",
+    "/service-areas"
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "staticOutputQualityGates": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "reviewedDocs": [
+    "deployment/azure/ice-production-readiness-master-plan/PRODUCTION_SEQUENCE.md",
+    "deployment/azure/ice-production-readiness-master-plan/MEDIA_GATE.md",
+    "deployment/azure/ice-production-readiness-master-plan/FORM_ENDPOINT_GATE.md",
+    "deployment/azure/ice-production-readiness-master-plan/APPROVAL_BOUNDARIES.md",
+    "deployment/azure/ice-production-readiness-master-plan/FUTURE_CODEX_PROMPTS.md",
+    "deployment/azure/ice-production-media-setup-planning/",
+    "deployment/azure/ice-static-form-endpoint-setup-planning/"
+  ],
+  "files": [
+    "README.md",
+    "MEDIA_FIRST_ANALYSIS.md",
+    "FORM_FIRST_ANALYSIS.md",
+    "RECOMMENDED_FIRST_GATE.md",
+    "REQUIRED_APPROVAL_FOR_NEXT_ACTION.md",
+    "NEXT_PROMPT_MEDIA_PREFLIGHT.md",
+    "NEXT_PROMPT_FORM_PREFLIGHT.md",
+    "manifest.json"
+  ],
+  "actionsPerformed": {
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "deployed": false,
+    "mediaUploaded": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "jwtPrinted": false,
+    "generatedStaticArtifactsStaged": false,
+    "rollerTouched": false
+  },
+  "rootReport": "PUMPKIN_ICE_FIRST_EXECUTION_GATE_DECISION_REPORT.md"
+}
