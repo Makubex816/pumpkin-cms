@@ -1,0 +1,60 @@
+{
+  "packageName": "ice-static-media-deployment-readiness",
+  "site": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "generatedAt": "2026-06-03T23:41:04-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "scope": "documentation-readiness-audit-only",
+  "approvedLiveCmsRoutes": [
+    "/",
+    "/contact",
+    "/service-areas"
+  ],
+  "classification": {
+    "readyForStaticGenerationDryRun": false,
+    "readyForAzureStaticWebAppStagingDeployment": false,
+    "readyForProductionMediaUrls": false,
+    "readyForProductionContactForm": false,
+    "readyForCloudflareDnsCutover": false,
+    "readyForProductionIndexing": false
+  },
+  "actionsPerformed": {
+    "cmsWrites": false,
+    "themeWrites": false,
+    "mediaAssetWrites": false,
+    "staticGeneration": false,
+    "azureResourcesCreated": false,
+    "azureDeployment": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "emailProviderChanges": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "LIVE_CMS_ROUTE_AUDIT.md",
+    "STATIC_GENERATION_TOOLING_AUDIT.md",
+    "MEDIA_PRODUCTION_READINESS.md",
+    "MEDIA_BLOB_UPLOAD_PLAN.md",
+    "CLOUDFLARE_MEDIA_URL_PLAN.md",
+    "CONTACT_FORM_PRODUCTION_READINESS.md",
+    "SITEMAP_AND_ROBOTS_READINESS.md",
+    "PREVIEW_ROUTE_EXCLUSION_CHECK.md",
+    "AZURE_STATIC_WEB_APP_ARTIFACT_PLAN.md",
+    "STAGING_DEPLOYMENT_BLOCKERS.md",
+    "NEXT_SETUP_SEQUENCE.md",
+    "manifest.json"
+  ],
+  "rootReport": "PUMPKIN_ICE_STATIC_MEDIA_DEPLOYMENT_READINESS_REPORT.md",
+  "primaryBlockers": [
+    "Static route expectations still include older Ice routes.",
+    "Existing CMS snapshot and static artifacts are stale.",
+    "MediaAsset public URLs still use local development media paths.",
+    "Static contact form endpoint is not deployed or tested.",
+    "Azure Static Web App staging resource and deployment are not created.",
+    "Production indexing policy is not approved."
+  ]
+}
+
