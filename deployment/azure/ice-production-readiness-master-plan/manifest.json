@@ -1,0 +1,73 @@
+{
+  "packageName": "ice-production-readiness-master-plan",
+  "site": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "generatedAt": "2026-06-04",
+  "branch": "feature/admin-page-editor-import-export",
+  "mode": "planning-preflight-only",
+  "localPhaseClosed": true,
+  "approvedRoutes": [
+    "/",
+    "/contact",
+    "/service-areas"
+  ],
+  "files": [
+    "README.md",
+    "CURRENT_STATE.md",
+    "PRODUCTION_SEQUENCE.md",
+    "APPROVAL_BOUNDARIES.md",
+    "MEDIA_GATE.md",
+    "FORM_ENDPOINT_GATE.md",
+    "AZURE_STAGING_GATE.md",
+    "CLOUDFLARE_DNS_GATE.md",
+    "MICROSOFT_365_EMAIL_GATE.md",
+    "CMS_AND_MEDIAASSET_UPDATE_GATE.md",
+    "SECRETS_AND_ENVIRONMENT_VARIABLES.md",
+    "VALIDATION_MATRIX.md",
+    "SMOKE_TEST_PLAN.md",
+    "CUTOVER_PLAN.md",
+    "ROLLBACK_PLAN.md",
+    "POST_LAUNCH_MONITORING_PLAN.md",
+    "DECISION_LOG.md",
+    "FUTURE_CODEX_PROMPTS.md",
+    "REMAINING_RISKS.md",
+    "manifest.json"
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "staticOutputQualityGates": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "remainingProductionBlockers": [
+    "media production URL readiness",
+    "contact form production readiness",
+    "Azure staging readiness",
+    "DNS cutover readiness",
+    "production indexing readiness"
+  ],
+  "actionsPerformed": {
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "mediaUploaded": false,
+    "endpointDeployed": false,
+    "emailSent": false,
+    "microsoft365SettingsTouched": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "productionStaticArtifactsStaged": false,
+    "rollerTouched": false
+  },
+  "rootReport": "PUMPKIN_ICE_PRODUCTION_READINESS_MASTER_PLAN_REPORT.md"
+}
