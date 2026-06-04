@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-06-04T01:51:33.795Z",
+  "ok": true,
+  "command": {
+    "ok": true,
+    "status": 0,
+    "signal": null,
+    "stdout": "{\n  \"ok\": true,\n  \"checkedCssSelectors\": 37,\n  \"checkedNavigationRoutes\": [\n    \"/\",\n    \"/service-areas\",\n    \"/contact\"\n  ],\n  \"importCandidateClassCount\": 20,\n  \"classes\": [\n    \"cms-copy\",\n    \"cms-eyebrow\",\n    \"cms-layout\",\n    \"cms-panel\",\n    \"ice-alias-note\",\n    \"ice-area-card\",\n    \"ice-area-grid\",\n    \"ice-check-list\",\n    \"ice-city-note\",\n    \"ice-cta-link\",\n    \"ice-details-list\",\n    \"ice-event-card\",\n    \"ice-event-grid\",\n    \"ice-hero-grid\",\n    \"ice-planning-table\",\n    \"ice-privacy-note\",\n    \"ice-quote-grid\",\n    \"ice-region-list\",\n    \"ice-response-note\",\n    \"ice-service-teaser\"\n  ],\n  \"warnings\": [],\n  \"failures\": []\n}\n",
+    "stderr": ""
+  },
+  "parsed": {
+    "ok": true,
+    "checkedCssSelectors": 37,
+    "checkedNavigationRoutes": [
+      "/",
+      "/service-areas",
+      "/contact"
+    ],
+    "importCandidateClassCount": 20,
+    "classes": [
+      "cms-copy",
+      "cms-eyebrow",
+      "cms-layout",
+      "cms-panel",
+      "ice-alias-note",
+      "ice-area-card",
+      "ice-area-grid",
+      "ice-check-list",
+      "ice-city-note",
+      "ice-cta-link",
+      "ice-details-list",
+      "ice-event-card",
+      "ice-event-grid",
+      "ice-hero-grid",
+      "ice-planning-table",
+      "ice-privacy-note",
+      "ice-quote-grid",
+      "ice-region-list",
+      "ice-response-note",
+      "ice-service-teaser"
+    ],
+    "warnings": [],
+    "failures": []
+  }
+}

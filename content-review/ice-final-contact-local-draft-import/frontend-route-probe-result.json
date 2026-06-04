@@ -1,0 +1,20 @@
+{
+  "contact": {
+    "url": "http://localhost:3002/contact",
+    "reachable": true,
+    "status": 200,
+    "length": 48760
+  },
+  "homepage": {
+    "url": "http://localhost:3002/",
+    "reachable": true,
+    "status": 200,
+    "length": 178963
+  },
+  "serviceAreas": {
+    "url": "http://localhost:3002/service-areas",
+    "reachable": true,
+    "status": 200,
+    "length": 112760
+  }
+}

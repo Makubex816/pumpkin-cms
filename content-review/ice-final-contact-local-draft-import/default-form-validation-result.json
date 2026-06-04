@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-06-04T01:51:21.058Z",
+  "ok": true,
+  "checks": {
+    "formBlockPresent": true,
+    "formKey": true,
+    "sourcePage": true,
+    "staticEndpointRef": true,
+    "leadRecipientRef": true,
+    "noRawFormHtml": true,
+    "noRealEmailSending": true
+  },
+  "failed": []
+}

@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "pumpkin.ice.final-contact-local-draft-import.v1",
+  "generatedAt": "2026-06-04T01:51:20.771Z",
+  "site": "IceSkatingRinkRentals.com",
+  "tenantId": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "route": "/contact",
+  "branch": "feature/admin-page-editor-import-export",
+  "outputFolder": "content-review/ice-final-contact-local-draft-import",
+  "rootReport": "PUMPKIN_ICE_FINAL_CONTACT_LOCAL_DRAFT_IMPORT_REPORT.md",
+  "inputCandidate": "content-review/ice-final-contact-validated/CONTACT_NORMALIZED_CANDIDATE.json",
+  "inputPackage": "content-review/ice-final-contact-validated/CONTACT_IMPORT_PACKAGE.json",
+  "preparedCandidate": "content-review/ice-final-contact-local-draft-import/CONTACT_FINAL_LOCAL_DRAFT_IMPORT_CANDIDATE.json",
+  "contactBefore": "content-review/ice-final-contact-local-draft-import/current-contact-before-final-import.snapshot.json",
+  "contactReadback": "content-review/ice-final-contact-local-draft-import/contact-readback-after-final-import.json",
+  "import": {
+    "attempted": true,
+    "performed": true,
+    "httpStatus": 200,
+    "endpoint": "PUT /api/admin/pages/ice-rink-rentals/contact?changeSource=json_import",
+    "requestedChangeSource": "final_contact_local_draft_import",
+    "apiChangeSource": "json_import",
+    "mode": "update-existing-contact"
+  },
+  "readback": {
+    "performed": true,
+    "ok": true,
+    "summary": {
+      "id": "ice-rink-rentals-contact",
+      "slug": "contact",
+      "route": "",
+      "isPublished": false,
+      "includeInSitemap": false,
+      "workflowStatus": "draft",
+      "workflowReviewStatus": "needs_review",
+      "pageVersion": 16,
+      "revisionNumber": 16,
+      "lastChangeSource": "json_import",
+      "lastChangeSummary": "final_contact_local_draft_import: import /contact as local CMS draft/needs_review only; keep productionApproved/publishApproved false; no homepage/service-areas/theme/media/static/deploy/provider/Roller action.",
+      "rollbackAvailable": true
+    },
+    "checks": {
+      "httpOk": true,
+      "routeContact": true,
+      "draftNeedsReview": true,
+      "productionApprovedFalse": true,
+      "publishApprovedFalse": true,
+      "staticNeedsRebuildTrue": true,
+      "revisionIncrementedOrRollback": true,
+      "rollbackMetadataExists": true,
+      "requestedSourceInSummary": true,
+      "apiSourcePersisted": true,
+      "selectedMailbox": true,
+      "publicEmailDisplayPolicy": true,
+      "noLegacyMailbox": true,
+      "noRawCf7WordPress": true,
+      "noRealEmailSending": true,
+      "officialMediaIdsOnly": true,
+      "officialMediaIdsExist": true
+    },
+    "failed": []
+  },
+  "formRouting": {
+    "ok": true,
+    "checks": {
+      "formBlockPresent": true,
+      "formKey": true,
+      "sourcePage": true,
+      "staticEndpointRef": true,
+      "leadRecipientRef": true,
+      "selectedMailboxMetadata": true,
+      "publicEmailDisplayPolicy": true,
+      "noRawFormControls": true,
+      "noRealEmailSending": true
+    },
+    "failed": []
+  },
+  "untouched": {
+    "homepageUnchanged": true,
+    "serviceAreasUnchanged": true,
+    "themeUnchanged": true,
+    "mediaAssetsUnchanged": true
+  },
+  "frontend": {
+    "checked": true,
+    "routes": {
+      "contact": {
+        "url": "http://localhost:3002/contact",
+        "reachable": true,
+        "status": 200,
+        "length": 48760
+      },
+      "homepage": {
+        "url": "http://localhost:3002/",
+        "reachable": true,
+        "status": 200,
+        "length": 178963
+      },
+      "serviceAreas": {
+        "url": "http://localhost:3002/service-areas",
+        "reachable": true,
+        "status": 200,
+        "length": 112760
+      }
+    }
+  },
+  "auth": {
+    "envStatus": "MISSING",
+    "tempInitialStatus": "PRESENT",
+    "presence": "PRESENT",
+    "validation": "VALID",
+    "tokenPrinted": false,
+    "tempJwtFinalStatus": "MISSING",
+    "tempDeletedAfterSuccess": true,
+    "tempRetainedOnFailure": false
+  },
+  "hygiene": {
+    "ok": true,
+    "results": {
+      "gitDiffCheck": {
+        "ok": true,
+        "status": 0,
+        "signal": null,
+        "stdout": "",
+        "stderr": ""
+      },
+      "nodeCheckRunner": {
+        "ok": true,
+        "status": 0,
+        "signal": null,
+        "stdout": "",
+        "stderr": ""
+      },
+      "trailingWhitespaceScan": {
+        "ok": true,
+        "hits": []
+      },
+      "protectedGeneratedRawArtifactPathCheck": {
+        "ok": true,
+        "protectedHits": [],
+        "generatedHits": [],
+        "rawHits": [],
+        "allowedReferenceRaw": [
+          "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/CorporateIceRinkRentalEvent.png",
+          "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/HolidayIceRink.png",
+          "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceRinkRentalsSetup.png",
+          "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/IceSkatingRinkRentalsLogo.png",
+          "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/WinterFestIceRinkRentals.png",
+          "content-review/ice-final-contact-input/extracted/ice-contact-page-phase9e-visual-pumpkin-rewrite/assets/ppec-wordmark-card-preview.png",
+          "content-review/ice-final-contact-input/ice-contact-page-phase9e-visual-pumpkin-rewrite.zip",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/corporate.webp",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/hero.webp",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/holiday.webp",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/logo.png",
+          "content-review/ice-service-areas-input/extracted/ice-service-areas-phase11b-production-polish/assets/setup.webp",
+          "content-review/ice-service-areas-input/ice-service-areas-phase11b-production-polish.zip"
+        ]
+      },
+      "targetedSecretScan": {
+        "ok": true,
+        "hits": []
+      },
+      "stagedArtifactCheck": {
+        "ok": true,
+        "stagedCount": 0,
+        "raw": [],
+        "extracted": [],
+        "statics": []
+      }
+    },
+    "failed": []
+  },
+  "safety": {
+    "contactWrites": 1,
+    "homepageWrite": false,
+    "serviceAreasWrite": false,
+    "stateCityCreated": false,
+    "themeWrite": false,
+    "mediaAssetWrite": false,
+    "staticGeneration": false,
+    "deployment": false,
+    "dnsEmailProviderChange": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false,
+    "imageGeneration": false,
+    "imageModification": false
+  },
+  "blockers": []
+}
