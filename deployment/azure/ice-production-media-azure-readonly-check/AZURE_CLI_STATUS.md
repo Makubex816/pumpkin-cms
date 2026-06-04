@@ -2,52 +2,55 @@
 
 Generated: 2026-06-04
 
-## Commands Attempted
+## Commands Run
 
-Read-only availability check:
-
-```powershell
-Get-Command az -ErrorAction SilentlyContinue
-```
-
-Version check attempted only if `az` was present:
+Read-only availability/version check:
 
 ```powershell
-az version --query '"azure-cli"' -o tsv
+az --version
 ```
 
-Account check attempted only if `az` was present:
+Read-only account checks:
 
 ```powershell
-az account show --query '{name:name,id:id}' -o json
+az account show --query "{name:name, id:id, tenantId:tenantId}" -o table
+az account show --query "{name:name, subscriptionId:id, tenantId:tenantId}" -o table
 ```
+
+The second account query aliases `id` as `subscriptionId` because the requested table formatter omitted the field named `id`.
 
 ## Result
 
 Azure CLI availability:
 
 ```text
-MISSING
+AVAILABLE
 ```
 
 Azure CLI version:
 
 ```text
-not checked because az is unavailable
+2.87.0
 ```
 
 Azure login/account status:
 
 ```text
-not checked because az is unavailable
+VALID
 ```
 
-## Blocker
+Current subscription:
 
-Azure CLI is not available in this terminal session.
+```text
+Name: Azure subscription 1
+Subscription ID: ff887def-fd83-4a19-9298-13d4b1687873
+Tenant ID: 38b16667-a82c-4ff8-98d8-aeebbec4536a
+```
 
-## Required User Action
+## Blocker Status
 
-Install Azure CLI or open a terminal/session where Azure CLI is available and already logged in, then rerun the approved read-only discovery.
+The previous Azure CLI availability blocker is cleared in this terminal.
 
-No credentials, tokens, keys, connection strings, or protected config values should be printed.
+## Safety Result
+
+No access tokens, keys, connection strings, SAS URLs, credentials, or protected config values were printed or read.

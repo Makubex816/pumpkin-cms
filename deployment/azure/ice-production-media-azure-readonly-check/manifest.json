@@ -5,20 +5,43 @@
   "primarySite": "IceSkatingRinkRentals.com",
   "pausedSite": "RollerRinkRentals.com",
   "branch": "feature/admin-page-editor-import-export",
-  "latestExpectedCommit": "Prepare Ice production media execution approval",
+  "latestExpectedCommit": {
+    "hash": "4a7b030",
+    "subject": "Document Ice Azure CLI remediation path",
+    "confirmed": true
+  },
   "approvalUsed": "Azure read-only checks only for Ice production media",
   "azureCli": {
-    "available": false,
-    "versionChecked": false,
-    "accountChecked": false,
-    "blocker": "Azure CLI is unavailable in this terminal."
+    "available": true,
+    "version": "2.87.0",
+    "versionChecked": true,
+    "accountChecked": true,
+    "blocker": null
+  },
+  "subscription": {
+    "contextValid": true,
+    "name": "Azure subscription 1",
+    "id": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a"
   },
   "discovery": {
-    "subscriptionContext": "not discovered",
-    "resourceGroups": "not discovered",
-    "storageAccounts": "not discovered",
-    "staticWebApps": "not discovered",
-    "reason": "Azure CLI is unavailable in this terminal."
+    "resourceGroups": {
+      "checked": true,
+      "visibleCount": 0,
+      "result": "none visible"
+    },
+    "storageAccounts": {
+      "checked": true,
+      "visibleCount": 0,
+      "result": "none visible"
+    },
+    "staticWebApps": {
+      "checked": true,
+      "visibleCount": 0,
+      "result": "none visible"
+    },
+    "likelyIcePumpkinMediaStorageCandidate": "none visible by name",
+    "likelyStaticWebAppOrResourceGroupCandidate": "none visible by name"
   },
   "approvedRoutes": [
     "/",
@@ -31,6 +54,7 @@
     "staticOutputQualityGates": false,
     "mediaProductionUrlReadiness": false,
     "contactFormProductionReadiness": false,
+    "azureReadOnlyDiscoveryReadiness": true,
     "azureStagingReadiness": false,
     "dnsCutoverReadiness": false,
     "productionIndexingReadiness": false,
@@ -67,6 +91,13 @@
     "generatedStaticArtifactsStaged": false,
     "rawImagesStaged": false,
     "rollerTouched": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed"
   },
   "rootReport": "PUMPKIN_ICE_PRODUCTION_MEDIA_AZURE_READONLY_CHECK_REPORT.md"
 }

@@ -2,33 +2,31 @@
 
 Generated: 2026-06-04
 
-## Intended Read-Only Discovery
-
-If Azure CLI were available and already logged in, the intended read-only command would be:
+## Read-Only Discovery Command
 
 ```powershell
-az storage account list --query '[].{name:name,resourceGroup:resourceGroup,location:location,kind:kind,sku:sku.name}' -o table
+az storage account list --query "[].{name:name, resourceGroup:resourceGroup, location:location}" -o table
 ```
 
-Expected review focus:
+Review focus:
 
-- Ice media storage candidates
-- Pumpkin media storage candidates
-- static web/media hosting storage candidates
+- Ice media storage candidates by name
+- Pumpkin media storage candidates by name
+- static web/media hosting storage candidates by name
 
 ## Result
 
 Storage accounts discovered:
 
 ```text
-not discovered
+none visible in the active subscription
 ```
 
-Reason:
+The command returned no table rows.
 
-```text
-Azure CLI is unavailable in this terminal.
-```
+## Storage Follow-Up
+
+No storage accounts were visible, so there were no account names, resource groups, or locations to list beyond the approved account-level discovery command.
 
 ## Safety Rules Honored
 
@@ -37,12 +35,13 @@ The following were not run:
 - `az storage account keys list`
 - connection string listing
 - SAS generation
+- container listing with credentials
 - container creation
 - blob upload
 - access policy modification
 
 ## Current Candidate Status
 
-No likely Ice/Pumpkin media storage account was confirmed or ruled out.
+No likely Ice/Pumpkin media storage account was found by name.
 
-No likely static web/media hosting storage account was confirmed or ruled out.
+No likely static web/media hosting storage account was found by name.

@@ -10,18 +10,26 @@ Approval used in this run:
 Azure read-only checks only for Ice production media.
 ```
 
-## Blocked Next Step
+## Current Read-Only Discovery Status
 
-Azure read-only discovery could not proceed because Azure CLI is unavailable.
+Azure read-only discovery completed successfully in the active subscription.
 
-## Required Next User Action
+No visible resource groups, storage accounts, or Static Web Apps were found.
 
-Use a terminal where Azure CLI is installed and already logged in, then approve rerunning Azure read-only discovery.
+## Required Next Approval
 
-Recommended approval wording:
+Any next step that creates Azure resources, creates Cosmos resources, creates Blob containers, uploads media, changes Cloudflare/DNS, updates CMS records, updates MediaAsset records, deploys static output, reads protected config, sends email, touches Microsoft 365, or touches Roller requires separate explicit approval.
+
+Recommended next approval wording for a future resource-creation planning gate:
 
 ```text
-Approve Azure read-only discovery only for Ice production media in a terminal where az is available and already logged in. Do not create resources, create Blob containers, upload media, change DNS, update CMS or MediaAsset records, deploy, print secrets, or touch Roller.
+Approve planning the exact Azure resource creation steps for Ice production media only. Do not create resources, create Blob containers, upload media, change DNS, update CMS or MediaAsset records, deploy, read protected config, print secrets, send email, touch Microsoft 365, or touch Roller.
+```
+
+Recommended next approval wording for actual creation, only after the plan is reviewed:
+
+```text
+Approve creating the explicitly documented Azure resources for Ice production media only. Do not upload media, change DNS, update CMS or MediaAsset records, deploy, read protected config, print secrets, send email, touch Microsoft 365, or touch Roller.
 ```
 
 ## Not Approved

@@ -2,15 +2,13 @@
 
 Generated: 2026-06-04
 
-## Intended Read-Only Discovery
-
-If Azure CLI were available and already logged in, the intended read-only command would be:
+## Read-Only Discovery Command
 
 ```powershell
-az group list --query '[].{name:name,location:location}' -o table
+az group list --query "[].{name:name, location:location}" -o table
 ```
 
-Expected review focus:
+Review focus:
 
 - Ice media resource group candidates by name
 - Pumpkin media resource group candidates by name
@@ -21,21 +19,17 @@ Expected review focus:
 Resource groups discovered:
 
 ```text
-not discovered
+none visible in the active subscription
 ```
 
-Reason:
-
-```text
-Azure CLI is unavailable in this terminal.
-```
+The command returned no table rows.
 
 ## Current Candidate Status
 
-No likely Ice/Pumpkin media resource groups were confirmed or ruled out.
+No likely Ice/Pumpkin media resource groups were found by name.
 
-No likely Static Web App resource groups were confirmed or ruled out.
+No likely Static Web App resource groups were found by name.
 
 ## Safety Result
 
-No resource groups were created or modified.
+No resource groups were created, modified, or deleted.

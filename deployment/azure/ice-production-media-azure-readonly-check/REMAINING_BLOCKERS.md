@@ -2,29 +2,30 @@
 
 Generated: 2026-06-04
 
-## Azure Read-Only Discovery Blocker
+## Azure Read-Only Discovery
 
-Azure CLI is unavailable in this terminal.
+Azure read-only discovery readiness:
 
-Impact:
+```text
+yes
+```
 
-- current subscription could not be discovered
-- resource groups could not be listed
-- storage accounts could not be listed
-- possible Ice/Pumpkin media resource candidates could not be identified
-- possible Static Web App candidates could not be identified
+The previous blocker from Azure CLI being unavailable is cleared.
+
+The active subscription returned no visible resource groups, storage accounts, or Static Web Apps.
 
 ## Production Media Blockers Still Open
 
 - media production URLs are not live
-- Azure media storage is not confirmed
-- Blob container is not confirmed
+- Azure media storage is not created or confirmed
+- Blob container is not created or confirmed
 - Cloudflare media hostname is not confirmed
 - 9 MediaAsset production URL updates are not approved or executed
-- six strict media file-level validator errors remain expected
+- six strict media file-level validator errors remain expected until production media URLs are live
 
 ## Other Production Blockers Still Open
 
+- static output quality gates remain `no`
 - contact form production readiness remains `no`
 - Azure staging readiness remains `no`
 - DNS cutover readiness remains `no`
