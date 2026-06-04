@@ -4,7 +4,7 @@
   "siteKey": "ice-rink-rentals",
   "generatedAt": "2026-06-04",
   "branch": "feature/admin-page-editor-import-export",
-  "scope": "safe local static dry-run readiness proof attempts, approved Ice CMS metadata repair, and remaining strict blocker diagnosis",
+  "scope": "safe local static dry-run readiness proof attempts, approved Ice CMS metadata repair, remaining strict blocker diagnosis, and local phase closure",
   "dryRunCommand": "cd apps/ice-rink-web && npm run export:static:ice:cms",
   "dryRunCompleted": true,
   "dryRunExitCode": 0,
@@ -50,6 +50,32 @@
     "staticDeploymentThisPass": false,
     "protectedConfigReadThisPass": false,
     "rollerTouchedThisPass": false
+  },
+  "localPhaseClosure": {
+    "performed": true,
+    "file": "LOCAL_PHASE_CLOSURE.md",
+    "checkpointCommitPresent": "a67460e Document Ice remaining strict validator blockers",
+    "routeProofComplete": true,
+    "approvedRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "previewOrObsoleteDeployablePaths": 0,
+    "noindexBlockersCleared": true,
+    "socialMetadataImageBlockerCleared": true,
+    "remainingStrictValidatorErrors": 8,
+    "remainingStrictValidatorErrorsExpected": true,
+    "nextLocalBuildGate": "A. No local repairs needed; move only when production media/form setup is approved later.",
+    "generatedStaticArtifactsShouldBeCommitted": false,
+    "cmsWritesThisClosurePass": false,
+    "mediaAssetWritesThisClosurePass": false,
+    "staticDeploymentThisClosurePass": false,
+    "azureResourcesCreatedThisClosurePass": false,
+    "cloudflareChangesThisClosurePass": false,
+    "dnsChangesThisClosurePass": false,
+    "protectedConfigReadThisClosurePass": false,
+    "rollerTouchedThisClosurePass": false
   },
   "cmsMetadataRepairResult": {
     "performed": true,
@@ -245,8 +271,9 @@
     "contactFormProductionReadiness": false,
     "azureStagingReadiness": false,
     "dnsCutoverReadiness": false,
-    "productionIndexingReadiness": true,
-    "productionIndexingReadinessBasis": "yes for the noindex validation gate only; overall production deployment remains blocked by media, form, and navigation readiness"
+    "productionIndexingReadiness": false,
+    "productionIndexingNoindexGateReadiness": true,
+    "productionIndexingReadinessBasis": "no overall; yes for the noindex validation gate only. Overall production deployment remains blocked by media, form, and navigation readiness"
   },
   "actionsPerformed": {
     "cmsWrites": true,

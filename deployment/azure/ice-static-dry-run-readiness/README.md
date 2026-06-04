@@ -41,6 +41,12 @@ Latest diagnosis-only pass:
 - static form endpoint env/config expectations are documented
 - next local build gate is classified as `A`: no local repairs needed; move only when production media/form setup is approved later
 
+Local phase closure:
+
+- `LOCAL_PHASE_CLOSURE.md` marks the Ice local static dry-run/readiness phase closed
+- no further local repairs are recommended before separately approved production media and static form work
+- generated static artifacts should not be committed
+
 Read-only repair planning docs:
 
 - `NOINDEX_REPAIR_PLAN.md`
@@ -75,6 +81,7 @@ Latest strict validator split:
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
+| production/indexing readiness overall | no |
 | production/indexing readiness for noindex gate | yes |
 
 ## Files
@@ -97,4 +104,5 @@ Latest strict validator split:
 - `BODY_MEDIA_URL_BLOCKER_AUDIT.md`
 - `STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md`
 - `NEXT_LOCAL_BUILD_GATE.md`
+- `LOCAL_PHASE_CLOSURE.md`
 - `manifest.json`

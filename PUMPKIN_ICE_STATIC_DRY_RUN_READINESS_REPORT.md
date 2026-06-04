@@ -153,6 +153,7 @@ Latest diagnosis-only docs:
 - `deployment/azure/ice-static-dry-run-readiness/BODY_MEDIA_URL_BLOCKER_AUDIT.md`
 - `deployment/azure/ice-static-dry-run-readiness/STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md`
 - `deployment/azure/ice-static-dry-run-readiness/NEXT_LOCAL_BUILD_GATE.md`
+- `deployment/azure/ice-static-dry-run-readiness/LOCAL_PHASE_CLOSURE.md`
 
 The remaining 8 strict errors are all expected:
 
@@ -171,6 +172,26 @@ Next local build gate classification: `A. No local repairs needed; move only whe
 CMS writes during this diagnosis pass: no.
 
 MediaAsset writes during this diagnosis pass: no.
+
+## Local Phase Closure
+
+The Ice local static dry-run/readiness phase is closed in:
+
+```text
+deployment/azure/ice-static-dry-run-readiness/LOCAL_PHASE_CLOSURE.md
+```
+
+Closure result:
+
+- route proof complete and clean
+- approved routes exactly `/`, `/contact`, `/service-areas`
+- preview/obsolete deployable paths: 0
+- noindex blocker repaired
+- social metadata image blocker repaired
+- remaining strict validator failures are expected production-readiness blockers only
+- next local build gate: A, no local repairs needed before separately approved production media/form setup
+
+No Azure, Cloudflare, DNS, deployment, CMS, MediaAsset, media upload, Microsoft 365, email, protected config, generated static artifact staging, or Roller action occurred in the closure pass.
 
 ## Repair Result
 
@@ -242,6 +263,7 @@ Unapproved rendered social image URL errors: cleared.
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
+| production/indexing readiness overall | no |
 | production/indexing readiness for noindex gate | yes |
 
 Overall production deployment readiness remains no because media, form endpoint, and permanent theme navigation readiness are still blocked.
@@ -255,6 +277,7 @@ Overall production deployment readiness remains no because media, form endpoint,
 - strict staging package validator: rejects package as expected
 - remaining strict validator errors: 8 expected errors documented
 - next local build gate: A, no local repairs needed before separately approved media/form setup
+- local phase closure doc: present
 - manifest JSON parse: pass
 - node --check for changed JS/MJS: pass
 - git diff --check: pass, with line-ending warnings only
@@ -265,6 +288,7 @@ Overall production deployment readiness remains no because media, form endpoint,
 - no Azure resources created: yes
 - no Cloudflare changes: yes
 - approved active CMS metadata writes only: yes
+- no CMS writes in closure pass: yes
 - no MediaAsset writes: yes
 - no static deployment: yes
 - Roller untouched: yes
