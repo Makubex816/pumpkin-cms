@@ -17,6 +17,7 @@ Branch: `feature/admin-page-editor-import-export`
 Recent log at start included:
 
 ```text
+b55cddb Complete Ice static dry-run route proof
 0caed80 Repair Ice static dry-run snapshot auth and route filtering
 12b5adb Repair Ice static deployment readiness gates
 dc8d149 Add Ice static media deployment readiness report
@@ -115,18 +116,23 @@ Theme navigation:
 
 Noindex:
 
-- source: CMS page metadata
-- `home`: `noindex, nofollow`
-- `contact`: `index,follow`
-- `service-areas`: `noindex, nofollow`
+- source field: CMS page `seo.robots`
+- render path: `apps/ice-rink-web/src/app/page.tsx` and `apps/ice-rink-web/src/app/[...slug]/page.tsx` call `buildMetadata(...)`, and `apps/ice-rink-web/src/lib/metadata.ts` emits `robots: seo.robots || 'index, follow'`
+- `home`: source `page.seo.robots = "noindex, nofollow"` renders `<meta name="robots" content="noindex, nofollow"/>` in `apps/ice-rink-web/out/index.html`
+- `contact`: source `page.seo.robots = "index,follow"` renders `<meta name="robots" content="index,follow"/>` in `apps/ice-rink-web/out/contact/index.html`; its revision snapshot still contains stale `noindex,nofollow`, but the active page field does not
+- `service-areas`: source `page.seo.robots = "noindex, nofollow"` renders `<meta name="robots" content="noindex, nofollow"/>` in `apps/ice-rink-web/out/service-areas/index.html`
 - local result: noindex is a production/indexing readiness blocker, not a route-shape blocker
+- local tooling fix status: no safe local tooling fix is appropriate because overriding `seo.robots` would hide a real production indexing blocker
 - CMS metadata write performed: no
 - recommended CMS change: when production approval is granted, remove noindex from `home` and `service-areas` or set their robots metadata to `index,follow`
 
 Media:
 
 - source: approved CMS pages and revision snapshots still contain local `/media/ice-rink-rentals/...` URLs
-- strict validators also report unapproved rendered image URLs under `https://iceskatingrinkrentals.com/media/...`
+- strict validators report one unique unapproved rendered image URL: `https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png`
+- rendered locations: `apps/ice-rink-web/out/index.html`, `apps/ice-rink-web/out/index.txt`, `apps/ice-rink-web/out/service-areas/index.html`, and `apps/ice-rink-web/out/service-areas/index.txt`
+- source fields: `home` and `service-areas` `page.seo.openGraph.og:image` and `page.seo.twitterCard.twitter:image` contain `/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png`; `apps/ice-rink-web/src/lib/metadata.ts` absolutizes that relative path to the site domain for Open Graph/Twitter metadata
+- local media URL render path: polished block rendering reads `publicUrl`/`url` from CMS media objects and renders them directly in `<img>` tags
 - local result: media issues remain production-readiness blockers, not route-shape blockers
 - MediaAsset writes/uploads performed: no
 - required future action: publish approved media to the production media origin and update MediaAsset/public URL records in a separately authorized task
@@ -162,8 +168,9 @@ Strict production/staging validators remain negative controls:
 
 | Validator | Exit | Expected blockers |
 | --- | --- | --- |
-| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `1` | local media URLs, unapproved image URLs, noindex, missing/unverified static form endpoint |
-| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `1` | local media URLs, unapproved image URLs, noindex, missing/unverified static form endpoint |
+| `npm run validate:snapshot:ice` | `0` | route/snapshot validation passed; production-readiness blockers remain warnings |
+| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `1` | 22 errors: local media URLs, unapproved image URLs, noindex on `index.html` and `service-areas/index.html`, missing/unverified static form endpoint |
+| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `1` | 22 errors: local media URLs, unapproved image URLs, noindex on `index.html` and `service-areas/index.html`, missing/unverified static form endpoint |
 
 No stale snapshot/static output was accepted as readiness proof.
 
@@ -173,6 +180,7 @@ No stale snapshot/static output was accepted as readiness proof.
 | --- | --- |
 | static dry run completed | yes |
 | static route output ready | yes |
+| static output quality gates | no |
 | media production URL readiness | no |
 | contact form production readiness | no |
 | Azure staging readiness | no |

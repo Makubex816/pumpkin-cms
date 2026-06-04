@@ -33,12 +33,19 @@ Remaining production blockers:
 - static form endpoint is missing/unverified
 - active CMS/theme navigation still needs permanent approval/update
 
+Latest strict validator split:
+
+- `npm run validate:snapshot:ice`: exit `0`; route/snapshot proof passes, production-readiness blockers remain warnings
+- `validate-static-output.mjs`: exit `1`; 22 strict production errors
+- `validate-staging-package.mjs`: exit `1`; 22 strict staging package errors
+
 ## Classification
 
 | Gate | Status |
 | --- | --- |
 | static dry run completed | yes |
 | static route output ready | yes |
+| static output quality gates | no |
 | media production URL readiness | no |
 | contact form production readiness | no |
 | Azure staging readiness | no |

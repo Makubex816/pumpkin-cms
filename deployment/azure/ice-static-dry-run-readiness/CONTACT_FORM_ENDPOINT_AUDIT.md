@@ -11,6 +11,11 @@ The generated static output was produced for route-shape proof, but the strict p
 
 No endpoint value was printed.
 
+Strict validator errors:
+
+- static form endpoint is not configured for production/static deploy readiness
+- static form endpoint/backend verification is missing; mailbox readiness is not app form readiness
+
 ## Policy Result
 
 The missing/unverified static form endpoint does not block local route-shape proof. It does block contact form production readiness, Azure staging readiness, and production deployment readiness.

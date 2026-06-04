@@ -12,7 +12,7 @@ Recommended sequence:
 4. Configure and verify the static contact form endpoint in a separately authorized infrastructure task.
 5. Review service-area claim language in a separately authorized CMS content task.
 6. Rerun the Ice-only CMS static dry-run command.
-7. Confirm strict production and staging validators pass.
+7. Confirm strict production and staging validators pass with static output quality gates marked yes.
 8. Only after validation, request authorization to create Azure Static Web App staging resources.
 9. Keep DNS/Cloudflare cutover separate.
 

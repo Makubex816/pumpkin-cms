@@ -9,6 +9,7 @@
   "dryRunCompleted": true,
   "dryRunExitCode": 0,
   "routeShapeProofCompleted": true,
+  "staticOutputQualityGatesPassed": false,
   "primaryBlocker": "production-readiness gates still fail on local media URLs, unapproved rendered image URLs, noindex metadata, missing static form endpoint verification, and permanent CMS/theme navigation approval",
   "currentAttemptRequiredEnv": {
     "PUMPKIN_API_URL": "PRESENT",
@@ -67,8 +68,36 @@
       "/service-areas"
     ],
     "flaggedPreviewOrObsoleteOutputPaths": 0,
+    "strictSnapshotValidatorExitCode": 0,
     "strictStaticValidatorExitCode": 1,
-    "strictStagingValidatorExitCode": 1
+    "strictStagingValidatorExitCode": 1,
+    "strictStaticValidatorErrorCount": 22,
+    "strictStagingValidatorErrorCount": 22,
+    "unapprovedRenderedImageUrls": [
+      {
+        "url": "https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png",
+        "routes": [
+          "/",
+          "/service-areas"
+        ],
+        "renderedFiles": [
+          "apps/ice-rink-web/out/index.html",
+          "apps/ice-rink-web/out/index.txt",
+          "apps/ice-rink-web/out/service-areas/index.html",
+          "apps/ice-rink-web/out/service-areas/index.txt"
+        ],
+        "sourceFields": [
+          "home.page.seo.openGraph.og:image",
+          "home.page.seo.twitterCard.twitter:image",
+          "service-areas.page.seo.openGraph.og:image",
+          "service-areas.page.seo.twitterCard.twitter:image"
+        ]
+      }
+    ],
+    "noindexRenderedFiles": [
+      "apps/ice-rink-web/out/index.html",
+      "apps/ice-rink-web/out/service-areas/index.html"
+    ]
   },
   "remainingBlockers": [
     "local /media/ice-rink-rentals/... URLs remain",
@@ -82,6 +111,7 @@
   "readiness": {
     "staticDryRunCompleted": true,
     "staticRouteOutputReady": true,
+    "staticOutputQualityGates": false,
     "mediaProductionUrlReadiness": false,
     "contactFormProductionReadiness": false,
     "azureStagingReadiness": false,

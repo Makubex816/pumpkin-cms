@@ -45,6 +45,14 @@ Fresh static output:
 | `apps/ice-rink-web/out` | `/`, `/contact`, `/service-areas` |
 | `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `/`, `/contact`, `/service-areas` |
 
+Validator split:
+
+| Validator | Exit | Result |
+| --- | ---: | --- |
+| `npm run validate:snapshot:ice` | 0 | route/snapshot validation passed; production-readiness blockers remain warnings |
+| `validate-static-output.mjs` | 1 | 22 strict production errors |
+| `validate-staging-package.mjs` | 1 | 22 strict staging package errors |
+
 Strict production/staging validators still exit `1`, as expected, because production readiness remains blocked by media URLs, unapproved rendered image URLs, noindex metadata, and missing/unverified static form endpoint.
 
 No staging, deployment, CMS writes, Theme writes, MediaAsset writes, email, or Microsoft 365 actions were performed.
