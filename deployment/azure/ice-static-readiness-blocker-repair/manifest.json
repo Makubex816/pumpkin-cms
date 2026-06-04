@@ -1,0 +1,50 @@
+{
+  "packageName": "ice-static-readiness-blocker-repair",
+  "site": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "generatedAt": "2026-06-03T23:41:04-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "scope": "non-deployment static readiness blocker repair",
+  "approvedRoutes": [
+    "/",
+    "/contact",
+    "/service-areas"
+  ],
+  "obsoleteRoutes": [
+    "/ice-rink-rentals",
+    "/events-holiday-activations"
+  ],
+  "readiness": {
+    "staticDryRunReadiness": true,
+    "azureStagingReadiness": false,
+    "productionMediaReadiness": false,
+    "contactFormProductionReadiness": false,
+    "dnsCutoverReadiness": false
+  },
+  "actionsPerformed": {
+    "cmsWrites": false,
+    "themeWrites": false,
+    "mediaAssetWrites": false,
+    "staticGeneration": false,
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "emailSent": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  },
+  "changedValidationAreas": [
+    "static route expectations",
+    "CMS snapshot stale route gate",
+    "static output stale route gate",
+    "staging package stale route gate",
+    "production media URL gate",
+    "static contact form endpoint gate",
+    "noindex sitemap gate"
+  ],
+  "rootReport": "PUMPKIN_ICE_STATIC_READINESS_BLOCKER_REPAIR_REPORT.md"
+}
+
