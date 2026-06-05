@@ -1,0 +1,67 @@
+{
+  "generatedAt": "2026-06-05",
+  "siteKey": "ice-rink-rentals",
+  "scope": "static form Azure Function scaffold and route alignment",
+  "status": "scaffold_complete",
+  "primaryRoute": "/api/static-contact",
+  "azureFunctionsRoute": "static-contact",
+  "hostRoutePrefix": "api",
+  "deployedContactCompatibilityRoute": false,
+  "localContactCompatibilityRoute": true,
+  "package": {
+    "path": "deployment/static-azure/forms/static-form-endpoint/",
+    "entrypoint": "azure-function-static-contact.mjs",
+    "adapter": "azure-function-adapter.mjs",
+    "hostJson": "host.json",
+    "settingsSample": "local.settings.sample.json",
+    "npmRunCheck": {
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "npmTest": {
+      "exitCode": 0,
+      "result": "pass"
+    }
+  },
+  "testsAdded": [
+    "route metadata",
+    "OPTIONS preflight",
+    "frontend alias payload in dry-run mode",
+    "legacy payload through primary route",
+    "invalid email rejection",
+    "unknown routing rejection",
+    "unknown recipient rejection",
+    "oversized message rejection",
+    "honeypot rejection",
+    "no secrets in validation response"
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormEndpointLocalHardening": true,
+    "staticFormFunctionScaffoldReadiness": true,
+    "contactFormProductionReadiness": false,
+    "staticOutputQualityGates": false,
+    "endpointDeploymentReadiness": "pending explicit approval",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsPerformed": {
+    "endpointDeployed": false,
+    "azureResourcesCreated": false,
+    "azureFunctionCreated": false,
+    "azureFunctionDeployed": false,
+    "productionEnvironmentChanged": false,
+    "emailSent": false,
+    "microsoft365Changed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}

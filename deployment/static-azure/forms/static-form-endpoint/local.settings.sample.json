@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "<local or approved Function storage setting>",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "PUMPKIN_API_URL": "<approved Pumpkin API URL>",
+    "ICE_RINK_RENTALS_API_KEY": "<server-side secret>",
+    "STATIC_FORM_ALLOWED_ORIGINS": "https://iceskatingrinkrentals.com,https://www.iceskatingrinkrentals.com",
+    "STATIC_FORM_ALLOWED_SITE_KEYS": "ice-rink-rentals",
+    "STATIC_FORM_FORWARD_MODE": "dry-run",
+    "STATIC_FORM_MAX_BODY_BYTES": "20000",
+    "STATIC_FORM_MAX_MESSAGE_LENGTH": "4000",
+    "STATIC_FORM_RATE_LIMIT_MODE": "<approved mode>",
+    "STATIC_FORM_SPAM_PROTECTION_MODE": "<approved mode>",
+    "ICE_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY": "ice-rink-rentals-default"
+  }
+}

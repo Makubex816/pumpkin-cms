@@ -3,9 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "azure-function-static-contact.mjs",
   "scripts": {
-    "check": "node --check contact-handler.mjs && node --check validate-static-form-payload.mjs && node --check sanitize-static-form-payload.mjs && node --check local-test-server.mjs",
+    "check": "node --check contact-handler.mjs && node --check validate-static-form-payload.mjs && node --check sanitize-static-form-payload.mjs && node --check azure-function-adapter.mjs && node --check azure-function-static-contact.mjs && node --check local-test-server.mjs && node --check test-static-form-endpoint.mjs && node --check test-azure-function-wrapper.mjs",
+    "test": "node test-static-form-endpoint.mjs && node test-azure-function-wrapper.mjs",
+    "test:wrapper": "node test-azure-function-wrapper.mjs",
     "start:local": "node local-test-server.mjs",
     "test:dry-run": "node local-test-server.mjs"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0"
   }
 }
