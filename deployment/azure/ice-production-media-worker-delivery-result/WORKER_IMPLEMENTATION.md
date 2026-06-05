@@ -2,43 +2,61 @@
 
 Date: 2026-06-05
 
-## Result
+## Local Source
 
-No Worker source file was created and no Worker script was deployed.
-
-Reason:
+Created:
 
 ```text
-Worker route list endpoint: HTTP 403
-Worker script list endpoint: HTTP 403
+deployment/azure/ice-production-media-worker-delivery-result/worker/index.mjs
 ```
 
-Because Worker setup was not clearly available with the active token, the guarded execution stopped before preparing a deployable Worker source file.
+The Worker source contains no secrets, keys, connection strings, SAS URLs, CMS references, or protected config references.
 
-## Required Future Worker Behavior
+## Behavior
 
-If Worker access is made available in a future explicitly approved run, the Worker must:
+The Worker is scoped for:
 
-- only serve `media.iceskatingrinkrentals.com`
-- only allow `/ice-rink-rentals/assets/`
-- reject other hosts and paths
-- fetch from the public Azure Blob origin by prepending `/ice-rink-rentals-media`
-- avoid secrets, keys, connection strings, and SAS URLs
-- set or preserve `Cache-Control: public, max-age=31536000, immutable`
-- avoid redirects to the Azure storage hostname
+```text
+host: media.iceskatingrinkrentals.com
+path prefix: /ice-rink-rentals/assets/
+methods: GET, HEAD
+```
 
-Required fetch mapping:
+Rewrite target:
 
 ```text
 incoming: https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
 origin:   https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
 ```
 
-## Local Source Files
+The Worker:
+
+- rejects other hosts or paths with `404` if invoked outside the approved scope
+- rejects non-GET/HEAD methods with `405`
+- does not forward cookies or authorization headers to Azure Blob Storage
+- forwards only safe public read headers needed for image delivery and caching
+- does not forward query strings, preventing accidental forwarding of secret query parameters
+- sets `Cache-Control: public, max-age=31536000, immutable`
+- removes any `Set-Cookie` header from the origin response
+
+## Deployment Result
+
+Worker script deployed:
 
 ```text
-Worker source created: no
-Worker config created: no
+script name: ice-media-delivery
+status: OK
 ```
 
-No JavaScript syntax check was required because no Worker file was created.
+Syntax check:
+
+```text
+node --check deployment/azure/ice-production-media-worker-delivery-result/worker/index.mjs
+result: passed
+```
+
+The Worker route itself is scoped to the approved path pattern:
+
+```text
+media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*
+```

@@ -2,39 +2,36 @@
 
 Date: 2026-06-05
 
-## Current Rollback Need
+## Configured Cloudflare Objects
 
-No Cloudflare Worker media configuration was created in this run.
+This run configured:
 
-Current state:
+- proxied CNAME `media.iceskatingrinkrentals.com` to `iceskatingmedia.blob.core.windows.net`
+- Worker script `ice-media-delivery`
+- Worker route `media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*`
 
-```text
-media DNS record created: no
-Worker script created: no
-Worker route created: no
-```
+## Rollback Scope
 
-No rollback action is currently required.
+If rollback is separately approved, limit rollback to the objects above.
 
-## If A Future Worker Media Setup Succeeds
-
-Rollback should remove only Worker-media-scoped configuration created for:
-
-- `media.iceskatingrinkrentals.com` DNS/proxy
-- Ice media Worker script
-- Worker route for `media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*`
-
-Rollback must not alter:
+Do not alter:
 
 - root/apex DNS
 - `www` DNS
-- MX/TXT/email records
+- MX/TXT/email DNS
+- main-site records
 - CMS records
 - MediaAsset records
-- deployments
+- Azure storage settings
+- Azure blobs
+- static or production deployment artifacts
 - Microsoft 365 settings
-- Roller
+- Roller records or assets
 
-## No-Secret Confirmation
+## Suggested Rollback Order
 
-No token, key, connection string, or SAS URL was printed or written.
+1. Remove the Worker route for `media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*`.
+2. Remove or disable the `ice-media-delivery` Worker script if no other approved route uses it.
+3. Remove the proxied `media.iceskatingrinkrentals.com` CNAME only if no approved media route depends on it.
+
+No rollback was performed in this run.

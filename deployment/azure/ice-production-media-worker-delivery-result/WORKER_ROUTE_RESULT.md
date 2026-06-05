@@ -2,32 +2,30 @@
 
 Date: 2026-06-05
 
-## Approved Route Scope
+## Route
+
+Created:
 
 ```text
-media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*
+pattern: media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*
+script: ice-media-delivery
 ```
 
-## Result
+The route is limited to the approved media host and asset path prefix.
 
-No Worker route was created or updated.
+## Script
 
-Worker route list endpoint:
+Created or updated:
 
 ```text
-GET /zones/{zone_id}/workers/routes
-HTTP 403
+script: ice-media-delivery
 ```
 
-Because the active token could not list Worker routes, Worker route creation was not clearly available. The guarded execution stopped before mutation.
-
-## Current State
+Read-only verification after setup:
 
 ```text
-Worker route configured: no
-Worker media delivery configured: no
+relevant media Worker route count: 1
+relevant media Worker script count: 1
 ```
 
-## No-Action Confirmation
-
-No unrelated Worker route, zone route, or root/`www` behavior was changed.
+No unrelated Worker routes, scripts, zones, or rules were intentionally changed.

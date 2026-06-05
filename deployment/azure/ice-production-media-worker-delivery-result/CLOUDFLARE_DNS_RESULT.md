@@ -2,35 +2,43 @@
 
 Date: 2026-06-05
 
-## Intended DNS Scope
+## Media DNS Record
 
-Only this DNS name was approved for Worker media delivery:
-
-```text
-media.iceskatingrinkrentals.com
-```
-
-The required DNS record, if Worker deployment had been available, would have been a proxied media-only record needed for the Worker route.
-
-## Result
-
-No Cloudflare DNS record was created or updated.
-
-Reason:
+Created:
 
 ```text
-Worker route/script access returned HTTP 403 during preflight.
+name: media.iceskatingrinkrentals.com
+type: CNAME
+target: iceskatingmedia.blob.core.windows.net
+proxied: true
 ```
 
-Creating DNS alone would have been an incomplete media delivery setup, so the run stopped before DNS mutation.
+This DNS record was created only for the approved media host. It does not alter the root/apex host, `www`, MX, TXT, email, main-site, or unrelated records.
 
-## Current State
+## Public DNS Validation
+
+Local resolver result:
 
 ```text
-media.iceskatingrinkrentals.com Cloudflare DNS record count: 0
-media.iceskatingrinkrentals.com public DNS: unresolved
+media.iceskatingrinkrentals.com A    172.67.130.204
+media.iceskatingrinkrentals.com A    104.21.9.71
+media.iceskatingrinkrentals.com AAAA 2606:4700:3031::6815:947
+media.iceskatingrinkrentals.com AAAA 2606:4700:3033::ac43:82cc
 ```
 
-## No-Action Confirmation
+Public resolver `1.1.1.1` returned the same Cloudflare A/AAAA records.
 
-No root/apex DNS, `www` DNS, MX, TXT, email DNS, or unrelated Cloudflare DNS record was changed.
+## Root and WWW Audit
+
+Read-only Cloudflare DNS audit after setup:
+
+```text
+iceskatingrinkrentals.com records: 4
+root A proxied: false
+root MX proxied: false
+root TXT proxied: false
+www.iceskatingrinkrentals.com records: 1
+www A proxied: false
+```
+
+No root/apex DNS or `www` DNS mutation was performed.

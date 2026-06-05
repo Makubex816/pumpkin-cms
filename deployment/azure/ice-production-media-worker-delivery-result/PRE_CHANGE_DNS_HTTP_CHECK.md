@@ -2,23 +2,17 @@
 
 Date: 2026-06-05
 
-## DNS Check
+## DNS
 
-Command:
-
-```text
-nslookup media.iceskatingrinkrentals.com
-```
-
-Result:
+Before the approved Worker retry mutated Cloudflare, the media hostname did not resolve.
 
 ```text
-media.iceskatingrinkrentals.com: Non-existent domain
+media.iceskatingrinkrentals.com: DNS name does not exist
 ```
 
-## Sample Public URL Check
+## Sample Public URL
 
-Sample target URL:
+Sample checked URL:
 
 ```text
 https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/winterfesticerinkrentals-324b1b89777d/324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c/winterfesticerinkrentals-324b1b89777d.png
@@ -27,17 +21,7 @@ https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/winterfesticerin
 Result:
 
 ```text
-failed before HTTP response
-reason: media hostname could not be resolved
+failed before HTTP response because media.iceskatingrinkrentals.com could not be resolved
 ```
 
-## Expected State
-
-This matched the expected pre-change state:
-
-- `media.iceskatingrinkrentals.com` was not yet created in Cloudflare DNS
-- public media URLs were not yet reachable
-
-## No-Action Confirmation
-
-No DNS records were changed during the pre-change check.
+This confirmed the media hostname was not already serving public URLs before the scoped Worker/DNS/route setup.

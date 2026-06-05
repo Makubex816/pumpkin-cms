@@ -14,7 +14,7 @@ media.iceskatingrinkrentals.com
 
 ## Scope
 
-This package documents the approved Cloudflare Worker media-delivery preflight and guarded execution attempt for Ice media only.
+This package documents the approved Cloudflare Worker media-delivery retry for Ice media only.
 
 Approved Worker route scope:
 
@@ -36,18 +36,38 @@ https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-re
 
 ## Result Summary
 
-Cloudflare Worker media delivery was not configured.
+Cloudflare Worker media delivery was configured and validated.
 
-Exact blocker:
+Configured objects:
+
+- proxied Cloudflare DNS CNAME for `media.iceskatingrinkrentals.com`
+- Worker script `ice-media-delivery`
+- Worker route `media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*`
+
+Public validation:
 
 ```text
-Worker route list endpoint: HTTP 403
-Worker script list endpoint: HTTP 403
+media.iceskatingrinkrentals.com DNS: resolves through Cloudflare
+Cloudflare Worker public media URLs: 9/9 passed
+HTTP status: 200 OK for 9/9
+content type: image/png for 9/9
+content length: matched expected values for 9/9
+cache-control: public, max-age=31536000, immutable for 9/9
+redirects: none
 ```
 
-Because Worker route/script access was not clearly available with the active token, setup stopped before creating DNS, Worker script, or Worker route.
+## Retry History
 
-No Worker source file was created in the repo because deployment was blocked during preflight.
+Prior rule-based Cloudflare media delivery was blocked by the HostHeader override entitlement.
+
+The first Worker attempt was blocked by the active token:
+
+```text
+GET /zones/{zone_id}/workers/routes: HTTP 403
+GET /accounts/{account_id}/workers/scripts: HTTP 403
+```
+
+This retry used the Worker-capable Cloudflare token from the active shell. The Worker route and script endpoints were readable, and the scoped setup completed.
 
 ## Azure Origin Status
 
@@ -62,24 +82,10 @@ cache-control: public, max-age=31536000, immutable
 
 No Azure access changes were made. No keys, connection strings, or SAS URLs were used or printed.
 
-## Public URL Validation
-
-Current validation result:
-
-```text
-media.iceskatingrinkrentals.com DNS: unresolved
-Cloudflare Worker public media URLs: 0/9 passed
-failure mode: failed before HTTP response because media hostname is unresolved
-```
-
 ## What Was Not Done
 
 This run did not:
 
-- create or update `media.iceskatingrinkrentals.com` DNS
-- create or update a Cloudflare Worker script
-- create or update a Cloudflare Worker route
-- deploy a Worker
 - change root/apex DNS
 - change `www` DNS
 - change MX/TXT/email DNS
@@ -93,6 +99,8 @@ This run did not:
 - print storage keys
 - print connection strings
 - generate SAS URLs
+- upload, delete, or move blobs
+- change Azure storage account or container access settings
 - stage raw images
 - stage generated static artifacts
 - send email
@@ -112,3 +120,4 @@ This run did not:
 - `NEXT_MEDIAASSET_UPDATE_APPROVAL_REQUIRED.md`
 - `ROLLBACK_NOTES.md`
 - `manifest.json`
+- `worker/index.mjs`

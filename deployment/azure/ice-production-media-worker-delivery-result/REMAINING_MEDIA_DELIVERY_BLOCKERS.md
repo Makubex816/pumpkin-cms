@@ -2,49 +2,42 @@
 
 Date: 2026-06-05
 
-## Worker Blocker
+## Resolved In This Run
 
-Cloudflare Worker media delivery is blocked because the active token cannot access Worker route/script endpoints:
-
-```text
-Worker route list endpoint: HTTP 403
-Worker script list endpoint: HTTP 403
-```
-
-Because Worker setup was not clearly available, the run stopped before DNS, Worker script, and Worker route mutation.
-
-## Existing Rule-Based Blocker
-
-Rule-based Cloudflare media delivery remains blocked from the prior approved attempt:
+Cloudflare Worker media delivery for the approved Ice media path is configured.
 
 ```text
-Origin Rule HostHeader override: not entitled to use the HostHeader override
-Cloud Connector phase probe: unknown phase "http_request_cloud_connector"
+media DNS/proxy: configured
+Worker script: configured
+Worker route: configured
+Cloudflare public media URLs: 9/9 validated
 ```
 
-## Current Media Delivery State
+## Still Blocked Or Not Approved
 
-```text
-media.iceskatingrinkrentals.com DNS/proxy/routing: not configured
-Cloudflare Worker media delivery: not configured
-public media URL validation: 0/9 passed
-```
+Media production URL readiness remains `no`.
 
-## Still Blocked
+Remaining blockers:
 
-- MediaAsset production URL updates are not done
-- strict validators have not been rerun against the production media domain
+- MediaAsset production URL updates were not approved and were not performed
+- strict validators have not been rerun against production media domain URLs
 - contact form production readiness remains `no`
 - Azure staging readiness remains `no`
-- main-site DNS cutover remains `no`
+- DNS cutover/main-site deployment remains `no`
 - production/indexing readiness remains not live-ready
 
-## Required Future Resolution
+## Historical Cloudflare Delivery Notes
 
-Use one explicitly approved future path:
+Rule-based Cloudflare media delivery remains blocked by the HostHeader override entitlement.
 
-- provide a Cloudflare token/account permission set that can manage only the required Worker script and media route, then rerun Worker setup
-- enable or use a Cloudflare product/API path that can route Azure Blob with the correct origin Host header/SNI and container path rewrite
-- configure Azure Storage custom domain/HTTPS behavior through an approved Azure change, then revisit Cloudflare media DNS/rules
+Cloud Connector remained unavailable in the earlier probe because the probed ruleset phase returned:
 
-Any future run must still avoid root/apex DNS changes, `www` changes, CMS writes, MediaAsset writes, deployment, email/Microsoft 365 work, and Roller work unless separately approved.
+```text
+unknown phase "http_request_cloud_connector"
+```
+
+The first Worker attempt was blocked by token permissions. This retry used the Worker-capable token and completed.
+
+## Guardrails
+
+Future runs must still avoid root/apex DNS changes, `www` changes, CMS writes, MediaAsset writes, deployment, email/Microsoft 365 work, and Roller work unless separately approved.

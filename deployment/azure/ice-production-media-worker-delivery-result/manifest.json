@@ -9,6 +9,11 @@
   "branch": "feature/admin-page-editor-import-export",
   "latestRelevantCommits": [
     {
+      "hash": "41e1774",
+      "subject": "Document Ice Cloudflare Worker media delivery permission blocker",
+      "confirmed": true
+    },
+    {
       "hash": "158deed",
       "subject": "Document Ice Cloudflare media delivery entitlement blocker",
       "confirmed": true
@@ -40,14 +45,16 @@
     }
   ],
   "startState": {
-    "workerResultPackageExisted": false,
-    "workerRootReportExisted": false,
+    "workerResultPackageExisted": true,
+    "workerRootReportExisted": true,
     "classifiedFiles": {
       "expectedCloudflareWorkerMediaDeliveryResultDocs": [
         "PUMPKIN_ICE_CLOUDFLARE_WORKER_MEDIA_DELIVERY_RESULT_REPORT.md",
         "deployment/azure/ice-production-media-worker-delivery-result/"
       ],
-      "expectedWorkerSourceConfigFiles": [],
+      "expectedWorkerSourceConfigFiles": [
+        "deployment/azure/ice-production-media-worker-delivery-result/worker/index.mjs"
+      ],
       "unrelatedStaticAzureBacklog": [
         "deployment/static-azure/"
       ],
@@ -69,12 +76,16 @@
   "cloudflarePreflight": {
     "cloudflareApiToken": "present",
     "cloudflareZoneId": "present",
+    "cloudflareAccountId": "present",
     "zoneName": "iceskatingrinkrentals.com",
     "zoneStatus": "active",
+    "accountAccessible": true,
     "mediaDnsRecordCountBefore": 0,
-    "workerRoutesListStatus": "HTTP 403",
-    "workerScriptsListStatus": "HTTP 403",
-    "workerDeploymentAvailable": false,
+    "workerRoutesListStatus": "OK",
+    "workerScriptsListStatus": "OK",
+    "relevantWorkerRoutesBefore": 0,
+    "relevantWorkerScriptsBefore": 0,
+    "workerDeploymentAvailable": true,
     "secretsPrinted": false,
     "tokensPrinted": false
   },
@@ -92,22 +103,29 @@
     "connectionStringsPrinted": false,
     "sasUrlsGeneratedOrPrinted": false
   },
-  "implementationAttempt": {
-    "workerSourceCreated": false,
-    "workerScriptCreatedOrUpdated": false,
-    "workerRouteCreatedOrUpdated": false,
-    "mediaDnsRecordCreatedOrUpdated": false,
-    "workerDeploymentAttempted": false,
-    "cloudflareMutationAttempted": false,
-    "configurationPersisted": false,
-    "sanitizedBlocker": "Worker route/script endpoints returned HTTP 403",
-    "cleanupRequired": false
+  "configuredCloudflareObjects": {
+    "workerSourceCreated": true,
+    "workerSourcePath": "deployment/azure/ice-production-media-worker-delivery-result/worker/index.mjs",
+    "workerScriptCreatedOrUpdated": true,
+    "workerScriptName": "ice-media-delivery",
+    "workerRouteCreatedOrUpdated": true,
+    "workerRoutePattern": "media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*",
+    "mediaDnsRecordCreatedOrUpdated": true,
+    "mediaDnsRecordType": "CNAME",
+    "mediaDnsRecordName": "media.iceskatingrinkrentals.com",
+    "mediaDnsRecordTarget": "iceskatingmedia.blob.core.windows.net",
+    "mediaDnsRecordProxied": true,
+    "configurationPersisted": true
   },
   "targetCloudflareUrls": {
     "validatedCount": 9,
-    "publiclyReadableCount": 0,
-    "status": "failed before HTTP response",
-    "dnsResolvedInLocalCheck": false,
+    "publiclyReadableCount": 9,
+    "status": "200 OK",
+    "dnsResolvedInLocalCheck": true,
+    "dnsResolvedInPublicResolverCheck": true,
+    "contentType": "image/png",
+    "contentLengthMatchesExpected": true,
+    "cacheControl": "public, max-age=31536000, immutable",
     "redirectedToAzureHost": false,
     "secretsExposedInResponses": false
   },
@@ -117,8 +135,8 @@
     "azureMediaFilesUploaded": true,
     "azureDirectPublicBlobMediaReadable": true,
     "cloudflareRuleBasedMediaDeliveryConfigured": "no, blocked by entitlement",
-    "cloudflareWorkerMediaDeliveryConfigured": false,
-    "cloudflarePublicMediaUrlsValidated": false,
+    "cloudflareWorkerMediaDeliveryConfigured": true,
+    "cloudflarePublicMediaUrlsValidated": true,
     "mediaAssetProductionUrlReadiness": false,
     "mediaProductionUrlReadiness": false,
     "contactFormProductionReadiness": false,
@@ -129,9 +147,9 @@
     "roller": "paused"
   },
   "actionsPerformed": {
-    "cloudflareWorkerPreflightOnly": true,
-    "cloudflareChanged": false,
-    "dnsChanged": false,
+    "cloudflareWorkerPreflightOnly": false,
+    "cloudflareChanged": true,
+    "dnsChanged": true,
     "rootDnsChanged": false,
     "wwwDnsChanged": false,
     "cmsRecordsUpdated": false,
@@ -162,11 +180,12 @@
     "REMAINING_MEDIA_DELIVERY_BLOCKERS.md",
     "NEXT_MEDIAASSET_UPDATE_APPROVAL_REQUIRED.md",
     "ROLLBACK_NOTES.md",
-    "manifest.json"
+    "manifest.json",
+    "worker/index.mjs"
   ],
   "validation": {
     "manifestJsonParse": "passed",
-    "workerJsSyntaxCheck": "not applicable, no Worker source file created",
+    "workerJsSyntaxCheck": "passed",
     "gitDiffCheck": "passed",
     "trailingWhitespaceScan": "passed",
     "protectedGeneratedRawArtifactPathCheck": "passed",

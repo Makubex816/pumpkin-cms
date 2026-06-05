@@ -10,7 +10,7 @@ Paused site: RollerRinkRentals.com
 
 ## Goal
 
-Perform approved Cloudflare Worker media delivery preflight and guarded execution for `media.iceskatingrinkrentals.com` only.
+Retry approved Cloudflare Worker media delivery for `media.iceskatingrinkrentals.com` only.
 
 Approved Worker route:
 
@@ -32,21 +32,32 @@ https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-re
 
 ## Result
 
-Cloudflare Worker media delivery was not configured.
+Cloudflare Worker media delivery was configured and validated.
 
-Exact blocker:
+Configured objects:
+
+- proxied CNAME `media.iceskatingrinkrentals.com` to `iceskatingmedia.blob.core.windows.net`
+- Worker script `ice-media-delivery`
+- Worker route `media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*`
+- local Worker source `deployment/azure/ice-production-media-worker-delivery-result/worker/index.mjs`
+
+Public validation result:
 
 ```text
-Worker route list endpoint: HTTP 403
-Worker script list endpoint: HTTP 403
+media.iceskatingrinkrentals.com resolves through Cloudflare
+approved Cloudflare public media URLs validated: 9/9
+HTTP 200 OK: 9/9
+content type image/png: 9/9
+content length matched expected values: 9/9
+cache-control public, max-age=31536000, immutable: 9/9
+redirects to wrong host: 0
 ```
-
-Because Worker route/script access was not clearly available with the active token, setup stopped before creating DNS, Worker source, Worker script, or Worker route.
 
 ## Start-State Checks
 
 Relevant commits confirmed:
 
+- `41e1774` Document Ice Cloudflare Worker media delivery permission blocker
 - `158deed` Document Ice Cloudflare media delivery entitlement blocker
 - `a919c25` Verify Ice Cloudflare zone activation
 - `65cd0fb` Complete Ice Option A media delivery phase 1B
@@ -56,8 +67,8 @@ Relevant commits confirmed:
 
 Start-state worktree classification:
 
-- expected Cloudflare Worker media delivery result docs: package and root report did not exist; created by this run
-- expected Worker source/config files: none existed and none were created because Worker access was blocked
+- expected Cloudflare Worker media delivery result docs: existing Worker result package and root report, updated by this run
+- expected Worker source/config files: none existed at start; `worker/index.mjs` was created in the Worker result package
 - unrelated static-azure backlog: modified files under `deployment/static-azure/`, left untouched
 - unrelated Ice media delivery strategy backlog: modified files under `deployment/azure/ice-production-media-delivery-strategy/`, left untouched
 - raw content-review input folders: untracked folders under `content-review/ice-final-contact-input/` and `content-review/ice-service-areas-input/`, left untouched
@@ -78,30 +89,29 @@ content length: matched expected values for 9/9
 cache-control: public, max-age=31536000, immutable for 9/9
 ```
 
-No Azure access changes were made. No storage keys, connection strings, or SAS URLs were used or printed.
+No Azure access changes were made. No Azure keys, connection strings, or SAS URLs were used or printed.
 
-## Cloudflare Worker Preflight
+## Cloudflare Preflight
 
 Credential presence:
 
 ```text
-CLOUDFLARE_API_TOKEN=PRESENT
-CLOUDFLARE_ZONE_ID=PRESENT
+CLOUDFLARE_API_TOKEN PRESENT
+CLOUDFLARE_ZONE_ID PRESENT
+CLOUDFLARE_ACCOUNT_ID PRESENT
 ```
 
-Cloudflare zone read-only verification:
+Cloudflare read-only verification:
 
 ```text
 zone name: iceskatingrinkrentals.com
 zone status: active
-media DNS record count before setup: 0
-```
-
-Worker endpoint checks:
-
-```text
-GET /zones/{zone_id}/workers/routes: HTTP 403
-GET /accounts/{account_id}/workers/scripts: HTTP 403
+account read: OK
+media DNS records before setup: 0
+relevant Worker routes before setup: 0
+relevant Worker scripts before setup: 0
+Worker routes endpoint: OK
+Worker scripts endpoint: OK
 ```
 
 No credential values or token values were printed.
@@ -120,57 +130,75 @@ Pre-change sample public media URL:
 failed before HTTP response because the media hostname could not be resolved
 ```
 
-## Worker Implementation Result
+## Worker Implementation
 
-No Worker source file was created and no Worker script was deployed.
+Worker source created:
 
-The required future Worker behavior is still:
+```text
+deployment/azure/ice-production-media-worker-delivery-result/worker/index.mjs
+```
 
-- only serve `media.iceskatingrinkrentals.com`
-- only allow `/ice-rink-rentals/assets/`
-- fetch from `https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media{request pathname}`
-- reject other hosts and paths
-- avoid secrets, keys, connection strings, and SAS URLs
-- set or preserve `Cache-Control: public, max-age=31536000, immutable`
+Worker behavior:
+
+- only serves `media.iceskatingrinkrentals.com`
+- only allows `/ice-rink-rentals/assets/`
+- only allows `GET` and `HEAD`
+- fetches from `https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media{request pathname}`
+- does not forward cookies, authorization headers, or query strings to Azure Blob Storage
+- sets `Cache-Control: public, max-age=31536000, immutable`
+- contains no secrets, keys, connection strings, SAS URLs, CMS references, or protected config references
 
 ## DNS and Route Result
 
-No Cloudflare DNS record was created.
-
-No Worker route was created.
-
-Current state:
+Cloudflare media DNS:
 
 ```text
-media DNS configured: no
-Worker script configured: no
-Worker route configured: no
-Worker delivery configured: no
+type: CNAME
+name: media.iceskatingrinkrentals.com
+target: iceskatingmedia.blob.core.windows.net
+proxied: true
 ```
+
+Cloudflare Worker route:
+
+```text
+pattern: media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*
+script: ice-media-delivery
+```
+
+Root and `www` DNS read-only audit:
+
+```text
+root A proxied: false
+root MX proxied: false
+root TXT proxied: false
+www A proxied: false
+```
+
+No root/apex DNS, `www` DNS, MX, TXT, email, main-site, or unrelated Cloudflare objects were intentionally changed.
 
 ## Public URL Validation
 
-`media.iceskatingrinkrentals.com` does not resolve.
+All 9 target public media URLs passed:
 
-All 9 target public media URLs were checked in the blocked state:
+| # | MediaAsset ID | Status | Content type | Content length | Cache-control | Redirect |
+| ---: | --- | ---: | --- | ---: | --- | --- |
+| 1 | `ice-rink-rentals-winterfesticerinkrentals-324b1b89777d` | 200 | `image/png` | 3607110 | `public, max-age=31536000, immutable` | none |
+| 2 | `ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd` | 200 | `image/png` | 3685341 | `public, max-age=31536000, immutable` | none |
+| 3 | `ice-rink-rentals-holidayicerink-973ce7691377` | 200 | `image/png` | 3866376 | `public, max-age=31536000, immutable` | none |
+| 4 | `ice-rink-rentals-icerinkrentalssetup-113d218572e4` | 200 | `image/png` | 3545952 | `public, max-age=31536000, immutable` | none |
+| 5 | `ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411` | 200 | `image/png` | 1627660 | `public, max-age=31536000, immutable` | none |
+| 6 | `ice-rink-rentals-partyproseastcoastlogo-cfd1fc9f60ae` | 200 | `image/png` | 24434 | `public, max-age=31536000, immutable` | none |
+| 7 | `ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd` | 200 | `image/png` | 1923827 | `public, max-age=31536000, immutable` | none |
+| 8 | `ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7` | 200 | `image/png` | 2253456 | `public, max-age=31536000, immutable` | none |
+| 9 | `ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d` | 200 | `image/png` | 2105292 | `public, max-age=31536000, immutable` | none |
 
-```text
-Cloudflare Worker public media URLs checked: 9
-HTTP 200 OK: 0
-passed: 0/9
-failure mode: failed before HTTP response because media hostname is unresolved
-```
-
-No redirects to the Azure storage hostname were observed because the hostname does not resolve.
+No Azure keys, SAS URLs, or query secrets were exposed in the checked responses.
 
 ## What Was Not Done
 
 This run did not:
 
-- create or update `media.iceskatingrinkrentals.com` DNS
-- create or update a Cloudflare Worker script
-- create or update a Cloudflare Worker route
-- deploy a Worker
 - change root/apex DNS
 - change `www` DNS
 - change MX/TXT/email DNS
@@ -184,6 +212,8 @@ This run did not:
 - print storage keys
 - print connection strings
 - generate SAS URLs
+- upload, delete, or move blobs
+- change Azure storage account or container access settings
 - stage raw images
 - stage generated static artifacts
 - send email
@@ -192,17 +222,14 @@ This run did not:
 
 ## Remaining Blockers
 
-- Cloudflare Worker route/script access is blocked by HTTP 403 with the active token
-- rule-based delivery remains blocked by HostHeader override entitlement
-- Cloud Connector remains unavailable through the probed ruleset phase
-- `media.iceskatingrinkrentals.com` DNS/proxy/routing is not configured
-- public `media.iceskatingrinkrentals.com` media URLs do not validate
 - MediaAsset production URL updates are not done
 - strict validators have not been rerun against production media domain URLs
 - contact form production readiness remains `no`
 - Azure staging readiness remains `no`
 - DNS cutover/main-site deployment remains `no`
 - production/indexing readiness remains not live-ready
+
+Rule-based Cloudflare media delivery remains `no`, blocked by the HostHeader override entitlement. The first Worker attempt was blocked by token permission HTTP 403 responses; this retry used the Worker-capable token and succeeded.
 
 ## Readiness Classification
 
@@ -211,8 +238,8 @@ This run did not:
 - Azure media files uploaded: yes
 - Azure direct public Blob media readable: yes
 - Cloudflare rule-based media delivery configured: no, blocked by entitlement
-- Cloudflare Worker media delivery configured: no
-- Cloudflare public media URLs validated: no
+- Cloudflare Worker media delivery configured: yes
+- Cloudflare public media URLs validated: yes
 - MediaAsset production URL readiness: no
 - Media production URL readiness: no
 - Contact form production readiness: no
@@ -221,9 +248,11 @@ This run did not:
 - Production/indexing readiness: not live-ready
 - Roller: paused
 
+Do not mark full media production URL readiness `yes` until MediaAsset updates are separately approved and strict validators pass against the production media domain.
+
 ## Result Package
 
-Created:
+Updated:
 
 ```text
 deployment/azure/ice-production-media-worker-delivery-result/
@@ -234,13 +263,13 @@ deployment/azure/ice-production-media-worker-delivery-result/
 Validation commands/checks:
 
 - manifest JSON parse
-- Worker JavaScript syntax check: not applicable because no Worker source file was created
+- Worker JavaScript syntax check
 - `git diff --check`
-- trailing whitespace scan on changed docs
+- trailing whitespace scan on changed docs/source
 - protected/generated/raw artifact path check
 - targeted secret scan
 - staged-file check
-- read-only Cloudflare check confirming root/`www` unchanged and media DNS absent
+- read-only Cloudflare audit confirming root/`www` records remained DNS-only
 
 Validation result:
 
