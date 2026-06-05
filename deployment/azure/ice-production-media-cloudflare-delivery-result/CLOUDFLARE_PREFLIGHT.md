@@ -1,40 +1,71 @@
 # Cloudflare Preflight
 
-## Tooling And Credential Presence
+Date: 2026-06-05
+
+## Credential Presence
 
 Only presence/missing status was checked. No credential values were printed.
 
 ```text
-CLOUDFLARE_API_TOKEN: MISSING
-CLOUDFLARE_ZONE_ID: MISSING
-CF_API_TOKEN: MISSING
-CF_ZONE_ID: MISSING
-wrangler CLI: MISSING
-cloudflare CLI: MISSING
+CLOUDFLARE_API_TOKEN=PRESENT
+CLOUDFLARE_ZONE_ID=PRESENT
 ```
 
-## Decision
-
-Stopped before Cloudflare mutation.
-
-The approved run allowed Cloudflare API/CLI use only if credentials were already present in the active shell or an approved safe mechanism. They were not available.
-
-## Exact Blocker
-
-Cloudflare media delivery setup cannot be executed from this shell until an approved Cloudflare authentication mechanism is available.
-
-Required non-secret names:
+Cloudflare token verification result:
 
 ```text
-CLOUDFLARE_API_TOKEN
-CLOUDFLARE_ZONE_ID
+token status: active
 ```
 
-Equivalent existing authenticated Cloudflare CLI context would also satisfy the preflight, but no Cloudflare CLI was installed.
+No token value was printed.
 
-## Safety Confirmation
+## Zone Verification
 
-No Cloudflare token values were printed.
+Read-only Cloudflare API verification:
 
-No protected config was read.
+```text
+zone name: iceskatingrinkrentals.com
+zone status: active
+assigned nameservers: amy.ns.cloudflare.com, bob.ns.cloudflare.com
+```
 
+Zone ID matched the requested site. No unrelated zone was used.
+
+## Existing Media State
+
+Read-only DNS record check:
+
+```text
+media.iceskatingrinkrentals.com Cloudflare DNS record count: 0
+```
+
+Read-only ruleset check:
+
+```text
+existing custom media rules: 0
+managed zone rulesets only before this run
+```
+
+No existing media DNS/rule conflict was found.
+
+## Rule Product Checks
+
+Cloudflare rejected the required Origin Rule HostHeader override:
+
+```text
+message: not entitled to use the HostHeader override
+source: /rules/0/host_header
+```
+
+Cloud Connector was not available through the probed ruleset phase:
+
+```text
+phase: http_request_cloud_connector
+message: unknown phase "http_request_cloud_connector"
+```
+
+Because the safe rule-based path requires HostHeader/SNI behavior for Azure Blob, setup stopped before DNS creation.
+
+## No-Secret Confirmation
+
+No Cloudflare token, Azure token, storage key, connection string, or SAS URL was printed.

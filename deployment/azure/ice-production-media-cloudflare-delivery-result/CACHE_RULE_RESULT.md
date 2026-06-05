@@ -1,30 +1,42 @@
 # Cache Rule Result
 
-## Result
+Date: 2026-06-05
 
-No Cloudflare cache rule was created.
+## Desired Cache Behavior
 
-## Azure Origin Cache Policy
-
-The Azure Blob origin already returns:
+The 9 approved Azure Blob media files already carry:
 
 ```text
 Cache-Control: public, max-age=31536000, immutable
 ```
 
-for all 9 approved uploaded media files.
-
-## Required Future Cloudflare Cache Behavior
-
-Future Cloudflare setup should preserve or explicitly match the immutable checksum-versioned media policy for:
+The intended Cloudflare cache behavior was to cache query-free checksum-versioned media paths under:
 
 ```text
-https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*
+https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/
 ```
 
-Do not cache-bypass the approved PNG assets unless a later rollback/debug approval requires it.
+while respecting the origin immutable TTL.
 
-## Blocker
+## Result
 
-Cloudflare credentials/tooling were missing, so no cache behavior was configured.
+Cloudflare cache behavior was not configured.
 
+Reason:
+
+```text
+The full safe delivery path was blocked before DNS/rule setup because Cloudflare is not entitled to use the required Origin Rule HostHeader override.
+```
+
+No cache settings rule was created.
+
+## Current State
+
+```text
+Azure origin cache header: public, max-age=31536000, immutable
+Cloudflare media cache rule configured: no
+```
+
+## No-Action Confirmation
+
+No Cloudflare cache settings were changed.

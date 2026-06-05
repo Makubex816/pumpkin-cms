@@ -8,6 +8,11 @@
   "branch": "feature/admin-page-editor-import-export",
   "latestRelevantCommits": [
     {
+      "hash": "a919c25",
+      "subject": "Verify Ice Cloudflare zone activation",
+      "confirmed": true
+    },
+    {
       "hash": "65cd0fb",
       "subject": "Complete Ice Option A media delivery phase 1B",
       "confirmed": true
@@ -28,15 +33,42 @@
       "confirmed": true
     }
   ],
+  "startState": {
+    "resultPackageExisted": true,
+    "rootReportExisted": true,
+    "classifiedFiles": {
+      "expectedCloudflareMediaDeliveryResultDocs": [
+        "PUMPKIN_ICE_CLOUDFLARE_MEDIA_DELIVERY_RESULT_REPORT.md",
+        "deployment/azure/ice-production-media-cloudflare-delivery-result/"
+      ],
+      "unrelatedStaticAzureBacklog": [
+        "deployment/static-azure/"
+      ],
+      "unrelatedIceMediaDeliveryStrategyBacklog": [
+        "deployment/azure/ice-production-media-delivery-strategy/"
+      ],
+      "rawContentReviewInputFolders": [
+        "content-review/ice-final-contact-input/",
+        "content-review/ice-service-areas-input/"
+      ],
+      "generatedArtifacts": [
+        "content-review/ice-final-contact-input/*.zip and extracted preview/assets",
+        "content-review/ice-service-areas-input/*.zip and extracted preview/assets"
+      ],
+      "protectedConfigRisk": [],
+      "unexpectedFiles": []
+    }
+  },
   "cloudflarePreflight": {
-    "cloudflareApiToken": "missing",
-    "cloudflareZoneId": "missing",
-    "cfApiToken": "missing",
-    "cfZoneId": "missing",
-    "wranglerCli": "missing",
-    "cloudflareCli": "missing",
-    "mutationAttempted": false,
-    "blocker": "Cloudflare credentials/tooling unavailable in active shell."
+    "cloudflareApiToken": "present",
+    "cloudflareZoneId": "present",
+    "tokenStatus": "active",
+    "zoneName": "iceskatingrinkrentals.com",
+    "zoneStatus": "active",
+    "mediaDnsRecordCountBefore": 0,
+    "existingCustomMediaRulesBefore": 0,
+    "secretsPrinted": false,
+    "tokensPrinted": false
   },
   "azureOrigin": {
     "storageAccount": "iceskatingmedia",
@@ -45,13 +77,36 @@
     "validatedCount": 9,
     "status": "200 OK",
     "contentType": "image/png",
-    "cacheControl": "public, max-age=31536000, immutable"
+    "contentLengthMatchesExpected": true,
+    "cacheControl": "public, max-age=31536000, immutable",
+    "azureAccessChangedInThisRun": false,
+    "storageKeysUsedOrPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGeneratedOrPrinted": false
+  },
+  "implementationAttempt": {
+    "selectedPath": "proxied CNAME plus Cloudflare URL Rewrite, Origin Rule, and Cache Settings Rule",
+    "workerDeploymentAttempted": false,
+    "cloudflareMutationAttempted": true,
+    "configurationPersisted": false,
+    "sanitizedBlocker": "not entitled to use the HostHeader override",
+    "sanitizedBlockerSource": "/rules/0/host_header",
+    "cloudConnectorProbe": {
+      "phase": "http_request_cloud_connector",
+      "availableAsRulesetPhase": false,
+      "sanitizedError": "unknown phase \"http_request_cloud_connector\""
+    },
+    "cleanupRequired": false,
+    "postAttemptMediaDnsRecordCount": 0,
+    "postAttemptCustomMediaRuleCount": 0
   },
   "targetCloudflareUrls": {
     "validatedCount": 9,
     "publiclyReadableCount": 0,
-    "statusCodeForAllCheckedUrls": "000",
-    "dnsResolvedInLocalCheck": false
+    "status": "failed before HTTP response",
+    "dnsResolvedInLocalCheck": false,
+    "redirectedToAzureHost": false,
+    "secretsExposedInResponses": false
   },
   "configuration": {
     "dnsRecordCreatedOrUpdated": false,
@@ -77,6 +132,7 @@
     "roller": "paused"
   },
   "actionsPerformed": {
+    "cloudflareWriteAttemptRejectedBeforeConfigCreation": true,
     "cloudflareChanged": false,
     "dnsChanged": false,
     "rootDnsChanged": false,
@@ -89,6 +145,7 @@
     "protectedConfigRead": false,
     "secretsPrinted": false,
     "tokensPrinted": false,
+    "azureTokensPrinted": false,
     "storageKeysPrinted": false,
     "connectionStringsPrinted": false,
     "sasUrlsGenerated": false,

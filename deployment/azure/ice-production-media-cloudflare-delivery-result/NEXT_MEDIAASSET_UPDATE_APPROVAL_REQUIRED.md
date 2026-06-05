@@ -1,20 +1,31 @@
 # Next MediaAsset Update Approval Required
 
+Date: 2026-06-05
+
 ## Current Status
 
-No MediaAsset records were updated.
+MediaAsset production URL updates are not approved and were not performed.
 
-MediaAsset updates remain blocked because Cloudflare public media URLs are not configured or validated.
+Cloudflare public media URLs are not ready:
 
-## Required Before MediaAsset Writes
+```text
+media.iceskatingrinkrentals.com DNS: unresolved
+Cloudflare public URL validation: 0/9 passed
+```
 
-- Cloudflare credentials/tooling available
-- `media.iceskatingrinkrentals.com` configured
-- path rewrite/routing configured
-- all 9 public media URLs return `200 OK`
-- strict validators can resolve production media URLs
+## Do Not Update Yet
 
-## Future Approval
+Do not update CMS or MediaAsset records until:
 
-Future MediaAsset approval must include exact fields and target URLs. Do not bundle MediaAsset writes into the Cloudflare credential/setup approval unless explicitly approved.
+- `media.iceskatingrinkrentals.com` delivery is configured
+- all 9 locked public media URLs return `200 OK`
+- expected `image/png` content type is confirmed
+- expected content lengths are confirmed
+- cache behavior is acceptable
+- strict validators pass against the production media domain
 
+## Separate Approval Required
+
+A future MediaAsset update run must be separately approved and scoped only after Cloudflare public media URLs validate.
+
+This run performed no CMS writes and no MediaAsset writes.

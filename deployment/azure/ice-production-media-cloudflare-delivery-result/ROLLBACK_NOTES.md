@@ -1,24 +1,40 @@
 # Rollback Notes
 
-## Cloudflare
+Date: 2026-06-05
 
-No Cloudflare changes occurred, so there is no Cloudflare rollback action from this run.
+## Current Rollback Need
 
-## Azure
+No Cloudflare media configuration remains from this run.
 
-No Azure access settings were changed in this run.
-
-Existing approved Option A Azure state remains:
+Post-attempt state:
 
 ```text
-account allowBlobPublicAccess: true
-container publicAccess: blob
-direct Azure Blob media URLs: 9/9 readable
+media DNS records: 0
+media custom rules: 0
 ```
 
-Any future rollback of Azure public-read settings requires separate explicit approval.
+No rollback action is currently required.
 
-## CMS And MediaAsset
+## If A Future Cloudflare Media Setup Succeeds
 
-No CMS or MediaAsset records were changed, so no CMS/MediaAsset rollback is required.
+Rollback should remove only media-scoped configuration created for:
 
+- `media.iceskatingrinkrentals.com` DNS/proxy
+- media host/path origin routing
+- media host/path path rewrite
+- media host/path cache settings
+
+Rollback must not alter:
+
+- root/apex DNS
+- `www` DNS
+- MX/TXT/email records
+- CMS records
+- MediaAsset records
+- deployments
+- Microsoft 365 settings
+- Roller
+
+## No-Secret Confirmation
+
+No token, key, connection string, or SAS URL was printed or written.

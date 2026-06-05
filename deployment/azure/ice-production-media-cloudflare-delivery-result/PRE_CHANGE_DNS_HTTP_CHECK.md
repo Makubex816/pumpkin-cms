@@ -1,22 +1,24 @@
-# Pre-Change DNS And HTTP Check
+# Pre-Change DNS and HTTP Check
 
-## DNS
+Date: 2026-06-05
 
-Read-only DNS check:
+## DNS Check
+
+Command:
 
 ```text
-Resolve-DnsName media.iceskatingrinkrentals.com
+nslookup media.iceskatingrinkrentals.com
 ```
 
 Result:
 
 ```text
-no records returned in the local check
+media.iceskatingrinkrentals.com: Non-existent domain
 ```
 
-## Representative HTTPS Check
+## Sample Public URL Check
 
-Representative target URL:
+Sample target URL:
 
 ```text
 https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/winterfesticerinkrentals-324b1b89777d/324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c/winterfesticerinkrentals-324b1b89777d.png
@@ -25,12 +27,17 @@ https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/winterfesticerin
 Result:
 
 ```text
-status: 000
+failed before HTTP response
+reason: media hostname could not be resolved
 ```
 
-## Interpretation
+## Expected State
 
-The target Cloudflare media hostname was not publicly usable before this run.
+This matched the expected pre-change state:
 
-Because Cloudflare credentials/tooling were missing, no DNS or Cloudflare mutation was attempted.
+- `media.iceskatingrinkrentals.com` was not yet created in Cloudflare DNS
+- public media URLs were not yet reachable
 
+## No-Action Confirmation
+
+No DNS records were changed during the pre-change check.

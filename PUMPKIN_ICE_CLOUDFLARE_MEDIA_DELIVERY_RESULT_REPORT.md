@@ -10,97 +10,157 @@ Paused site: RollerRinkRentals.com
 
 ## Goal
 
-Configure Cloudflare media delivery for:
+Configure Cloudflare media delivery for `media.iceskatingrinkrentals.com` only, then validate the 9 approved locked public media URLs.
 
-```text
-media.iceskatingrinkrentals.com
-```
-
-so the 9 approved Ice media files are served at:
+Locked public URL pattern:
 
 ```text
 https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
 ```
 
-## Result
-
-Cloudflare setup was not configured because Cloudflare credentials/tooling were unavailable in the active shell.
-
-Credential/tooling preflight:
-
-```text
-CLOUDFLARE_API_TOKEN: MISSING
-CLOUDFLARE_ZONE_ID: MISSING
-CF_API_TOKEN: MISSING
-CF_ZONE_ID: MISSING
-wrangler CLI: MISSING
-cloudflare CLI: MISSING
-```
-
-No Cloudflare mutation was attempted.
-
-## Azure Origin Validation
-
-Azure direct public Blob origin remains ready:
-
-```text
-direct Azure Blob public URLs: 9/9 HTTP 200 OK
-content type: image/png for 9/9
-cache-control: public, max-age=31536000, immutable for 9/9
-```
-
-## Cloudflare Public URL Validation
-
-`media.iceskatingrinkrentals.com` did not return DNS records in the local check.
-
-All 9 target Cloudflare public media URLs currently return:
-
-```text
-status: 000
-```
-
-Cloudflare public media URLs validated:
-
-```text
-no
-```
-
-## Required Future Mapping
-
-Public Cloudflare URL:
-
-```text
-https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
-```
-
-Azure origin URL:
+Azure origin URL pattern:
 
 ```text
 https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
 ```
 
-Cloudflare must route/rewrite:
+## Result
+
+Cloudflare media delivery was not configured.
+
+Exact blocker:
 
 ```text
-/ice-rink-rentals/assets/*
+Cloudflare rejected the required Origin Rule HostHeader override:
+not entitled to use the HostHeader override
 ```
 
-to:
+Cloud Connector was not available through the probed ruleset phase:
 
 ```text
-/ice-rink-rentals-media/ice-rink-rentals/assets/*
+unknown phase "http_request_cloud_connector"
 ```
+
+The approved instructions required stopping if Cloudflare required an unavailable paid feature, unavailable product, broader zone-wide change, or Worker deployment. Setup stopped under that rule.
+
+No Worker was deployed.
+
+## Start-State Checks
+
+Relevant commits confirmed:
+
+- `a919c25` Verify Ice Cloudflare zone activation
+- `65cd0fb` Complete Ice Option A media delivery phase 1B
+- `58ebbd0` Upload approved Ice media to Azure Blob
+- `3ad77db` Assign Ice Blob data-plane upload role
+- `941a1e7` Create Ice Azure media storage and container
+
+Start-state worktree classification:
+
+- expected Cloudflare media delivery result docs: package and root report existed; updated by this run
+- unrelated static-azure backlog: modified files under `deployment/static-azure/`, left untouched
+- unrelated Ice media delivery strategy backlog: modified files under `deployment/azure/ice-production-media-delivery-strategy/`, left untouched
+- raw content-review input folders: untracked folders under `content-review/ice-final-contact-input/` and `content-review/ice-service-areas-input/`, left untouched
+- generated artifacts: untracked zip/extracted preview/assets inside the content-review input folders, left untouched
+- protected config risk: none observed in `git status`
+- unexpected files: none beyond the classified backlog/input paths
+
+No files were staged.
+
+## Azure Origin Validation
+
+Direct anonymous Azure Blob recheck passed:
+
+```text
+direct Azure Blob public URLs: 9/9 HTTP 200 OK
+content type: image/png for 9/9
+content length: matched expected values for 9/9
+cache-control: public, max-age=31536000, immutable for 9/9
+```
+
+No Azure access changes were made. No storage keys, connection strings, or SAS URLs were used or printed.
+
+## Cloudflare Preflight
+
+Credential presence:
+
+```text
+CLOUDFLARE_API_TOKEN=PRESENT
+CLOUDFLARE_ZONE_ID=PRESENT
+```
+
+Cloudflare zone read-only verification:
+
+```text
+zone name: iceskatingrinkrentals.com
+zone status: active
+media DNS record count before setup: 0
+existing custom media rules before setup: 0
+```
+
+No credential values or token values were printed.
+
+## Pre-Change DNS and HTTP
+
+Pre-change DNS:
+
+```text
+media.iceskatingrinkrentals.com: unresolved
+```
+
+Pre-change sample public media URL:
+
+```text
+failed before HTTP response because the media hostname could not be resolved
+```
+
+## Cloudflare Configuration Result
+
+Selected implementation path:
+
+```text
+DNS proxied CNAME + URL Rewrite + Origin Rule + Cache Settings Rule
+```
+
+This path was blocked before DNS creation because the required Origin Rule HostHeader override is not entitled.
+
+Post-attempt Cloudflare state:
+
+```text
+media DNS records: 0
+custom media rules: 0
+path rewrite configured: no
+cache behavior configured: no
+proxy configured: no
+```
+
+## Public URL Validation
+
+`media.iceskatingrinkrentals.com` does not resolve.
+
+All 9 target public media URLs were checked in the blocked state:
+
+```text
+Cloudflare public media URLs checked: 9
+HTTP 200 OK: 0
+passed: 0/9
+failure mode: failed before HTTP response because media hostname is unresolved
+```
+
+No redirects to the Azure storage hostname were observed because the hostname does not resolve.
 
 ## What Was Not Done
 
 This run did not:
 
-- change Cloudflare or DNS
+- create or update `media.iceskatingrinkrentals.com` DNS
+- configure Cloudflare proxy delivery
+- configure Cloudflare path rewrite
+- configure Cloudflare cache settings
+- deploy a Cloudflare Worker
 - change root/apex DNS
 - change `www` DNS
-- create Cloudflare Cloud Connector rules
-- create Cloudflare rewrite or cache rules
-- deploy Cloudflare Workers
+- change MX/TXT/email DNS
 - write CMS records
 - write MediaAsset records
 - deploy static or production artifacts
@@ -119,7 +179,8 @@ This run did not:
 
 ## Remaining Blockers
 
-- Cloudflare credentials/tooling are missing from the active shell
+- Cloudflare HostHeader override entitlement is unavailable for the safe Origin Rule path
+- Cloud Connector was not available through the probed ruleset phase
 - `media.iceskatingrinkrentals.com` DNS/proxy/routing is not configured
 - Cloudflare path rewrite is not configured
 - Cloudflare media cache behavior is not configured
@@ -128,7 +189,7 @@ This run did not:
 - strict validators have not been rerun against production media domain URLs
 - contact form production readiness remains `no`
 - Azure staging readiness remains `no`
-- main-site DNS cutover remains `no`
+- DNS cutover/main-site deployment remains `no`
 - production/indexing readiness remains not live-ready
 
 ## Readiness Classification
@@ -149,7 +210,7 @@ This run did not:
 
 ## Result Package
 
-Created:
+Updated:
 
 ```text
 deployment/azure/ice-production-media-cloudflare-delivery-result/
@@ -157,14 +218,16 @@ deployment/azure/ice-production-media-cloudflare-delivery-result/
 
 ## Final Validation
 
-Validation commands run after package creation:
+Validation commands/checks:
 
 - manifest JSON parse
 - `git diff --check`
 - trailing whitespace scan on changed docs
 - protected/generated/raw artifact path check
-- targeted secret-value scan
+- targeted secret scan
 - staged-file check
+- read-only Cloudflare check confirming no media DNS/custom media rules remain
+- read-only root/`www` DNS safety check
 
 Validation result:
 
@@ -175,7 +238,6 @@ passed
 Additional validation confirmations:
 
 - no files were staged
-- no Cloudflare/DNS mutation commands were run
 - no root/apex DNS changes occurred
 - no `www` DNS changes occurred
 - no CMS write commands were run

@@ -1,36 +1,46 @@
 # Path Rewrite Result
 
+Date: 2026-06-05
+
+## Required Rewrite
+
+Public path:
+
+```text
+/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
+```
+
+Azure origin path:
+
+```text
+/ice-rink-rentals-media/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
+```
+
+Required transform:
+
+```text
+prepend /ice-rink-rentals-media to the public path
+```
+
 ## Result
 
-Not configured.
+Path rewrite was not configured.
 
-## Required Future Rewrite
-
-The locked public URL omits the Azure Blob container segment:
+Reason:
 
 ```text
-https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
+The full safe delivery path was blocked before DNS/rule setup because Cloudflare is not entitled to use the required Origin Rule HostHeader override.
 ```
 
-The Azure origin URL requires the container segment:
+No standalone rewrite rule was created because a rewrite without safe Azure Blob origin routing would leave an incomplete media delivery configuration.
+
+## Current State
 
 ```text
-https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
+path rewrite configured: no
+media public URL validation: 0/9 passed
 ```
 
-Future Cloudflare execution must route/rewrite:
+## No-Action Confirmation
 
-```text
-/ice-rink-rentals/assets/*
-```
-
-to:
-
-```text
-/ice-rink-rentals-media/ice-rink-rentals/assets/*
-```
-
-## Blocker
-
-Cloudflare credentials/tooling were missing, so no rewrite/routing rule was created.
-
+No Cloudflare transform rule remains configured for the Ice media host/path.
