@@ -1,0 +1,120 @@
+{
+  "packageName": "ice-production-mediaasset-url-update-result",
+  "generatedDate": "2026-06-05",
+  "mode": "mediaasset-production-url-update-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "approvedMediaAssetCount": 9,
+  "publicUrlValidation": {
+    "validatedCount": 9,
+    "passedCount": 9,
+    "status": "200 OK",
+    "contentType": "image/png",
+    "contentLengthMatchesExpected": true,
+    "cacheControl": "public, max-age=31536000, immutable",
+    "redirectsToAzureHost": 0,
+    "querySecretsOrSasExposed": false
+  },
+  "environmentPresence": {
+    "PUMPKIN_API_URL": "present",
+    "ICE_RINK_RENTALS_API_KEY": "present",
+    "ICE_RINK_RENTALS_TENANT_ID": "present",
+    "PUMPKIN_ADMIN_JWT": "present"
+  },
+  "adminAuth": {
+    "mediaAssetListStatus": "HTTP 401",
+    "jwtShape": "raw-like",
+    "jwtSegments": 3,
+    "jwtExpiryStatus": "expired-or-missing",
+    "tenantClaimPresent": true,
+    "roleClaimPresent": true,
+    "rawJwtPrinted": false
+  },
+  "mediaAssetUpdate": {
+    "attempted": false,
+    "updatedCount": 0,
+    "expectedCount": 9,
+    "blocked": true,
+    "blocker": "Admin MediaAsset endpoint returned HTTP 401 with current PUMPKIN_ADMIN_JWT before readback/write.",
+    "patchRequestsSent": 0,
+    "createdRecords": 0,
+    "deletedRecords": 0
+  },
+  "staticExport": {
+    "run": false,
+    "skippedReason": "MediaAsset update was blocked before write/readback."
+  },
+  "validators": {
+    "snapshotValidatorRun": false,
+    "strictStaticOutputValidatorRun": false,
+    "strictStagingPackageValidatorRun": false,
+    "skippedReason": "MediaAsset update was blocked before write/readback."
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureMediaFilesUploaded": true,
+    "azureDirectPublicBlobMediaReadable": true,
+    "cloudflareWorkerMediaDeliveryConfigured": true,
+    "cloudflarePublicMediaUrlsValidated": true,
+    "mediaAssetProductionUrlReadiness": false,
+    "mediaProductionUrlReadiness": false,
+    "staticOutputQualityGates": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "cmsPageWrites": false,
+    "mediaAssetWrites": false,
+    "themeWrites": false,
+    "navigationWrites": false,
+    "formWrites": false,
+    "cloudflareChanged": false,
+    "azureChanged": false,
+    "blobUploadDeleteMove": false,
+    "staticDeployment": false,
+    "productionDeployment": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "nodeCheckChangedJs": "not applicable",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed",
+    "noCloudflareChanges": "passed by no Cloudflare API mutation commands",
+    "noAzureChanges": "passed by no Azure CLI/API commands",
+    "noCmsPageThemeRollerDeploymentEmailWrites": "passed"
+  },
+  "files": [
+    "README.md",
+    "MEDIAASSET_UPDATE_SCOPE.md",
+    "PRE_WRITE_PUBLIC_URL_VALIDATION.md",
+    "PRE_WRITE_MEDIAASSET_READBACK.md",
+    "MEDIAASSET_UPDATE_RESULT.md",
+    "POST_WRITE_MEDIAASSET_READBACK.md",
+    "STATIC_EXPORT_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "REMAINING_MEDIA_BLOCKERS.md",
+    "NEXT_FORM_ENDPOINT_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ],
+  "rootReport": "PUMPKIN_ICE_MEDIAASSET_PRODUCTION_URL_UPDATE_RESULT_REPORT.md"
+}
