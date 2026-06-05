@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-06-05",
+  "siteKey": "ice-rink-rentals",
+  "scope": "static form no-email endpoint validator wiring",
+  "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+  "localValidationEnvOnly": {
+    "NEXT_PUBLIC_STATIC_FORM_ENDPOINT": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "STATIC_FORM_ENDPOINT": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "STATIC_FORM_ENDPOINT_VERIFIED": "true"
+  },
+  "endpointHealth": {
+    "optionsApprovedOrigin": 204,
+    "validFrontendPayload": 200,
+    "invalidEmail": 400,
+    "unknownRouting": 400,
+    "honeypot": 400
+  },
+  "staticExport": {
+    "command": "npm run export:static:ice:cms",
+    "exitCode": 0,
+    "snapshotSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "approvedContentRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "previewObsoleteDeployablePathCount": 0
+  },
+  "validators": {
+    "snapshot": {
+      "command": "npm run validate:snapshot:ice",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "strictStaticOutput": {
+      "command": "node deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "strictStagingPackage": {
+      "command": "node deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/out",
+      "exitCode": 0,
+      "result": "pass"
+    }
+  },
+  "mediaRegression": {
+    "localMediaFileCount": 0,
+    "renderedLocalImgFileCount": 0,
+    "latestSnapshotFileCount": 0,
+    "mediaUrlUniqueCount": 9,
+    "mediaUrlCheckedCount": 9,
+    "mediaUrlFailedCount": 0
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormNoEmailEndpointDeployed": true,
+    "staticFormNoEmailValidatorWiring": true,
+    "staticOutputQualityGates": "yes for local/staging no-email validation context",
+    "contactFormProductionReadiness": false,
+    "realEmailDeliveryReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "realEmailSent": false,
+    "microsoft365Changed": false,
+    "azureChanged": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "rollerTouched": false
+  }
+}
