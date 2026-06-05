@@ -44,6 +44,13 @@
   "recommendation": {
     "recommendedOption": "A",
     "label": "Public Blob read for approved checksum-versioned marketing media plus Cloudflare proxied delivery/routing and path rewrite",
+    "selected": true,
+    "selectedDate": "2026-06-05",
+    "phase1Started": true,
+    "phase1Completed": true,
+    "phase1BCompleted": true,
+    "phase1Blocker": null,
+    "azureDirectPublicBlobValidationPassed": true,
     "executed": false,
     "requiresSeparateApproval": true
   },

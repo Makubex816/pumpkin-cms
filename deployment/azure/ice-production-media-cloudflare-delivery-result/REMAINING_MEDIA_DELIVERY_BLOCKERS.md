@@ -2,9 +2,9 @@
 
 Date: 2026-06-05
 
-## Cloudflare Blocker
+## Rule-Based Cloudflare Blocker
 
-Cloudflare media delivery is blocked because the safe proxied-DNS plus Origin Rule path requires HostHeader override, and Cloudflare rejected it:
+Rule-based Cloudflare media delivery remains blocked because the safe proxied-DNS plus Origin Rule path requires HostHeader override, and Cloudflare rejected it:
 
 ```text
 not entitled to use the HostHeader override
@@ -16,15 +16,28 @@ Cloud Connector was not available through the probed ruleset phase:
 unknown phase "http_request_cloud_connector"
 ```
 
-No Worker was deployed because Worker deployment was not approved.
+## Worker Follow-Up
 
-## Current Media Delivery State
+The first Worker attempt was blocked by token permissions:
 
 ```text
-media.iceskatingrinkrentals.com DNS/proxy/routing: not configured
-Cloudflare path rewrite: not configured
-Cloudflare media cache behavior: not configured
-public media URL validation: 0/9 passed
+GET /zones/{zone_id}/workers/routes: HTTP 403
+GET /accounts/{account_id}/workers/scripts: HTTP 403
+```
+
+The Worker retry with the Worker-capable token completed:
+
+```text
+media DNS/proxy: configured
+Worker script: configured
+Worker route: configured
+public media URL validation: 9/9 passed
+```
+
+Worker result package:
+
+```text
+deployment/azure/ice-production-media-worker-delivery-result/
 ```
 
 ## Still Blocked
@@ -35,13 +48,5 @@ public media URL validation: 0/9 passed
 - Azure staging readiness remains `no`
 - main-site DNS cutover remains `no`
 - production/indexing readiness remains not live-ready
-
-## Required Future Resolution
-
-Use one explicitly approved future path:
-
-- enable or use a Cloudflare product/API path that can route Azure Blob with the correct origin Host header/SNI and container path rewrite
-- configure Azure Storage custom domain/HTTPS behavior through an approved Azure change, then revisit Cloudflare media DNS/rules
-- approve a Worker-based media proxy/rewrite path if Cloudflare rules cannot perform the required origin behavior
 
 Any future run must still avoid root/apex DNS changes, `www` changes, CMS writes, MediaAsset writes, deployment, email/Microsoft 365 work, and Roller work unless separately approved.

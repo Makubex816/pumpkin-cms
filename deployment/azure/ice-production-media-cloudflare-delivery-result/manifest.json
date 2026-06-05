@@ -8,6 +8,16 @@
   "branch": "feature/admin-page-editor-import-export",
   "latestRelevantCommits": [
     {
+      "hash": "41e1774",
+      "subject": "Document Ice Cloudflare Worker media delivery permission blocker",
+      "confirmed": true
+    },
+    {
+      "hash": "158deed",
+      "subject": "Document Ice Cloudflare media delivery entitlement blocker",
+      "confirmed": true
+    },
+    {
       "hash": "a919c25",
       "subject": "Verify Ice Cloudflare zone activation",
       "confirmed": true
@@ -33,42 +43,27 @@
       "confirmed": true
     }
   ],
-  "startState": {
-    "resultPackageExisted": true,
-    "rootReportExisted": true,
-    "classifiedFiles": {
-      "expectedCloudflareMediaDeliveryResultDocs": [
-        "PUMPKIN_ICE_CLOUDFLARE_MEDIA_DELIVERY_RESULT_REPORT.md",
-        "deployment/azure/ice-production-media-cloudflare-delivery-result/"
-      ],
-      "unrelatedStaticAzureBacklog": [
-        "deployment/static-azure/"
-      ],
-      "unrelatedIceMediaDeliveryStrategyBacklog": [
-        "deployment/azure/ice-production-media-delivery-strategy/"
-      ],
-      "rawContentReviewInputFolders": [
-        "content-review/ice-final-contact-input/",
-        "content-review/ice-service-areas-input/"
-      ],
-      "generatedArtifacts": [
-        "content-review/ice-final-contact-input/*.zip and extracted preview/assets",
-        "content-review/ice-service-areas-input/*.zip and extracted preview/assets"
-      ],
-      "protectedConfigRisk": [],
-      "unexpectedFiles": []
+  "ruleBasedResult": {
+    "selectedPath": "proxied CNAME plus Cloudflare URL Rewrite, Origin Rule, and Cache Settings Rule",
+    "configured": false,
+    "validated": false,
+    "sanitizedBlocker": "not entitled to use the HostHeader override",
+    "sanitizedBlockerSource": "/rules/0/host_header",
+    "cloudConnectorProbe": {
+      "phase": "http_request_cloud_connector",
+      "availableAsRulesetPhase": false,
+      "sanitizedError": "unknown phase \"http_request_cloud_connector\""
     }
   },
-  "cloudflarePreflight": {
-    "cloudflareApiToken": "present",
-    "cloudflareZoneId": "present",
-    "tokenStatus": "active",
-    "zoneName": "iceskatingrinkrentals.com",
-    "zoneStatus": "active",
-    "mediaDnsRecordCountBefore": 0,
-    "existingCustomMediaRulesBefore": 0,
-    "secretsPrinted": false,
-    "tokensPrinted": false
+  "workerFollowUp": {
+    "firstWorkerAttemptBlocked": true,
+    "firstWorkerAttemptBlocker": "Worker route/script endpoints returned HTTP 403",
+    "retryUsedWorkerCapableToken": true,
+    "cloudflareWorkerMediaDeliveryConfigured": true,
+    "cloudflarePublicMediaUrlsValidated": true,
+    "validatedCount": 9,
+    "workerResultPackage": "deployment/azure/ice-production-media-worker-delivery-result/",
+    "workerRootReport": "PUMPKIN_ICE_CLOUDFLARE_WORKER_MEDIA_DELIVERY_RESULT_REPORT.md"
   },
   "azureOrigin": {
     "storageAccount": "iceskatingmedia",
@@ -84,44 +79,14 @@
     "connectionStringsPrinted": false,
     "sasUrlsGeneratedOrPrinted": false
   },
-  "implementationAttempt": {
-    "selectedPath": "proxied CNAME plus Cloudflare URL Rewrite, Origin Rule, and Cache Settings Rule",
-    "workerDeploymentAttempted": false,
-    "cloudflareMutationAttempted": true,
-    "configurationPersisted": false,
-    "sanitizedBlocker": "not entitled to use the HostHeader override",
-    "sanitizedBlockerSource": "/rules/0/host_header",
-    "cloudConnectorProbe": {
-      "phase": "http_request_cloud_connector",
-      "availableAsRulesetPhase": false,
-      "sanitizedError": "unknown phase \"http_request_cloud_connector\""
-    },
-    "cleanupRequired": false,
-    "postAttemptMediaDnsRecordCount": 0,
-    "postAttemptCustomMediaRuleCount": 0
-  },
-  "targetCloudflareUrls": {
-    "validatedCount": 9,
-    "publiclyReadableCount": 0,
-    "status": "failed before HTTP response",
-    "dnsResolvedInLocalCheck": false,
-    "redirectedToAzureHost": false,
-    "secretsExposedInResponses": false
-  },
-  "configuration": {
-    "dnsRecordCreatedOrUpdated": false,
-    "proxyConfigured": false,
-    "pathRewriteConfigured": false,
-    "cacheBehaviorConfigured": false,
-    "workerDeployed": false
-  },
   "readiness": {
     "staticDryRunCompleted": true,
     "staticRouteOutputReady": true,
     "azureMediaFilesUploaded": true,
     "azureDirectPublicBlobMediaReadable": true,
-    "cloudflareMediaDeliveryConfigured": false,
-    "cloudflarePublicMediaUrlsValidated": false,
+    "cloudflareRuleBasedMediaDeliveryConfigured": "no, blocked by entitlement",
+    "cloudflareWorkerMediaDeliveryConfigured": true,
+    "cloudflarePublicMediaUrlsValidated": true,
     "mediaAssetProductionUrlReadiness": false,
     "mediaProductionUrlReadiness": false,
     "contactFormProductionReadiness": false,
@@ -132,9 +97,8 @@
     "roller": "paused"
   },
   "actionsPerformed": {
-    "cloudflareWriteAttemptRejectedBeforeConfigCreation": true,
-    "cloudflareChanged": false,
-    "dnsChanged": false,
+    "cloudflareWriteAttemptRejectedBeforeRuleConfigCreation": true,
+    "workerFollowUpConfiguredMediaDelivery": true,
     "rootDnsChanged": false,
     "wwwDnsChanged": false,
     "cmsRecordsUpdated": false,

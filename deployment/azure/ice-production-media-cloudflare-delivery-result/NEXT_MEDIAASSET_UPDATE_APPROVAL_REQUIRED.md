@@ -6,16 +6,16 @@ Date: 2026-06-05
 
 MediaAsset production URL updates are not approved and were not performed.
 
-Cloudflare public media URLs are not ready:
+Cloudflare Worker public media URLs now validate through the follow-up Worker package:
 
 ```text
-media.iceskatingrinkrentals.com DNS: unresolved
-Cloudflare public URL validation: 0/9 passed
+media.iceskatingrinkrentals.com DNS: resolves through Cloudflare
+Cloudflare Worker public URL validation: 9/9 passed
 ```
 
-## Do Not Update Yet
+## Do Not Update Without Separate Approval
 
-Do not update CMS or MediaAsset records until:
+Do not update CMS or MediaAsset records without a separate approval. The future approved run should still confirm:
 
 - `media.iceskatingrinkrentals.com` delivery is configured
 - all 9 locked public media URLs return `200 OK`
@@ -26,6 +26,6 @@ Do not update CMS or MediaAsset records until:
 
 ## Separate Approval Required
 
-A future MediaAsset update run must be separately approved and scoped only after Cloudflare public media URLs validate.
+A future MediaAsset update run must be separately approved and scoped only to the 9 approved Ice media records.
 
 This run performed no CMS writes and no MediaAsset writes.

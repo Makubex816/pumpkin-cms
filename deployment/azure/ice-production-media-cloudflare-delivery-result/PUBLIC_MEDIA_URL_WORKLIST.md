@@ -36,8 +36,21 @@ Direct Azure origin validation:
 9/9 passed
 ```
 
-Target Cloudflare public URL validation:
+Rule-based Cloudflare public URL validation from this package:
 
 ```text
 0/9 passed
+```
+
+Worker-based Cloudflare public URL validation from the follow-up Worker package:
+
+```text
+9/9 passed
+```
+
+See:
+
+```text
+deployment/azure/ice-production-media-worker-delivery-result/PUBLIC_MEDIA_URL_WORKLIST.md
+deployment/azure/ice-production-media-worker-delivery-result/POST_CHANGE_PUBLIC_URL_VALIDATION.md
 ```

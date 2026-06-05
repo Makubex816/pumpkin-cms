@@ -8,7 +8,7 @@ Recommend a future explicit approval for:
 Option A: public Blob read for approved checksum-versioned marketing media, delivered through Cloudflare at media.iceskatingrinkrentals.com with a path rewrite to the Azure container-backed origin path.
 ```
 
-Do not execute this recommendation without a separate approval.
+Selection update: Option A was selected on 2026-06-05. Option A Phase 1 enabled account-level Blob public access. Option A Phase 1B set the existing `ice-rink-rentals-media` container to blob-level anonymous read using a no-key Azure Resource Manager management-plane update, and all 9 direct Azure Blob public URLs validated successfully.
 
 ## Why This Fits
 
@@ -74,4 +74,3 @@ Both fallbacks require more operational design and should be approved separately
 - DNS cutover readiness: no
 - Production/indexing readiness: not live-ready
 - Roller: paused
-

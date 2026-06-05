@@ -35,6 +35,8 @@ For public marketing-site imagery, checksum-versioned paths, simple static HTML,
 Option A: public blob read for the approved media container, plus Cloudflare proxied delivery/routing and a path rewrite that maps the public URL path to the Azure container-backed origin path.
 ```
 
+Option A was selected for Ice media delivery on 2026-06-05 during Option A Phase 1. Phase 1B set the existing Azure Blob container to blob-level anonymous read using an Azure Resource Manager management-plane update, and all 9 direct Azure Blob public URLs validated successfully.
+
 This should be approved separately before execution. A plain CNAME to Azure Blob is not enough for the locked target URL pattern because Azure Blob service URLs include the container segment:
 
 ```text

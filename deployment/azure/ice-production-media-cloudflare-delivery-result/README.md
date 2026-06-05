@@ -14,7 +14,7 @@ media.iceskatingrinkrentals.com
 
 ## Scope
 
-This package documents the approved Ice Cloudflare media-delivery setup attempt for `media.iceskatingrinkrentals.com` only.
+This package documents the approved rule-based Cloudflare media-delivery setup attempt for `media.iceskatingrinkrentals.com` only.
 
 The approved target URL pattern remains:
 
@@ -28,9 +28,9 @@ The Azure origin URL pattern remains:
 https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
 ```
 
-## Result Summary
+## Rule-Based Result Summary
 
-Cloudflare media delivery was not configured.
+Rule-based Cloudflare media delivery was not configured.
 
 Exact blocker:
 
@@ -45,37 +45,38 @@ Cloud Connector was not used because the available Cloudflare API phase probe re
 unknown phase "http_request_cloud_connector"
 ```
 
-No Worker was deployed.
+No rule-based DNS record, path rewrite rule, origin routing rule, or cache settings rule was left configured by that attempt.
 
-No Cloudflare DNS record, path rewrite rule, origin routing rule, or cache settings rule remains configured for `media.iceskatingrinkrentals.com`.
+## Worker Follow-Up
 
-## Start-State Checks
-
-Branch:
+The first Worker attempt stopped safely because the active token could not access Worker route/script endpoints:
 
 ```text
-feature/admin-page-editor-import-export
+GET /zones/{zone_id}/workers/routes: HTTP 403
+GET /accounts/{account_id}/workers/scripts: HTTP 403
 ```
 
-Relevant commits confirmed:
+A later retry used the Worker-capable Cloudflare token from the active shell and completed.
 
-- `a919c25` Verify Ice Cloudflare zone activation
-- `65cd0fb` Complete Ice Option A media delivery phase 1B
-- `58ebbd0` Upload approved Ice media to Azure Blob
-- `3ad77db` Assign Ice Blob data-plane upload role
-- `941a1e7` Create Ice Azure media storage and container
+Worker delivery result:
 
-Start-state worktree classification:
+```text
+Cloudflare Worker media delivery configured: yes
+media.iceskatingrinkrentals.com resolves through Cloudflare: yes
+approved Cloudflare public media URLs validated: 9/9
+```
 
-- expected Cloudflare media delivery result docs: this package and root report existed and were updated
-- unrelated static-azure backlog: modified files under `deployment/static-azure/`, left untouched
-- unrelated Ice media delivery strategy backlog: modified files under `deployment/azure/ice-production-media-delivery-strategy/`, left untouched
-- raw content-review input folders: untracked folders under `content-review/ice-final-contact-input/` and `content-review/ice-service-areas-input/`, left untouched
-- generated artifacts: untracked zip/extracted preview/assets inside the content-review input folders, left untouched
-- protected config risk: none observed in `git status`
-- unexpected files: none beyond the classified backlog/input paths
+Worker result package:
 
-No files were staged.
+```text
+deployment/azure/ice-production-media-worker-delivery-result/
+```
+
+Root Worker report:
+
+```text
+PUMPKIN_ICE_CLOUDFLARE_WORKER_MEDIA_DELIVERY_RESULT_REPORT.md
+```
 
 ## Azure Origin Status
 
@@ -90,29 +91,22 @@ cache-control: public, max-age=31536000, immutable
 
 No Azure access changes were made. No keys, connection strings, or SAS URLs were used or printed.
 
-## Cloudflare Setup Status
+## Current Production Gate Status
 
-Selected safe implementation path:
+Media production URL readiness remains `no`.
 
-```text
-DNS proxied CNAME + URL Rewrite + Origin Rule + Cache Settings Rule
-```
+Remaining gates:
 
-Execution stopped before DNS creation because the required Origin Rule HostHeader override is not entitled on this Cloudflare account/plan.
+- MediaAsset production URL updates were not approved or performed
+- strict validators have not been rerun against production media domain URLs
+- contact form production readiness remains `no`
+- Azure staging readiness remains `no`
+- DNS cutover/main-site deployment remains `no`
+- production/indexing readiness remains not live-ready
 
-No media DNS record was created.
+## Guardrails Maintained
 
-No root/apex, `www`, MX, TXT, email, CMS, MediaAsset, deployment, protected config, raw image, generated static artifact, Microsoft 365, or Roller work occurred.
-
-## Public URL Validation
-
-Current validation result:
-
-```text
-media.iceskatingrinkrentals.com DNS: unresolved
-Cloudflare public media URLs: 0/9 passed
-failure mode: failed before HTTP response because media hostname is unresolved
-```
+No root/apex, `www`, MX, TXT, email, CMS, MediaAsset, deployment, protected config, raw image, generated static artifact, Microsoft 365, or Roller work occurred in the Worker retry beyond the approved media Worker/DNS/route scope.
 
 ## Files
 
