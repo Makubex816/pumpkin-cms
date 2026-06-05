@@ -1,0 +1,123 @@
+{
+  "packageName": "ice-production-media-storage-container-creation-result",
+  "generatedDate": "2026-06-04",
+  "mode": "azure-storage-account-container-creation-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestExpectedCommit": {
+    "hash": "5506bf8",
+    "subject": "Register Ice Azure Storage provider",
+    "confirmed": true
+  },
+  "approvalUsed": {
+    "scope": "Ice Azure storage account and Blob container creation only",
+    "resourceGroup": "rg-ice-production-media",
+    "storageAccount": "iceskatingmedia",
+    "blobContainer": "ice-rink-rentals-media",
+    "region": "eastus"
+  },
+  "azureContext": {
+    "azureCliAvailable": true,
+    "azureCliVersion": "2.87.0",
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a",
+    "subscriptionState": "Enabled",
+    "isDefault": true
+  },
+  "preCreateChecks": {
+    "microsoftStorageProviderRegistrationState": "Registered",
+    "resourceGroupExists": true,
+    "resourceGroupProvisioningState": "Succeeded",
+    "storageAccountNameAvailable": true,
+    "visibleStorageAccountsBeforeCreate": 0
+  },
+  "creationResult": {
+    "storageAccount": {
+      "name": "iceskatingmedia",
+      "resourceGroup": "rg-ice-production-media",
+      "location": "eastus",
+      "created": true,
+      "provisioningState": "Succeeded",
+      "kind": "StorageV2",
+      "sku": "Standard_LRS",
+      "accessTier": "Hot",
+      "minimumTlsVersion": "TLS1_2",
+      "httpsOnly": true,
+      "allowBlobPublicAccess": false
+    },
+    "blobContainer": {
+      "name": "ice-rink-rentals-media",
+      "storageAccount": "iceskatingmedia",
+      "created": true,
+      "exists": true,
+      "publicAccess": "None",
+      "blobCountVerified": false,
+      "blobCountVerificationNote": "Blob list count was blocked by data-plane RBAC; no key auth was used and no upload command was run."
+    },
+    "alternateResourceNamesCreated": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureReadOnlyDiscoveryReadiness": true,
+    "azureResourceGroupCreated": true,
+    "microsoftStorageProviderRegistered": true,
+    "azureStorageAccountCreated": true,
+    "blobContainerCreated": true,
+    "mediaUploadReadiness": "pending explicit approval",
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "files": [
+    "README.md",
+    "AZURE_CONTEXT.md",
+    "STORAGE_PROVIDER_STATUS.md",
+    "PRE_CREATE_CHECKS.md",
+    "STORAGE_ACCOUNT_CREATION_RESULT.md",
+    "BLOB_CONTAINER_CREATION_RESULT.md",
+    "POST_CREATE_READONLY_VERIFICATION.md",
+    "REMAINING_MEDIA_EXECUTION_BLOCKERS.md",
+    "NEXT_MEDIA_UPLOAD_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ],
+  "actionsPerformed": {
+    "storageAccountCreated": true,
+    "approvedStorageAccountCreated": true,
+    "blobContainerCreated": true,
+    "approvedBlobContainerCreated": true,
+    "unapprovedResourceNamesCreated": false,
+    "mediaUploaded": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_STORAGE_CONTAINER_CREATION_RESULT_REPORT.md"
+}
