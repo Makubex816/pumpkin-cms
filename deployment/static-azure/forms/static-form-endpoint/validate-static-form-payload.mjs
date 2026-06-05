@@ -5,6 +5,7 @@ const HONEYPOT_FIELDS = new Set([
   'website',
   'company-url',
   'companyUrl',
+  'honeypot',
   'hp-field',
   'hp_field',
   '_gotcha',
@@ -43,6 +44,14 @@ export function getSiteConfigs(env = process.env) {
       defaultLeadRoutingMode: 'manual_review_then_provider_match',
       defaultRecipientGroup: 'ICE_RINK_RENTALS_LEAD_RECIPIENT',
       staticFormEndpointKey: env.ICE_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY || 'ice-rink-rentals-default',
+      allowedDomainRoutingKeys: uniqueList([
+        'ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT',
+        env.ICE_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY || 'ice-rink-rentals-default',
+      ]),
+      allowedRecipientGroups: uniqueList([
+        'ICE_RINK_RENTALS_LEAD_RECIPIENT',
+        'local_admin',
+      ]),
     },
     {
       siteKey: 'roller-rink-rentals',
@@ -59,6 +68,12 @@ export function getSiteConfigs(env = process.env) {
       defaultLeadRoutingMode: 'manual_review_then_provider_match',
       defaultRecipientGroup: 'local_admin',
       staticFormEndpointKey: env.ROLLER_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY || 'roller-rink-rentals-default',
+      allowedDomainRoutingKeys: uniqueList([
+        env.ROLLER_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY || 'roller-rink-rentals-default',
+      ]),
+      allowedRecipientGroups: uniqueList([
+        'local_admin',
+      ]),
     },
   ];
 }
@@ -165,6 +180,11 @@ export function validateStaticFormPayload({
   const formId = sanitizeString(payload.formId, 120) || formKey;
   const pageSlug = sanitizeString(payload.pageSlug, 180) || 'contact';
   const formType = sanitizeString(payload.formType, 120) || sanitizeString(payload?.formConfig?.formType, 120) || (formKey === 'default-quote-request' ? 'quote-request' : 'contact');
+  const routing = site ? resolveRoutingReferences({ payload, site }) : {
+    domainRoutingKey: '',
+    recipientGroup: '',
+    routingMode: '',
+  };
 
   if (!formId) errors.push('formId is required.');
   if (Object.keys(formData).length === 0) errors.push('formData is required.');
@@ -180,6 +200,8 @@ export function validateStaticFormPayload({
   const eventLocation = firstNonEmpty(formData, ['event-location', 'eventLocation', 'event_location', 'eventCity', 'eventState', 'location', 'venue']);
   const message = firstNonEmpty(formData, ['message', 'details', 'comments']);
   const consent = firstNonEmpty(formData, ['consent', 'terms', 'privacyConsent']);
+  const rawMessage = firstNonEmptyRaw(payload.formData, ['message', 'details', 'comments']);
+  const maxMessageLength = parseInteger(env.STATIC_FORM_MAX_MESSAGE_LENGTH, 4000);
 
   if (!name) errors.push('Name is required.');
   if (!email) {
@@ -189,6 +211,39 @@ export function validateStaticFormPayload({
   }
 
   if (!isTruthy(consent)) errors.push('Consent is required.');
+  if (rawMessage && rawMessage.length > maxMessageLength) {
+    errors.push(`Message must be ${maxMessageLength} characters or fewer.`);
+  }
+
+  if (site) {
+    if (!routing.domainRoutingKey) {
+      errors.push('domainRoutingKey is required.');
+    } else if (!site.allowedDomainRoutingKeys.includes(routing.domainRoutingKey)) {
+      errors.push('domainRoutingKey is not allowed for this site.');
+    }
+
+    if (!routing.recipientGroup) {
+      errors.push('recipientGroup is required.');
+    } else if (!site.allowedRecipientGroups.includes(routing.recipientGroup)) {
+      errors.push('recipientGroup is not allowed for this site.');
+    }
+
+    if (hasNonEmpty(payload?.domainRoutingKey) && hasNonEmpty(payload?.staticEndpointRef)) {
+      const legacyValue = sanitizeString(payload.domainRoutingKey, 160);
+      const frontendValue = sanitizeString(payload.staticEndpointRef, 160);
+      if (legacyValue !== frontendValue) {
+        warnings.push('Both domainRoutingKey and staticEndpointRef were provided; domainRoutingKey was used.');
+      }
+    }
+
+    if (hasNonEmpty(payload?.recipientGroup) && hasNonEmpty(payload?.leadRecipientRef)) {
+      const legacyValue = sanitizeString(payload.recipientGroup, 160);
+      const frontendValue = sanitizeString(payload.leadRecipientRef, 160);
+      if (legacyValue !== frontendValue) {
+        warnings.push('Both recipientGroup and leadRecipientRef were provided; recipientGroup was used.');
+      }
+    }
+  }
 
   if (formType === 'quote_request' || formType === 'quote-request' || formKey === 'default-quote-request') {
     if (!phone) errors.push('Phone is required for quote requests.');
@@ -209,6 +264,35 @@ export function validateStaticFormPayload({
     formKey,
     pageSlug,
     formType,
+    routing,
+  };
+}
+
+export function resolveRoutingReferences({ payload, site }) {
+  const domainRoutingKey = firstNonEmptyPayloadValue([
+    payload?.domainRoutingKey,
+    payload?.staticEndpointRef,
+    payload?.formConfig?.domainRoutingKey,
+    payload?.formConfig?.staticEndpointRef,
+    site?.staticFormEndpointKey,
+  ], 160);
+  const recipientGroup = firstNonEmptyPayloadValue([
+    payload?.recipientGroup,
+    payload?.leadRecipientRef,
+    payload?.formConfig?.recipientGroup,
+    payload?.formConfig?.leadRecipientRef,
+    site?.defaultRecipientGroup,
+  ], 160);
+  const routingMode = firstNonEmptyPayloadValue([
+    payload?.routingMode,
+    payload?.formConfig?.routingMode,
+    site?.defaultLeadRoutingMode,
+  ], 160);
+
+  return {
+    domainRoutingKey,
+    recipientGroup,
+    routingMode,
   };
 }
 
@@ -219,6 +303,30 @@ function firstNonEmpty(record, keys) {
   }
 
   return '';
+}
+
+function firstNonEmptyRaw(record, keys) {
+  if (!record || typeof record !== 'object' || Array.isArray(record)) return '';
+
+  for (const key of keys) {
+    const value = record[key];
+    if (typeof value === 'string' && value.trim()) return value.trim();
+  }
+
+  return '';
+}
+
+function firstNonEmptyPayloadValue(values, maxLength) {
+  for (const value of values) {
+    const sanitized = sanitizeString(value, maxLength);
+    if (sanitized) return sanitized;
+  }
+
+  return '';
+}
+
+function hasNonEmpty(value) {
+  return Boolean(sanitizeString(value, 160));
 }
 
 function normalizeDomain(value) {
@@ -252,4 +360,8 @@ function normalizeFormKey(value) {
 function parseInteger(value, fallback) {
   const parsed = Number.parseInt(String(value || ''), 10);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function uniqueList(values) {
+  return [...new Set(values.map((value) => sanitizeString(value, 160)).filter(Boolean))];
 }

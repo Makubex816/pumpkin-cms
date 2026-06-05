@@ -1,0 +1,91 @@
+{
+  "packageName": "ice-static-form-endpoint-local-hardening-result",
+  "generatedDate": "2026-06-05",
+  "mode": "static-form-endpoint-local-hardening",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "sourceFilesChanged": [
+    "deployment/static-azure/forms/static-form-endpoint/contact-handler.mjs",
+    "deployment/static-azure/forms/static-form-endpoint/validate-static-form-payload.mjs",
+    "deployment/static-azure/forms/static-form-endpoint/test-static-form-endpoint.mjs",
+    "deployment/static-azure/forms/static-form-endpoint/package.json",
+    "deployment/static-azure/forms/static-form-endpoint/sample-request.json",
+    "deployment/static-azure/forms/static-form-endpoint/sample-request-legacy.json",
+    "deployment/static-azure/forms/static-form-endpoint/README.md",
+    "deployment/static-azure/forms/static-form-endpoint/DEPLOYMENT_INSTRUCTIONS.md"
+  ],
+  "mapping": {
+    "staticEndpointRefMapsToDomainRoutingKey": true,
+    "leadRecipientRefMapsToRecipientGroup": true,
+    "legacyDomainRoutingKeyPreserved": true,
+    "legacyRecipientGroupPreserved": true,
+    "legacyFieldsTakePrecedence": true
+  },
+  "allowedIceRefs": {
+    "domainRoutingKeys": [
+      "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+      "ice-rink-rentals-default"
+    ],
+    "recipientGroups": [
+      "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+      "local_admin"
+    ]
+  },
+  "tests": {
+    "npmRunCheck": {
+      "exitCode": 0,
+      "passed": true
+    },
+    "npmTest": {
+      "exitCode": 0,
+      "passed": true,
+      "coveredCaseCount": 10
+    }
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormEndpointLocalHardening": true,
+    "contactFormProductionReadiness": false,
+    "staticOutputQualityGates": false,
+    "endpointDeploymentReadiness": "pending explicit approval",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "endpointDeployed": false,
+    "emailSent": false,
+    "microsoft365Changed": false,
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanges": false,
+    "staticDeployment": false,
+    "productionDeployment": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "rollerTouched": false
+  },
+  "files": [
+    "README.md",
+    "HARDENING_SCOPE.md",
+    "FRONTEND_PAYLOAD_COMPATIBILITY.md",
+    "HANDLER_MAPPING_RESULT.md",
+    "VALIDATION_AND_SANITIZATION_RESULT.md",
+    "LOCAL_TEST_RESULT.md",
+    "DEPLOYMENT_STILL_BLOCKED.md",
+    "NEXT_ENDPOINT_DEPLOYMENT_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ],
+  "rootReport": "PUMPKIN_ICE_STATIC_FORM_ENDPOINT_LOCAL_HARDENING_RESULT_REPORT.md"
+}
+

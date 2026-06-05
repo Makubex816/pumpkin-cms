@@ -98,6 +98,7 @@ export async function handleStaticContactRequest({
     clientIp: getClientIp(headers),
     now,
     payload,
+    routing: validation.routing,
   });
 
   try {
@@ -123,10 +124,10 @@ export async function handleStaticContactRequest({
   }
 }
 
-export function buildFormEntry({ site, formId, formKey, pageSlug, formData, origin, referrer, userAgent, clientIp, now, payload }) {
-  const domainRoutingKey = sanitizeString(payload?.domainRoutingKey || payload?.formConfig?.domainRoutingKey || site.staticFormEndpointKey, 160);
-  const recipientGroup = sanitizeString(payload?.recipientGroup || payload?.formConfig?.recipientGroup || site.defaultRecipientGroup, 160);
-  const routingMode = sanitizeString(payload?.routingMode || payload?.formConfig?.routingMode || site.defaultLeadRoutingMode, 160);
+export function buildFormEntry({ site, formId, formKey, pageSlug, formData, origin, referrer, userAgent, clientIp, now, payload, routing = {} }) {
+  const domainRoutingKey = sanitizeString(routing.domainRoutingKey || payload?.domainRoutingKey || payload?.staticEndpointRef || payload?.formConfig?.domainRoutingKey || payload?.formConfig?.staticEndpointRef || site.staticFormEndpointKey, 160);
+  const recipientGroup = sanitizeString(routing.recipientGroup || payload?.recipientGroup || payload?.leadRecipientRef || payload?.formConfig?.recipientGroup || payload?.formConfig?.leadRecipientRef || site.defaultRecipientGroup, 160);
+  const routingMode = sanitizeString(routing.routingMode || payload?.routingMode || payload?.formConfig?.routingMode || site.defaultLeadRoutingMode, 160);
   const consentAccepted = ['true', 'on', 'yes', '1'].includes(String(formData.consent || '').toLowerCase());
 
   return {
