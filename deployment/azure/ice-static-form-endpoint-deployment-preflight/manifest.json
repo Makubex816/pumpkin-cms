@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-06-05",
+  "siteKey": "ice-rink-rentals",
+  "scope": "static form endpoint deployment preflight",
+  "status": "preflight_complete",
+  "recommendedOption": "standalone Azure Function companion endpoint",
+  "recommendedRoute": "/api/static-contact",
+  "compatibilityRoute": "/api/contact",
+  "package": {
+    "path": "deployment/static-azure/forms/static-form-endpoint/",
+    "npmRunCheck": {
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "npmTest": {
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "deploymentScaffoldComplete": false
+  },
+  "futureTarget": {
+    "stagingFunctionApp": "func-pumpkin-static-forms-staging",
+    "productionFunctionApp": "func-pumpkin-static-forms-prod",
+    "publicUrlShape": "https://<approved-form-endpoint-host>/api/static-contact"
+  },
+  "validatorAliases": [
+    "NEXT_PUBLIC_STATIC_FORM_ENDPOINT",
+    "STATIC_FORM_ENDPOINT",
+    "NEXT_PUBLIC_STATIC_FORM_ACTION",
+    "STATIC_FORM_ACTION"
+  ],
+  "verificationFlag": "STATIC_FORM_ENDPOINT_VERIFIED",
+  "requiredFutureRuntimeSettings": [
+    "PUMPKIN_API_URL",
+    "ICE_RINK_RENTALS_API_KEY",
+    "STATIC_FORM_ALLOWED_ORIGINS",
+    "STATIC_FORM_ALLOWED_SITE_KEYS",
+    "STATIC_FORM_FORWARD_MODE",
+    "STATIC_FORM_MAX_BODY_BYTES",
+    "STATIC_FORM_MAX_MESSAGE_LENGTH",
+    "STATIC_FORM_RATE_LIMIT_MODE",
+    "STATIC_FORM_SPAM_PROTECTION_MODE",
+    "ICE_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY"
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormEndpointLocalHardening": true,
+    "staticFormEndpointDeploymentPreflight": true,
+    "contactFormProductionReadiness": false,
+    "staticOutputQualityGates": false,
+    "endpointDeploymentReadiness": "pending explicit approval",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsPerformed": {
+    "endpointDeployed": false,
+    "emailSent": false,
+    "microsoft365Changed": false,
+    "azureResourcesCreated": false,
+    "azureFunctionCreated": false,
+    "azureFunctionDeployed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}
