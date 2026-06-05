@@ -5,8 +5,9 @@
   "type": "module",
   "main": "azure-function-static-contact.mjs",
   "scripts": {
-    "check": "node --check contact-handler.mjs && node --check validate-static-form-payload.mjs && node --check sanitize-static-form-payload.mjs && node --check azure-function-adapter.mjs && node --check azure-function-static-contact.mjs && node --check local-test-server.mjs && node --check test-static-form-endpoint.mjs && node --check test-azure-function-wrapper.mjs",
-    "test": "node test-static-form-endpoint.mjs && node test-azure-function-wrapper.mjs",
+    "check": "node --check contact-handler.mjs && node --check validate-static-form-payload.mjs && node --check sanitize-static-form-payload.mjs && node --check graph-send-mail-delivery.mjs && node --check azure-function-adapter.mjs && node --check azure-function-static-contact.mjs && node --check local-test-server.mjs && node --check test-static-form-endpoint.mjs && node --check test-graph-send-mail-delivery.mjs && node --check test-azure-function-wrapper.mjs",
+    "test": "node test-static-form-endpoint.mjs && node test-graph-send-mail-delivery.mjs && node test-azure-function-wrapper.mjs",
+    "test:graph": "node test-graph-send-mail-delivery.mjs",
     "test:wrapper": "node test-azure-function-wrapper.mjs",
     "start:local": "node local-test-server.mjs",
     "test:dry-run": "node local-test-server.mjs"

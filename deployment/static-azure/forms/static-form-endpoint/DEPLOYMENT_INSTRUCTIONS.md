@@ -34,9 +34,10 @@ The current deployable scaffold does not register a deployed `/api/contact` comp
 9. Verify `FormEntry` persistence through the approved backend path.
 10. Confirm no secrets appear in responses, logs, or static output.
 11. Keep email notifications disabled unless separately approved.
-12. Set `NEXT_PUBLIC_STATIC_FORM_ENDPOINT` for static build only after the public endpoint URL is real.
-13. Set `STATIC_FORM_ENDPOINT_VERIFIED=true` only after endpoint/backend verification passes.
-14. Rerun Ice static export and strict validators.
+12. Keep `FORM_DELIVERY_MODE=dry-run` unless Graph/Microsoft 365 email delivery has separate approval.
+13. Set `NEXT_PUBLIC_STATIC_FORM_ENDPOINT` for static build only after the public endpoint URL is real.
+14. Set `STATIC_FORM_ENDPOINT_VERIFIED=true` only after the approved endpoint verification context passes.
+15. Rerun Ice static export and strict validators.
 
 ## Required Future Settings
 
@@ -54,12 +55,28 @@ PUMPKIN_API_URL=<approved Pumpkin API URL>
 ICE_RINK_RENTALS_API_KEY=<server-side secret>
 STATIC_FORM_ALLOWED_ORIGINS=https://iceskatingrinkrentals.com,https://www.iceskatingrinkrentals.com
 STATIC_FORM_ALLOWED_SITE_KEYS=ice-rink-rentals
+FORM_DELIVERY_MODE=dry-run
 STATIC_FORM_FORWARD_MODE=pumpkin-api
 STATIC_FORM_MAX_BODY_BYTES=20000
 STATIC_FORM_MAX_MESSAGE_LENGTH=4000
 STATIC_FORM_RATE_LIMIT_MODE=<approved mode>
 STATIC_FORM_SPAM_PROTECTION_MODE=<approved mode>
 ICE_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY=ice-rink-rentals-default
+```
+
+Endpoint runtime app settings for future approved Graph mode, placeholders only:
+
+```text
+FORM_DELIVERY_MODE=graph
+MICROSOFT_GRAPH_TENANT_ID=<Microsoft tenant id>
+MICROSOFT_GRAPH_CLIENT_ID=<Microsoft Graph app client id>
+MICROSOFT_GRAPH_CLIENT_SECRET -> <Key Vault reference or approved server-side secret>
+MICROSOFT_GRAPH_SENDER_USER=contact@iceskatingrinkrentals.com
+ICE_RINK_RENTALS_LEAD_RECIPIENT=<approved recipient mailbox or distribution group>
+MICROSOFT_GRAPH_SAVE_TO_SENT_ITEMS=false
+FORM_EMAIL_REPLY_TO_MODE=<none|submitter-email|static>
+FORM_EMAIL_REPLY_TO_ADDRESS=<approved static reply-to mailbox>
+FORM_EMAIL_SUBJECT_PREFIX=<approved subject prefix>
 ```
 
 Do not put Pumpkin API keys, email credentials, connection strings, tokens, or provider secrets in frontend/static build settings.
@@ -73,6 +90,7 @@ cd deployment/static-azure/forms/static-form-endpoint
 npm run check
 npm test
 npm run test:wrapper
+npm run test:graph
 ```
 
 Local server dry-run:
@@ -103,6 +121,7 @@ The deployable scaffold includes:
 - `azure-function-adapter.mjs`
 - `contact-handler.mjs`
 - validation and sanitization helpers
+- Graph sendMail delivery adapter
 - `host.json`
 - `.funcignore`
 - `local.settings.sample.json` with placeholders only
@@ -135,6 +154,15 @@ Before `STATIC_FORM_ENDPOINT_VERIFIED=true` may be set:
 - no secrets appear in public responses or logs
 - approved no-email backend persistence verification passes
 
+Before production email readiness may be considered, future approved Graph verification must also prove:
+
+- Microsoft 365 app or managed identity setup is complete
+- Exchange Online RBAC for Applications or approved mailbox scope is configured
+- Graph mode is deployed with server-side settings only
+- exactly one approved live test email is received at the approved recipient
+- invalid payloads still reject without sending email
+- public responses remain generic and secret-free
+
 ## Approval Boundaries
 
 Separate explicit approval is required before:
@@ -146,6 +174,9 @@ Separate explicit approval is required before:
 - setting `STATIC_FORM_ENDPOINT_VERIFIED=true`
 - sending email
 - Microsoft 365 changes
+- Microsoft Graph app registration or permission grants
+- Exchange Online RBAC changes
+- Azure Function app setting changes
 - Cloudflare or DNS changes
 - CMS writes
 - MediaAsset writes

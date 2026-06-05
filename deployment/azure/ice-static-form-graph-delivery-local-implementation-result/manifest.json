@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-06-05",
+  "siteKey": "ice-rink-rentals",
+  "scope": "static form Graph delivery local implementation",
+  "status": "local_implementation_complete",
+  "packagePath": "deployment/static-azure/forms/static-form-endpoint",
+  "filesAdded": [
+    "deployment/static-azure/forms/static-form-endpoint/graph-send-mail-delivery.mjs",
+    "deployment/static-azure/forms/static-form-endpoint/test-graph-send-mail-delivery.mjs"
+  ],
+  "filesUpdated": [
+    "deployment/static-azure/forms/static-form-endpoint/contact-handler.mjs",
+    "deployment/static-azure/forms/static-form-endpoint/package.json",
+    "deployment/static-azure/forms/static-form-endpoint/README.md",
+    "deployment/static-azure/forms/static-form-endpoint/DEPLOYMENT_INSTRUCTIONS.md",
+    "deployment/static-azure/forms/static-form-endpoint/local.settings.sample.json",
+    "deployment/azure/ice-static-form-real-email-delivery-preflight/README.md",
+    "deployment/azure/ice-static-form-real-email-delivery-preflight/ENDPOINT_CODE_CHANGE_REVIEW.md"
+  ],
+  "deliveryModes": [
+    "dry-run",
+    "no-email",
+    "graph",
+    "m365-graph",
+    "pumpkin-api"
+  ],
+  "defaultDeliveryMode": "dry-run",
+  "graphModeEnvPlaceholders": [
+    "FORM_DELIVERY_MODE",
+    "MICROSOFT_GRAPH_TENANT_ID",
+    "MICROSOFT_GRAPH_CLIENT_ID",
+    "MICROSOFT_GRAPH_CLIENT_SECRET",
+    "MICROSOFT_GRAPH_SENDER_USER",
+    "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "MICROSOFT_GRAPH_SAVE_TO_SENT_ITEMS",
+    "FORM_EMAIL_REPLY_TO_MODE",
+    "FORM_EMAIL_REPLY_TO_ADDRESS",
+    "FORM_EMAIL_SUBJECT_PREFIX"
+  ],
+  "localPackageChecks": {
+    "npmRunCheck": {
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "npmTest": {
+      "exitCode": 0,
+      "result": "pass"
+    }
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormNoEmailEndpointDeployed": true,
+    "staticFormNoEmailValidatorWiring": true,
+    "graphDeliveryLocalImplementation": true,
+    "contactFormProductionReadiness": false,
+    "realEmailDeliveryReadiness": "pending Microsoft 365/RBAC/app settings/redeploy/test",
+    "microsoft365EmailSetupReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "realEmailSent": false,
+    "microsoft365Changed": false,
+    "appRegistrationCreated": false,
+    "graphPermissionGranted": false,
+    "exchangeRbacChanged": false,
+    "azureAppSettingsChanged": false,
+    "endpointRedeployed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}
+

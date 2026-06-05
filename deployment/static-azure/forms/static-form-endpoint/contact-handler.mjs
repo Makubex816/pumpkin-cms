@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { validateStaticFormPayload } from './validate-static-form-payload.mjs';
 import { sanitizeString } from './sanitize-static-form-payload.mjs';
+import { sendGraphMailDelivery } from './graph-send-mail-delivery.mjs';
 
 export function buildCorsHeaders(origin = '', env = process.env) {
   const headers = {
@@ -102,7 +103,7 @@ export async function handleStaticContactRequest({
   });
 
   try {
-    const savedEntry = await forwardToPumpkin({
+    const savedEntry = await deliverStaticFormEntry({
       entry,
       site: validation.site,
       env,
@@ -116,7 +117,7 @@ export async function handleStaticContactRequest({
       entryId: savedEntry?.id || entry.id,
     }, origin, env);
   } catch (error) {
-    logger.error?.('Static form forward failed:', getSafeErrorMessage(error));
+    logger.error?.('Static form delivery failed:', getSafeErrorMessage(error));
     return response(502, {
       ok: false,
       message: 'Unable to submit this request right now.',
@@ -168,13 +169,39 @@ export function buildFormEntry({ site, formId, formKey, pageSlug, formData, orig
   };
 }
 
-async function forwardToPumpkin({ entry, site, env, fetchImpl, logger }) {
-  const mode = env.STATIC_FORM_FORWARD_MODE || 'pumpkin-api';
-  if (mode === 'dry-run') {
-    logger.info?.(`Static form dry-run accepted for site ${site.siteKey}, form ${entry.formId}.`);
-    return { id: entry.id, dryRun: true };
+async function deliverStaticFormEntry({ entry, site, env, fetchImpl, logger }) {
+  const mode = getDeliveryMode(env);
+
+  if (mode === 'graph') {
+    return sendGraphMailDelivery({ entry, site, env, fetchImpl, logger });
   }
 
+  if (mode === 'pumpkin-api') {
+    return forwardToPumpkin({ entry, site, env, fetchImpl });
+  }
+
+  logger.info?.(`Static form dry-run accepted for site ${site.siteKey}, form ${entry.formId}.`);
+  return { id: entry.id, dryRun: true, deliveryMode: 'dry-run' };
+}
+
+function getDeliveryMode(env) {
+  const explicitMode = normalizeMode(env.FORM_DELIVERY_MODE);
+  if (explicitMode === 'graph' || explicitMode === 'm365-graph') return 'graph';
+  if (explicitMode === 'pumpkin-api') return 'pumpkin-api';
+  if (explicitMode === 'dry-run' || explicitMode === 'no-email') return 'dry-run';
+
+  const legacyMode = normalizeMode(env.STATIC_FORM_FORWARD_MODE);
+  if (legacyMode === 'pumpkin-api') return 'pumpkin-api';
+  if (legacyMode === 'graph' || legacyMode === 'm365-graph') return 'graph';
+
+  return 'dry-run';
+}
+
+function normalizeMode(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+async function forwardToPumpkin({ entry, site, env, fetchImpl }) {
   const apiUrl = String(env.PUMPKIN_API_URL || 'http://localhost:5064').replace(/\/+$/, '');
   const apiKey = env[site.apiKeyEnv] || '';
 
