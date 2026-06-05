@@ -6,21 +6,118 @@
   "pausedSite": "RollerRinkRentals.com",
   "branch": "feature/admin-page-editor-import-export",
   "latestRelevantCommit": {
-    "hash": "8142e34",
-    "subject": "Document Ice Cloudflare media delivery auth blocker",
+    "hash": "61438f7",
+    "subject": "Document Ice Cloudflare nameserver propagation",
     "confirmed": true
   },
+  "startState": {
+    "previousActivationStatusPackageExists": true,
+    "rootReportExists": true,
+    "classifiedFiles": {
+      "expectedCloudflareActivationDocs": [
+        "PUMPKIN_ICE_CLOUDFLARE_ZONE_ACTIVATION_STATUS_REPORT.md",
+        "deployment/azure/ice-cloudflare-zone-activation-status/"
+      ],
+      "unrelatedStaticAzureBacklog": [
+        "deployment/static-azure/"
+      ],
+      "unrelatedIceMediaDeliveryStrategyBacklog": [
+        "deployment/azure/ice-production-media-delivery-strategy/"
+      ],
+      "rawContentReviewInputFolders": [
+        "content-review/ice-final-contact-input/",
+        "content-review/ice-service-areas-input/"
+      ],
+      "generatedArtifacts": [
+        "content-review/ice-final-contact-input/*.zip and extracted preview/assets",
+        "content-review/ice-service-areas-input/*.zip and extracted preview/assets"
+      ],
+      "protectedConfigRisk": [],
+      "unexpectedFiles": []
+    }
+  },
   "credentialPresence": {
-    "cloudflareApiToken": "missing",
-    "cloudflareZoneId": "missing",
+    "cloudflareApiToken": "present",
+    "cloudflareZoneId": "present",
     "tokenValuePrinted": false
   },
   "cloudflareApi": {
-    "queried": false,
-    "blocker": "CLOUDFLARE_API_TOKEN and CLOUDFLARE_ZONE_ID are missing in the active Codex shell.",
-    "zoneStatus": "unknown",
-    "assignedNameservers": "unknown",
-    "dnsRecordProxyFlagsAudited": false
+    "queried": true,
+    "methodsUsed": [
+      "GET"
+    ],
+    "mutationMethodsUsed": [],
+    "zoneName": "iceskatingrinkrentals.com",
+    "zoneStatus": "active",
+    "assignedNameservers": [
+      "amy.ns.cloudflare.com",
+      "bob.ns.cloudflare.com"
+    ],
+    "zoneMetadataOriginalNameservers": [
+      "ns1.bluehost.com",
+      "ns2.bluehost.com"
+    ],
+    "dnsRecordProxyFlagsAudited": true,
+    "allowedRecordFiltersQueried": [
+      "name=iceskatingrinkrentals.com",
+      "name=www.iceskatingrinkrentals.com",
+      "name=autodiscover.iceskatingrinkrentals.com",
+      "type=MX",
+      "type=TXT",
+      "name=media.iceskatingrinkrentals.com"
+    ],
+    "dnsRecords": [
+      {
+        "type": "A",
+        "name": "iceskatingrinkrentals.com",
+        "content": "66.81.203.198",
+        "proxied": false,
+        "proxiable": true,
+        "ttl": 1
+      },
+      {
+        "type": "A",
+        "name": "www.iceskatingrinkrentals.com",
+        "content": "66.81.203.198",
+        "proxied": false,
+        "proxiable": true,
+        "ttl": 1
+      },
+      {
+        "type": "CNAME",
+        "name": "autodiscover.iceskatingrinkrentals.com",
+        "content": "autodiscover.outlook.com",
+        "proxied": false,
+        "proxiable": true,
+        "ttl": 1
+      },
+      {
+        "type": "MX",
+        "name": "iceskatingrinkrentals.com",
+        "content": "iceskatingrinkrentals-com.mail.protection.outlook.com",
+        "priority": 0,
+        "proxied": false,
+        "proxiable": false,
+        "ttl": 1
+      },
+      {
+        "type": "TXT",
+        "name": "iceskatingrinkrentals.com",
+        "content": "\"MS=ms13281863\"",
+        "proxied": false,
+        "proxiable": false,
+        "ttl": 1
+      },
+      {
+        "type": "TXT",
+        "name": "iceskatingrinkrentals.com",
+        "content": "\"v=spf1 include:spf.protection.outlook.com -all\"",
+        "proxied": false,
+        "proxiable": false,
+        "ttl": 1
+      }
+    ],
+    "mediaRecordPresent": false
   },
   "publicDns": {
     "nameserverPropagationVisible": true,
@@ -49,8 +146,7 @@
     "azureMediaFilesUploaded": true,
     "azureDirectPublicBlobMediaReadable": true,
     "cloudflareZoneOnboarded": true,
-    "cloudflareZoneActive": "unknown-api-blocked",
-    "cloudflareNameserverPropagationVisible": true,
+    "cloudflareZoneActive": true,
     "cloudflareMediaDeliveryConfigured": false,
     "cloudflarePublicMediaUrlsValidated": false,
     "mediaAssetProductionUrlReadiness": false,

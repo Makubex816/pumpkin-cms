@@ -1,59 +1,104 @@
 # DNS Record Safety Audit
 
+Date: 2026-06-05
+
 ## Audit Source
 
-Cloudflare API record-list audit was not available because required Cloudflare environment variables were missing.
+Cloudflare DNS records were queried read-only through the Cloudflare API for only the approved record filters:
 
-Public DNS was checked read-only. Public DNS can confirm record visibility, but it cannot prove Cloudflare dashboard proxy flags.
+- root/apex name: `iceskatingrinkrentals.com`
+- `www.iceskatingrinkrentals.com`
+- `autodiscover.iceskatingrinkrentals.com`
+- `MX`
+- `TXT`
+- `media.iceskatingrinkrentals.com`
 
-## Public DNS Observations
+No Cloudflare DNS records were created, updated, deleted, proxied, or unproxied.
 
-Root record:
+## Cloudflare DNS Records
+
+Root/apex record:
 
 ```text
-iceskatingrinkrentals.com A 66.81.203.198
+type: A
+name: iceskatingrinkrentals.com
+content: 66.81.203.198
+proxied: false
+proxiable: true
+ttl: 1
 ```
 
 `www` record:
 
 ```text
-www.iceskatingrinkrentals.com A 66.81.203.198
+type: A
+name: www.iceskatingrinkrentals.com
+content: 66.81.203.198
+proxied: false
+proxiable: true
+ttl: 1
 ```
 
 `autodiscover` record:
 
 ```text
-autodiscover.iceskatingrinkrentals.com CNAME autodiscover.outlook.com
+type: CNAME
+name: autodiscover.iceskatingrinkrentals.com
+content: autodiscover.outlook.com
+proxied: false
+proxiable: true
+ttl: 1
 ```
 
 MX record:
 
 ```text
-iceskatingrinkrentals.com MX 0 iceskatingrinkrentals-com.mail.protection.outlook.com
+type: MX
+name: iceskatingrinkrentals.com
+content: iceskatingrinkrentals-com.mail.protection.outlook.com
+priority: 0
+proxied: false
+proxiable: false
+ttl: 1
 ```
 
 TXT records:
 
 ```text
-MS=ms13281863
-v=spf1 include:spf.protection.outlook.com -all
+type: TXT
+name: iceskatingrinkrentals.com
+content: "MS=ms13281863"
+proxied: false
+proxiable: false
+ttl: 1
+```
+
+```text
+type: TXT
+name: iceskatingrinkrentals.com
+content: "v=spf1 include:spf.protection.outlook.com -all"
+proxied: false
+proxiable: false
+ttl: 1
 ```
 
 Media hostname:
 
 ```text
-media.iceskatingrinkrentals.com: not found
+media.iceskatingrinkrentals.com: no Cloudflare DNS record returned
 ```
 
 ## Safety Conclusions
 
-- root and `www` publicly resolve to `66.81.203.198`
-- `autodiscover` publicly resolves to Microsoft autodiscover
-- MX and TXT records are present in public DNS
-- no `media.iceskatingrinkrentals.com` record is visible in public DNS
-- Cloudflare proxy status for root, `www`, and `autodiscover` is not confirmed by API in this run
+- root `A` record is DNS only
+- `www` `A` record is DNS only
+- `autodiscover` `CNAME` is DNS only
+- MX remains DNS only
+- TXT records remain present
+- no `media.iceskatingrinkrentals.com` record has been created in Cloudflare DNS
+- root and `www` still point to `66.81.203.198`
+- Microsoft autodiscover, MX, and TXT records remain visible in the audited Cloudflare DNS records
 
 ## No-Action Confirmation
 
 No DNS records were created, updated, deleted, proxied, or unproxied in this run.
-

@@ -1,5 +1,7 @@
 # Nameserver Propagation Check
 
+Date: 2026-06-05
+
 ## Expected Nameservers
 
 ```text
@@ -54,5 +56,15 @@ iceskatingrinkrentals.com nameserver = bob.ns.cloudflare.com
 
 ## Propagation Status
 
-Nameserver propagation to Cloudflare is visible from the checked resolvers.
+Nameserver propagation to Cloudflare is visible from all checked resolvers:
 
+- local resolver
+- `1.1.1.1`
+- `8.8.8.8`
+
+The public nameservers observed are:
+
+```text
+amy.ns.cloudflare.com
+bob.ns.cloudflare.com
+```

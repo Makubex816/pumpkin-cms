@@ -1,25 +1,22 @@
 # Next Media Delivery Approval Required
 
-## Current Blocker
+Date: 2026-06-05
 
-Cloudflare API credentials are not available in the active Codex shell.
+## Current Status
 
-Missing names:
+Cloudflare credentials are present in the active shell, and the approved read-only zone/status audit is complete.
 
-```text
-CLOUDFLARE_API_TOKEN
-CLOUDFLARE_ZONE_ID
-```
+The zone is active, public nameserver propagation is visible, and the allowed DNS record safety audit confirms no `media.iceskatingrinkrentals.com` Cloudflare DNS record exists yet.
 
 ## Before Media Delivery Setup
 
-Make the required Cloudflare authentication available to the active shell or provide another approved safe mechanism.
+A separate, explicit media-delivery approval is still required before any Cloudflare configuration is changed.
 
 Do not print token values.
 
 ## Next Approval Shape
 
-After credentials are available, request a media-only Cloudflare execution approval that covers only:
+After explicit approval, a media-only Cloudflare execution approval should cover only:
 
 - `media.iceskatingrinkrentals.com`
 - DNS/proxy setup for the media hostname
@@ -36,4 +33,3 @@ Do not include:
 - deployment
 - email/Microsoft 365 work
 - Roller work
-

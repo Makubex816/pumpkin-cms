@@ -10,35 +10,66 @@ Paused site: RollerRinkRentals.com
 
 ## Goal
 
-Perform read-only Cloudflare zone activation/status verification and document the result.
+Complete the approved read-only Cloudflare API zone-status and DNS safety audit. Do not mutate Cloudflare configuration.
+
+## Start-State Checks
+
+Latest relevant commit confirmed:
+
+```text
+61438f7 Document Ice Cloudflare nameserver propagation
+```
+
+Previous Cloudflare activation/status package confirmed present:
+
+```text
+PUMPKIN_ICE_CLOUDFLARE_ZONE_ACTIVATION_STATUS_REPORT.md
+deployment/azure/ice-cloudflare-zone-activation-status/
+```
+
+Start-state worktree classification:
+
+- expected Cloudflare activation docs: package and root report existed; updated by this run
+- unrelated static-azure backlog: modified files under `deployment/static-azure/`, left untouched
+- unrelated Ice media delivery strategy backlog: modified files under `deployment/azure/ice-production-media-delivery-strategy/`, left untouched
+- raw content-review input folders: untracked folders under `content-review/ice-final-contact-input/` and `content-review/ice-service-areas-input/`, left untouched
+- generated artifacts: untracked zip/extracted preview/assets inside the content-review input folders, left untouched
+- protected config risk: none observed in `git status`
+- unexpected files: none beyond the classified backlog/input paths
+
+No files were staged.
 
 ## Credential Preflight
 
 Only presence/missing status was checked.
 
 ```text
-CLOUDFLARE_API_TOKEN: MISSING
-CLOUDFLARE_ZONE_ID: MISSING
+CLOUDFLARE_API_TOKEN=PRESENT
+CLOUDFLARE_ZONE_ID=PRESENT
 ```
 
 No token value was printed.
 
-Because the required environment variables were missing in the active Codex shell, Cloudflare API zone status and record-list checks were not run.
+## Cloudflare API Zone Status
 
-## Zone Status
-
-Cloudflare zone status from API:
+Cloudflare API read-only zone status:
 
 ```text
-unknown-api-blocked
+zone name: iceskatingrinkrentals.com
+zone status: active
+assigned nameservers:
+  amy.ns.cloudflare.com
+  bob.ns.cloudflare.com
 ```
 
-Nameserver delegation is visible in public DNS:
+Cloudflare API zone metadata still returned the following legacy/original nameserver values:
 
 ```text
-amy.ns.cloudflare.com
-bob.ns.cloudflare.com
+ns1.bluehost.com
+ns2.bluehost.com
 ```
+
+No Cloudflare mutation methods were used. The Cloudflare API calls were read-only `GET` requests for the zone object and the approved DNS record filters.
 
 ## Nameserver Status
 
@@ -55,29 +86,36 @@ amy.ns.cloudflare.com
 bob.ns.cloudflare.com
 ```
 
-## DNS Record Safety Audit
-
-Cloudflare dashboard/API proxy flags could not be audited because credentials were missing.
-
-Public DNS observations:
+Nameserver propagation status:
 
 ```text
-iceskatingrinkrentals.com A 66.81.203.198
-www.iceskatingrinkrentals.com A 66.81.203.198
-autodiscover.iceskatingrinkrentals.com CNAME autodiscover.outlook.com
-iceskatingrinkrentals.com MX 0 iceskatingrinkrentals-com.mail.protection.outlook.com
-TXT MS=ms13281863
-TXT v=spf1 include:spf.protection.outlook.com -all
-media.iceskatingrinkrentals.com not found
+propagated to Cloudflare nameservers
+```
+
+## DNS Record Safety Audit
+
+Allowed Cloudflare DNS record reads returned:
+
+```text
+iceskatingrinkrentals.com A 66.81.203.198 proxied=false
+www.iceskatingrinkrentals.com A 66.81.203.198 proxied=false
+autodiscover.iceskatingrinkrentals.com CNAME autodiscover.outlook.com proxied=false
+iceskatingrinkrentals.com MX 0 iceskatingrinkrentals-com.mail.protection.outlook.com proxied=false
+iceskatingrinkrentals.com TXT "MS=ms13281863" proxied=false
+iceskatingrinkrentals.com TXT "v=spf1 include:spf.protection.outlook.com -all" proxied=false
+media.iceskatingrinkrentals.com no Cloudflare DNS record returned
 ```
 
 Safety result:
 
-- root and `www` public DNS still resolve to `66.81.203.198`
-- autodiscover resolves to Microsoft autodiscover
-- MX and TXT records are visible
-- no public `media.iceskatingrinkrentals.com` record is visible
-- Cloudflare proxy/DNS-only flags were not confirmed by API in this run
+- root `A` record is DNS only
+- `www` `A` record is DNS only
+- `autodiscover` `CNAME` is DNS only
+- MX remains DNS only
+- TXT records remain present
+- no `media.iceskatingrinkrentals.com` Cloudflare DNS record has been created
+- root and `www` still resolve to `66.81.203.198`
+- Microsoft autodiscover, MX, and TXT records remain visible
 
 ## What Was Not Done
 
@@ -108,8 +146,7 @@ This run did not:
 - Azure media files uploaded: yes
 - Azure direct public Blob media readable: yes
 - Cloudflare zone onboarded: yes
-- Cloudflare zone active: unknown-api-blocked
-- Cloudflare nameserver propagation visible: yes
+- Cloudflare zone active: yes
 - Cloudflare media delivery configured: no
 - Cloudflare public media URLs validated: no
 - MediaAsset production URL readiness: no
@@ -122,7 +159,7 @@ This run did not:
 
 ## Package
 
-Created:
+Updated:
 
 ```text
 deployment/azure/ice-cloudflare-zone-activation-status/
@@ -130,13 +167,13 @@ deployment/azure/ice-cloudflare-zone-activation-status/
 
 ## Final Validation
 
-Validation commands run after package creation:
+Validation commands/checks:
 
 - manifest JSON parse
 - `git diff --check`
 - trailing whitespace scan on changed docs
 - protected/generated/raw artifact path check
-- targeted secret-value scan
+- targeted secret scan
 - staged-file check
 
 Validation result:

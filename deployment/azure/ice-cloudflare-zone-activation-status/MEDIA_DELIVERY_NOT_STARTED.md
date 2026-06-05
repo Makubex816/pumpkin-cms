@@ -1,10 +1,12 @@
 # Media Delivery Not Started
 
+Date: 2026-06-05
+
 ## Current Status
 
 Cloudflare media delivery has not been started.
 
-No DNS record exists in public DNS for:
+No Cloudflare DNS record was returned for:
 
 ```text
 media.iceskatingrinkrentals.com
@@ -33,4 +35,3 @@ Azure direct public Blob media readable: yes
 ## No-Action Confirmation
 
 No media DNS setup, Cloudflare media delivery setup, path rewrite, cache rule, Worker, CMS write, MediaAsset write, or deployment occurred.
-
