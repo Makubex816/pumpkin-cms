@@ -1,0 +1,100 @@
+{
+  "packageName": "ice-production-media-storage-provider-registration-result",
+  "generatedDate": "2026-06-04",
+  "mode": "azure-storage-provider-registration-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestExpectedCommit": {
+    "hash": "b7224fd",
+    "subject": "Diagnose Ice Azure Storage provider blocker",
+    "confirmed": true
+  },
+  "approvalUsed": {
+    "scope": "Register Microsoft.Storage provider for the Ice Azure subscription only",
+    "providerNamespace": "Microsoft.Storage"
+  },
+  "azureContext": {
+    "azureCliAvailable": true,
+    "azureCliVersion": "2.87.0",
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a",
+    "subscriptionState": "Enabled",
+    "isDefault": true
+  },
+  "providerRegistration": {
+    "namespace": "Microsoft.Storage",
+    "preRegistrationState": "NotRegistered",
+    "registrationCommandRun": true,
+    "interimState": "Registering",
+    "finalState": "Registered",
+    "registered": true
+  },
+  "resourceGroup": {
+    "name": "rg-ice-production-media",
+    "location": "eastus",
+    "exists": true,
+    "provisioningState": "Succeeded",
+    "modifiedInThisPass": false,
+    "deletedInThisPass": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureReadOnlyDiscoveryReadiness": true,
+    "azureResourceGroupCreated": true,
+    "microsoftStorageProviderRegistered": true,
+    "azureStorageAccountCreated": false,
+    "blobContainerCreated": false,
+    "mediaUploadReadiness": "blocked until storage account/container exist",
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "files": [
+    "README.md",
+    "AZURE_CONTEXT.md",
+    "PRE_REGISTRATION_STATUS.md",
+    "REGISTRATION_ACTION.md",
+    "POST_REGISTRATION_STATUS.md",
+    "RESOURCE_GROUP_RECHECK.md",
+    "REMAINING_STORAGE_CREATION_BLOCKERS.md",
+    "NEXT_STORAGE_CREATION_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ],
+  "actionsPerformed": {
+    "microsoftStorageProviderRegisterCommandRun": true,
+    "storageAccountsCreated": false,
+    "blobContainersCreated": false,
+    "mediaUploaded": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_STORAGE_PROVIDER_REGISTRATION_RESULT_REPORT.md"
+}
