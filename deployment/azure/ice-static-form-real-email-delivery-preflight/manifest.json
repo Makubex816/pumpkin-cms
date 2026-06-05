@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-06-05",
+  "siteKey": "ice-rink-rentals",
+  "scope": "static form real email delivery preflight",
+  "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+  "currentEndpointMode": "dry-run",
+  "recommendedEmailPath": "Microsoft Graph sendMail with Exchange Online RBAC for Applications scoped to contact@iceskatingrinkrentals.com",
+  "senderIdentity": "contact@iceskatingrinkrentals.com",
+  "frontendRoutingRefs": {
+    "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT"
+  },
+  "localPackageChecks": {
+    "npmRunCheck": {
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "npmTest": {
+      "exitCode": 0,
+      "result": "pass"
+    }
+  },
+  "safeHttpsNoEmailSpotCheck": {
+    "optionsApprovedOrigin": 204,
+    "validFrontendPayload": 200
+  },
+  "futureApprovalsRequired": [
+    "Microsoft 365/email setup",
+    "Microsoft Entra app or managed identity permission changes",
+    "Exchange Online mailbox scoping",
+    "Azure Function app setting changes",
+    "endpoint code changes",
+    "endpoint redeployment",
+    "one approved live test email",
+    "production email validator transition"
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormNoEmailEndpointDeployed": true,
+    "staticFormNoEmailValidatorWiring": true,
+    "staticOutputQualityGates": "yes for local/staging no-email validation context",
+    "contactFormProductionReadiness": false,
+    "realEmailDeliveryReadiness": "pending explicit approval",
+    "microsoft365EmailSetupReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "realEmailSent": false,
+    "microsoft365Changed": false,
+    "azureAppSettingsChanged": false,
+    "endpointRedeployed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  },
+  "officialReferences": [
+    "https://learn.microsoft.com/en-us/graph/api/user-sendmail",
+    "https://learn.microsoft.com/en-us/graph/permissions-overview",
+    "https://learn.microsoft.com/en-us/graph/permissions-reference",
+    "https://learn.microsoft.com/en-us/exchange/permissions-exo/application-rbac",
+    "https://learn.microsoft.com/en-us/exchange/permissions-exo/application-access-policies",
+    "https://learn.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/deprecation-of-basic-authentication-exchange-online",
+    "https://learn.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/authenticated-client-smtp-submission",
+    "https://learn.microsoft.com/en-us/azure/app-service/app-service-key-vault-references"
+  ]
+}
+
