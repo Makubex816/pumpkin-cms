@@ -26,7 +26,29 @@ The compact output scan did not detect `data:image` markers or `base64` image pa
 
 On 2026-06-05, the 9 approved Ice MediaAsset records were updated to production `media.iceskatingrinkrentals.com` URLs and read back successfully.
 
-This did not clear the static output media errors because the remaining local URLs are embedded in CMS page body/media fields and revision snapshot fields. Updating those fields would be page/body CMS work, which was not approved in the MediaAsset URL update run.
+This did not clear the static output media errors because the remaining local URLs were embedded in CMS page body/media fields and revision snapshot fields. Page/body CMS work was not approved in the MediaAsset URL update run.
+
+## Later Active Page Body Media Repair Status
+
+On 2026-06-05, a separately approved run repaired only active root `ContentData` and root `media` URL fields on the three approved Ice pages.
+
+Post-repair active root result:
+
+| Page | Active `ContentData` local URLs | Active `media` local URLs | Revision snapshot local URLs |
+| --- | ---: | ---: | ---: |
+| `home` | 0 | 0 | 52 |
+| `contact` | 0 | 0 | 50 |
+| `service-areas` | 0 | 0 | 30 |
+
+Rendered image tag result:
+
+| File | Local `/media` img tags | Production media img tags |
+| --- | ---: | ---: |
+| `index.html` | 0 | 9 |
+| `contact/index.html` | 0 | 7 |
+| `service-areas/index.html` | 0 | 6 |
+
+Strict validators still fail because the generated HTML/TXT serializes `revision.latestSnapshot` rollback payloads with pre-repair local media URLs. Manual stale revision/rollback snapshot editing was not approved in that run.
 
 ## Unapproved Rendered Social Image URL
 
@@ -80,7 +102,7 @@ Detailed route/source mapping is recorded in:
 deployment/azure/ice-static-dry-run-readiness/BODY_MEDIA_URL_BLOCKER_AUDIT.md
 ```
 
-The remaining local media URLs map to active page body/media fields and media objects with Ice `mediaAssetId` values. Clearing them would remove visible hero, card, logo, partner, setup, and section imagery, so they should remain blockers until production media origin work and MediaAsset/public URL updates are separately approved.
+The earlier remaining local media URLs mapped to active page body/media fields and media objects with Ice `mediaAssetId` values. Those active root fields are now repaired. The remaining strict media failures map to serialized rollback snapshot payloads, not active rendered image tags.
 
 ## Policy Result
 
@@ -88,8 +110,8 @@ Local body/media URL problems do not block the local route-shape proof. They do 
 
 ## Readiness
 
-Media production URL readiness: no.
+Active page body media URL readiness: yes.
 
 MediaAsset production URL readiness: yes after the later approved 2026-06-05 update.
 
-Full media production URL readiness: no until the page/body static output local media URLs are cleared and strict validators pass.
+Full media production URL readiness: no until the rollback snapshot/static output local media strings are cleared or filtered through a separately approved path and strict validators pass.

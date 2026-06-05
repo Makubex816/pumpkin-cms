@@ -33,6 +33,19 @@ local /media URL fields remaining in updated MediaAsset URL fields: 0
 
 The 9 records still have lifecycle `status: draft`; that status was not changed because this approval covered production media URL/storage fields only.
 
+## Later Active Page Body Media Repair Status
+
+On 2026-06-05, a later separately approved run repaired only active Ice root `ContentData` and root `media` URL fields:
+
+```text
+active page body/media fields repaired: 132
+active ContentData/media root local media URLs remaining: 0
+rendered local /media img tags after export: 0
+MediaAsset writes in later run: 0
+```
+
+Full media production readiness is still `no` because exported static output includes serialized `revision.latestSnapshot` rollback payloads with pre-repair local URLs. The static form endpoint also remains missing/unverified.
+
 ## Static Export And Validators
 
 `npm run export:static:ice:cms` exited `0`.
@@ -59,7 +72,7 @@ Validator result:
 - strict static output validator: exit `1`
 - strict staging package validator: exit `1`
 
-The strict validators still fail on local `/media/ice-rink-rentals/...` URLs in rendered page body/static output plus the missing/unverified static form endpoint. Those local URLs are in CMS page body/media fields, not in the updated MediaAsset URL fields. Page/body edits were explicitly out of scope.
+The strict validators initially failed on active page body/media local URLs plus the missing/unverified static form endpoint. After the later active page body/media repair, active rendered image tags are clean, but validators still fail on local URLs serialized from `revision.latestSnapshot` rollback payloads plus the form endpoint blockers.
 
 ## Files
 

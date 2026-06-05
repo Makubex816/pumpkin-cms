@@ -16,6 +16,20 @@ On 2026-06-05, a separately approved run updated the 9 approved Ice MediaAsset r
 
 That later run did not update CMS page body/content media fields. The local route-shape dry run remains complete, but full media production URL readiness remains `no` because strict validators still find local `/media/ice-rink-rentals/...` URLs in rendered static output.
 
+## Later Active Page Body Media Repair Status
+
+On 2026-06-05, a separately approved run updated only active Ice root `ContentData` and root `media` URL fields that still contained local `/media/ice-rink-rentals/...` values.
+
+Later result:
+
+```text
+active page body/media fields repaired: 132
+active ContentData/media root local media URLs remaining: 0
+rendered local /media img tags after export: 0
+```
+
+Full media production URL readiness remains `no` because strict validators still find local media strings serialized from `revision.latestSnapshot` rollback payloads, and because the static form endpoint remains missing/unverified.
+
 ## Start State
 
 Branch: `feature/admin-page-editor-import-export`
@@ -136,14 +150,15 @@ Noindex:
 
 Media:
 
-- source: approved CMS pages and revision snapshots still contain local `/media/ice-rink-rentals/...` URLs
-- later MediaAsset state: the 9 approved MediaAsset records now use production media URLs, but active page body/media fields still carry local URLs
+- source before the later page-body repair: approved CMS active page body/media fields and revision snapshots contained local `/media/ice-rink-rentals/...` URLs
+- later MediaAsset state: the 9 approved MediaAsset records now use production media URLs
+- later active page body/media state: active root `ContentData` and root `media` fields now use production media URLs
 - strict validators no longer report the previous unapproved rendered Open Graph/Twitter image URL: `https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png`
 - repaired source fields: `home` and `service-areas` `page.seo.openGraph.og:image` and `page.seo.twitterCard.twitter:image` are now empty
 - local media URL render path: polished block rendering reads `publicUrl`/`url` from CMS media objects and renders them directly in `<img>` tags
-- local result: body/media URLs remain production-readiness blockers, not route-shape blockers
+- local result after the later page-body repair: active body/media rendered image URLs are clean, but rollback snapshot media URLs remain production-readiness blockers because they are serialized into static output
 - MediaAsset writes/uploads during the original dry-run pass: no
-- required future action after the later MediaAsset update: separately approve page/body media URL updates or another approved page-render resolution path before marking media production URL readiness yes
+- required future action after the later page-body repair: separately approve stale revision/rollback snapshot cleanup or an approved static export payload filtering path before marking full media production URL readiness yes
 
 Static contact endpoint:
 

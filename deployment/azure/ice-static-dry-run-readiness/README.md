@@ -37,8 +37,9 @@ Remaining production blockers:
 Later MediaAsset update status:
 
 - on 2026-06-05, the 9 approved Ice MediaAsset records were updated to `media.iceskatingrinkrentals.com` production URLs
-- that later run did not update CMS page body/media fields
-- strict validators still fail on local page-body media URLs plus form endpoint readiness
+- a later separately approved active page body/media repair updated 132 active root `ContentData` and root `media` fields
+- active rendered image tags now use production media URLs
+- strict validators still fail on local media strings serialized from `revision.latestSnapshot` rollback payloads plus form endpoint readiness
 
 Latest diagnosis-only pass:
 
@@ -70,7 +71,7 @@ Diagnosis docs:
 - `STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md`
 - `NEXT_LOCAL_BUILD_GATE.md`
 
-Latest strict validator split:
+Latest strict validator split after the active page body/media repair:
 
 - `npm run validate:snapshot:ice`: exit `0`; route/snapshot proof passes, production-readiness blockers remain warnings
 - `validate-static-output.mjs`: exit `1`; 8 strict production errors
@@ -83,6 +84,7 @@ Latest strict validator split:
 | static dry run completed | yes |
 | static route output ready | yes |
 | static output quality gates | no |
+| active page body media URL readiness | yes |
 | media production URL readiness | no |
 | contact form production readiness | no |
 | Azure staging readiness | no |

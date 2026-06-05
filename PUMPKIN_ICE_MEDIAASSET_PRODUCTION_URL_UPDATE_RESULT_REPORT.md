@@ -29,6 +29,25 @@ local /media URL fields remaining in updated MediaAsset records: 0
 
 The 9 MediaAsset records still have lifecycle `status: draft`; status activation was not changed because it was not approved.
 
+## Later Active Page Body Media Repair Status
+
+On 2026-06-05, a separately approved run updated only the active Ice page root `ContentData` and root `media` URL fields that still contained local `/media/ice-rink-rentals/...` values.
+
+Later result:
+
+```text
+active page body/media fields repaired: 132
+active ContentData/media root local media URLs remaining: 0
+rendered local /media img tags after export: 0
+MediaAsset writes in later run: 0
+```
+
+Strict static/staging validators still fail because the generated output serializes `revision.latestSnapshot` rollback payloads that contain the pre-repair local URLs, and because the static form endpoint remains missing/unverified. That later stale-revision/export-payload issue is documented in:
+
+```text
+deployment/azure/ice-page-body-media-url-repair-result/
+```
+
 ## Start-State Checks
 
 Recent relevant commits confirmed:
@@ -160,7 +179,7 @@ Remaining strict errors:
 - static form endpoint is not configured
 - static form endpoint/backend verification is missing
 
-The 6 file-level media errors map to 9 distinct local page-body media URLs. Those URLs are still embedded in CMS page body/media fields and revision snapshot fields, not in the 9 updated MediaAsset records. Page/body CMS edits were explicitly out of scope.
+The 6 file-level media errors initially mapped to local page-body media URLs and revision snapshot fields. A later separately approved page-body media repair cleared the active page root `ContentData` and `media` fields, but the strict validators still see local URLs serialized from `revision.latestSnapshot` rollback payloads. Those are not remaining in the 9 updated MediaAsset records.
 
 ## What Was Not Done
 
@@ -190,8 +209,9 @@ This run did not:
 
 ## Remaining Blockers
 
-- CMS page body/media fields still contain local `/media/ice-rink-rentals/...` URLs
-- strict static/staging validators still fail on those page-body local media URLs
+- active CMS page body/media root fields are repaired
+- `revision.latestSnapshot` rollback payloads still contain local `/media/ice-rink-rentals/...` URLs and are serialized into static output
+- strict static/staging validators still fail on those serialized local media URLs
 - contact form production readiness remains `no`
 - Azure staging readiness remains `no`
 - DNS cutover/main-site deployment remains `no`
@@ -208,6 +228,7 @@ This run did not:
 | Cloudflare Worker media delivery configured | yes |
 | Cloudflare public media URLs validated | yes |
 | MediaAsset production URL readiness | yes |
+| active page body media URL readiness | yes |
 | media production URL readiness | no |
 | static output quality gates | no |
 | contact form production readiness | no |

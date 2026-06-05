@@ -1,0 +1,154 @@
+{
+  "packageName": "ice-page-body-media-url-repair-result",
+  "generatedDate": "2026-06-05",
+  "mode": "active-page-body-media-url-repair-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "approvedPages": [
+    "home",
+    "contact",
+    "service-areas"
+  ],
+  "approvedMediaUrlCount": 9,
+  "publicMediaHeadValidation": {
+    "checked": 9,
+    "passed": 9,
+    "failures": 0
+  },
+  "pageRepair": {
+    "cmsPageWrites": true,
+    "putRequestsSent": 3,
+    "changedPages": [
+      "home",
+      "contact",
+      "service-areas"
+    ],
+    "nonTargetPagesChanged": 0,
+    "obsoletePagesChanged": 0,
+    "fieldsChanged": {
+      "home": 52,
+      "contact": 50,
+      "service-areas": 30,
+      "total": 132
+    },
+    "activeRootLocalMediaRemaining": {
+      "home": 0,
+      "contact": 0,
+      "service-areas": 0
+    },
+    "unexpectedNonSystemDiffs": 0
+  },
+  "staticExport": {
+    "run": true,
+    "command": "npm run export:static:ice:cms",
+    "exitCode": 0,
+    "snapshotSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "outRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "copiedArtifactRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "previewOrObsoleteDeployablePaths": 0,
+    "localImgTags": {
+      "index.html": 0,
+      "contact/index.html": 0,
+      "service-areas/index.html": 0
+    },
+    "productionMediaImgTags": {
+      "index.html": 9,
+      "contact/index.html": 7,
+      "service-areas/index.html": 6
+    }
+  },
+  "validators": {
+    "snapshotValidator": {
+      "run": true,
+      "exitCode": 0,
+      "passed": true,
+      "warningsRemain": true,
+      "warningSource": "revision.latestSnapshot rollback payload local media URLs plus form/readiness warnings"
+    },
+    "strictStaticOutputValidator": {
+      "run": true,
+      "exitCode": 1,
+      "passed": false,
+      "remainingErrors": [
+        "Local-dev media URL found in static output: contact/index.html",
+        "Local-dev media URL found in static output: contact/index.txt",
+        "Local-dev media URL found in static output: index.html",
+        "Local-dev media URL found in static output: index.txt",
+        "Local-dev media URL found in static output: service-areas/index.html",
+        "Local-dev media URL found in static output: service-areas/index.txt",
+        "Static form endpoint is not configured for production/static deploy readiness.",
+        "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness."
+      ]
+    },
+    "strictStagingPackageValidator": {
+      "run": true,
+      "exitCode": 1,
+      "passed": false,
+      "remainingErrorsMatchStaticOutput": true
+    }
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureMediaFilesUploaded": true,
+    "azureDirectPublicBlobMediaReadable": true,
+    "cloudflareWorkerMediaDeliveryConfigured": true,
+    "cloudflarePublicMediaUrlsValidated": true,
+    "mediaAssetProductionUrlReadiness": true,
+    "activePageBodyMediaUrlReadiness": true,
+    "mediaProductionUrlReadiness": false,
+    "staticOutputQualityGates": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "cmsPageWrites": true,
+    "cmsPageWriteScope": "active Ice root ContentData/media URL fields only",
+    "textEdits": false,
+    "layoutEdits": false,
+    "themeWrites": false,
+    "navigationWrites": false,
+    "formWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "azureChanged": false,
+    "staticDeployment": false,
+    "productionDeployment": false,
+    "emailOrMicrosoft365Work": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false,
+    "secretsPrinted": false
+  },
+  "files": [
+    "README.md",
+    "REPAIR_SCOPE.md",
+    "PRE_WRITE_LOCAL_MEDIA_AUDIT.md",
+    "PRE_WRITE_PAGE_READBACK.md",
+    "PAGE_BODY_MEDIA_REPAIR_RESULT.md",
+    "POST_WRITE_PAGE_READBACK.md",
+    "STATIC_EXPORT_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "REMAINING_MEDIA_BLOCKERS.md",
+    "NEXT_FORM_ENDPOINT_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ],
+  "rootReport": "PUMPKIN_ICE_PAGE_BODY_MEDIA_URL_REPAIR_RESULT_REPORT.md"
+}

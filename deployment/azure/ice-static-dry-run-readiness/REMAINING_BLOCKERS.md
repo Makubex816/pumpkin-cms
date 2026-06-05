@@ -16,9 +16,10 @@ Cleared:
 
 - Approved media binaries have been uploaded and Cloudflare Worker public media delivery validates.
 - The 9 approved Ice MediaAsset records were updated to production public URLs in a separately approved 2026-06-05 task.
-- Confirm no local `/media/...` URLs remain in snapshot or static output before marking media production URL readiness yes.
+- A separately approved 2026-06-05 page body/media repair cleared active root `ContentData` and root `media` local URLs on `home`, `contact`, and `service-areas`.
+- Confirm no local `/media/...` URLs remain in serialized rollback snapshot/static output payloads before marking full media production URL readiness yes.
 - Keep Open Graph/Twitter social image fields empty or replace them only with approved production media URLs after media readiness work is authorized.
-- Do not clear body/media fields as a local workaround; the remaining local media URLs are visible page imagery and should remain blockers until page/body media URL updates or another approved rendering-resolution path is separately approved.
+- Do not mutate rollback snapshots or filter static page payloads unless separately approved; the remaining local media strings are no longer active rendered image tags, but they still fail strict output scans.
 
 ## Before Contact Form Production Readiness
 
