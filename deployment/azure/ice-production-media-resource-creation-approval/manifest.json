@@ -1,0 +1,101 @@
+{
+  "packageName": "ice-production-media-resource-creation-approval",
+  "generatedDate": "2026-06-04",
+  "mode": "azure-media-resource-creation-approval-planning-only",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestExpectedCommit": {
+    "hash": "2d239a2",
+    "subject": "Complete Ice Azure media read-only discovery",
+    "confirmed": true
+  },
+  "priorReadOnlyDiscovery": {
+    "azureCliAvailable": true,
+    "azureCliVersion": "2.87.0",
+    "subscriptionContextValid": true,
+    "resourceGroupsVisible": 0,
+    "storageAccountsVisible": 0,
+    "staticWebAppsVisible": 0,
+    "likelyExistingCandidates": "none visible by name",
+    "azureReadOnlyDiscoveryReadiness": true
+  },
+  "proposedResources": {
+    "resourceGroup": "rg-ice-production-media",
+    "storageAccount": "iceskatingmedia",
+    "blobContainer": "ice-rink-rentals-media",
+    "region": "eastus",
+    "storageSku": "Standard_LRS",
+    "storageKind": "StorageV2",
+    "accessTier": "Hot",
+    "httpsOnly": true,
+    "minimumTlsVersion": "TLS1_2",
+    "allowBlobPublicAccess": false,
+    "containerPublicAccess": "off",
+    "storageAccountGlobalAvailability": "unknown until future approved check/create"
+  },
+  "targetMedia": {
+    "domain": "media.iceskatingrinkrentals.com",
+    "pathPattern": "ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+    "urlPattern": "https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+    "requiredMediaAssetCount": 9,
+    "strictMediaFileErrorCount": 6
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureReadOnlyDiscoveryReadiness": true,
+    "azureMediaResourceCreationReadiness": "pending explicit approval",
+    "staticOutputQualityGates": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "files": [
+    "README.md",
+    "PROPOSED_AZURE_RESOURCES.md",
+    "RESOURCE_NAMING_RATIONALE.md",
+    "FUTURE_AZURE_CREATE_COMMANDS.md",
+    "FUTURE_BLOB_CONTAINER_COMMANDS.md",
+    "SECURITY_AND_ACCESS_BOUNDARIES.md",
+    "COST_AND_REGION_NOTES.md",
+    "APPROVAL_REQUIRED.md",
+    "STOP_POINTS.md",
+    "POST_CREATION_READONLY_VALIDATION.md",
+    "NEXT_RESOURCE_CREATION_PROMPT.md",
+    "manifest.json"
+  ],
+  "actionsPerformed": {
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "deployed": false,
+    "mediaUploaded": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_AZURE_MEDIA_RESOURCE_CREATION_APPROVAL_REPORT.md"
+}
