@@ -1,0 +1,146 @@
+{
+  "packageName": "ice-production-media-blob-rbac-diagnosis",
+  "generatedDate": "2026-06-04",
+  "mode": "azure-blob-data-plane-rbac-readonly-diagnosis",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestExpectedCommit": {
+    "hash": "941a1e7",
+    "subject": "Create Ice Azure media storage and container",
+    "confirmed": true
+  },
+  "azureContext": {
+    "azureCliAvailable": true,
+    "azureCliVersion": "2.87.0",
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a",
+    "subscriptionState": "Enabled",
+    "isDefault": true
+  },
+  "storageResources": {
+    "resourceGroup": {
+      "name": "rg-ice-production-media",
+      "location": "eastus",
+      "provisioningState": "Succeeded"
+    },
+    "storageAccount": {
+      "name": "iceskatingmedia",
+      "resourceGroup": "rg-ice-production-media",
+      "location": "eastus",
+      "provisioningState": "Succeeded",
+      "kind": "StorageV2",
+      "sku": "Standard_LRS",
+      "accessTier": "Hot",
+      "httpsOnly": true,
+      "minimumTlsVersion": "TLS1_2",
+      "allowBlobPublicAccess": false
+    },
+    "blobContainer": {
+      "name": "ice-rink-rentals-media",
+      "exists": true,
+      "publicAccess": "None"
+    }
+  },
+  "principal": {
+    "objectId": "66783b82-3ed1-48c6-8a99-ca190faae1e0",
+    "userPrincipalName": "Contact@iceskatingrinkrentals.com",
+    "displayName": "Steven Benedetto"
+  },
+  "roleAssignments": {
+    "checkedScopes": [
+      "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873",
+      "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-media",
+      "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-media/providers/Microsoft.Storage/storageAccounts/iceskatingmedia",
+      "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-media/providers/Microsoft.Storage/storageAccounts/iceskatingmedia/blobServices/default/containers/ice-rink-rentals-media"
+    ],
+    "foundAssignments": [
+      {
+        "roleDefinitionName": "Owner",
+        "scope": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873",
+        "principalType": "User",
+        "grantsBlobDataPlaneAccess": false
+      }
+    ],
+    "storageBlobDataReaderFound": false,
+    "storageBlobDataContributorFound": false,
+    "storageBlobDataOwnerFound": false
+  },
+  "dataPlaneTests": {
+    "authMode": "login",
+    "containerExistsSucceeded": true,
+    "containerShowSucceeded": true,
+    "blobListSucceeded": false,
+    "blobListFailureCategory": "insufficient Blob data-plane permissions for current principal",
+    "keyAuthUsed": false
+  },
+  "recommendation": {
+    "readListRole": "Storage Blob Data Reader",
+    "uploadRole": "Storage Blob Data Contributor",
+    "preferredScope": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-media/providers/Microsoft.Storage/storageAccounts/iceskatingmedia/blobServices/default/containers/ice-rink-rentals-media",
+    "fallbackScope": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-media/providers/Microsoft.Storage/storageAccounts/iceskatingmedia"
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureReadOnlyDiscoveryReadiness": true,
+    "azureResourceGroupCreated": true,
+    "microsoftStorageProviderRegistered": true,
+    "azureStorageAccountCreated": true,
+    "blobContainerCreated": true,
+    "blobDataPlaneUploadReadiness": false,
+    "mediaUploadReadiness": "pending explicit approval and RBAC readiness",
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "files": [
+    "README.md",
+    "AZURE_CONTEXT.md",
+    "STORAGE_RESOURCE_RECHECK.md",
+    "SIGNED_IN_PRINCIPAL.md",
+    "CURRENT_ROLE_ASSIGNMENTS.md",
+    "DATA_PLANE_READ_TEST.md",
+    "REQUIRED_ROLE_RECOMMENDATION.md",
+    "NEXT_RBAC_ASSIGNMENT_APPROVAL_REQUIRED.md",
+    "NEXT_MEDIA_UPLOAD_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ],
+  "actionsPerformed": {
+    "roleAssignmentsCreated": false,
+    "roleAssignmentsDeleted": false,
+    "azureResourcesCreated": false,
+    "azureResourcesDeleted": false,
+    "blobContainersCreated": false,
+    "mediaUploaded": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_BLOB_DATA_PLANE_RBAC_DIAGNOSIS_REPORT.md"
+}
