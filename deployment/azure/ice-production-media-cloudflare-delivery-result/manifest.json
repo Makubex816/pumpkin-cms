@@ -1,0 +1,124 @@
+{
+  "packageName": "ice-production-media-cloudflare-delivery-result",
+  "generatedDate": "2026-06-05",
+  "mode": "cloudflare-media-delivery-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "targetHost": "media.iceskatingrinkrentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestRelevantCommits": [
+    {
+      "hash": "65cd0fb",
+      "subject": "Complete Ice Option A media delivery phase 1B",
+      "confirmed": true
+    },
+    {
+      "hash": "58ebbd0",
+      "subject": "Upload approved Ice media to Azure Blob",
+      "confirmed": true
+    },
+    {
+      "hash": "3ad77db",
+      "subject": "Assign Ice Blob data-plane upload role",
+      "confirmed": true
+    },
+    {
+      "hash": "941a1e7",
+      "subject": "Create Ice Azure media storage and container",
+      "confirmed": true
+    }
+  ],
+  "cloudflarePreflight": {
+    "cloudflareApiToken": "missing",
+    "cloudflareZoneId": "missing",
+    "cfApiToken": "missing",
+    "cfZoneId": "missing",
+    "wranglerCli": "missing",
+    "cloudflareCli": "missing",
+    "mutationAttempted": false,
+    "blocker": "Cloudflare credentials/tooling unavailable in active shell."
+  },
+  "azureOrigin": {
+    "storageAccount": "iceskatingmedia",
+    "container": "ice-rink-rentals-media",
+    "directPublicBlobUrlsReadable": true,
+    "validatedCount": 9,
+    "status": "200 OK",
+    "contentType": "image/png",
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  "targetCloudflareUrls": {
+    "validatedCount": 9,
+    "publiclyReadableCount": 0,
+    "statusCodeForAllCheckedUrls": "000",
+    "dnsResolvedInLocalCheck": false
+  },
+  "configuration": {
+    "dnsRecordCreatedOrUpdated": false,
+    "proxyConfigured": false,
+    "pathRewriteConfigured": false,
+    "cacheBehaviorConfigured": false,
+    "workerDeployed": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureMediaFilesUploaded": true,
+    "azureDirectPublicBlobMediaReadable": true,
+    "cloudflareMediaDeliveryConfigured": false,
+    "cloudflarePublicMediaUrlsValidated": false,
+    "mediaAssetProductionUrlReadiness": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "rootDnsChanged": false,
+    "wwwDnsChanged": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "files": [
+    "README.md",
+    "CLOUDFLARE_PREFLIGHT.md",
+    "PRE_CHANGE_DNS_HTTP_CHECK.md",
+    "CLOUDFLARE_CONFIGURATION_RESULT.md",
+    "PATH_REWRITE_RESULT.md",
+    "CACHE_RULE_RESULT.md",
+    "POST_CHANGE_PUBLIC_URL_VALIDATION.md",
+    "PUBLIC_MEDIA_URL_WORKLIST.md",
+    "REMAINING_MEDIA_DELIVERY_BLOCKERS.md",
+    "NEXT_MEDIAASSET_UPDATE_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ],
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed",
+    "noRootWwwDnsChanges": "passed",
+    "noCmsMediaAssetDeploymentEmailM365Roller": "passed",
+    "noFilesStaged": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_CLOUDFLARE_MEDIA_DELIVERY_RESULT_REPORT.md"
+}
