@@ -1,0 +1,139 @@
+{
+  "packageName": "ice-static-form-endpoint-readiness-preflight",
+  "generatedDate": "2026-06-05",
+  "mode": "static-form-endpoint-readiness-preflight",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "currentValidatorStatus": {
+    "staticExport": {
+      "command": "npm run export:static:ice:cms",
+      "exitCode": 0
+    },
+    "snapshotValidator": {
+      "command": "npm run validate:snapshot:ice",
+      "exitCode": 0,
+      "passed": true,
+      "formWarningsRemain": true
+    },
+    "strictStaticValidator": {
+      "command": "node deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out",
+      "exitCode": 1,
+      "remainingErrors": [
+        "Static form endpoint is not configured for production/static deploy readiness.",
+        "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness."
+      ],
+      "mediaErrorsRemain": false
+    },
+    "strictStagingValidator": {
+      "command": "node deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/out",
+      "exitCode": 1,
+      "remainingErrors": [
+        "Static form endpoint is not configured for production/static deploy readiness.",
+        "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness."
+      ],
+      "mediaErrorsRemain": false
+    }
+  },
+  "routeAndMediaProof": {
+    "approvedPageRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "generated404Present": true,
+    "localMediaOccurrences": 0,
+    "latestSnapshotMentions": 0,
+    "renderedLocalImgSrcOccurrences": 0,
+    "previewPathsPresent": 0,
+    "obsoletePathsPresent": 0
+  },
+  "formSources": {
+    "home": {
+      "route": "/",
+      "formBlockId": "homepage-quote-form",
+      "formKey": "default-quote-request",
+      "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+      "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT"
+    },
+    "contact": {
+      "route": "/contact",
+      "formBlockId": "contact-quote-form",
+      "formKey": "default-quote-request",
+      "staticEndpointRef": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+      "leadRecipientRef": "ICE_RINK_RENTALS_LEAD_RECIPIENT"
+    },
+    "serviceAreas": {
+      "route": "/service-areas",
+      "visibleFormBlock": false
+    }
+  },
+  "endpointRequirements": {
+    "frontendEndpointAliases": [
+      "NEXT_PUBLIC_STATIC_FORM_ENDPOINT",
+      "STATIC_FORM_ENDPOINT",
+      "NEXT_PUBLIC_STATIC_FORM_ACTION",
+      "STATIC_FORM_ACTION"
+    ],
+    "verificationFlag": "STATIC_FORM_ENDPOINT_VERIFIED",
+    "endpointMustBeHttps": true,
+    "endpointMayBePlaceholder": false,
+    "recommendedPath": "/api/static-contact",
+    "compatibilityPath": "/api/contact"
+  },
+  "recommendedOption": "Option A: deploy/configure the existing static form endpoint foundation later as an Ice-only hardened endpoint",
+  "preflightFindings": [
+    "Existing endpoint foundation syntax check passed.",
+    "Current frontend sends staticEndpointRef and leadRecipientRef.",
+    "Current endpoint handler reads domainRoutingKey and recipientGroup; future execution should map or align these names.",
+    "Durable rate limiting and CAPTCHA/Turnstile are not yet implemented in the local foundation.",
+    "Email delivery remains separate from endpoint readiness."
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticOutputQualityGates": false,
+    "contactFormProductionReadiness": false,
+    "formEndpointExecutionReadiness": "pending explicit approval",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "endpointDeployed": false,
+    "emailSent": false,
+    "microsoft365Changed": false,
+    "azureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "blobContainersCreated": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanges": false,
+    "staticDeployment": false,
+    "productionDeployment": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "rollerTouched": false
+  },
+  "files": [
+    "README.md",
+    "CURRENT_FORM_VALIDATOR_ERRORS.md",
+    "EXISTING_FORM_TOOLING_REVIEW.md",
+    "IMPLEMENTATION_OPTIONS.md",
+    "RECOMMENDED_FORM_ENDPOINT_PATH.md",
+    "FORM_ENDPOINT_CONTRACT.md",
+    "REQUIRED_ENVIRONMENT_VARIABLES.md",
+    "VALIDATION_AND_SANITIZATION_PLAN.md",
+    "EMAIL_DELIVERY_DEPENDENCY.md",
+    "APPROVAL_REQUIRED_BEFORE_EXECUTION.md",
+    "ROLLBACK_AND_DISABLE_PLAN.md",
+    "NEXT_FORM_ENDPOINT_EXECUTION_PROMPT.md",
+    "manifest.json"
+  ],
+  "rootReport": "PUMPKIN_ICE_STATIC_FORM_ENDPOINT_READINESS_PREFLIGHT_REPORT.md"
+}
+
