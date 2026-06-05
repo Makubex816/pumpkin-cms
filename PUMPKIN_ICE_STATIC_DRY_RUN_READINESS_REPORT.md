@@ -10,6 +10,12 @@ Only the explicitly approved active Ice CMS metadata fields were changed for `ho
 
 Latest repair pass used live CMS readback and the approved admin JWT only for the scoped Ice metadata update and verification.
 
+## Later MediaAsset Update Status
+
+On 2026-06-05, a separately approved run updated the 9 approved Ice MediaAsset records to validated `media.iceskatingrinkrentals.com` production URLs.
+
+That later run did not update CMS page body/content media fields. The local route-shape dry run remains complete, but full media production URL readiness remains `no` because strict validators still find local `/media/ice-rink-rentals/...` URLs in rendered static output.
+
 ## Start State
 
 Branch: `feature/admin-page-editor-import-export`
@@ -131,12 +137,13 @@ Noindex:
 Media:
 
 - source: approved CMS pages and revision snapshots still contain local `/media/ice-rink-rentals/...` URLs
+- later MediaAsset state: the 9 approved MediaAsset records now use production media URLs, but active page body/media fields still carry local URLs
 - strict validators no longer report the previous unapproved rendered Open Graph/Twitter image URL: `https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png`
 - repaired source fields: `home` and `service-areas` `page.seo.openGraph.og:image` and `page.seo.twitterCard.twitter:image` are now empty
 - local media URL render path: polished block rendering reads `publicUrl`/`url` from CMS media objects and renders them directly in `<img>` tags
 - local result: body/media URLs remain production-readiness blockers, not route-shape blockers
-- MediaAsset writes/uploads performed: no
-- required future action: publish approved media to the production media origin and update MediaAsset/public URL records in a separately authorized task
+- MediaAsset writes/uploads during the original dry-run pass: no
+- required future action after the later MediaAsset update: separately approve page/body media URL updates or another approved page-render resolution path before marking media production URL readiness yes
 
 Static contact endpoint:
 

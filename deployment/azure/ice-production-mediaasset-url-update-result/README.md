@@ -11,59 +11,55 @@ Paused site: RollerRinkRentals.com
 Approved action:
 
 - update only the 9 approved Ice MediaAsset records from local media URLs to validated `media.iceskatingrinkrentals.com` production URLs
-- rerun Ice static export and validators after successful update
+- rerun Ice static export and validators
 - update reports/docs
+
+No page/body CMS edits, page metadata edits, theme edits, navigation edits, form edits, Cloudflare changes, Azure changes, deployments, email/Microsoft 365 work, raw image staging, generated static artifact staging, or Roller work were approved or performed.
 
 ## Result Summary
 
-MediaAsset production URL updates were not performed.
-
-Exact blocker:
+MediaAsset production URL updates completed for the 9 approved Ice records.
 
 ```text
-PUMPKIN_ADMIN_JWT was PRESENT but the admin MediaAsset endpoint returned HTTP 401.
-JWT shape check reported: raw-like, 3 segments, expired-or-missing expiry status.
+Admin auth probe: HTTP 200 valid
+pre-write public URL validation: 9/9 passed
+pre-write MediaAsset readback: 9/9 readable, tenant/site matched
+PATCH requests sent: 9
+MediaAsset records updated: 9/9
+non-target MediaAsset IDs changed: 0
+post-write MediaAsset readback: 9/9 expected production URLs
+local /media URL fields remaining in updated MediaAsset URL fields: 0
 ```
 
-The run stopped before any MediaAsset write.
+The 9 records still have lifecycle `status: draft`; that status was not changed because this approval covered production media URL/storage fields only.
 
-## Completed Pre-Write Checks
+## Static Export And Validators
 
-Environment presence check:
+`npm run export:static:ice:cms` exited `0`.
+
+Static route output remained scoped to:
 
 ```text
-PUMPKIN_API_URL PRESENT
-ICE_RINK_RENTALS_API_KEY PRESENT
-ICE_RINK_RENTALS_TENANT_ID PRESENT
-PUMPKIN_ADMIN_JWT PRESENT
+/
+/contact
+/service-areas
 ```
 
-Validated public media URLs:
+Preview/obsolete deployable route paths checked:
 
 ```text
-9/9 passed
-HTTP 200 OK
-image/png
-expected content lengths
-public, max-age=31536000, immutable
-no redirects
-no SAS/query secrets
+/draft-preview: absent
+/ice-rink-rentals: absent
+/events-holiday-activations: absent
 ```
 
-## Not Run
+Validator result:
 
-These steps were not run because the approved MediaAsset update was blocked before readback/write:
+- `npm run validate:snapshot:ice`: exit `0`
+- strict static output validator: exit `1`
+- strict staging package validator: exit `1`
 
-- MediaAsset URL PATCH writes
-- post-write MediaAsset readback
-- Ice static export
-- Ice snapshot/static/staging validators
-
-## Guardrails Maintained
-
-No page/body CMS edits, page metadata edits, theme edits, navigation edits, form edits, Cloudflare changes, Azure changes, deployments, email/Microsoft 365 work, raw image staging, generated static artifact staging, or Roller work occurred.
-
-No secrets, keys, tokens, connection strings, or SAS URLs were printed.
+The strict validators still fail on local `/media/ice-rink-rentals/...` URLs in rendered page body/static output plus the missing/unverified static form endpoint. Those local URLs are in CMS page body/media fields, not in the updated MediaAsset URL fields. Page/body edits were explicitly out of scope.
 
 ## Files
 

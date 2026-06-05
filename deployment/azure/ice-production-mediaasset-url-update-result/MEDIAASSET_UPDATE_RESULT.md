@@ -7,20 +7,66 @@ Date: 2026-06-05
 MediaAsset updates performed:
 
 ```text
-0/9
+9/9
 ```
 
-Exact blocker:
+The write call used only:
 
 ```text
-Admin MediaAsset readback returned HTTP 401 with the current PUMPKIN_ADMIN_JWT.
-Token shape check reported expired-or-missing expiry status.
+PATCH /api/admin/{tenantId}/media-assets/{id}
 ```
 
-## Write Safety
+No create, delete, archive, restore, replace, page, theme, navigation, form, Roller, Azure, Cloudflare, deployment, email, or Microsoft 365 write action was performed.
 
-No `PATCH /api/admin/{tenantId}/media-assets/{id}` requests were sent.
+## Changed Records
 
-No MediaAsset records were created, deleted, archived, restored, replaced, or updated.
+| # | MediaAsset ID | Result |
+| ---: | --- | --- |
+| 1 | `ice-rink-rentals-winterfesticerinkrentals-324b1b89777d` | patched |
+| 2 | `ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd` | patched |
+| 3 | `ice-rink-rentals-holidayicerink-973ce7691377` | patched |
+| 4 | `ice-rink-rentals-icerinkrentalssetup-113d218572e4` | patched |
+| 5 | `ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411` | patched |
+| 6 | `ice-rink-rentals-partyproseastcoastlogo-cfd1fc9f60ae` | patched |
+| 7 | `ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd` | patched |
+| 8 | `ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7` | patched |
+| 9 | `ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d` | patched |
 
-No page/body CMS records, page metadata, theme records, navigation records, form records, Cloudflare configuration, Azure configuration, blobs, deployments, email/Microsoft 365 settings, raw images, generated static artifacts, or Roller records were changed.
+Tenant MediaAsset count before and after:
+
+```text
+before: 12
+after: 12
+```
+
+Changed MediaAsset IDs:
+
+```text
+9 approved IDs only
+```
+
+Non-target MediaAsset IDs changed:
+
+```text
+0
+```
+
+## Fields Changed
+
+Only production media URL/storage metadata fields were changed:
+
+- `url`
+- `publicUrl`
+- `thumbnailUrl`
+- `storageProvider`
+- `storageContainer`
+- `blobPath`
+- `checksum`
+- `hash`
+- `safeFileName`
+- `variants[].url`
+- `variants[].publicUrl`
+- `variants[].storageProvider`
+- `variants[].blobPath`
+
+Lifecycle `status` stayed `draft` on all 9 records.

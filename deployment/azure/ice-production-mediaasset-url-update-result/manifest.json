@@ -6,16 +6,6 @@
   "pausedSite": "RollerRinkRentals.com",
   "branch": "feature/admin-page-editor-import-export",
   "approvedMediaAssetCount": 9,
-  "publicUrlValidation": {
-    "validatedCount": 9,
-    "passedCount": 9,
-    "status": "200 OK",
-    "contentType": "image/png",
-    "contentLengthMatchesExpected": true,
-    "cacheControl": "public, max-age=31536000, immutable",
-    "redirectsToAzureHost": 0,
-    "querySecretsOrSasExposed": false
-  },
   "environmentPresence": {
     "PUMPKIN_API_URL": "present",
     "ICE_RINK_RENTALS_API_KEY": "present",
@@ -23,33 +13,119 @@
     "PUMPKIN_ADMIN_JWT": "present"
   },
   "adminAuth": {
-    "mediaAssetListStatus": "HTTP 401",
-    "jwtShape": "raw-like",
-    "jwtSegments": 3,
-    "jwtExpiryStatus": "expired-or-missing",
-    "tenantClaimPresent": true,
-    "roleClaimPresent": true,
-    "rawJwtPrinted": false
+    "verifyEndpointStatus": "HTTP 200",
+    "safeCategory": "valid",
+    "tokenPrinted": false,
+    "cmsWritePerformedByProbe": false
+  },
+  "publicUrlValidation": {
+    "checked": 9,
+    "passed": 9,
+    "head200": 9,
+    "get200": 9,
+    "contentType": "image/png",
+    "contentLengthMatchesExpected": true,
+    "downloadedBytesMatchExpected": true,
+    "cacheControl": "public, max-age=31536000, immutable",
+    "redirectsToAzureHost": 0,
+    "querySecretsOrSasExposed": false
+  },
+  "preWriteReadback": {
+    "checked": 9,
+    "readable": 9,
+    "tenantMatches": 9,
+    "siteMatches": 9,
+    "localMediaPresentBeforeUpdate": 9,
+    "statusBeforeUpdate": "draft for all 9"
   },
   "mediaAssetUpdate": {
-    "attempted": false,
-    "updatedCount": 0,
+    "attempted": true,
+    "updatedCount": 9,
     "expectedCount": 9,
-    "blocked": true,
-    "blocker": "Admin MediaAsset endpoint returned HTTP 401 with current PUMPKIN_ADMIN_JWT before readback/write.",
-    "patchRequestsSent": 0,
+    "blocked": false,
+    "patchRequestsSent": 9,
     "createdRecords": 0,
-    "deletedRecords": 0
+    "deletedRecords": 0,
+    "archivedRecords": 0,
+    "restoredRecords": 0,
+    "replacedRecords": 0,
+    "tenantMediaAssetCountBefore": 12,
+    "tenantMediaAssetCountAfter": 12,
+    "nonTargetMediaAssetIdsChanged": 0,
+    "changedFields": [
+      "url",
+      "publicUrl",
+      "thumbnailUrl",
+      "storageProvider",
+      "storageContainer",
+      "blobPath",
+      "checksum",
+      "hash",
+      "safeFileName",
+      "variants[].url",
+      "variants[].publicUrl",
+      "variants[].storageProvider",
+      "variants[].blobPath"
+    ],
+    "statusChanged": false,
+    "statusPreserved": "draft"
+  },
+  "postWriteReadback": {
+    "checked": 9,
+    "tenantMatches": 9,
+    "targetUrlMatches": 9,
+    "azureBlobMetadataMatches": 9,
+    "localUrlFieldsRemainingInUpdatedMediaAssets": 0,
+    "blockers": []
   },
   "staticExport": {
-    "run": false,
-    "skippedReason": "MediaAsset update was blocked before write/readback."
+    "run": true,
+    "command": "npm run export:static:ice:cms",
+    "exitCode": 0,
+    "snapshotSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "outRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "copiedArtifactRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "previewOrObsoleteDeployablePaths": 0
   },
   "validators": {
-    "snapshotValidatorRun": false,
-    "strictStaticOutputValidatorRun": false,
-    "strictStagingPackageValidatorRun": false,
-    "skippedReason": "MediaAsset update was blocked before write/readback."
+    "snapshotValidator": {
+      "run": true,
+      "exitCode": 0,
+      "passed": true
+    },
+    "strictStaticOutputValidator": {
+      "run": true,
+      "exitCode": 1,
+      "passed": false,
+      "remainingErrors": [
+        "Local-dev media URL found in static output: contact/index.html",
+        "Local-dev media URL found in static output: contact/index.txt",
+        "Local-dev media URL found in static output: index.html",
+        "Local-dev media URL found in static output: index.txt",
+        "Local-dev media URL found in static output: service-areas/index.html",
+        "Local-dev media URL found in static output: service-areas/index.txt",
+        "Static form endpoint is not configured for production/static deploy readiness.",
+        "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness."
+      ]
+    },
+    "strictStagingPackageValidator": {
+      "run": true,
+      "exitCode": 1,
+      "passed": false,
+      "remainingErrorsMatchStaticOutput": true
+    }
   },
   "readiness": {
     "staticDryRunCompleted": true,
@@ -58,7 +134,7 @@
     "azureDirectPublicBlobMediaReadable": true,
     "cloudflareWorkerMediaDeliveryConfigured": true,
     "cloudflarePublicMediaUrlsValidated": true,
-    "mediaAssetProductionUrlReadiness": false,
+    "mediaAssetProductionUrlReadiness": true,
     "mediaProductionUrlReadiness": false,
     "staticOutputQualityGates": false,
     "contactFormProductionReadiness": false,
@@ -70,7 +146,8 @@
   },
   "actionsPerformed": {
     "cmsPageWrites": false,
-    "mediaAssetWrites": false,
+    "mediaAssetWrites": true,
+    "mediaAssetWriteScope": "only 9 approved Ice MediaAsset records",
     "themeWrites": false,
     "navigationWrites": false,
     "formWrites": false,
@@ -93,14 +170,19 @@
   },
   "validation": {
     "manifestJsonParse": "passed",
-    "nodeCheckChangedJs": "not applicable",
+    "nodeCheckChangedJsMjs": "passed for modified JS/MJS in existing static-azure backlog",
     "gitDiffCheck": "passed",
     "trailingWhitespaceScan": "passed",
     "protectedGeneratedRawArtifactPathCheck": "passed",
-    "targetedSecretScan": "passed",
-    "noCloudflareChanges": "passed by no Cloudflare API mutation commands",
-    "noAzureChanges": "passed by no Azure CLI/API commands",
-    "noCmsPageThemeRollerDeploymentEmailWrites": "passed"
+    "targetedReportDocSecretScan": "passed",
+    "broadSecretScanNote": "Broad scan over all changed tracked files found known detector-definition strings in pre-existing static-azure validator scripts; report/doc scan found no secrets.",
+    "stagedFileCount": 0,
+    "cloudflareRuntimeConfigChanged": 0,
+    "azureRuntimeConfigOrBlobChanged": 0,
+    "cmsPageSourceChanged": 0,
+    "themeSourceChanged": 0,
+    "formSourceChanged": 0,
+    "rollerSourceChanged": 0
   },
   "files": [
     "README.md",

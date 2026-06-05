@@ -2,24 +2,48 @@
 
 Date: 2026-06-05
 
-## Rollback Status
+## Scope
 
-No rollback is required for this run because no MediaAsset write occurred.
+Rollback, if ever approved, should affect only the 9 MediaAsset records changed in this run.
 
-## If A Future Retry Updates Records
+No rollback was performed in this run.
 
-If a future approved retry updates the 9 MediaAsset URL fields and rollback is separately approved, rollback should be limited to those same 9 Ice MediaAsset records and only the URL/rendering fields changed by that retry.
+## Previous URL Shape
 
-Do not rollback or alter:
+Before this update, each approved MediaAsset used:
 
-- page/body CMS content
-- page metadata
-- theme records
-- navigation records
-- form records
-- Cloudflare configuration
-- Azure configuration
-- blobs
-- static or production deployments
-- email/Microsoft 365 settings
-- Roller records
+```text
+/media/ice-rink-rentals/2026/06/{safeFileName}
+```
+
+The previous storage metadata used:
+
+```text
+storageProvider: local-dev
+storageContainer: media-assets
+blobPath: ice-rink-rentals/2026/06/{safeFileName}
+```
+
+Each record had one `original` variant using the same local URL and local-dev storage metadata.
+
+## Forward URL Shape
+
+After this update, each approved MediaAsset uses:
+
+```text
+https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
+```
+
+with:
+
+```text
+storageProvider: azure-blob
+storageContainer: ice-rink-rentals-media
+blobPath: ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}
+```
+
+## Guardrails
+
+Do not roll back with broad tenant-level writes. If rollback is approved, re-read each target record first, verify tenant/site, and patch only the URL/storage fields for the same 9 IDs.
+
+Do not touch page/body CMS content, theme/navigation, forms, Cloudflare, Azure, blobs, deployment, email/Microsoft 365, raw images, generated static artifact staging, or Roller work without separate explicit approval.

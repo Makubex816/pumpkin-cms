@@ -22,6 +22,12 @@ https://media.iceskatingrinkrentals.com
 
 The compact output scan did not detect `data:image` markers or `base64` image payload markers.
 
+## Later MediaAsset Update Status
+
+On 2026-06-05, the 9 approved Ice MediaAsset records were updated to production `media.iceskatingrinkrentals.com` URLs and read back successfully.
+
+This did not clear the static output media errors because the remaining local URLs are embedded in CMS page body/media fields and revision snapshot fields. Updating those fields would be page/body CMS work, which was not approved in the MediaAsset URL update run.
+
 ## Unapproved Rendered Social Image URL
 
 Previous strict validators reported one unique unapproved rendered social image URL:
@@ -84,4 +90,6 @@ Local body/media URL problems do not block the local route-shape proof. They do 
 
 Media production URL readiness: no.
 
-No MediaAsset records were updated and no media files were uploaded.
+MediaAsset production URL readiness: yes after the later approved 2026-06-05 update.
+
+Full media production URL readiness: no until the page/body static output local media URLs are cleared and strict validators pass.

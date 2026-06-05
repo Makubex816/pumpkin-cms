@@ -30,9 +30,15 @@ What improved:
 
 Remaining production blockers:
 
-- local `/media/...` body/media URLs remain
+- local `/media/...` body/media URLs remain in page content/static output
 - static form endpoint is missing/unverified
 - active CMS/theme navigation still needs permanent approval/update
+
+Later MediaAsset update status:
+
+- on 2026-06-05, the 9 approved Ice MediaAsset records were updated to `media.iceskatingrinkrentals.com` production URLs
+- that later run did not update CMS page body/media fields
+- strict validators still fail on local page-body media URLs plus form endpoint readiness
 
 Latest diagnosis-only pass:
 

@@ -2,38 +2,37 @@
 
 Date: 2026-06-05
 
-## Current Blocker
+## Resolved
 
-MediaAsset production URL readiness remains blocked:
+The approved 9 Ice MediaAsset records now point to validated `media.iceskatingrinkrentals.com` production URLs in their MediaAsset URL fields.
 
 ```text
-PUMPKIN_ADMIN_JWT present but admin MediaAsset endpoint returned HTTP 401.
-JWT expiry status: expired-or-missing.
+MediaAsset production URL readiness: yes
+Cloudflare public media URL validation: yes
+Azure direct public Blob media readable: yes
 ```
 
-## Readiness Classification
+## Still Blocked
 
-- Static dry run completed: yes
-- Static route output ready: yes
-- Azure media files uploaded: yes
-- Azure direct public Blob media readable: yes
-- Cloudflare Worker media delivery configured: yes
-- Cloudflare public media URLs validated: yes
-- MediaAsset production URL readiness: no
-- Media production URL readiness: no
-- Static output quality gates: not rerun
-- Contact form production readiness: no
-- Azure staging readiness: no
-- DNS cutover readiness: no
-- Production/indexing readiness: not live-ready
-- Roller: paused
+Media production URL readiness remains `no` for static output because CMS page body/media fields still contain local `/media/ice-rink-rentals/...` URLs.
 
-## Remaining Work
+Strict validators still report local media URL errors in:
 
-- provide a fresh valid admin JWT in the approved environment channel
-- rerun the 9-record MediaAsset readback
-- update only the 9 approved Ice MediaAsset URL fields
-- rerun post-write MediaAsset readback
-- rerun Ice static export and validators
+- `index.html`
+- `index.txt`
+- `contact/index.html`
+- `contact/index.txt`
+- `service-areas/index.html`
+- `service-areas/index.txt`
 
-No MediaAsset write was attempted in this run.
+The remaining local media strings are in page records and rendered static output. Updating them would require page/body CMS edits, which were explicitly not approved.
+
+## Other Readiness Blockers
+
+- static form endpoint production readiness remains `no`
+- Azure staging readiness remains `no`
+- DNS cutover readiness remains `no`
+- production/indexing readiness remains not live-ready
+- Roller remains paused
+
+Do not mark full media production URL readiness yes until the page/body media URL blocker is separately approved and cleared, and the strict static/staging validators pass.

@@ -14,11 +14,11 @@ Cleared:
 
 ## Before Media Production Readiness
 
-- Publish approved media binaries to the planned production media origin in a separately authorized task.
-- Update MediaAsset production public URLs in a separately authorized CMS/media task.
-- Confirm no local `/media/...` URLs remain in snapshot or static output.
+- Approved media binaries have been uploaded and Cloudflare Worker public media delivery validates.
+- The 9 approved Ice MediaAsset records were updated to production public URLs in a separately approved 2026-06-05 task.
+- Confirm no local `/media/...` URLs remain in snapshot or static output before marking media production URL readiness yes.
 - Keep Open Graph/Twitter social image fields empty or replace them only with approved production media URLs after media readiness work is authorized.
-- Do not clear body/media fields as a local workaround; the remaining media URLs are visible page imagery and should remain blockers until production media URLs exist.
+- Do not clear body/media fields as a local workaround; the remaining local media URLs are visible page imagery and should remain blockers until page/body media URL updates or another approved rendering-resolution path is separately approved.
 
 ## Before Contact Form Production Readiness
 

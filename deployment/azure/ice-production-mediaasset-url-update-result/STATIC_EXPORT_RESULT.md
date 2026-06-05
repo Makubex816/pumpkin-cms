@@ -2,37 +2,43 @@
 
 Date: 2026-06-05
 
+## Command
+
+```powershell
+cd apps/ice-rink-web
+npm run export:static:ice:cms
+```
+
 ## Result
 
-Ice static export was not rerun in this blocked attempt.
-
-Reason:
+Exit code:
 
 ```text
-The approved MediaAsset update was blocked before write/readback by HTTP 401 admin auth.
+0
 ```
 
-The requested command was therefore not run:
+Snapshot result:
 
 ```text
-cd apps/ice-rink-web
-npm run export:static:ice:cms
+pageCount: 3
+publishedCount: 3
+themeSnapshot: true
+snapshot slugs: contact, home, service-areas
 ```
 
-No generated static artifacts were staged.
+Route output:
 
-## Expected Follow-Up
+| Location | Expected approved routes | Result |
+| --- | --- | --- |
+| `apps/ice-rink-web/out` | `/`, `/contact`, `/service-areas` | present |
+| `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `/`, `/contact`, `/service-areas` | present |
 
-After a fresh valid admin JWT is available and the 9 MediaAsset records are updated/read back, rerun:
+Preview/obsolete deployable paths:
 
-```text
-cd apps/ice-rink-web
-npm run export:static:ice:cms
-```
+| Path | Result |
+| --- | --- |
+| `/draft-preview` | absent |
+| `/ice-rink-rentals` | absent |
+| `/events-holiday-activations` | absent |
 
-Expected route scope remains:
-
-- snapshot slugs: `contact`, `home`, `service-areas`
-- out routes: `/`, `/contact`, `/service-areas`
-- copied artifact routes: `/`, `/contact`, `/service-areas`
-- preview/obsolete deployable paths: `0`
+The export still reported production-readiness warnings for CMS page body/media fields that contain local `/media/ice-rink-rentals/...` URLs. Those fields are page/body CMS content and were not updated in this approved MediaAsset-only scope.
