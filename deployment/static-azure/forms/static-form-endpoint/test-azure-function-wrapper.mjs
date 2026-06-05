@@ -135,6 +135,7 @@ const tests = [
     assert.equal(result.headers['Access-Control-Allow-Methods'], 'OPTIONS, POST');
     assert.equal(result.headers['Access-Control-Allow-Headers'], 'Content-Type');
     assert.equal(result.headers.Vary, 'Origin');
+    assert.equal(Object.hasOwn(result, 'jsonBody'), false);
   }],
   ['accepts frontend alias payload in no-email dry-run mode', async () => {
     let fetchCalled = false;

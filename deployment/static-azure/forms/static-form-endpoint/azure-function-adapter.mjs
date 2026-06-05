@@ -29,11 +29,16 @@ export async function handleAzureFunctionStaticContact(request, context = {}, ov
     logger: context,
   });
 
-  return {
+  const response = {
     status: result.status,
     headers: result.headers,
-    jsonBody: result.body,
   };
+
+  if (result.status !== 204) {
+    response.jsonBody = result.body;
+  }
+
+  return response;
 }
 
 function headersToObject(headers) {

@@ -1,0 +1,95 @@
+{
+  "generatedAt": "2026-06-05",
+  "siteKey": "ice-rink-rentals",
+  "scope": "Azure Function no-email deployment setup",
+  "status": "deployed_no_email",
+  "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+  "resourceGroup": "rg-ice-static-form-endpoint",
+  "location": "eastus",
+  "resourcesFinal": [
+    {
+      "name": "iceforms20260605",
+      "type": "Microsoft.Storage/storageAccounts",
+      "purpose": "Function runtime storage"
+    },
+    {
+      "name": "func-ice-static-contact-20260605",
+      "type": "Microsoft.Web/sites",
+      "purpose": "Ice static form Function App"
+    },
+    {
+      "name": "EastUSPlan",
+      "type": "Microsoft.Web/serverFarms",
+      "purpose": "Windows Consumption plan"
+    }
+  ],
+  "runtime": {
+    "functionsVersion": "4",
+    "nodeVersion": "24",
+    "os": "Windows",
+    "plan": "Consumption"
+  },
+  "route": "/api/static-contact",
+  "deployedContactCompatibilityRoute": false,
+  "forwardMode": "dry-run",
+  "localPackageVerification": {
+    "npmRunCheck": {
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "npmTest": {
+      "exitCode": 0,
+      "result": "pass"
+    }
+  },
+  "deployment": {
+    "method": "Azure CLI zip deployment",
+    "status": 4,
+    "active": true,
+    "complete": true,
+    "deploymentId": "df61dfca6ad24e7ba9bd670747fe2afe"
+  },
+  "httpsTests": {
+    "optionsApprovedOrigin": "pass",
+    "validFrontendPayload": "pass",
+    "validLegacyPayload": "pass",
+    "invalidEmailRejected": "pass",
+    "unknownRoutingRejected": "pass",
+    "unknownRecipientRejected": "pass",
+    "oversizedMessageRejected": "pass",
+    "honeypotRejected": "pass",
+    "unapprovedOriginRejected": "pass"
+  },
+  "cleanup": {
+    "failedLinuxFunctionAppDeleted": true,
+    "failedLinuxPlanDeleted": true,
+    "unusedPackageBlobContainerDeleted": true,
+    "autoCreatedApplicationInsightsDeleted": true
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormEndpointLocalHardening": true,
+    "staticFormFunctionScaffoldReadiness": true,
+    "staticFormNoEmailEndpointDeployed": true,
+    "contactFormProductionReadiness": false,
+    "staticOutputQualityGates": false,
+    "endpointDeploymentReadiness": "no-email endpoint deployed; production verification still pending",
+    "emailMicrosoft365Readiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "realEmailSent": false,
+    "microsoft365Changed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticSiteDeployment": false,
+    "staticFormEndpointVerifiedSet": false,
+    "rollerTouched": false
+  }
+}
