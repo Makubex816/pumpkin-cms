@@ -1,0 +1,168 @@
+{
+  "packageName": "ice-production-media-upload-result",
+  "generatedDate": "2026-06-05",
+  "mode": "azure-blob-media-upload-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestExpectedCommit": {
+    "hash": "3ad77db",
+    "subject": "Assign Ice Blob data-plane upload role",
+    "confirmed": true
+  },
+  "storage": {
+    "resourceGroup": "rg-ice-production-media",
+    "storageAccount": "iceskatingmedia",
+    "blobContainer": "ice-rink-rentals-media",
+    "region": "eastus"
+  },
+  "upload": {
+    "approvedFileCount": 9,
+    "uploadedFileCount": 9,
+    "sourceRoot": "apps/pumpkin-api/.local-media/ice-rink-rentals/2026/06",
+    "destinationPathPattern": "ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+    "contentType": "image/png",
+    "cacheControl": "public, max-age=31536000, immutable",
+    "authMode": "login",
+    "overwrite": false,
+    "unexpectedBlobCount": 0,
+    "missingBlobCount": 0
+  },
+  "mediaItems": [
+    {
+      "mediaAssetId": "ice-rink-rentals-winterfesticerinkrentals-324b1b89777d",
+      "assetId": "winterfesticerinkrentals-324b1b89777d",
+      "safeFileName": "winterfesticerinkrentals-324b1b89777d.png",
+      "checksum": "324b1b89777d8f9d277f4cee70390eb0a3f68dd6902457f9f6f19164e1fbb59c",
+      "sizeBytes": 3607110,
+      "uploaded": true
+    },
+    {
+      "mediaAssetId": "ice-rink-rentals-corporateicerinkrentalevent-18e985ca59bd",
+      "assetId": "corporateicerinkrentalevent-18e985ca59bd",
+      "safeFileName": "corporateicerinkrentalevent-18e985ca59bd.png",
+      "checksum": "18e985ca59bd67b3f1d74a1a3841a273081b8f8a9ddb97d67dc6ff233e559a2d",
+      "sizeBytes": 3685341,
+      "uploaded": true
+    },
+    {
+      "mediaAssetId": "ice-rink-rentals-holidayicerink-973ce7691377",
+      "assetId": "holidayicerink-973ce7691377",
+      "safeFileName": "holidayicerink-973ce7691377.png",
+      "checksum": "973ce769137773ecb68c439a192ae7bb96f7be2365a591c651c3fcc746c0f853",
+      "sizeBytes": 3866376,
+      "uploaded": true
+    },
+    {
+      "mediaAssetId": "ice-rink-rentals-icerinkrentalssetup-113d218572e4",
+      "assetId": "icerinkrentalssetup-113d218572e4",
+      "safeFileName": "icerinkrentalssetup-113d218572e4.png",
+      "checksum": "113d218572e45a8744673e3b86e2ea7d2e75dfacfcd8a0756a767f59c5ad3f40",
+      "sizeBytes": 3545952,
+      "uploaded": true
+    },
+    {
+      "mediaAssetId": "ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+      "assetId": "iceskatingrinkrentalslogo-0d1f970f0411",
+      "safeFileName": "iceskatingrinkrentalslogo-0d1f970f0411.png",
+      "checksum": "0d1f970f0411e0778405f0a9cce316f0c7affca36e27576d4ebef751782f075b",
+      "sizeBytes": 1627660,
+      "uploaded": true
+    },
+    {
+      "mediaAssetId": "ice-rink-rentals-partyproseastcoastlogo-cfd1fc9f60ae",
+      "assetId": "partyproseastcoastlogo-cfd1fc9f60ae",
+      "safeFileName": "partyproseastcoastlogo-cfd1fc9f60ae.png",
+      "checksum": "cfd1fc9f60aee99c8d9c981f3eab7e7ce45d402343b9aa3bfa207f0dbb4e7582",
+      "sizeBytes": 24434,
+      "uploaded": true
+    },
+    {
+      "mediaAssetId": "ice-rink-rentals-chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+      "assetId": "chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd",
+      "safeFileName": "chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd.png",
+      "checksum": "841162071dfd3c5651f6111d3f6ed84354a8c60fc94a545e8648aea31f136b0a",
+      "sizeBytes": 1923827,
+      "uploaded": true
+    },
+    {
+      "mediaAssetId": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+      "assetId": "chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7",
+      "safeFileName": "chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7.png",
+      "checksum": "9ab697f5d9c704a3525382f0fbec020977053f592e2d1203998717e28badaa54",
+      "sizeBytes": 2253456,
+      "uploaded": true
+    },
+    {
+      "mediaAssetId": "ice-rink-rentals-chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d",
+      "assetId": "chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d",
+      "safeFileName": "chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d.png",
+      "checksum": "40c9a505552d4cb278eb0912581d75566f0d717b97357c42934f0b59c2158120",
+      "sizeBytes": 2105292,
+      "uploaded": true
+    }
+  ],
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureReadOnlyDiscoveryReadiness": true,
+    "azureResourceGroupCreated": true,
+    "microsoftStorageProviderRegistered": true,
+    "azureStorageAccountCreated": true,
+    "blobContainerCreated": true,
+    "blobDataPlaneUploadReadiness": true,
+    "mediaUploadedToAzureBlob": true,
+    "cloudflareMediaDomainReadiness": false,
+    "mediaAssetProductionUrlReadiness": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "files": [
+    "README.md",
+    "UPLOAD_SCOPE.md",
+    "APPROVED_MEDIA_UPLOAD_WORKLIST.md",
+    "PRE_UPLOAD_SOURCE_VERIFICATION.md",
+    "PRE_UPLOAD_TARGET_CHECK.md",
+    "UPLOAD_RESULT.md",
+    "POST_UPLOAD_VERIFICATION.md",
+    "TARGET_CDN_URLS_PENDING_DNS.md",
+    "REMAINING_MEDIA_BLOCKERS.md",
+    "NEXT_CLOUDFLARE_DNS_APPROVAL_REQUIRED.md",
+    "NEXT_MEDIAASSET_UPDATE_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ],
+  "actionsPerformed": {
+    "approvedMediaFilesUploaded": true,
+    "approvedMediaUploadCount": 9,
+    "unapprovedFilesUploaded": false,
+    "rawImagesStaged": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_PRODUCTION_MEDIA_UPLOAD_RESULT_REPORT.md"
+}
