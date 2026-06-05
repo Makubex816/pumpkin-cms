@@ -1,0 +1,125 @@
+{
+  "packageName": "ice-production-media-option-a-phase1-result",
+  "generatedDate": "2026-06-05",
+  "mode": "option-a-phase1-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "selectedStrategy": "Option A",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestRelevantCommits": [
+    {
+      "hash": "8085ea5",
+      "subject": "Document Ice media delivery strategy",
+      "confirmed": true
+    },
+    {
+      "hash": "58ebbd0",
+      "subject": "Upload approved Ice media to Azure Blob",
+      "confirmed": true
+    },
+    {
+      "hash": "3ad77db",
+      "subject": "Assign Ice Blob data-plane upload role",
+      "confirmed": true
+    },
+    {
+      "hash": "941a1e7",
+      "subject": "Create Ice Azure media storage and container",
+      "confirmed": true
+    }
+  ],
+  "azure": {
+    "resourceGroup": "rg-ice-production-media",
+    "storageAccount": "iceskatingmedia",
+    "blobContainer": "ice-rink-rentals-media",
+    "preChangeAllowBlobPublicAccess": false,
+    "postChangeAllowBlobPublicAccess": true,
+    "preChangeContainerPublicAccess": null,
+    "postChangeContainerPublicAccess": null,
+    "containerBlobPublicReadEnabled": false,
+    "blobCountBefore": 9,
+    "blobCountAfter": 9,
+    "customDomain": null,
+    "enableHttpsTrafficOnly": true,
+    "minimumTlsVersion": "TLS1_2"
+  },
+  "accessChange": {
+    "accountLevelBlobPublicAccessEnabled": true,
+    "containerBlobLevelAnonymousReadEnabled": false,
+    "blocker": "az storage container set-permission rejected --auth-mode login; the command only allowed key auth in this environment, and key/SAS/connection-string use was forbidden.",
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false
+  },
+  "directAzureBlobPublicValidation": {
+    "approvedFileCount": 9,
+    "publiclyReadableCount": 0,
+    "statusCodeForAllCheckedUrls": 404,
+    "passed": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureMediaFilesUploaded": true,
+    "selectedMediaDeliveryStrategy": "Option A",
+    "azureDirectPublicBlobMediaReadable": false,
+    "cloudflareMediaDeliveryConfigured": false,
+    "mediaAssetProductionUrlReadiness": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "optionARecordedSelected": true,
+    "azureAccountPublicReadEnabled": true,
+    "containerBlobPublicReadEnabled": false,
+    "directAzureBlobPublicUrlValidationRun": true,
+    "cloudflarePrepPackageCreated": true,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "files": [
+    "README.md",
+    "OPTION_A_SELECTED.md",
+    "PRE_CHANGE_ACCESS_STATE.md",
+    "ACCESS_CHANGE_RESULT.md",
+    "POST_CHANGE_ACCESS_STATE.md",
+    "DIRECT_AZURE_BLOB_PUBLIC_URL_VALIDATION.md",
+    "PUBLIC_URL_WORKLIST.md",
+    "ROLLBACK_PLAN.md",
+    "REMAINING_MEDIA_DELIVERY_BLOCKERS.md",
+    "NEXT_CLOUDFLARE_APPROVAL_REQUIRED.md",
+    "NEXT_MEDIAASSET_UPDATE_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ],
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed",
+    "finalAzureReadback": "passed",
+    "noCloudflareDnsChanges": "passed",
+    "noCmsMediaAssetDeploymentEmailM365Roller": "passed",
+    "noFilesStaged": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_OPTION_A_MEDIA_DELIVERY_PHASE1_RESULT_REPORT.md"
+}

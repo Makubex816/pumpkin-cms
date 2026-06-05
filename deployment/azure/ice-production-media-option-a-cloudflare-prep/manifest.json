@@ -1,0 +1,36 @@
+{
+  "packageName": "ice-production-media-option-a-cloudflare-prep",
+  "generatedDate": "2026-06-05",
+  "mode": "option-a-cloudflare-prep-planning-only",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "selectedStrategy": "Option A",
+  "cloudflareChanged": false,
+  "dnsChanged": false,
+  "currentBlocker": "Direct Azure Blob public URLs are not yet readable because container blob-level anonymous read remains unset.",
+  "mapping": {
+    "publicUrlPattern": "https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+    "azureOriginUrlPattern": "https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+    "requiresContainerSegmentRewrite": true
+  },
+  "files": [
+    "README.md",
+    "CLOUDFLARE_DNS_TARGET.md",
+    "CLOUDFLARE_PATH_REWRITE_PLAN.md",
+    "CLOUDFLARE_CACHE_RULE_PLAN.md",
+    "CLOUDFLARE_CLOUD_CONNECTOR_PLAN.md",
+    "ORIGIN_URL_MAPPING.md",
+    "PUBLIC_URL_VALIDATION_PLAN.md",
+    "MEDIAASSET_UPDATE_DEPENDENCY.md",
+    "NEXT_CLOUDFLARE_EXECUTION_APPROVAL_REQUIRED.md",
+    "NEXT_CLOUDFLARE_EXECUTION_PROMPT.md",
+    "manifest.json"
+  ],
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed"
+  }
+}
