@@ -16,8 +16,8 @@ Local route-shape proof is clean:
 | Validator | Result |
 | --- | --- |
 | `npm run validate:snapshot:ice` | pass, exit `0` |
-| strict static output validator | fail as expected, exit `1`, 8 production errors |
-| strict staging package validator | fail as expected, exit `1`, 8 production errors |
+| strict static output validator | fail as expected, exit `1`, 2 form endpoint errors |
+| strict staging package validator | fail as expected, exit `1`, 2 form endpoint errors |
 
 ## Repair Order
 
@@ -31,10 +31,12 @@ Local route-shape proof is clean:
 3. Static form endpoint repair, in a separate authorized infrastructure task:
    - configure and verify static endpoint
    - do not infer app form readiness from mailbox readiness
-4. Media production URL repair, in a separate authorized media task:
-   - publish approved media to production media origin
-   - update MediaAsset/public URL records
-   - confirm local `/media/...` URLs are gone
+4. Media production URL repair, after separate approval, completed:
+   - approved media was published to the production media origin
+   - MediaAsset/public URL records were updated
+   - active page body/media fields were repaired
+   - public static revision payloads were cleaned up by omitting `revision.latestSnapshot`
+   - local `/media/...` URLs are gone from public static output
 
 ## Readiness Classification
 
@@ -43,7 +45,7 @@ Local route-shape proof is clean:
 | static dry run completed | yes |
 | static route output ready | yes |
 | static output quality gates | no |
-| media production URL readiness | no |
+| media production URL readiness | yes |
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
@@ -58,8 +60,8 @@ After approved CMS metadata repair:
 3. Confirmed no preview or obsolete deployable paths exist.
 4. Confirmed no noindex meta appears on approved production pages.
 5. Confirmed no unapproved rendered social image URL remains.
-6. Confirmed strict static output validator still fails with 8 remaining errors.
-7. Confirmed strict staging package validator still fails with 8 remaining errors.
+6. Confirmed strict static output validator still fails with 2 remaining form endpoint errors.
+7. Confirmed strict staging package validator still fails with 2 remaining form endpoint errors.
 
 ## Actions Not Performed
 

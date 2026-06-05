@@ -17,9 +17,10 @@ Cleared:
 - Approved media binaries have been uploaded and Cloudflare Worker public media delivery validates.
 - The 9 approved Ice MediaAsset records were updated to production public URLs in a separately approved 2026-06-05 task.
 - A separately approved 2026-06-05 page body/media repair cleared active root `ContentData` and root `media` local URLs on `home`, `contact`, and `service-areas`.
-- Confirm no local `/media/...` URLs remain in serialized rollback snapshot/static output payloads before marking full media production URL readiness yes.
+- A separately approved 2026-06-05 static revision-payload cleanup removed `revision.latestSnapshot` from public static snapshot artifacts.
+- Full media production URL readiness is now `yes`.
 - Keep Open Graph/Twitter social image fields empty or replace them only with approved production media URLs after media readiness work is authorized.
-- Do not mutate rollback snapshots or filter static page payloads unless separately approved; the remaining local media strings are no longer active rendered image tags, but they still fail strict output scans.
+- Do not mutate rollback snapshots in CMS; the public static artifact cleanup did not require CMS revision writes.
 
 ## Before Contact Form Production Readiness
 
@@ -30,7 +31,7 @@ Cleared:
 
 ## Next Local Build Gate
 
-Classification: A. No local repairs needed; move only when production media/form setup is approved later.
+Classification: A. No local repairs needed for media; move only when production form setup is approved later.
 
 The remaining strict validator errors are expected. No unexpected tooling repair is required from the current local state.
 
@@ -52,5 +53,5 @@ The remaining strict validator errors are expected. No unexpected tooling repair
 
 ## Before Azure Staging
 
-- Clear media, form, and permanent theme navigation gates.
+- Clear form and permanent theme navigation gates.
 - Create Azure staging resources only after explicit authorization.

@@ -10,6 +10,8 @@ This is documentation and hygiene only. No Azure resources, Cosmos resources, Bl
 
 RollerRinkRentals.com remains paused.
 
+Later 2026-06-05 approved MediaAsset, active page body/media, and static revision-payload cleanup work cleared the media URL blockers from public static output. This closure file now records the current readiness state while preserving the original closure context.
+
 ## Start-State Checkpoint
 
 Latest checkpoint commit was present:
@@ -55,11 +57,10 @@ Static route output ready: yes.
 
 ## Remaining Blockers
 
-Strict static output and staging package validators still fail as expected with 8 production-readiness errors:
+Strict static output and staging package validators still fail as expected with 2 production-readiness errors:
 
 | Category | Count | Detail |
 | --- | ---: | --- |
-| local body/media URL errors | 6 | `index.html`, `index.txt`, `contact/index.html`, `contact/index.txt`, `service-areas/index.html`, `service-areas/index.txt` |
 | static form endpoint not configured | 1 | no public static form endpoint env var is configured |
 | static form endpoint/backend verification missing | 1 | `STATIC_FORM_ENDPOINT_VERIFIED` is not `true` |
 
@@ -67,7 +68,7 @@ Noindex errors are cleared.
 
 Unapproved rendered social metadata image URL errors are cleared.
 
-The remaining local body/media URLs are tied to approved visible page imagery and Ice `mediaAssetId` values. Clearing them locally would remove visible site imagery and should not be done as a local repair.
+Media URL errors are cleared. Public static artifacts no longer contain local `/media/ice-rink-rentals/...` strings or serialized `revision.latestSnapshot` rollback payloads.
 
 The remaining form errors are correct because there is no verified public HTTPS static form endpoint.
 
@@ -78,7 +79,7 @@ The remaining form errors are correct because there is no verified public HTTPS 
 | static dry run completed | yes |
 | static route output ready | yes |
 | static output quality gates | no |
-| media production URL readiness | no |
+| media production URL readiness | yes |
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
@@ -92,7 +93,7 @@ The next local build gate is:
 A. No local repairs needed; move only when production media/form setup is approved later.
 ```
 
-No more local readiness repairs are recommended before separately approved production media and static form work.
+No more local media readiness repairs are recommended. The remaining local gate is separately approved static form endpoint work.
 
 ## Do Not Do Next Locally
 
@@ -113,7 +114,6 @@ Do not move to Azure staging, DNS/cutover, deployment, production indexing, medi
 
 The next phase requires explicit approval for each separate area:
 
-- production media setup and MediaAsset/public URL updates
 - static form endpoint setup and backend verification
 - Azure staging resource creation
 - DNS/Cloudflare/cutover work
@@ -121,7 +121,6 @@ The next phase requires explicit approval for each separate area:
 
 Until those approvals exist, keep:
 
-- media production URL readiness: no
 - contact form production readiness: no
 - Azure staging readiness: no
 - DNS cutover readiness: no

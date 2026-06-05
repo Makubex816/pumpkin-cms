@@ -288,6 +288,18 @@ function routeScopedTheme(site, theme, warnings) {
   return { ...theme, menu: scopedMenu };
 }
 
+function stripPublicStaticAdminPayloads(site, page) {
+  if (site.siteKey !== 'ice-rink-rentals' || !page || typeof page !== 'object') return page;
+
+  const publicPage = JSON.parse(JSON.stringify(page));
+
+  if (publicPage.revision && typeof publicPage.revision === 'object') {
+    delete publicPage.revision.latestSnapshot;
+  }
+
+  return publicPage;
+}
+
 function collectStrings(value, pathLabel = 'page', output = []) {
   if (typeof value === 'string') {
     output.push({ path: pathLabel, value });
@@ -755,7 +767,9 @@ function writeSnapshot(site, pages, theme, warnings, includeUnpublished, scope =
   rmSync(site.snapshotRoot, { recursive: true, force: true });
   mkdirSync(pagesDir, { recursive: true });
 
-  const sortedPages = [...pages].sort((a, b) => getPageSlug(a).localeCompare(getPageSlug(b)));
+  const sortedPages = pages
+    .map((page) => stripPublicStaticAdminPayloads(site, page))
+    .sort((a, b) => getPageSlug(a).localeCompare(getPageSlug(b)));
 
   for (const page of sortedPages) {
     writeFileSync(path.join(pagesDir, pageFileName(page)), JSON.stringify(page, null, 2), 'utf8');

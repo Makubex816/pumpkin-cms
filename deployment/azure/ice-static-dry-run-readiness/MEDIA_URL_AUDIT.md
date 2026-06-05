@@ -2,7 +2,7 @@
 
 ## Current Snapshot And Output
 
-The approved three-page snapshot and generated static output still contain local-dev body/media URLs:
+The approved three-page snapshot and generated static output no longer contain local-dev body/media URLs:
 
 ```text
 /media/ice-rink-rentals/...
@@ -32,13 +32,15 @@ This did not clear the static output media errors because the remaining local UR
 
 On 2026-06-05, a separately approved run repaired only active root `ContentData` and root `media` URL fields on the three approved Ice pages.
 
+A later approved static revision-payload cleanup on 2026-06-05 removed `revision.latestSnapshot` from public static snapshot artifacts, clearing the remaining serialized rollback payload local media strings without editing CMS revisions.
+
 Post-repair active root result:
 
-| Page | Active `ContentData` local URLs | Active `media` local URLs | Revision snapshot local URLs |
+| Page | Active `ContentData` local URLs | Active `media` local URLs | Public static `revision.latestSnapshot` payload |
 | --- | ---: | ---: | ---: |
-| `home` | 0 | 0 | 52 |
-| `contact` | 0 | 0 | 50 |
-| `service-areas` | 0 | 0 | 30 |
+| `home` | 0 | 0 | omitted |
+| `contact` | 0 | 0 | omitted |
+| `service-areas` | 0 | 0 | omitted |
 
 Rendered image tag result:
 
@@ -48,7 +50,7 @@ Rendered image tag result:
 | `contact/index.html` | 0 | 7 |
 | `service-areas/index.html` | 0 | 6 |
 
-Strict validators still fail because the generated HTML/TXT serializes `revision.latestSnapshot` rollback payloads with pre-repair local media URLs. Manual stale revision/rollback snapshot editing was not approved in that run.
+Strict validators no longer fail on media URLs. Manual stale revision/rollback snapshot editing was not performed.
 
 ## Unapproved Rendered Social Image URL
 
@@ -82,17 +84,17 @@ Before the CMS metadata repair, each source field contained the local value:
 
 The approved active CMS metadata repair cleared those four source fields on `home` and `service-areas`. The post-repair static output no longer contains that unapproved rendered social image URL.
 
-This does not claim media production readiness. Local body/media image URLs still remain in rendered page content.
+This no longer blocks media production URL readiness.
 
 ## Local Media URL Summary
 
-Unique local `/media/ice-rink-rentals/...` URL counts in fresh static output:
+Unique local `/media/ice-rink-rentals/...` URL counts in fresh static output after the revision-payload cleanup:
 
 | Route | Unique local media URLs | Rendered files |
 | --- | ---: | --- |
-| `/` | 6 | `index.html`, `index.txt` |
-| `/contact` | 8 | `contact/index.html`, `contact/index.txt` |
-| `/service-areas` | 6 | `service-areas/index.html`, `service-areas/index.txt` |
+| `/` | 0 | `index.html`, `index.txt` |
+| `/contact` | 0 | `contact/index.html`, `contact/index.txt` |
+| `/service-areas` | 0 | `service-areas/index.html`, `service-areas/index.txt` |
 
 The CMS source paths are page media objects and block media objects such as `page.media.*.publicUrl`, `page.media.*.url`, and `page.ContentData.ContentBlocks[*].content.*.media.publicUrl/url`. The renderer path is `apps/ice-rink-web/src/components/blocks/PolishedBlocks.tsx`, which reads `publicUrl`/`url` and emits `<img src=...>`.
 
@@ -102,11 +104,11 @@ Detailed route/source mapping is recorded in:
 deployment/azure/ice-static-dry-run-readiness/BODY_MEDIA_URL_BLOCKER_AUDIT.md
 ```
 
-The earlier remaining local media URLs mapped to active page body/media fields and media objects with Ice `mediaAssetId` values. Those active root fields are now repaired. The remaining strict media failures map to serialized rollback snapshot payloads, not active rendered image tags.
+The earlier remaining local media URLs mapped first to active page body/media fields, then to serialized rollback snapshot payloads after the active-root repair. Both are now cleared from public static output.
 
 ## Policy Result
 
-Local body/media URL problems do not block the local route-shape proof. They do block production media readiness, Azure staging readiness, and production deployment readiness.
+Local body/media URL problems no longer block production media readiness. Form endpoint readiness still blocks static output quality gates, Azure staging readiness, and production deployment readiness.
 
 ## Readiness
 
@@ -114,4 +116,4 @@ Active page body media URL readiness: yes.
 
 MediaAsset production URL readiness: yes after the later approved 2026-06-05 update.
 
-Full media production URL readiness: no until the rollback snapshot/static output local media strings are cleared or filtered through a separately approved path and strict validators pass.
+Full media production URL readiness: yes after the later approved static revision-payload cleanup.

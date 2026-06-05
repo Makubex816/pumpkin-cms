@@ -10,11 +10,11 @@ active media local media URLs: 0
 rendered local img tags: 0
 ```
 
-## Still Blocked
+## Resolved By Later Static Revision Payload Cleanup
 
-Full media production URL readiness remains `no`.
+Full media production URL readiness is now `yes`.
 
-The page API stores a rollback snapshot under `revision.latestSnapshot.page`. After the approved active-root repair, that snapshot intentionally contains the pre-repair page state. The static export serializes that revision snapshot into the generated page payloads, so strict validators still find local `/media/ice-rink-rentals/...` strings in:
+The page API stores a rollback snapshot under `revision.latestSnapshot.page`. After the approved active-root repair, that snapshot intentionally contained the pre-repair page state. At the time of this repair, static export serialized that revision snapshot into the generated page payloads, so strict validators still found local `/media/ice-rink-rentals/...` strings in:
 
 - `index.html`
 - `index.txt`
@@ -23,7 +23,7 @@ The page API stores a rollback snapshot under `revision.latestSnapshot.page`. Af
 - `service-areas/index.html`
 - `service-areas/index.txt`
 
-Manual stale revision/rollback snapshot editing was not approved in this run. The run stopped at documentation for that boundary.
+A later approved Ice static revision-payload cleanup on 2026-06-05 removed `revision.latestSnapshot` from public static snapshot artifacts without editing CMS revisions. Current strict media URL errors are cleared.
 
 ## Other Blockers
 
@@ -32,4 +32,3 @@ Manual stale revision/rollback snapshot editing was not approved in this run. Th
 - DNS cutover readiness remains `no`
 - production/indexing readiness remains not live-ready
 - Roller remains paused
-

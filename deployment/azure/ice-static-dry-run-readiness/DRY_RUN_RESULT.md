@@ -54,13 +54,13 @@ Validator split:
 | Validator | Exit | Result |
 | --- | ---: | --- |
 | `npm run validate:snapshot:ice` | 0 | route/snapshot validation passed; production-readiness blockers remain warnings |
-| `validate-static-output.mjs` | 1 | 8 strict production errors |
-| `validate-staging-package.mjs` | 1 | 8 strict staging package errors |
+| `validate-static-output.mjs` | 1 | 2 strict production errors after later media/revision cleanup |
+| `validate-staging-package.mjs` | 1 | 2 strict staging package errors after later media/revision cleanup |
 
-Strict production/staging validators still exit `1`, as expected, because production readiness remains blocked by local body/media URLs and the missing/unverified static form endpoint.
+Strict production/staging validators still exit `1`, as expected, because production readiness remains blocked by the missing/unverified static form endpoint. Later approved MediaAsset, active page body/media, and static revision-payload cleanup work cleared the media URL errors.
 
 Noindex errors and the unapproved rendered social image URL are cleared.
 
-The remaining 8 strict errors were inventoried in `REMAINING_STRICT_VALIDATOR_ERRORS.md`. The next local build gate is classified in `NEXT_LOCAL_BUILD_GATE.md` as: A. No local repairs needed; move only when production media/form setup is approved later.
+The remaining strict errors are now the 2 form endpoint readiness errors. The next local build gate is classified in `NEXT_LOCAL_BUILD_GATE.md` as: A. No local repairs needed for media; move only when production form setup is approved later.
 
 No staging, deployment, Theme writes, MediaAsset writes, email, or Microsoft 365 actions were performed. Only the explicitly approved active CMS metadata fields were changed.

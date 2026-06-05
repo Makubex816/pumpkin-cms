@@ -1,0 +1,187 @@
+{
+  "packageName": "ice-static-revision-payload-cleanup-result",
+  "generatedDate": "2026-06-05",
+  "mode": "public-static-export-revision-payload-cleanup",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "siteKey": "ice-rink-rentals",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "approvedRoutes": [
+    "/",
+    "/contact",
+    "/service-areas"
+  ],
+  "excludedSlugs": [
+    "events-holiday-activations",
+    "ice-rink-rentals",
+    "phase-5a-csv-import-54754949"
+  ],
+  "sourceDiagnosis": {
+    "staleMediaSource": "revision.latestSnapshot rollback payload serialized into public static page props",
+    "activeRenderedMediaLocalUrls": 0,
+    "publicRuntimeNeedsLatestSnapshot": false,
+    "selectedRepair": "omit revision.latestSnapshot from Ice public static snapshot pages"
+  },
+  "toolingChange": {
+    "file": "apps/ice-rink-web/scripts/snapshot-cms-content.mjs",
+    "siteScopedTo": "ice-rink-rentals",
+    "removedPublicSnapshotField": "revision.latestSnapshot",
+    "cmsWrites": false,
+    "pageBodyEdits": false,
+    "mediaAssetWrites": false
+  },
+  "preCleanup": {
+    "publicFilesWithLocalMedia": {
+      "index.html": 52,
+      "index.txt": 52,
+      "contact/index.html": 50,
+      "contact/index.txt": 50,
+      "service-areas/index.html": 30,
+      "service-areas/index.txt": 30
+    },
+    "activeRenderedLocalImgTags": 0,
+    "sourcePathPrefix": "page.revision.latestSnapshot.page"
+  },
+  "postCleanup": {
+    "allOutLocalMediaOccurrences": 0,
+    "allOutLatestSnapshotMentions": 0,
+    "publicFiles": {
+      "index.html": {
+        "localMediaOccurrences": 0,
+        "localImgSrcOccurrences": 0,
+        "productionMediaOccurrences": 66,
+        "latestSnapshotMentions": 0
+      },
+      "index.txt": {
+        "localMediaOccurrences": 0,
+        "localImgSrcOccurrences": 0,
+        "productionMediaOccurrences": 52,
+        "latestSnapshotMentions": 0
+      },
+      "contact/index.html": {
+        "localMediaOccurrences": 0,
+        "localImgSrcOccurrences": 0,
+        "productionMediaOccurrences": 64,
+        "latestSnapshotMentions": 0
+      },
+      "contact/index.txt": {
+        "localMediaOccurrences": 0,
+        "localImgSrcOccurrences": 0,
+        "productionMediaOccurrences": 50,
+        "latestSnapshotMentions": 0
+      },
+      "service-areas/index.html": {
+        "localMediaOccurrences": 0,
+        "localImgSrcOccurrences": 0,
+        "productionMediaOccurrences": 41,
+        "latestSnapshotMentions": 0
+      },
+      "service-areas/index.txt": {
+        "localMediaOccurrences": 0,
+        "localImgSrcOccurrences": 0,
+        "productionMediaOccurrences": 30,
+        "latestSnapshotMentions": 0
+      }
+    },
+    "snapshotPages": {
+      "contact.json": {
+        "localMediaOccurrences": 0,
+        "productionMediaOccurrences": 50,
+        "hasRevisionObject": true,
+        "hasLatestSnapshot": false
+      },
+      "home.json": {
+        "localMediaOccurrences": 0,
+        "productionMediaOccurrences": 52,
+        "hasRevisionObject": true,
+        "hasLatestSnapshot": false
+      },
+      "service-areas.json": {
+        "localMediaOccurrences": 0,
+        "productionMediaOccurrences": 30,
+        "hasRevisionObject": true,
+        "hasLatestSnapshot": false
+      }
+    },
+    "previewPathsPresent": 0,
+    "obsoletePathsPresent": 0
+  },
+  "staticExport": {
+    "run": true,
+    "command": "npm run export:static:ice:cms",
+    "exitCode": 0,
+    "snapshotSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "pageCount": 3,
+    "publishedCount": 3,
+    "sitemapCount": 3,
+    "redirectCount": 0
+  },
+  "validators": {
+    "snapshotValidator": {
+      "run": true,
+      "exitCode": 0,
+      "passed": true,
+      "warningsRemain": true,
+      "mediaWarningsRemain": false
+    },
+    "strictStaticOutputValidator": {
+      "run": true,
+      "exitCode": 1,
+      "passed": false,
+      "mediaErrorsRemain": false,
+      "remainingErrors": [
+        "Static form endpoint is not configured for production/static deploy readiness.",
+        "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness."
+      ]
+    },
+    "strictStagingPackageValidator": {
+      "run": true,
+      "exitCode": 1,
+      "passed": false,
+      "mediaErrorsRemain": false,
+      "remainingErrorsMatchStaticOutput": true
+    }
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureMediaFilesUploaded": true,
+    "azureDirectPublicBlobMediaReadable": true,
+    "cloudflareWorkerMediaDeliveryConfigured": true,
+    "cloudflarePublicMediaUrlsValidated": true,
+    "mediaAssetProductionUrlReadiness": true,
+    "activePageBodyMediaUrlReadiness": true,
+    "revisionPayloadLocalMediaCleanup": true,
+    "mediaProductionUrlReadiness": true,
+    "staticOutputQualityGates": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "cmsWrites": false,
+    "pageBodyEdits": false,
+    "staleRevisionCmsWrites": false,
+    "mediaAssetWrites": false,
+    "themeWrites": false,
+    "navigationWrites": false,
+    "formWrites": false,
+    "cloudflareChanged": false,
+    "azureChanged": false,
+    "staticDeployment": false,
+    "productionDeployment": false,
+    "emailOrMicrosoft365Work": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false,
+    "secretsPrinted": false
+  },
+  "rootReport": "PUMPKIN_ICE_STATIC_REVISION_PAYLOAD_CLEANUP_RESULT_REPORT.md"
+}
+

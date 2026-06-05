@@ -83,21 +83,15 @@ Validator results:
 | Validator | Exit | Result |
 | --- | ---: | --- |
 | `npm run validate:snapshot:ice` | 0 | route/snapshot validation passed; warnings remain for production readiness |
-| `validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | 1 | 8 strict errors remain |
-| `validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | 1 | 8 strict errors remain |
+| `validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | 1 | 2 strict form endpoint errors remain after later media/revision cleanup |
+| `validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/out` | 1 | 2 strict form endpoint errors remain after later media/revision cleanup |
 
 Noindex result: cleared in active snapshot and rendered static output.
 
 Unapproved rendered social image URL result: cleared from rendered static output.
 
-Remaining strict errors:
+Remaining strict errors after later approved MediaAsset, active page body/media, and static revision-payload cleanup work:
 
-- local-dev media URL found in `contact/index.html`
-- local-dev media URL found in `contact/index.txt`
-- local-dev media URL found in `index.html`
-- local-dev media URL found in `index.txt`
-- local-dev media URL found in `service-areas/index.html`
-- local-dev media URL found in `service-areas/index.txt`
 - static form endpoint not configured
 - static form endpoint/backend verification missing
 

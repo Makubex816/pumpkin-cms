@@ -65,12 +65,12 @@ Validator results:
 | strict static output validator | 1 | failed |
 | strict staging package validator | 1 | failed |
 
-Strict validators still fail because static output includes serialized `revision.latestSnapshot` rollback payloads with pre-repair local media URLs, plus the missing/unverified static form endpoint. Active page body/media roots are clean, and local rendered `<img>` tags are clean.
+At the time of the active page body/media repair, strict validators still failed because static output included serialized `revision.latestSnapshot` rollback payloads with pre-repair local media URLs, plus the missing/unverified static form endpoint.
+
+A later approved Ice static revision-payload cleanup on 2026-06-05 removed `revision.latestSnapshot` from public static snapshot artifacts. Current strict media URL errors are cleared; strict static/staging validators now fail only for the missing/unverified static form endpoint.
 
 ## Remaining Blockers
 
-- stale rollback snapshot local media URLs are serialized into static output
-- strict static/staging validators still fail on those serialized local media strings
 - static form endpoint production readiness remains `no`
 - Azure staging readiness remains `no`
 - DNS cutover readiness remains `no`
@@ -87,4 +87,3 @@ deployment/azure/ice-page-body-media-url-repair-result/
 ## What Was Not Done
 
 No text/copy, layout, section ordering, theme, navigation, form endpoint, MediaAsset, Cloudflare, Azure, deployment, email/Microsoft 365, raw image staging, protected config, or Roller work occurred.
-

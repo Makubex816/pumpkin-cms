@@ -14,7 +14,7 @@ Latest repair pass used live CMS readback and the approved admin JWT only for th
 
 On 2026-06-05, a separately approved run updated the 9 approved Ice MediaAsset records to validated `media.iceskatingrinkrentals.com` production URLs.
 
-That later run did not update CMS page body/content media fields. The local route-shape dry run remains complete, but full media production URL readiness remains `no` because strict validators still find local `/media/ice-rink-rentals/...` URLs in rendered static output.
+That later run did not update CMS page body/content media fields. Subsequent separately approved active page body/media repair and static revision-payload cleanup work cleared the remaining local media strings from public static output. Full media production URL readiness is now `yes`; strict validators still fail on the missing/unverified static form endpoint.
 
 ## Later Active Page Body Media Repair Status
 
@@ -28,7 +28,7 @@ active ContentData/media root local media URLs remaining: 0
 rendered local /media img tags after export: 0
 ```
 
-Full media production URL readiness remains `no` because strict validators still find local media strings serialized from `revision.latestSnapshot` rollback payloads, and because the static form endpoint remains missing/unverified.
+On 2026-06-05, a separately approved static revision-payload cleanup removed `revision.latestSnapshot` from public static snapshot artifacts. Full media production URL readiness is now `yes`; strict validators still fail because the static form endpoint remains missing/unverified.
 
 ## Start State
 
@@ -156,9 +156,9 @@ Media:
 - strict validators no longer report the previous unapproved rendered Open Graph/Twitter image URL: `https://iceskatingrinkrentals.com/media/ice-rink-rentals/2026/06/winterfesticerinkrentals-324b1b89777d.png`
 - repaired source fields: `home` and `service-areas` `page.seo.openGraph.og:image` and `page.seo.twitterCard.twitter:image` are now empty
 - local media URL render path: polished block rendering reads `publicUrl`/`url` from CMS media objects and renders them directly in `<img>` tags
-- local result after the later page-body repair: active body/media rendered image URLs are clean, but rollback snapshot media URLs remain production-readiness blockers because they are serialized into static output
+- local result after the later page-body repair and static revision-payload cleanup: active body/media rendered image URLs are clean, rollback snapshot payloads are no longer serialized into public static output, and strict media URL errors are cleared
 - MediaAsset writes/uploads during the original dry-run pass: no
-- required future action after the later page-body repair: separately approve stale revision/rollback snapshot cleanup or an approved static export payload filtering path before marking full media production URL readiness yes
+- required future action after the later static revision-payload cleanup: no further media URL repair is currently required; the remaining strict validator failures are form endpoint readiness failures
 
 Static contact endpoint:
 
@@ -177,15 +177,14 @@ Latest diagnosis-only docs:
 - `deployment/azure/ice-static-dry-run-readiness/NEXT_LOCAL_BUILD_GATE.md`
 - `deployment/azure/ice-static-dry-run-readiness/LOCAL_PHASE_CLOSURE.md`
 
-The remaining 8 strict errors are all expected:
+The remaining strict errors are all expected form endpoint readiness failures:
 
 | Category | Count | Details |
 | --- | ---: | --- |
-| local body/media URL file errors | 6 | `index.html`, `index.txt`, `contact/index.html`, `contact/index.txt`, `service-areas/index.html`, `service-areas/index.txt` |
 | missing static form endpoint | 1 | no public static form endpoint env var is configured |
 | missing endpoint/backend verification | 1 | `STATIC_FORM_ENDPOINT_VERIFIED` is not `true` |
 
-Body/media URL diagnosis: URLs appear in active page body/content media and page media objects, not theme navigation, metadata, CSS, or generated-only files. The active snapshot media objects carry Ice `mediaAssetId` values. Clearing them would remove visible approved site imagery, so they should remain blockers until production media origin and MediaAsset/public URL work is explicitly approved.
+Body/media URL diagnosis: the earlier active page body/media URL blockers were cleared by the separately approved MediaAsset and active page body/media repair work. The later static revision-payload cleanup removed admin rollback snapshot payloads from public static artifacts, so strict media URL errors are now cleared.
 
 Static form diagnosis: validators read `NEXT_PUBLIC_STATIC_FORM_ENDPOINT`, `STATIC_FORM_ENDPOINT`, `NEXT_PUBLIC_STATIC_FORM_ACTION`, or `STATIC_FORM_ACTION`; backend verification requires `STATIC_FORM_ENDPOINT_VERIFIED=true`. A local placeholder/stub may be useful only for interaction experiments and must not mark production readiness yes.
 
@@ -265,8 +264,8 @@ Strict production/staging validators remain negative controls:
 | Validator | Exit | Expected blockers |
 | --- | --- | --- |
 | `npm run validate:snapshot:ice` | `0` | route/snapshot validation passed; production-readiness blockers remain warnings |
-| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `1` | 8 errors: local body/media URLs in the three approved routes and missing/unverified static form endpoint |
-| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `1` | 8 errors: local body/media URLs in the three approved routes and missing/unverified static form endpoint |
+| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `1` | 2 errors: missing/unverified static form endpoint |
+| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/out` | `1` | 2 errors: missing/unverified static form endpoint |
 
 No stale snapshot/static output was accepted as readiness proof.
 
@@ -281,14 +280,14 @@ Unapproved rendered social image URL errors: cleared.
 | static dry run completed | yes |
 | static route output ready | yes |
 | static output quality gates | no |
-| media production URL readiness | no |
+| media production URL readiness | yes |
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
 | production/indexing readiness overall | no |
 | production/indexing readiness for noindex gate | yes |
 
-Overall production deployment readiness remains no because media, form endpoint, and permanent theme navigation readiness are still blocked.
+Overall production deployment readiness remains no because form endpoint and permanent theme navigation readiness are still blocked.
 
 ## Checks
 
@@ -297,7 +296,7 @@ Overall production deployment readiness remains no because media, form endpoint,
 - route/snapshot shape validation: pass
 - strict production static validator: rejects output as expected
 - strict staging package validator: rejects package as expected
-- remaining strict validator errors: 8 expected errors documented
+- remaining strict validator errors: 2 expected form endpoint errors documented
 - next local build gate: A, no local repairs needed before separately approved media/form setup
 - local phase closure doc: present
 - manifest JSON parse: pass
@@ -317,4 +316,4 @@ Overall production deployment readiness remains no because media, form endpoint,
 
 ## Next Recommended Action
 
-Do not proceed to Azure setup, DNS cutover, deployment, or production static publication. The next authorized work should clear the remaining strict blockers: production media URLs, static form endpoint verification, and permanent active theme navigation approval/update.
+Do not proceed to Azure setup, DNS cutover, deployment, or production static publication. The next authorized work should clear the remaining strict blockers: static form endpoint verification and permanent active theme navigation approval/update.

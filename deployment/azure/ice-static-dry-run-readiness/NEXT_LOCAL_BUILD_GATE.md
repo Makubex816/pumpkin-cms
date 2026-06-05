@@ -10,19 +10,24 @@ Selected next-step classification:
 A. No local repairs needed; move only when production media/form setup is approved later.
 ```
 
+Current follow-up status after later approved MediaAsset, active page body/media, and static revision-payload cleanup work:
+
+```text
+A. No local repairs needed for media; move only when production form setup is approved later.
+```
+
 ## Rationale
 
 Route-shape proof is clean and the snapshot validator passes.
 
-The remaining 8 strict validator errors are expected production-readiness gates:
+The remaining 2 strict validator errors are expected production-readiness gates:
 
-- six file-level local body/media URL errors
 - one missing static form endpoint error
 - one missing endpoint/backend verification error
 
 No unexpected validator category was found.
 
-The media findings map to active page body/media fields and page media objects with Ice `mediaAssetId` values. Clearing those fields would remove visible site imagery, so it is not a safe local repair.
+The earlier media findings were cleared through separately approved MediaAsset, active page body/media, and public static revision-payload cleanup work. No current local media URL strict errors remain.
 
 The form findings require a real verified HTTPS endpoint. A local placeholder/stub may support interaction experiments, but strict staging/production validators are correct to fail until an endpoint exists and `STATIC_FORM_ENDPOINT_VERIFIED=true` is set after backend verification.
 
@@ -39,7 +44,6 @@ The form findings require a real verified HTTPS endpoint. A local placeholder/st
 
 Future strict validator pass requires separate approval for:
 
-- production media origin/infrastructure and MediaAsset/public URL updates
 - static form endpoint deployment/configuration and backend verification
 
 Do not proceed to Azure resources, DNS/Cloudflare changes, deployment, Microsoft 365/email work, MediaAsset writes, CMS content writes, or Roller work from this pass.

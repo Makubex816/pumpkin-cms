@@ -76,19 +76,14 @@
       "exitCode": 0,
       "passed": true,
       "warningsRemain": true,
-      "warningSource": "revision.latestSnapshot rollback payload local media URLs plus form/readiness warnings"
+      "warningSource": "form/readiness warnings after later revision payload cleanup"
     },
     "strictStaticOutputValidator": {
       "run": true,
       "exitCode": 1,
       "passed": false,
+      "mediaErrorsRemain": false,
       "remainingErrors": [
-        "Local-dev media URL found in static output: contact/index.html",
-        "Local-dev media URL found in static output: contact/index.txt",
-        "Local-dev media URL found in static output: index.html",
-        "Local-dev media URL found in static output: index.txt",
-        "Local-dev media URL found in static output: service-areas/index.html",
-        "Local-dev media URL found in static output: service-areas/index.txt",
         "Static form endpoint is not configured for production/static deploy readiness.",
         "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness."
       ]
@@ -97,6 +92,7 @@
       "run": true,
       "exitCode": 1,
       "passed": false,
+      "mediaErrorsRemain": false,
       "remainingErrorsMatchStaticOutput": true
     }
   },
@@ -109,7 +105,8 @@
     "cloudflarePublicMediaUrlsValidated": true,
     "mediaAssetProductionUrlReadiness": true,
     "activePageBodyMediaUrlReadiness": true,
-    "mediaProductionUrlReadiness": false,
+    "revisionPayloadLocalMediaCleanup": true,
+    "mediaProductionUrlReadiness": true,
     "staticOutputQualityGates": false,
     "contactFormProductionReadiness": false,
     "azureStagingReadiness": false,

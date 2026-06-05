@@ -72,7 +72,9 @@ Validators:
 | strict static output validator | 1 | failed |
 | strict staging package validator | 1 | failed |
 
-The strict validators still fail because exported HTML/TXT includes serialized `revision.latestSnapshot` rollback payloads with the pre-repair local media URLs. Active `ContentData` and active `media` roots are clean; local rendered `<img>` tags are clean.
+At the time of this active page body/media repair, strict validators still failed because exported HTML/TXT included serialized `revision.latestSnapshot` rollback payloads with the pre-repair local media URLs. Active `ContentData` and active `media` roots were clean; local rendered `<img>` tags were clean.
+
+A later approved Ice static revision-payload cleanup on 2026-06-05 removed `revision.latestSnapshot` from public static snapshot artifacts. Current strict media URL errors are cleared; strict static/staging validators now fail only for the missing/unverified static form endpoint.
 
 The contact form endpoint remains unconfigured/unverified, so contact form production readiness remains `no`.
 
@@ -88,11 +90,10 @@ The contact form endpoint remains unconfigured/unverified, so contact form produ
 | Cloudflare public media URLs validated | yes |
 | MediaAsset production URL readiness | yes |
 | active page body media URL readiness | yes |
-| full media production URL readiness | no |
+| full media production URL readiness | yes |
 | static output quality gates | no |
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
 | production/indexing readiness | not live-ready |
 | Roller | paused |
-

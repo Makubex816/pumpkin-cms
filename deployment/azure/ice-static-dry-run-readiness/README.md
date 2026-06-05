@@ -30,7 +30,6 @@ What improved:
 
 Remaining production blockers:
 
-- local `/media/...` body/media URLs remain in page content/static output
 - static form endpoint is missing/unverified
 - active CMS/theme navigation still needs permanent approval/update
 
@@ -39,11 +38,13 @@ Later MediaAsset update status:
 - on 2026-06-05, the 9 approved Ice MediaAsset records were updated to `media.iceskatingrinkrentals.com` production URLs
 - a later separately approved active page body/media repair updated 132 active root `ContentData` and root `media` fields
 - active rendered image tags now use production media URLs
-- strict validators still fail on local media strings serialized from `revision.latestSnapshot` rollback payloads plus form endpoint readiness
+- a later approved static revision-payload cleanup removed `revision.latestSnapshot` from public static snapshot artifacts
+- strict media URL errors are now cleared
+- strict validators still fail on static form endpoint readiness
 
 Latest diagnosis-only pass:
 
-- exact remaining 8 strict validator errors are documented
+- exact remaining strict validator errors are documented
 - body/media URL source fields are mapped to active page media and content-block media objects
 - static form endpoint env/config expectations are documented
 - next local build gate is classified as `A`: no local repairs needed; move only when production media/form setup is approved later
@@ -71,11 +72,11 @@ Diagnosis docs:
 - `STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md`
 - `NEXT_LOCAL_BUILD_GATE.md`
 
-Latest strict validator split after the active page body/media repair:
+Latest strict validator split after the active page body/media repair and static revision-payload cleanup:
 
 - `npm run validate:snapshot:ice`: exit `0`; route/snapshot proof passes, production-readiness blockers remain warnings
-- `validate-static-output.mjs`: exit `1`; 8 strict production errors
-- `validate-staging-package.mjs`: exit `1`; 8 strict staging package errors
+- `validate-static-output.mjs`: exit `1`; 2 strict production errors, both form endpoint readiness
+- `validate-staging-package.mjs`: exit `1`; 2 strict staging package errors, both form endpoint readiness
 
 ## Classification
 
@@ -85,7 +86,7 @@ Latest strict validator split after the active page body/media repair:
 | static route output ready | yes |
 | static output quality gates | no |
 | active page body media URL readiness | yes |
-| media production URL readiness | no |
+| media production URL readiness | yes |
 | contact form production readiness | no |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
