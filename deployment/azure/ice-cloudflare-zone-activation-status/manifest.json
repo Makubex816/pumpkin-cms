@@ -1,0 +1,104 @@
+{
+  "packageName": "ice-cloudflare-zone-activation-status",
+  "generatedDate": "2026-06-05",
+  "mode": "cloudflare-zone-activation-readonly-status",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestRelevantCommit": {
+    "hash": "8142e34",
+    "subject": "Document Ice Cloudflare media delivery auth blocker",
+    "confirmed": true
+  },
+  "credentialPresence": {
+    "cloudflareApiToken": "missing",
+    "cloudflareZoneId": "missing",
+    "tokenValuePrinted": false
+  },
+  "cloudflareApi": {
+    "queried": false,
+    "blocker": "CLOUDFLARE_API_TOKEN and CLOUDFLARE_ZONE_ID are missing in the active Codex shell.",
+    "zoneStatus": "unknown",
+    "assignedNameservers": "unknown",
+    "dnsRecordProxyFlagsAudited": false
+  },
+  "publicDns": {
+    "nameserverPropagationVisible": true,
+    "expectedNameservers": [
+      "amy.ns.cloudflare.com",
+      "bob.ns.cloudflare.com"
+    ],
+    "resolversChecked": [
+      "local resolver",
+      "1.1.1.1",
+      "8.8.8.8"
+    ],
+    "rootA": "66.81.203.198",
+    "wwwA": "66.81.203.198",
+    "autodiscoverCname": "autodiscover.outlook.com",
+    "mx": "iceskatingrinkrentals-com.mail.protection.outlook.com",
+    "txtRecordsObserved": [
+      "MS=ms13281863",
+      "v=spf1 include:spf.protection.outlook.com -all"
+    ],
+    "mediaRecordVisible": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureMediaFilesUploaded": true,
+    "azureDirectPublicBlobMediaReadable": true,
+    "cloudflareZoneOnboarded": true,
+    "cloudflareZoneActive": "unknown-api-blocked",
+    "cloudflareNameserverPropagationVisible": true,
+    "cloudflareMediaDeliveryConfigured": false,
+    "cloudflarePublicMediaUrlsValidated": false,
+    "mediaAssetProductionUrlReadiness": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "cloudflareApiMutation": false,
+    "cloudflareDnsChanged": false,
+    "cloudflareRulesChanged": false,
+    "cloudflareCacheChanged": false,
+    "rootDnsChanged": false,
+    "wwwDnsChanged": false,
+    "mediaDnsSetupStarted": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "generatedStaticArtifactsStaged": false,
+    "rollerTouched": false
+  },
+  "files": [
+    "README.md",
+    "CLOUDFLARE_ZONE_STATUS.md",
+    "NAMESERVER_PROPAGATION_CHECK.md",
+    "DNS_RECORD_SAFETY_AUDIT.md",
+    "MEDIA_DELIVERY_NOT_STARTED.md",
+    "NEXT_MEDIA_DELIVERY_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ],
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed",
+    "noCloudflareMutations": "passed",
+    "noCmsMediaAssetDeploymentEmailM365Roller": "passed",
+    "noFilesStaged": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_CLOUDFLARE_ZONE_ACTIVATION_STATUS_REPORT.md"
+}
