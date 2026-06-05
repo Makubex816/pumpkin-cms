@@ -1,0 +1,114 @@
+{
+  "packageName": "ice-production-media-delivery-strategy",
+  "generatedDate": "2026-06-05",
+  "mode": "media-delivery-strategy-diagnosis",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestExpectedCommit": {
+    "hash": "58ebbd0",
+    "subject": "Upload approved Ice media to Azure Blob",
+    "confirmed": true
+  },
+  "storage": {
+    "resourceGroup": "rg-ice-production-media",
+    "storageAccount": "iceskatingmedia",
+    "blobContainer": "ice-rink-rentals-media",
+    "region": "eastus",
+    "allowBlobPublicAccess": false,
+    "containerPublicAccess": null,
+    "customDomain": null,
+    "enableHttpsTrafficOnly": true,
+    "minimumTlsVersion": "TLS1_2",
+    "publicNetworkAccess": "Enabled",
+    "blobCount": 9
+  },
+  "dns": {
+    "targetMediaHost": "media.iceskatingrinkrentals.com",
+    "localResolveDnsNameReturnedRecords": false
+  },
+  "publicBlobUrlSmokeCheck": {
+    "method": "HEAD",
+    "anonymousRequestUsed": true,
+    "sasGeneratedOrUsed": false,
+    "statusCode": 409,
+    "reason": "Public access is not permitted on this storage account.",
+    "anonymousPublicAccessWorks": false
+  },
+  "optionsCompared": [
+    "Option A: public Blob read plus Cloudflare delivery/routing",
+    "Option B: private Blob plus Cloudflare Worker or equivalent signed origin fetch",
+    "Option C: Azure CDN or Azure Front Door",
+    "Option D: defer media delivery until access policy is explicitly chosen"
+  ],
+  "recommendation": {
+    "recommendedOption": "A",
+    "label": "Public Blob read for approved checksum-versioned marketing media plus Cloudflare proxied delivery/routing and path rewrite",
+    "executed": false,
+    "requiresSeparateApproval": true
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureMediaFilesUploaded": true,
+    "publicMediaDeliveryConfigured": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "readOnlyAzureChecks": true,
+    "publicBlobUrlSmokeCheck": true,
+    "officialDocsReviewed": true,
+    "docsCreated": true,
+    "azurePublicAccessChanged": false,
+    "azureNetworkChanged": false,
+    "azureCustomDomainChanged": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "files": [
+    "README.md",
+    "CURRENT_BLOB_ACCESS_STATE.md",
+    "PUBLIC_BLOB_URL_SMOKE_CHECK.md",
+    "DELIVERY_OPTION_A_PUBLIC_BLOB_CLOUDFLARE.md",
+    "DELIVERY_OPTION_B_PRIVATE_BLOB_WORKER.md",
+    "DELIVERY_OPTION_C_AZURE_CDN_FRONTDOOR.md",
+    "DELIVERY_OPTION_D_DEFER.md",
+    "RECOMMENDED_MEDIA_DELIVERY_STRATEGY.md",
+    "APPROVAL_REQUIRED_FOR_NEXT_ACTION.md",
+    "FUTURE_CLOUDFLARE_DNS_PLAN.md",
+    "FUTURE_MEDIAASSET_UPDATE_DEPENDENCIES.md",
+    "REMAINING_MEDIA_DELIVERY_RISKS.md",
+    "manifest.json"
+  ],
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed",
+    "noAzurePublicAccessChanges": "passed",
+    "noCloudflareDnsChanges": "passed",
+    "noCmsMediaAssetDeploymentEmailM365Roller": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_MEDIA_DELIVERY_STRATEGY_REPORT.md"
+}
