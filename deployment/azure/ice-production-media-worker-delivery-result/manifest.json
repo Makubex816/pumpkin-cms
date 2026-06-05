@@ -1,0 +1,179 @@
+{
+  "packageName": "ice-production-media-worker-delivery-result",
+  "generatedDate": "2026-06-05",
+  "mode": "cloudflare-worker-media-delivery-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "targetHost": "media.iceskatingrinkrentals.com",
+  "approvedWorkerRoute": "media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestRelevantCommits": [
+    {
+      "hash": "158deed",
+      "subject": "Document Ice Cloudflare media delivery entitlement blocker",
+      "confirmed": true
+    },
+    {
+      "hash": "a919c25",
+      "subject": "Verify Ice Cloudflare zone activation",
+      "confirmed": true
+    },
+    {
+      "hash": "65cd0fb",
+      "subject": "Complete Ice Option A media delivery phase 1B",
+      "confirmed": true
+    },
+    {
+      "hash": "58ebbd0",
+      "subject": "Upload approved Ice media to Azure Blob",
+      "confirmed": true
+    },
+    {
+      "hash": "3ad77db",
+      "subject": "Assign Ice Blob data-plane upload role",
+      "confirmed": true
+    },
+    {
+      "hash": "941a1e7",
+      "subject": "Create Ice Azure media storage and container",
+      "confirmed": true
+    }
+  ],
+  "startState": {
+    "workerResultPackageExisted": false,
+    "workerRootReportExisted": false,
+    "classifiedFiles": {
+      "expectedCloudflareWorkerMediaDeliveryResultDocs": [
+        "PUMPKIN_ICE_CLOUDFLARE_WORKER_MEDIA_DELIVERY_RESULT_REPORT.md",
+        "deployment/azure/ice-production-media-worker-delivery-result/"
+      ],
+      "expectedWorkerSourceConfigFiles": [],
+      "unrelatedStaticAzureBacklog": [
+        "deployment/static-azure/"
+      ],
+      "unrelatedIceMediaDeliveryStrategyBacklog": [
+        "deployment/azure/ice-production-media-delivery-strategy/"
+      ],
+      "rawContentReviewInputFolders": [
+        "content-review/ice-final-contact-input/",
+        "content-review/ice-service-areas-input/"
+      ],
+      "generatedArtifacts": [
+        "content-review/ice-final-contact-input/*.zip and extracted preview/assets",
+        "content-review/ice-service-areas-input/*.zip and extracted preview/assets"
+      ],
+      "protectedConfigRisk": [],
+      "unexpectedFiles": []
+    }
+  },
+  "cloudflarePreflight": {
+    "cloudflareApiToken": "present",
+    "cloudflareZoneId": "present",
+    "zoneName": "iceskatingrinkrentals.com",
+    "zoneStatus": "active",
+    "mediaDnsRecordCountBefore": 0,
+    "workerRoutesListStatus": "HTTP 403",
+    "workerScriptsListStatus": "HTTP 403",
+    "workerDeploymentAvailable": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false
+  },
+  "azureOrigin": {
+    "storageAccount": "iceskatingmedia",
+    "container": "ice-rink-rentals-media",
+    "directPublicBlobUrlsReadable": true,
+    "validatedCount": 9,
+    "status": "200 OK",
+    "contentType": "image/png",
+    "contentLengthMatchesExpected": true,
+    "cacheControl": "public, max-age=31536000, immutable",
+    "azureAccessChangedInThisRun": false,
+    "storageKeysUsedOrPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGeneratedOrPrinted": false
+  },
+  "implementationAttempt": {
+    "workerSourceCreated": false,
+    "workerScriptCreatedOrUpdated": false,
+    "workerRouteCreatedOrUpdated": false,
+    "mediaDnsRecordCreatedOrUpdated": false,
+    "workerDeploymentAttempted": false,
+    "cloudflareMutationAttempted": false,
+    "configurationPersisted": false,
+    "sanitizedBlocker": "Worker route/script endpoints returned HTTP 403",
+    "cleanupRequired": false
+  },
+  "targetCloudflareUrls": {
+    "validatedCount": 9,
+    "publiclyReadableCount": 0,
+    "status": "failed before HTTP response",
+    "dnsResolvedInLocalCheck": false,
+    "redirectedToAzureHost": false,
+    "secretsExposedInResponses": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureMediaFilesUploaded": true,
+    "azureDirectPublicBlobMediaReadable": true,
+    "cloudflareRuleBasedMediaDeliveryConfigured": "no, blocked by entitlement",
+    "cloudflareWorkerMediaDeliveryConfigured": false,
+    "cloudflarePublicMediaUrlsValidated": false,
+    "mediaAssetProductionUrlReadiness": false,
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "actionsPerformed": {
+    "cloudflareWorkerPreflightOnly": true,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "rootDnsChanged": false,
+    "wwwDnsChanged": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "deployed": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "azureTokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "files": [
+    "README.md",
+    "WORKER_PREFLIGHT.md",
+    "PRE_CHANGE_DNS_HTTP_CHECK.md",
+    "WORKER_IMPLEMENTATION.md",
+    "CLOUDFLARE_DNS_RESULT.md",
+    "WORKER_ROUTE_RESULT.md",
+    "POST_CHANGE_PUBLIC_URL_VALIDATION.md",
+    "PUBLIC_MEDIA_URL_WORKLIST.md",
+    "REMAINING_MEDIA_DELIVERY_BLOCKERS.md",
+    "NEXT_MEDIAASSET_UPDATE_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ],
+  "validation": {
+    "manifestJsonParse": "passed",
+    "workerJsSyntaxCheck": "not applicable, no Worker source file created",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed",
+    "noRootWwwDnsChanges": "passed",
+    "noCmsMediaAssetDeploymentEmailM365Roller": "passed",
+    "noFilesStaged": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_CLOUDFLARE_WORKER_MEDIA_DELIVERY_RESULT_REPORT.md"
+}
