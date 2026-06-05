@@ -1,0 +1,116 @@
+{
+  "packageName": "ice-production-media-resource-creation-result",
+  "generatedDate": "2026-06-04",
+  "mode": "azure-media-resource-creation-execution-result",
+  "primarySite": "IceSkatingRinkRentals.com",
+  "pausedSite": "RollerRinkRentals.com",
+  "branch": "feature/admin-page-editor-import-export",
+  "latestExpectedCommit": {
+    "hash": "9013b2a",
+    "subject": "Prepare Ice Azure media resource creation approval",
+    "confirmed": true
+  },
+  "approvalUsed": {
+    "resourceGroup": "rg-ice-production-media",
+    "storageAccount": "iceskatingmedia",
+    "blobContainer": "ice-rink-rentals-media",
+    "region": "eastus",
+    "scope": "Ice Azure media resource creation only"
+  },
+  "azureContext": {
+    "azureCliAvailable": true,
+    "azureCliVersion": "2.87.0",
+    "subscriptionContextValid": true,
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a"
+  },
+  "preCreateChecks": {
+    "resourceGroupExisted": false,
+    "storageAccountExisted": false,
+    "visibleResourceGroupsBeforeCreate": 0,
+    "visibleStorageAccountsBeforeCreate": 0,
+    "storageNameAvailabilityCheck": "failed with SubscriptionNotFound"
+  },
+  "creationResult": {
+    "resourceGroup": {
+      "name": "rg-ice-production-media",
+      "location": "eastus",
+      "created": true,
+      "provisioningState": "Succeeded"
+    },
+    "storageAccount": {
+      "name": "iceskatingmedia",
+      "location": "eastus",
+      "created": false,
+      "errorCode": "SubscriptionNotFound",
+      "errorMessage": "Subscription ff887def-fd83-4a19-9298-13d4b1687873 was not found."
+    },
+    "blobContainer": {
+      "name": "ice-rink-rentals-media",
+      "created": false,
+      "reason": "storage account was not created",
+      "existenceCheck": "timed out after 34 seconds"
+    },
+    "alternateResourceNamesCreated": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "azureReadOnlyDiscoveryReadiness": true,
+    "azureMediaResourceCreationReadiness": false,
+    "azureMediaResourceCreationReadinessLabel": "no, blocked after resource group creation",
+    "mediaUploadReadiness": "pending explicit approval",
+    "mediaProductionUrlReadiness": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": false,
+    "productionIndexingReadinessLabel": "not live-ready",
+    "roller": "paused"
+  },
+  "files": [
+    "README.md",
+    "RESOURCE_GROUP_RESULT.md",
+    "STORAGE_ACCOUNT_RESULT.md",
+    "BLOB_CONTAINER_RESULT.md",
+    "POST_CREATE_READONLY_VERIFICATION.md",
+    "REMAINING_MEDIA_EXECUTION_BLOCKERS.md",
+    "NEXT_MEDIA_UPLOAD_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ],
+  "actionsPerformed": {
+    "azureResourcesCreated": true,
+    "approvedResourceGroupCreated": true,
+    "approvedStorageAccountCreated": false,
+    "approvedBlobContainerCreated": false,
+    "unapprovedAzureResourcesCreated": false,
+    "cosmosResourcesCreated": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "deployed": false,
+    "mediaUploaded": false,
+    "cmsRecordsUpdated": false,
+    "mediaAssetRecordsUpdated": false,
+    "emailSent": false,
+    "microsoft365Touched": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "storageKeysPrinted": false,
+    "connectionStringsPrinted": false,
+    "sasUrlsGenerated": false,
+    "generatedStaticArtifactsStaged": false,
+    "rawImagesStaged": false,
+    "rollerTouched": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed",
+    "protectedGeneratedRawArtifactPathCheck": "passed",
+    "targetedSecretScan": "passed"
+  },
+  "rootReport": "PUMPKIN_ICE_AZURE_MEDIA_RESOURCE_CREATION_RESULT_REPORT.md"
+}
