@@ -19,21 +19,23 @@ minimumTlsVersion: TLS1_2
 
 ## Container Blob-Level Anonymous Read
 
-Blocked.
+Completed in Phase 1B.
 
-Approved command attempted:
+The Phase 1 `az storage container set-permission --auth-mode login` path was blocked because that command required key auth in this environment. Phase 1B used the approved no-key Azure Resource Manager management-plane method instead.
+
+Approved ARM target:
 
 ```text
-az storage container set-permission --account-name iceskatingmedia --name ice-rink-rentals-media --public-access blob --auth-mode login
+/subscriptions/{subscriptionId}/resourceGroups/rg-ice-production-media/providers/Microsoft.Storage/storageAccounts/iceskatingmedia/blobServices/default/containers/ice-rink-rentals-media
 ```
 
 Result:
 
 ```text
-az storage container set-permission: 'login' is not a valid value for '--auth-mode'. Allowed values: key.
+properties.publicAccess: Blob
 ```
 
-Because storage keys, connection strings, and SAS URLs were forbidden, no key-auth command was run and no alternative broader Azure mutation was attempted.
+Storage data-plane keys, connection strings, and SAS URLs were not used or printed.
 
 ## Scope Confirmation
 
@@ -49,4 +51,3 @@ This run did not:
 - print connection strings
 - generate SAS URLs
 - change Cloudflare or DNS
-

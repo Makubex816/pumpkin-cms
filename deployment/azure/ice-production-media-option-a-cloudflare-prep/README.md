@@ -36,9 +36,11 @@ https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-re
 
 Cloudflare must route/rewrite the public path to the Azure origin path that includes the `ice-rink-rentals-media` container segment.
 
-## Current Blocker
+## Current Status
 
-Cloudflare execution should not proceed yet. Direct public Azure Blob URLs are not readable because container blob-level anonymous read was not enabled in Phase 1.
+Direct public Azure Blob URLs are readable for all 9 approved media files after Phase 1B.
+
+Cloudflare execution still requires a separate explicit approval. No Cloudflare/DNS changes occurred in Phase 1B.
 
 ## Files
 
@@ -52,4 +54,3 @@ Cloudflare execution should not proceed yet. Direct public Azure Blob URLs are n
 - `NEXT_CLOUDFLARE_EXECUTION_APPROVAL_REQUIRED.md`
 - `NEXT_CLOUDFLARE_EXECUTION_PROMPT.md`
 - `manifest.json`
-

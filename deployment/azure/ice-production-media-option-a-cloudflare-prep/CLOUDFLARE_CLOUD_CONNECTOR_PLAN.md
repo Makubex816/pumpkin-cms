@@ -14,12 +14,12 @@ iceskatingmedia.blob.core.windows.net
 
 The Azure Blob container must be publicly readable before Cloud Connector can serve the content.
 
-Current Phase 1 result:
+Current Phase 1B result:
 
 ```text
 account allowBlobPublicAccess: true
-container publicAccess: null
-direct public URL status for all 9 files: 404
+container publicAccess: blob
+direct public URL status for all 9 files: 200 OK
 ```
 
 ## Future Rule Intent
@@ -39,4 +39,3 @@ https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-re
 ## Not Done
 
 No Cloud Connector rule was created.
-

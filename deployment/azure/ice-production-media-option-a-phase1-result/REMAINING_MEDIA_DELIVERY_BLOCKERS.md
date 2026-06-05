@@ -2,8 +2,6 @@
 
 ## Blockers
 
-- container blob-level anonymous read is not enabled
-- direct Azure Blob public URLs return `404`
 - Cloudflare/DNS media delivery is not configured
 - Cloudflare path rewrite is not configured
 - MediaAsset production URL updates are not done
@@ -13,11 +11,11 @@
 - DNS cutover readiness remains `no`
 - production/indexing readiness remains not live-ready
 
-## Immediate Technical Blocker
+## Resolved In Phase 1B
 
-The approved `az storage container set-permission` path cannot be completed without key auth in this Azure CLI environment, and key-based auth was forbidden.
+- container blob-level anonymous read is enabled
+- direct Azure Blob public URLs return `200 OK` for all 9 approved media files
 
 ## Required Next Decision
 
-Choose an approved way to set blob-level anonymous read on `ice-rink-rentals-media` without printing or exposing secrets, or explicitly approve a different access method.
-
+Approve Cloudflare/DNS execution for `media.iceskatingrinkrentals.com` if the project is ready to route the public media domain to the Azure Blob origin with the required path rewrite.

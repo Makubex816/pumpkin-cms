@@ -2,36 +2,38 @@
 
 ## Summary
 
-Direct anonymous Azure Blob public URL validation did not pass because the container remains private.
+Direct anonymous Azure Blob public URL validation passed after Phase 1B.
 
 Result:
 
 ```text
-publicly readable: 0/9
-status for all 9 direct URLs: 404
+publicly readable: 9/9
+status for all 9 direct URLs: 200 OK
+content type for all 9 direct URLs: image/png
+cache-control for all 9 direct URLs: public, max-age=31536000, immutable
 ```
 
 Representative post-change response:
 
 ```text
-HTTP/1.1 404 The specified resource does not exist.
+HTTP/1.1 200 OK
+Content-Type: image/png
+Cache-Control: public, max-age=31536000, immutable
 ```
 
-The blobs still exist according to authenticated read-only Blob list checks. The anonymous response is consistent with account-level public access being enabled while container public access remains unset.
+No SAS URLs were generated or used.
 
 ## Validation Table
 
 | # | Asset ID | HTTP status | Content type | Content length | Cache-control | Publicly readable |
-| ---: | --- | ---: | --- | --- | --- | --- |
-| 1 | `winterfesticerinkrentals-324b1b89777d` | 404 | unavailable | unavailable | unavailable | no |
-| 2 | `corporateicerinkrentalevent-18e985ca59bd` | 404 | unavailable | unavailable | unavailable | no |
-| 3 | `holidayicerink-973ce7691377` | 404 | unavailable | unavailable | unavailable | no |
-| 4 | `icerinkrentalssetup-113d218572e4` | 404 | unavailable | unavailable | unavailable | no |
-| 5 | `iceskatingrinkrentalslogo-0d1f970f0411` | 404 | unavailable | unavailable | unavailable | no |
-| 6 | `partyproseastcoastlogo-cfd1fc9f60ae` | 404 | unavailable | unavailable | unavailable | no |
-| 7 | `chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd` | 404 | unavailable | unavailable | unavailable | no |
-| 8 | `chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7` | 404 | unavailable | unavailable | unavailable | no |
-| 9 | `chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d` | 404 | unavailable | unavailable | unavailable | no |
-
-No SAS URLs were generated or used.
+| ---: | --- | --- | --- | ---: | --- | --- |
+| 1 | `winterfesticerinkrentals-324b1b89777d` | 200 OK | `image/png` | 3607110 | `public, max-age=31536000, immutable` | yes |
+| 2 | `corporateicerinkrentalevent-18e985ca59bd` | 200 OK | `image/png` | 3685341 | `public, max-age=31536000, immutable` | yes |
+| 3 | `holidayicerink-973ce7691377` | 200 OK | `image/png` | 3866376 | `public, max-age=31536000, immutable` | yes |
+| 4 | `icerinkrentalssetup-113d218572e4` | 200 OK | `image/png` | 3545952 | `public, max-age=31536000, immutable` | yes |
+| 5 | `iceskatingrinkrentalslogo-0d1f970f0411` | 200 OK | `image/png` | 1627660 | `public, max-age=31536000, immutable` | yes |
+| 6 | `partyproseastcoastlogo-cfd1fc9f60ae` | 200 OK | `image/png` | 24434 | `public, max-age=31536000, immutable` | yes |
+| 7 | `chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd` | 200 OK | `image/png` | 1923827 | `public, max-age=31536000, immutable` | yes |
+| 8 | `chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7` | 200 OK | `image/png` | 2253456 | `public, max-age=31536000, immutable` | yes |
+| 9 | `chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d` | 200 OK | `image/png` | 2105292 | `public, max-age=31536000, immutable` | yes |
 

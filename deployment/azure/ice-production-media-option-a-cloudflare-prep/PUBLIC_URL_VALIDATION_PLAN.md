@@ -17,7 +17,8 @@ For each URL, confirm:
 - no redirect to `iceskatingmedia.blob.core.windows.net`
 - cache-control is immutable or intentionally equivalent
 
-## Current Status
+## Current Azure Origin Status
 
-Direct Azure Blob URLs are not publicly readable yet. Cloudflare validation remains blocked.
+Direct Azure Blob URLs are publicly readable for all 9 approved media files.
 
+Cloudflare validation remains future work because no Cloudflare/DNS changes have occurred.

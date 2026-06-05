@@ -18,27 +18,18 @@ Option A Phase 1 was approved for Ice media delivery only:
 
 ## Result
 
-Partial success with a documented blocker.
+Phase 1B completed the Azure direct public Blob readiness step.
 
 Completed:
 
 - Option A recorded as selected
 - account-level Blob public access enabled for `iceskatingmedia`
+- container public access set to blob-level anonymous read using an Azure Resource Manager management-plane update
+- direct public Azure Blob URL validation passed for all 9 approved media files
 - blob count remained 9
 - Cloudflare prep package created
 
-Blocked:
-
-- container blob-level anonymous read was not enabled
-- direct public Azure Blob URLs are not readable yet
-
-The approved container ACL command failed because this Azure CLI command only accepts key auth in this environment:
-
-```text
-az storage container set-permission: 'login' is not a valid value for '--auth-mode'. Allowed values: key.
-```
-
-Keys, connection strings, and SAS URLs were forbidden, so no broader method was attempted.
+No storage keys, connection strings, or SAS URLs were used or printed.
 
 ## Current Readiness
 
@@ -46,7 +37,7 @@ Keys, connection strings, and SAS URLs were forbidden, so no broader method was 
 - Static route output ready: yes
 - Azure media files uploaded: yes
 - Selected media delivery strategy: Option A
-- Azure direct public Blob media readable: no
+- Azure direct public Blob media readable: yes
 - Cloudflare media delivery configured: no
 - MediaAsset production URL readiness: no
 - Media production URL readiness: no
@@ -55,4 +46,3 @@ Keys, connection strings, and SAS URLs were forbidden, so no broader method was 
 - DNS cutover readiness: no
 - Production/indexing readiness: not live-ready
 - Roller: paused
-

@@ -16,7 +16,6 @@ Public checksum-versioned Azure Blob media served behind Cloudflare at media.ice
 
 ## Execution Status
 
-Phase 1 started and partially completed.
+Phase 1B completed the Azure direct public Blob readiness step.
 
-The selected strategy remains blocked until container blob-level anonymous read is enabled and direct Azure Blob public URL validation passes for all 9 approved media files.
-
+The selected strategy remains blocked on Cloudflare/DNS execution and later MediaAsset updates. Full media production URL readiness is still `no` until `media.iceskatingrinkrentals.com` is configured and validated.

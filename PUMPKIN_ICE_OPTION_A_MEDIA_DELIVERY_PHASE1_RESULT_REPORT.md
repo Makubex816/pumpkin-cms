@@ -10,60 +10,61 @@ Paused site: RollerRinkRentals.com
 
 ## Goal
 
-Execute Option A Phase 1 for Ice media delivery only:
+Execute Option A Phase 1 and Phase 1B for Ice media delivery only:
 
 - record Option A as selected
 - enable Azure Blob public-read behavior for uploaded checksum-versioned Ice media
-- set the `ice-rink-rentals-media` container to blob-level anonymous read if possible
+- set the `ice-rink-rentals-media` container to blob-level anonymous read using a no-key ARM management-plane method
 - validate direct public Azure Blob URLs for the 9 approved uploaded files
 - prepare Cloudflare path-rewrite/DNS execution package
 
 ## Result
 
-Partial success with a documented Azure CLI blocker.
+Completed for Azure direct Blob public-read readiness.
 
 Completed:
 
 - Option A recorded as selected
 - account-level Blob public access enabled for `iceskatingmedia`
-- Cloudflare Option A prep package created
-- direct public Azure Blob URL validation run for all 9 approved files
-
-Blocked:
-
-- container blob-level anonymous read was not enabled
-- direct public Azure Blob URLs are not readable yet
+- container `ice-rink-rentals-media` public access set to blob-level anonymous read
+- direct public Azure Blob URL validation passed for all 9 approved files
+- Cloudflare Option A prep package updated
 
 ## Azure Access Changes Performed
 
-Changed only:
+Changed:
 
 ```text
 storage account: iceskatingmedia
 resource group: rg-ice-production-media
-allowBlobPublicAccess: True
+allowBlobPublicAccess: true
+container: ice-rink-rentals-media
+container publicAccess: blob
+ARM container publicAccess: Blob
 ```
 
-Not changed:
+Unchanged:
 
 ```text
-container: ice-rink-rentals-media
-publicAccess: null
 enableHttpsTrafficOnly: true
 minimumTlsVersion: TLS1_2
 customDomain: null
 blob count: 9
 ```
 
-## Blocker
-
-The approved container command failed:
+Phase 1B used only the approved Azure Resource Manager management-plane target:
 
 ```text
-az storage container set-permission: 'login' is not a valid value for '--auth-mode'. Allowed values: key.
+/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-media/providers/Microsoft.Storage/storageAccounts/iceskatingmedia/blobServices/default/containers/ice-rink-rentals-media
 ```
 
-Keys, connection strings, and SAS URLs were forbidden, so no key-auth command or broader alternate Azure mutation was attempted.
+Allowed property changed:
+
+```text
+properties.publicAccess = Blob
+```
+
+No storage keys, connection strings, or SAS URLs were used or printed.
 
 ## Direct Public Azure Blob URL Validation
 
@@ -72,11 +73,13 @@ All 9 approved direct Azure Blob URLs were checked anonymously.
 Result:
 
 ```text
-publicly readable: 0/9
-status for all checked direct URLs: 404
+publicly readable: 9/9
+status for all checked direct URLs: 200 OK
+content type for all checked direct URLs: image/png
+cache-control for all checked direct URLs: public, max-age=31536000, immutable
 ```
 
-The uploaded blobs still exist according to authenticated read-only list checks:
+The authenticated read-only Blob list still shows:
 
 ```text
 blob count: 9
@@ -84,7 +87,7 @@ blob count: 9
 
 ## Cloudflare Package Prepared
 
-Created planning-only package:
+Updated planning-only package:
 
 ```text
 deployment/azure/ice-production-media-option-a-cloudflare-prep/
@@ -108,6 +111,10 @@ Cloudflare must route/rewrite the public path to the Azure origin path that incl
 
 This run did not:
 
+- use or list storage keys
+- print storage keys
+- print connection strings
+- generate or print SAS URLs
 - change Cloudflare or DNS
 - create Cloudflare Cloud Connector rules
 - create Cloudflare rewrite or cache rules
@@ -118,9 +125,6 @@ This run did not:
 - read protected config
 - print secret values
 - print Azure tokens
-- print storage keys
-- print connection strings
-- generate SAS URLs
 - stage raw images
 - stage generated static artifacts
 - send email
@@ -129,9 +133,8 @@ This run did not:
 
 ## Remaining Blockers
 
-- container blob-level anonymous read is not enabled
-- direct public Azure Blob URLs are not readable
 - Cloudflare/DNS media delivery is not configured
+- Cloudflare path rewrite is not configured
 - MediaAsset production URL updates are not done
 - strict validators have not been rerun against production media domain URLs
 - contact form production readiness remains `no`
@@ -145,7 +148,7 @@ This run did not:
 - Static route output ready: yes
 - Azure media files uploaded: yes
 - Selected media delivery strategy: Option A
-- Azure direct public Blob media readable: no
+- Azure direct public Blob media readable: yes
 - Cloudflare media delivery configured: no
 - MediaAsset production URL readiness: no
 - Media production URL readiness: no
@@ -157,7 +160,7 @@ This run did not:
 
 ## Result Packages
 
-Created:
+Updated:
 
 ```text
 deployment/azure/ice-production-media-option-a-phase1-result/
@@ -166,7 +169,7 @@ deployment/azure/ice-production-media-option-a-cloudflare-prep/
 
 ## Final Validation
 
-Validation commands run after package creation:
+Validation commands run after Phase 1B:
 
 - manifest JSON parse
 - `git diff --check`
@@ -174,7 +177,7 @@ Validation commands run after package creation:
 - protected/generated/raw artifact path check
 - targeted secret-value scan
 - final Azure read-only access recheck
-- final direct public URL status grouping
+- final direct public URL status/header validation
 - staged-file check
 
 Validation result:
@@ -187,14 +190,18 @@ Final Azure readback:
 
 ```text
 allowBlobPublicAccess: true
-container publicAccess: null
+container publicAccess: blob
+ARM container publicAccess: Blob
 blob count: 9
-direct public URL status: 404 for 9/9 checked URLs
+direct public URL status: 200 OK for 9/9 checked URLs
 ```
 
 Additional validation confirmations:
 
 - no files were staged
+- no storage keys were listed
+- no connection strings were printed
+- no SAS URLs were generated
 - no Cloudflare/DNS commands were run
 - no CMS write commands were run
 - no MediaAsset write commands were run

@@ -7,7 +7,8 @@
   "selectedStrategy": "Option A",
   "cloudflareChanged": false,
   "dnsChanged": false,
-  "currentBlocker": "Direct Azure Blob public URLs are not yet readable because container blob-level anonymous read remains unset.",
+  "azureDirectPublicOriginReady": true,
+  "currentBlocker": null,
   "mapping": {
     "publicUrlPattern": "https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
     "azureOriginUrlPattern": "https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
