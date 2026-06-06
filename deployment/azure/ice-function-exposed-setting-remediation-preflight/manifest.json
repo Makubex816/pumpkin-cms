@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-06-06",
+  "siteKey": "ice-rink-rentals",
+  "scope": "Azure Function exposed setting remediation preflight only",
+  "status": "preflight_complete_execution_approval_required",
+  "functionApp": {
+    "name": "func-ice-static-contact-20260605",
+    "resourceGroup": "rg-ice-static-form-endpoint",
+    "defaultHostName": "func-ice-static-contact-20260605.azurewebsites.net",
+    "state": "Running",
+    "enabled": true,
+    "location": "East US",
+    "plan": "EastUSPlan",
+    "functionsObserved": [
+      "static-contact"
+    ]
+  },
+  "storageAccount": {
+    "name": "iceforms20260605",
+    "resourceGroup": "rg-ice-static-form-endpoint",
+    "location": "eastus",
+    "kind": "StorageV2",
+    "sku": "Standard_LRS",
+    "provisioningState": "Succeeded",
+    "statusOfPrimary": "available",
+    "allowBlobPublicAccess": false,
+    "minimumTlsVersion": "TLS1_2"
+  },
+  "settingNameAudit": {
+    "settingNameCount": 17,
+    "valuesPrintedInThisPreflight": false,
+    "storageConnectionSettingNamesPresent": [
+      "AzureWebJobsStorage",
+      "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+      "AzureWebJobsDashboard"
+    ],
+    "runtimeStorageConnectionSetting": "AzureWebJobsStorage",
+    "runtimeStorageConnectionWasExposed": true,
+    "contentStorageConnectionSetting": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+    "legacyDashboardStorageSetting": "AzureWebJobsDashboard",
+    "graphRelatedSettingNamesPresent": [],
+    "dryRunNoEmailSettingNamesPresent": [
+      "STATIC_FORM_FORWARD_MODE"
+    ]
+  },
+  "recommendedRemediation": {
+    "path": "rotate_exposed_storage_key_and_update_affected_function_storage_settings",
+    "affectedSettingNames": [
+      "AzureWebJobsStorage",
+      "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+      "AzureWebJobsDashboard"
+    ],
+    "requiresFutureApproval": true
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "graphCapableFunctionCodeDeployed": true,
+    "microsoftGraphAppRegistration": true,
+    "mailSendPermissionConfigured": true,
+    "adminConsentGranted": true,
+    "exchangeRbacMailboxScopeConfigured": true,
+    "exposedSettingRemediationReadiness": "preflight_complete_execution_approval_required",
+    "clientSecretAppCredentialReadiness": false,
+    "functionGraphDeliverySettingsConfigured": false,
+    "contactFormProductionReadiness": false,
+    "realEmailDeliveryReadiness": "blocked pending exposed setting remediation plus app credential/settings/redeploy/live-test approval",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "settingValuesPrinted": false,
+    "storageKeysListed": false,
+    "connectionStringsPrinted": false,
+    "keyRotation": false,
+    "azureFunctionAppSettingsChanged": false,
+    "endpointRedeployed": false,
+    "realEmailSent": false,
+    "microsoft365Changed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedLocalConfigRead": false,
+    "rollerTouched": false
+  }
+}
