@@ -3,9 +3,12 @@ import { handleStaticContactRequest } from './contact-handler.mjs';
 
 const port = Number.parseInt(process.env.STATIC_FORM_LOCAL_PORT || '7072', 10);
 const maxBodyBytes = Number.parseInt(process.env.STATIC_FORM_MAX_BODY_BYTES || '20000', 10);
+const allowedLocalPaths = new Set(['/api/static-contact', '/api/contact']);
 
 const server = http.createServer(async (request, response) => {
-  if (request.url !== '/api/contact') {
+  const requestPath = new URL(request.url || '/', `http://${request.headers.host || 'localhost'}`).pathname;
+
+  if (!allowedLocalPaths.has(requestPath)) {
     writeJson(response, 404, { ok: false, message: 'Not found.' });
     return;
   }
@@ -44,7 +47,8 @@ const server = http.createServer(async (request, response) => {
 });
 
 server.listen(port, () => {
-  console.log(`Static form endpoint local test server listening on http://localhost:${port}/api/contact`);
+  console.log(`Static form endpoint local test server listening on http://localhost:${port}/api/static-contact`);
+  console.log(`Local-only compatibility path available at http://localhost:${port}/api/contact`);
   console.log('Use STATIC_FORM_FORWARD_MODE=dry-run for validation-only local tests without Pumpkin API credentials.');
 });
 

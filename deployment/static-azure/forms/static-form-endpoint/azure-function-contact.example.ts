@@ -22,6 +22,6 @@ export async function staticContact(
 app.http('static-contact', {
   methods: ['OPTIONS', 'POST'],
   authLevel: 'anonymous',
-  route: 'contact',
+  route: 'static-contact',
   handler: staticContact,
 });
