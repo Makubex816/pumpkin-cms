@@ -1,0 +1,103 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "site": "IceSkatingRinkRentals.com",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice production indexing/search readiness preflight only",
+  "result": "completed-with-indexing-risks",
+  "production": {
+    "customDomainCutover": true,
+    "smokeTestPassed": true,
+    "apexHost": "https://iceskatingrinkrentals.com",
+    "wwwHost": "https://www.iceskatingrinkrentals.com",
+    "canonicalHost": "https://iceskatingrinkrentals.com",
+    "wwwRedirectConfigured": false
+  },
+  "routes": {
+    "approvedRoutesStatus200": true,
+    "approvedRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "obsoletePreviewRoutesStatus404": true,
+    "checkedObsoletePreviewPaths": [
+      "/ice-rink-rentals",
+      "/events-holiday-activations",
+      "/draft-preview",
+      "/draft-preview/ice-rink-rentals",
+      "/phase-5a-csv-import-54754949",
+      "/api/preview",
+      "/preview"
+    ]
+  },
+  "sitemapRobots": {
+    "sitemapStatus200": true,
+    "sitemapProductionOnly": true,
+    "sitemapTrailingSlashAlignmentWithCanonicals": false,
+    "robotsStatus200": true,
+    "robotsPermitsIndexing": true,
+    "robotsReferencesProductionSitemap": true
+  },
+  "indexingMeta": {
+    "noindexAbsent": true,
+    "robotsIndexFollow": true,
+    "titlesPresent": true,
+    "descriptionsPresent": true,
+    "canonicalsUseApex": true,
+    "latestSnapshotAbsent": true,
+    "cmsLiveAbsent": true,
+    "localhostAbsent": true,
+    "localMediaAbsent": true,
+    "rollerAbsent": true,
+    "secretLikeTextAbsent": true,
+    "hiddenCmsReviewPayloadRisk": true,
+    "contactHiddenIndexingNotAuthorizedText": true
+  },
+  "mediaForm": {
+    "mediaUrlsChecked": 9,
+    "mediaFailures": 0,
+    "formOptionsPassed": true,
+    "validFormSubmissionSent": false,
+    "emailSent": false
+  },
+  "readiness": {
+    "indexingPreflightCompleted": true,
+    "technicalCrawlReadiness": true,
+    "productionIndexingReadiness": "no-go-for-submission-pending-risk-acceptance-or-cleanup",
+    "searchConsoleSubmissionReadiness": false,
+    "roller": "paused"
+  },
+  "approvalBoundary": {
+    "searchConsoleSubmissionPerformed": false,
+    "sitemapSubmissionPerformed": false,
+    "urlInspectionRequestPerformed": false,
+    "indexingRequestPerformed": false,
+    "robotsChanged": false,
+    "sitemapChanged": false,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesPerformed": false,
+    "dnsChangesPerformed": false,
+    "cloudflareChangesPerformed": false,
+    "azureChangesPerformed": false,
+    "deploymentPerformed": false,
+    "functionSettingChangesPerformed": false,
+    "emailSent": false,
+    "microsoft365ChangesPerformed": false,
+    "protectedConfigRead": false,
+    "rollerWorkPerformed": false
+  },
+  "files": [
+    "README.md",
+    "LIVE_ROUTE_CHECKS.md",
+    "CANONICAL_ROOT_WWW_CHECK.md",
+    "SITEMAP_ROBOTS_CHECK.md",
+    "INDEXING_META_CHECK.md",
+    "OBSOLETE_PREVIEW_ROUTE_CHECK.md",
+    "MEDIA_FORM_NON_EMAIL_CHECK.md",
+    "SEARCH_CONSOLE_NEXT_STEPS.md",
+    "GO_NO_GO_INDEXING_CHECKLIST.md",
+    "REMAINING_INDEXING_RISKS.md",
+    "NEXT_INDEXING_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ]
+}
