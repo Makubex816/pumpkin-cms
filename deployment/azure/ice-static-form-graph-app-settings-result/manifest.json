@@ -1,0 +1,92 @@
+{
+  "generatedAt": "2026-06-06",
+  "siteKey": "ice-rink-rentals",
+  "scope": "Graph app credential and Function app settings setup only",
+  "status": "completed_graph_settings_staged_no_send_mode",
+  "appRegistration": {
+    "displayName": "Ice Static Contact Form Mailer",
+    "appId": "423390e3-63ee-4c53-bc87-c87f59958f13",
+    "passwordCredentialCreated": true,
+    "passwordCredentialCountAfter": 1,
+    "keyCredentialCountAfter": 0,
+    "credentialDisplayName": "Ice static contact Function Graph secret 2026-06-06"
+  },
+  "functionApp": {
+    "name": "func-ice-static-contact-20260605",
+    "resourceGroup": "rg-ice-static-form-endpoint",
+    "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "stateAfterSetup": "Running",
+    "endpointRedeployed": false
+  },
+  "functionAppSettings": {
+    "configured": true,
+    "configuredSettingNames": [
+      "FORM_DELIVERY_MODE",
+      "MICROSOFT_GRAPH_TENANT_ID",
+      "MICROSOFT_GRAPH_CLIENT_ID",
+      "MICROSOFT_GRAPH_CLIENT_SECRET",
+      "MICROSOFT_GRAPH_SENDER_USER",
+      "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+      "MICROSOFT_GRAPH_SAVE_TO_SENT_ITEMS",
+      "FORM_EMAIL_REPLY_TO_MODE",
+      "FORM_EMAIL_SUBJECT_PREFIX"
+    ],
+    "requiredSettingValuesPresent": true,
+    "deliveryModeNoEmailConfirmed": true,
+    "legacyDryRunStillPresent": true,
+    "graphModeActive": false,
+    "graphRelatedSettingNameCount": 6
+  },
+  "endpointHealth": {
+    "preSettings": {
+      "optionsCorsStatus": 204,
+      "validPayloadStatus": "not_run",
+      "invalidEmailStatus": 400,
+      "unknownRoutingRecipientStatus": 400,
+      "honeypotStatus": 400,
+      "secretPatternInResponse": false,
+      "passed": true
+    },
+    "postSettingsNoSend": {
+      "optionsCorsStatus": 204,
+      "validNoSendPayloadStatus": 200,
+      "invalidEmailStatus": 400,
+      "unknownRoutingRecipientStatus": 400,
+      "honeypotStatus": 400,
+      "secretPatternInResponse": false,
+      "passed": true
+    }
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "graphCapableFunctionCodeDeployed": true,
+    "microsoftGraphAppRegistration": true,
+    "mailSendPermissionConfigured": true,
+    "adminConsentGranted": true,
+    "exchangeRbacMailboxScopeConfigured": true,
+    "exposedSettingRemediation": true,
+    "clientSecretAppCredentialReadiness": true,
+    "graphFunctionAppSettingsReadiness": "yes_staged_no_send_mode",
+    "contactFormProductionReadiness": false,
+    "realEmailDeliveryReadiness": "pending live-email test approval",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "realEmailSent": false,
+    "liveProductionFormSubmission": false,
+    "secretValuesPrinted": false,
+    "secretValuesWrittenToRepo": false,
+    "endpointRedeployed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedLocalConfigRead": false,
+    "rollerTouched": false
+  }
+}
