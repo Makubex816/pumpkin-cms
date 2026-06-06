@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2026-06-06",
+  "siteKey": "ice-rink-rentals",
+  "scope": "Graph live email test only",
+  "status": "completed_delivered_reverted_to_no_email",
+  "functionApp": {
+    "name": "func-ice-static-contact-20260605",
+    "resourceGroup": "rg-ice-static-form-endpoint",
+    "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "endpointRedeployed": false
+  },
+  "modeChanges": {
+    "changedSettingNames": [
+      "FORM_DELIVERY_MODE"
+    ],
+    "preTestMode": "no-email",
+    "testMode": "graph",
+    "postTestMode": "no-email",
+    "graphModeActiveAfterTest": false
+  },
+  "liveEmailTest": {
+    "validPayloadAttemptsInGraphMode": 1,
+    "submittedAtUtc": "2026-06-06T02:53:16.896Z",
+    "testRunId": "ice-graph-live-20260606025316",
+    "endpointStatus": 200,
+    "endpointResponseOk": true,
+    "entryIdPresent": true,
+    "responseSecretPatternFound": false
+  },
+  "deliveryEvidence": {
+    "exchangeMessageTraceQueried": true,
+    "mailboxContentAccessed": false,
+    "matchCount": 1,
+    "senderAddress": "Contact@iceskatingrinkrentals.com",
+    "recipientAddress": "Contact@iceskatingrinkrentals.com",
+    "subject": "Ice rink rental lead: Ice Graph Delivery Test",
+    "status": "Delivered",
+    "messageTraceId": "94e8d3f8-748a-4a5e-2fb0-08dec376c3b7",
+    "humanInboxConfirmation": "pending"
+  },
+  "healthChecks": {
+    "preTestNoEmailInvalidOnly": {
+      "optionsCorsStatus": 204,
+      "invalidEmailStatus": 400,
+      "unknownRoutingRecipientStatus": 400,
+      "honeypotStatus": 400,
+      "validPayloadsAttempted": 0,
+      "passed": true
+    },
+    "postGraphSwitchInvalidOnly": {
+      "invalidEmailStatus": 400,
+      "unknownRoutingRecipientStatus": 400,
+      "honeypotStatus": 400,
+      "validPayloadsAttempted": 0,
+      "passed": true
+    },
+    "postTestNoEmailInvalidOnly": {
+      "optionsCorsStatus": 204,
+      "invalidEmailStatus": 400,
+      "unknownRoutingRecipientStatus": 400,
+      "honeypotStatus": 400,
+      "additionalValidPayloadsAttempted": 0,
+      "passed": true
+    }
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "graphCapableFunctionCodeDeployed": true,
+    "microsoftGraphAppRegistration": true,
+    "mailSendPermissionConfigured": true,
+    "adminConsentGranted": true,
+    "exchangeRbacMailboxScopeConfigured": true,
+    "clientSecretAppCredentialReadiness": true,
+    "graphFunctionAppSettingsReadiness": true,
+    "realEmailTestSent": true,
+    "exchangeTraceDeliveryEvidence": true,
+    "humanInboxConfirmation": false,
+    "contactFormProductionReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "productionWebsiteDeployment": false,
+    "rootWwwDnsChanges": false,
+    "microsoft365PermissionRbacChanges": false,
+    "appRegistrationChanges": false,
+    "clientSecretCreated": false,
+    "endpointRedeployed": false,
+    "protectedLocalConfigRead": false,
+    "secretValuesPrinted": false,
+    "secretValuesWrittenToRepo": false,
+    "rollerTouched": false
+  }
+}
