@@ -1,0 +1,56 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice static form production enablement",
+  "functionApp": "func-ice-static-contact-20260605",
+  "resourceGroup": "rg-ice-static-form-endpoint",
+  "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+  "settingsChanged": [
+    "FORM_DELIVERY_MODE",
+    "NEXT_PUBLIC_STATIC_FORM_ENDPOINT",
+    "STATIC_FORM_ENDPOINT_VERIFIED"
+  ],
+  "deliveryMode": "graph",
+  "endpointVerified": true,
+  "humanInboxConfirmation": true,
+  "newValidEmailTestSent": false,
+  "officialCmsExport": {
+    "command": "npm run export:static:ice:cms",
+    "ok": false,
+    "blocker": "snapshot:cms:ice returned 401 Unauthorized from admin pages"
+  },
+  "existingSnapshotGeneration": {
+    "snapshotValidation": "passed",
+    "build": "passed-with-warnings",
+    "generate": "passed",
+    "publishedPages": 3,
+    "redirects": 0
+  },
+  "validators": {
+    "staticOutput": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    },
+    "stagingPackage": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "notPerformed": [
+    "endpoint redeploy",
+    "Azure resource creation",
+    "Microsoft 365 changes",
+    "CMS writes",
+    "MediaAsset writes",
+    "Cloudflare changes",
+    "static deployment",
+    "production website deployment",
+    "root/www DNS changes",
+    "Roller changes"
+  ],
+  "roller": "paused"
+}
