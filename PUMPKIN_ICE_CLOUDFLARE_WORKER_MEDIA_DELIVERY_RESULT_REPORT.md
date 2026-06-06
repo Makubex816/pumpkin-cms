@@ -34,6 +34,28 @@ https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-re
 
 Cloudflare Worker media delivery was configured and validated.
 
+## Later MediaAsset Update Status
+
+On 2026-06-05, a separately approved run updated the 9 approved Ice MediaAsset records to the validated `media.iceskatingrinkrentals.com` Worker URLs.
+
+This Cloudflare Worker result remains valid. Full media production URL readiness is still `no` because strict validators still find local `/media/ice-rink-rentals/...` URLs embedded in CMS page body/static output fields. Page/body CMS edits were not included in the MediaAsset URL update approval.
+
+## Later Active Page Body Media Repair Status
+
+On 2026-06-05, a later separately approved run repaired only active Ice root `ContentData` and root `media` URL fields.
+
+Later result:
+
+```text
+active page body/media fields repaired: 132
+active ContentData/media root local media URLs remaining: 0
+rendered local /media img tags after export: 0
+Cloudflare changes in later run: 0
+MediaAsset writes in later run: 0
+```
+
+Full media production URL readiness is still `no` because static output includes serialized `revision.latestSnapshot` rollback payloads with the pre-repair local media URLs, and the static form endpoint remains missing/unverified.
+
 Configured objects:
 
 - proxied CNAME `media.iceskatingrinkrentals.com` to `iceskatingmedia.blob.core.windows.net`
@@ -222,8 +244,8 @@ This run did not:
 
 ## Remaining Blockers
 
-- MediaAsset production URL updates are not done
-- strict validators have not been rerun against production media domain URLs
+- CMS page body/media fields still contain local `/media/ice-rink-rentals/...` URLs
+- strict validators still fail on those page-body local media URLs
 - contact form production readiness remains `no`
 - Azure staging readiness remains `no`
 - DNS cutover/main-site deployment remains `no`
@@ -240,7 +262,7 @@ Rule-based Cloudflare media delivery remains `no`, blocked by the HostHeader ove
 - Cloudflare rule-based media delivery configured: no, blocked by entitlement
 - Cloudflare Worker media delivery configured: yes
 - Cloudflare public media URLs validated: yes
-- MediaAsset production URL readiness: no
+- MediaAsset production URL readiness: yes after later approved 2026-06-05 update
 - Media production URL readiness: no
 - Contact form production readiness: no
 - Azure staging readiness: no
@@ -248,7 +270,7 @@ Rule-based Cloudflare media delivery remains `no`, blocked by the HostHeader ove
 - Production/indexing readiness: not live-ready
 - Roller: paused
 
-Do not mark full media production URL readiness `yes` until MediaAsset updates are separately approved and strict validators pass against the production media domain.
+Do not mark full media production URL readiness `yes` until the remaining CMS page body/media local URLs are separately approved for repair or otherwise resolved, and strict validators pass against the production media domain.
 
 ## Result Package
 

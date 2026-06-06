@@ -56,6 +56,26 @@ cache-control: public, max-age=31536000, immutable for 9/9
 redirects: none
 ```
 
+## Later MediaAsset Update Status
+
+A later approved run on 2026-06-05 updated the 9 approved Ice MediaAsset records to the validated Worker public URLs. The Worker delivery result remains valid.
+
+Full media production URL readiness remained `no` after the MediaAsset run because CMS page body/media fields still rendered local `/media/ice-rink-rentals/...` URLs, and page/body edits were not approved in that later run.
+
+## Later Active Page Body Media Repair Status
+
+A later approved run on 2026-06-05 repaired only active Ice root `ContentData` and root `media` URL fields:
+
+```text
+active page body/media fields repaired: 132
+active ContentData/media root local media URLs remaining: 0
+rendered local /media img tags after export: 0
+Cloudflare changes: 0
+MediaAsset writes: 0
+```
+
+Full media production URL readiness is still `no` because strict static/staging validators find local media strings serialized from `revision.latestSnapshot` rollback payloads, and the static form endpoint remains missing/unverified.
+
 ## Retry History
 
 Prior rule-based Cloudflare media delivery was blocked by the HostHeader override entitlement.
