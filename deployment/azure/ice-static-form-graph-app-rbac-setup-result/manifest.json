@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2026-06-05",
+  "siteKey": "ice-rink-rentals",
+  "scope": "Microsoft 365 Graph app and mailbox-scope setup",
+  "status": "partial_app_created_permission_requested_rbac_blocked",
+  "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a",
+  "targetMailbox": "contact@iceskatingrinkrentals.com",
+  "appRegistration": {
+    "displayName": "Ice Static Contact Form Mailer",
+    "appId": "423390e3-63ee-4c53-bc87-c87f59958f13",
+    "objectId": "75ddecd2-8c21-4663-bafe-fdbf9682eaea",
+    "created": true
+  },
+  "servicePrincipal": {
+    "objectId": "0f2df0f4-4b1d-476f-be2a-74fd980d09a0",
+    "created": true
+  },
+  "graphPermission": {
+    "api": "Microsoft Graph",
+    "apiAppId": "00000003-0000-0000-c000-000000000000",
+    "permission": "Mail.Send",
+    "type": "Application",
+    "appRoleId": "b633e1c5-b582-4048-a93e-9f11b44c7e96",
+    "requiredPermissionConfigured": true,
+    "adminConsentGranted": false,
+    "appRoleAssignmentCount": 0,
+    "mailSendAssignmentCount": 0
+  },
+  "exchangeRbac": {
+    "configured": false,
+    "blocker": "ExchangeOnlineManagement module and Exchange Online RBAC cmdlets are unavailable in this local environment"
+  },
+  "clientCredentials": {
+    "secretCreated": false,
+    "certificateCreated": false,
+    "credentialCount": 0
+  },
+  "functionAppStatus": {
+    "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "staticForwardDryRun": true,
+    "formDeliveryGraphActive": false,
+    "graphSettingNameCount": 0,
+    "appSettingsChanged": false,
+    "endpointRedeployed": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "graphCapableFunctionCodeDeployed": true,
+    "microsoftGraphAppRegistration": true,
+    "mailSendPermissionConfigured": "requested_not_consented",
+    "adminConsentGranted": false,
+    "exchangeRbacMailboxScopeConfigured": false,
+    "clientSecretAppCredentialReadiness": false,
+    "contactFormProductionReadiness": false,
+    "realEmailDeliveryReadiness": "pending Exchange RBAC/admin consent strategy/app credential/app settings/live-test approval",
+    "microsoft365EmailSetupReadiness": "partial",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "realEmailSent": false,
+    "clientSecretCreated": false,
+    "tokensPrinted": false,
+    "secretsPrinted": false,
+    "azureFunctionAppSettingsChanged": false,
+    "endpointRedeployed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}
+
