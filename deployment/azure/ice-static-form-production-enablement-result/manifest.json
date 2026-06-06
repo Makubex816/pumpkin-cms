@@ -16,10 +16,27 @@
   "newValidEmailTestSent": false,
   "officialCmsExport": {
     "command": "npm run export:static:ice:cms",
-    "ok": false,
-    "blocker": "snapshot:cms:ice returned 401 Unauthorized from admin pages"
+    "ok": true,
+    "exitCode": 0,
+    "blocker": null,
+    "verifiedBy": "deployment/azure/ice-official-fresh-cms-export-verification-result",
+    "snapshotSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "outRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "artifactRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ]
   },
-  "existingSnapshotGeneration": {
+  "freshCmsSnapshotGeneration": {
     "snapshotValidation": "passed",
     "build": "passed-with-warnings",
     "generate": "passed",

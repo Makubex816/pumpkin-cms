@@ -69,7 +69,7 @@ No additional valid payload was submitted during this enablement turn.
 
 ## Static Export Result
 
-The official CMS-backed export command was rerun with the approved endpoint env values:
+The official CMS-backed export command was rerun with the approved endpoint env values during the later official fresh CMS export verification:
 
 ```text
 npm run export:static:ice:cms
@@ -78,15 +78,16 @@ npm run export:static:ice:cms
 Result:
 
 ```text
-failed at snapshot:cms:ice with 401 Unauthorized from admin pages
+passed, exit 0
 ```
 
 No CMS write was attempted or performed.
 
-Because the fresh CMS snapshot step was blocked by admin authentication, the local static output was regenerated from the existing Ice CMS snapshot:
+Fresh CMS-backed generation completed:
 
 | Command | Result |
 | --- | --- |
+| `npm run snapshot:cms:ice` | passed |
 | `npm run validate:snapshot:ice` | passed |
 | `npm run build:static:ice:cms` | passed with existing build warnings |
 | `node scripts/static-publish.mjs generate` | passed |
@@ -96,6 +97,7 @@ Generation summary:
 | Metric | Result |
 | --- | --- |
 | site | `ice-rink-rentals` |
+| snapshot slugs | `contact`, `home`, `service-areas` |
 | published pages | `3` |
 | redirects | `0` |
 | output snapshot | yes |
@@ -136,7 +138,7 @@ STATIC_FORM_ENDPOINT_VERIFIED=true
 | strict static output validator | passed |
 | strict staging package validator | passed |
 | contact form production readiness for the approved endpoint/config | yes |
-| fresh CMS-backed export | blocked by admin `401 Unauthorized` |
+| fresh CMS-backed export | verified, exit `0` |
 | production website deployment | not performed |
 | root/www DNS cutover readiness | not changed |
 | Roller | paused |
@@ -157,9 +159,15 @@ Do not rotate secrets, change Microsoft 365, change CMS content, or deploy the s
 
 ## Remaining Blockers
 
-- Fresh CMS-backed static export needs valid admin snapshot authentication before it can complete end to end.
 - No production static deployment was performed in this approval.
 - No Cloudflare/root/www DNS changes were performed.
+- Azure staging remains a separate approval.
+
+## Later Official Fresh CMS Export Verification Status
+
+On 2026-06-06, a separately approved official fresh CMS export verification rechecked admin auth before export. The required env vars were present by name, and the read-only auth probe returned `200` for `GET /api/auth/verify`, `GET /api/admin/pages?tenantId=...`, and `GET /api/admin/themes/{tenantId}/active`.
+
+The official `npm run export:static:ice:cms` command was rerun from live CMS and exited `0`. Strict validators passed against the fresh live-CMS-backed output: static output validator `42 files, 0 errors, 0 warnings`; staging package validator `42 files, 0 errors, 0 warnings`.
 
 ## Evidence Package
 
@@ -168,4 +176,3 @@ See:
 ```text
 deployment/azure/ice-static-form-production-enablement-result/
 ```
-

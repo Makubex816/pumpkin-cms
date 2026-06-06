@@ -23,17 +23,18 @@ npm run export:static:ice:cms
 Result:
 
 ```text
-failed at snapshot:cms:ice with 401 Unauthorized from admin pages
+passed, exit 0
 ```
 
 No CMS write occurred. Protected config contents were not opened or printed.
 
-## Existing Snapshot Generation
+## Fresh CMS Snapshot Generation
 
-Because the fresh CMS snapshot step was blocked, local output was regenerated from the existing Ice CMS snapshot.
+The fresh CMS-backed export completed after the refreshed admin auth probe returned `200`.
 
 | Command | Result |
 | --- | --- |
+| `npm run snapshot:cms:ice` | passed |
 | `npm run validate:snapshot:ice` | passed |
 | `npm run build:static:ice:cms` | passed with warnings |
 | `node scripts/static-publish.mjs generate` | passed |
@@ -45,9 +46,9 @@ Generation result:
 | `ok` | true |
 | pages | `3` |
 | published pages | `3` |
+| snapshot slugs | `contact`, `home`, `service-areas` |
 | sitemap count | `3` |
 | redirects | `0` |
 | output snapshot | true |
 
 The generated output was local only. No static deployment was performed.
-

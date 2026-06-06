@@ -10,7 +10,7 @@ This is documentation and hygiene only. No Azure resources, Cosmos resources, Bl
 
 RollerRinkRentals.com remains paused.
 
-Later 2026-06-05 approved MediaAsset, active page body/media, and static revision-payload cleanup work cleared the media URL blockers from public static output. This closure file now records the current readiness state while preserving the original closure context.
+Later 2026-06-05 approved MediaAsset, active page body/media, and static revision-payload cleanup work cleared the media URL blockers from public static output. Later 2026-06-06 production form enablement and official fresh CMS export verification cleared the strict form endpoint validator blockers. This closure file now records the current readiness state while preserving the original closure context.
 
 ## Start-State Checkpoint
 
@@ -57,12 +57,12 @@ Static route output ready: yes.
 
 ## Remaining Blockers
 
-Strict static output and staging package validators still fail as expected with 2 production-readiness errors:
+Strict static output and staging package validators now pass in the latest fresh CMS-backed verification:
 
-| Category | Count | Detail |
-| --- | ---: | --- |
-| static form endpoint not configured | 1 | no public static form endpoint env var is configured |
-| static form endpoint/backend verification missing | 1 | `STATIC_FORM_ENDPOINT_VERIFIED` is not `true` |
+| Validator | Result |
+| --- | --- |
+| strict static output validator | 42 files, 0 errors, 0 warnings |
+| strict staging package validator | 42 files, 0 errors, 0 warnings |
 
 Noindex errors are cleared.
 
@@ -70,7 +70,7 @@ Unapproved rendered social metadata image URL errors are cleared.
 
 Media URL errors are cleared. Public static artifacts no longer contain local `/media/ice-rink-rentals/...` strings or serialized `revision.latestSnapshot` rollback payloads.
 
-The remaining form errors are correct because there is no verified public HTTPS static form endpoint.
+The previously documented form errors are cleared for the approved endpoint/config.
 
 ## Current Readiness
 
@@ -78,9 +78,9 @@ The remaining form errors are correct because there is no verified public HTTPS 
 | --- | --- |
 | static dry run completed | yes |
 | static route output ready | yes |
-| static output quality gates | no |
+| static output quality gates | yes |
 | media production URL readiness | yes |
-| contact form production readiness | no |
+| contact form production readiness | yes |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
 | production/indexing readiness | not fully live-ready |
@@ -90,10 +90,10 @@ The remaining form errors are correct because there is no verified public HTTPS 
 The next local build gate is:
 
 ```text
-A. No local repairs needed; move only when production media/form setup is approved later.
+Fresh CMS-backed static output quality gates passed; Azure staging requires separate approval.
 ```
 
-No more local media readiness repairs are recommended. The remaining local gate is separately approved static form endpoint work.
+No more local media or form readiness repairs are recommended for the current local output. The remaining gate is separately approved Azure staging.
 
 ## Do Not Do Next Locally
 
@@ -108,20 +108,19 @@ Do not stage or commit generated static artifacts from:
 - `apps/ice-rink-web/.static-content-snapshots`
 - `.next`
 
-Do not move to Azure staging, DNS/cutover, deployment, production indexing, media infrastructure, static form endpoint deployment, Microsoft 365/email work, CMS content writes, MediaAsset writes, or Roller work from this local closure.
+Do not move to Azure staging, DNS/cutover, deployment, production indexing, Microsoft 365/email work, CMS content writes, MediaAsset writes, or Roller work from this local closure.
 
 ## Future Explicit Approval Required
 
 The next phase requires explicit approval for each separate area:
 
-- static form endpoint setup and backend verification
 - Azure staging resource creation
 - DNS/Cloudflare/cutover work
 - Microsoft 365/email settings or delivery work
 
 Until those approvals exist, keep:
 
-- contact form production readiness: no
+- contact form production readiness: yes for the approved endpoint/config
 - Azure staging readiness: no
 - DNS cutover readiness: no
 

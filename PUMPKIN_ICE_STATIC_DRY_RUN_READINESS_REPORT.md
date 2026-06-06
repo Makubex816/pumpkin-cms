@@ -14,7 +14,7 @@ Latest repair pass used live CMS readback and the approved admin JWT only for th
 
 On 2026-06-05, a separately approved run updated the 9 approved Ice MediaAsset records to validated `media.iceskatingrinkrentals.com` production URLs.
 
-That later run did not update CMS page body/content media fields. Subsequent separately approved active page body/media repair and static revision-payload cleanup work cleared the remaining local media strings from public static output. Full media production URL readiness is now `yes`; strict validators still fail on the missing/unverified static form endpoint.
+That later run did not update CMS page body/content media fields. Subsequent separately approved active page body/media repair and static revision-payload cleanup work cleared the remaining local media strings from public static output. Full media production URL readiness is now `yes`.
 
 ## Later Active Page Body Media Repair Status
 
@@ -28,7 +28,15 @@ active ContentData/media root local media URLs remaining: 0
 rendered local /media img tags after export: 0
 ```
 
-On 2026-06-05, a separately approved static revision-payload cleanup removed `revision.latestSnapshot` from public static snapshot artifacts. Full media production URL readiness is now `yes`; strict validators still fail because the static form endpoint remains missing/unverified.
+On 2026-06-05, a separately approved static revision-payload cleanup removed `revision.latestSnapshot` from public static snapshot artifacts. Full media production URL readiness is now `yes`.
+
+## Later Official Fresh CMS Export Verification Status
+
+On 2026-06-06, a separately approved official fresh CMS export verification retry resolved the prior admin auth blocker. The read-only auth probe returned `200` for `GET /api/auth/verify`, `GET /api/admin/pages?tenantId=...`, and `GET /api/admin/themes/{tenantId}/active`.
+
+The full `npm run export:static:ice:cms` command was rerun from live CMS and exited `0`. Fresh snapshot slugs were exactly `contact`, `home`, and `service-areas`; generated `out` routes and copied artifact routes were exactly `/`, `/contact`, and `/service-areas`.
+
+Strict validators passed against the fresh live-CMS-backed output: static output validator `42 files, 0 errors, 0 warnings`; staging package validator `42 files, 0 errors, 0 warnings`.
 
 ## Start State
 
@@ -163,9 +171,10 @@ Media:
 Static contact endpoint:
 
 - source: `home` and `contact` contain `formBlock`
-- current state: static form endpoint is missing/unverified for production readiness
-- local result: form endpoint remains a production-readiness blocker, not a route-shape blocker
-- endpoint deployment/email/Microsoft 365 action performed: no
+- current state: the approved static form endpoint URL is configured for the validation/build context and `STATIC_FORM_ENDPOINT_VERIFIED=true`
+- latest result: form endpoint readiness is no longer a strict validator blocker
+- endpoint deployment/email/Microsoft 365 action performed during the original dry-run pass: no
+- later separately approved production form enablement activated the approved Graph endpoint; the fresh export verification pass did not send email or change Function settings
 
 ## Remaining Strict Validator Diagnosis
 
@@ -177,18 +186,21 @@ Latest diagnosis-only docs:
 - `deployment/azure/ice-static-dry-run-readiness/NEXT_LOCAL_BUILD_GATE.md`
 - `deployment/azure/ice-static-dry-run-readiness/LOCAL_PHASE_CLOSURE.md`
 
-The remaining strict errors are all expected form endpoint readiness failures:
+The previous remaining strict errors were form endpoint readiness failures. They are now cleared by the separately approved static form production enablement and the latest official fresh CMS export verification.
 
-| Category | Count | Details |
-| --- | ---: | --- |
-| missing static form endpoint | 1 | no public static form endpoint env var is configured |
-| missing endpoint/backend verification | 1 | `STATIC_FORM_ENDPOINT_VERIFIED` is not `true` |
+Latest strict validator status after the official fresh CMS-backed export:
 
-Body/media URL diagnosis: the earlier active page body/media URL blockers were cleared by the separately approved MediaAsset and active page body/media repair work. The later static revision-payload cleanup removed admin rollback snapshot payloads from public static artifacts, so strict media URL errors are now cleared.
+| Validator | Result |
+| --- | --- |
+| `npm run validate:snapshot:ice` | passed; 3 pages, 5 files, 0 errors |
+| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | passed; 42 files, 0 errors, 0 warnings |
+| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/out` | passed; 42 files, 0 errors, 0 warnings |
 
-Static form diagnosis: validators read `NEXT_PUBLIC_STATIC_FORM_ENDPOINT`, `STATIC_FORM_ENDPOINT`, `NEXT_PUBLIC_STATIC_FORM_ACTION`, or `STATIC_FORM_ACTION`; backend verification requires `STATIC_FORM_ENDPOINT_VERIFIED=true`. A local placeholder/stub may be useful only for interaction experiments and must not mark production readiness yes.
+Body/media URL diagnosis: the earlier active page body/media URL blockers were cleared by the separately approved MediaAsset and active page body/media repair work. The later static revision-payload cleanup removed admin rollback snapshot payloads from public static artifacts, so strict media URL errors are cleared.
 
-Next local build gate classification: `A. No local repairs needed; move only when production media/form setup is approved later.`
+Static form diagnosis: the approved endpoint URL and `STATIC_FORM_ENDPOINT_VERIFIED=true` are now valid for the local export/validation context. The latest official verification did not send email.
+
+Next local build gate classification: fresh CMS-backed static output quality gates are now passed; Azure staging still requires separate approval.
 
 CMS writes during this diagnosis pass: no.
 
@@ -264,8 +276,8 @@ Strict production/staging validators remain negative controls:
 | Validator | Exit | Expected blockers |
 | --- | --- | --- |
 | `npm run validate:snapshot:ice` | `0` | route/snapshot validation passed; production-readiness blockers remain warnings |
-| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `1` | 2 errors: missing/unverified static form endpoint |
-| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/out` | `1` | 2 errors: missing/unverified static form endpoint |
+| `deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/out` | `0` | passed; 42 files, 0 errors, 0 warnings |
+| `deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder apps/ice-rink-web/out` | `0` | passed; 42 files, 0 errors, 0 warnings |
 
 No stale snapshot/static output was accepted as readiness proof.
 
@@ -279,25 +291,25 @@ Unapproved rendered social image URL errors: cleared.
 | --- | --- |
 | static dry run completed | yes |
 | static route output ready | yes |
-| static output quality gates | no |
+| static output quality gates | yes |
 | media production URL readiness | yes |
-| contact form production readiness | no |
+| contact form production readiness | yes |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
-| production/indexing readiness overall | no |
+| production/indexing readiness overall | not live-ready |
 | production/indexing readiness for noindex gate | yes |
 
-Overall production deployment readiness remains no because form endpoint and permanent theme navigation readiness are still blocked.
+Overall production deployment readiness remains not live-ready because Azure staging, DNS/cutover, production static deployment, and final launch/indexing approval were not performed.
 
 ## Checks
 
 - touched script syntax check: pass
 - Ice-only CMS static export: pass, exit `0`
 - route/snapshot shape validation: pass
-- strict production static validator: rejects output as expected
-- strict staging package validator: rejects package as expected
-- remaining strict validator errors: 2 expected form endpoint errors documented
-- next local build gate: A, no local repairs needed before separately approved media/form setup
+- strict production static validator: pass, 42 files, 0 errors, 0 warnings
+- strict staging package validator: pass, 42 files, 0 errors, 0 warnings
+- remaining strict validator errors: none in the latest fresh CMS-backed verification
+- next local build gate: Azure staging requires separate approval
 - local phase closure doc: present
 - manifest JSON parse: pass
 - node --check for changed JS/MJS: pass
@@ -316,4 +328,4 @@ Overall production deployment readiness remains no because form endpoint and per
 
 ## Next Recommended Action
 
-Do not proceed to Azure setup, DNS cutover, deployment, or production static publication. The next authorized work should clear the remaining strict blockers: static form endpoint verification and permanent active theme navigation approval/update.
+Do not proceed to Azure setup, DNS cutover, deployment, or production static publication without separate approval. The latest fresh CMS-backed output passed the local strict quality gates; Azure staging remains the next separately approved gate.

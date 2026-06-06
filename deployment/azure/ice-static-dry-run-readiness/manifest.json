@@ -4,13 +4,13 @@
   "siteKey": "ice-rink-rentals",
   "generatedAt": "2026-06-04",
   "branch": "feature/admin-page-editor-import-export",
-  "scope": "safe local static dry-run readiness proof attempts, approved Ice CMS metadata repair, remaining strict blocker diagnosis, and local phase closure",
+  "scope": "safe local static dry-run readiness proof attempts, approved Ice CMS metadata repair, remaining strict blocker diagnosis, local phase closure, and latest official fresh CMS export verification status",
   "dryRunCommand": "cd apps/ice-rink-web && npm run export:static:ice:cms",
   "dryRunCompleted": true,
   "dryRunExitCode": 0,
   "routeShapeProofCompleted": true,
-  "staticOutputQualityGatesPassed": false,
-  "primaryBlocker": "production-readiness gates still fail on missing static form endpoint verification and permanent CMS/theme navigation approval",
+  "staticOutputQualityGatesPassed": true,
+  "primaryBlocker": "Azure staging, DNS cutover, production deployment, and production indexing remain separate approvals; permanent CMS/theme navigation approval may still be needed",
   "latestPlanningPass": {
     "mode": "planning complete; approved metadata repair applied",
     "liveCmsInspectionRequired": false,
@@ -63,9 +63,9 @@
     "previewOrObsoleteDeployablePaths": 0,
     "noindexBlockersCleared": true,
     "socialMetadataImageBlockerCleared": true,
-    "remainingStrictValidatorErrors": 2,
-    "remainingStrictValidatorErrorsExpected": true,
-    "nextLocalBuildGate": "A. No local repairs needed for media; move only when production form setup is approved later.",
+    "remainingStrictValidatorErrors": 0,
+    "remainingStrictValidatorErrorsExpected": false,
+    "nextLocalBuildGate": "Fresh CMS-backed static output quality gates passed; Azure staging requires separate approval.",
     "generatedStaticArtifactsShouldBeCommitted": false,
     "cmsWritesThisClosurePass": false,
     "mediaAssetWritesThisClosurePass": false,
@@ -144,7 +144,49 @@
     "noindexResult": "cleared",
     "unapprovedRenderedSocialImageUrlResult": "cleared",
     "mediaProductionUrlReadiness": true,
-    "contactFormProductionReadiness": false
+    "contactFormProductionReadiness": true
+  },
+  "officialFreshCmsExportVerification": {
+    "performed": true,
+    "date": "2026-06-06",
+    "resultPackage": "deployment/azure/ice-official-fresh-cms-export-verification-result",
+    "auth401Resolved": true,
+    "authVerifyStatus": 200,
+    "adminPagesStatus": 200,
+    "adminActiveThemeStatus": 200,
+    "exportCommand": "npm run export:static:ice:cms",
+    "exportExitCode": 0,
+    "snapshotSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "outRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "artifactRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "strictStaticValidatorExitCode": 0,
+    "strictStagingValidatorExitCode": 0,
+    "strictStaticValidatorErrorCount": 0,
+    "strictStagingValidatorErrorCount": 0,
+    "mediaProductionUrlReadiness": true,
+    "contactFormProductionReadiness": true,
+    "staticOutputQualityGates": true,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "functionSettingChanges": false,
+    "emailSent": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
   },
   "currentAttemptRequiredEnv": {
     "PUMPKIN_API_URL": "PRESENT",
@@ -205,46 +247,33 @@
     ],
     "flaggedPreviewOrObsoleteOutputPaths": 0,
     "strictSnapshotValidatorExitCode": 0,
-    "strictStaticValidatorExitCode": 1,
-    "strictStagingValidatorExitCode": 1,
-    "strictStaticValidatorErrorCount": 2,
-    "strictStagingValidatorErrorCount": 2,
+    "strictStaticValidatorExitCode": 0,
+    "strictStagingValidatorExitCode": 0,
+    "strictStaticValidatorErrorCount": 0,
+    "strictStagingValidatorErrorCount": 0,
     "unapprovedRenderedImageUrls": [],
     "noindexRenderedFiles": [],
-    "remainingStrictErrors": [
-      {
-        "category": "missing static form endpoint",
-        "staticOutputError": "Static form endpoint is not configured for production/static deploy readiness.",
-        "stagingPackageError": "Static form endpoint is not configured for production/static deploy readiness.",
-        "route": "global",
-        "source": "static form endpoint environment/config"
-      },
-      {
-        "category": "missing static form endpoint/backend verification",
-        "staticOutputError": "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness.",
-        "stagingPackageError": "Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness.",
-        "route": "global",
-        "source": "STATIC_FORM_ENDPOINT_VERIFIED"
-      }
-    ]
+    "remainingStrictErrors": []
   },
   "remainingBlockers": [
-    "static form endpoint is missing or unverified",
-    "permanent CMS/theme navigation update or approval remains",
-    "service-area claim language still needs review"
+    "Azure staging requires separate approval",
+    "DNS cutover requires separate approval",
+    "production deployment/indexing requires separate approval",
+    "permanent CMS/theme navigation update or approval may remain",
+    "service-area claim language and fulfillment warnings still need launch review"
   ],
   "staleOutputAccepted": false,
   "readiness": {
     "staticDryRunCompleted": true,
     "staticRouteOutputReady": true,
-    "staticOutputQualityGates": false,
+    "staticOutputQualityGates": true,
     "mediaProductionUrlReadiness": true,
-    "contactFormProductionReadiness": false,
+    "contactFormProductionReadiness": true,
     "azureStagingReadiness": false,
     "dnsCutoverReadiness": false,
     "productionIndexingReadiness": false,
     "productionIndexingNoindexGateReadiness": true,
-    "productionIndexingReadinessBasis": "no overall; yes for the noindex validation gate only. Overall production deployment remains blocked by form and navigation readiness"
+    "productionIndexingReadinessBasis": "not live-ready overall; yes for local strict static quality gates. Azure staging, DNS cutover, production deployment, and indexing approval were not performed"
   },
   "actionsPerformed": {
     "cmsWrites": true,

@@ -12,10 +12,9 @@ Generated: 2026-06-06
 | strict static output validator | passed |
 | strict staging package validator | passed |
 | contact form production readiness for approved endpoint/config | yes |
-| fresh CMS-backed export | blocked by admin `401 Unauthorized` |
+| fresh CMS-backed export | verified, exit `0` |
 | static site deployment | not performed |
 | Cloudflare/root/www DNS changes | not performed |
 | Roller | paused |
 
 The Function endpoint is production-enabled for Graph delivery. The public static site remains unchanged until a separately approved static deployment is performed.
-

@@ -30,8 +30,8 @@ What improved:
 
 Remaining production blockers:
 
-- static form endpoint is missing/unverified
-- active CMS/theme navigation still needs permanent approval/update
+- active CMS/theme navigation still needs permanent approval/update if it has not been approved separately
+- Azure staging, DNS/cutover, production deployment, and production indexing remain separate approvals
 
 Later MediaAsset update status:
 
@@ -40,7 +40,7 @@ Later MediaAsset update status:
 - active rendered image tags now use production media URLs
 - a later approved static revision-payload cleanup removed `revision.latestSnapshot` from public static snapshot artifacts
 - strict media URL errors are now cleared
-- strict validators still fail on static form endpoint readiness
+- later static form production enablement cleared the form endpoint validator blockers
 
 Latest diagnosis-only pass:
 
@@ -72,11 +72,17 @@ Diagnosis docs:
 - `STATIC_FORM_ENDPOINT_BLOCKER_AUDIT.md`
 - `NEXT_LOCAL_BUILD_GATE.md`
 
-Latest strict validator split after the active page body/media repair and static revision-payload cleanup:
+Latest strict validator split after the active page body/media repair, static revision-payload cleanup, production form enablement, and official fresh CMS export retry:
 
 - `npm run validate:snapshot:ice`: exit `0`; route/snapshot proof passes, production-readiness blockers remain warnings
-- `validate-static-output.mjs`: exit `1`; 2 strict production errors, both form endpoint readiness
-- `validate-staging-package.mjs`: exit `1`; 2 strict staging package errors, both form endpoint readiness
+- `validate-static-output.mjs`: exit `0`; 42 files, 0 errors, 0 warnings
+- `validate-staging-package.mjs`: exit `0`; 42 files, 0 errors, 0 warnings
+
+Later official fresh CMS export verification:
+
+- on 2026-06-06, the read-only admin auth probe returned `200` for auth verify, admin page-list access, and active theme access
+- `npm run export:static:ice:cms` was rerun from live CMS and exited `0`
+- fresh live-CMS route/media/form validator proof passed
 
 ## Classification
 
@@ -84,14 +90,16 @@ Latest strict validator split after the active page body/media repair and static
 | --- | --- |
 | static dry run completed | yes |
 | static route output ready | yes |
-| static output quality gates | no |
+| static output quality gates | yes |
 | active page body media URL readiness | yes |
 | media production URL readiness | yes |
-| contact form production readiness | no |
+| contact form production readiness | yes |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
-| production/indexing readiness overall | no |
+| production/indexing readiness overall | not live-ready |
 | production/indexing readiness for noindex gate | yes |
+
+Fresh official CMS-backed export verification is now `yes` after the 2026-06-06 auth refresh retry.
 
 ## Files
 

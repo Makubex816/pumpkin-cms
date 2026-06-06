@@ -24,16 +24,18 @@ Cleared:
 
 ## Before Contact Form Production Readiness
 
-- Deploy or configure a static form endpoint in a separate authorized task.
-- Verify endpoint/backend behavior.
-- Confirm form submission readiness is not inferred from mailbox readiness.
-- Set `STATIC_FORM_ENDPOINT_VERIFIED=true` only after backend verification passes.
+Cleared by later separately approved production form enablement and the official fresh CMS export retry:
+
+- approved static form endpoint URL configured for validation/build context
+- endpoint/backend verification flag set for the approved context
+- strict form endpoint validator errors: 0
+- no valid email payload was sent in the fresh export verification pass
 
 ## Next Local Build Gate
 
-Classification: A. No local repairs needed for media; move only when production form setup is approved later.
+Classification: fresh CMS-backed static output quality gates passed.
 
-The remaining strict validator errors are expected. No unexpected tooling repair is required from the current local state.
+No unexpected tooling repair is required from the current local state. Azure staging remains a separate approval.
 
 ## Before Production Content Approval
 
@@ -53,5 +55,6 @@ The remaining strict validator errors are expected. No unexpected tooling repair
 
 ## Before Azure Staging
 
-- Clear form and permanent theme navigation gates.
-- Create Azure staging resources only after explicit authorization.
+- Confirm permanent theme navigation approval/update if required.
+- Review remaining content/fulfillment launch warnings.
+- Create or deploy Azure staging resources only after explicit authorization.

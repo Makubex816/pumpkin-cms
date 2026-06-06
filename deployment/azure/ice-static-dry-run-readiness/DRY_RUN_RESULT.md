@@ -49,18 +49,18 @@ Fresh static output:
 | `apps/ice-rink-web/out` | `/`, `/contact`, `/service-areas` |
 | `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` | `/`, `/contact`, `/service-areas` |
 
-Validator split:
+Latest validator split:
 
 | Validator | Exit | Result |
 | --- | ---: | --- |
 | `npm run validate:snapshot:ice` | 0 | route/snapshot validation passed; production-readiness blockers remain warnings |
-| `validate-static-output.mjs` | 1 | 2 strict production errors after later media/revision cleanup |
-| `validate-staging-package.mjs` | 1 | 2 strict staging package errors after later media/revision cleanup |
+| `validate-static-output.mjs` | 0 | passed after later media/revision cleanup, production form enablement, and official fresh CMS export retry |
+| `validate-staging-package.mjs` | 0 | passed after later media/revision cleanup, production form enablement, and official fresh CMS export retry |
 
-Strict production/staging validators still exit `1`, as expected, because production readiness remains blocked by the missing/unverified static form endpoint. Later approved MediaAsset, active page body/media, and static revision-payload cleanup work cleared the media URL errors.
+Strict production/staging validators now pass in the latest official fresh CMS-backed verification. Later approved MediaAsset, active page body/media, static revision-payload cleanup, and static form production enablement cleared the previous media/form strict errors.
 
 Noindex errors and the unapproved rendered social image URL are cleared.
 
-The remaining strict errors are now the 2 form endpoint readiness errors. The next local build gate is classified in `NEXT_LOCAL_BUILD_GATE.md` as: A. No local repairs needed for media; move only when production form setup is approved later.
+There are no remaining strict static/staging validator errors in the latest fresh CMS-backed verification. Azure staging remains a separate approval.
 
 No staging, deployment, Theme writes, MediaAsset writes, email, or Microsoft 365 actions were performed. Only the explicitly approved active CMS metadata fields were changed.

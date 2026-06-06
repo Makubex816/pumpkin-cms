@@ -1,0 +1,145 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice official fresh CMS export verification",
+  "result": "passed",
+  "environmentPresence": {
+    "PUMPKIN_API_URL": "PRESENT",
+    "ICE_RINK_RENTALS_API_KEY": "PRESENT",
+    "ICE_RINK_RENTALS_TENANT_ID": "PRESENT",
+    "PUMPKIN_ADMIN_JWT": "PRESENT"
+  },
+  "authProbe": {
+    "authVerifyStatus": 200,
+    "adminPagesStatus": 200,
+    "adminPagesCount": 9,
+    "adminPageSlugs": [
+      "contact",
+      "events-holiday-activations",
+      "home",
+      "ice-rink-rentals",
+      "phase-3-draft-test-51412237",
+      "phase-3-duplicate-test-51412237",
+      "phase-5a-csv-import-54754949",
+      "phase-6d-redirect-test",
+      "service-areas"
+    ],
+    "adminActiveThemeStatus": 200,
+    "ok": true
+  },
+  "preExportExternalReadiness": {
+    "mediaHeadStatus": 200,
+    "formOptionsStatus": 204,
+    "formOptionsCorsOrigin": "https://iceskatingrinkrentals.com",
+    "validPayloadsSubmitted": 0,
+    "emailSent": false
+  },
+  "officialCmsExport": {
+    "command": "npm run export:static:ice:cms",
+    "run": true,
+    "exitCode": 0,
+    "verified": true,
+    "contentSource": "cms-snapshot",
+    "snapshotGeneratedAt": "2026-06-06T13:27:25.439Z",
+    "staticManifestGeneratedAt": "2026-06-06T13:27:40.465Z",
+    "discoveredPageCount": 6,
+    "approvedPageCount": 3,
+    "publishedCount": 3,
+    "unpublishedCount": 0,
+    "excludedPageSlugs": [
+      "events-holiday-activations",
+      "ice-rink-rentals",
+      "phase-5a-csv-import-54754949"
+    ],
+    "themeSnapshot": true,
+    "redirectCount": 0,
+    "warningCount": 7
+  },
+  "routeProof": {
+    "snapshotSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "outRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "artifactRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "previewPathFiles": 0,
+    "obsoleteRouteCount": 0,
+    "publicLocalMediaStringFiles": 0,
+    "latestSnapshotMentionFiles": 0,
+    "renderedLocalImgSrcFiles": 0
+  },
+  "mediaRecheck": {
+    "uniqueProductionMediaUrls": 9,
+    "headChecked": 9,
+    "headFailed": 0,
+    "localMediaStringFiles": 0,
+    "renderedLocalImgSrcFiles": 0
+  },
+  "formRecheck": {
+    "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "endpointStringFiles": 6,
+    "optionsStatus": 204,
+    "strictValidatorFormErrors": 0,
+    "validPayloadsSubmitted": 0,
+    "emailSent": false
+  },
+  "validators": {
+    "snapshot": {
+      "ok": true,
+      "pageCount": 3,
+      "fileCount": 5,
+      "errors": 0,
+      "warnings": 6
+    },
+    "staticOutput": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    },
+    "stagingPackage": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "readiness": {
+    "officialFreshCmsBackedExportVerified": true,
+    "auth401Resolved": true,
+    "staticDryRunCompletedBasedOnThisRun": true,
+    "staticRouteOutputReadyBasedOnThisRun": true,
+    "mediaProductionUrlReadiness": true,
+    "contactFormProductionReadiness": true,
+    "staticOutputQualityGates": true,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not-live-ready",
+    "roller": "paused"
+  },
+  "notPerformed": [
+    "CMS writes",
+    "MediaAsset writes",
+    "Function App setting changes",
+    "endpoint deployment",
+    "email sending",
+    "Microsoft 365 changes",
+    "Azure resource creation",
+    "Azure config changes",
+    "Cloudflare changes",
+    "static deployment",
+    "production deployment",
+    "root/www DNS changes",
+    "protected config reads",
+    "Roller work"
+  ]
+}
