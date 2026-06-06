@@ -130,6 +130,16 @@
     "rollerWorkApproved": false,
     "rollerWorkPerformed": false
   },
+  "postCutoverIndexingCleanup": {
+    "cleanupApproved": true,
+    "staticRedeployApprovedAfterCleanup": true,
+    "hiddenWorkflowReviewPayloadClearedLive": true,
+    "sitemapCanonicalTrailingSlashAlignmentClearedLive": true,
+    "liveProductionIndexingReadiness": true,
+    "searchConsoleSubmissionPerformed": false,
+    "resultReport": "PUMPKIN_ICE_PRODUCTION_INDEXING_CLEANUP_RESULT_REPORT.md",
+    "resultPackage": "deployment/azure/ice-production-indexing-cleanup-result"
+  },
   "files": [
     "README.md",
     "PRE_CUTOVER_AZURE_CHECK.md",

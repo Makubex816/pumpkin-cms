@@ -27,3 +27,17 @@ Generated: 2026-06-06
 ## Readiness Decision
 
 Do not submit to Search Console until the owner either approves the current risks or authorizes cleanup.
+
+## Post-Cleanup Status
+
+The owner later authorized cleanup, and the cleaned static output was redeployed after explicit follow-up approval.
+
+| Prior risk | Post-cleanup result |
+| --- | --- |
+| hidden serialized CMS review metadata | cleared from live public HTML |
+| `/contact` hidden indexing disclaimer | cleared from live public HTML |
+| sitemap/canonical slash mismatch | cleared |
+| `www` canonical-only behavior | unchanged; not a cleanup blocker |
+| Search Console ownership state unknown | still requires separate approval if verification is needed |
+
+Search Console submission still was not performed.

@@ -86,6 +86,17 @@
     "protectedConfigRead": false,
     "rollerWorkPerformed": false
   },
+  "postCleanupFollowUp": {
+    "cleanupApproved": true,
+    "staticRedeployApprovedAfterCleanup": true,
+    "hiddenCmsReviewPayloadRiskClearedLive": true,
+    "contactHiddenIndexingNotAuthorizedTextClearedLive": true,
+    "sitemapTrailingSlashAlignmentWithCanonicalsClearedLive": true,
+    "liveProductionIndexingReadiness": true,
+    "searchConsoleSubmissionPerformed": false,
+    "resultReport": "PUMPKIN_ICE_PRODUCTION_INDEXING_CLEANUP_RESULT_REPORT.md",
+    "resultPackage": "deployment/azure/ice-production-indexing-cleanup-result"
+  },
   "files": [
     "README.md",
     "LIVE_ROUTE_CHECKS.md",

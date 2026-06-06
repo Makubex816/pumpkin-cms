@@ -44,6 +44,12 @@ No CMS writes, MediaAsset writes, Function setting changes, endpoint redeploys, 
 
 Cloudflare TXT values used for Azure validation were not written to this repository.
 
+## Post-Cutover Indexing Cleanup Update
+
+The later-approved indexing cleanup and static redeploy cleared hidden CMS workflow/review payload strings from live public HTML and aligned sitemap URLs with canonical trailing-slash behavior.
+
+Search Console submission was not performed and still requires separate approval. See `deployment/azure/ice-production-indexing-cleanup-result/`.
+
 ## Reference
 
 Azure Static Web Apps custom-domain requirements were checked against Microsoft documentation:

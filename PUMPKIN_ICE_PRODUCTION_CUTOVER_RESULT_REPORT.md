@@ -76,3 +76,19 @@ No CMS writes, MediaAsset writes, Function setting changes, endpoint redeploys, 
 ## Result Package
 
 See `deployment/azure/ice-production-cutover-result/`.
+
+## Post-Cutover Indexing Cleanup Update
+
+After cutover, the production indexing preflight found hidden serialized CMS review payload text and sitemap/canonical trailing-slash drift. The user later approved cleanup and then approved redeploying the cleaned static output.
+
+Current status:
+
+| Area | Result |
+| --- | --- |
+| static output redeployed after cleanup | yes |
+| hidden workflow/review payload in live public HTML | cleared |
+| sitemap/canonical trailing slash alignment | cleared |
+| live production indexing readiness | yes |
+| Search Console submission | not performed; separate approval required |
+
+No DNS, Cloudflare, Azure custom-domain, CMS, MediaAsset, Function setting, endpoint, email, Microsoft 365, or Roller changes were made in the indexing cleanup.

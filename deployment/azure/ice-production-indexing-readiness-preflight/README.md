@@ -50,3 +50,19 @@ No changes were made to Search Console, sitemap, robots, CMS, MediaAsset records
 ## Boundary
 
 This package documents a preflight only. It does not approve or perform indexing submission.
+
+## Post-Cleanup Update
+
+The preflight risks above were later cleaned under the approved Ice production indexing blocker cleanup scope, and the cleaned static output was redeployed after explicit follow-up approval.
+
+Post-cleanup live production status:
+
+| Area | Result |
+| --- | --- |
+| hidden workflow/review payload in public HTML | cleared |
+| `/contact` indexing-not-authorized hidden text | cleared |
+| sitemap/canonical trailing slash mismatch | cleared |
+| live production indexing readiness | yes |
+| Search Console submission | not performed; separate approval required |
+
+See `deployment/azure/ice-production-indexing-cleanup-result/`.

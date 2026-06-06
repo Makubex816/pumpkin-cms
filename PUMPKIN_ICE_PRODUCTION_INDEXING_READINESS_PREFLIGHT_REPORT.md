@@ -103,3 +103,20 @@ No Search Console submission, sitemap submission, URL Inspection request, indexi
 ## Result Package
 
 See `deployment/azure/ice-production-indexing-readiness-preflight/`.
+
+## Post-Cleanup Update
+
+After this preflight, the user approved Ice production indexing blocker cleanup and later approved redeploying the cleaned static output. The hidden CMS workflow/review payload and sitemap/canonical slash mismatch documented above are now cleared from live production.
+
+Current follow-up classification:
+
+| Area | Result |
+| --- | --- |
+| indexing cleanup completed | yes |
+| static output indexing readiness | yes |
+| live production indexing readiness | yes |
+| deployment required before indexing submission | no |
+| Search Console submission readiness | yes, technically ready; explicit approval still required |
+| Search Console submission performed | no |
+
+See `PUMPKIN_ICE_PRODUCTION_INDEXING_CLEANUP_RESULT_REPORT.md` and `deployment/azure/ice-production-indexing-cleanup-result/`.

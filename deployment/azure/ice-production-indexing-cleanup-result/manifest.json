@@ -1,0 +1,149 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "site": "IceSkatingRinkRentals.com",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice production indexing blocker cleanup only; static output redeploy later approved by user",
+  "result": "completed-live",
+  "cleanup": {
+    "hiddenWorkflowReviewPayloadCleanedFromPublicOutput": true,
+    "contactIndexingNotAuthorizedTextCleanedFromPublicOutput": true,
+    "draftNeedsReviewHiddenPayloadCleanedFromPublicOutput": true,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesPerformed": false
+  },
+  "sourceChanges": [
+    "apps/ice-rink-web/src/lib/public-render-page.ts",
+    "apps/ice-rink-web/src/app/page.tsx",
+    "apps/ice-rink-web/src/app/[...slug]/page.tsx",
+    "apps/ice-rink-web/src/components/PageRenderer.tsx",
+    "apps/ice-rink-web/src/lib/metadata.ts",
+    "apps/ice-rink-web/scripts/static-publish.mjs"
+  ],
+  "sitemapCanonical": {
+    "canonicalHost": "https://iceskatingrinkrentals.com",
+    "trailingSlashPolicy": "root and non-root sitemap URLs match canonical tags",
+    "sitemapLocs": [
+      "https://iceskatingrinkrentals.com/contact/",
+      "https://iceskatingrinkrentals.com/",
+      "https://iceskatingrinkrentals.com/service-areas/"
+    ],
+    "aligned": true
+  },
+  "freshExport": {
+    "command": "npm run export:static:ice:cms",
+    "exitCode": 0,
+    "snapshotSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "deployableRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "previewObsoleteDeployablePaths": 0,
+    "fileCount": 42
+  },
+  "validators": {
+    "snapshot": {
+      "ok": true,
+      "pageCount": 3,
+      "fileCount": 5,
+      "errors": 0
+    },
+    "strictStaticOutput": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    },
+    "strictStagingPackage": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    },
+    "typeCheck": true,
+    "nodeCheckStaticPublish": true
+  },
+  "deployment": {
+    "staticOutputRedeployApprovedAfterInitialRequest": true,
+    "completed": true,
+    "tool": "Azure Static Web Apps CLI",
+    "staticWebApp": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "environment": "production",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "deploymentTokenPrinted": false,
+    "localCliEnvFileWrittenAndRemovedWithoutReading": true
+  },
+  "liveRecheck": {
+    "approvedRoutesStatus200": true,
+    "approvedRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "apexAndWwwChecked": true,
+    "defaultHostnameChecked": true,
+    "obsoletePreviewRoutesStatus404": true,
+    "sitemapStatus200": true,
+    "robotsStatus200": true,
+    "robotsPermitsIndexing": true,
+    "robotsReferencesProductionSitemap": true,
+    "noindexAbsent": true,
+    "robotsIndexFollow": true,
+    "titlesPresent": true,
+    "descriptionsPresent": true,
+    "hiddenWorkflowReviewPayloadHits": 0,
+    "mediaUrlsChecked": 8,
+    "mediaFailures": 0,
+    "formOptionsPassed": true,
+    "validFormSubmissionSent": false,
+    "emailSent": false
+  },
+  "readiness": {
+    "productionCustomDomainCutover": true,
+    "productionSmokeTestPassed": true,
+    "indexingCleanupCompleted": true,
+    "staticOutputIndexingReadiness": true,
+    "liveProductionIndexingReadiness": true,
+    "searchConsoleSubmissionReadiness": "technical-ready-explicit-approval-required",
+    "deploymentRequiredBeforeIndexingSubmission": false,
+    "roller": "paused"
+  },
+  "approvalBoundary": {
+    "searchConsoleSubmissionPerformed": false,
+    "sitemapSubmissionPerformed": false,
+    "urlInspectionRequestPerformed": false,
+    "indexingRequestPerformed": false,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesPerformed": false,
+    "dnsChangesPerformed": false,
+    "cloudflareChangesPerformed": false,
+    "azureResourceConfigChangesPerformed": false,
+    "functionSettingChangesPerformed": false,
+    "endpointRedeployPerformed": false,
+    "validFormSubmissionSent": false,
+    "emailSent": false,
+    "microsoft365ChangesPerformed": false,
+    "protectedConfigPrinted": false,
+    "productionStaticArtifactsStaged": false,
+    "rollerWorkPerformed": false
+  },
+  "files": [
+    "README.md",
+    "PRE_CLEANUP_INDEXING_BLOCKERS.md",
+    "WORKFLOW_REVIEW_PAYLOAD_SOURCE_DIAGNOSIS.md",
+    "PUBLIC_OUTPUT_CLEANUP_RESULT.md",
+    "SITEMAP_CANONICAL_ALIGNMENT_RESULT.md",
+    "FRESH_EXPORT_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "INDEXING_READINESS_RECHECK.md",
+    "REMAINING_INDEXING_BLOCKERS.md",
+    "NEXT_INDEXING_SUBMISSION_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ]
+}

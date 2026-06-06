@@ -94,8 +94,8 @@ function loadPages() {
 }
 
 function buildPageUrl(site, slug) {
-  if (!slug || slug === 'home') return `https://${site.domain}`;
-  return `https://${site.domain}/${slug}`;
+  if (!slug || slug === 'home') return `https://${site.domain}/`;
+  return `https://${site.domain}/${slug}/`;
 }
 
 function normalizeSlug(value) {
@@ -759,7 +759,8 @@ function writeStaticArtifacts(site, pages, targetDir, qualityWarnings = [], redi
       contentSource,
       pageCount: pages.length,
       redirectCount: redirects.length,
-      qualityWarnings,
+      qualityWarningCount: qualityWarnings.length,
+      qualityWarningsRedacted: true,
       pages: pages.map(({ page }) => ({
         pageSlug: page.pageSlug,
         isPublished: page.isPublished,

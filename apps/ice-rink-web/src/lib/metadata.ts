@@ -4,8 +4,8 @@ import type { ResolvedSite } from '@/config/sites';
 
 export function buildPageUrl(site: ResolvedSite, slug?: string | null): string {
   const normalizedSlug = (slug || '').replace(/^\/+|\/+$/g, '');
-  if (!normalizedSlug || normalizedSlug === 'home') return site.canonicalUrl;
-  return `${site.canonicalUrl}/${normalizedSlug}`;
+  if (!normalizedSlug || normalizedSlug === 'home') return `${site.canonicalUrl}/`;
+  return `${site.canonicalUrl}/${normalizedSlug}/`;
 }
 
 export function buildMetadata(page: Page, site: ResolvedSite): Metadata {
