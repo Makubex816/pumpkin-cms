@@ -1,0 +1,149 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "site": "IceSkatingRinkRentals.com",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice production custom-domain/DNS cutover execution",
+  "result": "completed",
+  "azure": {
+    "resourceGroup": "rg-ice-static-staging",
+    "staticWebApp": "swa-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "customDomains": [
+      {
+        "domainName": "iceskatingrinkrentals.com",
+        "status": "Ready"
+      },
+      {
+        "domainName": "www.iceskatingrinkrentals.com",
+        "status": "Ready"
+      }
+    ],
+    "newStaticDeploymentPerformed": false,
+    "functionSettingChangesPerformed": false
+  },
+  "cloudflare": {
+    "rootRecord": {
+      "name": "iceskatingrinkrentals.com",
+      "type": "CNAME",
+      "content": "happy-mud-0b375e20f.7.azurestaticapps.net",
+      "proxied": false,
+      "ttl": "auto"
+    },
+    "wwwRecord": {
+      "name": "www.iceskatingrinkrentals.com",
+      "type": "CNAME",
+      "content": "happy-mud-0b375e20f.7.azurestaticapps.net",
+      "proxied": false,
+      "ttl": "auto"
+    },
+    "rollbackRootRecord": {
+      "name": "iceskatingrinkrentals.com",
+      "type": "A",
+      "content": "66.81.203.198",
+      "proxied": false,
+      "ttl": "auto"
+    },
+    "rollbackWwwRecord": {
+      "name": "www.iceskatingrinkrentals.com",
+      "type": "A",
+      "content": "66.81.203.198",
+      "proxied": false,
+      "ttl": "auto"
+    },
+    "preservedRecords": {
+      "media": true,
+      "mx": true,
+      "spfTxt": true,
+      "microsoft365Txt": true,
+      "autodiscover": true
+    },
+    "validationTxtValuesRecorded": false,
+    "nonDnsCloudflareChangesPerformed": false
+  },
+  "smoke": {
+    "productionHosts": [
+      "https://iceskatingrinkrentals.com",
+      "https://www.iceskatingrinkrentals.com"
+    ],
+    "approvedRoutesStatus200": true,
+    "supportFilesStatus200": true,
+    "obsoleteRoutesStatus404": true,
+    "staticAssetsChecked": 30,
+    "staticAssetFailures": 0,
+    "mediaUrlsChecked": 9,
+    "mediaFailures": 0,
+    "formOptionsPassed": true,
+    "validFormSubmissionSent": false,
+    "emailSent": false
+  },
+  "validators": {
+    "snapshot": {
+      "ok": true,
+      "pageCount": 3,
+      "fileCount": 5,
+      "errors": 0,
+      "knownMetadataWarnings": 6
+    },
+    "staticPublishCmsSnapshot": {
+      "ok": true,
+      "pageCount": 3,
+      "errors": 0,
+      "knownMetadataWarnings": 6
+    },
+    "strictStaticOutput": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    },
+    "strictStagingPackage": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "canonical": {
+    "canonicalHost": "https://iceskatingrinkrentals.com",
+    "wwwRedirectConfigured": false,
+    "sitemapUsesApex": true,
+    "robotsUsesApexSitemap": true
+  },
+  "approvalBoundary": {
+    "cmsWritesApproved": false,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesApproved": false,
+    "mediaAssetWritesPerformed": false,
+    "functionSettingChangesApproved": false,
+    "functionSettingChangesPerformed": false,
+    "endpointRedeployApproved": false,
+    "endpointRedeployPerformed": false,
+    "emailSendingApproved": false,
+    "emailSent": false,
+    "microsoft365ChangesApproved": false,
+    "microsoft365ChangesPerformed": false,
+    "newStaticDeploymentApproved": false,
+    "newStaticDeploymentPerformed": false,
+    "productionArtifactRebuildPerformed": false,
+    "cloudflareNonDnsChangesPerformed": false,
+    "protectedConfigRead": false,
+    "rollerWorkApproved": false,
+    "rollerWorkPerformed": false
+  },
+  "files": [
+    "README.md",
+    "PRE_CUTOVER_AZURE_CHECK.md",
+    "PRE_CUTOVER_CLOUDFLARE_DNS_CHECK.md",
+    "PRE_CUTOVER_PUBLIC_BASELINE.md",
+    "AZURE_CUSTOM_DOMAIN_BINDING_RESULT.md",
+    "CLOUDFLARE_DNS_CUTOVER_RESULT.md",
+    "POST_CUTOVER_DNS_HTTPS_VALIDATION.md",
+    "PRODUCTION_SMOKE_TEST_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "CANONICAL_REDIRECT_RESULT.md",
+    "ROLLBACK_PLAN.md",
+    "REMAINING_PRODUCTION_BLOCKERS.md",
+    "NEXT_INDEXING_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ]
+}
