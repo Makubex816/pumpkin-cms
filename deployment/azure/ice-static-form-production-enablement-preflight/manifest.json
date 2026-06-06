@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-06-06",
+  "siteKey": "ice-rink-rentals",
+  "scope": "static form production enablement preflight only",
+  "status": "preflight_complete_human_inbox_confirmation_required",
+  "graphLiveEmailTest": {
+    "reviewed": true,
+    "validPayloadAttemptsInGraphMode": 1,
+    "submittedAtUtc": "2026-06-06T02:53:16.896Z",
+    "endpointStatus": 200,
+    "endpointResponseOk": true,
+    "exchangeTraceStatus": "Delivered",
+    "messageTraceId": "94e8d3f8-748a-4a5e-2fb0-08dec376c3b7",
+    "humanInboxConfirmation": false,
+    "finalModeAfterTest": "no-email"
+  },
+  "productionSettingsNeeded": {
+    "functionDeliveryMode": "FORM_DELIVERY_MODE=graph",
+    "currentSafeMode": "FORM_DELIVERY_MODE=no-email",
+    "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "preferredEndpointEnvVar": "NEXT_PUBLIC_STATIC_FORM_ENDPOINT",
+    "compatibleEndpointEnvVars": [
+      "STATIC_FORM_ENDPOINT",
+      "NEXT_PUBLIC_STATIC_FORM_ACTION",
+      "STATIC_FORM_ACTION"
+    ],
+    "verificationFlag": "STATIC_FORM_ENDPOINT_VERIFIED=true"
+  },
+  "validatorWiring": {
+    "endpointAliasOrder": [
+      "NEXT_PUBLIC_STATIC_FORM_ENDPOINT",
+      "STATIC_FORM_ENDPOINT",
+      "NEXT_PUBLIC_STATIC_FORM_ACTION",
+      "STATIC_FORM_ACTION"
+    ],
+    "requiresStaticFormEndpointVerifiedTrue": true,
+    "staticExportRerunRequired": true,
+    "strictStaticValidatorRerunRequired": true,
+    "strictStagingValidatorRerunRequired": true,
+    "expectedRemainingFormErrorsAfterApprovedEnablement": []
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormEndpointLocalHardening": true,
+    "staticFormFunctionScaffoldReadiness": true,
+    "graphLiveEmailDeliveryProof": true,
+    "contactFormProductionReadiness": false,
+    "productionFormEnablementReadiness": "pending human inbox confirmation and explicit approval",
+    "staticOutputQualityGates": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "functionAppSettingsChanged": false,
+    "formDeliveryModeSetToGraph": false,
+    "staticFormEndpointVerifiedSetTrue": false,
+    "emailSent": false,
+    "endpointDeployment": false,
+    "azureResourceCreation": false,
+    "microsoft365Changed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "productionWebsiteDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}
