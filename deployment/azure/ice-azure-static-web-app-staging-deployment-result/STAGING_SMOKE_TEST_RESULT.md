@@ -6,7 +6,7 @@ Generated: 2026-06-06
 
 Content, route, media, asset, sitemap, robots, and not-found smoke checks passed on the Azure default hostname.
 
-Form UI wiring is present, but browser form submission from the Azure default hostname is blocked until the Function allowed-origin policy includes the staging hostname or a later approval chooses another form-testing path.
+Form UI wiring is present. The original deployment smoke test found the Azure default hostname was not yet allowed by the static contact Function CORS/origin policy. A later approved CORS/origin enablement pass resolved that blocker.
 
 ## Passing Checks
 
@@ -41,6 +41,18 @@ Safe non-email `OPTIONS` checks:
 
 No valid contact form payload was submitted. No email was sent.
 
+## Subsequent CORS Resolution
+
+After the later approved CORS/origin enablement pass:
+
+| Origin | Status | Allow-Origin |
+| --- | --- | --- |
+| `https://happy-mud-0b375e20f.7.azurestaticapps.net` | 204 | `https://happy-mud-0b375e20f.7.azurestaticapps.net` |
+| `https://iceskatingrinkrentals.com` | 204 | `https://iceskatingrinkrentals.com` |
+| `https://www.iceskatingrinkrentals.com` | 204 | `https://www.iceskatingrinkrentals.com` |
+
+An invalid empty JSON POST from the staging origin returned 400 with the staging allow-origin header. No valid form lead was submitted and no email was sent.
+
 ## Result Classification
 
 | Area | Status |
@@ -50,4 +62,4 @@ No valid contact form payload was submitted. No email was sent.
 | asset smoke | pass |
 | route/not-found smoke | pass |
 | form UI smoke | pass |
-| staging-origin browser form readiness | blocked |
+| staging-origin browser form readiness | pass after later CORS enablement |

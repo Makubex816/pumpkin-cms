@@ -1,0 +1,122 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "site": "IceSkatingRinkRentals.com",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice production cutover preflight only",
+  "result": "passed-preflight-only",
+  "stagingReadiness": {
+    "officialFreshCmsBackedExportVerified": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "contactFormProductionReadiness": true,
+    "staticOutputQualityGates": true,
+    "azureStagingResourceReadiness": true,
+    "azureStagingDeploymentCompleted": true,
+    "stagingFormBrowserOriginReadiness": true,
+    "azureStagingSmokeTestPassed": true,
+    "azureStagingReadiness": "yes-for-default-host-staging"
+  },
+  "azure": {
+    "staticWebApp": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "location": "East US 2",
+    "sku": "Free",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "provider": "SwaCli",
+    "environmentStatus": "Ready",
+    "customHostnames": [],
+    "customDomainBindingPerformed": false
+  },
+  "cloudflare": {
+    "envTokenPresent": true,
+    "envZoneIdPresent": true,
+    "zone": "iceskatingrinkrentals.com",
+    "zoneStatus": "active",
+    "zonePaused": false,
+    "records": {
+      "apex": {
+        "type": "A",
+        "content": "66.81.203.198",
+        "proxied": false,
+        "ttl": "auto"
+      },
+      "www": {
+        "type": "A",
+        "content": "66.81.203.198",
+        "proxied": false,
+        "ttl": "auto"
+      },
+      "media": {
+        "type": "CNAME",
+        "content": "iceskatingmedia.blob.core.windows.net",
+        "proxied": true,
+        "ttl": "auto"
+      },
+      "mx": "iceskatingrinkrentals-com.mail.protection.outlook.com",
+      "autodiscover": "autodiscover.outlook.com"
+    },
+    "mutationsPerformed": false
+  },
+  "publicBaseline": {
+    "httpsRoot": "unable-to-connect",
+    "httpsWww": "unable-to-connect",
+    "stagingDefaultHostStatus": 200,
+    "mediaKnownUrlStatus": 200,
+    "formOptions": {
+      "root": 204,
+      "www": 204,
+      "staging": 204
+    }
+  },
+  "canonicalPlan": {
+    "canonicalHost": "iceskatingrinkrentals.com",
+    "wwwPlan": "redirect-to-apex-preferred-or-canonical-only-if-redirect-deferred",
+    "redirectCount": 0,
+    "sitemapUsesApex": true,
+    "robotsUsesApexSitemap": true
+  },
+  "recommendedCutoverTarget": {
+    "useExistingStaticWebApp": true,
+    "staticWebApp": "swa-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "requiresExplicitApproval": true,
+    "requiresAzureCustomDomainBinding": true,
+    "requiresCloudflareDnsChanges": true
+  },
+  "readinessClassification": {
+    "productionCutoverPreflight": true,
+    "dnsCutoverReadiness": "pending-explicit-approval",
+    "productionIndexingReadiness": "not-live-ready",
+    "roller": "paused"
+  },
+  "notPerformed": [
+    "DNS changes",
+    "Cloudflare mutations",
+    "Azure custom-domain binding",
+    "production deployment",
+    "CMS writes",
+    "MediaAsset writes",
+    "Function App setting changes",
+    "endpoint redeployment",
+    "email sending",
+    "Microsoft 365 changes",
+    "protected config read",
+    "generated artifact staging",
+    "Roller work"
+  ],
+  "files": [
+    "README.md",
+    "CURRENT_STAGING_READINESS.md",
+    "AZURE_CUSTOM_DOMAIN_PREFLIGHT.md",
+    "CLOUDFLARE_DNS_PREFLIGHT.md",
+    "CURRENT_PUBLIC_DNS_HTTP_BASELINE.md",
+    "RECOMMENDED_CUTOVER_STRATEGY.md",
+    "ROOT_WWW_CANONICAL_PLAN.md",
+    "FINAL_PRODUCTION_SMOKE_TEST_PLAN.md",
+    "ROLLBACK_PLAN.md",
+    "GO_NO_GO_CHECKLIST.md",
+    "APPROVAL_REQUIRED_BEFORE_CUTOVER.md",
+    "NEXT_PRODUCTION_CUTOVER_PROMPT.md",
+    "manifest.json"
+  ]
+}

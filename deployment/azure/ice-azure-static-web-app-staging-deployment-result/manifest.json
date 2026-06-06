@@ -3,7 +3,7 @@
   "site": "IceSkatingRinkRentals.com",
   "generatedDate": "2026-06-06",
   "approval": "Ice Azure Static Web Apps staging deployment only",
-  "result": "deployed-with-form-cors-blocker",
+  "result": "deployed-form-cors-resolved-by-later-enablement",
   "deployment": {
     "completed": true,
     "tool": "Azure Static Web Apps CLI",
@@ -122,17 +122,28 @@
     "validFormSubmissionSent": false,
     "emailSent": false
   },
+  "subsequentFormCorsEnablement": {
+    "approved": true,
+    "result": "passed",
+    "resultReport": "PUMPKIN_ICE_STAGING_FORM_CORS_ENABLEMENT_RESULT_REPORT.md",
+    "originEnabled": "https://happy-mud-0b375e20f.7.azurestaticapps.net",
+    "settingChanged": "STATIC_FORM_ALLOWED_ORIGINS",
+    "formStagingOriginCorsPassed": true,
+    "validFormSubmissionSent": false,
+    "emailSent": false,
+    "endpointRedeployed": false
+  },
   "currentReadiness": {
     "officialFreshCmsBackedExportVerified": true,
     "staticDryRunCompleted": true,
     "staticRouteOutputReady": true,
     "mediaProductionUrlReadiness": true,
-    "contactFormProductionReadiness": "yes-for-production-origin-staging-origin-cors-blocked",
+    "contactFormProductionReadiness": true,
     "staticOutputQualityGates": true,
     "azureStagingResourceReadiness": true,
     "azureStagingDeploymentCompleted": true,
-    "azureStagingSmokeTestPassed": "partial-content-pass-form-cors-blocked",
-    "azureStagingReadiness": false,
+    "azureStagingSmokeTestPassed": "yes-for-approved-default-host-options-boundary-after-later-cors-enablement",
+    "azureStagingReadiness": "yes-for-default-host-staging-no-production-cutover-approval",
     "dnsCutoverReadiness": false,
     "productionIndexingReadiness": "not-live-ready",
     "roller": "paused"

@@ -4,15 +4,15 @@ Generated: 2026-06-06
 
 ## Recommended Next Gate
 
-Before production cutover preflight, decide whether staging browser form submission must be tested from the Azure default hostname.
+The staging browser-origin OPTIONS blocker was resolved by a later approved CORS/origin enablement pass.
 
-Safest next approval if form testing is required:
+Optional next approval if a valid staging-origin lead submission is required:
 
 ```text
-Approve Ice static form staging-origin CORS update/verification only: add only the Azure Static Web Apps staging default hostname happy-mud-0b375e20f.7.azurestaticapps.net to the approved Function allowed-origin setting if required, run safe OPTIONS checks, and document results. No valid form submission, no email sending, no endpoint redeploy, no CMS/MediaAsset writes, no DNS/Cloudflare changes, no static deployment, no Microsoft 365 changes, and Roller remains paused.
+Approve Ice staging valid form submission verification only: submit one clearly marked staging test lead from https://happy-mud-0b375e20f.7.azurestaticapps.net/contact, verify endpoint response and email delivery if applicable, and document results. No endpoint redeploy, no Function setting changes, no CMS/MediaAsset writes except the approved test FormEntry if the endpoint records one, no Cloudflare/DNS/static deployment/production cutover, no Microsoft 365 changes, and Roller remains paused.
 ```
 
-After staging-origin form readiness is resolved or explicitly deferred, the next production gate should be preflight only:
+If valid staging lead submission is deferred, the next production gate should be preflight only:
 
 ```text
 Approve Ice production cutover preflight only: review the deployed Azure Static Web Apps staging default host, strict validators, smoke results, DNS/Cloudflare requirements, rollback plan, indexing/canonical implications, and exact approval boundary for production cutover. No DNS changes, no Cloudflare changes, no production deployment, no CMS/MediaAsset writes, no Function setting changes, no email/Microsoft 365 work, and Roller remains paused.

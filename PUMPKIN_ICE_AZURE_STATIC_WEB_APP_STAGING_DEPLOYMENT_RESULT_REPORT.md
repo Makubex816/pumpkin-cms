@@ -102,6 +102,23 @@ Observed blocker:
 
 No valid contact form payload was submitted and no email was sent.
 
+## Subsequent Form CORS Enablement
+
+A later approved CORS/origin enablement pass added the Azure staging default hostname to the static contact Function allowed-origin setting.
+
+Current post-change result:
+
+- staging origin `OPTIONS` returns 204 with `Access-Control-Allow-Origin: https://happy-mud-0b375e20f.7.azurestaticapps.net`
+- production root origin remains allowed
+- production `www` origin remains allowed
+- no wildcard origin was introduced
+- an invalid empty JSON POST from the staging origin returned 400 with the staging allow-origin header
+- no valid form lead was submitted
+- no email was sent
+- no endpoint redeploy occurred
+
+See `PUMPKIN_ICE_STAGING_FORM_CORS_ENABLEMENT_RESULT_REPORT.md`.
+
 ## Readiness Classification
 
 | Gate | Status |
@@ -110,21 +127,21 @@ No valid contact form payload was submitted and no email was sent.
 | static dry run completed | yes |
 | static route output ready | yes |
 | media production URL readiness | yes |
-| contact form production readiness | yes for production origin; staging origin blocked by CORS |
+| contact form production readiness | yes |
 | static output quality gates | yes |
 | Azure staging resource readiness | yes |
 | Azure staging deployment completed | yes |
-| Azure staging smoke test passed | partial, content/media/routes pass; form staging-origin CORS blocked |
-| Azure staging readiness | no, because staging-origin browser form submission is not CORS-ready |
+| Azure staging smoke test passed | yes for approved default-host/OPTIONS boundary after later CORS enablement |
+| Azure staging readiness | yes for default-host staging; no production cutover approval |
 | DNS cutover readiness | no |
 | production/indexing readiness | not live-ready |
 | Roller | paused |
 
 ## Remaining Blockers
 
-Before treating staging as fully ready, the staging hostname needs a separately approved Function allowed-origin decision or an explicit decision to defer browser form submission testing on staging.
+The staging-origin CORS blocker was resolved by the later approved CORS enablement pass.
 
-Production cutover remains unapproved. DNS, Cloudflare, custom domain, Function settings, endpoint redeploy, valid form submission, email/Microsoft 365 work, CMS/MediaAsset writes, and Roller work remain outside this deployment result.
+Production cutover remains unapproved. DNS, Cloudflare, custom domain, endpoint redeploy, valid form submission, email/Microsoft 365 work, CMS/MediaAsset writes, and Roller work remain outside this deployment result.
 
 ## Evidence Package
 
