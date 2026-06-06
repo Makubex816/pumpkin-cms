@@ -1,0 +1,171 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "site": "IceSkatingRinkRentals.com",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice Azure Static Web Apps staging deployment only",
+  "result": "deployed-with-form-cors-blocker",
+  "deployment": {
+    "completed": true,
+    "tool": "Azure Static Web Apps CLI",
+    "toolVersion": "2.0.9",
+    "resourceGroup": "rg-ice-static-staging",
+    "staticWebApp": "swa-ice-static-staging",
+    "location": "East US 2",
+    "sku": "Free",
+    "environment": "production",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "providerAfterDeployment": "SwaCli",
+    "environmentStatusAfterDeployment": "Ready",
+    "customHostnames": [],
+    "deploymentTokenUsedTransiently": true,
+    "deploymentTokenPrinted": false,
+    "deploymentTokenWrittenToRepo": false
+  },
+  "artifact": {
+    "path": "apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out",
+    "fileCount": 42,
+    "routes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "previewPaths": 0,
+    "obsoleteRouteFolders": 0,
+    "rollerContentDetected": false,
+    "localMediaReferences": 0,
+    "latestSnapshotMentions": 0,
+    "protectedConfigFilesDetected": false
+  },
+  "preDeploymentRecheck": {
+    "cmsExportRerun": true,
+    "cmsExportOk": true,
+    "snapshotPageCount": 3,
+    "snapshotPublishedCount": 3,
+    "themeSnapshot": true,
+    "approvedSlugs": [
+      "contact",
+      "home",
+      "service-areas"
+    ],
+    "excludedSlugs": [
+      "events-holiday-activations",
+      "ice-rink-rentals",
+      "phase-5a-csv-import-54754949"
+    ]
+  },
+  "validators": {
+    "snapshot": {
+      "ok": true,
+      "pageCount": 3,
+      "fileCount": 5,
+      "errors": 0
+    },
+    "staticOutput": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    },
+    "stagingPackage": {
+      "ok": true,
+      "fileCount": 42,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "smoke": {
+    "base": "https://happy-mud-0b375e20f.7.azurestaticapps.net",
+    "contentSmokePassed": true,
+    "formStagingOriginCorsPassed": false,
+    "pageResults": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/contact",
+        "status": 200
+      },
+      {
+        "path": "/service-areas",
+        "status": 200
+      },
+      {
+        "path": "/sitemap.xml",
+        "status": 200
+      },
+      {
+        "path": "/robots.txt",
+        "status": 200
+      },
+      {
+        "path": "/__ice-staging-smoke-missing-route",
+        "status": 404
+      },
+      {
+        "path": "/ice-rink-rentals",
+        "status": 404
+      },
+      {
+        "path": "/events-holiday-activations",
+        "status": 404
+      }
+    ],
+    "staticAssetsChecked": 15,
+    "mediaUrlsChecked": 9,
+    "formOptions": {
+      "stagingOriginStatus": 204,
+      "stagingOriginAllowOrigin": "",
+      "productionOriginStatus": 204,
+      "productionOriginAllowOrigin": "https://iceskatingrinkrentals.com"
+    },
+    "validFormSubmissionSent": false,
+    "emailSent": false
+  },
+  "currentReadiness": {
+    "officialFreshCmsBackedExportVerified": true,
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "contactFormProductionReadiness": "yes-for-production-origin-staging-origin-cors-blocked",
+    "staticOutputQualityGates": true,
+    "azureStagingResourceReadiness": true,
+    "azureStagingDeploymentCompleted": true,
+    "azureStagingSmokeTestPassed": "partial-content-pass-form-cors-blocked",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not-live-ready",
+    "roller": "paused"
+  },
+  "approvalBoundary": {
+    "customDomainApproved": false,
+    "productionDeploymentApproved": false,
+    "productionDnsCutoverApproved": false,
+    "rootWwwDnsChangesApproved": false,
+    "cloudflareChangesApproved": false,
+    "cmsWritesApproved": false,
+    "mediaAssetWritesApproved": false,
+    "functionSettingChangesApproved": false,
+    "endpointRedeployApproved": false,
+    "validFormSubmissionApproved": false,
+    "emailSendingApproved": false,
+    "microsoft365ChangesApproved": false,
+    "protectedConfigRead": false,
+    "generatedStaticArtifactsStaged": false,
+    "rollerWorkApproved": false
+  },
+  "files": [
+    "README.md",
+    "PRE_DEPLOYMENT_READINESS_RECHECK.md",
+    "DEPLOYMENT_TARGET.md",
+    "DEPLOYMENT_ARTIFACT_SCOPE.md",
+    "DEPLOYMENT_RESULT.md",
+    "DEFAULT_HOSTNAME_RESULT.md",
+    "STAGING_SMOKE_TEST_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "REMAINING_STAGING_BLOCKERS.md",
+    "NEXT_PRODUCTION_CUTOVER_PREFLIGHT_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ]
+}
