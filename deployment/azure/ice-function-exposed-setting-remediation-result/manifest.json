@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2026-06-06",
+  "siteKey": "ice-rink-rentals",
+  "scope": "Azure Function exposed storage setting remediation execution only",
+  "status": "completed",
+  "functionApp": {
+    "name": "func-ice-static-contact-20260605",
+    "resourceGroup": "rg-ice-static-form-endpoint",
+    "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "stateAfterRemediation": "Running",
+    "explicitRestartCommandRun": false,
+    "endpointRedeployed": false
+  },
+  "storageAccount": {
+    "name": "iceforms20260605",
+    "affectedKeyName": "key1",
+    "alternateKeyName": "key2",
+    "rotatedKeyName": "key1",
+    "rotatedBothKeys": false
+  },
+  "appSettingUpdate": {
+    "updated": true,
+    "updatedSettingNames": [
+      "AzureWebJobsStorage",
+      "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+      "AzureWebJobsDashboard"
+    ],
+    "settingsNowReferenceKeyName": "key2",
+    "graphRelatedSettingNameCount": 0,
+    "graphModeActive": false,
+    "dryRunNoEmailModeConfirmed": true
+  },
+  "endpointHealth": {
+    "preChange": {
+      "optionsCorsStatus": 204,
+      "validDryRunPayloadStatus": 200,
+      "invalidEmailStatus": 400,
+      "unknownRoutingRecipientStatus": 400,
+      "honeypotStatus": 400,
+      "secretPatternInResponse": false,
+      "passed": true
+    },
+    "postSettingUpdatePreRotation": {
+      "optionsCorsStatus": 204,
+      "validDryRunPayloadStatus": 200,
+      "invalidEmailStatus": 400,
+      "unknownRoutingRecipientStatus": 400,
+      "honeypotStatus": 400,
+      "secretPatternInResponse": false,
+      "passed": true
+    },
+    "postRotation": {
+      "optionsCorsStatus": 204,
+      "validDryRunPayloadStatus": 200,
+      "invalidEmailStatus": 400,
+      "unknownRoutingRecipientStatus": 400,
+      "honeypotStatus": 400,
+      "secretPatternInResponse": false,
+      "passed": true
+    }
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "graphCapableFunctionCodeDeployed": true,
+    "microsoftGraphAppRegistration": true,
+    "mailSendPermissionConfigured": true,
+    "adminConsentGranted": true,
+    "exchangeRbacMailboxScopeConfigured": true,
+    "exposedSettingRemediation": true,
+    "clientSecretAppCredentialReadiness": false,
+    "functionGraphDeliverySettingsConfigured": false,
+    "contactFormProductionReadiness": false,
+    "realEmailDeliveryReadiness": "pending app credential/app settings/live-test approval",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "secretValuesPrinted": false,
+    "secretValuesWrittenToRepo": false,
+    "realEmailSent": false,
+    "microsoft365Changed": false,
+    "graphAppRbacChanged": false,
+    "clientSecretCreated": false,
+    "certificateCreated": false,
+    "endpointRedeployed": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedLocalConfigRead": false,
+    "rollerTouched": false
+  }
+}
