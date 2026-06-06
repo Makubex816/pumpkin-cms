@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-06-05",
+  "siteKey": "ice-rink-rentals",
+  "scope": "redeploy Graph-capable static form Function code in dry-run mode",
+  "status": "redeployed_dry_run",
+  "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+  "resourceGroup": "rg-ice-static-form-endpoint",
+  "functionApp": "func-ice-static-contact-20260605",
+  "deployment": {
+    "method": "Azure CLI zip deployment",
+    "id": "5989b4ef54af46c2b3d0a2e3de49c9b7",
+    "status": 4,
+    "active": true,
+    "complete": true,
+    "endTime": "2026-06-05T23:52:36.9025832Z"
+  },
+  "localPackageVerification": {
+    "npmRunCheck": {
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "npmTest": {
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "packageBuiltOutsideRepo": true,
+    "temporaryPackageRemoved": true
+  },
+  "preRedeployHttpsTests": {
+    "optionsApprovedOrigin": 204,
+    "validFrontendPayload": 200,
+    "validLegacyPayload": 200,
+    "invalidEmailRejected": 400,
+    "unknownRoutingRejected": 400,
+    "unknownRecipientRejected": 400,
+    "oversizedMessageRejected": 400,
+    "honeypotRejected": 400,
+    "unapprovedOriginRejected": 400,
+    "secretPatternResponseMatches": 0
+  },
+  "postRedeployHttpsTests": {
+    "optionsApprovedOrigin": 204,
+    "validFrontendPayload": 200,
+    "validLegacyPayload": 200,
+    "invalidEmailRejected": 400,
+    "unknownRoutingRejected": 400,
+    "unknownRecipientRejected": 400,
+    "oversizedMessageRejected": 400,
+    "honeypotRejected": 400,
+    "unapprovedOriginRejected": 400,
+    "secretPatternResponseMatches": 0
+  },
+  "dryRunModeConfirmation": {
+    "staticForwardDryRun": true,
+    "formDeliveryGraphActive": false,
+    "graphSettingNameCount": 0,
+    "graphCredentialsConfigured": false
+  },
+  "readiness": {
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "staticFormNoEmailEndpointDeployed": true,
+    "staticFormNoEmailValidatorWiring": true,
+    "graphDeliveryLocalImplementation": true,
+    "graphCapableCodeDeployedToFunction": true,
+    "contactFormProductionReadiness": false,
+    "realEmailDeliveryReadiness": "pending Microsoft 365/RBAC/app settings/live-test approval",
+    "microsoft365EmailSetupReadiness": false,
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not live-ready",
+    "roller": "paused"
+  },
+  "externalActionsNotPerformed": {
+    "realEmailSent": false,
+    "microsoft365Changed": false,
+    "graphAppRegistrationCreated": false,
+    "graphPermissionGranted": false,
+    "exchangeRbacChanged": false,
+    "azureAppSettingsChangedToGraphMode": false,
+    "graphCredentialsConfigured": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cloudflareChanged": false,
+    "staticDeployment": false,
+    "protectedConfigRead": false,
+    "rollerTouched": false
+  }
+}
+
