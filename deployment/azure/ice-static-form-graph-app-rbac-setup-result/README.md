@@ -5,17 +5,11 @@ Updated: 2026-06-06
 
 ## Result
 
-Partial success.
+Completed within the approved scope.
 
-The existing Ice-specific Microsoft Entra app and service principal were reused. Microsoft Graph `Mail.Send` remains configured as a required application permission. ExchangeOnlineManagement was installed/imported, Exchange Online connection succeeded, the contact mailbox was verified as a `UserMailbox`, and the Exchange service-principal pointer now exists.
+`Get-OrganizationConfig` reported `IsDehydrated=true`, so `Enable-OrganizationCustomization` was run. Exchange then reported `IsDehydrated=false`. The existing Ice-specific Microsoft Entra app, tenant service principal, and Exchange service-principal pointer were reused.
 
-Mailbox-scoped RBAC could not be completed because Exchange returned the tenant prerequisite:
-
-```text
-Enable-OrganizationCustomization
-```
-
-That tenant-level command was not approved in this pass, so the management scope and `Application Mail.Send` role assignment were not created.
+The mailbox-scoped Exchange RBAC setup now exists for `contact@iceskatingrinkrentals.com`, and Microsoft Graph `Mail.Send` admin consent was granted only after `Test-ServicePrincipalAuthorization` verified the app is in scope for that mailbox.
 
 ## App
 
@@ -30,17 +24,19 @@ That tenant-level command was not approved in this pass, so the management scope
 
 ```text
 client secret created: no
-admin consent granted: no
+certificate created: no
+admin consent granted: yes, Mail.Send only
 Exchange service-principal pointer: yes
-Exchange mailbox scope configured: no
+Exchange mailbox scope configured: yes
 real email sent: no
 Function app settings changed: no
 endpoint redeployed: no
 ```
+
+Function delivery remains dry-run/no-email until separate approval adds Graph delivery settings and validates one live email.
 
 Contact form production readiness remains:
 
 ```text
 no
 ```
-

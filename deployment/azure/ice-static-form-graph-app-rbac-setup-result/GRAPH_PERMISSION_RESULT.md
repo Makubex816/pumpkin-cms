@@ -25,12 +25,12 @@ Not added:
 
 ## Effective Permission State
 
-The permission is present in required resource access, but no Microsoft Entra app role assignment/admin consent is active:
+The required Microsoft Graph `Mail.Send` application permission is now admin-consented for the existing tenant service principal:
 
 ```text
-app role assignment count=0
-Mail.Send assignment count=0
+app role assignment count=1
+Mail.Send assignment count=1
+resource=Microsoft Graph
 ```
 
-Admin consent was not granted because broad Entra `Mail.Send` is not mailbox-scoped and Microsoft documents Entra grants and Exchange RBAC assignments as additive.
-
+Admin consent was granted only after the Exchange mailbox scope verified for `contact@iceskatingrinkrentals.com`.

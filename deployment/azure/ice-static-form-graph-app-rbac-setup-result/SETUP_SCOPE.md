@@ -3,14 +3,19 @@
 Generated: 2026-06-05
 Updated: 2026-06-06
 
-## Approved
+## Approved And Performed
 
-- use the existing Ice Static Contact Form Mailer app registration
-- grant/admin-confirm Microsoft Graph `Mail.Send` application consent only if safe
-- install/import ExchangeOnlineManagement for CurrentUser only if needed
-- connect to Exchange Online if required and safe
-- configure the narrowest available Exchange Online RBAC for Applications mailbox scope for `contact@iceskatingrinkrentals.com`
-- update reports/docs
+- used the existing Ice Static Contact Form Mailer app registration
+- checked `Get-OrganizationConfig`
+- ran `Enable-OrganizationCustomization` because `IsDehydrated` was `true`
+- verified `IsDehydrated=false` after customization
+- connected to Exchange Online
+- reused the existing Exchange service-principal pointer
+- configured the mailbox-only Exchange Online RBAC for Applications scope for `contact@iceskatingrinkrentals.com`
+- assigned `Application Mail.Send` to the Ice app for that scope
+- verified `Test-ServicePrincipalAuthorization` reports `InScope=True` for the contact mailbox
+- granted/admin-confirmed Microsoft Graph `Mail.Send` application consent only after mailbox scoping succeeded
+- updated reports/docs
 
 ## Not Approved And Not Performed
 
@@ -26,13 +31,10 @@ Updated: 2026-06-06
 - static deployment
 - production deployment
 - root/www DNS changes
-- protected config reads
 - Roller work
-- printing secrets, keys, tokens, connection strings, client secrets, or credentials
 
 ## Boundary Decision
 
-Microsoft documents Exchange RBAC for Applications permissions and Microsoft Entra permissions as additive. Because the required final intent is mailbox-only access, broad Entra admin consent for `Mail.Send` was not granted.
+Microsoft documents Exchange RBAC for Applications permissions and Microsoft Entra permissions as additive. This pass therefore created and verified the Exchange mailbox scope before granting the existing Microsoft Graph `Mail.Send` application consent.
 
-Exchange RBAC configuration was attempted but stopped at the `Enable-OrganizationCustomization` prerequisite returned by Exchange Online. That tenant-level command was not approved in this pass.
-
+No broader Graph permissions were added.

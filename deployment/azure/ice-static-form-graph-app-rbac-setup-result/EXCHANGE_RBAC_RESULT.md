@@ -5,46 +5,20 @@ Updated: 2026-06-06
 
 ## Result
 
-Exchange RBAC setup partially completed.
+Exchange RBAC setup completed for the approved mailbox scope.
 
 Created or verified:
 
-- Exchange Online connection succeeded.
+- `Get-OrganizationConfig` initially returned `IsDehydrated=true`.
+- `Enable-OrganizationCustomization` ran because the organization was dehydrated.
+- Follow-up organization verification returned `IsDehydrated=false`.
 - Target mailbox resolved as a `UserMailbox`.
 - Exchange service-principal pointer exists for `Ice Static Contact Form Mailer`.
+- Management scope exists for the contact mailbox.
+- `Application Mail.Send` role assignment exists for the Ice app and that scope.
+- `Test-ServicePrincipalAuthorization` reports the app is in scope for the contact mailbox.
 
-Not completed:
-
-- management scope for the contact mailbox
-- `Application Mail.Send` role assignment
-- successful `Test-ServicePrincipalAuthorization` in-scope result
-
-## Exact Blocker
-
-The first role-scope creation command failed:
-
-```text
-New-ManagementScope
-```
-
-Exchange Online returned:
-
-```text
-The command you tried to run isn't currently allowed in your organization. To run this command, you first need to run the command: Enable-OrganizationCustomization.
-```
-
-`Enable-OrganizationCustomization` was not run because it is a tenant-level Exchange organization change and was not included in this approval.
-
-## Current Verification
-
-| Check | Result |
-| --- | --- |
-| Exchange service-principal pointer exists | true |
-| Management scope exists | false |
-| Role assignment exists | false |
-| `Application Mail.Send` in scope for contact mailbox | false |
-
-## Intended Future Scope
+## Scope
 
 Target app:
 
@@ -60,15 +34,30 @@ Target mailbox:
 contact@iceskatingrinkrentals.com
 ```
 
-Expected future Exchange RBAC commands, documentation only:
+Management scope:
 
-```powershell
-Connect-ExchangeOnline -UserPrincipalName <approved Exchange admin>
-Enable-OrganizationCustomization
-New-ManagementScope -Name "Ice Static Contact Form Mailer - contact mailbox" -RecipientRestrictionFilter "PrimarySmtpAddress -eq 'contact@iceskatingrinkrentals.com'"
-New-ManagementRoleAssignment -Name "Ice Static Contact Form Mailer - Application Mail.Send - contact" -Role "Application Mail.Send" -App 0f2df0f4-4b1d-476f-be2a-74fd980d09a0 -CustomResourceScope "Ice Static Contact Form Mailer - contact mailbox"
-Test-ServicePrincipalAuthorization -Identity 0f2df0f4-4b1d-476f-be2a-74fd980d09a0 -Resource contact@iceskatingrinkrentals.com
+```text
+Name=Ice Static Contact Form Mailer - contact mailbox
+Filter=PrimarySmtpAddress -eq 'contact@iceskatingrinkrentals.com'
 ```
 
-Only the Exchange service-principal pointer portion was completed in this pass.
+Role assignment:
 
+```text
+Name=Ice Static Contact Form Mailer - Application Mail.Send - contact
+Role=Application Mail.Send
+App=0f2df0f4-4b1d-476f-be2a-74fd980d09a0
+CustomResourceScope=Ice Static Contact Form Mailer - contact mailbox
+```
+
+## Authorization Verification
+
+```text
+RoleName=Application Mail.Send
+GrantedPermissions=Mail.Send
+AllowedResourceScope=Ice Static Contact Form Mailer - contact mailbox
+ScopeType=CustomRecipientScope
+InScope=True
+```
+
+No real email was sent.

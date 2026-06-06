@@ -5,24 +5,27 @@ Updated: 2026-06-06
 
 ## Current State
 
-The app has no credential, no active Entra app role assignment, and no Exchange mailbox-scope role assignment. It cannot send mail in the current state.
+The app has Microsoft Graph `Mail.Send` admin consent and an Exchange `Application Mail.Send` role assignment scoped to `contact@iceskatingrinkrentals.com`.
 
-Exchange service-principal pointer now exists:
+The app still has no client secret or certificate, and the Function App remains dry-run/no-email with no Microsoft Graph app settings. It cannot send real email through the deployed Function in the current state.
+
+Exchange objects:
 
 ```text
-0f2df0f4-4b1d-476f-be2a-74fd980d09a0
+Service principal object id: 0f2df0f4-4b1d-476f-be2a-74fd980d09a0
+Management scope: Ice Static Contact Form Mailer - contact mailbox
+Role assignment: Ice Static Contact Form Mailer - Application Mail.Send - contact
 ```
 
-## Disable Options
+## Future Approved Disable Options
 
-Future approved rollback options:
-
+- remove the Exchange management role assignment
+- remove the Exchange management scope
 - remove the Exchange service-principal pointer
+- remove the Microsoft Graph `Mail.Send` app-role assignment/admin consent
+- remove required Graph `Mail.Send` permission from the app
 - remove the app registration `Ice Static Contact Form Mailer`
 - remove the tenant service principal
-- remove required Graph `Mail.Send` permission from the app
-- ensure no admin consent/app-role assignment exists
-- remove any future Exchange management role assignment/scope
 
 ## Function Safety
 
@@ -33,4 +36,3 @@ dry-run/no-email
 ```
 
 No Function app setting rollback is needed from this pass because no Function app settings were changed.
-

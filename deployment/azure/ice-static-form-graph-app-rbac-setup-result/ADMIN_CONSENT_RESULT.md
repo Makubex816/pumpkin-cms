@@ -5,22 +5,26 @@ Updated: 2026-06-06
 
 ## Result
 
-Admin consent was not granted.
+Admin consent was granted for the existing `Ice Static Contact Form Mailer` app.
 
-## Reason
+## Guardrail
 
-Microsoft documents that Exchange RBAC for Applications permissions are independent of Microsoft Entra grants, and that permission consents are additive. This project requires mailbox-only send scope for `contact@iceskatingrinkrentals.com`.
+Before consent, the app's required Microsoft Graph permissions were checked and contained exactly one approved permission:
 
-Granting Microsoft Entra `Mail.Send` admin consent would create broad unscoped application send capability unless another approved scoping mechanism constrained it. Since the approved path is Exchange RBAC for Applications and the RBAC scope was blocked by `Enable-OrganizationCustomization`, broad Entra consent was not safe to grant.
+```text
+Microsoft Graph Mail.Send
+type=Application role
+appRoleId=b633e1c5-b582-4048-a93e-9f11b44c7e96
+```
+
+No additional required Graph/API permissions were present.
 
 ## Verified State
 
 ```text
-appRoleAssignmentCount=0
-mailSendAssignmentCount=0
+appRoleAssignmentCount=1
+mailSendAssignmentCount=1
+resource=Microsoft Graph
 ```
 
-## Future Consent Decision
-
-Future approval should complete Exchange RBAC scoping first. If a future plan still requires Entra admin consent, it must explicitly account for Microsoft Entra and Exchange RBAC additive permission behavior.
-
+Consent was granted only after Exchange RBAC returned `InScope=True` for `Application Mail.Send` on `contact@iceskatingrinkrentals.com`.

@@ -2,8 +2,8 @@
   "generatedAt": "2026-06-05",
   "updatedAt": "2026-06-06",
   "siteKey": "ice-rink-rentals",
-  "scope": "Microsoft Graph admin consent and Exchange mailbox-scope setup",
-  "status": "partial_exchange_service_principal_created_scope_blocked_by_org_customization",
+  "scope": "Exchange organization customization and mailbox-scoped Graph mail setup",
+  "status": "completed_mailbox_scoped_exchange_rbac_and_mail_send_admin_consent",
   "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a",
   "targetMailbox": "contact@iceskatingrinkrentals.com",
   "appRegistration": {
@@ -23,36 +23,52 @@
     "type": "Application",
     "appRoleId": "b633e1c5-b582-4048-a93e-9f11b44c7e96",
     "requiredPermissionConfigured": true,
-    "adminConsentGranted": false,
-    "appRoleAssignmentCount": 0,
-    "mailSendAssignmentCount": 0,
-    "adminConsentSkippedReason": "Broad Entra Mail.Send consent is additive with Exchange RBAC and would not be mailbox-scoped"
+    "adminConsentGranted": true,
+    "appRoleAssignmentCount": 1,
+    "mailSendAssignmentCount": 1,
+    "broaderPermissionsAdded": false
   },
   "exchangeOnline": {
     "exchangeOnlineManagementInstalled": true,
     "exchangeOnlineManagementVersion": "3.9.2",
     "connected": true,
     "mailboxVerified": true,
-    "mailboxRecipientTypeDetails": "UserMailbox"
+    "mailboxRecipientTypeDetails": "UserMailbox",
+    "isDehydratedBefore": true,
+    "enableOrganizationCustomizationRun": true,
+    "isDehydratedAfter": false
   },
   "exchangeRbac": {
     "servicePrincipalPointerExists": true,
-    "managementScopeConfigured": false,
-    "roleAssignmentConfigured": false,
-    "applicationMailSendInScope": false,
-    "blocker": "New-ManagementScope failed because Enable-OrganizationCustomization is required before this organization allows the command",
-    "enableOrganizationCustomizationRun": false
+    "managementScopeConfigured": true,
+    "managementScopeName": "Ice Static Contact Form Mailer - contact mailbox",
+    "managementScopeFilter": "PrimarySmtpAddress -eq 'contact@iceskatingrinkrentals.com'",
+    "roleAssignmentConfigured": true,
+    "roleAssignmentName": "Ice Static Contact Form Mailer - Application Mail.Send - contact",
+    "roleAssignmentRole": "Application Mail.Send",
+    "roleAssignmentApp": "0f2df0f4-4b1d-476f-be2a-74fd980d09a0",
+    "applicationMailSendInScope": true,
+    "testServicePrincipalAuthorization": {
+      "roleName": "Application Mail.Send",
+      "grantedPermissions": "Mail.Send",
+      "allowedResourceScope": "Ice Static Contact Form Mailer - contact mailbox",
+      "scopeType": "CustomRecipientScope",
+      "inScope": true
+    }
   },
   "clientCredentials": {
     "secretCreated": false,
     "certificateCreated": false,
-    "credentialCount": 0
+    "passwordCredentialCount": 0,
+    "keyCredentialCount": 0
   },
   "functionAppStatus": {
     "endpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
-    "staticForwardDryRun": true,
+    "staticForwardMode": "dry-run",
     "formDeliveryGraphActive": false,
     "graphSettingNameCount": 0,
+    "graphClientSecretSettingPresent": false,
+    "graphRecipientSettingPresent": false,
     "appSettingsChanged": false,
     "endpointRedeployed": false
   },
@@ -62,13 +78,14 @@
     "mediaProductionUrlReadiness": true,
     "graphCapableFunctionCodeDeployed": true,
     "microsoftGraphAppRegistration": true,
-    "mailSendPermissionConfigured": "required_permission_present_not_entra_consented",
-    "adminConsentGranted": false,
+    "mailSendPermissionConfigured": true,
+    "adminConsentGranted": true,
     "exchangeServicePrincipalPointer": true,
-    "exchangeRbacMailboxScopeConfigured": false,
+    "exchangeRbacMailboxScopeConfigured": true,
     "clientSecretAppCredentialReadiness": false,
+    "functionGraphDeliverySettingsConfigured": false,
     "contactFormProductionReadiness": false,
-    "realEmailDeliveryReadiness": "pending org customization/RBAC scope/app credential/app settings/live-test approval",
+    "realEmailDeliveryReadiness": "pending app credential/settings/restart or redeploy/live-test approval",
     "microsoft365EmailSetupReadiness": "partial",
     "azureStagingReadiness": false,
     "dnsCutoverReadiness": false,
@@ -79,16 +96,18 @@
     "realEmailSent": false,
     "clientSecretCreated": false,
     "certificateCreated": false,
-    "tokensPrinted": false,
-    "secretsPrinted": false,
     "azureFunctionAppSettingsChanged": false,
     "endpointRedeployed": false,
     "cmsWrites": false,
     "mediaAssetWrites": false,
     "cloudflareChanged": false,
     "staticDeployment": false,
-    "protectedConfigRead": false,
     "rollerTouched": false
+  },
+  "protectedOutputNote": {
+    "protectedValuesWrittenToRepo": false,
+    "protectedAzureStorageSettingValueExposedInCommandTranscript": true,
+    "graphClientSecretExposed": false,
+    "accessTokenExposed": false
   }
 }
-

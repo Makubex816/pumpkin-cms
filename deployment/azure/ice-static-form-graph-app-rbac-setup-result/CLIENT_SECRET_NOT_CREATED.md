@@ -5,13 +5,14 @@ Updated: 2026-06-06
 
 No client secret or certificate was created in this pass.
 
-Verified credential count:
+Verified app credential counts:
 
 ```text
-0
+passwordCredentialCount=0
+keyCredentialCount=0
 ```
 
-No token, secret, credential, key, connection string, JWT, or email credential was printed.
+No Graph client secret, certificate, or email credential was created or written to files.
 
 Future app credential setup requires separate approval and should prefer:
 
@@ -20,4 +21,3 @@ Future app credential setup requires separate approval and should prefer:
 - client secret stored only as an approved server-side secret/Key Vault reference
 
 Do not put Graph credentials in static frontend output.
-

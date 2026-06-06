@@ -26,21 +26,13 @@ Signed-in user:
 Contact@iceskatingrinkrentals.com
 ```
 
-No tokens were printed.
+No access tokens were printed.
 
 ## ExchangeOnlineManagement
 
-Initial state:
+Available module:
 
 ```text
-ExchangeOnlineManagement module: not available
-```
-
-Approved action performed:
-
-```text
-NuGet provider installed for CurrentUser
-ExchangeOnlineManagement installed/imported for CurrentUser
 ExchangeOnlineManagement version 3.9.2
 ```
 
@@ -48,21 +40,21 @@ Exchange Online connection:
 
 ```text
 connected with active Azure CLI identity/token
-tokens not printed
+access token not printed
 ```
 
-Available after connection:
+Commands used:
 
+- `Get-OrganizationConfig`
+- `Enable-OrganizationCustomization`
 - `Get-EXOMailbox`
-- `New-ServicePrincipal`
 - `Get-ServicePrincipal`
-- `New-ManagementScope`
 - `Get-ManagementScope`
-- `New-ManagementRoleAssignment`
+- `New-ManagementScope`
 - `Get-ManagementRoleAssignment`
+- `New-ManagementRoleAssignment`
 - `Test-ServicePrincipalAuthorization`
 
 ## Consent Safety Decision
 
-Microsoft documents that Microsoft Entra permissions and Exchange RBAC permissions are additive. Because this project requires mailbox-only access for `contact@iceskatingrinkrentals.com`, broad Entra admin consent for `Mail.Send` was not granted in this pass.
-
+Microsoft documents that Microsoft Entra permissions and Exchange RBAC permissions are additive. Admin consent for Graph `Mail.Send` was granted only after Exchange RBAC verified the app was in scope for the target mailbox.
