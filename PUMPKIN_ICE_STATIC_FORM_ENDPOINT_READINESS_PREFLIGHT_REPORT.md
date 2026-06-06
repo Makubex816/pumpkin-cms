@@ -79,7 +79,9 @@ Compatibility path if using the current wrapper unchanged:
 https://<approved-form-endpoint-host>/api/contact
 ```
 
-Preflight finding to address before deployment: the frontend sends `staticEndpointRef` and `leadRecipientRef`; the existing endpoint handler currently reads `domainRoutingKey` and `recipientGroup`. Future execution should map or align those names so routing metadata is preserved exactly.
+Preflight finding resolved by later local hardening: the endpoint package now maps `staticEndpointRef` to `domainRoutingKey` and `leadRecipientRef` to `recipientGroup` when the legacy fields are absent. Legacy `domainRoutingKey`/`recipientGroup` payloads still work.
+
+Deployment is still blocked pending explicit approval for a real endpoint, server-side settings, backend verification, and any separate email/Microsoft 365 work.
 
 ## Readiness
 
@@ -105,4 +107,3 @@ deployment/azure/ice-static-form-endpoint-readiness-preflight/
 ```
 
 No endpoint was deployed, no email was sent, no Microsoft 365 changes occurred, no Azure resources were created, no CMS or MediaAsset writes occurred, no Cloudflare changes occurred, no static deployment occurred, no protected config was read, no secrets were printed, and Roller remained paused.
-

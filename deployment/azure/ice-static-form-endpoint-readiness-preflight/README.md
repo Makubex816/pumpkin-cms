@@ -32,6 +32,15 @@ deployment/static-azure/forms/static-form-endpoint/
 
 Safest future path: deploy an Ice-only hardened Azure Function or equivalent companion endpoint after explicit approval, point the static frontend at its public HTTPS URL, verify backend behavior, then set `STATIC_FORM_ENDPOINT_VERIFIED=true` only after that verification passes.
 
+## Later Local Hardening Status
+
+On 2026-06-05, a later approved local hardening pass updated the endpoint package to accept and map the current frontend fields:
+
+- `staticEndpointRef` -> `domainRoutingKey`
+- `leadRecipientRef` -> `recipientGroup`
+
+Legacy `domainRoutingKey`/`recipientGroup` payloads remain supported. Local package tests pass. No endpoint was deployed.
+
 ## Remaining Blocker
 
 Contact form production readiness remains `no` because there is no verified production/static form endpoint.
@@ -50,4 +59,3 @@ Contact form production readiness remains `no` because there is no verified prod
 - `ROLLBACK_AND_DISABLE_PLAN.md`
 - `NEXT_FORM_ENDPOINT_EXECUTION_PROMPT.md`
 - `manifest.json`
-

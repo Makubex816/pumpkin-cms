@@ -5,6 +5,7 @@
 Future approved local tests should:
 
 - run `npm run check` in `deployment/static-azure/forms/static-form-endpoint`
+- run `npm test` in `deployment/static-azure/forms/static-form-endpoint`
 - start the local server only in `STATIC_FORM_FORWARD_MODE=dry-run`
 - submit test-only Ice payloads
 - confirm valid payloads return success
@@ -20,6 +21,8 @@ Reject:
 - missing or unapproved origin
 - unknown site key
 - mismatched tenant/site
+- unknown routing ref
+- unknown recipient ref
 - missing name
 - missing email
 - invalid email
@@ -71,4 +74,3 @@ After endpoint/backend verification:
 6. Rerun strict staging package validator.
 
 Static output quality gates should pass only if no other strict errors appear.
-

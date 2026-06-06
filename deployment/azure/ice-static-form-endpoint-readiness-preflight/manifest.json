@@ -86,10 +86,21 @@
   "preflightFindings": [
     "Existing endpoint foundation syntax check passed.",
     "Current frontend sends staticEndpointRef and leadRecipientRef.",
-    "Current endpoint handler reads domainRoutingKey and recipientGroup; future execution should map or align these names.",
+    "Later local hardening maps staticEndpointRef to domainRoutingKey and leadRecipientRef to recipientGroup when legacy fields are absent.",
+    "Legacy domainRoutingKey and recipientGroup payloads remain supported.",
     "Durable rate limiting and CAPTCHA/Turnstile are not yet implemented in the local foundation.",
     "Email delivery remains separate from endpoint readiness."
   ],
+  "localHardeningFollowUp": {
+    "performed": true,
+    "date": "2026-06-05",
+    "resultPackage": "deployment/azure/ice-static-form-endpoint-local-hardening-result",
+    "frontendAliasesMapped": true,
+    "legacyPayloadSupported": true,
+    "localTestsPassed": true,
+    "endpointDeployed": false,
+    "contactFormProductionReadiness": false
+  },
   "readiness": {
     "staticDryRunCompleted": true,
     "staticRouteOutputReady": true,
@@ -136,4 +147,3 @@
   ],
   "rootReport": "PUMPKIN_ICE_STATIC_FORM_ENDPOINT_READINESS_PREFLIGHT_REPORT.md"
 }
-

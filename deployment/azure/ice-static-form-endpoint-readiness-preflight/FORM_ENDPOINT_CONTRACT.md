@@ -60,7 +60,7 @@ Expected top-level fields from the current static frontend:
 }
 ```
 
-Future execution should confirm the endpoint preserves `staticEndpointRef` and `leadRecipientRef` metadata, either by reading those names directly or mapping them to the existing `domainRoutingKey` and `recipientGroup` fields.
+Later local hardening confirmed the endpoint preserves `staticEndpointRef` and `leadRecipientRef` metadata by mapping them to the existing `domainRoutingKey` and `recipientGroup` fields when the legacy fields are absent.
 
 ## Validation Requirements
 
@@ -75,6 +75,7 @@ Future execution should confirm the endpoint preserves `staticEndpointRef` and `
 - consent is truthy
 - honeypot fields are empty
 - origin is approved
+- routing and recipient refs are allowed for the resolved site
 
 ## Sanitization Requirements
 
@@ -128,4 +129,3 @@ Do not log or expose:
 - unnecessary PII
 
 Log enough to verify routing, status, and failures safely.
-

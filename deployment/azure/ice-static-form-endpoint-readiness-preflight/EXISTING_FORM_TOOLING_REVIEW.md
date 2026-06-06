@@ -56,6 +56,8 @@ Files reviewed:
 
 `npm run check` in that package exited `0`.
 
+Later local hardening added `npm test` for handler compatibility and validation coverage. That test exits `0`.
+
 ## Foundation Capabilities
 
 The existing handler:
@@ -78,7 +80,6 @@ The existing handler:
 - Existing Azure Function wrapper route is `contact`, producing `/api/contact`.
 - Some planning docs recommend `/api/static-contact` for clearer separation.
 - Current frontend form payload sends `staticEndpointRef` and `leadRecipientRef`.
-- Current endpoint handler reads `domainRoutingKey` and `recipientGroup`, with defaults if absent.
-- Future execution should align or map those field names before deployment so routing metadata is preserved exactly.
+- Later local hardening maps `staticEndpointRef` to `domainRoutingKey` and `leadRecipientRef` to `recipientGroup` when legacy fields are absent.
+- Legacy `domainRoutingKey` and `recipientGroup` still take precedence when present.
 - Durable rate limiting, CAPTCHA/Turnstile, production monitoring, and email notifications are not implemented in the local foundation.
-
