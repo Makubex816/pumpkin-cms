@@ -1,6 +1,7 @@
 # Tooling Auth Preflight
 
 Generated: 2026-06-05
+Updated: 2026-06-06
 
 ## Azure CLI
 
@@ -27,21 +28,41 @@ Contact@iceskatingrinkrentals.com
 
 No tokens were printed.
 
-## Other Tooling
+## ExchangeOnlineManagement
 
-| Tool/Command | Available |
-| --- | --- |
-| Microsoft Graph CLI `mgc` | no |
-| Microsoft 365 CLI `m365` | no |
-| ExchangeOnlineManagement module | no |
-| `Connect-ExchangeOnline` | no |
-| `Get-EXOMailbox` | no |
-| `New-ServicePrincipal` | no |
-| `New-ManagementScope` | no |
-| `New-ManagementRoleAssignment` | no |
-| `Test-ServicePrincipalAuthorization` | no |
+Initial state:
 
-## Blocker
+```text
+ExchangeOnlineManagement module: not available
+```
 
-Exchange Online RBAC for Applications cannot be configured from this local environment because the required Exchange Online PowerShell module/cmdlets are unavailable. Per approval constraints, no new tooling was installed.
+Approved action performed:
+
+```text
+NuGet provider installed for CurrentUser
+ExchangeOnlineManagement installed/imported for CurrentUser
+ExchangeOnlineManagement version 3.9.2
+```
+
+Exchange Online connection:
+
+```text
+connected with active Azure CLI identity/token
+tokens not printed
+```
+
+Available after connection:
+
+- `Get-EXOMailbox`
+- `New-ServicePrincipal`
+- `Get-ServicePrincipal`
+- `New-ManagementScope`
+- `Get-ManagementScope`
+- `New-ManagementRoleAssignment`
+- `Get-ManagementRoleAssignment`
+- `Test-ServicePrincipalAuthorization`
+
+## Consent Safety Decision
+
+Microsoft documents that Microsoft Entra permissions and Exchange RBAC permissions are additive. Because this project requires mailbox-only access for `contact@iceskatingrinkrentals.com`, broad Entra admin consent for `Mail.Send` was not granted in this pass.
 

@@ -1,19 +1,20 @@
 {
   "generatedAt": "2026-06-05",
+  "updatedAt": "2026-06-06",
   "siteKey": "ice-rink-rentals",
-  "scope": "Microsoft 365 Graph app and mailbox-scope setup",
-  "status": "partial_app_created_permission_requested_rbac_blocked",
+  "scope": "Microsoft Graph admin consent and Exchange mailbox-scope setup",
+  "status": "partial_exchange_service_principal_created_scope_blocked_by_org_customization",
   "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a",
   "targetMailbox": "contact@iceskatingrinkrentals.com",
   "appRegistration": {
     "displayName": "Ice Static Contact Form Mailer",
     "appId": "423390e3-63ee-4c53-bc87-c87f59958f13",
     "objectId": "75ddecd2-8c21-4663-bafe-fdbf9682eaea",
-    "created": true
+    "exists": true
   },
   "servicePrincipal": {
     "objectId": "0f2df0f4-4b1d-476f-be2a-74fd980d09a0",
-    "created": true
+    "exists": true
   },
   "graphPermission": {
     "api": "Microsoft Graph",
@@ -24,11 +25,23 @@
     "requiredPermissionConfigured": true,
     "adminConsentGranted": false,
     "appRoleAssignmentCount": 0,
-    "mailSendAssignmentCount": 0
+    "mailSendAssignmentCount": 0,
+    "adminConsentSkippedReason": "Broad Entra Mail.Send consent is additive with Exchange RBAC and would not be mailbox-scoped"
+  },
+  "exchangeOnline": {
+    "exchangeOnlineManagementInstalled": true,
+    "exchangeOnlineManagementVersion": "3.9.2",
+    "connected": true,
+    "mailboxVerified": true,
+    "mailboxRecipientTypeDetails": "UserMailbox"
   },
   "exchangeRbac": {
-    "configured": false,
-    "blocker": "ExchangeOnlineManagement module and Exchange Online RBAC cmdlets are unavailable in this local environment"
+    "servicePrincipalPointerExists": true,
+    "managementScopeConfigured": false,
+    "roleAssignmentConfigured": false,
+    "applicationMailSendInScope": false,
+    "blocker": "New-ManagementScope failed because Enable-OrganizationCustomization is required before this organization allows the command",
+    "enableOrganizationCustomizationRun": false
   },
   "clientCredentials": {
     "secretCreated": false,
@@ -49,12 +62,13 @@
     "mediaProductionUrlReadiness": true,
     "graphCapableFunctionCodeDeployed": true,
     "microsoftGraphAppRegistration": true,
-    "mailSendPermissionConfigured": "requested_not_consented",
+    "mailSendPermissionConfigured": "required_permission_present_not_entra_consented",
     "adminConsentGranted": false,
+    "exchangeServicePrincipalPointer": true,
     "exchangeRbacMailboxScopeConfigured": false,
     "clientSecretAppCredentialReadiness": false,
     "contactFormProductionReadiness": false,
-    "realEmailDeliveryReadiness": "pending Exchange RBAC/admin consent strategy/app credential/app settings/live-test approval",
+    "realEmailDeliveryReadiness": "pending org customization/RBAC scope/app credential/app settings/live-test approval",
     "microsoft365EmailSetupReadiness": "partial",
     "azureStagingReadiness": false,
     "dnsCutoverReadiness": false,
@@ -64,6 +78,7 @@
   "externalActionsNotPerformed": {
     "realEmailSent": false,
     "clientSecretCreated": false,
+    "certificateCreated": false,
     "tokensPrinted": false,
     "secretsPrinted": false,
     "azureFunctionAppSettingsChanged": false,

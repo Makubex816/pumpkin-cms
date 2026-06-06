@@ -1,13 +1,15 @@
 # Post-Setup Verification
 
 Generated: 2026-06-05
+Updated: 2026-06-06
 
 ## App
 
 | Check | Result |
 | --- | --- |
 | App registration exists | yes |
-| Service principal exists | yes |
+| Tenant service principal exists | yes |
+| Exchange service-principal pointer exists | yes |
 | Client secret/certificate count | 0 |
 
 ## Graph Permission
@@ -16,17 +18,18 @@ Generated: 2026-06-05
 | --- | --- |
 | Required permission includes Graph `Mail.Send` | yes |
 | Mail.Send app role id | `b633e1c5-b582-4048-a93e-9f11b44c7e96` |
-| Effective app role assignment count | 0 |
-| Mail.Send assignment count | 0 |
+| Effective Entra app role assignment count | 0 |
+| Entra Mail.Send assignment count | 0 |
 
 ## Exchange RBAC
 
 | Check | Result |
 | --- | --- |
-| Exchange service principal pointer | not configured |
+| Exchange service-principal pointer | exists |
 | Management scope for contact mailbox | not configured |
 | Application Mail.Send role assignment | not configured |
-| Authorization test for contact mailbox | not run |
+| Authorization test for contact mailbox | not in scope |
+| Blocker | `Enable-OrganizationCustomization` required |
 
 ## Function App
 

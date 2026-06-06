@@ -1,24 +1,27 @@
 # Pumpkin Ice Static Form Graph App RBAC Setup Result Report
 
 Generated: 2026-06-05
+Updated: 2026-06-06
 
 ## Scope
 
-Approved action: Ice Microsoft 365 Graph app and mailbox-scope setup only.
+Approved action: Ice Microsoft Graph admin consent and Exchange mailbox-scope setup only.
 
-No client secret was created. No client secret, token, key, connection string, API key, JWT, or credential was printed. No Azure Function app settings were changed. The endpoint was not redeployed. No real email was sent. No CMS writes occurred. No MediaAsset writes occurred. No Cloudflare changes were made. No static site was deployed. No protected config was read. Roller remains paused.
+No client secret was created. No certificate was created. No client secret, token, key, connection string, API key, JWT, or credential was printed. No Azure Function app settings were changed. The endpoint was not redeployed. No real email was sent. No CMS writes occurred. No MediaAsset writes occurred. No Cloudflare changes were made. No static site was deployed. No protected config was read. Roller remains paused.
 
 ## Result
 
-Partial success:
+Partial success with a specific Exchange blocker:
 
-- Microsoft Entra app registration was created.
-- Tenant service principal was created.
-- Microsoft Graph `Mail.Send` application permission was added as a required permission.
-- No admin consent was granted.
-- Exchange Online RBAC for Applications mailbox scope was not configured because required Exchange Online PowerShell tooling is not available in this environment.
-
-Admin consent was intentionally not granted because Exchange mailbox scoping could not be completed here. Granting unscoped Graph `Mail.Send` consent before mailbox scope would create broad tenant-wide send capability.
+- Existing Microsoft Entra app registration was reused.
+- Existing service principal was reused.
+- Microsoft Graph `Mail.Send` remains present as a required application permission.
+- ExchangeOnlineManagement was installed/imported for the current user.
+- Exchange Online connection succeeded without printing tokens.
+- Target mailbox resolved as a `UserMailbox`.
+- Exchange service-principal pointer was created.
+- Exchange management scope and role assignment were blocked by the tenant prerequisite `Enable-OrganizationCustomization`.
+- Admin consent was not granted because Microsoft documents Entra permissions and Exchange RBAC permissions as additive; granting unscoped Entra `Mail.Send` would undermine the mailbox-only RBAC intent.
 
 ## App Registration
 
@@ -35,44 +38,58 @@ Admin consent was intentionally not granted because Exchange mailbox scoping cou
 
 | Check | Result |
 | --- | --- |
-| Microsoft Graph application permission requested | `Mail.Send` |
+| Microsoft Graph required application permission | `Mail.Send` |
 | Mail.Send app role id | `b633e1c5-b582-4048-a93e-9f11b44c7e96` |
-| App role assignments / admin consent | `0` |
-| Mail.Send active assignment | `0` |
+| Entra app role assignments / admin consent | `0` |
+| Mail.Send active Entra assignment | `0` |
 | Broader mail permissions added | no |
 
-## Mailbox Scope State
+## Exchange RBAC State
 
-Target mailbox identity:
+Target mailbox:
 
 ```text
 contact@iceskatingrinkrentals.com
 ```
 
-Read-only Entra identity lookup resolved the user/mail identity. Exchange mailbox-level verification and RBAC assignment were blocked because these commands/modules are unavailable locally:
+Read-only Exchange verification:
 
-- `Connect-ExchangeOnline`
-- `Get-EXOMailbox`
-- `New-ServicePrincipal`
-- `New-ManagementScope`
-- `New-ManagementRoleAssignment`
-- `Test-ServicePrincipalAuthorization`
+| Check | Result |
+| --- | --- |
+| mailbox primary SMTP | `Contact@iceskatingrinkrentals.com` |
+| mailbox type | `UserMailbox` |
+| Exchange service-principal pointer | exists |
+| management scope | not created |
+| role assignment | not created |
+| `Application Mail.Send` in scope | false |
+
+Blocked command:
+
+```text
+New-ManagementScope
+```
+
+Exact Microsoft error:
+
+```text
+The command you tried to run isn't currently allowed in your organization. To run this command, you first need to run the command: Enable-OrganizationCustomization.
+```
+
+`Enable-OrganizationCustomization` was not run because it is a tenant-level Exchange organization change and was not included in this approval.
 
 ## Next Required Step
 
-Run the Exchange Online RBAC setup from an approved admin workstation/session with the ExchangeOnlineManagement module, then grant only the scoped application access. Do not grant broad unscoped Graph `Mail.Send` admin consent unless the approved Exchange scoping plan explicitly accounts for Microsoft’s additive permission behavior.
-
-Expected future Exchange RBAC shape:
+Separate approval is required to run `Enable-OrganizationCustomization`, then complete the mailbox-only RBAC scope:
 
 ```powershell
 Connect-ExchangeOnline -UserPrincipalName <approved Exchange admin>
-New-ServicePrincipal -AppId 423390e3-63ee-4c53-bc87-c87f59958f13 -ObjectId 0f2df0f4-4b1d-476f-be2a-74fd980d09a0 -DisplayName "Ice Static Contact Form Mailer"
+Enable-OrganizationCustomization
 New-ManagementScope -Name "Ice Static Contact Form Mailer - contact mailbox" -RecipientRestrictionFilter "PrimarySmtpAddress -eq 'contact@iceskatingrinkrentals.com'"
-New-ManagementRoleAssignment -Name "Ice Static Contact Form Mailer - Application Mail.Send - contact" -Role "Application Mail.Send" -App "Ice Static Contact Form Mailer" -CustomResourceScope "Ice Static Contact Form Mailer - contact mailbox"
-Test-ServicePrincipalAuthorization -Identity "Ice Static Contact Form Mailer" -Resource contact@iceskatingrinkrentals.com
+New-ManagementRoleAssignment -Name "Ice Static Contact Form Mailer - Application Mail.Send - contact" -Role "Application Mail.Send" -App 0f2df0f4-4b1d-476f-be2a-74fd980d09a0 -CustomResourceScope "Ice Static Contact Form Mailer - contact mailbox"
+Test-ServicePrincipalAuthorization -Identity 0f2df0f4-4b1d-476f-be2a-74fd980d09a0 -Resource contact@iceskatingrinkrentals.com
 ```
 
-These commands were not run in this pass.
+These commands were not completed in this pass beyond creating the Exchange service-principal pointer.
 
 ## Function Endpoint State
 
@@ -93,12 +110,13 @@ Safe Function app setting status check by name/status only:
 | media production URL readiness | yes |
 | Graph-capable Function code deployed | yes |
 | Microsoft Graph app registration | yes |
-| Mail.Send permission configured | requested, not consented |
-| Admin consent granted | no |
-| Exchange RBAC mailbox scope configured | no, blocked by unavailable Exchange Online tooling |
+| Mail.Send permission configured | required permission present, not Entra-consented |
+| Admin consent granted | no, skipped to avoid unscoped Mail.Send |
+| Exchange RBAC mailbox scope configured | no, blocked by `Enable-OrganizationCustomization` prerequisite |
+| Exchange service-principal pointer | yes |
 | client secret/app credential readiness | no |
 | contact form production readiness | no |
-| real email delivery readiness | pending Exchange RBAC/admin consent strategy/app credential/app settings/live-test approval |
+| real email delivery readiness | pending org customization/RBAC scope/app credential/app settings/live-test approval |
 | Microsoft 365/email setup readiness | partial |
 | Azure staging readiness | no |
 | DNS cutover readiness | no |
@@ -110,5 +128,5 @@ Safe Function app setting status check by name/status only:
 - Microsoft Graph `sendMail`: https://learn.microsoft.com/en-us/graph/api/user-sendmail
 - Microsoft Graph permissions reference: https://learn.microsoft.com/en-us/graph/permissions-reference
 - Exchange Online RBAC for Applications: https://learn.microsoft.com/en-us/exchange/permissions-exo/application-rbac
-- Microsoft identity client credentials flow: https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow
+- Connect to Exchange Online PowerShell: https://learn.microsoft.com/en-us/powershell/module/exchange/connect-exchangeonline
 

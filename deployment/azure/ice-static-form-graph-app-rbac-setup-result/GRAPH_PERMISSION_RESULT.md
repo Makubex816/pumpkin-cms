@@ -1,8 +1,9 @@
 # Graph Permission Result
 
 Generated: 2026-06-05
+Updated: 2026-06-06
 
-## Permission Added As Required Permission
+## Required Permission Present
 
 | Field | Value |
 | --- | --- |
@@ -24,12 +25,12 @@ Not added:
 
 ## Effective Permission State
 
-The permission is present in required resource access, but no app role assignment/admin consent is active:
+The permission is present in required resource access, but no Microsoft Entra app role assignment/admin consent is active:
 
 ```text
 app role assignment count=0
 Mail.Send assignment count=0
 ```
 
-This is intentional until Exchange mailbox scope can be configured safely.
+Admin consent was not granted because broad Entra `Mail.Send` is not mailbox-scoped and Microsoft documents Entra grants and Exchange RBAC assignments as additive.
 

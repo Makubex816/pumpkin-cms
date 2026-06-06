@@ -1,8 +1,9 @@
 # App Registration Result
 
 Generated: 2026-06-05
+Updated: 2026-06-06
 
-## Created
+## Existing App Reused
 
 | Field | Value |
 | --- | --- |
@@ -11,7 +12,7 @@ Generated: 2026-06-05
 | App registration object id | `75ddecd2-8c21-4663-bafe-fdbf9682eaea` |
 | Tenant id | `38b16667-a82c-4ff8-98d8-aeebbec4536a` |
 
-## Service Principal
+## Tenant Service Principal
 
 | Field | Value |
 | --- | --- |
@@ -20,9 +21,13 @@ Generated: 2026-06-05
 | Service principal object id | `0f2df0f4-4b1d-476f-be2a-74fd980d09a0` |
 | Type | `Application` |
 
-## Existing App Discovery
+## Exchange Service-Principal Pointer
 
-No existing app with display name `Ice Static Contact Form Mailer` was found before creation.
+Exchange Online service-principal pointer:
+
+```text
+exists
+```
 
 No client secret or certificate was created.
 

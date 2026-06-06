@@ -1,12 +1,21 @@
 # Ice Static Form Graph App RBAC Setup Result
 
 Generated: 2026-06-05
+Updated: 2026-06-06
 
 ## Result
 
 Partial success.
 
-The Ice-specific Microsoft Entra app registration and service principal were created, and Microsoft Graph `Mail.Send` application permission was added as a required permission. Admin consent and Exchange Online mailbox-scope RBAC were not completed because Exchange Online PowerShell tooling is unavailable in this local environment.
+The existing Ice-specific Microsoft Entra app and service principal were reused. Microsoft Graph `Mail.Send` remains configured as a required application permission. ExchangeOnlineManagement was installed/imported, Exchange Online connection succeeded, the contact mailbox was verified as a `UserMailbox`, and the Exchange service-principal pointer now exists.
+
+Mailbox-scoped RBAC could not be completed because Exchange returned the tenant prerequisite:
+
+```text
+Enable-OrganizationCustomization
+```
+
+That tenant-level command was not approved in this pass, so the management scope and `Application Mail.Send` role assignment were not created.
 
 ## App
 
@@ -22,7 +31,8 @@ The Ice-specific Microsoft Entra app registration and service principal were cre
 ```text
 client secret created: no
 admin consent granted: no
-Exchange RBAC mailbox scope configured: no
+Exchange service-principal pointer: yes
+Exchange mailbox scope configured: no
 real email sent: no
 Function app settings changed: no
 endpoint redeployed: no

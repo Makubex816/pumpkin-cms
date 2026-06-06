@@ -1,6 +1,7 @@
 # Admin Consent Result
 
 Generated: 2026-06-05
+Updated: 2026-06-06
 
 ## Result
 
@@ -8,7 +9,9 @@ Admin consent was not granted.
 
 ## Reason
 
-Exchange Online RBAC for Applications could not be configured in this environment because ExchangeOnlineManagement tooling is unavailable. Granting Microsoft Graph `Mail.Send` application consent before mailbox scoping would create broad unscoped send capability.
+Microsoft documents that Exchange RBAC for Applications permissions are independent of Microsoft Entra grants, and that permission consents are additive. This project requires mailbox-only send scope for `contact@iceskatingrinkrentals.com`.
+
+Granting Microsoft Entra `Mail.Send` admin consent would create broad unscoped application send capability unless another approved scoping mechanism constrained it. Since the approved path is Exchange RBAC for Applications and the RBAC scope was blocked by `Enable-OrganizationCustomization`, broad Entra consent was not safe to grant.
 
 ## Verified State
 
@@ -19,10 +22,5 @@ mailSendAssignmentCount=0
 
 ## Future Consent Decision
 
-Before granting consent, confirm the approved scoping model:
-
-- Exchange Online RBAC for Applications with `Application Mail.Send`, or
-- another approved Microsoft-supported mailbox-scope mechanism
-
-Do not grant broad unscoped `Mail.Send` admin consent as the final state.
+Future approval should complete Exchange RBAC scoping first. If a future plan still requires Entra admin consent, it must explicitly account for Microsoft Entra and Exchange RBAC additive permission behavior.
 

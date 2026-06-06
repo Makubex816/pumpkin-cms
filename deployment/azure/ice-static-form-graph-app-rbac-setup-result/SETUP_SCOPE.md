@@ -1,18 +1,21 @@
 # Setup Scope
 
 Generated: 2026-06-05
+Updated: 2026-06-06
 
 ## Approved
 
-- create/configure Ice-specific Microsoft Entra app registration
-- add Microsoft Graph `Mail.Send` application permission if safe
-- grant/admin-confirm consent only if active identity and mailbox scoping allow a safe result
-- scope the app to `contact@iceskatingrinkrentals.com` using Exchange Online RBAC for Applications, or document exact blocker
+- use the existing Ice Static Contact Form Mailer app registration
+- grant/admin-confirm Microsoft Graph `Mail.Send` application consent only if safe
+- install/import ExchangeOnlineManagement for CurrentUser only if needed
+- connect to Exchange Online if required and safe
+- configure the narrowest available Exchange Online RBAC for Applications mailbox scope for `contact@iceskatingrinkrentals.com`
 - update reports/docs
 
 ## Not Approved And Not Performed
 
 - client secret creation
+- certificate creation
 - real email sending
 - Azure Function app setting changes
 - endpoint redeployment
@@ -29,5 +32,7 @@ Generated: 2026-06-05
 
 ## Boundary Decision
 
-Admin consent was not granted because Exchange Online RBAC scoping could not be completed in this environment. This avoids creating broad unscoped `Mail.Send` capability.
+Microsoft documents Exchange RBAC for Applications permissions and Microsoft Entra permissions as additive. Because the required final intent is mailbox-only access, broad Entra admin consent for `Mail.Send` was not granted.
+
+Exchange RBAC configuration was attempted but stopped at the `Enable-OrganizationCustomization` prerequisite returned by Exchange Online. That tenant-level command was not approved in this pass.
 
