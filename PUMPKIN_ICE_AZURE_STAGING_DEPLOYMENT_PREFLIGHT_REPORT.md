@@ -45,14 +45,28 @@ Exact future target:
 
 | Item | Value |
 | --- | --- |
-| Static Web App | `swa-ice-rink-rentals-staging` |
-| resource group | `rg-pumpkin-static-staging` |
-| region | `eastus`, unless a later approval chooses otherwise |
+| Static Web App | `swa-ice-static-staging` |
+| resource group | `rg-ice-static-staging` |
+| region | `eastus2` |
 | artifact root | `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` |
-| first host to validate | Azure-generated default hostname |
+| first host to validate | `happy-mud-0b375e20f.7.azurestaticapps.net` |
 | custom domain | not in first deployment |
 
+The later resource creation approval selected execution names `rg-ice-static-staging` and `swa-ice-static-staging`, superseding the earlier planning placeholder names `rg-pumpkin-static-staging` and `swa-ice-rink-rentals-staging`.
+
 Azure Storage static website remains a fallback only. Local package-only validation remains the current hold state until the separate deployment/resource creation approval is granted.
+
+## Subsequent Resource Creation Result
+
+After this preflight, a separate approval created the Ice default-host staging resources only:
+
+- resource group: `rg-ice-static-staging`
+- Static Web App: `swa-ice-static-staging`
+- default hostname: `happy-mud-0b375e20f.7.azurestaticapps.net`
+- SKU: `Free`
+- environment status: `WaitingForDeployment`
+
+No static artifact deployment occurred. See `PUMPKIN_ICE_AZURE_STATIC_WEB_APP_STAGING_RESOURCE_RESULT_REPORT.md`.
 
 ## Package Requirements
 

@@ -24,13 +24,15 @@ This preflight did not approve or perform:
 - protected config reads
 - Roller work
 
+A later approved resource-creation gate created `rg-ice-static-staging` and `swa-ice-static-staging` in `eastus2`. Static artifact deployment remains unapproved and was not performed.
+
 ## Required Next Approval
 
 A future approval must explicitly state whether Codex may:
 
-- create resource group `rg-pumpkin-static-staging`, if it does not exist
-- create Static Web App `swa-ice-rink-rentals-staging`
-- use `eastus` or another region
+- use existing resource group `rg-ice-static-staging`
+- use existing Static Web App `swa-ice-static-staging`
+- deploy to default hostname `happy-mud-0b375e20f.7.azurestaticapps.net`
 - read or use the SWA deployment token without printing it
 - deploy the prebuilt Ice static artifact
 - validate only the Azure default hostname

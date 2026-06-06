@@ -10,12 +10,30 @@
   "recommendedPath": "Azure Static Web Apps staging default-host first",
   "recommendedTarget": {
     "type": "Azure Static Web Apps",
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "region": "eastus2",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "customDomainFirstPass": false,
+    "artifactRoot": "apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out"
+  },
+  "previousPlanningTarget": {
     "name": "swa-ice-rink-rentals-staging",
     "resourceGroup": "rg-pumpkin-static-staging",
     "region": "eastus",
-    "defaultHostname": "to-be-created",
-    "customDomainFirstPass": false,
-    "artifactRoot": "apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out"
+    "supersededByResourceCreationApproval": true
+  },
+  "subsequentResourceCreation": {
+    "approved": true,
+    "executed": true,
+    "resourceGroup": "rg-ice-static-staging",
+    "staticWebApp": "swa-ice-static-staging",
+    "location": "eastus2",
+    "sku": "Free",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "environmentStatus": "WaitingForDeployment",
+    "staticArtifactDeploymentExecuted": false,
+    "resultReport": "PUMPKIN_ICE_AZURE_STATIC_WEB_APP_STAGING_RESOURCE_RESULT_REPORT.md"
   },
   "azureDiscovery": {
     "cliAvailable": true,

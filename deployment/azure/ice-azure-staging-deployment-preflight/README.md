@@ -16,16 +16,22 @@ Exact future target:
 | option decision | Option A selected by user |
 | site | IceSkatingRinkRentals.com |
 | site key | `ice-rink-rentals` |
-| Azure Static Web App name | `swa-ice-rink-rentals-staging` |
-| resource group | `rg-pumpkin-static-staging` |
-| region | `eastus`, unless the deployment approval chooses a different region |
-| first validation host | Azure-generated default hostname |
+| Azure Static Web App name | `swa-ice-static-staging` |
+| resource group | `rg-ice-static-staging` |
+| region | `eastus2` |
+| first validation host | `happy-mud-0b375e20f.7.azurestaticapps.net` |
 | custom staging domain | not in first deployment; later optional `ice-dev.iceskatingrinkrentals.com` or `staging.iceskatingrinkrentals.com` |
 | static package root | `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` |
 
 No Azure resource creation, Static Web App creation, deployment, DNS change, Cloudflare change, CMS write, MediaAsset write, Function App setting change, endpoint redeployment, email sending, Microsoft 365 change, protected config read, generated artifact staging, or Roller work occurred.
 
 Selecting Option A does not approve resource creation or deployment. It locks the staging path for the next explicit approval.
+
+## Subsequent Resource Creation
+
+A later approved resource-creation gate created `rg-ice-static-staging` and `swa-ice-static-staging` in `eastus2` with Free SKU and default hostname `happy-mud-0b375e20f.7.azurestaticapps.net`.
+
+Those execution names supersede the earlier planning placeholders `rg-pumpkin-static-staging` and `swa-ice-rink-rentals-staging`. Static artifact deployment is still not approved and has not occurred.
 
 ## Current Gate
 

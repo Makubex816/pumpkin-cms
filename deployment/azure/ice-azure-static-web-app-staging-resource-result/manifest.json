@@ -1,0 +1,106 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "site": "IceSkatingRinkRentals.com",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice Azure Static Web Apps staging resource creation preflight/execution only",
+  "result": "created",
+  "resourceCreationExecuted": true,
+  "staticArtifactDeploymentExecuted": false,
+  "namingDecision": {
+    "executionResourceGroup": "rg-ice-static-staging",
+    "executionStaticWebApp": "swa-ice-static-staging",
+    "previousPlanningResourceGroup": "rg-pumpkin-static-staging",
+    "previousPlanningStaticWebApp": "swa-ice-rink-rentals-staging",
+    "executionApprovalSupersededPlanningPlaceholderNames": true
+  },
+  "azureContext": {
+    "cliAvailable": true,
+    "cliVersion": "2.87.0",
+    "accountState": "Enabled",
+    "defaultSubscription": true,
+    "subscriptionIdPrinted": false,
+    "tenantIdPrinted": false
+  },
+  "preCreateDiscovery": {
+    "resourceGroupsFound": [
+      {
+        "name": "rg-ice-production-media",
+        "location": "eastus"
+      },
+      {
+        "name": "rg-ice-static-form-endpoint",
+        "location": "eastus"
+      },
+      {
+        "name": "DefaultResourceGroup-EUS",
+        "location": "eastus"
+      }
+    ],
+    "staticWebAppsFound": [],
+    "suitableExistingStagingTargetFound": false,
+    "approvedResourceGroupAlreadyExisted": false
+  },
+  "createdResources": {
+    "resourceGroup": {
+      "name": "rg-ice-static-staging",
+      "location": "eastus2",
+      "provisioningState": "Succeeded"
+    },
+    "staticWebApp": {
+      "name": "swa-ice-static-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "location": "East US 2",
+      "sku": "Free",
+      "provider": "None",
+      "repositoryUrl": null,
+      "branch": null,
+      "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+      "customHostnames": [],
+      "defaultEnvironmentStatus": "WaitingForDeployment"
+    }
+  },
+  "currentReadiness": {
+    "officialFreshCmsBackedExportVerified": true,
+    "staticDryRunCompleted": true,
+    "staticRouteOutputReady": true,
+    "mediaProductionUrlReadiness": true,
+    "contactFormProductionReadiness": true,
+    "staticOutputQualityGates": true,
+    "azureStagingResourceReadiness": true,
+    "azureStagingDeploymentReadiness": "pending-explicit-deployment-approval",
+    "azureStagingReadiness": false,
+    "dnsCutoverReadiness": false,
+    "productionIndexingReadiness": "not-live-ready",
+    "roller": "paused"
+  },
+  "approvalBoundary": {
+    "resourceGroupCreationApproved": true,
+    "staticWebAppCreationApproved": true,
+    "staticArtifactDeploymentApproved": false,
+    "productionDeploymentApproved": false,
+    "dnsChangesApproved": false,
+    "cloudflareChangesApproved": false,
+    "cmsWritesApproved": false,
+    "mediaAssetWritesApproved": false,
+    "functionSettingChangesApproved": false,
+    "endpointRedeployApproved": false,
+    "emailSendingApproved": false,
+    "microsoft365ChangesApproved": false,
+    "protectedConfigRead": false,
+    "deploymentTokenPrinted": false,
+    "rollerWorkApproved": false
+  },
+  "files": [
+    "README.md",
+    "AZURE_CONTEXT.md",
+    "PRE_CREATE_DISCOVERY.md",
+    "RESOURCE_GROUP_RESULT.md",
+    "STATIC_WEB_APP_RESOURCE_RESULT.md",
+    "DEFAULT_HOSTNAME_RESULT.md",
+    "POST_CREATE_READONLY_VERIFICATION.md",
+    "REMAINING_STAGING_BLOCKERS.md",
+    "NEXT_STAGING_DEPLOYMENT_APPROVAL_REQUIRED.md",
+    "ROLLBACK_NOTES.md",
+    "manifest.json"
+  ]
+}

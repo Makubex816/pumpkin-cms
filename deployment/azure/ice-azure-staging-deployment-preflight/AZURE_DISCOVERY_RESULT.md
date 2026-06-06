@@ -27,7 +27,7 @@ Read-only group list by name/location:
 | `rg-ice-static-form-endpoint` | `eastus` |
 | `DefaultResourceGroup-EUS` | `eastus` |
 
-No `rg-pumpkin-static-staging` resource group currently appears in discovery.
+At preflight time, no staging resource group appeared in discovery.
 
 ## Static Web Apps
 
@@ -54,7 +54,7 @@ These storage accounts are tied to form/media infrastructure. They are not a dis
 
 No existing Azure staging host was found.
 
-The exact recommended staging target remains a future Azure Static Web App:
+The exact recommended staging target at preflight time was a future Azure Static Web App:
 
 ```text
 name: swa-ice-rink-rentals-staging
@@ -63,4 +63,13 @@ region: eastus unless changed by explicit deployment approval
 validation host: Azure-generated default hostname first
 ```
 
-Creating the resource group or Static Web App requires a separate explicit approval.
+The later explicit resource-creation approval selected and created:
+
+```text
+name: swa-ice-static-staging
+resource group: rg-ice-static-staging
+region: eastus2
+validation host: happy-mud-0b375e20f.7.azurestaticapps.net
+```
+
+Static artifact deployment still requires a separate explicit approval.

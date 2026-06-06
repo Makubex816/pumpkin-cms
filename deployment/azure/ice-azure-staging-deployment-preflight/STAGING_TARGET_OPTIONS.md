@@ -8,8 +8,8 @@ Selected by user.
 
 | Category | Details |
 | --- | --- |
-| resources required | `rg-pumpkin-static-staging`, `swa-ice-rink-rentals-staging` |
-| region | `eastus` recommended from existing Ice Azure resources unless deployment approval chooses another region |
+| resources required | `rg-ice-static-staging`, `swa-ice-static-staging` |
+| region | `eastus2`, selected by the later resource creation approval |
 | deployment method | prebuilt static artifact deploy through SWA CLI or inactive GitHub Actions template activated later |
 | artifact root | `apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out` |
 | app settings/secrets | deployment token placeholder only; no Pumpkin API key in static app |
@@ -30,7 +30,7 @@ Pros:
 
 Cons:
 
-- No staging SWA currently exists, so resource creation is required later.
+- Staging SWA now exists, but static artifact deployment is still required later.
 - Browser form submission from the Azure default hostname may need the Function allowed-origin list updated after the default hostname is known. That is a separate Function setting approval.
 - Custom staging domain requires separate DNS/Cloudflare approval.
 
@@ -90,6 +90,6 @@ Cons:
 
 ## Decision
 
-Option A is the chosen path for the next explicit deployment approval: create/use `swa-ice-rink-rentals-staging` and deploy the prebuilt Ice artifact to the Azure default hostname first.
+Option A is the chosen path for the next explicit deployment approval: use `swa-ice-static-staging` and deploy the prebuilt Ice artifact to `happy-mud-0b375e20f.7.azurestaticapps.net` first.
 
-Until that approval is granted, the current state remains preflight complete with no Azure resource creation or deployment performed.
+Until that deployment approval is granted, the current state remains resource-created but not deployed. The earlier planning placeholders `rg-pumpkin-static-staging` and `swa-ice-rink-rentals-staging` were superseded by the later approved execution target.

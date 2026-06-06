@@ -17,7 +17,18 @@ artifact root: apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out
 first host: <Azure-generated default hostname>
 ```
 
-No Static Web App currently exists, so the next deployment approval must include resource creation or identify a different existing SWA target.
+A later resource creation approval superseded those planning placeholder names with this created staging target:
+
+```text
+resource group: rg-ice-static-staging
+Static Web App: swa-ice-static-staging
+region: eastus2
+site key: ice-rink-rentals
+artifact root: apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out
+first host: happy-mud-0b375e20f.7.azurestaticapps.net
+```
+
+The Static Web App now exists, but static artifact deployment still requires separate approval.
 
 This decision does not approve resource creation, deployment, DNS changes, Cloudflare changes, Function setting changes, CMS writes, MediaAsset writes, email sending, or Roller work.
 
