@@ -1,0 +1,117 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "site": "IceSkatingRinkRentals.com",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice post-launch operational readiness and manual final-review preflight only",
+  "result": "completed-with-manual-review-pending",
+  "liveHealth": {
+    "approvedRoutesStatus200": true,
+    "approvedRoutes": [
+      "/",
+      "/contact/",
+      "/service-areas/"
+    ],
+    "apexAndWwwChecked": true,
+    "sitemapStatus200": true,
+    "robotsStatus200": true,
+    "robotsPermitsIndexing": true,
+    "sitemapCanonicalTrailingSlashAligned": true,
+    "noindexHitsOnApprovedPages": 0,
+    "hiddenWorkflowReviewPayloadHits": 0,
+    "obsoletePreviewRoutesStatus404": true,
+    "mediaHeadCheckPassed": true,
+    "formOptionsPassed": true,
+    "validFormSubmissionSent": false,
+    "emailSent": false,
+    "analyticsTrackingHitsOnCheckedPages": 0
+  },
+  "readOnlyProviderChecks": {
+    "credentialValuesPrinted": false,
+    "azureStaticWebAppReadOk": true,
+    "azureFunctionAppReadOk": true,
+    "cloudflareMediaDnsReadOk": true,
+    "cloudflareMediaWorkerRouteReadOk": true
+  },
+  "rollback": {
+    "pathsReviewed": true,
+    "rollbackExecuted": false,
+    "rootWwwDnsRollbackDocumented": true,
+    "staticContentRollbackDocumented": true,
+    "cloudflareMediaWorkerRollbackDocumented": true,
+    "azureBlobMediaRollbackGuidanceDocumented": true,
+    "staticFormDisableRollbackDocumented": true,
+    "noindexIndexingDelayGuidanceDocumented": true
+  },
+  "monitoring": {
+    "azureStaticWebAppPointsDocumented": true,
+    "cloudflareDnsWorkerMediaPointsDocumented": true,
+    "azureFunctionPointsDocumented": true,
+    "microsoft365ExchangeTracePointsDocumented": true,
+    "route404MonitoringDocumented": true,
+    "formSubmissionMonitoringDocumented": true,
+    "mediaUrlMonitoringDocumented": true,
+    "settingsChanged": false
+  },
+  "analyticsTracking": {
+    "implemented": false,
+    "deferred": true,
+    "requiredBeforeIndexing": false,
+    "separateApprovalRequiredIfDesired": true
+  },
+  "manualOwnerReview": {
+    "checklistCreated": true,
+    "status": "pending-user-manual-confirmation"
+  },
+  "searchConsoleHardStop": {
+    "searchConsoleSubmissionPerformed": false,
+    "sitemapSubmissionPerformed": false,
+    "urlInspectionRequestPerformed": false,
+    "indexingRequestPerformed": false,
+    "finalIndexingApprovalRequired": true
+  },
+  "readiness": {
+    "productionCustomDomainCutover": true,
+    "productionSmokeTestPassed": true,
+    "indexingCleanupCompleted": true,
+    "liveProductionIndexingReadiness": true,
+    "operationalReadinessPreflight": true,
+    "manualOwnerReviewReadiness": "pending-user-manual-confirmation",
+    "searchConsoleIndexingReadiness": "blocked-pending-final-manual-approval",
+    "roller": "paused"
+  },
+  "approvalBoundary": {
+    "searchConsoleSubmissionPerformed": false,
+    "sitemapSubmissionPerformed": false,
+    "urlInspectionRequestPerformed": false,
+    "indexingRequestPerformed": false,
+    "robotsChanged": false,
+    "sitemapChanged": false,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesPerformed": false,
+    "dnsChangesPerformed": false,
+    "cloudflareChangesPerformed": false,
+    "azureResourceConfigChangesPerformed": false,
+    "functionSettingChangesPerformed": false,
+    "endpointRedeployPerformed": false,
+    "deploymentPerformed": false,
+    "validFormSubmissionSent": false,
+    "emailSent": false,
+    "microsoft365ChangesPerformed": false,
+    "protectedConfigPrinted": false,
+    "productionStaticArtifactsStaged": false,
+    "rollerWorkPerformed": false
+  },
+  "files": [
+    "README.md",
+    "LIVE_PRODUCTION_HEALTH_RECHECK.md",
+    "ROLLBACK_PATH_REVIEW.md",
+    "MONITORING_LOGGING_PLAN.md",
+    "ANALYTICS_TRACKING_DECISION_STATUS.md",
+    "MANUAL_OWNER_REVIEW_CHECKLIST.md",
+    "SEARCH_CONSOLE_INDEXING_HARD_STOP.md",
+    "FINAL_GO_NO_GO_BEFORE_INDEXING.md",
+    "REMAINING_OPERATIONAL_RISKS.md",
+    "NEXT_FINAL_INDEXING_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ]
+}
