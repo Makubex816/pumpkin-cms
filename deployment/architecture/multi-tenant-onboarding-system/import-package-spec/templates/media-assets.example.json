@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "assets": [
+    {
+      "mediaId": "example-hero",
+      "fileName": "example-hero.jpg",
+      "kind": "image",
+      "altText": "Example outdoor rink setup",
+      "sourceStatus": "pending-review",
+      "publicUrl": "https://media.example.com/example-rink-rentals/assets/example-hero/example-hero.jpg"
+    },
+    {
+      "mediaId": "example-logo",
+      "fileName": "example-logo.png",
+      "kind": "logo",
+      "altText": "Example Rink Rentals logo",
+      "sourceStatus": "pending-review",
+      "publicUrl": "https://media.example.com/example-rink-rentals/assets/example-logo/example-logo.png"
+    }
+  ]
+}
+

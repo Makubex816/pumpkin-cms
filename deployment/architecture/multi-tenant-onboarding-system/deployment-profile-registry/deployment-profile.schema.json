@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/deployment/deployment-profile.schema.json",
+  "title": "Pumpkin CMS Deployment Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "profileId", "displayName", "supportedTenants", "requiredInfra", "requiredEnvVars", "requiredValidators", "deploymentSteps", "smokeTests", "approvalGates", "rollbackSteps", "unsupportedActions", "indexingFinalGate"],
+  "properties": {
+    "schemaVersion": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "profileId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,80}$" },
+    "displayName": { "type": "string", "minLength": 2 },
+    "supportedTenants": { "type": "array", "items": { "type": "string" } },
+    "requiredInfra": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "requiredEnvVars": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,80}$" } },
+    "requiredValidators": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "deploymentSteps": { "type": "array", "items": { "type": "string" } },
+    "smokeTests": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "approvalGates": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "rollbackSteps": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "unsupportedActions": { "type": "array", "items": { "type": "string" } },
+    "indexingFinalGate": { "type": "boolean", "const": true }
+  },
+  "examples": [
+    {
+      "schemaVersion": "1.0.0",
+      "profileId": "static-azure-cloudflare-worker-graph",
+      "displayName": "Static Azure, Cloudflare Worker Media, Graph Forms",
+      "supportedTenants": ["example-rink-rentals"],
+      "requiredInfra": ["Pumpkin CMS", "Azure Static Web Apps", "Azure Blob", "Cloudflare DNS", "Cloudflare Worker", "Azure Function", "Microsoft Graph"],
+      "requiredEnvVars": ["TENANT_API_KEY_RUNTIME_ONLY"],
+      "requiredValidators": ["import-package", "static-output", "media", "form", "staging", "production-smoke", "indexing-hard-stop"],
+      "deploymentSteps": ["static export", "staging deployment", "production cutover"],
+      "smokeTests": ["approved routes 200", "forbidden routes 404"],
+      "approvalGates": ["media", "form", "staging", "production-cutover", "final-indexing"],
+      "rollbackSteps": ["restore DNS", "redeploy known-good artifact", "disable form email"],
+      "unsupportedActions": ["arbitrary external mutation"],
+      "indexingFinalGate": true
+    }
+  ]
+}
+

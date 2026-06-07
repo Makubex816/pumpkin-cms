@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/multi-tenant-onboarding/site.schema.json",
+  "title": "Pumpkin CMS Site",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "tenantId", "siteKey", "primaryDomain", "wwwDomain", "mediaDomain", "deploymentProfileId", "canonicalHost"],
+  "properties": {
+    "schemaVersion": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "tenantId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$" },
+    "siteKey": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$" },
+    "primaryDomain": { "type": "string", "pattern": "^[a-z0-9.-]+\\.[a-z]{2,}$" },
+    "wwwDomain": { "type": "string", "pattern": "^www\\.[a-z0-9.-]+\\.[a-z]{2,}$" },
+    "mediaDomain": { "type": "string", "pattern": "^[a-z0-9.-]+\\.[a-z]{2,}$" },
+    "stagingHostname": { "type": "string" },
+    "deploymentProfileId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,80}$" },
+    "canonicalHost": { "type": "string", "enum": ["primary", "www"] },
+    "cloudflareZoneName": { "type": "string" },
+    "azureResourcePrefix": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$" },
+    "searchConsoleProperty": { "type": "string", "description": "Metadata only. Does not authorize Search Console or indexing actions." }
+  },
+  "examples": [
+    {
+      "schemaVersion": "1.0.0",
+      "tenantId": "example-rink-rentals",
+      "siteKey": "example-rink-rentals",
+      "primaryDomain": "example.com",
+      "wwwDomain": "www.example.com",
+      "mediaDomain": "media.example.com",
+      "deploymentProfileId": "static-azure-cloudflare-worker-graph",
+      "canonicalHost": "primary"
+    }
+  ]
+}
+

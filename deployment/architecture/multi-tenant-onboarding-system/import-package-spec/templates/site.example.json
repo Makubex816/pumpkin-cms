@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "primaryDomain": "example.com",
+  "wwwDomain": "www.example.com",
+  "mediaDomain": "media.example.com",
+  "stagingHostname": "example-staging.examplehost.net",
+  "deploymentProfileId": "static-azure-cloudflare-worker-graph",
+  "canonicalHost": "primary",
+  "cloudflareZoneName": "example.com",
+  "azureResourcePrefix": "example-rink",
+  "searchConsoleProperty": "sc-domain:example.com"
+}
+

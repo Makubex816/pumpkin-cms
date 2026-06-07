@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "slug": "contact",
+  "route": "/contact/",
+  "title": "Contact Example Rink Rentals",
+  "status": "draft",
+  "seo": {
+    "title": "Contact Example Rink Rentals",
+    "description": "Contact Example Rink Rentals to request information about a rink rental.",
+    "robots": "noindex,nofollow",
+    "canonicalUrl": "https://example.com/contact/"
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "heading": "Contact Example Rink Rentals"
+    },
+    {
+      "type": "form",
+      "formId": "example-contact"
+    }
+  ],
+  "notes": "Example page only."
+}
+

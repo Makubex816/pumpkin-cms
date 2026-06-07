@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "approvedRoutes": [
+    "/",
+    "/contact/",
+    "/service-areas/"
+  ],
+  "forbiddenRoutes": [
+    "/draft/",
+    "/preview/",
+    "/old-home/"
+  ],
+  "wwwBehavior": "canonical-only",
+  "notes": "Only approved routes may appear in production output."
+}
+

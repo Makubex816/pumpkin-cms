@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "themeId": "example-rink-default",
+  "displayName": "Example Rink Default",
+  "navigation": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Service Areas",
+      "href": "/service-areas/"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact/"
+    }
+  ],
+  "colors": {
+    "primary": "#145C72",
+    "accent": "#F2B84B",
+    "background": "#FFFFFF",
+    "text": "#222222"
+  }
+}
+

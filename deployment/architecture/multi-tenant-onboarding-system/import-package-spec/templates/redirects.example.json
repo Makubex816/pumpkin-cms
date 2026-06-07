@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "redirects": [
+    {
+      "source": "/old-contact/",
+      "destination": "/contact/",
+      "statusCode": 301,
+      "reason": "Old contact route replaced by approved contact route."
+    }
+  ]
+}
+

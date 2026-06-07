@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "slug": "service-areas",
+  "route": "/service-areas/",
+  "title": "Service Areas",
+  "status": "draft",
+  "seo": {
+    "title": "Example Rink Rentals Service Areas",
+    "description": "Review example service area information for Example Rink Rentals.",
+    "robots": "noindex,nofollow",
+    "canonicalUrl": "https://example.com/service-areas/"
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "heading": "Service Areas"
+    },
+    {
+      "type": "content",
+      "body": "Replace this example text with approved service area details."
+    }
+  ],
+  "notes": "Example page only."
+}
+

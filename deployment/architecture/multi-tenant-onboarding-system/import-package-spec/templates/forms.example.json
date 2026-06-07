@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "forms": [
+    {
+      "formId": "example-contact",
+      "displayName": "Example Contact Form",
+      "deliveryMode": "no-email",
+      "recipient": "contact@example.com",
+      "mailboxOwner": "TBD",
+      "fields": [
+        "name",
+        "email",
+        "phone",
+        "eventDate",
+        "message"
+      ],
+      "consentNoticeStatus": "pending-review",
+      "rollbackMode": "no-email"
+    }
+  ]
+}
+

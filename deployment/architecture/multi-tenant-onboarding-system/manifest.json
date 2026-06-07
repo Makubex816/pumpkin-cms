@@ -1,0 +1,41 @@
+{
+  "package": "multi-tenant-onboarding-system",
+  "generatedDate": "2026-06-07",
+  "scope": "architecture-design-only",
+  "primaryReferenceTenant": "IceSkatingRinkRentals.com",
+  "pausedTenant": "RollerRinkRentals.com",
+  "result": "created",
+  "implementationPerformed": false,
+  "newTenantCreated": false,
+  "externalSystemsChanged": false,
+  "searchConsoleIndexingAffected": false,
+  "roller": "paused",
+  "requiredSections": {
+    "topLevelArchitecture": true,
+    "userWalkthrough": true,
+    "intakePackage": true,
+    "importPackageSpec": true,
+    "schemaDrafts": true,
+    "templateExamples": true,
+    "validatorDesign": true,
+    "pluginExtensionDesign": true,
+    "deploymentProfileRegistry": true,
+    "wizardDesign": true,
+    "cliDesign": true,
+    "operatorRunbooks": true,
+    "roadmap": true
+  },
+  "hardStops": {
+    "cmsWrites": "explicit-approval-required",
+    "mediaAssetWrites": "explicit-approval-required",
+    "azureChanges": "explicit-approval-required",
+    "cloudflareChanges": "explicit-approval-required",
+    "dnsChanges": "explicit-approval-required",
+    "deployment": "explicit-approval-required",
+    "functionSettings": "explicit-approval-required",
+    "emailMicrosoft365": "explicit-approval-required",
+    "searchConsoleIndexing": "final-explicit-approval-required",
+    "rollerWork": "paused"
+  }
+}
+

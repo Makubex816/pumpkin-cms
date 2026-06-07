@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "slug": "home",
+  "route": "/",
+  "title": "Example Rink Rentals",
+  "status": "draft",
+  "seo": {
+    "title": "Example Rink Rentals",
+    "description": "Example Rink Rentals provides seasonal event rink rental information for customers.",
+    "robots": "noindex,nofollow",
+    "canonicalUrl": "https://example.com/"
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "heading": "Example Rink Rentals",
+      "body": "Plan a memorable rink rental with a clear quote process.",
+      "mediaId": "example-hero"
+    },
+    {
+      "type": "cta",
+      "label": "Request a quote",
+      "href": "/contact/"
+    }
+  ],
+  "notes": "Example page only."
+}
+

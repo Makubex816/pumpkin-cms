@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/multi-tenant-onboarding/page.schema.json",
+  "title": "Pumpkin CMS Page",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "tenantId", "siteKey", "slug", "route", "title", "status", "seo", "blocks"],
+  "properties": {
+    "schemaVersion": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "tenantId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$" },
+    "siteKey": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,80}$" },
+    "route": { "type": "string", "pattern": "^/$|^/[a-z0-9][a-z0-9-]*(/[a-z0-9][a-z0-9-]*)*/$" },
+    "title": { "type": "string", "minLength": 2, "maxLength": 120 },
+    "status": { "type": "string", "enum": ["draft", "approved-for-preview"] },
+    "seo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "description", "robots"],
+      "properties": {
+        "title": { "type": "string", "minLength": 2 },
+        "description": { "type": "string", "minLength": 20 },
+        "robots": { "type": "string", "enum": ["index,follow", "noindex,nofollow"] },
+        "canonicalUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "blocks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": { "type": "string", "description": "Operator notes only. Do not include secrets or workflow metadata." }
+  },
+  "examples": [
+    {
+      "schemaVersion": "1.0.0",
+      "tenantId": "example-rink-rentals",
+      "siteKey": "example-rink-rentals",
+      "slug": "contact",
+      "route": "/contact/",
+      "title": "Contact Example Rink Rentals",
+      "status": "draft",
+      "seo": {
+        "title": "Contact Example Rink Rentals",
+        "description": "Request information from Example Rink Rentals.",
+        "robots": "noindex,nofollow"
+      },
+      "blocks": [{ "type": "hero" }, { "type": "form" }]
+    }
+  ]
+}
+
