@@ -1,0 +1,99 @@
+{
+  "siteKey": "ice-rink-rentals",
+  "site": "IceSkatingRinkRentals.com",
+  "generatedDate": "2026-06-06",
+  "approval": "Ice manual owner review package only",
+  "result": "manual-review-package-created-owner-signoff-pending",
+  "packagePath": "deployment/azure/ice-manual-owner-review-before-indexing/",
+  "sourceEvidenceReviewed": [
+    "PUMPKIN_ICE_POST_LAUNCH_OPERATIONAL_READINESS_PREFLIGHT_REPORT.md",
+    "deployment/azure/ice-post-launch-operational-readiness-preflight/",
+    "PUMPKIN_ICE_PRODUCTION_INDEXING_CLEANUP_RESULT_REPORT.md",
+    "deployment/azure/ice-production-indexing-cleanup-result/",
+    "PUMPKIN_ICE_PRODUCTION_CUTOVER_RESULT_REPORT.md",
+    "deployment/azure/ice-production-cutover-result/",
+    "PUMPKIN_ICE_AZURE_STATIC_WEB_APP_STAGING_DEPLOYMENT_RESULT_REPORT.md",
+    "deployment/azure/ice-azure-static-web-app-staging-deployment-result/",
+    "PUMPKIN_ICE_STATIC_FORM_PRODUCTION_ENABLEMENT_RESULT_REPORT.md",
+    "deployment/azure/ice-static-form-production-enablement-result/"
+  ],
+  "packageFiles": [
+    "README.md",
+    "CONTENT_APPROVAL_CHECKLIST.md",
+    "LEGAL_PRIVACY_REVIEW_CHECKLIST.md",
+    "CONTACT_FORM_OVERSIGHT_CHECKLIST.md",
+    "ANALYTICS_TRACKING_DECISION.md",
+    "MONITORING_RESPONSIBILITY_ASSIGNMENT.md",
+    "ROLLBACK_OWNER_AND_ESCALATION.md",
+    "FINAL_INDEXING_HARD_STOP.md",
+    "OWNER_SIGNOFF_TEMPLATE.md",
+    "REMAINING_MANUAL_RISKS.md",
+    "NEXT_FINAL_INDEXING_APPROVAL_PROMPT.md",
+    "manifest.json"
+  ],
+  "readiness": {
+    "productionCustomDomainCutover": "yes",
+    "productionSmokeTestPassed": "yes",
+    "indexingCleanupCompleted": "yes",
+    "operationalReadinessPreflight": "yes",
+    "manualOwnerReviewPackage": "yes",
+    "ownerSignoff": "pending",
+    "searchConsoleIndexingReadiness": "blocked-pending-owner-signoff-and-explicit-final-approval",
+    "roller": "paused"
+  },
+  "manualReviewGates": {
+    "contentApproval": "pending-owner-review",
+    "legalPrivacyReview": "pending-owner-review",
+    "contactFormOversight": "pending-owner-assignment",
+    "analyticsTrackingDecision": "pending-owner-acknowledgement",
+    "monitoringResponsibility": "pending-owner-assignment",
+    "rollbackOwner": "pending-owner-assignment",
+    "ownerSignoffTemplateCreated": true,
+    "finalIndexingHardStopDocumented": true
+  },
+  "formStatusFromPriorReports": {
+    "graphDeliveryProven": true,
+    "humanInboxConfirmation": true,
+    "productionSendingEnabled": true,
+    "noDuplicateUnexpectedMessagesConfirmed": true,
+    "validFormSubmissionSentInThisPackage": false,
+    "emailSentInThisPackage": false,
+    "rollbackToNoEmailDocumented": true
+  },
+  "analyticsTracking": {
+    "implemented": false,
+    "deferred": true,
+    "indexingCanProceedWithoutAnalytics": true,
+    "laterTrackingRequiresSeparateApproval": true
+  },
+  "hardStop": {
+    "searchConsoleSubmissionAllowed": false,
+    "sitemapSubmissionAllowed": false,
+    "urlInspectionAllowed": false,
+    "indexingRequestAllowed": false,
+    "finalIndexingApprovalRequired": true
+  },
+  "approvalBoundary": {
+    "searchConsoleSubmissionPerformed": false,
+    "sitemapSubmissionPerformed": false,
+    "urlInspectionRequestPerformed": false,
+    "indexingRequestPerformed": false,
+    "robotsChanged": false,
+    "sitemapChanged": false,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesPerformed": false,
+    "dnsChangesPerformed": false,
+    "cloudflareChangesPerformed": false,
+    "azureResourceConfigChangesPerformed": false,
+    "functionSettingChangesPerformed": false,
+    "endpointRedeployPerformed": false,
+    "deploymentPerformed": false,
+    "validFormSubmissionSent": false,
+    "emailSent": false,
+    "microsoft365ChangesPerformed": false,
+    "protectedConfigReadOrPrinted": false,
+    "productionStaticArtifactsStaged": false,
+    "rollerWorkPerformed": false
+  }
+}
+
