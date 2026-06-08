@@ -1,0 +1,3 @@
+# Next Phase 2B1 Implementation Prompt
+
+Approve Phase 2B1 import package builder prototype implementation only: implement a local/offline CLI package builder prototype that reads safe draft answers, generates deterministic tenant import package JSON files, runs the existing offline validator, writes validation reports, exports the existing support packet, supports save/resume draft files, includes fake fixtures/tests, and documents usage. No tenant creation, no CMS/Azure/Cloudflare/DNS/deployment/email/Search Console/indexing actions, no external HTTP checks, no protected config reads, and Roller remains paused.
