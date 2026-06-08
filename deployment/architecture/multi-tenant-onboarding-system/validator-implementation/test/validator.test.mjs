@@ -36,6 +36,29 @@ test("valid minimal fixture passes offline validation and writes reports", async
   assert.match(markdownReport, /How To Read This/);
 });
 
+test("explicit Roller local-only dry-run approval allows paused tenant package references", async () => {
+  const packagePath = await makeRollerDryRunPackage();
+  const report = await validatePackage({ packagePath });
+
+  assert.equal(report.overallStatus, "passed");
+  assert.equal(report.summary.errors, 0);
+  assert.equal(report.summary.warnings, 0);
+});
+
+test("Roller dry-run approval with live pages approved still fails validation", async () => {
+  const packagePath = await makeRollerDryRunPackage(async (packageRoot) => {
+    const manifestPath = path.join(packageRoot, "manifest.json");
+    const manifest = await readJson(manifestPath);
+    manifest.pausedTenantDryRunApproval.livePagesApproved = true;
+    await writeJson(manifestPath, manifest);
+  });
+  const report = await validatePackage({ packagePath });
+
+  assert.equal(report.overallStatus, "failed");
+  assert(report.findings.some((finding) => finding.code === ErrorCode.SCHEMA_VALIDATION_ERROR));
+  assert(report.findings.some((finding) => finding.code === ErrorCode.PAUSED_TENANT_REFERENCE));
+});
+
 test("existing skeleton fixtures still fail for their intended reasons", async () => {
   await assertFixtureHasCode("invalid-missing-required-file", ErrorCode.REQUIRED_FILE_MISSING);
   await assertFixtureHasCode("invalid-json", ErrorCode.JSON_PARSE_ERROR);
@@ -233,6 +256,85 @@ async function mutateFirstForm(packagePath, mutate) {
   const forms = await readJson(formsPath);
   mutate(forms.forms[0]);
   await writeJson(formsPath, forms);
+}
+
+async function makeRollerDryRunPackage(extraMutate = null) {
+  const packagePath = await copyFixtureToTemp("valid-minimal");
+  const files = [
+    "manifest.json",
+    "tenant.json",
+    "site.json",
+    "routes.json",
+    "media-assets.json",
+    "forms.json",
+    "seo.json",
+    "theme.json",
+    "redirects.json",
+    path.join("pages", "home.json")
+  ];
+
+  for (const relativePath of files) {
+    const filePath = path.join(packagePath, relativePath);
+    const data = deepReplace(await readJson(filePath), {
+      "example-rink-rentals": "roller-rink-rentals",
+      "Example Rink Rentals": "Roller Rink Rentals",
+      "exampleeventrentals.com": "rollerrinkrentals.com",
+      "www.exampleeventrentals.com": "www.rollerrinkrentals.com",
+      "media.exampleeventrentals.com": "media.rollerrinkrentals.com",
+      "event rentals": "roller rink rental services"
+    });
+    await writeJson(filePath, data);
+  }
+
+  const manifestPath = path.join(packagePath, "manifest.json");
+  const manifest = await readJson(manifestPath);
+  manifest.pausedTenantDryRunApproval = {
+    tenant: "roller-rink-rentals",
+    primaryDomain: "rollerrinkrentals.com",
+    approvedScope: "local-offline-dry-run-only",
+    externalMutationsAllowed: false,
+    livePagesApproved: false,
+    livePagesHardStopped: true,
+    searchConsoleApproved: false,
+    searchConsoleIndexingHardStopped: true,
+    approvedByOwner: true
+  };
+  await writeJson(manifestPath, manifest);
+
+  const tenantPath = path.join(packagePath, "tenant.json");
+  const tenant = await readJson(tenantPath);
+  tenant.pausedRelatedTenants = ["roller-rink-rentals"];
+  await writeJson(tenantPath, tenant);
+
+  const seoPath = path.join(packagePath, "seo.json");
+  const seo = await readJson(seoPath);
+  seo.defaultRobots = "noindex,nofollow";
+  seo.sitemapPolicy = "disabled-until-final-gate";
+  seo.canonicalBaseUrl = "https://rollerrinkrentals.com";
+  seo.indexingFinalGate = true;
+  await writeJson(seoPath, seo);
+
+  if (extraMutate) {
+    await extraMutate(packagePath);
+  }
+
+  return packagePath;
+}
+
+function deepReplace(value, replacements) {
+  if (typeof value === "string") {
+    return Object.entries(replacements).reduce((current, [from, to]) => current.replaceAll(from, to), value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => deepReplace(item, replacements));
+  }
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, deepReplace(item, replacements)]));
+  }
+
+  return value;
 }
 
 async function readJson(filePath) {

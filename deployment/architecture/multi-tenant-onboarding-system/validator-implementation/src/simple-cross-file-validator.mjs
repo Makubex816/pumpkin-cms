@@ -10,6 +10,7 @@ export function validateSimpleCrossFile(parsedDocuments) {
   const manifest = parsedDocuments.get("manifest.json")?.data;
   const tenant = parsedDocuments.get("tenant.json")?.data;
   const site = parsedDocuments.get("site.json")?.data;
+  const seo = parsedDocuments.get("seo.json")?.data;
   const routes = parsedDocuments.get("routes.json")?.data;
   const theme = parsedDocuments.get("theme.json")?.data;
   const redirects = parsedDocuments.get("redirects.json")?.data;
@@ -17,7 +18,7 @@ export function validateSimpleCrossFile(parsedDocuments) {
 
   validateScopeConsistency(findings, parsedDocuments, manifest, tenant, site);
   validateRoutesAndPages(findings, routes, pages, theme, redirects);
-  validateTenantReferences(findings, parsedDocuments, tenant);
+  validateTenantReferences(findings, parsedDocuments, manifest, tenant, site, seo);
 
   return findings;
 }
@@ -168,15 +169,16 @@ function validateRoutesAndPages(findings, routes, pages, theme, redirects) {
   }
 }
 
-function validateTenantReferences(findings, parsedDocuments, tenant) {
+function validateTenantReferences(findings, parsedDocuments, manifest, tenant, site, seo) {
   const tenantId = tenant?.tenantId;
   const siteKey = tenant?.siteKey;
   const cmsTenantSlug = tenant?.cmsTenantSlug;
+  const pausedTenantDryRunApproved = isPausedTenantDryRunApproved(manifest, tenant, site, seo);
 
   for (const document of parsedDocuments.values()) {
     walkStringValues(document, (value, pointer, field) => {
       const normalized = value.toLowerCase();
-      if (pausedTenantPatterns.some((pattern) => pattern.test(value)) && !isAllowedPausedTenantPointer(document.relativePath, pointer)) {
+      if (pausedTenantPatterns.some((pattern) => pattern.test(value)) && !pausedTenantDryRunApproved && !isAllowedPausedTenantPointer(document.relativePath, pointer)) {
         findings.push(
           createFinding({
             severity: "error",
@@ -261,4 +263,29 @@ function isAllowedRelatedTenantPointer(pointer) {
 
 function isAllowedPausedTenantPointer(file, pointer) {
   return file === "tenant.json" && pointer.includes("/pausedRelatedTenants/");
+}
+
+function isPausedTenantDryRunApproved(manifest, tenant, site, seo) {
+  const approval = manifest?.pausedTenantDryRunApproval;
+  return isPlainObject(approval)
+    && approval.tenant === "roller-rink-rentals"
+    && approval.primaryDomain === "rollerrinkrentals.com"
+    && approval.approvedScope === "local-offline-dry-run-only"
+    && approval.externalMutationsAllowed === false
+    && approval.livePagesApproved === false
+    && approval.livePagesHardStopped === true
+    && approval.searchConsoleApproved === false
+    && approval.searchConsoleIndexingHardStopped === true
+    && approval.approvedByOwner === true
+    && tenant?.tenantId === "roller-rink-rentals"
+    && tenant?.siteKey === "roller-rink-rentals"
+    && tenant?.cmsTenantSlug === "roller-rink-rentals"
+    && site?.primaryDomain === "rollerrinkrentals.com"
+    && seo?.defaultRobots === "noindex,nofollow"
+    && seo?.sitemapPolicy === "disabled-until-final-gate"
+    && seo?.indexingFinalGate === true;
+}
+
+function isPlainObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }

@@ -2,33 +2,34 @@
 
 ## Status
 
-Status: `not_run_blocked`
+Status: `passed`
 
-The offline import package validator was not run against a real candidate package.
+The offline validator was run against:
 
-## Reason
+```text
+deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/
+```
 
-No generated local candidate package exists.
+## Result
 
-## Expected Future Result
+| Area | Result |
+| --- | --- |
+| Overall status | passed |
+| Files checked | 12 |
+| Errors | 0 |
+| Warnings | 0 |
+| Infos | 0 |
+| External checks | skipped/not implemented |
+| CMS writes | false |
+| MediaAsset writes | false |
+| Search Console/indexing actions | false |
+| Protected config reads | false |
 
-After a valid local package is generated, the expected validator result is:
-
-- `0` errors
-- `0` warnings, unless explicitly documented as accepted dry-run warnings
-- no secret findings
-- no protected path findings
-- no external mutation findings
-- Search Console and indexing blocked
-- Roller paused unless explicitly selected
-
-## Future Report Files
-
-The future validator/support run should create:
+## Reports
 
 - `validation-report.json`
 - `VALIDATION_REPORT.md`
 
-## Boundary Confirmation
+## Boundary Result
 
-No validator command was run against a generated real candidate package.
+The validator read local package files and wrote local reports only.

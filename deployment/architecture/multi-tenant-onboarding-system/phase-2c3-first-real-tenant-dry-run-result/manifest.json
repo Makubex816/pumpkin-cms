@@ -2,60 +2,49 @@
   "phase": "2C-3",
   "name": "first-real-tenant-local-dry-run-result",
   "createdDate": "2026-06-08",
-  "status": "blocked_missing_candidate_intake",
+  "status": "completed_after_phase_2c3a_guardrail_repair",
   "candidate": {
-    "tenantDisplayName": null,
-    "tenantSlug": null,
-    "primaryDomain": null,
-    "wwwDomain": null,
-    "mediaDomain": null,
-    "rollerSelected": false
+    "tenantDisplayName": "Roller Rink Rentals",
+    "tenantSlug": "roller-rink-rentals",
+    "primaryDomain": "rollerrinkrentals.com",
+    "wwwDomain": "www.rollerrinkrentals.com",
+    "mediaDomain": "media.rollerrinkrentals.com",
+    "approvedRoutes": ["/", "/contact", "/service-areas"],
+    "forbiddenRoutes": ["/preview", "/draft", "/old-roller-rink-rentals"],
+    "deploymentProfile": "static-azure-cloudflare-worker-graph",
+    "leadRecipientRef": "roller-rink-leads",
+    "rollerExplicitlySelectedForLocalDryRunOnly": true
   },
   "readiness": {
     "phase2c2DryRunApprovalPackage": "complete",
-    "phase2c3FirstRealTenantLocalDryRun": false,
-    "generatedRealCandidatePackage": false,
-    "validatorResult": "not_run",
-    "supportPacketGenerated": false,
-    "readyForCmsImportPlanning": false,
+    "phase2c3RollerFirstRealTenantLocalDryRunRetry": true,
+    "generatedRollerCandidatePackage": true,
+    "validatorResult": "passed",
+    "supportPacketGenerated": true,
+    "readyForCmsImportPlanning": true,
     "readyForCmsImportExecution": false,
+    "readyForProductionReadinessPlanning": false,
+    "readyForLivePages": false,
     "realTenantCreated": false,
     "externalSystemsChanged": false,
     "searchConsoleOrIndexingAffected": false,
-    "rollerStatus": "paused"
+    "livePagePublicationAffected": false
   },
-  "blockedReason": "Required approved non-secret candidate intake was not supplied; tenant fields remained placeholders.",
-  "localChecks": {
-    "builderNpmTest": "passed",
-    "builderNpmRunCheck": "passed",
-    "validatorNpmTest": "passed",
-    "manifestJsonParse": "passed",
-    "nodeCheckForChangedJsMjs": "not_applicable_no_changed_js_mjs",
-    "generatedCandidateOutputStaged": false
-  },
-  "artifacts": [
-    "README.md",
-    "CANDIDATE_INTAKE_REVIEW.md",
-    "ANSWERS_FILE_RESULT.md",
-    "BUILDER_DRY_RUN_RESULT.md",
-    "GENERATED_PACKAGE_RESULT.md",
-    "VALIDATOR_RESULT.md",
-    "SUPPORT_PACKET_RESULT.md",
-    "OPERATOR_HANDOFF_REVIEW.md",
-    "REMAINING_INTAKE_OR_PACKAGE_GAPS.md",
-    "NEXT_CMS_IMPORT_PLANNING_APPROVAL_REQUIRED.md",
-    "manifest.json"
-  ],
   "outputs": {
-    "answersFileCreated": false,
-    "builderDryRunExecuted": false,
-    "generatedPackageCreated": false,
-    "validatorExecutedAgainstCandidate": false,
-    "supportPacketGenerated": false,
-    "operatorHandoffGenerated": false
+    "answersFileCreated": true,
+    "answersFilePath": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/fixtures/real-dry-run-roller-rink-rentals.answers.json",
+    "builderDryRunSucceeded": true,
+    "generatedPackageCreated": true,
+    "generatedPackagePath": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/",
+    "validatorExecutedAgainstCandidate": true,
+    "validatorOverallStatus": "passed",
+    "validatorErrors": 0,
+    "validatorWarnings": 0,
+    "supportPacketGenerated": true,
+    "operatorHandoffGenerated": true
   },
   "boundaryConfirmation": {
-    "realTenantPackageGenerated": false,
+    "realTenantPackageGeneratedLocally": true,
     "newTenantCreated": false,
     "cmsChanged": false,
     "mediaAssetChanged": false,
@@ -70,6 +59,6 @@
     "indexingRequested": false,
     "externalChecksRun": false,
     "protectedConfigRead": false,
-    "rollerResumed": false
+    "livePagesPublished": false
   }
 }

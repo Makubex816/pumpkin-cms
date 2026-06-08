@@ -1,0 +1,59 @@
+{
+  "phase": "2C-3A",
+  "name": "paused-tenant-guardrail-repair-result",
+  "createdDate": "2026-06-08",
+  "status": "completed",
+  "guardrail": {
+    "pausedTenantsBlockedByDefault": true,
+    "rollerAllowedOnlyWithExplicitLocalOfflineDryRunApproval": true,
+    "externalMutationsAllowed": false,
+    "livePagesApproved": false,
+    "searchConsoleIndexingApproved": false
+  },
+  "outputs": {
+    "answersFile": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/fixtures/real-dry-run-roller-rink-rentals.answers.json",
+    "generatedPackage": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/",
+    "validationReport": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/validation-report.json",
+    "supportPacket": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/support-packet.json",
+    "operatorHandoff": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/OPERATOR_HANDOFF.md"
+  },
+  "readiness": {
+    "phase2c3aPausedTenantLocalOnlyGuardrailRepair": true,
+    "phase2c3RollerFirstRealTenantLocalDryRunRetry": true,
+    "generatedRollerCandidatePackage": true,
+    "validatorResult": "passed",
+    "supportPacketGenerated": true,
+    "readyForCmsImportPlanning": true,
+    "readyForCmsImportExecution": false,
+    "readyForProductionReadinessPlanning": false,
+    "readyForLivePages": false,
+    "realTenantCreated": false,
+    "externalSystemsChanged": false,
+    "searchConsoleOrIndexingAffected": false
+  },
+  "tests": {
+    "builderNpmTest": "passed",
+    "builderNpmRunCheck": "passed",
+    "validatorNpmTest": "passed",
+    "rollerDryRunCommand": "passed",
+    "rollerGenerateCommand": "passed",
+    "rollerValidateSupportCommand": "passed"
+  },
+  "boundaryConfirmation": {
+    "newTenantCreated": false,
+    "cmsChanged": false,
+    "mediaAssetChanged": false,
+    "azureChanged": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "deploymentChanged": false,
+    "functionSettingsChanged": false,
+    "emailSent": false,
+    "microsoft365Changed": false,
+    "searchConsoleChanged": false,
+    "indexingRequested": false,
+    "externalChecksRun": false,
+    "protectedConfigRead": false,
+    "livePagesPublished": false
+  }
+}

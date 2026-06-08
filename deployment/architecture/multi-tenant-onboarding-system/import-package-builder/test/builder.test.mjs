@@ -14,6 +14,7 @@ const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const validAnswers = path.join(packageRoot, "fixtures", "example-event-rentals.answers.json");
 const validFullAnswers = path.join(packageRoot, "fixtures", "valid-full-package.answers.json");
 const fakePilotAnswers = path.join(packageRoot, "fixtures", "fake-pilot-example-event-rentals.answers.json");
+const rollerDryRunAnswers = path.join(packageRoot, "fixtures", "real-dry-run-roller-rink-rentals.answers.json");
 const missingDomainAnswers = path.join(packageRoot, "fixtures", "invalid-missing-domain.answers.json");
 const secretLikeAnswers = path.join(packageRoot, "fixtures", "invalid-secret-like-value.answers.json");
 const invalidFixtureCases = [
@@ -128,6 +129,73 @@ test("fake pilot fixture generates requested Example Event Rentals package", asy
   assert.equal(seo.defaultRobots, "noindex,nofollow");
   assert.equal(seo.sitemapPolicy, "disabled-until-final-gate");
   assert.equal(seo.indexingFinalGate, true);
+});
+
+test("approved Roller local-only dry-run fixture previews without writing output", async () => {
+  const outDir = path.join(await tempRoot(), "roller-dry-run-preview");
+  const result = await buildImportPackage({
+    answersPath: rollerDryRunAnswers,
+    outDir,
+    dryRun: true,
+    validate: true,
+    supportPacket: true
+  });
+
+  assert.equal(result.status, "passed");
+  assert.equal(result.stage, "dry-run");
+  assert.deepEqual(result.preview.routes.approved, ["/", "/contact/", "/service-areas/"]);
+  assert.ok(result.preview.routes.forbidden.includes("/old-roller-rink-rentals/"));
+  assert.equal(result.preview.formRefs[0].leadRecipientRef, "roller-rink-leads");
+  assert.deepEqual(result.filesWritten, []);
+  await assertMissing(outDir);
+});
+
+test("Roller paused tenant reference without explicit local-only approval still fails", async () => {
+  const answersPath = await mutatedRollerAnswers("roller-no-approval", (answers) => {
+    delete answers.pausedTenantDryRunApproval;
+  });
+
+  await assertRollerAnswersFail(answersPath, AnswerErrorCode.PAUSED_TENANT_REFERENCE);
+});
+
+test("generic paused tenant dry-run approval still fails", async () => {
+  const answersPath = await mutatedRollerAnswers("roller-generic-approval", (answers) => {
+    answers.pausedTenantDryRunApproval.tenant = "generic-paused-tenant";
+  });
+
+  await assertRollerAnswersFail(answersPath, AnswerErrorCode.PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID);
+});
+
+test("mismatched paused tenant dry-run domain still fails", async () => {
+  const answersPath = await mutatedRollerAnswers("roller-mismatched-domain", (answers) => {
+    answers.pausedTenantDryRunApproval.primaryDomain = "exampleeventrentals.com";
+  });
+
+  await assertRollerAnswersFail(answersPath, AnswerErrorCode.PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID);
+});
+
+test("paused tenant dry-run approval with external mutations still fails", async () => {
+  const answersPath = await mutatedRollerAnswers("roller-external-mutations", (answers) => {
+    answers.pausedTenantDryRunApproval.externalMutationsAllowed = true;
+  });
+
+  await assertRollerAnswersFail(answersPath, AnswerErrorCode.PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID);
+});
+
+test("paused tenant dry-run approval with live pages approved still fails", async () => {
+  const answersPath = await mutatedRollerAnswers("roller-live-pages", (answers) => {
+    answers.pausedTenantDryRunApproval.livePagesApproved = true;
+  });
+
+  await assertRollerAnswersFail(answersPath, AnswerErrorCode.PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID);
+});
+
+test("paused tenant dry-run approval with Search Console approved still fails", async () => {
+  const answersPath = await mutatedRollerAnswers("roller-search-console", (answers) => {
+    answers.pausedTenantDryRunApproval.searchConsoleApproved = true;
+  });
+
+  await assertRollerAnswersFail(answersPath, AnswerErrorCode.PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID);
 });
 
 test("normalizes page and route paths in generated package", async () => {
@@ -427,6 +495,30 @@ async function tempRoot() {
 
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, "utf8"));
+}
+
+async function mutatedRollerAnswers(name, mutate) {
+  const answers = await readJson(rollerDryRunAnswers);
+  mutate(answers);
+  const filePath = path.join(await tempRoot(), `${name}.answers.json`);
+  await writeFile(filePath, `${JSON.stringify(answers, null, 2)}\n`, "utf8");
+  return filePath;
+}
+
+async function assertRollerAnswersFail(answersPath, expectedCode) {
+  const outDir = await tempOutput(path.basename(answersPath, ".answers.json"));
+  const result = await buildImportPackage({
+    answersPath,
+    outDir,
+    dryRun: true,
+    validate: true,
+    supportPacket: true
+  });
+
+  assert.equal(result.status, "failed");
+  assert.equal(result.stage, "answers-validation");
+  assert.ok(result.errors.some((issue) => issue.code === expectedCode), JSON.stringify(result.errors, null, 2));
+  await assertMissing(outDir);
 }
 
 async function assertExists(filePath) {

@@ -2,50 +2,51 @@
 
 ## Status
 
-Status: `not_generated_blocked`
+Status: `generated`
 
-No local tenant import package candidate was generated.
-
-## Reason
-
-The required approved candidate intake and answers file are missing.
-
-## Required Future Output Path
-
-The future generated output should use an ignored local path such as:
+Generated local package path:
 
 ```text
-deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-<tenant-slug>/
+deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/
 ```
 
-## Expected Future Package Files
+## Generation Command
 
-When generation is approved later, the local package candidate should include:
+```powershell
+node src/builder-cli.mjs --answers fixtures/real-dry-run-roller-rink-rentals.answers.json --out .tmp/real-dry-run-roller-rink-rentals --overwrite --validate --support-packet
+```
+
+## Result
+
+| Area | Result |
+| --- | --- |
+| Files planned | 13 |
+| Files written | 13 |
+| Generated pages | home, contact, service-areas |
+| Approved routes | `/`, `/contact/`, `/service-areas/` |
+| Forbidden routes | `/preview/`, `/draft/`, `/old-roller-rink-rentals/`, `/old/` |
+| Media refs | `hero-roller-rink` |
+| Form refs | `contact-form -> roller-rink-leads` |
+| Form delivery | `no-email` |
+| Robots | `noindex,nofollow` |
+| Sitemap | disabled until final gate |
+
+## Generated Files
 
 - `README.md`
 - `manifest.json`
 - `tenant.json`
 - `site.json`
 - `routes.json`
-- `pages/*.json`
+- `pages/home.json`
+- `pages/contact.json`
+- `pages/service-areas.json`
 - `media-assets.json`
 - `forms.json`
 - `seo.json`
 - `theme.json`
 - `redirects.json`
 
-## Audit Items Not Run
+## Boundary Result
 
-- approved routes check
-- forbidden routes check
-- media reference check
-- form reference check
-- SEO/canonical defaults check
-- Search Console/indexing hard-stop check
-- Roller reference check
-- secret-like value scan on generated package
-- protected path scan on generated package
-
-## Boundary Confirmation
-
-No generated package output was created or staged.
+The package is local ignored output. It was not staged and does not create, publish, deploy, import, index, or email anything.

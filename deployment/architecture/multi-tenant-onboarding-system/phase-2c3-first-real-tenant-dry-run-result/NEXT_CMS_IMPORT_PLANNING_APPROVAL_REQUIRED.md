@@ -1,29 +1,17 @@
 # Next CMS Import Planning Approval Required
 
-CMS import planning is not ready.
+CMS import planning is now the next possible planning gate, but it is not approved by Phase 2C-3A.
 
 ## Current Decision
 
-Status: `not_ready`
+Status: `planning_approval_required`
 
-The Phase 2C-3 local dry run did not reach package generation or validation because candidate intake was missing.
+The local Roller package exists and passed offline validation. A separate approval is required before planning CMS import.
 
-## CMS Import Planning Cannot Begin Until
+## CMS Import Planning Approval Must Name
 
-- a real candidate is selected
-- approved non-secret intake is supplied
-- no-secrets agreement is complete
-- owner review before generation is complete
-- local answers file is created
-- local import package candidate is generated
-- offline validator passes or documented warnings are accepted
-- support packet and operator handoff are generated
-- owner reviews the local candidate package
-
-## Future CMS Planning Approval Must Name
-
-- tenant
-- package path
+- tenant: Roller Rink Rentals
+- generated package path
 - validation report path
 - support packet path
 - CMS scope to plan
@@ -31,8 +19,9 @@ The Phase 2C-3 local dry run did not reach package generation or validation beca
 - systems excluded from planning
 - rollback owner
 - evidence path
+- hard stop before live pages
 
-## Not Authorized
+## Still Not Authorized
 
 - CMS import
 - CMS writes
@@ -46,4 +35,10 @@ The Phase 2C-3 local dry run did not reach package generation or validation beca
 - email or Microsoft 365 work
 - Search Console or indexing
 - external checks
-- Roller work
+- live-page publication
+
+## Suggested Future Approval Shape
+
+```text
+Approve Roller CMS import planning only: review the local Roller import package at <package path>, validation report at <validation report path>, and support packet at <support packet path>; define the CMS preview import plan and rollback owner. No CMS writes, no tenant creation, no Azure/Cloudflare/DNS/deployment/email/Search Console/indexing actions, no external checks, no secrets, and hard stop before live pages.
+```

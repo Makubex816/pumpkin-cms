@@ -15,6 +15,11 @@ const secretLikePatterns = [
 const stagingOrLocalPatterns = [/localhost/i, /127\.0\.0\.1/i, /\[::1\]/i, /azurestaticapps\.net/i, /azurewebsites\.net/i, /pages\.dev/i, /web\.core\.windows\.net/i, /staging/i, /preview/i, /default-host/i];
 const pausedTenantPatterns = [/roller/i, /roller-rink-rentals/i, /rollerrinkrentals/i];
 const unrelatedTenantPatterns = [/iceskatingrinkrentals/i, /ice-skating-rink-rentals/i, /iceskatingrinkrentals\.com/i, /othertenantrentals/i, /other-tenant-rentals/i, /othertenantrentals\.com/i];
+const approvedPausedTenantDryRun = Object.freeze({
+  tenant: "roller-rink-rentals",
+  primaryDomain: "rollerrinkrentals.com",
+  approvedScope: "local-offline-dry-run-only"
+});
 const allowedDeploymentProfiles = new Set([
   "static-azure-cloudflare-worker-graph",
   "static-azure-cloudflare-cdn",
@@ -84,6 +89,7 @@ export const AnswerErrorCode = Object.freeze({
   INDEXING_NOT_ALLOWED: "ANSWERS_INDEXING_NOT_ALLOWED",
   SECRET_LIKE_VALUE: "ANSWERS_SECRET_LIKE_VALUE",
   PAUSED_TENANT_REFERENCE: "ANSWERS_PAUSED_TENANT_REFERENCE",
+  PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID: "ANSWERS_PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID",
   UNRELATED_TENANT_REFERENCE: "ANSWERS_UNRELATED_TENANT_REFERENCE",
   LOCAL_PATH_VALUE: "ANSWERS_LOCAL_PATH_VALUE"
 });
@@ -104,7 +110,10 @@ export function validateAnswers(answers) {
   validatePrivacy(errors, answers?.privacyReviewStatus);
   validateOwnerContacts(errors, answers?.ownerContacts);
   validateManualApprovals(errors, answers?.manualApprovals);
-  scanForUnsafeStrings(errors, answers);
+  validatePausedTenantDryRunApproval(errors, answers);
+  scanForUnsafeStrings(errors, answers, "$", {
+    pausedTenantDryRunApproved: isPausedTenantDryRunApproved(answers)
+  });
 
   return {
     valid: errors.length === 0,
@@ -145,6 +154,29 @@ export function getAnswerForms(answers) {
 export function canonicalBaseUrlFromAnswers(answers) {
   const host = selectedCanonicalHost(answers);
   return host ? `https://${host}` : null;
+}
+
+export function isPausedTenantDryRunApproved(answers) {
+  const approval = answers?.pausedTenantDryRunApproval;
+  return isPlainObject(approval)
+    && approval.tenant === approvedPausedTenantDryRun.tenant
+    && approval.primaryDomain === approvedPausedTenantDryRun.primaryDomain
+    && approval.approvedScope === approvedPausedTenantDryRun.approvedScope
+    && approval.externalMutationsAllowed === false
+    && approval.livePagesApproved === false
+    && approval.livePagesHardStopped === true
+    && approval.searchConsoleApproved === false
+    && approval.searchConsoleIndexingHardStopped === true
+    && approval.approvedByOwner === true
+    && answers?.tenant?.tenantId === approvedPausedTenantDryRun.tenant
+    && answers?.tenant?.siteKey === approvedPausedTenantDryRun.tenant
+    && answers?.tenant?.cmsTenantSlug === approvedPausedTenantDryRun.tenant
+    && answers?.domains?.primaryDomain === approvedPausedTenantDryRun.primaryDomain
+    && answers?.builderProfile?.generatorMode === "offline-local-only"
+    && answers?.seo?.defaultRobots === "noindex,nofollow"
+    && answers?.seo?.sitemapPolicy === "disabled-until-final-gate"
+    && answers?.seo?.indexingFinalGate === true
+    && answers?.manualApprovals?.indexingFinalGateApproval === "blocked-until-final-review";
 }
 
 function validateTopLevel(errors, answers) {
@@ -481,6 +513,70 @@ function validateManualApprovals(errors, manualApprovals) {
   }
 }
 
+function validatePausedTenantDryRunApproval(errors, answers) {
+  const approval = answers?.pausedTenantDryRunApproval;
+  if (approval === undefined) {
+    return;
+  }
+
+  if (!isPlainObject(approval)) {
+    errors.push(error(
+      AnswerErrorCode.PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID,
+      "pausedTenantDryRunApproval",
+      "Paused tenant dry-run approval must be a structured object.",
+      "Use the approved local-only Roller dry-run approval object.",
+      "Ask an operator before allowing any paused tenant package generation."
+    ));
+    return;
+  }
+
+  requireApprovalValue(errors, approval.tenant, "pausedTenantDryRunApproval.tenant", approvedPausedTenantDryRun.tenant);
+  requireApprovalValue(errors, approval.primaryDomain, "pausedTenantDryRunApproval.primaryDomain", approvedPausedTenantDryRun.primaryDomain);
+  requireApprovalValue(errors, approval.approvedScope, "pausedTenantDryRunApproval.approvedScope", approvedPausedTenantDryRun.approvedScope);
+  requireApprovalValue(errors, approval.externalMutationsAllowed, "pausedTenantDryRunApproval.externalMutationsAllowed", false);
+  requireApprovalValue(errors, approval.livePagesApproved, "pausedTenantDryRunApproval.livePagesApproved", false);
+  requireApprovalValue(errors, approval.livePagesHardStopped, "pausedTenantDryRunApproval.livePagesHardStopped", true);
+  requireApprovalValue(errors, approval.searchConsoleApproved, "pausedTenantDryRunApproval.searchConsoleApproved", false);
+  requireApprovalValue(errors, approval.searchConsoleIndexingHardStopped, "pausedTenantDryRunApproval.searchConsoleIndexingHardStopped", true);
+  requireApprovalValue(errors, approval.approvedByOwner, "pausedTenantDryRunApproval.approvedByOwner", true);
+
+  const mismatchChecks = [
+    [answers?.tenant?.tenantId, "tenant.tenantId", approvedPausedTenantDryRun.tenant],
+    [answers?.tenant?.siteKey, "tenant.siteKey", approvedPausedTenantDryRun.tenant],
+    [answers?.tenant?.cmsTenantSlug, "tenant.cmsTenantSlug", approvedPausedTenantDryRun.tenant],
+    [answers?.domains?.primaryDomain, "domains.primaryDomain", approvedPausedTenantDryRun.primaryDomain],
+    [answers?.builderProfile?.generatorMode, "builderProfile.generatorMode", "offline-local-only"],
+    [answers?.seo?.defaultRobots, "seo.defaultRobots", "noindex,nofollow"],
+    [answers?.seo?.sitemapPolicy, "seo.sitemapPolicy", "disabled-until-final-gate"],
+    [answers?.seo?.indexingFinalGate, "seo.indexingFinalGate", true],
+    [answers?.manualApprovals?.indexingFinalGateApproval, "manualApprovals.indexingFinalGateApproval", "blocked-until-final-review"]
+  ];
+
+  for (const [actual, field, expected] of mismatchChecks) {
+    if (actual !== expected) {
+      errors.push(error(
+        AnswerErrorCode.PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID,
+        "pausedTenantDryRunApproval",
+        `Paused tenant dry-run approval does not match ${field}.`,
+        `Use ${field} = ${JSON.stringify(expected)} for this local-only Roller dry run.`,
+        "Ask an operator before changing paused tenant approval metadata."
+      ));
+    }
+  }
+}
+
+function requireApprovalValue(errors, actual, path, expected) {
+  if (actual !== expected) {
+    errors.push(error(
+      AnswerErrorCode.PAUSED_TENANT_DRY_RUN_APPROVAL_INVALID,
+      path,
+      `${path} must be ${JSON.stringify(expected)} for the approved local-only Roller dry run.`,
+      `Set ${path} to ${JSON.stringify(expected)} or remove the paused tenant reference.`,
+      "Ask an operator before allowing any paused tenant package generation."
+    ));
+  }
+}
+
 function validateRouteList(errors, routes, path) {
   if (!Array.isArray(routes)) {
     errors.push(error(AnswerErrorCode.REQUIRED_FIELD_MISSING, path, `${path} must be an array.`, "Use an array such as [\"/\", \"/contact/\"].", "Ask the content owner for the approved routes."));
@@ -620,9 +716,9 @@ function validatePublicUrl(errors, value, path, options = {}) {
   }
 }
 
-function scanForUnsafeStrings(errors, value, pointer = "$") {
+function scanForUnsafeStrings(errors, value, pointer = "$", options = {}) {
   if (typeof value === "string") {
-    if (pausedTenantPatterns.some((pattern) => pattern.test(value))) {
+    if (!options.pausedTenantDryRunApproved && pausedTenantPatterns.some((pattern) => pattern.test(value))) {
       errors.push(error(AnswerErrorCode.PAUSED_TENANT_REFERENCE, pointer, "Paused tenant references are not allowed in builder answers.", "Remove the paused tenant name or domain from this package.", "Ask an operator if this package appears to mix tenants."));
     }
     if (unrelatedTenantPatterns.some((pattern) => pattern.test(value))) {
@@ -645,13 +741,13 @@ function scanForUnsafeStrings(errors, value, pointer = "$") {
   }
 
   if (Array.isArray(value)) {
-    value.forEach((item, index) => scanForUnsafeStrings(errors, item, `${pointer}[${index}]`));
+    value.forEach((item, index) => scanForUnsafeStrings(errors, item, `${pointer}[${index}]`, options));
     return;
   }
 
   if (isPlainObject(value)) {
     for (const [key, child] of Object.entries(value)) {
-      scanForUnsafeStrings(errors, child, `${pointer}.${key}`);
+      scanForUnsafeStrings(errors, child, `${pointer}.${key}`, options);
     }
   }
 }

@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "1.0.0",
+  "builderProfile": {
+    "deploymentProfile": "static-azure-cloudflare-worker-graph",
+    "generatorMode": "offline-local-only"
+  },
+  "pausedTenantDryRunApproval": {
+    "tenant": "roller-rink-rentals",
+    "primaryDomain": "rollerrinkrentals.com",
+    "approvedScope": "local-offline-dry-run-only",
+    "externalMutationsAllowed": false,
+    "livePagesApproved": false,
+    "livePagesHardStopped": true,
+    "searchConsoleApproved": false,
+    "searchConsoleIndexingHardStopped": true,
+    "approvedByOwner": true
+  },
+  "tenant": {
+    "tenantId": "roller-rink-rentals",
+    "siteKey": "roller-rink-rentals",
+    "tenantDisplayName": "Roller Rink Rentals",
+    "businessType": "roller rink rental services",
+    "cmsTenantSlug": "roller-rink-rentals",
+    "tenantApiKeyPlaceholder": "TENANT_API_KEY_RUNTIME_ONLY"
+  },
+  "domains": {
+    "primaryDomain": "rollerrinkrentals.com",
+    "wwwDomain": "www.rollerrinkrentals.com",
+    "mediaDomain": "media.rollerrinkrentals.com",
+    "canonicalHost": "primary"
+  },
+  "routing": {
+    "trailingSlashPolicy": "always",
+    "approvedRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "forbiddenRoutes": [
+      "/preview",
+      "/draft",
+      "/old-roller-rink-rentals"
+    ]
+  },
+  "pages": [
+    {
+      "route": "/",
+      "slug": "home",
+      "title": "Roller Rink Rentals",
+      "navLabel": "Home",
+      "seoDescription": "Local offline dry-run home page placeholder for Roller Rink Rentals review before any live-page publication.",
+      "mediaRefs": [
+        "hero-roller-rink"
+      ]
+    },
+    {
+      "route": "/contact",
+      "slug": "contact",
+      "title": "Contact Roller Rink Rentals",
+      "navLabel": "Contact",
+      "seoDescription": "Local offline dry-run contact page placeholder for Roller Rink Rentals lead form review.",
+      "formRef": "contact-form"
+    },
+    {
+      "route": "/service-areas",
+      "slug": "service-areas",
+      "title": "Roller Rink Rentals Service Areas",
+      "navLabel": "Service Areas",
+      "seoDescription": "Local offline dry-run service area placeholder for Roller Rink Rentals review."
+    }
+  ],
+  "media": [
+    {
+      "mediaId": "hero-roller-rink",
+      "fileName": "hero-roller-rink.webp",
+      "kind": "image",
+      "altText": "Roller rink rental setup placeholder",
+      "sourceStatus": "placeholder",
+      "publicUrl": "https://media.rollerrinkrentals.com/hero-roller-rink.webp"
+    }
+  ],
+  "form": {
+    "formId": "contact-form",
+    "displayName": "Contact form",
+    "deliveryMode": "no-email",
+    "recipient": "dry-run-placeholder@example.invalid",
+    "mailboxOwner": "Roller Rink Rentals form owner pending",
+    "fields": [
+      "name",
+      "email",
+      "eventDate",
+      "message"
+    ],
+    "consentNoticeStatus": "pending-review",
+    "rollbackMode": "disable-form",
+    "leadRecipientRef": "roller-rink-leads",
+    "recipientGroup": "roller-rink-leads",
+    "staticEndpointRef": "PROFILE_MANAGED_STATIC_ENDPOINT"
+  },
+  "seo": {
+    "defaultRobots": "noindex,nofollow",
+    "canonicalBaseUrl": "https://rollerrinkrentals.com",
+    "sitemapPolicy": "disabled-until-final-gate",
+    "indexingFinalGate": true
+  },
+  "analyticsDecision": {
+    "status": "deferred",
+    "owner": "Roller Rink Rentals analytics owner pending",
+    "notes": "No scripts, pixels, tracking IDs, or tokens are included in this local dry-run fixture."
+  },
+  "privacyReviewStatus": {
+    "status": "pending-review",
+    "owner": "Roller Rink Rentals privacy owner pending",
+    "notes": "Legal/privacy owner must review contact form notice text before any CMS import, deployment, Search Console action, indexing action, or live-page publication."
+  },
+  "ownerContacts": {
+    "businessOwner": "Roller Rink Rentals owner pending",
+    "contentOwner": "Roller Rink Rentals content owner pending",
+    "mediaOwner": "Roller Rink Rentals media owner pending",
+    "formOwner": "Roller Rink Rentals form owner pending",
+    "technicalOperator": "Pumpkin CMS onboarding operator",
+    "monitoringOwner": "Roller Rink Rentals monitoring owner pending",
+    "rollbackOwner": "Roller Rink Rentals rollback owner pending",
+    "indexingOwner": "Roller Rink Rentals indexing owner pending"
+  },
+  "manualApprovals": {
+    "contentApproval": "pending",
+    "legalPrivacyApproval": "pending",
+    "formOversightApproval": "pending",
+    "analyticsDecisionApproval": "pending",
+    "monitoringApproval": "pending",
+    "rollbackApproval": "pending",
+    "indexingFinalGateApproval": "blocked-until-final-review"
+  }
+}

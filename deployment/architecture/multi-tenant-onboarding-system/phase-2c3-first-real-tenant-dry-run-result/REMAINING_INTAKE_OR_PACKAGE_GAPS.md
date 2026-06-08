@@ -1,69 +1,31 @@
 # Remaining Intake Or Package Gaps
 
-## Blocking Gaps
+## Remaining Intake Gaps Before CMS Import Planning
 
-- Tenant display name is missing.
-- Tenant slug is missing.
-- Primary domain is missing.
-- `www` domain preference is missing.
-- Media domain preference is missing.
-- Approved routes are missing.
-- Forbidden routes are missing.
-- Deployment profile preference is missing.
-- Contact form recipient reference is missing.
-- Page copy source is missing.
-- Images/media source and rights status are missing.
-- Service areas are missing or not marked not applicable.
-- Legal/privacy reviewer and status are missing.
-- Analytics/tracking decision is missing.
-- Owner contact is missing.
-- Monitoring owner is missing.
-- Rollback owner is missing.
-- Final indexing owner is missing.
-- Roller status confirmation is missing.
+- named business owner
+- named content owner
+- named media owner
+- named form owner
+- named analytics owner
+- named legal/privacy owner
+- named monitoring owner
+- named rollback owner
+- named final indexing owner
+- approved lead delivery mailbox, if future delivery is ever approved
+- page copy source
+- media rights confirmation
+- service area source
 
-## Package Gaps
+## Package Review Gaps
 
-No package exists yet, so these checks remain pending:
+- Generated page copy is placeholder-level and needs owner/content review.
+- Generated media uses placeholder metadata and needs media owner review.
+- Legal/privacy review remains pending.
+- Form oversight approval remains pending.
+- Analytics decision approval remains pending.
+- Monitoring and rollback approvals remain pending.
+- Final indexing gate remains blocked until final review.
 
-- generated package structure
-- route references
-- media references
-- form references
-- SEO/canonical defaults
-- validator report
-- support packet
-- operator handoff
+## Live-Page Gap
 
-## Exact Information Needed Next
-
-Provide approved non-secret candidate intake with:
-
-```text
-Tenant display name:
-Tenant slug:
-Primary domain:
-www preference:
-Media domain preference:
-Approved routes:
-Forbidden routes:
-Deployment profile preference:
-Contact form leadRecipientRef:
-Legacy recipientGroup, if needed:
-Page copy source:
-Images/media source:
-Media rights status:
-Service areas:
-Legal/privacy reviewer:
-Legal/privacy status:
-Analytics/tracking decision:
-Owner contact:
-Monitoring owner:
-Rollback owner:
-Final indexing owner:
-Roller status:
-```
-
-## Required Safety Confirmation
-
-The next approval must confirm that the supplied intake contains no secrets, protected config, protected local paths, or private customer data.
+Live pages are not ready and remain hard-stopped. This dry run did not publish, deploy, index, or expose live pages.

@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { canonicalBaseUrlFromAnswers, defaultForbiddenRoutes, getAnswerForms, normalizeRoute, slugFromRoute } from "./answers-validator.mjs";
+import { canonicalBaseUrlFromAnswers, defaultForbiddenRoutes, getAnswerForms, isPausedTenantDryRunApproved, normalizeRoute, slugFromRoute } from "./answers-validator.mjs";
 
 const schemaVersion = "1.0.0";
 const packageVersion = "0.2.0";
@@ -28,7 +28,7 @@ export function generatePackagePlan(answers) {
 
   return [
     textFile("README.md", renderGeneratedReadme(answers)),
-    jsonFile("manifest.json", {
+    jsonFile("manifest.json", withoutUndefined({
       schemaVersion,
       packageVersion,
       tenantId,
@@ -38,8 +38,9 @@ export function generatePackagePlan(answers) {
       validation: {
         status: "not-run",
         externalMutationAllowed: false
-      }
-    }),
+      },
+      pausedTenantDryRunApproval: packagePausedTenantDryRunApproval(answers)
+    })),
     jsonFile("tenant.json", {
       schemaVersion,
       tenantId,
@@ -50,7 +51,7 @@ export function generatePackagePlan(answers) {
       status: "intake-draft",
       tenantApiKeyPlaceholder: "TENANT_API_KEY_RUNTIME_ONLY",
       relatedTenants: [],
-      pausedRelatedTenants: []
+      pausedRelatedTenants: isPausedTenantDryRunApproved(answers) ? [answers.pausedTenantDryRunApproval.tenant] : []
     }),
     jsonFile("site.json", withoutUndefined({
       schemaVersion,
@@ -256,8 +257,28 @@ Boundary:
 - no email or Microsoft 365 actions were performed
 - no Search Console, sitemap, URL Inspection, or indexing actions were performed
 - no external HTTP checks were performed
-- Roller remains paused
+- Roller remains paused outside this approved local/offline dry run
+- live pages remain hard-stopped before publication
 `;
+}
+
+function packagePausedTenantDryRunApproval(answers) {
+  if (!isPausedTenantDryRunApproved(answers)) {
+    return undefined;
+  }
+
+  const approval = answers.pausedTenantDryRunApproval;
+  return {
+    tenant: approval.tenant,
+    primaryDomain: approval.primaryDomain,
+    approvedScope: approval.approvedScope,
+    externalMutationsAllowed: approval.externalMutationsAllowed,
+    livePagesApproved: approval.livePagesApproved,
+    livePagesHardStopped: approval.livePagesHardStopped,
+    searchConsoleApproved: approval.searchConsoleApproved,
+    searchConsoleIndexingHardStopped: approval.searchConsoleIndexingHardStopped,
+    approvedByOwner: approval.approvedByOwner
+  };
 }
 
 function uniqueRoutes(routes) {

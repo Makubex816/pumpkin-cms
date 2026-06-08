@@ -1,49 +1,38 @@
 # Phase 2C-3 First Real Tenant Local Dry-Run Result
 
-Phase 2C-3 was approved for first real tenant local dry-run package generation only, but the required approved candidate intake was not supplied.
+Phase 2C-3 is now complete for Roller Rink Rentals after the Phase 2C-3A paused-tenant local dry-run guardrail repair.
 
-The dry run is blocked before answers-file creation. No real tenant package was generated.
+Earlier outcomes remain part of the audit trail:
+
+- First Phase 2C-3 attempt: blocked because candidate intake still used placeholders.
+- Roller retry: blocked because the default paused-tenant guardrail rejected Roller values.
+- Phase 2C-3A retry: passed with explicit local-only Roller dry-run approval metadata.
 
 ## Result Status
 
 | Area | Status |
 | --- | --- |
 | Phase 2C-2 dry-run approval package | complete |
-| Phase 2C-3 first real tenant local dry-run | no, blocked before generation |
-| Generated real candidate package | no |
-| Validator result | not run, no generated package exists |
-| Support packet generated | no |
-| Ready for CMS import planning | no |
+| Phase 2C-3 Roller first real tenant local dry-run retry | complete |
+| Generated Roller candidate package | yes |
+| Validator result | pass, 0 errors, 0 warnings |
+| Support packet generated | yes |
+| Ready for CMS import planning | yes, planning only with a separate approval |
 | Ready for CMS import execution | no |
+| Ready for production readiness planning | no, until CMS import planning gates pass |
+| Ready for live pages | no, hard-stopped |
 | Real tenant created | no |
 | External systems changed | no |
 | Search Console or indexing affected | no |
-| Roller | paused |
 
-## Blocking Reason
+## Local Outputs
 
-The attached approval text left all required candidate fields as `[FILL_IN]`, and the user message used `[TENANT_NAME]` instead of a real candidate name.
-
-Because the approved non-secret candidate intake is missing, it would be unsafe to create:
-
-- a real tenant answers file
-- a local import package candidate
-- validator evidence for a candidate
-- a support packet or operator handoff for a candidate
-
-## Files In This Result Package
-
-- `CANDIDATE_INTAKE_REVIEW.md`
-- `ANSWERS_FILE_RESULT.md`
-- `BUILDER_DRY_RUN_RESULT.md`
-- `GENERATED_PACKAGE_RESULT.md`
-- `VALIDATOR_RESULT.md`
-- `SUPPORT_PACKET_RESULT.md`
-- `OPERATOR_HANDOFF_REVIEW.md`
-- `REMAINING_INTAKE_OR_PACKAGE_GAPS.md`
-- `NEXT_CMS_IMPORT_PLANNING_APPROVAL_REQUIRED.md`
-- `manifest.json`
+- Answers file: `deployment/architecture/multi-tenant-onboarding-system/import-package-builder/fixtures/real-dry-run-roller-rink-rentals.answers.json`
+- Generated package: `deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/`
+- Validator report: `.tmp/real-dry-run-roller-rink-rentals/validation-report.json`
+- Operator handoff: `.tmp/real-dry-run-roller-rink-rentals/OPERATOR_HANDOFF.md`
+- Support packet: `.tmp/real-dry-run-roller-rink-rentals/support-packet.json`
 
 ## Boundary Confirmation
 
-No answers file was created. No package was generated. No validator was run against a generated real candidate package. No support packet was generated. No tenant was created. No CMS, MediaAsset, Azure, Cloudflare, DNS, deployment, Function App, email, Microsoft 365, Search Console, indexing, external check, protected config, or Roller action occurred.
+This was local/offline only. No tenant was created, no CMS records were written, no MediaAsset records were written, no Azure, Cloudflare, DNS, deployment, Function App, email, Microsoft 365, Search Console, indexing, external HTTP, protected config, or live-page publication action occurred.

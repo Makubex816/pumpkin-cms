@@ -2,33 +2,28 @@
 
 ## Status
 
-Status: `blocked_before_handoff`
+Status: `generated_for_local_review`
 
-No operator handoff packet exists because no candidate package was generated.
+Generated handoff:
 
-## What The Operator Should Know
+```text
+deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/OPERATOR_HANDOFF.md
+```
 
-- The Phase 2C-3 approval was received.
-- Required candidate values were not supplied.
-- All tenant fields in the attached request were placeholders.
-- No answers file was created.
-- No builder dry-run was run.
-- No package was generated.
-- No validator/support packet was run.
-- Roller remains paused.
-- External systems remain untouched.
+## Operator Summary
 
-## Required Operator Action
+- Roller was explicitly selected for this local/offline dry run only.
+- The default paused-tenant guardrail remains strict.
+- The Roller package passed only because exact local-only approval metadata was present.
+- The generated package validated with 0 errors and 0 warnings.
+- The support packet was generated and redaction passed.
+- No external systems were touched.
+- Live pages remain hard-stopped.
 
-Ask for completed Phase 2C-2 candidate materials:
+## Required Operator Follow-Up
 
-- candidate selection worksheet
-- user-facing intake checklist
-- no-secrets agreement
-- required information worksheet
-- owner review before generation
-- exact Phase 2C-3 approval wording with real non-secret values and paths
-
-## Next Handoff Condition
-
-Only after approved candidate intake exists should the operator prepare the local answers file and run the builder/validator workflow.
+- Resolve pending owner placeholders before CMS import planning.
+- Review generated content placeholders.
+- Confirm media rights before any import planning.
+- Confirm form owner and future lead delivery plan before any email/form test approval.
+- Keep Search Console and indexing blocked until final owner approval after production readiness.

@@ -2,32 +2,40 @@
 
 ## Status
 
-Status: `not_created_blocked`
+Status: `created_and_validated`
 
-No local answers file was created.
-
-## Reason
-
-The approved candidate intake was not supplied. Creating an answers file from `[FILL_IN]` placeholders would create misleading evidence and could allow a later operator to mistake placeholders for approved tenant data.
-
-## Required Future Answers Path
-
-The future approval should name a path similar to:
+Created:
 
 ```text
-deployment/architecture/multi-tenant-onboarding-system/import-package-builder/fixtures/real-dry-run-<tenant-slug>.answers.json
+deployment/architecture/multi-tenant-onboarding-system/import-package-builder/fixtures/real-dry-run-roller-rink-rentals.answers.json
 ```
 
-## Required Safety Rules
+## Guardrail Approval Metadata
 
-The future answers file must:
+The answers file includes:
 
-- contain approved non-secret values only
-- use placeholders only for runtime-only values
-- include no API keys, JWTs, Cloudflare tokens, Azure tokens, Microsoft Graph secrets, SMTP passwords, connection strings, storage keys, deployment tokens, protected local paths, or private customer data
-- keep Search Console and indexing hard-stopped
-- keep Roller paused unless explicitly selected
+```json
+"pausedTenantDryRunApproval": {
+  "tenant": "roller-rink-rentals",
+  "primaryDomain": "rollerrinkrentals.com",
+  "approvedScope": "local-offline-dry-run-only",
+  "externalMutationsAllowed": false,
+  "livePagesApproved": false,
+  "livePagesHardStopped": true,
+  "searchConsoleApproved": false,
+  "searchConsoleIndexingHardStopped": true,
+  "approvedByOwner": true
+}
+```
 
-## Boundary Confirmation
+## Safety Result
 
-No answers JSON was written for Phase 2C-3.
+The answers file parsed as JSON and passed builder validation after the Phase 2C-3A guardrail repair. It contains no known secrets, no protected local paths, and no private customer data.
+
+## Hard Stops
+
+- Form delivery is `no-email`.
+- Default robots are `noindex,nofollow`.
+- Sitemap policy is `disabled-until-final-gate`.
+- Indexing final gate remains blocked until final review.
+- Live pages are not approved.
