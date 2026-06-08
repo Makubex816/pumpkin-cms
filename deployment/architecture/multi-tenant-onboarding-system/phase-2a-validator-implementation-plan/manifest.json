@@ -1,0 +1,82 @@
+{
+  "package": "phase-2a-validator-implementation-plan",
+  "generatedDate": "2026-06-07",
+  "scope": "implementation-plan-only",
+  "reviewedInputs": [
+    "deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/GAP_REGISTER.md",
+    "deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/RECOMMENDED_FIXES.md",
+    "deployment/architecture/multi-tenant-onboarding-system/validator-design/",
+    "deployment/architecture/multi-tenant-onboarding-system/import-package-spec/",
+    "deployment/architecture/multi-tenant-onboarding-system/cli-design/",
+    "deployment/architecture/multi-tenant-onboarding-system/wizard-design/",
+    "deployment/architecture/multi-tenant-onboarding-system/deployment-profile-registry/"
+  ],
+  "result": "created",
+  "auditFindingsCaptured": [
+    "cross-file validator design",
+    "URL safety rules",
+    "normalized gate status vocabulary",
+    "deployment profile environment-variable classification",
+    "profile-specific smoke-test matrix",
+    "extension permission and migration schema handling"
+  ],
+  "actualImplementationPerformed": false,
+  "newTenantCreated": false,
+  "externalSystemsChanged": false,
+  "searchConsoleIndexingAffected": false,
+  "roller": "paused",
+  "plannedModules": [
+    "schema-loader",
+    "package-discovery",
+    "json-parse-validator",
+    "schema-validator",
+    "cross-file-reference-validator",
+    "route-policy-validator",
+    "media-reference-validator",
+    "form-reference-validator",
+    "seo-validator",
+    "url-safety-validator",
+    "secret-pattern-scanner",
+    "gate-status-normalizer",
+    "validation-report-writer",
+    "cli-entrypoint"
+  ],
+  "futureCliEntrypoints": [
+    "pumpkin tenant validate-intake",
+    "pumpkin tenant validate-import-package",
+    "pumpkin tenant validate-all",
+    "pumpkin tenant explain-error",
+    "pumpkin tenant export-support-packet"
+  ],
+  "hardStops": {
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "functionSettingChanges": false,
+    "emailMicrosoft365Work": false,
+    "searchConsoleIndexingActions": false,
+    "rollerWork": false
+  },
+  "files": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "NON_GOALS.md",
+    "MODULE_BOUNDARIES.md",
+    "SCHEMA_LOADING_PLAN.md",
+    "CROSS_FILE_VALIDATION_PLAN.md",
+    "URL_SAFETY_RULES.md",
+    "NORMALIZED_GATE_STATUS_VOCABULARY.md",
+    "VALIDATION_REPORT_FORMAT.md",
+    "ERROR_MESSAGE_REQUIREMENTS.md",
+    "CLI_ENTRYPOINT_PLAN.md",
+    "TEST_PLAN.md",
+    "ACCEPTANCE_CRITERIA.md",
+    "PHASE_2A_BACKLOG.md",
+    "RISKS_AND_OPEN_DECISIONS.md",
+    "NEXT_IMPLEMENTATION_PROMPT.md",
+    "manifest.json"
+  ]
+}
