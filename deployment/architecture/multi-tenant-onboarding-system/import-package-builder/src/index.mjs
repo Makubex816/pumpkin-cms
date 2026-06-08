@@ -2,7 +2,9 @@ import path from "node:path";
 import { loadAnswers, BuilderInputError } from "./answers-loader.mjs";
 import { validateAnswers } from "./answers-validator.mjs";
 import { generatePackagePlan, writePackagePlan } from "./package-generator.mjs";
+import { buildPackagePreview } from "./package-preview.mjs";
 import { prepareOutputDirectory, OutputPathError } from "./path-safety.mjs";
+import { checkSupportPacketRedaction, writeBuilderPackageSummary } from "./support-packet-hardening.mjs";
 import { runOfflineValidator } from "./validator-runner.mjs";
 
 export async function buildImportPackage(options) {
@@ -17,13 +19,22 @@ export async function buildImportPackage(options) {
       outputDirectory: options.outDir ? path.resolve(options.outDir) : null,
       filesPlanned: [],
       filesWritten: [],
+      preview: null,
       validationReport: null,
+      supportPacketSafety: null,
       boundaryConfirmation: boundaryConfirmation()
     };
   }
 
   const files = generatePackagePlan(answersRecord.answers);
   const outputDirectory = path.resolve(options.outDir);
+  const preview = await buildPackagePreview({
+    answers: answersRecord.answers,
+    files,
+    outputDirectory,
+    validate: options.validate,
+    supportPacket: options.supportPacket
+  });
 
   if (options.dryRun) {
     return {
@@ -34,7 +45,9 @@ export async function buildImportPackage(options) {
       outputDirectory,
       filesPlanned: files.map((file) => file.relativePath),
       filesWritten: [],
+      preview,
       validationReport: null,
+      supportPacketSafety: null,
       boundaryConfirmation: boundaryConfirmation()
     };
   }
@@ -43,6 +56,7 @@ export async function buildImportPackage(options) {
   await writePackagePlan(files, safeOutputDirectory);
 
   let validationReport = null;
+  let supportPacketSafety = null;
   if (options.validate || options.supportPacket) {
     validationReport = await runOfflineValidator({
       packagePath: safeOutputDirectory,
@@ -52,17 +66,32 @@ export async function buildImportPackage(options) {
     });
   }
 
+  if (options.supportPacket) {
+    await writeBuilderPackageSummary({
+      outputDirectory: safeOutputDirectory,
+      preview,
+      validationReport
+    });
+    supportPacketSafety = await checkSupportPacketRedaction({
+      outputDirectory: safeOutputDirectory,
+      answersPath: answersRecord.answersPath
+    });
+  }
+
   const validatorFailed = validationReport?.overallStatus === "failed";
+  const supportPacketFailed = supportPacketSafety?.status === "failed";
 
   return {
-    status: validatorFailed ? "failed" : "passed",
-    stage: validatorFailed ? "validator" : "complete",
-    errors: [],
+    status: validatorFailed || supportPacketFailed ? "failed" : "passed",
+    stage: validatorFailed ? "validator" : supportPacketFailed ? "support-packet-redaction" : "complete",
+    errors: supportPacketFailed ? supportPacketSafety.findings : [],
     answersPath: answersRecord.answersPath,
     outputDirectory: safeOutputDirectory,
     filesPlanned: files.map((file) => file.relativePath),
     filesWritten: files.map((file) => file.relativePath),
+    preview,
     validationReport,
+    supportPacketSafety,
     boundaryConfirmation: boundaryConfirmation()
   };
 }

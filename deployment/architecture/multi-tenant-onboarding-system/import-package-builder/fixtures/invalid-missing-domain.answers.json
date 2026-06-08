@@ -14,9 +14,11 @@
     "canonicalHost": "primary"
   },
   "builderProfile": {
-    "deploymentProfile": "static-azure-cloudflare-worker-graph"
+    "deploymentProfile": "static-azure-cloudflare-worker-graph",
+    "generatorMode": "offline-local-only"
   },
   "routing": {
+    "trailingSlashPolicy": "always",
     "approvedRoutes": [
       "/"
     ],
@@ -47,7 +49,37 @@
   },
   "seo": {
     "defaultRobots": "noindex,nofollow",
+    "canonicalBaseUrl": "https://missingdomaindemo.com",
     "sitemapPolicy": "disabled-until-final-gate",
     "indexingFinalGate": true
+  },
+  "analyticsDecision": {
+    "status": "deferred",
+    "owner": "Example Analytics Owner",
+    "notes": "No analytics implementation is included."
+  },
+  "privacyReviewStatus": {
+    "status": "pending-review",
+    "owner": "Example Privacy Owner",
+    "notes": "Review is pending."
+  },
+  "ownerContacts": {
+    "businessOwner": "Example Business Owner",
+    "contentOwner": "Example Content Owner",
+    "mediaOwner": "Example Media Owner",
+    "formOwner": "Example Form Owner",
+    "technicalOperator": "Example Technical Operator",
+    "monitoringOwner": "Example Monitoring Owner",
+    "rollbackOwner": "Example Rollback Owner",
+    "indexingOwner": "Example SEO Owner"
+  },
+  "manualApprovals": {
+    "contentApproval": "pending",
+    "legalPrivacyApproval": "pending",
+    "formOversightApproval": "pending",
+    "analyticsDecisionApproval": "pending",
+    "monitoringApproval": "pending",
+    "rollbackApproval": "pending",
+    "indexingFinalGateApproval": "blocked-until-final-review"
   }
 }

@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "1.0.0",
+  "builderProfile": {
+    "deploymentProfile": "static-azure-cloudflare-worker-graph",
+    "generatorMode": "offline-local-only"
+  },
+  "tenant": {
+    "tenantId": "example-event-rentals-full",
+    "siteKey": "example-event-rentals-full",
+    "tenantDisplayName": "Example Event Rentals Full",
+    "businessType": "event rental services",
+    "cmsTenantSlug": "example-event-rentals-full",
+    "tenantApiKeyPlaceholder": "TENANT_API_KEY_RUNTIME_ONLY"
+  },
+  "domains": {
+    "primaryDomain": "exampleeventrentals.com",
+    "wwwDomain": "www.exampleeventrentals.com",
+    "mediaDomain": "media.exampleeventrentals.com",
+    "canonicalHost": "primary",
+    "stagingHostname": "example-staging.invalid"
+  },
+  "routing": {
+    "trailingSlashPolicy": "always",
+    "approvedRoutes": [
+      "/",
+      "/contact/",
+      "/service-areas/",
+      "/rental-packages/"
+    ],
+    "forbiddenRoutes": [
+      "/draft/",
+      "/preview/",
+      "/old/"
+    ]
+  },
+  "pages": [
+    {
+      "route": "/",
+      "slug": "home",
+      "title": "Example Event Rentals Full",
+      "navLabel": "Home",
+      "seoTitle": "Example Event Rentals Full",
+      "seoDescription": "Plan example event rentals with local delivery support, placeholder media, and manual review gates.",
+      "status": "draft",
+      "mediaRefs": [
+        "hero-event-rink"
+      ],
+      "blocks": [
+        {
+          "type": "hero",
+          "heading": "Example Event Rentals Full",
+          "mediaId": "hero-event-rink"
+        }
+      ]
+    },
+    {
+      "route": "/contact/",
+      "slug": "contact",
+      "title": "Contact Example Event Rentals Full",
+      "navLabel": "Contact",
+      "seoTitle": "Contact Example Event Rentals Full",
+      "seoDescription": "Contact Example Event Rentals Full for non-binding placeholder event planning questions.",
+      "status": "draft",
+      "formRef": "contact-form",
+      "blocks": [
+        {
+          "type": "form",
+          "formId": "contact-form"
+        }
+      ]
+    },
+    {
+      "route": "/service-areas/",
+      "slug": "service-areas",
+      "title": "Example Event Rental Service Areas",
+      "navLabel": "Service Areas",
+      "seoTitle": "Example Event Rental Service Areas",
+      "seoDescription": "Review placeholder service area information before requesting example event rental support.",
+      "status": "draft",
+      "mediaRefs": [
+        "service-area-map"
+      ],
+      "blocks": [
+        {
+          "type": "image",
+          "mediaId": "service-area-map"
+        }
+      ]
+    },
+    {
+      "route": "/rental-packages/",
+      "slug": "rental-packages",
+      "title": "Example Rental Packages",
+      "navLabel": "Packages",
+      "seoTitle": "Example Rental Packages",
+      "seoDescription": "Compare placeholder rental package information for example private and community events.",
+      "status": "draft"
+    }
+  ],
+  "media": [
+    {
+      "mediaId": "hero-event-rink",
+      "fileName": "hero-event-rink.webp",
+      "kind": "image",
+      "altText": "Example portable event rink setup",
+      "sourceStatus": "placeholder",
+      "publicUrl": "https://media.exampleeventrentals.com/hero-event-rink.webp"
+    },
+    {
+      "mediaId": "service-area-map",
+      "fileName": "service-area-map.webp",
+      "kind": "image",
+      "altText": "Example service area map placeholder",
+      "sourceStatus": "pending-review",
+      "publicUrl": "https://media.exampleeventrentals.com/service-area-map.webp"
+    }
+  ],
+  "forms": [
+    {
+      "formId": "contact-form",
+      "displayName": "Contact form",
+      "deliveryMode": "no-email",
+      "recipient": "leads@exampleeventrentals.com",
+      "mailboxOwner": "Example Form Owner",
+      "fields": [
+        "name",
+        "email",
+        "eventDate",
+        "message"
+      ],
+      "consentNoticeStatus": "pending-review",
+      "rollbackMode": "disable-form",
+      "leadRecipientRef": "primary-leads",
+      "staticEndpointRef": "PROFILE_MANAGED_STATIC_ENDPOINT"
+    }
+  ],
+  "seo": {
+    "defaultRobots": "noindex,nofollow",
+    "canonicalBaseUrl": "https://exampleeventrentals.com",
+    "sitemapPolicy": "disabled-until-final-gate",
+    "indexingFinalGate": true
+  },
+  "analyticsDecision": {
+    "status": "deferred",
+    "owner": "Example Analytics Owner",
+    "notes": "No scripts, pixels, tracking IDs, or tokens are included in this local fixture."
+  },
+  "privacyReviewStatus": {
+    "status": "pending-review",
+    "owner": "Example Privacy Owner",
+    "notes": "Legal/privacy owner must review contact form notice text before launch."
+  },
+  "ownerContacts": {
+    "businessOwner": "Example Business Owner",
+    "contentOwner": "Example Content Owner",
+    "mediaOwner": "Example Media Owner",
+    "formOwner": "Example Form Owner",
+    "technicalOperator": "Example Technical Operator",
+    "monitoringOwner": "Example Monitoring Owner",
+    "rollbackOwner": "Example Rollback Owner",
+    "indexingOwner": "Example SEO Owner"
+  },
+  "manualApprovals": {
+    "contentApproval": "pending",
+    "legalPrivacyApproval": "pending",
+    "formOversightApproval": "pending",
+    "analyticsDecisionApproval": "pending",
+    "monitoringApproval": "pending",
+    "rollbackApproval": "pending",
+    "indexingFinalGateApproval": "blocked-until-final-review"
+  }
+}

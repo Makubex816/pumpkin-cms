@@ -6,12 +6,28 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 import { buildImportPackage, OutputPathError } from "../src/index.mjs";
+import { AnswerErrorCode } from "../src/answers-validator.mjs";
 import { prepareOutputDirectory } from "../src/path-safety.mjs";
+import { checkSupportPacketRedaction } from "../src/support-packet-hardening.mjs";
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const validAnswers = path.join(packageRoot, "fixtures", "example-event-rentals.answers.json");
+const validFullAnswers = path.join(packageRoot, "fixtures", "valid-full-package.answers.json");
 const missingDomainAnswers = path.join(packageRoot, "fixtures", "invalid-missing-domain.answers.json");
 const secretLikeAnswers = path.join(packageRoot, "fixtures", "invalid-secret-like-value.answers.json");
+const invalidFixtureCases = [
+  ["invalid-malformed-domain.answers.json", AnswerErrorCode.INVALID_DOMAIN],
+  ["invalid-duplicate-route.answers.json", AnswerErrorCode.DUPLICATE_ROUTE],
+  ["invalid-duplicate-slug.answers.json", AnswerErrorCode.DUPLICATE_PAGE_SLUG],
+  ["invalid-unknown-deployment-profile.answers.json", AnswerErrorCode.UNKNOWN_DEPLOYMENT_PROFILE],
+  ["invalid-trailing-slash-policy.answers.json", AnswerErrorCode.INVALID_TRAILING_SLASH_POLICY],
+  ["invalid-media-unsafe-file-name.answers.json", AnswerErrorCode.UNSAFE_MEDIA_FILE_NAME],
+  ["invalid-form-missing-recipient.answers.json", AnswerErrorCode.REQUIRED_FIELD_MISSING],
+  ["invalid-unsafe-canonical-url.answers.json", AnswerErrorCode.INVALID_PRODUCTION_URL],
+  ["invalid-paused-tenant-reference.answers.json", AnswerErrorCode.PAUSED_TENANT_REFERENCE],
+  ["invalid-unrelated-tenant-reference.answers.json", AnswerErrorCode.UNRELATED_TENANT_REFERENCE],
+  ["invalid-duplicate-form.answers.json", AnswerErrorCode.DUPLICATE_FORM_ID]
+];
 
 test("generates a valid import package and support packet", async () => {
   const outDir = await tempOutput("valid-package");
@@ -28,6 +44,7 @@ test("generates a valid import package and support packet", async () => {
   assert.equal(result.validationReport.overallStatus, "passed");
   assert.equal(result.validationReport.summary.errors, 0);
   assert.equal(result.validationReport.summary.warnings, 0);
+  assert.equal(result.supportPacketSafety.status, "passed");
   assert.equal(result.boundaryConfirmation.offlineOnly, true);
   assert.equal(result.boundaryConfirmation.tenantCreated, false);
   assert.equal(result.boundaryConfirmation.externalChecksImplemented, false);
@@ -38,6 +55,30 @@ test("generates a valid import package and support packet", async () => {
   await assertExists(path.join(outDir, "validation-report.json"));
   await assertExists(path.join(outDir, "OPERATOR_HANDOFF.md"));
   await assertExists(path.join(outDir, "NON_TECHNICAL_SUMMARY.md"));
+  await assertExists(path.join(outDir, "BUILDER_PACKAGE_SUMMARY.md"));
+});
+
+test("valid full fixture generates and validates", async () => {
+  const outDir = await tempOutput("valid-full-package");
+  const result = await buildImportPackage({
+    answersPath: validFullAnswers,
+    outDir,
+    validate: true,
+    supportPacket: true
+  });
+
+  assert.equal(result.status, "passed");
+  assert.equal(result.validationReport.overallStatus, "passed");
+  assert.equal(result.validationReport.summary.errors, 0);
+  assert.equal(result.validationReport.summary.warnings, 0);
+
+  const manifest = await readJson(path.join(outDir, "manifest.json"));
+  const forms = await readJson(path.join(outDir, "forms.json"));
+  assert.equal(manifest.packageVersion, "0.2.0");
+  assert.equal(forms.forms.length, 1);
+  assert.ok(result.preview.routes.forbidden.includes("/draft/"));
+  assert.ok(result.preview.routes.forbidden.includes("/preview/"));
+  assert.ok(result.preview.routes.forbidden.includes("/old/"));
 });
 
 test("normalizes page and route paths in generated package", async () => {
@@ -70,6 +111,7 @@ test("rejects answers with missing required domain before writing package", asyn
   assert.equal(result.status, "failed");
   assert.equal(result.stage, "answers-validation");
   assert.match(result.errors.map((issue) => issue.path).join("\n"), /domains\.primaryDomain/);
+  assert.match(result.errors.map((issue) => issue.suggestedFix).join("\n"), /root domain|field/i);
   await assertMissing(path.join(outDir, "manifest.json"));
 });
 
@@ -84,9 +126,29 @@ test("rejects secret-like answers before writing package", async () => {
 
   assert.equal(result.status, "failed");
   assert.equal(result.stage, "answers-validation");
-  assert.match(result.errors.map((issue) => issue.message).join("\n"), /Secret-like value detected/);
+  assert.ok(result.errors.some((issue) => issue.code === AnswerErrorCode.SECRET_LIKE_VALUE));
+  assert.ok(result.errors.every((issue) => !String(issue.message).includes("notARealSecretForFixture")));
   await assertMissing(path.join(outDir, "manifest.json"));
 });
+
+for (const [fixtureName, expectedCode] of invalidFixtureCases) {
+  test(`${fixtureName} fails safely with ${expectedCode}`, async () => {
+    const outDir = await tempOutput(fixtureName.replace(".answers.json", ""));
+    const result = await buildImportPackage({
+      answersPath: path.join(packageRoot, "fixtures", fixtureName),
+      outDir,
+      validate: true,
+      supportPacket: true
+    });
+
+    assert.equal(result.status, "failed");
+    assert.equal(result.stage, "answers-validation");
+    assert.ok(result.errors.some((issue) => issue.code === expectedCode), JSON.stringify(result.errors, null, 2));
+    assert.ok(result.errors.every((issue) => issue.suggestedFix));
+    assert.ok(result.errors.every((issue) => issue.askForHelp));
+    await assertMissing(path.join(outDir, "manifest.json"));
+  });
+}
 
 test("requires overwrite for a non-empty output directory", async () => {
   const outDir = await tempOutput("overwrite-required");
@@ -156,8 +218,33 @@ test("dry-run reports planned files without writing output", async () => {
   assert.equal(result.status, "passed");
   assert.equal(result.stage, "dry-run");
   assert.ok(result.filesPlanned.includes("manifest.json"));
+  assert.equal(result.preview.counts.create, result.filesPlanned.length);
+  assert.equal(result.preview.validator.willRun, true);
+  assert.match(result.preview.validator.command, /support-packet/);
   assert.deepEqual(result.filesWritten, []);
   await assertMissing(outDir);
+});
+
+test("dry-run preview summarizes overwrites without writing output", async () => {
+  const outDir = await tempOutput("preview-overwrite");
+  await buildImportPackage({
+    answersPath: validAnswers,
+    outDir,
+    validate: false
+  });
+  const before = await readFile(path.join(outDir, "manifest.json"), "utf8");
+
+  const result = await buildImportPackage({
+    answersPath: validFullAnswers,
+    outDir,
+    dryRun: true,
+    validate: true,
+    supportPacket: true
+  });
+
+  assert.equal(result.status, "passed");
+  assert.ok(result.preview.counts.overwrite > 0);
+  assert.equal(await readFile(path.join(outDir, "manifest.json"), "utf8"), before);
 });
 
 test("CLI help lists support packet option", () => {
@@ -183,6 +270,52 @@ test("generated core files contain no secret-like values", async () => {
   const generatedText = (await Promise.all(coreFiles.map((file) => readFile(file, "utf8")))).join("\n");
   assert.doesNotMatch(generatedText, /client_secret|access_token|api[_-]?key\s*[:=]|password\s*[:=]|-----BEGIN/i);
   assert.doesNotMatch(generatedText, /AKIA[0-9A-Z]{16}/);
+});
+
+test("support packet omits raw answers and passes redaction scan", async () => {
+  const outDir = await tempOutput("support-redaction");
+  const result = await buildImportPackage({
+    answersPath: validAnswers,
+    outDir,
+    validate: true,
+    supportPacket: true
+  });
+
+  assert.equal(result.supportPacketSafety.status, "passed");
+  const supportText = await readFile(path.join(outDir, "support-packet.json"), "utf8");
+  const handoffText = await readFile(path.join(outDir, "OPERATOR_HANDOFF.md"), "utf8");
+  const nextActionsText = await readFile(path.join(outDir, "NEXT_ACTIONS.md"), "utf8");
+  const builderSummary = await readFile(path.join(outDir, "BUILDER_PACKAGE_SUMMARY.md"), "utf8");
+
+  assert.doesNotMatch(supportText, /example-event-rentals\.answers\.json/);
+  assert.match(supportText, /"sourceFilesCopied": false/);
+  assert.match(handoffText, /Stop Points/);
+  assert.match(nextActionsText, /Next Actions/);
+  assert.match(builderSummary, /Generated Package/);
+  assert.match(builderSummary, /Validation/);
+});
+
+test("redaction checker fails closed on secret-like support packet values", async () => {
+  const outDir = await tempOutput("support-redaction-fails");
+  await mkdir(outDir, { recursive: true });
+  await writeFile(path.join(outDir, "support-packet.json"), `${"client"}_secret=notARealSecretForFixture\n`, "utf8");
+
+  const result = await checkSupportPacketRedaction({
+    outputDirectory: outDir,
+    answersPath: validAnswers
+  });
+
+  assert.equal(result.status, "failed");
+  assert.ok(result.secretLikeFindings.length > 0);
+});
+
+test("builder source contains no external call hooks", async () => {
+  const sourceFiles = (await listFiles(path.join(packageRoot, "src"))).filter((file) => file.endsWith(".mjs"));
+  const sourceText = (await Promise.all(sourceFiles.map((file) => readFile(file, "utf8")))).join("\n");
+
+  assert.doesNotMatch(sourceText, /fetch\s*\(/);
+  assert.doesNotMatch(sourceText, /axios|http\.request|https\.request|node:http|node:https|node:dns|sendMail|nodemailer|URLInspection|submitSitemap/i);
+  assert.doesNotMatch(sourceText, /searchConsole\.(submit|inspect|index|request)/i);
 });
 
 async function tempOutput(name) {

@@ -97,6 +97,7 @@ async function removeKnownGeneratedFiles(outputDirectory) {
     "validation-report.json",
     "VALIDATION_REPORT.md",
     "support-packet.json",
+    "BUILDER_PACKAGE_SUMMARY.md",
     "OPERATOR_HANDOFF.md",
     "NON_TECHNICAL_SUMMARY.md",
     "NEXT_ACTIONS.md",

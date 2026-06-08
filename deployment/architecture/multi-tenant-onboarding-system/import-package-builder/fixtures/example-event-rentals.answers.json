@@ -14,9 +14,11 @@
     "canonicalHost": "primary"
   },
   "builderProfile": {
-    "deploymentProfile": "static-azure-cloudflare-worker-graph"
+    "deploymentProfile": "static-azure-cloudflare-worker-graph",
+    "generatorMode": "offline-local-only"
   },
   "routing": {
+    "trailingSlashPolicy": "always",
     "approvedRoutes": [
       "/",
       "/contact",
@@ -82,11 +84,37 @@
   },
   "seo": {
     "defaultRobots": "noindex,nofollow",
+    "canonicalBaseUrl": "https://exampleeventrentals.com",
     "sitemapPolicy": "disabled-until-final-gate",
     "indexingFinalGate": true
   },
   "analyticsDecision": {
-    "status": "not-selected",
+    "status": "deferred",
+    "owner": "Example Analytics Owner",
     "notes": "Analytics remains undecided in this local skeleton fixture."
+  },
+  "privacyReviewStatus": {
+    "status": "pending-review",
+    "owner": "Example Privacy Owner",
+    "notes": "Contact form notice remains pending manual review."
+  },
+  "ownerContacts": {
+    "businessOwner": "Example Business Owner",
+    "contentOwner": "Example Content Owner",
+    "mediaOwner": "Example Media Owner",
+    "formOwner": "Example Form Owner",
+    "technicalOperator": "Example Technical Operator",
+    "monitoringOwner": "Example Monitoring Owner",
+    "rollbackOwner": "Example Rollback Owner",
+    "indexingOwner": "Example SEO Owner"
+  },
+  "manualApprovals": {
+    "contentApproval": "pending",
+    "legalPrivacyApproval": "pending",
+    "formOversightApproval": "pending",
+    "analyticsDecisionApproval": "pending",
+    "monitoringApproval": "pending",
+    "rollbackApproval": "pending",
+    "indexingFinalGateApproval": "blocked-until-final-review"
   }
 }

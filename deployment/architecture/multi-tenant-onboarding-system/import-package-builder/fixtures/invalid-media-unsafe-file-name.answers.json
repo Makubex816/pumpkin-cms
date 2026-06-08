@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "builderProfile": { "deploymentProfile": "static-azure-cloudflare-worker-graph", "generatorMode": "offline-local-only" },
+  "tenant": { "tenantId": "example-event-rentals", "siteKey": "example-event-rentals", "tenantDisplayName": "Example Event Rentals", "businessType": "event rental services", "cmsTenantSlug": "example-event-rentals" },
+  "domains": { "primaryDomain": "exampleeventrentals.com", "wwwDomain": "www.exampleeventrentals.com", "mediaDomain": "media.exampleeventrentals.com", "canonicalHost": "primary" },
+  "routing": { "trailingSlashPolicy": "always", "approvedRoutes": ["/"], "forbiddenRoutes": ["/draft/", "/preview/", "/old/"] },
+  "pages": [{ "route": "/", "slug": "home", "title": "Example Event Rentals", "seoDescription": "Fixture with an unsafe media file name.", "mediaRefs": ["hero-event-rink"] }],
+  "media": [{ "mediaId": "hero-event-rink", "fileName": "folder/hero-event-rink.webp", "kind": "image", "altText": "Example event setup", "sourceStatus": "placeholder", "publicUrl": "https://media.exampleeventrentals.com/hero-event-rink.webp" }],
+  "form": { "formId": "contact-form", "displayName": "Contact form", "deliveryMode": "no-email", "recipient": "leads@exampleeventrentals.com", "mailboxOwner": "Example Form Owner", "fields": ["name", "email", "message"], "consentNoticeStatus": "pending-review", "rollbackMode": "disable-form" },
+  "seo": { "defaultRobots": "noindex,nofollow", "canonicalBaseUrl": "https://exampleeventrentals.com", "sitemapPolicy": "disabled-until-final-gate", "indexingFinalGate": true },
+  "analyticsDecision": { "status": "deferred", "owner": "Example Analytics Owner", "notes": "No analytics implementation is included." },
+  "privacyReviewStatus": { "status": "pending-review", "owner": "Example Privacy Owner", "notes": "Review is pending." },
+  "ownerContacts": { "businessOwner": "Example Business Owner", "contentOwner": "Example Content Owner", "mediaOwner": "Example Media Owner", "formOwner": "Example Form Owner", "technicalOperator": "Example Technical Operator", "monitoringOwner": "Example Monitoring Owner", "rollbackOwner": "Example Rollback Owner", "indexingOwner": "Example SEO Owner" },
+  "manualApprovals": { "contentApproval": "pending", "legalPrivacyApproval": "pending", "formOversightApproval": "pending", "analyticsDecisionApproval": "pending", "monitoringApproval": "pending", "rollbackApproval": "pending", "indexingFinalGateApproval": "blocked-until-final-review" }
+}

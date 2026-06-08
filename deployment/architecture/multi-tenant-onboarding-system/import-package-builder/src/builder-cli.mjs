@@ -125,8 +125,28 @@ function printSummary(result) {
     console.log("");
     console.log("Answer issues:");
     for (const issue of result.errors.slice(0, 8)) {
-      console.log(`- ${issue.path}: ${issue.message}`);
+      console.log(`- ${issue.code ?? "BUILDER_ERROR"} at ${issue.path}: ${issue.message}`);
+      if (issue.suggestedFix) {
+        console.log(`  Fix: ${issue.suggestedFix}`);
+      }
+      if (issue.askForHelp) {
+        console.log(`  Ask for help: ${issue.askForHelp}`);
+      }
     }
+  }
+
+  if (result.preview) {
+    console.log("");
+    console.log("Package preview:");
+    console.log(`- create: ${result.preview.counts.create}`);
+    console.log(`- overwrite: ${result.preview.counts.overwrite}`);
+    console.log(`- unchanged: ${result.preview.counts.unchanged}`);
+    console.log(`- pages: ${result.preview.pages.map((page) => `${page.slug} ${page.route}`).join(", ")}`);
+    console.log(`- approved routes: ${result.preview.routes.approved.join(", ")}`);
+    console.log(`- media refs: ${result.preview.mediaRefs.map((asset) => asset.mediaId).join(", ") || "none"}`);
+    console.log(`- form refs: ${result.preview.formRefs.map((form) => form.formId).join(", ") || "none"}`);
+    console.log(`- validator command: ${result.preview.validator.command}`);
+    console.log(`- diff mode: ${result.preview.diffMode}`);
   }
 
   if (result.validationReport) {
@@ -139,6 +159,10 @@ function printSummary(result) {
     console.log("Validation: skipped in dry-run mode.");
   } else {
     console.log("Validation: not requested.");
+  }
+
+  if (result.supportPacketSafety) {
+    console.log(`Support packet redaction: ${result.supportPacketSafety.status}; checked ${result.supportPacketSafety.filesChecked.length} file(s).`);
   }
 
   console.log("");
@@ -157,7 +181,7 @@ Options:
   --validate             Run the existing offline validator after generation.
   --support-packet       Write validator support packet files; implies --validate.
   --overwrite            Replace known generated files in the output folder.
-  --dry-run              Print planned output without writing package files.
+  --dry-run              Print preview/diff summary without writing package files.
   --json                 Request JSON validator report only.
   --markdown             Request Markdown validator report only.
   --help, -h             Show this help.
@@ -166,7 +190,7 @@ Example:
   node src/builder-cli.mjs --answers fixtures/example-event-rentals.answers.json --out .tmp/generated-example --validate --support-packet
 
 Local-only boundary:
-  This builder reads local answers, writes local generated package files, and can run the local offline validator. It does not create a tenant, import content, write CMS data, modify MediaAsset storage, modify Azure, modify Cloudflare, change DNS, deploy, send email, use Search Console, request indexing, perform external HTTP checks, read protected config, or touch Roller.
+  This builder reads local answers, writes local generated package files, can preview create/overwrite/unchanged files, and can run the local offline validator. It does not create a tenant, import content, write CMS data, modify MediaAsset storage, modify Azure, modify Cloudflare, change DNS, deploy, send email, use Search Console, request indexing, perform external HTTP checks, read protected config, or touch Roller.
 
 Exit codes:
   0  Builder completed and validator passed if requested.

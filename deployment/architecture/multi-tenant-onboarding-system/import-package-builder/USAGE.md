@@ -21,7 +21,7 @@ node src/builder-cli.mjs --answers fixtures/example-event-rentals.answers.json -
 | `--validate` | no | Run the existing offline validator after generation. |
 | `--support-packet` | no | Write validator support packet files; implies `--validate`. |
 | `--overwrite` | no | Replace known generated files in an existing output folder. |
-| `--dry-run` | no | Report planned generated files without writing package files. |
+| `--dry-run` | no | Print preview/diff summary without writing package files. |
 | `--json` | no | Request JSON validator report only. |
 | `--markdown` | no | Request Markdown validator report only. |
 | `--help` | no | Show help, examples, hard stops, and exit codes. |
@@ -35,10 +35,24 @@ npm run generate:example
 npm run validate:generated-example
 ```
 
+## Preview/Diff Summary
+
+`--dry-run` does not create the output folder and does not run validation. It reports:
+
+- files that would be created
+- files that would be overwritten
+- unchanged files
+- generated pages and routes
+- media references
+- form references
+- the validator command that would run if generation continued
+
+Full line-by-line file diffs are not implemented in Phase 2B-2; the preview is a safe summary.
+
 ## Exit Codes
 
 - `0`: builder completed and validator passed if requested
-- `1`: answers failed validation or generated package failed validator
+- `1`: answers failed validation, generated package failed validator, or support packet redaction failed
 - `2`: usage, path, parse, or runtime error
 
 ## Safe Failure Behavior
@@ -46,7 +60,9 @@ npm run validate:generated-example
 - Parse errors stop before generation.
 - Answer validation errors stop before generation.
 - Secret-like answer values stop before generation.
+- URL credentials, local paths, staging URLs, paused tenant references, and unrelated tenant references stop before generation.
 - A non-empty output folder requires `--overwrite`.
 - `--overwrite` removes only known generated files and keeps unrelated files.
 - Validator failures keep generated files local and report failed status.
+- Support packet redaction failures return failed builder status.
 - `--dry-run` writes no package files and skips validation.

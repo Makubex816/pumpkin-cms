@@ -15,6 +15,7 @@ The integration imports `validatePackage` from `../validator-implementation/src/
 - The generated package folder is used as both the package path and report output directory.
 - If the validator returns `failed`, the builder exits with status code `1`.
 - If the validator passes, the builder exits with status code `0`.
+- Phase 2B-2 also writes `BUILDER_PACKAGE_SUMMARY.md` and scans support packet outputs for raw-answer references and secret-like values.
 
 ## Report Files
 
@@ -30,6 +31,7 @@ Support packet output adds:
 - `NON_TECHNICAL_SUMMARY.md`
 - `NEXT_ACTIONS.md`
 - `PACKAGE_FILE_INVENTORY.md`
+- `BUILDER_PACKAGE_SUMMARY.md`
 
 ## Boundary
 
