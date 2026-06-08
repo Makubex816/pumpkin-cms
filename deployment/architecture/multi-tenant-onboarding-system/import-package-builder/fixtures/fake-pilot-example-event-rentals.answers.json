@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenant": {
+    "tenantId": "example-event-rentals",
+    "siteKey": "example-event-rentals",
+    "tenantDisplayName": "Example Event Rentals",
+    "businessType": "event rental services",
+    "cmsTenantSlug": "example-event-rentals",
+    "tenantApiKeyPlaceholder": "TENANT_API_KEY_RUNTIME_ONLY"
+  },
+  "domains": {
+    "primaryDomain": "exampleeventrentals.com",
+    "wwwDomain": "www.exampleeventrentals.com",
+    "mediaDomain": "media.exampleeventrentals.com",
+    "canonicalHost": "primary"
+  },
+  "builderProfile": {
+    "deploymentProfile": "static-azure-cloudflare-worker-graph",
+    "generatorMode": "offline-local-only"
+  },
+  "routing": {
+    "trailingSlashPolicy": "always",
+    "approvedRoutes": [
+      "/",
+      "/contact",
+      "/service-areas"
+    ],
+    "forbiddenRoutes": [
+      "/preview",
+      "/draft",
+      "/old-event-rentals"
+    ]
+  },
+  "pages": [
+    {
+      "route": "/",
+      "slug": "home",
+      "title": "Example Event Rentals",
+      "navLabel": "Home",
+      "seoTitle": "Example Event Rentals",
+      "seoDescription": "Plan example event rentals with placeholder package details, safe review gates, and local-only onboarding evidence.",
+      "status": "draft",
+      "mediaRefs": [
+        "hero-event-rink"
+      ],
+      "blocks": [
+        {
+          "type": "hero",
+          "heading": "Example Event Rentals",
+          "mediaId": "hero-event-rink"
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "slug": "contact",
+      "title": "Contact Example Event Rentals",
+      "navLabel": "Contact",
+      "seoTitle": "Contact Example Event Rentals",
+      "seoDescription": "Contact Example Event Rentals for non-binding placeholder event rental questions and scheduling details.",
+      "status": "draft",
+      "formRef": "contact-form",
+      "blocks": [
+        {
+          "type": "form",
+          "formId": "contact-form"
+        }
+      ]
+    },
+    {
+      "route": "/service-areas",
+      "slug": "service-areas",
+      "title": "Example Event Rental Service Areas",
+      "navLabel": "Service Areas",
+      "seoTitle": "Example Event Rental Service Areas",
+      "seoDescription": "Review placeholder service area notes for Example Event Rentals before requesting fake pilot support.",
+      "status": "draft",
+      "mediaRefs": [
+        "service-area-map"
+      ],
+      "blocks": [
+        {
+          "type": "image",
+          "mediaId": "service-area-map"
+        }
+      ]
+    }
+  ],
+  "media": [
+    {
+      "mediaId": "hero-event-rink",
+      "fileName": "hero-event-rink.webp",
+      "kind": "image",
+      "altText": "Example portable event rink setup",
+      "sourceStatus": "placeholder",
+      "publicUrl": "https://media.exampleeventrentals.com/hero-event-rink.webp"
+    },
+    {
+      "mediaId": "service-area-map",
+      "fileName": "service-area-map.webp",
+      "kind": "image",
+      "altText": "Example service area map placeholder",
+      "sourceStatus": "placeholder",
+      "publicUrl": "https://media.exampleeventrentals.com/service-area-map.webp"
+    }
+  ],
+  "forms": [
+    {
+      "formId": "contact-form",
+      "displayName": "Contact form",
+      "deliveryMode": "no-email",
+      "recipient": "leads@exampleeventrentals.com",
+      "mailboxOwner": "Example Form Owner",
+      "fields": [
+        "name",
+        "email",
+        "eventDate",
+        "message"
+      ],
+      "consentNoticeStatus": "pending-review",
+      "rollbackMode": "disable-form",
+      "leadRecipientRef": "example-event-leads",
+      "staticEndpointRef": "PROFILE_MANAGED_STATIC_ENDPOINT"
+    }
+  ],
+  "seo": {
+    "defaultRobots": "noindex,nofollow",
+    "canonicalBaseUrl": "https://exampleeventrentals.com",
+    "sitemapPolicy": "disabled-until-final-gate",
+    "indexingFinalGate": true
+  },
+  "analyticsDecision": {
+    "status": "deferred",
+    "owner": "Example Analytics Owner",
+    "notes": "No scripts, pixels, tracking IDs, or tokens are included in this fake-pilot fixture."
+  },
+  "privacyReviewStatus": {
+    "status": "pending-review",
+    "owner": "Example Privacy Owner",
+    "notes": "Legal/privacy owner must review contact form notice text before real tenant use."
+  },
+  "ownerContacts": {
+    "businessOwner": "Example Business Owner",
+    "contentOwner": "Example Content Owner",
+    "mediaOwner": "Example Media Owner",
+    "formOwner": "Example Form Owner",
+    "technicalOperator": "Example Technical Operator",
+    "monitoringOwner": "Example Monitoring Owner",
+    "rollbackOwner": "Example Rollback Owner",
+    "indexingOwner": "Example SEO Owner"
+  },
+  "manualApprovals": {
+    "contentApproval": "pending",
+    "legalPrivacyApproval": "pending",
+    "formOversightApproval": "pending",
+    "analyticsDecisionApproval": "pending",
+    "monitoringApproval": "pending",
+    "rollbackApproval": "pending",
+    "indexingFinalGateApproval": "blocked-until-final-review"
+  }
+}

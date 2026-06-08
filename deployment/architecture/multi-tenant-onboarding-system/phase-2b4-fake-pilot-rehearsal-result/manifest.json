@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0.0",
+  "packageType": "phase-2b4-fake-pilot-rehearsal-result",
+  "createdDate": "2026-06-08",
+  "fakeTenant": {
+    "displayName": "Example Event Rentals",
+    "tenantId": "example-event-rentals",
+    "siteKey": "example-event-rentals",
+    "primaryDomain": "exampleeventrentals.com",
+    "wwwDomain": "www.exampleeventrentals.com",
+    "mediaDomain": "media.exampleeventrentals.com",
+    "deploymentProfile": "static-azure-cloudflare-worker-graph"
+  },
+  "inputs": {
+    "answersFixture": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/fixtures/fake-pilot-example-event-rentals.answers.json"
+  },
+  "localOutputs": {
+    "generatedPackage": "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/fake-pilot-example-event-rentals/"
+  },
+  "artifacts": [
+    "README.md",
+    "FAKE_TENANT_PROFILE.md",
+    "BUILDER_DRY_RUN_RESULT.md",
+    "GENERATED_PACKAGE_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "SUPPORT_PACKET_RESULT.md",
+    "OPERATOR_HANDOFF_AUDIT.md",
+    "NON_TECHNICAL_SUMMARY_AUDIT.md",
+    "GAP_FINDINGS.md",
+    "PILOT_READINESS_RECOMMENDATION.md",
+    "NEXT_REAL_TENANT_PILOT_APPROVAL_PROMPT.md",
+    "manifest.json"
+  ],
+  "results": {
+    "fakePilotRehearsalComplete": true,
+    "fakePackageGenerated": true,
+    "fakePackageValidated": true,
+    "supportPacketGenerated": true,
+    "validatorErrors": 0,
+    "validatorWarnings": 0,
+    "readyForRealTenantPilotPlanning": true,
+    "readyForRealTenantPilotExecution": false
+  },
+  "boundaryConfirmation": {
+    "offlineOnly": true,
+    "externalChecksImplemented": false,
+    "tenantCreated": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "functionSettingChanges": false,
+    "emailMicrosoft365Work": false,
+    "searchConsoleIndexingActions": false,
+    "rollerWork": false,
+    "protectedConfigReads": false
+  }
+}

@@ -13,6 +13,7 @@ import { checkSupportPacketRedaction } from "../src/support-packet-hardening.mjs
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const validAnswers = path.join(packageRoot, "fixtures", "example-event-rentals.answers.json");
 const validFullAnswers = path.join(packageRoot, "fixtures", "valid-full-package.answers.json");
+const fakePilotAnswers = path.join(packageRoot, "fixtures", "fake-pilot-example-event-rentals.answers.json");
 const missingDomainAnswers = path.join(packageRoot, "fixtures", "invalid-missing-domain.answers.json");
 const secretLikeAnswers = path.join(packageRoot, "fixtures", "invalid-secret-like-value.answers.json");
 const invalidFixtureCases = [
@@ -22,7 +23,9 @@ const invalidFixtureCases = [
   ["invalid-unknown-deployment-profile.answers.json", AnswerErrorCode.UNKNOWN_DEPLOYMENT_PROFILE],
   ["invalid-trailing-slash-policy.answers.json", AnswerErrorCode.INVALID_TRAILING_SLASH_POLICY],
   ["invalid-media-unsafe-file-name.answers.json", AnswerErrorCode.UNSAFE_MEDIA_FILE_NAME],
+  ["invalid-unknown-media-reference.answers.json", AnswerErrorCode.UNKNOWN_MEDIA_REFERENCE],
   ["invalid-form-missing-recipient.answers.json", AnswerErrorCode.REQUIRED_FIELD_MISSING],
+  ["invalid-unknown-form-reference.answers.json", AnswerErrorCode.UNKNOWN_FORM_REFERENCE],
   ["invalid-unsafe-canonical-url.answers.json", AnswerErrorCode.INVALID_PRODUCTION_URL],
   ["invalid-paused-tenant-reference.answers.json", AnswerErrorCode.PAUSED_TENANT_REFERENCE],
   ["invalid-unrelated-tenant-reference.answers.json", AnswerErrorCode.UNRELATED_TENANT_REFERENCE],
@@ -81,6 +84,37 @@ test("valid full fixture generates and validates", async () => {
   assert.ok(result.preview.routes.forbidden.includes("/old/"));
 });
 
+test("fake pilot fixture generates requested Example Event Rentals package", async () => {
+  const outDir = await tempOutput("fake-pilot-example-event-rentals");
+  const result = await buildImportPackage({
+    answersPath: fakePilotAnswers,
+    outDir,
+    validate: true,
+    supportPacket: true
+  });
+
+  assert.equal(result.status, "passed");
+  assert.equal(result.validationReport.overallStatus, "passed");
+  assert.deepEqual(result.preview.routes.approved, ["/", "/contact/", "/service-areas/"]);
+  assert.ok(result.preview.routes.forbidden.includes("/old-event-rentals/"));
+  assert.ok(result.preview.routes.forbidden.includes("/old/"));
+
+  const site = await readJson(path.join(outDir, "site.json"));
+  const routes = await readJson(path.join(outDir, "routes.json"));
+  const forms = await readJson(path.join(outDir, "forms.json"));
+  const seo = await readJson(path.join(outDir, "seo.json"));
+
+  assert.equal(site.primaryDomain, "exampleeventrentals.com");
+  assert.equal(site.deploymentProfileId, "static-azure-cloudflare-worker-graph");
+  assert.deepEqual(routes.approvedRoutes, ["/", "/contact/", "/service-areas/"]);
+  assert.ok(routes.forbiddenRoutes.includes("/old-event-rentals/"));
+  assert.equal(forms.forms[0].formId, "contact-form");
+  assert.equal(forms.forms[0].deliveryMode, "no-email");
+  assert.equal(seo.defaultRobots, "noindex,nofollow");
+  assert.equal(seo.sitemapPolicy, "disabled-until-final-gate");
+  assert.equal(seo.indexingFinalGate, true);
+});
+
 test("normalizes page and route paths in generated package", async () => {
   const outDir = await tempOutput("normalized-routes");
   await buildImportPackage({
@@ -112,6 +146,8 @@ test("rejects answers with missing required domain before writing package", asyn
   assert.equal(result.stage, "answers-validation");
   assert.match(result.errors.map((issue) => issue.path).join("\n"), /domains\.primaryDomain/);
   assert.match(result.errors.map((issue) => issue.suggestedFix).join("\n"), /root domain|field/i);
+  assert.ok(result.errors.some((issue) => issue.code === AnswerErrorCode.REQUIRED_FIELD_MISSING));
+  assert.ok(!result.errors.some((issue) => issue.code === AnswerErrorCode.INVALID_DOMAIN));
   await assertMissing(path.join(outDir, "manifest.json"));
 });
 
@@ -258,6 +294,27 @@ test("CLI help lists support packet option", () => {
   assert.match(cli.stdout, /Local-only boundary/);
 });
 
+test("CLI invalid answers print plain fixes without malformed URL suggestions", () => {
+  const cli = spawnSync(process.execPath, [
+    "src/builder-cli.mjs",
+    "--answers",
+    "fixtures/invalid-malformed-domain.answers.json",
+    "--out",
+    ".tmp/cli-invalid-malformed-domain",
+    "--validate",
+    "--support-packet"
+  ], {
+    cwd: packageRoot,
+    encoding: "utf8"
+  });
+
+  assert.equal(cli.status, 1);
+  assert.match(cli.stdout, /ANSWERS_INVALID_DOMAIN/);
+  assert.match(cli.stdout, /Fix:/);
+  assert.match(cli.stdout, /Ask for help:/);
+  assert.doesNotMatch(cli.stdout, /https:\/\/https:\/\//);
+});
+
 test("generated core files contain no secret-like values", async () => {
   const outDir = await tempOutput("secret-scan");
   await buildImportPackage({
@@ -282,6 +339,14 @@ test("support packet omits raw answers and passes redaction scan", async () => {
   });
 
   assert.equal(result.supportPacketSafety.status, "passed");
+  assert.deepEqual(result.supportPacketSafety.filesChecked.sort(), [
+    "BUILDER_PACKAGE_SUMMARY.md",
+    "NEXT_ACTIONS.md",
+    "NON_TECHNICAL_SUMMARY.md",
+    "OPERATOR_HANDOFF.md",
+    "PACKAGE_FILE_INVENTORY.md",
+    "support-packet.json"
+  ]);
   const supportText = await readFile(path.join(outDir, "support-packet.json"), "utf8");
   const handoffText = await readFile(path.join(outDir, "OPERATOR_HANDOFF.md"), "utf8");
   const nextActionsText = await readFile(path.join(outDir, "NEXT_ACTIONS.md"), "utf8");

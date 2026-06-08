@@ -1,0 +1,3 @@
+# Next Real Tenant Pilot Approval Prompt
+
+Approve real tenant pilot planning only: define the gated plan for selecting and preparing the first real tenant pilot after the Example Event Rentals fake-pilot rehearsal, including owner approvals, safe intake rules, support packet redaction, form recipient reference decision, validation gates, rollback owner, monitoring owner, final indexing hard stop, and explicit approval checkpoints before any external action. No implementation, no real tenant creation, no CMS/Azure/Cloudflare/DNS/deployment/email/Search Console actions, no external checks, and Roller remains paused.
