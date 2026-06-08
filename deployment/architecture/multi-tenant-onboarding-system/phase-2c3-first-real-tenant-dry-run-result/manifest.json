@@ -1,0 +1,75 @@
+{
+  "phase": "2C-3",
+  "name": "first-real-tenant-local-dry-run-result",
+  "createdDate": "2026-06-08",
+  "status": "blocked_missing_candidate_intake",
+  "candidate": {
+    "tenantDisplayName": null,
+    "tenantSlug": null,
+    "primaryDomain": null,
+    "wwwDomain": null,
+    "mediaDomain": null,
+    "rollerSelected": false
+  },
+  "readiness": {
+    "phase2c2DryRunApprovalPackage": "complete",
+    "phase2c3FirstRealTenantLocalDryRun": false,
+    "generatedRealCandidatePackage": false,
+    "validatorResult": "not_run",
+    "supportPacketGenerated": false,
+    "readyForCmsImportPlanning": false,
+    "readyForCmsImportExecution": false,
+    "realTenantCreated": false,
+    "externalSystemsChanged": false,
+    "searchConsoleOrIndexingAffected": false,
+    "rollerStatus": "paused"
+  },
+  "blockedReason": "Required approved non-secret candidate intake was not supplied; tenant fields remained placeholders.",
+  "localChecks": {
+    "builderNpmTest": "passed",
+    "builderNpmRunCheck": "passed",
+    "validatorNpmTest": "passed",
+    "manifestJsonParse": "passed",
+    "nodeCheckForChangedJsMjs": "not_applicable_no_changed_js_mjs",
+    "generatedCandidateOutputStaged": false
+  },
+  "artifacts": [
+    "README.md",
+    "CANDIDATE_INTAKE_REVIEW.md",
+    "ANSWERS_FILE_RESULT.md",
+    "BUILDER_DRY_RUN_RESULT.md",
+    "GENERATED_PACKAGE_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "SUPPORT_PACKET_RESULT.md",
+    "OPERATOR_HANDOFF_REVIEW.md",
+    "REMAINING_INTAKE_OR_PACKAGE_GAPS.md",
+    "NEXT_CMS_IMPORT_PLANNING_APPROVAL_REQUIRED.md",
+    "manifest.json"
+  ],
+  "outputs": {
+    "answersFileCreated": false,
+    "builderDryRunExecuted": false,
+    "generatedPackageCreated": false,
+    "validatorExecutedAgainstCandidate": false,
+    "supportPacketGenerated": false,
+    "operatorHandoffGenerated": false
+  },
+  "boundaryConfirmation": {
+    "realTenantPackageGenerated": false,
+    "newTenantCreated": false,
+    "cmsChanged": false,
+    "mediaAssetChanged": false,
+    "azureChanged": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "deploymentChanged": false,
+    "functionSettingsChanged": false,
+    "emailSent": false,
+    "microsoft365Changed": false,
+    "searchConsoleChanged": false,
+    "indexingRequested": false,
+    "externalChecksRun": false,
+    "protectedConfigRead": false,
+    "rollerResumed": false
+  }
+}
