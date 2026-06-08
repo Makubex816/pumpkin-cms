@@ -5,10 +5,15 @@ import { parseJsonFiles } from "./json-parse-validator.mjs";
 import { loadSchemas } from "./schema-loader.mjs";
 import { validateParsedDocuments } from "./schema-validator.mjs";
 import { validateSimpleCrossFile } from "./simple-cross-file-validator.mjs";
+import { validateMediaReferences } from "./validators/media-reference-validator.mjs";
+import { validateFormReferences } from "./validators/form-reference-validator.mjs";
+import { validateSeoConsistency } from "./validators/seo-validator.mjs";
 import { validateUrlSafety } from "./validators/url-safety-validator.mjs";
 import { scanForSecretPatterns } from "./validators/secret-pattern-scanner.mjs";
 import { buildGateStatuses, GateStatus, hasBlockingFindings } from "./gate-status.mjs";
-import { writeReports } from "./report-writer.mjs";
+import { attachErrorExplanations } from "./error-explanations.mjs";
+import { planReportFiles, writeReports } from "./report-writer.mjs";
+import { planSupportPacketFiles, writeSupportPacket } from "./support-packet-writer.mjs";
 
 export async function validatePackage(options) {
   const packagePath = path.resolve(options.packagePath);
@@ -17,14 +22,17 @@ export async function validatePackage(options) {
   const requiredFindings = validateRequiredFiles(discovery);
   const { parsed, findings: parseFindings } = await parseJsonFiles(discovery.files);
 
-  const findings = [
+  const findings = attachErrorExplanations([
     ...requiredFindings,
     ...parseFindings,
     ...validateParsedDocuments(parsed, schemaRegistry),
     ...validateSimpleCrossFile(parsed),
+    ...validateMediaReferences(parsed),
+    ...validateFormReferences(parsed),
+    ...validateSeoConsistency(parsed),
     ...validateUrlSafety(parsed),
     ...scanForSecretPatterns(parsed)
-  ];
+  ]);
 
   const strictWarningFailure = Boolean(options.strict) && findings.some((finding) => finding.severity === "warning");
   const overallStatus = hasBlockingFindings(findings) || strictWarningFailure ? GateStatus.FAILED : GateStatus.PASSED;
@@ -36,8 +44,8 @@ export async function validatePackage(options) {
 
   const report = {
     schemaVersion: "1.0.0",
-    validatorVersion: "0.1.0",
-    phase: "2A-1",
+    validatorVersion: "0.3.0",
+    phase: "2A-3",
     tenantId: manifest?.tenantId ?? tenant?.tenantId ?? null,
     siteKey: manifest?.siteKey ?? tenant?.siteKey ?? site?.siteKey ?? null,
     packagePath,
@@ -72,14 +80,27 @@ export async function validatePackage(options) {
   };
 
   if (options.outDir) {
-    const outputs = await writeReports(report, path.resolve(options.outDir), {
+    const outputDirectory = path.resolve(options.outDir);
+    const reportFiles = planReportFiles(outputDirectory, {
       json: options.json,
       markdown: options.markdown
     });
+    const supportPacketFiles = options.supportPacket ? planSupportPacketFiles(outputDirectory) : [];
+
     report.outputs = {
-      directory: path.resolve(options.outDir),
-      files: outputs
+      directory: outputDirectory,
+      files: [...reportFiles, ...supportPacketFiles]
     };
+
+    await writeReports(report, outputDirectory, {
+      json: options.json,
+      markdown: options.markdown,
+      additionalFiles: supportPacketFiles
+    });
+
+    if (options.supportPacket) {
+      await writeSupportPacket(report, outputDirectory);
+    }
   }
 
   return report;

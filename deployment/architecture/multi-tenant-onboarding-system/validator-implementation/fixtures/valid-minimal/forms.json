@@ -2,5 +2,20 @@
   "schemaVersion": "1.0.0",
   "tenantId": "example-rink-rentals",
   "siteKey": "example-rink-rentals",
-  "forms": []
+  "forms": [
+    {
+      "formId": "lead-form",
+      "displayName": "Lead Form",
+      "deliveryMode": "profile-managed",
+      "recipient": "leads@exampleeventrentals.com",
+      "mailboxOwner": "events-team",
+      "fields": [
+        "name",
+        "email",
+        "eventDate"
+      ],
+      "consentNoticeStatus": "approved",
+      "rollbackMode": "profile-managed"
+    }
+  ]
 }

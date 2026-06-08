@@ -2,5 +2,14 @@
   "schemaVersion": "1.0.0",
   "tenantId": "example-rink-rentals",
   "siteKey": "example-rink-rentals",
-  "assets": []
+  "assets": [
+    {
+      "mediaId": "hero-rink-image",
+      "fileName": "hero-rink-image.webp",
+      "kind": "image",
+      "altText": "Example event rink setup",
+      "sourceStatus": "usage-rights-confirmed",
+      "publicUrl": "https://media.exampleeventrentals.com/hero-rink-image.webp"
+    }
+  ]
 }

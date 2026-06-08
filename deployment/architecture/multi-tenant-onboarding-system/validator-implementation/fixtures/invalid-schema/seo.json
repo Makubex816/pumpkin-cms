@@ -3,7 +3,7 @@
   "tenantId": "example-rink-rentals",
   "siteKey": "example-rink-rentals",
   "defaultRobots": "noindex,nofollow",
-  "canonicalBaseUrl": "https://example.test",
+  "canonicalBaseUrl": "https://exampleeventrentals.com",
   "sitemapPolicy": "disabled-until-final-gate",
   "indexingFinalGate": true
 }

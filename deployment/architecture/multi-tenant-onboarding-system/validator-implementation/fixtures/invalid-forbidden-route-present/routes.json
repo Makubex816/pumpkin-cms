@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "approvedRoutes": [
+    "/",
+    "/draft/"
+  ],
+  "forbiddenRoutes": [
+    "/draft/"
+  ],
+  "wwwBehavior": "canonical-only"
+}

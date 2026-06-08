@@ -1,10 +1,11 @@
 import { createFinding } from "./gate-status.mjs";
+import { ErrorCode } from "./error-codes.mjs";
 
 export function validateRequiredFiles(discovery) {
   return discovery.missing.map((missing) =>
     createFinding({
       severity: "error",
-      code: "REQUIRED_FILE_MISSING",
+      code: ErrorCode.REQUIRED_FILE_MISSING,
       file: missing.file,
       message: `${missing.file} is required but was not found.`,
       ownerExplanation: "The import package is missing a file the offline validator needs before it can safely continue.",

@@ -1,20 +1,14 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { getErrorExplanation } from "./error-explanations.mjs";
 
 export async function writeReports(report, outputDirectory, options = {}) {
+  const ownOutputs = planReportFiles(outputDirectory, options);
+  const outputs = [...ownOutputs, ...(options.additionalFiles ?? [])];
   const writeJson = options.json !== false;
   const writeMarkdown = options.markdown !== false;
-  const outputs = [];
 
   await mkdir(outputDirectory, { recursive: true });
-
-  if (writeJson) {
-    outputs.push(path.join(outputDirectory, "validation-report.json"));
-  }
-
-  if (writeMarkdown) {
-    outputs.push(path.join(outputDirectory, "VALIDATION_REPORT.md"));
-  }
 
   const reportWithOutputs = {
     ...report,
@@ -35,6 +29,22 @@ export async function writeReports(report, outputDirectory, options = {}) {
   return outputs;
 }
 
+export function planReportFiles(outputDirectory, options = {}) {
+  const writeJson = options.json !== false;
+  const writeMarkdown = options.markdown !== false;
+  const outputs = [];
+
+  if (writeJson) {
+    outputs.push(path.join(outputDirectory, "validation-report.json"));
+  }
+
+  if (writeMarkdown) {
+    outputs.push(path.join(outputDirectory, "VALIDATION_REPORT.md"));
+  }
+
+  return outputs;
+}
+
 export function renderMarkdown(report) {
   const errorFindings = report.findings.filter((finding) => finding.severity === "error" || finding.severity === "critical");
   const warningFindings = report.findings.filter((finding) => finding.severity === "warning");
@@ -45,6 +55,8 @@ Package: ${report.packagePath}
 
 Overall status: ${report.overallStatus}
 
+Phase: ${report.phase}
+
 ## Summary
 
 | Metric | Count |
@@ -52,6 +64,14 @@ Overall status: ${report.overallStatus}
 | Files checked | ${report.summary.filesChecked} |
 | Errors | ${report.summary.errors} |
 | Warnings | ${report.summary.warnings} |
+| Info | ${report.summary.infos} |
+
+## How To Read This
+
+- passed means the offline validator did not find a blocker for that gate.
+- failed means the package needs fixes before import or launch review can continue.
+- skipped means the gate is intentionally not implemented in this offline phase.
+- deferred means a later offline phase must add that validation.
 
 ## Gate Statuses
 
@@ -66,6 +86,14 @@ ${renderFindings(errorFindings)}
 ## Warnings
 
 ${renderFindings(warningFindings)}
+
+## Plain-Language Error Help
+
+${renderExplanationCatalog([...errorFindings, ...warningFindings])}
+
+## Files Checked
+
+${report.filesChecked.map((file) => `- ${file}`).join("\n") || "- None"}
 
 ## Next Actions
 
@@ -85,7 +113,22 @@ function renderFindings(findings) {
   return findings
     .map((finding) => {
       const location = [finding.file, finding.jsonPointer].filter(Boolean).join("");
-      return `- ${finding.code}: ${finding.message}${location ? ` (${location})` : ""}\n  - Fix: ${finding.nextAction}`;
+      const explanation = finding.explanation ?? getErrorExplanation(finding.code);
+      return `- ${finding.code}: ${finding.message}${location ? ` (${location})` : ""}\n  - Plain English: ${explanation.plainLanguage}\n  - Likely cause: ${explanation.likelyCause}\n  - Fix: ${explanation.howToFix}\n  - Ask for help: ${explanation.whenToAskForHelp}`;
+    })
+    .join("\n");
+}
+
+function renderExplanationCatalog(findings) {
+  const uniqueCodes = [...new Set(findings.map((finding) => finding.code))].sort();
+  if (uniqueCodes.length === 0) {
+    return "No error explanations needed for this report.\n";
+  }
+
+  return uniqueCodes
+    .map((code) => {
+      const explanation = getErrorExplanation(code);
+      return `- ${code}: ${explanation.title}\n  - Meaning: ${explanation.plainLanguage}\n  - Fix: ${explanation.howToFix}\n  - Review owner: ${explanation.reviewOwner}`;
     })
     .join("\n");
 }

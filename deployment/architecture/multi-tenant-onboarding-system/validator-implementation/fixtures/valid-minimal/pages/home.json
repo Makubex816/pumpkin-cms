@@ -5,16 +5,23 @@
   "slug": "home",
   "route": "/",
   "title": "Example Rink Rentals",
-  "status": "draft",
+  "status": "approved-for-preview",
   "seo": {
     "title": "Example Rink Rentals",
     "description": "Learn about Example Rink Rentals for event skating experiences.",
-    "robots": "noindex,nofollow",
-    "canonicalUrl": "https://example.test/"
+    "robots": "index,follow",
+    "canonicalUrl": "https://exampleeventrentals.com/"
   },
   "blocks": [
     {
-      "type": "hero"
+      "type": "hero",
+      "mediaId": "hero-rink-image"
+    },
+    {
+      "type": "form",
+      "formId": "lead-form",
+      "staticEndpointRef": "PROFILE_MANAGED_STATIC_ENDPOINT",
+      "leadRecipientRef": "events-team"
     }
   ]
 }

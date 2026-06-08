@@ -1,21 +1,28 @@
 import { createFinding } from "../gate-status.mjs";
+import { ErrorCode } from "../error-codes.mjs";
+import { walkStringValues } from "./reference-utils.mjs";
 
-const secretAssignmentTerms = ["client_secret", "access_token", "api[_-]?key", "password"];
-const connectionStringTerms = ["DefaultEndpointsProtocol", "Account" + "Key", "SharedAccess" + "Signature"];
+const allowedPlaceholders = new Set(["TENANT_API_KEY_RUNTIME_ONLY", "PLACEHOLDER", "TODO_SECRET_AT_RUNTIME", "PROFILE_MANAGED_STATIC_ENDPOINT"]);
+const assignmentTerms = ["client_secret", "access_token", "api[_-]?key", "password", "secret"];
+const connectionTerms = ["DefaultEndpointsProtocol", "Account" + "Key", "SharedAccess" + "Signature"];
+const cloudflarePrefixes = ["cfpat", "cf_", "cloudflare_"];
 
 const secretPatterns = [
-  { code: "SECRET_AWS_ACCESS_KEY", pattern: new RegExp("AKIA" + "[0-9A-Z]{16}") },
-  { code: "SECRET_PRIVATE_KEY", pattern: new RegExp("-----BEGIN " + "[A-Z ]*PRIVATE KEY-----") },
-  { code: "SECRET_CONNECTION_STRING", pattern: new RegExp(`(${connectionStringTerms.join("|")})=`, "i") },
-  { code: "SECRET_ASSIGNMENT", pattern: new RegExp(`(${secretAssignmentTerms.join("|")})\\s*[:=]\\s*[A-Za-z0-9_./+=%-]{12,}`, "i") }
+  { detector: "aws-access-key-shape", pattern: new RegExp("AKIA" + "[0-9A-Z]{16}") },
+  { detector: "private-key-header", pattern: new RegExp("-----BEGIN " + "[A-Z ]*PRIVATE KEY-----") },
+  { detector: "azure-connection-string", pattern: new RegExp(`(${connectionTerms.join("|")})=`, "i") },
+  { detector: "assignment-with-secret-looking-value", pattern: new RegExp(`(${assignmentTerms.join("|")})\\s*[:=]\\s*[^\\s,;]{12,}`, "i") },
+  { detector: "jwt-looking-value", pattern: /eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/ },
+  { detector: "cloudflare-token-looking-value", pattern: new RegExp(`(${cloudflarePrefixes.join("|")})[A-Za-z0-9_-]{20,}`, "i") },
+  { detector: "sas-query-shape", pattern: /[?&](sig|signature|sv|sp|se)=/i }
 ];
 
 export function scanForSecretPatterns(parsedDocuments) {
   const findings = [];
 
   for (const document of parsedDocuments.values()) {
-    walkStrings(document.data, "", (value, pointer) => {
-      if (value === "TENANT_API_KEY_RUNTIME_ONLY") {
+    walkStringValues(document, (value, pointer, field) => {
+      if (isAllowedPlaceholder(value)) {
         return;
       }
 
@@ -24,13 +31,14 @@ export function scanForSecretPatterns(parsedDocuments) {
           findings.push(
             createFinding({
               severity: "error",
-              code: rule.code,
+              code: ErrorCode.FORBIDDEN_SECRET_LIKE_VALUE,
               file: document.relativePath,
               jsonPointer: pointer,
+              field,
               message: `${document.relativePath}${pointer} contains a secret-looking value.`,
               ownerExplanation: "The import package appears to include a value that should not be stored in package files.",
-              operatorDetail: "The value is intentionally redacted by the validator.",
-              nextAction: "Remove the secret and replace it with an approved placeholder or profile-managed setting.",
+              operatorDetail: `Detector ${rule.detector} matched. The value is intentionally redacted by the validator.`,
+              nextAction: "Remove the secret-like value and replace it with an approved placeholder or profile-managed setting.",
               gateId: "secret-patterns"
             })
           );
@@ -42,22 +50,6 @@ export function scanForSecretPatterns(parsedDocuments) {
   return findings;
 }
 
-function walkStrings(value, pointer, visitor) {
-  if (typeof value === "string") {
-    visitor(value, pointer || "/");
-    return;
-  }
-  if (Array.isArray(value)) {
-    value.forEach((item, index) => walkStrings(item, `${pointer}/${index}`, visitor));
-    return;
-  }
-  if (value && typeof value === "object") {
-    for (const [key, child] of Object.entries(value)) {
-      walkStrings(child, `${pointer}/${escapePointer(key)}`, visitor);
-    }
-  }
-}
-
-function escapePointer(value) {
-  return String(value).replaceAll("~", "~0").replaceAll("/", "~1");
+function isAllowedPlaceholder(value) {
+  return allowedPlaceholders.has(value);
 }

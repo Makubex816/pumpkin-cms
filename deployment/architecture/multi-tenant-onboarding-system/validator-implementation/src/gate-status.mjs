@@ -22,20 +22,23 @@ export function buildGateStatuses(findings) {
     buildGate("required-files", "Required file discovery", findings),
     buildGate("json-parse", "JSON parse validation", findings),
     buildGate("schema-validation", "Basic JSON schema validation", findings),
-    buildGate("simple-cross-file", "Simple cross-file validation", findings),
+    buildGate("cross-file", "Cross-file tenant, site, and route validation", findings),
+    buildGate("media-references", "Media reference validation", findings),
+    buildGate("form-references", "Form reference validation", findings),
+    buildGate("seo-canonical", "SEO, canonical, and sitemap validation", findings),
     buildGate("url-safety", "Offline URL safety scan", findings),
     buildGate("secret-patterns", "Offline secret-pattern scan", findings),
     {
       gateId: "external-checks",
       status: GateStatus.SKIPPED,
-      summary: "External checks are out of scope for Phase 2A-1.",
+      summary: "External checks are out of scope for Phase 2A-3.",
       blockingFindingCodes: [],
       ownerActionRequired: false
     },
     {
-      gateId: "deeper-cross-file-validation",
+      gateId: "deployment-profile-and-extension-validation",
       status: GateStatus.DEFERRED,
-      summary: "Media, form, SEO, deployment-profile, and extension validation are planned for Phase 2A-2.",
+      summary: "Deployment profile env-var classification, profile smoke tests, and extension migration validation are deferred to a later offline phase.",
       blockingFindingCodes: [],
       ownerActionRequired: false
     }

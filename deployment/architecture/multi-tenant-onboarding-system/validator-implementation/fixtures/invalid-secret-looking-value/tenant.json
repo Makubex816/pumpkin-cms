@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "displayName": "Example Rink Rentals",
+  "businessType": "event rentals",
+  "cmsTenantSlug": "example-rink-rentals",
+  "status": "intake-draft",
+  "tenantApiKeyPlaceholder": "TENANT_API_KEY_RUNTIME_ONLY",
+  "notes": "Fake token shape for scanner test: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleGFtcGxlIjoiZml4dHVyZSJ9.fakeSignatureValue1234567890"
+}

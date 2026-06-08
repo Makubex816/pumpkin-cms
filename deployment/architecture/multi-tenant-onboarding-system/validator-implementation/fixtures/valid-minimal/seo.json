@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "tenantId": "example-rink-rentals",
   "siteKey": "example-rink-rentals",
-  "defaultRobots": "noindex,nofollow",
-  "canonicalBaseUrl": "https://example.test",
-  "sitemapPolicy": "disabled-until-final-gate",
+  "defaultRobots": "index,follow",
+  "canonicalBaseUrl": "https://exampleeventrentals.com",
+  "sitemapPolicy": "approved-routes-only",
   "indexingFinalGate": true
 }

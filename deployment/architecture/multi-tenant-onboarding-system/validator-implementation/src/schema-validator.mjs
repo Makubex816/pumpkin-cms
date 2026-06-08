@@ -1,4 +1,5 @@
 import { createFinding } from "./gate-status.mjs";
+import { ErrorCode } from "./error-codes.mjs";
 
 export function validateParsedDocuments(parsedDocuments, schemaRegistry) {
   const findings = [];
@@ -27,7 +28,7 @@ export function validateParsedDocuments(parsedDocuments, schemaRegistry) {
       findings.push(
         createFinding({
           severity: "error",
-          code: "SCHEMA_VALIDATION_ERROR",
+          code: ErrorCode.SCHEMA_VALIDATION_ERROR,
           file: document.relativePath,
           jsonPointer: error.pointer || "/",
           field: error.field,

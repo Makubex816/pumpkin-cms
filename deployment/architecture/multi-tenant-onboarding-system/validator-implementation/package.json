@@ -1,13 +1,15 @@
 {
   "name": "pumpkin-multi-tenant-offline-validator",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "Local-only Phase 2A-1 skeleton validator for Pumpkin CMS tenant import packages.",
+  "description": "Local-only Phase 2A validator for Pumpkin CMS tenant import packages.",
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "check": "node --check src/cli.mjs && node --check src/index.mjs && node --check src/schema-loader.mjs && node --check src/package-discovery.mjs && node --check src/json-parse-validator.mjs && node --check src/schema-validator.mjs && node --check src/required-files-validator.mjs && node --check src/gate-status.mjs && node --check src/report-writer.mjs && node --check src/simple-cross-file-validator.mjs && node --check src/validators/url-safety-validator.mjs && node --check src/validators/secret-pattern-scanner.mjs && npm test",
-    "validate:example": "node src/cli.mjs --package fixtures/valid-minimal --out .tmp/valid-minimal-report"
+    "check": "node --check src/cli.mjs && node --check src/index.mjs && node --check src/error-codes.mjs && node --check src/error-explanations.mjs && node --check src/schema-loader.mjs && node --check src/package-discovery.mjs && node --check src/json-parse-validator.mjs && node --check src/schema-validator.mjs && node --check src/required-files-validator.mjs && node --check src/gate-status.mjs && node --check src/report-writer.mjs && node --check src/support-packet-writer.mjs && node --check src/simple-cross-file-validator.mjs && node --check src/validators/reference-utils.mjs && node --check src/validators/media-reference-validator.mjs && node --check src/validators/form-reference-validator.mjs && node --check src/validators/seo-validator.mjs && node --check src/validators/url-safety-validator.mjs && node --check src/validators/secret-pattern-scanner.mjs && npm test",
+    "validate:example": "node src/cli.mjs --package fixtures/valid-minimal --out .tmp/valid-minimal-report",
+    "support:example": "node src/cli.mjs --package fixtures/valid-minimal --out .tmp/valid-minimal-support --support-packet",
+    "explain:example": "node src/cli.mjs --explain-error JSON_PARSE_ERROR"
   },
   "engines": {
     "node": ">=20"

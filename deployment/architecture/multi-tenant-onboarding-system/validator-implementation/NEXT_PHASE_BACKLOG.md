@@ -1,13 +1,30 @@
 # Next Phase Backlog
 
-Recommended Phase 2A-2 work:
+Recommended next work is Phase 2B import package wizard planning/implementation, still offline-first unless separately approved.
 
-- Add full media reference validation from page blocks to `media-assets.json`.
-- Add full form reference validation from page blocks to `forms.json`.
-- Add SEO canonical, sitemap, noindex, and final indexing hard-stop validation.
-- Add deployment profile reference validation and environment-variable classification.
+Backlog:
+
+- Add an operator import-package wizard that gathers required files and runs this validator before handoff.
+- Add fixture catalog documentation for package authors and support teams.
+- Add snapshot tests for Markdown support packet output once the operator copy settles.
+- Add report schema validation once the normalized gate status vocabulary is aligned in schema.
+- Add deployment profile reference validation and environment-variable classification as offline checks.
 - Add offline profile smoke-test fixtures.
 - Add extension manifest, permission, and migration schema validation or explicit blocking deferral.
-- Add fixture coverage for URL safety failures and secret-looking values.
-- Add report schema validation against the planned validation report schema after the schema vocabulary is aligned.
+- Add stricter page block reference contracts once block schemas are available.
 - Decide whether to add a production JSON Schema validator dependency under a separate approval.
+
+Still not included without later approval:
+
+- tenant creation
+- CMS writes
+- MediaAsset writes
+- Azure changes
+- Cloudflare changes
+- DNS changes
+- deployment
+- Function App setting changes
+- email or Microsoft 365 work
+- Search Console, sitemap, indexing, or URL Inspection actions
+- external HTTP checks
+- Roller work

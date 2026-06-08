@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { createFinding } from "./gate-status.mjs";
+import { ErrorCode } from "./error-codes.mjs";
 
 export async function parseJsonFiles(files) {
   const parsed = new Map();
@@ -12,7 +13,7 @@ export async function parseJsonFiles(files) {
       findings.push(
         createFinding({
           severity: "error",
-          code: "JSON_EMPTY_FILE",
+          code: ErrorCode.JSON_EMPTY_FILE,
           file: file.relativePath,
           message: `${file.relativePath} is empty.`,
           ownerExplanation: "The validator found a required JSON file with no content.",
@@ -33,7 +34,7 @@ export async function parseJsonFiles(files) {
       findings.push(
         createFinding({
           severity: "error",
-          code: "JSON_PARSE_ERROR",
+          code: ErrorCode.JSON_PARSE_ERROR,
           file: file.relativePath,
           message: `${file.relativePath} is not valid JSON.`,
           ownerExplanation: "One of the package files cannot be read because the JSON syntax is broken.",

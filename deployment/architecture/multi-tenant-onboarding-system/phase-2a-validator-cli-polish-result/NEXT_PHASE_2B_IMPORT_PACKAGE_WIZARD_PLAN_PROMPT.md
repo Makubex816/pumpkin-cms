@@ -1,0 +1,3 @@
+# Next Phase 2B Import Package Wizard Plan Prompt
+
+Approve Phase 2B multi-tenant onboarding import package wizard planning only: design the local/offline operator wizard that guides package authors through required file selection, template checks, validator execution, support packet generation, manual owner handoff, and hard-stop confirmations before any import or external action. Include wizard screens/steps, state model, validation hooks, support packet handoff, non-technical copy, test plan, and acceptance criteria. No implementation, no tenant creation, no CMS/Azure/Cloudflare/DNS/deployment/email/Search Console/indexing actions, no external HTTP checks, no protected config reads, and Roller remains paused.

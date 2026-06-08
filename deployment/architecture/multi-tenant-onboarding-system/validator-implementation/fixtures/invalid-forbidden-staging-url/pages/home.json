@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "slug": "home",
+  "route": "/",
+  "title": "Example Rink Rentals",
+  "status": "draft",
+  "seo": {
+    "title": "Example Rink Rentals",
+    "description": "Learn about Example Rink Rentals for event skating experiences.",
+    "robots": "noindex,nofollow",
+    "canonicalUrl": "https://example-staging.azurestaticapps.net/"
+  },
+  "blocks": [
+    {
+      "type": "hero"
+    }
+  ]
+}
