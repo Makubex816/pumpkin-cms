@@ -15,4 +15,3 @@
   "wwwBehavior": "canonical-only",
   "notes": "Only approved routes may appear in production output."
 }
-

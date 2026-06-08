@@ -20,4 +20,3 @@ Expected values:
 - Local media paths, localhost URLs, staging URLs, draft notes, workflow metadata, review metadata, and indexing blocker text are forbidden.
 
 Blocks should use known CMS block types and reference media/forms by IDs declared elsewhere in the package.
-

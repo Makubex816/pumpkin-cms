@@ -23,4 +23,3 @@ Forbidden anywhere in import packages:
 - draft workflow/review/admin payloads in public page JSON
 
 JSON Schema cannot catch every forbidden value. Validators must run targeted scans and contextual checks.
-

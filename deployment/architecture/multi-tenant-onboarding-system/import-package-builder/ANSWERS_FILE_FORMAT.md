@@ -13,7 +13,7 @@ The answers file is a local, non-secret JSON file. It is intended for fake or op
 | `routing` | Approved routes, forbidden routes, and trailing slash policy. |
 | `pages` | Page answers for every approved route. |
 | `media` | Declared media assets; can be an empty array. |
-| `form` or `forms` | Contact form configuration. Use one `form` object or one `forms` array, not both. |
+| `form` or `forms` | Contact form configuration with a safe `leadRecipientRef`. Use one `form` object or one `forms` array, not both. |
 | `seo` | Robots, canonical base URL, sitemap policy, and indexing final gate. |
 | `analyticsDecision` | Decision record only; no scripts, tokens, or pixels. |
 | `privacyReviewStatus` | Legal/privacy review status and owner. |
@@ -72,6 +72,19 @@ The builder always carries these forbidden route defaults into generated package
 | `formRef` | Optional form ID declared in `form` or `forms`. |
 | `blocks` | Optional custom blocks; media/form references are checked before generation. |
 
+## Form Recipient References
+
+Every generated form package needs a non-secret `leadRecipientRef`, such as `example-event-leads`.
+
+Rules:
+
+- `leadRecipientRef` is the import package lead routing reference.
+- `recipientGroup` is optional legacy compatibility. If provided, it must match `leadRecipientRef`.
+- `leadRecipientRef` and `recipientGroup` must use lowercase letters, numbers, and hyphens.
+- The builder does not emit raw recipient email into generated `forms.json`.
+- `staticEndpointRef` must remain a placeholder or profile-managed reference.
+- `domainRoutingKey`, when provided, must be a non-secret lowercase reference.
+
 ## Secret And URL Guardrails
 
 The builder rejects answers that look like:
@@ -107,3 +120,16 @@ Ask for help: Ask the domain owner to provide the plain host name.
 ```
 
 See `fixtures/example-event-rentals.answers.json` and `fixtures/valid-full-package.answers.json` for passing examples.
+
+## When To Ask For Help
+
+Stop and ask an operator or owner before continuing if:
+
+- a domain field contains `https://`, a path, a query string, a staging/default host, or an unknown host
+- a page mentions a media ID or form ID that is not listed in `media`, `form`, or `forms`
+- a form recipient reference is blank, conflicts with `recipientGroup`, or looks like a credential
+- a form recipient is blank or the mailbox owner is unknown
+- a value looks like a password, token, API key, private URL, signed URL, or local file path
+- the answers mention another tenant, a paused tenant, Roller, Search Console, sitemap submission, URL Inspection, or indexing
+
+The builder should fail before generation in these cases. Share the generated error code and field path with the operator, not the raw answers file.

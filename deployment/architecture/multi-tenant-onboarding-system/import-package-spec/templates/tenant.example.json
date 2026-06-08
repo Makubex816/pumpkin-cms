@@ -12,9 +12,11 @@
   "owners": [
     {
       "role": "business-owner",
-      "name": "TBD"
+      "name": "TBD",
+      "contactMethod": "TBD",
+      "responsibility": "Approves business facts and final launch.",
+      "backupStatus": "backup-needed"
     }
   ],
   "notes": "Example tenant only. No secrets."
 }
-

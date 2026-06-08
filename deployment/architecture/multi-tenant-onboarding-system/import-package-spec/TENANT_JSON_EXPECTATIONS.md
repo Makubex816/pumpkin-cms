@@ -28,4 +28,3 @@ Forbidden:
 - provider tokens
 
 Use `TENANT_API_KEY_RUNTIME_ONLY` only as a placeholder in examples.
-

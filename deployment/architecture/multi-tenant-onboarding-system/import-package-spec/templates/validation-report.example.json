@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "gate": "import-package",
+  "status": "not-run",
+  "externalMutationPerformed": false,
+  "findings": [],
+  "nextActions": [
+    "Run JSON parse and schema validation before CMS import approval."
+  ],
+  "boundaryConfirmation": {
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "emailMicrosoft365": false,
+    "searchConsoleIndexing": false
+  }
+}

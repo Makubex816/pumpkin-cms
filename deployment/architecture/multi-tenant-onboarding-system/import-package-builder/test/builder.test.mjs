@@ -31,6 +31,11 @@ const invalidFixtureCases = [
   ["invalid-unrelated-tenant-reference.answers.json", AnswerErrorCode.UNRELATED_TENANT_REFERENCE],
   ["invalid-duplicate-form.answers.json", AnswerErrorCode.DUPLICATE_FORM_ID]
 ];
+const invalidRecipientReferenceFixtureCases = [
+  ["invalid-missing-lead-recipient-ref.answers.json", AnswerErrorCode.REQUIRED_FIELD_MISSING],
+  ["invalid-secret-like-lead-recipient-ref.answers.json", AnswerErrorCode.SECRET_LIKE_VALUE],
+  ["invalid-conflicting-recipient-reference.answers.json", AnswerErrorCode.FORM_RECIPIENT_REFERENCE_CONFLICT]
+];
 
 test("generates a valid import package and support packet", async () => {
   const outDir = await tempOutput("valid-package");
@@ -79,6 +84,9 @@ test("valid full fixture generates and validates", async () => {
   const forms = await readJson(path.join(outDir, "forms.json"));
   assert.equal(manifest.packageVersion, "0.2.0");
   assert.equal(forms.forms.length, 1);
+  assert.equal(forms.forms[0].leadRecipientRef, "primary-leads");
+  assert.equal(forms.forms[0].recipientGroup, "primary-leads");
+  assert.equal(forms.forms[0].recipient, undefined);
   assert.ok(result.preview.routes.forbidden.includes("/draft/"));
   assert.ok(result.preview.routes.forbidden.includes("/preview/"));
   assert.ok(result.preview.routes.forbidden.includes("/old/"));
@@ -103,6 +111,8 @@ test("fake pilot fixture generates requested Example Event Rentals package", asy
   const routes = await readJson(path.join(outDir, "routes.json"));
   const forms = await readJson(path.join(outDir, "forms.json"));
   const seo = await readJson(path.join(outDir, "seo.json"));
+  const packet = await readJson(path.join(outDir, "support-packet.json"));
+  const builderSummary = await readFile(path.join(outDir, "BUILDER_PACKAGE_SUMMARY.md"), "utf8");
 
   assert.equal(site.primaryDomain, "exampleeventrentals.com");
   assert.equal(site.deploymentProfileId, "static-azure-cloudflare-worker-graph");
@@ -110,6 +120,11 @@ test("fake pilot fixture generates requested Example Event Rentals package", asy
   assert.ok(routes.forbiddenRoutes.includes("/old-event-rentals/"));
   assert.equal(forms.forms[0].formId, "contact-form");
   assert.equal(forms.forms[0].deliveryMode, "no-email");
+  assert.equal(forms.forms[0].leadRecipientRef, "example-event-leads");
+  assert.equal(forms.forms[0].recipientGroup, "example-event-leads");
+  assert.equal(forms.forms[0].recipient, undefined);
+  assert.equal(packet.formRecipientRefs[0].leadRecipientRef, "example-event-leads");
+  assert.match(builderSummary, /contact-form -> example-event-leads/);
   assert.equal(seo.defaultRobots, "noindex,nofollow");
   assert.equal(seo.sitemapPolicy, "disabled-until-final-gate");
   assert.equal(seo.indexingFinalGate, true);
@@ -183,6 +198,25 @@ for (const [fixtureName, expectedCode] of invalidFixtureCases) {
     assert.ok(result.errors.every((issue) => issue.suggestedFix));
     assert.ok(result.errors.every((issue) => issue.askForHelp));
     await assertMissing(path.join(outDir, "manifest.json"));
+  });
+}
+
+for (const [fixtureName, expectedCode] of invalidRecipientReferenceFixtureCases) {
+  test(`${fixtureName} fails safely with ${expectedCode}`, async () => {
+    const outDir = await tempOutput(fixtureName.replace(".answers.json", ""));
+    const result = await buildImportPackage({
+      answersPath: path.join(packageRoot, "fixtures", fixtureName),
+      outDir,
+      validate: true,
+      supportPacket: true
+    });
+
+    assert.equal(result.status, "failed");
+    assert.equal(result.stage, "answers-validation");
+    assert.ok(result.errors.some((issue) => issue.code === expectedCode), JSON.stringify(result.errors, null, 2));
+    assert.ok(result.errors.every((issue) => issue.suggestedFix));
+    assert.ok(result.errors.every((issue) => issue.askForHelp));
+    await assertMissing(path.join(outDir, "forms.json"));
   });
 }
 

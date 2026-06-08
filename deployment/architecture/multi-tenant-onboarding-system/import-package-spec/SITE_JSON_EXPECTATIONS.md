@@ -21,4 +21,3 @@ Optional:
 - `searchConsoleProperty`
 
 Search Console fields are metadata only. They do not authorize verification, sitemap submission, URL Inspection, or indexing requests.
-

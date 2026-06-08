@@ -19,4 +19,3 @@ Production expectations:
 - Local `/media/...` paths are forbidden in production-ready packages.
 - Secret-bearing URLs and SAS URLs are forbidden.
 - Usage rights status must be recorded.
-

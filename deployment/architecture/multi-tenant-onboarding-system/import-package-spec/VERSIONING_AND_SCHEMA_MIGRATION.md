@@ -17,4 +17,3 @@ Initial draft version:
 - Validators must report unsupported versions clearly.
 - Extension packs must declare compatible schema versions.
 - Imported packages should record the schema version used at import time.
-

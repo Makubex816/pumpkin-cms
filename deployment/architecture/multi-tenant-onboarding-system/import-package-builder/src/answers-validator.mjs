@@ -79,6 +79,7 @@ export const AnswerErrorCode = Object.freeze({
   FORM_REQUIRED: "ANSWERS_FORM_REQUIRED",
   DUPLICATE_FORM_ID: "ANSWERS_DUPLICATE_FORM_ID",
   UNKNOWN_FORM_REFERENCE: "ANSWERS_UNKNOWN_FORM_REFERENCE",
+  FORM_RECIPIENT_REFERENCE_CONFLICT: "ANSWERS_FORM_RECIPIENT_REFERENCE_CONFLICT",
   INVALID_ENUM_VALUE: "ANSWERS_INVALID_ENUM_VALUE",
   INDEXING_NOT_ALLOWED: "ANSWERS_INDEXING_NOT_ALLOWED",
   SECRET_LIKE_VALUE: "ANSWERS_SECRET_LIKE_VALUE",
@@ -142,7 +143,7 @@ export function getAnswerForms(answers) {
 }
 
 export function canonicalBaseUrlFromAnswers(answers) {
-  const host = answers?.domains?.canonicalHost === "www" ? answers?.domains?.wwwDomain : answers?.domains?.primaryDomain;
+  const host = selectedCanonicalHost(answers);
   return host ? `https://${host}` : null;
 }
 
@@ -376,6 +377,16 @@ function validateForms(errors, answers) {
     requireTextLength(errors, form?.displayName, `${base}.displayName`, 2, 120, "Enter a clear form name.");
     requireEnum(errors, form?.deliveryMode ?? "no-email", `${base}.deliveryMode`, [...allowedFormDeliveryModes], "Use no-email, graph, webhook, or profile-managed.");
     requireEmail(errors, form?.recipient, `${base}.recipient`);
+    requirePattern(errors, form?.leadRecipientRef, `${base}.leadRecipientRef`, idPattern, "Use a non-secret lowercase reference such as example-event-leads.");
+    if (form?.recipientGroup) {
+      requirePattern(errors, form.recipientGroup, `${base}.recipientGroup`, idPattern, "Use the same safe reference style as leadRecipientRef.");
+    }
+    if (form?.leadRecipientRef && form?.recipientGroup && form.leadRecipientRef !== form.recipientGroup) {
+      errors.push(error(AnswerErrorCode.FORM_RECIPIENT_REFERENCE_CONFLICT, `${base}.recipientGroup`, "leadRecipientRef and recipientGroup must match when both are provided.", "Use the same non-secret reference value for both fields or remove recipientGroup.", "Ask the form owner before changing lead recipient routing."));
+    }
+    if (form?.domainRoutingKey) {
+      requirePattern(errors, form.domainRoutingKey, `${base}.domainRoutingKey`, idPattern, "Use a non-secret lowercase routing key.");
+    }
     requireTextLength(errors, form?.mailboxOwner, `${base}.mailboxOwner`, 2, 120, "Enter the person or team responsible for this inbox.");
     requireEnum(errors, form?.consentNoticeStatus ?? "pending-review", `${base}.consentNoticeStatus`, [...allowedConsentStatuses], "Use approved, pending-review, or not-required-by-owner.");
     requireEnum(errors, form?.rollbackMode ?? "disable-form", `${base}.rollbackMode`, [...allowedRollbackModes], "Use disable-form, no-email, or profile-managed.");
@@ -391,7 +402,7 @@ function validateForms(errors, answers) {
       errors.push(error(AnswerErrorCode.REQUIRED_FIELD_MISSING, `${base}.fields`, "At least one form field is required.", "Add fields such as name, email, eventDate, and message.", "Ask the form owner what information should be collected."));
     }
 
-    if (form?.staticEndpointRef && !["PROFILE_MANAGED_STATIC_ENDPOINT", "PROFILE_MANAGED_ENDPOINT_RUNTIME_ONLY"].includes(form.staticEndpointRef)) {
+    if (form?.staticEndpointRef && !isAllowedEndpointRef(form.staticEndpointRef)) {
       errors.push(error(AnswerErrorCode.SECRET_LIKE_VALUE, `${base}.staticEndpointRef`, "Static endpoint references must be placeholders only.", "Use PROFILE_MANAGED_STATIC_ENDPOINT or PROFILE_MANAGED_ENDPOINT_RUNTIME_ONLY.", "Ask a developer if someone supplied a real endpoint or token."));
     }
   });
@@ -412,8 +423,9 @@ function validateSeo(errors, answers) {
     errors.push(error(AnswerErrorCode.INDEXING_NOT_ALLOWED, "seo.indexingFinalGate", "The final indexing gate must remain true.", "Set indexingFinalGate to true. This records that indexing is still blocked until final manual review.", "Ask the SEO/indexing owner if this is unclear."));
   }
   if (seo.canonicalBaseUrl) {
+    const requiredHost = selectedCanonicalHost(answers);
     validatePublicUrl(errors, seo.canonicalBaseUrl, "seo.canonicalBaseUrl", {
-      requiredHost: answers?.domains?.canonicalHost === "www" ? answers?.domains?.wwwDomain : answers?.domains?.primaryDomain,
+      requiredHost,
       noPath: true,
       message: "The canonical base URL must be HTTPS and use the selected production canonical host."
     });
@@ -513,6 +525,9 @@ function requireValue(errors, value, path) {
 
 function requireTextLength(errors, value, path, min, max, suggestedFix) {
   requireValue(errors, value, path);
+  if (isMissing(value)) {
+    return;
+  }
   if (typeof value !== "string") {
     return;
   }
@@ -524,6 +539,9 @@ function requireTextLength(errors, value, path, min, max, suggestedFix) {
 
 function requirePattern(errors, value, path, pattern, suggestedFix) {
   requireValue(errors, value, path);
+  if (isMissing(value)) {
+    return;
+  }
   if (typeof value === "string" && !pattern.test(value)) {
     errors.push(error(AnswerErrorCode.INVALID_ID_FORMAT, path, `${path} uses an unsupported format.`, suggestedFix, "Ask an operator or developer if the identifier needs to be changed."));
   }
@@ -531,6 +549,9 @@ function requirePattern(errors, value, path, pattern, suggestedFix) {
 
 function requireDomain(errors, value, path, suggestedFix) {
   requireValue(errors, value, path);
+  if (isMissing(value)) {
+    return;
+  }
   if (typeof value !== "string") {
     return;
   }
@@ -551,6 +572,9 @@ function requireDomain(errors, value, path, suggestedFix) {
 
 function requireEmail(errors, value, path) {
   requireValue(errors, value, path);
+  if (isMissing(value)) {
+    return;
+  }
   if (typeof value === "string" && !emailPattern.test(value)) {
     errors.push(error(AnswerErrorCode.INVALID_ID_FORMAT, path, `${path} must be an email address.`, "Use an approved lead inbox such as leads@exampleeventrentals.com.", "Ask the form owner which inbox should receive leads."));
   }
@@ -565,6 +589,9 @@ function requireEnum(errors, value, path, allowed, suggestedFix) {
 
 function validatePublicUrl(errors, value, path, options = {}) {
   requireValue(errors, value, path);
+  if (isMissing(value)) {
+    return;
+  }
   if (typeof value !== "string") {
     return;
   }
@@ -583,8 +610,9 @@ function validatePublicUrl(errors, value, path, options = {}) {
     errors.push(error(AnswerErrorCode.INVALID_PRODUCTION_URL, path, "Production URL fields cannot use localhost, staging, preview, or default-host URLs.", "Use the approved public production URL.", "Ask a deployment engineer if the production host is not ready."));
   }
 
-  if (options.requiredHost && parsed.hostname.toLowerCase() !== options.requiredHost.toLowerCase()) {
-    errors.push(error(AnswerErrorCode.INVALID_PRODUCTION_URL, path, `This URL must use ${options.requiredHost}.`, `Use https://${options.requiredHost}${options.noPath ? "" : "/..."}.`, "Ask the domain or media owner to confirm the approved host."));
+  const requiredHost = safePlainDomain(options.requiredHost);
+  if (requiredHost && parsed.hostname.toLowerCase() !== requiredHost.toLowerCase()) {
+    errors.push(error(AnswerErrorCode.INVALID_PRODUCTION_URL, path, `This URL must use ${requiredHost}.`, `Use https://${requiredHost}${options.noPath ? "" : "/..."}.`, "Ask the domain or media owner to confirm the approved host."));
   }
 
   if (options.noPath && (parsed.pathname !== "/" || parsed.search || parsed.hash)) {
@@ -638,6 +666,37 @@ function parseUrl(value) {
 
 function trimTrailingSlash(value) {
   return String(value).replace(/\/+$/, "");
+}
+
+function selectedCanonicalHost(answers) {
+  const host = answers?.domains?.canonicalHost === "www" ? answers?.domains?.wwwDomain : answers?.domains?.primaryDomain;
+  return safePlainDomain(host);
+}
+
+function safePlainDomain(value) {
+  if (typeof value !== "string" || isMissing(value)) {
+    return null;
+  }
+  if (value.includes("://") || value.includes("/") || value.includes("@") || value.includes("..")) {
+    return null;
+  }
+  if (!domainPattern.test(value)) {
+    return null;
+  }
+  if (stagingOrLocalPatterns.some((pattern) => pattern.test(value))) {
+    return null;
+  }
+  return value;
+}
+
+function isAllowedEndpointRef(value) {
+  return value === "PROFILE_MANAGED_STATIC_ENDPOINT"
+    || value === "PROFILE_MANAGED_ENDPOINT_RUNTIME_ONLY"
+    || (typeof value === "string" && /^profile:[a-z][a-z0-9-]{2,80}$/.test(value));
+}
+
+function isMissing(value) {
+  return value === undefined || value === null || value === "";
 }
 
 function isPlainObject(value) {

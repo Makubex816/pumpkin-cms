@@ -80,7 +80,9 @@
       "message"
     ],
     "consentNoticeStatus": "pending-review",
-    "rollbackMode": "disable-form"
+    "rollbackMode": "disable-form",
+    "leadRecipientRef": "example-event-leads",
+    "staticEndpointRef": "PROFILE_MANAGED_STATIC_ENDPOINT"
   },
   "seo": {
     "defaultRobots": "noindex,nofollow",

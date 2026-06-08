@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { access, mkdtemp, readFile, readdir } from "node:fs/promises";
+import { access, cp, mkdtemp, readFile, readdir, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
@@ -58,6 +58,52 @@ test("media and form reference fixtures fail with reference codes", async () => 
   await assertFixtureHasCode("invalid-unknown-form-reference", ErrorCode.UNKNOWN_FORM_REFERENCE);
 });
 
+test("form recipient references accept leadRecipientRef and legacy recipientGroup", async () => {
+  const modernReport = await validateFixture("valid-minimal");
+  assert.equal(modernReport.overallStatus, "passed");
+
+  const legacyPackage = await copyFixtureToTemp("valid-minimal");
+  const formsPath = path.join(legacyPackage, "forms.json");
+  const forms = await readJson(formsPath);
+  delete forms.forms[0].leadRecipientRef;
+  forms.forms[0].recipientGroup = "events-team";
+  await writeJson(formsPath, forms);
+
+  const legacyReport = await validatePackage({ packagePath: legacyPackage });
+  assert.equal(legacyReport.overallStatus, "passed");
+  assert.equal(legacyReport.summary.errors, 0);
+});
+
+test("form recipient references fail when missing, unsafe, or conflicting", async () => {
+  const missingPackage = await copyFixtureToTemp("valid-minimal");
+  await mutateFirstForm(missingPackage, (form) => {
+    delete form.leadRecipientRef;
+    delete form.recipientGroup;
+  });
+  const missingReport = await validatePackage({ packagePath: missingPackage });
+  assert.equal(missingReport.overallStatus, "failed");
+  assert(missingReport.findings.some((finding) => finding.code === ErrorCode.FORM_RECIPIENT_REFERENCE_REQUIRED));
+
+  const secretPackage = await copyFixtureToTemp("valid-minimal");
+  await mutateFirstForm(secretPackage, (form) => {
+    form.leadRecipientRef = "client_secret=notARealSecretForFixture";
+    delete form.recipientGroup;
+  });
+  const secretReport = await validatePackage({ packagePath: secretPackage });
+  assert.equal(secretReport.overallStatus, "failed");
+  assert(secretReport.findings.some((finding) => finding.code === ErrorCode.FORM_RECIPIENT_REFERENCE_INVALID));
+  assert(secretReport.findings.some((finding) => finding.code === ErrorCode.FORBIDDEN_SECRET_LIKE_VALUE));
+
+  const conflictPackage = await copyFixtureToTemp("valid-minimal");
+  await mutateFirstForm(conflictPackage, (form) => {
+    form.leadRecipientRef = "events-team";
+    form.recipientGroup = "other-team";
+  });
+  const conflictReport = await validatePackage({ packagePath: conflictPackage });
+  assert.equal(conflictReport.overallStatus, "failed");
+  assert(conflictReport.findings.some((finding) => finding.code === ErrorCode.FORM_RECIPIENT_REFERENCE_CONFLICT));
+});
+
 test("URL safety fixtures fail with stable URL codes", async () => {
   await assertFixtureHasCode("invalid-forbidden-local-url", ErrorCode.FORBIDDEN_LOCAL_URL);
   await assertFixtureHasCode("invalid-forbidden-staging-url", ErrorCode.FORBIDDEN_STAGING_URL);
@@ -113,6 +159,7 @@ test("valid fixture support packet writes expected handoff files without copying
   await assertFileExists(path.join(outDir, "PACKAGE_FILE_INVENTORY.md"));
 
   const summary = await readFile(path.join(outDir, "NON_TECHNICAL_SUMMARY.md"), "utf8");
+  const handoff = await readFile(path.join(outDir, "OPERATOR_HANDOFF.md"), "utf8");
   const inventory = await readFile(path.join(outDir, "PACKAGE_FILE_INVENTORY.md"), "utf8");
   const packet = JSON.parse(await readFile(path.join(outDir, "support-packet.json"), "utf8"));
   const outputEntries = new Set(await readdir(outDir));
@@ -120,8 +167,10 @@ test("valid fixture support packet writes expected handoff files without copying
   assert.match(summary, /What Passed/);
   assert.match(summary, /What Needs Fixing/);
   assert.match(summary, /Do Not Paste Secrets/);
+  assert.match(handoff, /lead-form -> events-team/);
   assert.match(inventory, /Source files copied: false/);
   assert.equal(packet.sourceFilesCopied, false);
+  assert.equal(packet.formRecipientRefs[0].leadRecipientRef, "events-team");
   assert.equal(packet.supportRules.externalChecksPerformed, false);
   assert.equal(outputEntries.has("tenant.json"), false);
   assert.equal(outputEntries.has("site.json"), false);
@@ -170,6 +219,28 @@ async function validateFixture(fixtureName, extraOptions = {}) {
 
 async function assertFileExists(filePath) {
   await access(filePath);
+}
+
+async function copyFixtureToTemp(fixtureName) {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "pumpkin-validator-fixture-"));
+  const packagePath = path.join(tempDir, fixtureName);
+  await cp(path.join(fixturesRoot, fixtureName), packagePath, { recursive: true });
+  return packagePath;
+}
+
+async function mutateFirstForm(packagePath, mutate) {
+  const formsPath = path.join(packagePath, "forms.json");
+  const forms = await readJson(formsPath);
+  mutate(forms.forms[0]);
+  await writeJson(formsPath, forms);
+}
+
+async function readJson(filePath) {
+  return JSON.parse(await readFile(filePath, "utf8"));
+}
+
+async function writeJson(filePath, data) {
+  await writeFile(filePath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
 function runCli(args) {

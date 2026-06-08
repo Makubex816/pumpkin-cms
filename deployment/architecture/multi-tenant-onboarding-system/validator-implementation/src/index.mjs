@@ -41,6 +41,7 @@ export async function validatePackage(options) {
   const manifest = parsed.get("manifest.json")?.data;
   const tenant = parsed.get("tenant.json")?.data;
   const site = parsed.get("site.json")?.data;
+  const forms = parsed.get("forms.json")?.data;
 
   const report = {
     schemaVersion: "1.0.0",
@@ -50,6 +51,7 @@ export async function validatePackage(options) {
     siteKey: manifest?.siteKey ?? tenant?.siteKey ?? site?.siteKey ?? null,
     packagePath,
     profileId: site?.deploymentProfileId ?? null,
+    formRecipientRefs: summarizeFormRecipientRefs(forms),
     overallStatus,
     gateStatuses,
     findings,
@@ -104,6 +106,20 @@ export async function validatePackage(options) {
   }
 
   return report;
+}
+
+function summarizeFormRecipientRefs(formsDoc) {
+  if (!Array.isArray(formsDoc?.forms)) {
+    return [];
+  }
+
+  return formsDoc.forms.map((form) => ({
+    formId: form.formId ?? null,
+    leadRecipientRef: form.leadRecipientRef ?? null,
+    recipientGroup: form.recipientGroup ?? null,
+    staticEndpointRef: form.staticEndpointRef ?? null,
+    domainRoutingKey: form.domainRoutingKey ?? null
+  }));
 }
 
 function buildNextActions(findings) {

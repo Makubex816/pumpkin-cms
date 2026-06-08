@@ -22,4 +22,3 @@
 - indexing hard stop: pending
 
 This example report is not a real validation result.
-

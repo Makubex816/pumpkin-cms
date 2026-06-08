@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "builderProfile": {
+    "deploymentProfile": "static-azure-cloudflare-worker-graph",
+    "generatorMode": "offline-local-only"
+  },
+  "tenant": {
+    "tenantId": "unknown-media-demo",
+    "siteKey": "unknown-media-demo",
+    "tenantDisplayName": "Unknown Media Demo",
+    "businessType": "event rental services",
+    "cmsTenantSlug": "unknown-media-demo"
+  },
+  "domains": {
+    "primaryDomain": "unknownmediademo.com",
+    "wwwDomain": "www.unknownmediademo.com",
+    "mediaDomain": "media.unknownmediademo.com",
+    "canonicalHost": "primary"
+  },
+  "routing": {
+    "trailingSlashPolicy": "always",
+    "approvedRoutes": [
+      "/"
+    ],
+    "forbiddenRoutes": []
+  },
+  "pages": [
+    {
+      "route": "/",
+      "slug": "home",
+      "title": "Unknown Media Demo",
+      "seoDescription": "Fixture that intentionally references a media item that is not declared.",
+      "mediaRefs": [
+        "missing-hero-image"
+      ]
+    }
+  ],
+  "media": [],
+  "form": {
+    "formId": "contact-form",
+    "displayName": "Contact form",
+    "deliveryMode": "no-email",
+    "recipient": "leads@unknownmediademo.com",
+    "mailboxOwner": "Example Form Owner",
+    "fields": [
+      "name",
+      "email",
+      "message"
+    ],
+    "consentNoticeStatus": "pending-review",
+    "rollbackMode": "disable-form"
+  },
+  "seo": {
+    "defaultRobots": "noindex,nofollow",
+    "canonicalBaseUrl": "https://unknownmediademo.com",
+    "sitemapPolicy": "disabled-until-final-gate",
+    "indexingFinalGate": true
+  },
+  "analyticsDecision": {
+    "status": "deferred",
+    "owner": "Example Analytics Owner",
+    "notes": "No analytics implementation is included."
+  },
+  "privacyReviewStatus": {
+    "status": "pending-review",
+    "owner": "Example Privacy Owner",
+    "notes": "Review is pending."
+  },
+  "ownerContacts": {
+    "businessOwner": "Example Business Owner",
+    "contentOwner": "Example Content Owner",
+    "mediaOwner": "Example Media Owner",
+    "formOwner": "Example Form Owner",
+    "technicalOperator": "Example Technical Operator",
+    "monitoringOwner": "Example Monitoring Owner",
+    "rollbackOwner": "Example Rollback Owner",
+    "indexingOwner": "Example SEO Owner"
+  },
+  "manualApprovals": {
+    "contentApproval": "pending",
+    "legalPrivacyApproval": "pending",
+    "formOversightApproval": "pending",
+    "analyticsDecisionApproval": "pending",
+    "monitoringApproval": "pending",
+    "rollbackApproval": "pending",
+    "indexingFinalGateApproval": "blocked-until-final-review"
+  }
+}

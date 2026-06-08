@@ -58,7 +58,8 @@ export async function buildPackagePreview({ answers, files, outputDirectory, val
     formRefs: forms.map((form) => ({
       formId: form.formId,
       deliveryMode: form.deliveryMode ?? "no-email",
-      recipientDomain: form.recipient?.split("@").at(-1) ?? null
+      leadRecipientRef: form.leadRecipientRef ?? null,
+      recipientGroup: form.recipientGroup ?? form.leadRecipientRef ?? null
     })),
     validator: {
       willRun: Boolean(validate || supportPacket),

@@ -8,6 +8,10 @@
       "displayName": "Lead Form",
       "deliveryMode": "profile-managed",
       "recipient": "leads@exampleeventrentals.com",
+      "leadRecipientRef": "events-team",
+      "recipientGroup": "events-team",
+      "staticEndpointRef": "PROFILE_MANAGED_STATIC_ENDPOINT",
+      "domainRoutingKey": "events-team",
       "mailboxOwner": "events-team",
       "fields": [
         "name",

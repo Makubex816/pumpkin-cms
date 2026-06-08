@@ -16,4 +16,3 @@ Rules:
 - Approved page files must match approved routes.
 - Preview and obsolete routes must not appear in static output.
 - Redirects require a separate `redirects.json` entry and validator approval.
-

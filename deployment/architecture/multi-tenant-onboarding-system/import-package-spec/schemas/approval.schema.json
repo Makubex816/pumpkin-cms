@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/multi-tenant-onboarding/approval.schema.json",
+  "title": "Pumpkin CMS Gate Approvals",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "tenantId", "siteKey", "approvals", "hardStops"],
+  "properties": {
+    "schemaVersion": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "tenantId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$" },
+    "siteKey": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$" },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gate", "status", "ownerRole", "approvedBy", "approvedDate", "scope", "excludedSystems"],
+        "properties": {
+          "gate": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,80}$" },
+          "status": { "type": "string", "enum": ["pending", "approved", "rejected", "accepted-with-risk"] },
+          "ownerRole": { "type": "string", "minLength": 3 },
+          "approvedBy": { "type": "string", "minLength": 2 },
+          "approvedDate": { "type": "string" },
+          "scope": { "type": "string", "minLength": 10 },
+          "excludedSystems": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+        }
+      }
+    },
+    "hardStops": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["externalMutationAllowedByThisFile", "searchConsoleIndexingFinalGate"],
+      "properties": {
+        "externalMutationAllowedByThisFile": { "type": "boolean", "const": false },
+        "searchConsoleIndexingFinalGate": { "type": "boolean", "const": true }
+      }
+    }
+  }
+}

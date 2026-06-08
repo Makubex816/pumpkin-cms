@@ -33,7 +33,7 @@ Output folder: ${outputDirectory}
 - forbidden routes: ${preview.routes.forbidden.join(", ")}
 - pages: ${preview.pages.map((page) => `${page.slug} (${page.route})`).join(", ")}
 - media refs: ${preview.mediaRefs.map((asset) => asset.mediaId).join(", ") || "none"}
-- form refs: ${preview.formRefs.map((form) => form.formId).join(", ") || "none"}
+- form refs: ${preview.formRefs.map((form) => `${form.formId} -> ${form.leadRecipientRef ?? form.recipientGroup ?? "missing-recipient-ref"}`).join(", ") || "none"}
 
 ## Validation
 

@@ -35,6 +35,18 @@ npm run generate:example
 npm run validate:generated-example
 ```
 
+## Evidence QA Rehearsal
+
+Use these commands when rehearsing a fake pilot package or collecting QA evidence:
+
+```powershell
+node src/builder-cli.mjs --answers fixtures/valid-full-package.answers.json --out .tmp/qa-valid-full --dry-run --validate --support-packet
+node src/builder-cli.mjs --answers fixtures/valid-full-package.answers.json --out .tmp/qa-valid-full --overwrite --validate --support-packet
+node src/builder-cli.mjs --answers fixtures/invalid-malformed-domain.answers.json --out .tmp/qa-invalid-malformed-domain --validate --support-packet
+```
+
+The invalid command should exit with code `1`, write no package files, and show an issue code, field path, `Fix:`, and `Ask for help:` guidance. Treat that as a successful negative-path rehearsal.
+
 ## Preview/Diff Summary
 
 `--dry-run` does not create the output folder and does not run validation. It reports:

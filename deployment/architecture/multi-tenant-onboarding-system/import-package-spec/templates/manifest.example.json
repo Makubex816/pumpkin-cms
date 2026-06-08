@@ -6,6 +6,7 @@
   "createdFor": "Example Rink Rentals",
   "files": [
     "tenant.json",
+    "owner-contacts.json",
     "site.json",
     "routes.json",
     "pages/home.json",
@@ -15,11 +16,13 @@
     "forms.json",
     "seo.json",
     "theme.json",
-    "redirects.json"
+    "redirects.json",
+    "approvals.json",
+    "validation-report.json",
+    "support-packet.json"
   ],
   "validation": {
     "status": "not-run",
     "externalMutationAllowed": false
   }
 }
-

@@ -11,4 +11,3 @@ Future tools should generate a downloadable zip with:
 - support ticket template
 
 The kit must exclude secrets, generated artifacts, raw production images unless explicitly selected, and protected config files.
-

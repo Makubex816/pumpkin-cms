@@ -42,6 +42,7 @@ export function buildSupportPacket(report, files) {
     summary: report.summary,
     topBlockers: topBlockingFindings(report).map(summarizeFinding),
     gateStatuses: report.gateStatuses,
+    formRecipientRefs: report.formRecipientRefs ?? [],
     nextActions: report.nextActions,
     filesChecked: report.filesChecked,
     generatedFiles: files.map((file) => path.basename(file)),
@@ -82,6 +83,7 @@ ${renderGateSummary(report, "media-references")}
 ## Form Summary
 
 ${renderGateSummary(report, "form-references")}
+${renderFormRecipientRefs(report)}
 
 ## SEO Summary
 
@@ -193,6 +195,19 @@ function renderGateSummary(report, gateId) {
   return `- Status: ${gate.status}
 - Summary: ${gate.summary}
 - Blocking findings: ${blockers.length}`;
+}
+
+function renderFormRecipientRefs(report) {
+  const refs = report.formRecipientRefs ?? [];
+  if (refs.length === 0) {
+    return "- Recipient references: none declared";
+  }
+
+  return `- Recipient references: ${refs.map((form) => {
+    const ref = form.leadRecipientRef ?? form.recipientGroup ?? "missing";
+    const legacy = form.recipientGroup && form.recipientGroup !== form.leadRecipientRef ? ` legacy=${form.recipientGroup}` : "";
+    return `${form.formId ?? "unknown-form"} -> ${ref}${legacy}`;
+  }).join(", ")}`;
 }
 
 function renderPassedGates(report) {

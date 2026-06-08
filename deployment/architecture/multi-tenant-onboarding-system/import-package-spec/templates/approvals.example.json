@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "approvals": [
+    {
+      "gate": "cms-preview-import",
+      "status": "pending",
+      "ownerRole": "business-owner",
+      "approvedBy": "TBD",
+      "approvedDate": "TBD",
+      "scope": "Import package into CMS preview only after validation passes.",
+      "excludedSystems": ["Azure", "Cloudflare", "DNS", "deployment", "email", "Search Console"]
+    },
+    {
+      "gate": "final-indexing",
+      "status": "pending",
+      "ownerRole": "indexing-owner",
+      "approvedBy": "TBD",
+      "approvedDate": "TBD",
+      "scope": "Final Search Console/indexing only after owner review.",
+      "excludedSystems": ["CMS", "MediaAsset", "Azure", "Cloudflare", "DNS", "deployment", "email"]
+    }
+  ],
+  "hardStops": {
+    "externalMutationAllowedByThisFile": false,
+    "searchConsoleIndexingFinalGate": true
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "issueSummary": "Example package validation support request.",
+  "currentGate": "import-package",
+  "publicUrls": [
+    "https://example.com/",
+    "https://media.example.com/example-rink-rentals/assets/example-hero/example-hero.jpg"
+  ],
+  "validationReports": [
+    "VALIDATION_REPORT.md",
+    "validation-report.json"
+  ],
+  "ownerContacts": [
+    {
+      "role": "business-owner",
+      "contactMethod": "contact@example.com"
+    }
+  ],
+  "redaction": {
+    "secretsIncluded": false,
+    "protectedConfigIncluded": false,
+    "mailboxContentsIncluded": false
+  }
+}

@@ -17,4 +17,3 @@ Rules:
 - Navigation links must be approved routes or approved external URLs.
 - Theme files must not contain secrets.
 - Tenant theme updates require approval before CMS writes.
-

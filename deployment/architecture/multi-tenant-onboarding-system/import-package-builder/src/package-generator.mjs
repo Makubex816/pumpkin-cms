@@ -90,16 +90,22 @@ export function generatePackagePlan(answers) {
       schemaVersion,
       tenantId,
       siteKey,
-      forms: forms.map((form) => ({
-        formId: form.formId,
-        displayName: form.displayName,
-        deliveryMode: form.deliveryMode ?? "no-email",
-        recipient: form.recipient,
-        mailboxOwner: form.mailboxOwner,
-        fields: form.fields,
-        consentNoticeStatus: form.consentNoticeStatus ?? "pending-review",
-        rollbackMode: form.rollbackMode ?? "disable-form"
-      }))
+      forms: forms.map((form) => {
+        const leadRecipientRef = form.leadRecipientRef;
+        return withoutUndefined({
+          formId: form.formId,
+          displayName: form.displayName,
+          deliveryMode: form.deliveryMode ?? "no-email",
+          leadRecipientRef,
+          recipientGroup: form.recipientGroup ?? leadRecipientRef,
+          staticEndpointRef: form.staticEndpointRef,
+          domainRoutingKey: form.domainRoutingKey,
+          mailboxOwner: form.mailboxOwner,
+          fields: form.fields,
+          consentNoticeStatus: form.consentNoticeStatus ?? "pending-review",
+          rollbackMode: form.rollbackMode ?? "disable-form"
+        });
+      })
     }),
     jsonFile("seo.json", {
       schemaVersion,

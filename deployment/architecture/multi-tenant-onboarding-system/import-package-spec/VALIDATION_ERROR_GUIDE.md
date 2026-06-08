@@ -23,4 +23,3 @@ Good:
 ```text
 pages/contact.json uses route /contact-us/, but routes.json approves only /contact/. Change the page route or update the approved route list before import.
 ```
-

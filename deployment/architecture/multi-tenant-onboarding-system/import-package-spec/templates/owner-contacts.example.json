@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "contacts": [
+    {
+      "role": "business-owner",
+      "name": "TBD Business Owner",
+      "contactMethod": "contact@example.com",
+      "responsibility": "Approves business facts and final launch.",
+      "backupStatus": "backup-needed"
+    },
+    {
+      "role": "rollback-owner",
+      "name": "TBD Operator",
+      "contactMethod": "operator@example.com",
+      "responsibility": "Owns rollback decision and escalation.",
+      "backupStatus": "backup-needed"
+    },
+    {
+      "role": "indexing-owner",
+      "name": "TBD Indexing Owner",
+      "contactMethod": "contact@example.com",
+      "responsibility": "Approves Search Console/indexing only after final gate.",
+      "backupStatus": "backup-needed"
+    }
+  ]
+}

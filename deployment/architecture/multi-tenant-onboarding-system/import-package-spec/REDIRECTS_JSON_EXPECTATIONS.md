@@ -14,4 +14,3 @@ Rules:
 - Redirects must not point to draft, preview, unrelated tenant, localhost, or secret-bearing URLs.
 - Redirects are not a substitute for route allowlist validation.
 - Redirects should be smoke-tested after staging and production cutover.
-

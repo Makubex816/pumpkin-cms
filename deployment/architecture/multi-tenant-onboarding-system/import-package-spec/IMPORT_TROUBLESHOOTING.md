@@ -9,4 +9,3 @@
 | Local media path found | Content copied from local preview | Replace with profile-approved public media URL. |
 | Secret scan hit | Credential pasted into package | Remove secret and rotate if exposed. |
 | Obsolete page present | Old route was not marked forbidden | Add forbidden route and remove page file. |
-

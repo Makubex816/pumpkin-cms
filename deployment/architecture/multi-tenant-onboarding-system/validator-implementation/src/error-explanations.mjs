@@ -90,6 +90,30 @@ const errorExplanations = new Map(
       whenToAskForHelp: "Ask the form owner before changing where leads are collected.",
       reviewOwner: "Form owner or operator"
     }),
+    explanation(ErrorCode.FORM_RECIPIENT_REFERENCE_REQUIRED, {
+      title: "Lead recipient reference is missing",
+      plainLanguage: "A form does not name the approved lead routing reference.",
+      likelyCause: "The form was created before leadRecipientRef was added to the package schema.",
+      howToFix: "Add leadRecipientRef, or keep a matching legacy recipientGroup, using a safe reference such as example-event-leads.",
+      whenToAskForHelp: "Ask the form owner or operator if you do not know the approved lead routing reference.",
+      reviewOwner: "Form owner or operator"
+    }),
+    explanation(ErrorCode.FORM_RECIPIENT_REFERENCE_INVALID, {
+      title: "Lead recipient reference is unsafe",
+      plainLanguage: "A form recipient reference looks like the wrong kind of value.",
+      likelyCause: "An email address, token, URL, path, or copied secret-like value may have been used instead of a safe reference ID.",
+      howToFix: "Use lowercase letters, numbers, and hyphens only, such as example-event-leads.",
+      whenToAskForHelp: "Ask an operator or security reviewer if the value might be a credential.",
+      reviewOwner: "Form owner or security reviewer"
+    }),
+    explanation(ErrorCode.FORM_RECIPIENT_REFERENCE_CONFLICT, {
+      title: "Lead recipient references conflict",
+      plainLanguage: "The new lead recipient reference and the legacy recipient group do not match.",
+      likelyCause: "One field was updated while the compatibility field kept an older routing value.",
+      howToFix: "Use the same safe value for leadRecipientRef and recipientGroup, or remove recipientGroup after legacy consumers no longer need it.",
+      whenToAskForHelp: "Ask the form owner before changing lead routing.",
+      reviewOwner: "Form owner or operator"
+    }),
     explanation(ErrorCode.FORBIDDEN_LOCAL_URL, {
       title: "Local preview URL is present",
       plainLanguage: "The package contains a local computer or preview URL that should not go live.",

@@ -16,4 +16,3 @@ Rules:
 - Approved production pages should use `index,follow` only after readiness gates allow it.
 - Sitemap URLs must match canonical URLs.
 - Search Console/indexing remains a final gate and is never triggered by this file.
-

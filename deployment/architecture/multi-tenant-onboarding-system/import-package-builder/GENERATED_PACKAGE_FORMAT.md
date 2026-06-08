@@ -27,6 +27,8 @@ The builder writes a validator-ready local package folder. The generated folder 
 - `tenant.tenantApiKeyPlaceholder` is `TENANT_API_KEY_RUNTIME_ONLY`.
 - generated page `status` defaults to `draft`.
 - generated SEO must remain `noindex,nofollow` until the final indexing hard stop is cleared outside this builder.
+- generated forms use `leadRecipientRef` for non-secret lead routing and mirror it to legacy `recipientGroup`.
+- generated forms do not emit raw recipient email values.
 - `redirects.json` starts with an empty redirect list.
 - forbidden route defaults include `/draft/`, `/preview/`, and `/old/`.
 
@@ -49,6 +51,17 @@ If a page answer does not provide custom blocks, the builder creates:
 - one form block when `formRef` is present
 
 If custom blocks are supplied, the builder checks media and form references before generation. The offline validator still performs package-level schema and reference checks after generation.
+
+## Form Recipient References
+
+Generated `forms.json` includes:
+
+- `leadRecipientRef`: the safe import package recipient reference
+- `recipientGroup`: a matching legacy compatibility value
+- optional `staticEndpointRef`: profile-managed endpoint placeholder
+- optional `domainRoutingKey`: safe routing key
+
+The builder rejects missing, unsafe, or conflicting recipient references before writing package files.
 
 ## Field Catalog Alignment
 
