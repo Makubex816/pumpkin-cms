@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "themeId": "example-theme",
+  "displayName": "Example Theme",
+  "navigation": [
+    {
+      "label": "Home",
+      "href": "/"
+    }
+  ],
+  "colors": {
+    "primary": "#1F6FEB",
+    "accent": "#2DA44E"
+  }
+}

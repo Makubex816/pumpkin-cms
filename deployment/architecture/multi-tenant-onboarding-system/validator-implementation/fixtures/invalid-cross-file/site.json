@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "different-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "primaryDomain": "example.test",
+  "wwwDomain": "www.example.test",
+  "mediaDomain": "media.example.test",
+  "deploymentProfileId": "static-azure-cloudflare-cdn",
+  "canonicalHost": "primary"
+}

@@ -1,0 +1,3 @@
+# Next Phase 2A-2 Prompt
+
+Approve Phase 2A-2 multi-tenant onboarding offline cross-file validator expansion only: extend the local validator in `deployment/architecture/multi-tenant-onboarding-system/validator-implementation/` with deeper media reference validation, form reference validation, SEO canonical/sitemap/noindex policy validation, URL safety fixture coverage, secret-pattern fixture coverage, deployment profile environment-variable classification, profile-specific offline smoke-test fixtures, and extension permission/migration schema handling. No CMS writes, tenant creation, Azure/Cloudflare/DNS/deployment/email/Microsoft 365/Search Console/indexing actions, external checks, protected config reads, or Roller work.

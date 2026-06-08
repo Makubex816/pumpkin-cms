@@ -1,0 +1,5 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "primaryDomain": "example.test",

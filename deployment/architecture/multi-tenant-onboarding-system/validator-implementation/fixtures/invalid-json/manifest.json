@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "packageVersion": "0.1.0",
+  "tenantId": "example-rink-rentals",
+  "siteKey": "example-rink-rentals",
+  "createdFor": "Example Rink Rentals",
+  "files": [
+    "tenant.json",
+    "site.json",
+    "routes.json",
+    "media-assets.json",
+    "forms.json",
+    "seo.json",
+    "theme.json",
+    "redirects.json",
+    "pages/home.json"
+  ],
+  "validation": {
+    "status": "not-run",
+    "externalMutationAllowed": false
+  }
+}
