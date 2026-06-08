@@ -1,0 +1,78 @@
+{
+  "phase": "2C-1",
+  "name": "real-tenant-pilot-plan",
+  "createdDate": "2026-06-08",
+  "status": "planning_complete",
+  "scope": {
+    "planningOnly": true,
+    "implementation": false,
+    "realTenantCreation": false,
+    "externalChecks": false,
+    "externalMutation": false
+  },
+  "readiness": {
+    "phase2b5FormRecipientAlignment": "complete",
+    "phase2c1RealTenantPilotPlanning": true,
+    "readyForRealTenantDryRunApproval": true,
+    "readyForRealTenantDryRunApprovalStatus": "conditional_yes",
+    "dryRunApprovalConditions": [
+      "approved_non_secret_candidate_intake_supplied",
+      "builder_tests_pass_before_dry_run",
+      "validator_tests_pass_before_dry_run",
+      "fake_pilot_has_no_relevant_blocker",
+      "explicit_no_mutation_dry_run_approval_given"
+    ],
+    "readyForRealTenantExecution": false,
+    "newTenantCreated": false,
+    "externalSystemsChanged": false,
+    "searchConsoleOrIndexingAffected": false,
+    "rollerStatus": "paused"
+  },
+  "artifacts": [
+    "README.md",
+    "PILOT_SCOPE.md",
+    "NON_GOALS.md",
+    "CANDIDATE_SELECTION_CRITERIA.md",
+    "PILOT_INTAKE_REQUIREMENTS.md",
+    "REQUIRED_USER_SUPPLIED_INFORMATION.md",
+    "FORBIDDEN_USER_SUPPLIED_INFORMATION.md",
+    "NO_MUTATION_DRY_RUN_PLAN.md",
+    "BUILDER_VALIDATOR_WORKFLOW.md",
+    "SUPPORT_PACKET_REVIEW_PLAN.md",
+    "OPERATOR_REVIEW_CHECKLIST.md",
+    "APPROVAL_BOUNDARIES.md",
+    "ROLLBACK_AND_ABORT_PLAN.md",
+    "RISK_REGISTER.md",
+    "READINESS_GATE_BEFORE_EXECUTION.md",
+    "NEXT_REAL_TENANT_DRY_RUN_APPROVAL_PROMPT.md",
+    "manifest.json"
+  ],
+  "forbiddenActions": [
+    "tenant_creation",
+    "cms_write",
+    "mediaasset_write",
+    "azure_change",
+    "cloudflare_change",
+    "dns_change",
+    "deployment",
+    "email_sending",
+    "search_console_submission",
+    "sitemap_submission",
+    "indexing_request",
+    "external_check",
+    "protected_config_access",
+    "roller_change"
+  ],
+  "boundaryConfirmation": {
+    "newTenantCreated": false,
+    "cmsChanged": false,
+    "azureChanged": false,
+    "cloudflareChanged": false,
+    "dnsChanged": false,
+    "deploymentChanged": false,
+    "emailSent": false,
+    "searchConsoleChanged": false,
+    "indexingRequested": false,
+    "rollerResumed": false
+  }
+}
