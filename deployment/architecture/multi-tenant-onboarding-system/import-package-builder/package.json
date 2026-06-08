@@ -1,0 +1,16 @@
+{
+  "name": "pumpkin-import-package-builder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local/offline skeleton builder for Pumpkin multi-tenant import packages.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/answers-loader.mjs && node --check src/answers-validator.mjs && node --check src/builder-cli.mjs && node --check src/index.mjs && node --check src/package-generator.mjs && node --check src/path-safety.mjs && node --check src/validator-runner.mjs && npm test",
+    "generate:example": "node src/builder-cli.mjs --answers fixtures/example-event-rentals.answers.json --out .tmp/generated-example --overwrite",
+    "validate:generated-example": "node src/builder-cli.mjs --answers fixtures/example-event-rentals.answers.json --out .tmp/generated-example --overwrite --validate --support-packet"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

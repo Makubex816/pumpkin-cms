@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0.0",
+  "tenant": {
+    "tenantId": "missing-domain-demo",
+    "siteKey": "missing-domain-demo",
+    "tenantDisplayName": "Missing Domain Demo",
+    "businessType": "event rental services",
+    "cmsTenantSlug": "missing-domain-demo"
+  },
+  "domains": {
+    "primaryDomain": "",
+    "wwwDomain": "www.missingdomaindemo.com",
+    "mediaDomain": "media.missingdomaindemo.com",
+    "canonicalHost": "primary"
+  },
+  "builderProfile": {
+    "deploymentProfile": "static-azure-cloudflare-worker-graph"
+  },
+  "routing": {
+    "approvedRoutes": [
+      "/"
+    ],
+    "forbiddenRoutes": []
+  },
+  "pages": [
+    {
+      "route": "/",
+      "slug": "home",
+      "title": "Missing Domain Demo",
+      "seoDescription": "Fixture that intentionally omits the primary domain for validation coverage."
+    }
+  ],
+  "media": [],
+  "form": {
+    "formId": "contact-form",
+    "displayName": "Contact form",
+    "deliveryMode": "no-email",
+    "recipient": "leads@missingdomaindemo.com",
+    "mailboxOwner": "Example Form Owner",
+    "fields": [
+      "name",
+      "email",
+      "message"
+    ],
+    "consentNoticeStatus": "pending-review",
+    "rollbackMode": "disable-form"
+  },
+  "seo": {
+    "defaultRobots": "noindex,nofollow",
+    "sitemapPolicy": "disabled-until-final-gate",
+    "indexingFinalGate": true
+  }
+}
