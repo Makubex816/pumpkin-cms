@@ -1,0 +1,16 @@
+.tmp/
+*.zip
+*.vault
+*.encrypted
+*.bin
+*.key
+*.pem
+*.pfx
+*.p12
+*private*
+encrypted-vault/
+session-handoff-vault/
+plaintext-credentials*
+credential-values*
+handoff-package*
+vault-output*

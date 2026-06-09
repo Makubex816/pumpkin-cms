@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "0.1.0",
+  "fakeOnly": true,
+  "fakePassphraseMaterial": "FAKE_LOCAL_ONLY_HANDOFF_VAULT_TEST_PHRASE",
+  "items": [
+    {
+      "credentialRefId": "credential-roller-rink-rentals-api-key",
+      "envName": "ROLLER_RINK_RENTALS_API_KEY",
+      "category": "durable-api-key",
+      "sampleMaterial": "FAKE_ROLLER_RINK_RENTALS_MATERIAL_FOR_AES_GCM_TEST"
+    }
+  ],
+  "excludedItems": [
+    {
+      "credentialRefId": "credential-pumpkin-admin-jwt-session",
+      "envName": "PUMPKIN_ADMIN_JWT",
+      "category": "session-token",
+      "presence": "PRESENT",
+      "excludedReason": "session token excluded from durable escrow by default",
+      "valueIncluded": false
+    }
+  ]
+}

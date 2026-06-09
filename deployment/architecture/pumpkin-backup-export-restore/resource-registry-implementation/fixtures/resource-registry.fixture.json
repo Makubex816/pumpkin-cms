@@ -1,0 +1,387 @@
+{
+  "registryId": "pumpkin-phase-2f12m-local-redacted-registry",
+  "environment": "production",
+  "resources": [
+    {
+      "resourceId": "resource-ice-cosmos-resource-group",
+      "resourceType": "azure-resource-group",
+      "displayName": "rg-ice-production-cosmos",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure",
+      "nonSecretIdentifiers": {
+        "subscriptionName": "Azure subscription 1",
+        "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+        "resourceGroup": "rg-ice-production-cosmos",
+        "region": "eastus"
+      },
+      "credentialRefs": [],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12g-cosmos-provisioning-execution-result",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "No credential values are stored in the registry."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Remove future-target resources only after owner-approved replacement or retirement."
+      }
+    },
+    {
+      "resourceId": "resource-ice-cosmos-account",
+      "resourceType": "cosmos-account",
+      "displayName": "cosmos-pumpkin-prod-eastus",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-cosmos",
+      "nonSecretIdentifiers": {
+        "accountName": "cosmos-pumpkin-prod-eastus",
+        "resourceGroup": "rg-ice-production-cosmos",
+        "location": "East US",
+        "documentEndpoint": "https://cosmos-pumpkin-prod-eastus.documents.azure.com:443/",
+        "backupPolicy": "Continuous30Days"
+      },
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime"
+      ],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12g-cosmos-provisioning-execution-result/COSMOS_ACCOUNT_RESULT.md",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Managed identity is preferred for runtime access."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retire only after Backup Center resource registry is refreshed."
+      }
+    },
+    {
+      "resourceId": "resource-ice-cosmos-database",
+      "resourceType": "cosmos-database",
+      "displayName": "pumpkin-prod-cms",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-cosmos",
+      "nonSecretIdentifiers": {
+        "accountName": "cosmos-pumpkin-prod-eastus",
+        "databaseName": "pumpkin-prod-cms",
+        "sharedThroughputRu": 400
+      },
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime"
+      ],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12g-cosmos-provisioning-execution-result/DATABASE_RESULT.md",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "No account key is stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retain until data migration and restore validation are complete."
+      }
+    },
+    {
+      "resourceId": "resource-ice-cosmos-container-set",
+      "resourceType": "cosmos-container-set",
+      "displayName": "pumpkin-prod-cms model-aligned containers",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-cosmos",
+      "nonSecretIdentifiers": {
+        "databaseName": "pumpkin-prod-cms",
+        "partitionKey": "/tenantKey",
+        "containerNames": [
+          "tenants",
+          "sites",
+          "pages",
+          "routes",
+          "forms",
+          "mediaAssets",
+          "themes",
+          "publishRuns",
+          "importRuns",
+          "users"
+        ]
+      },
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime"
+      ],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12g-cosmos-provisioning-execution-result/CONTAINER_RESULT.md",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "No credential values are stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Container cleanup requires explicit owner approval."
+      }
+    },
+    {
+      "resourceId": "resource-roller-api",
+      "resourceType": "external-tenant-api",
+      "displayName": "Roller Rink Rentals tenant API",
+      "environment": "production",
+      "status": "attached",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "roller-rink-rentals",
+      "nonSecretIdentifiers": {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "domain": "IceSkatingRinkRentals.com"
+      },
+      "credentialRefs": [
+        "credential-roller-rink-rentals-api-key"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12m-session-env-presence",
+        "lastVerifiedAt": null
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Durable API key is eligible only for encrypted local handoff escrow."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Rotate or remove after build handoff if owner requests."
+      }
+    },
+    {
+      "resourceId": "resource-ice-tenant-website-bundle",
+      "resourceType": "tenant-website-bundle",
+      "displayName": "Ice tenant website bundle",
+      "environment": "production",
+      "status": "planned",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "pumpkin-backup-center",
+      "nonSecretIdentifiers": {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "bundleModel": "tenant-aware-public-html-equivalent"
+      },
+      "credentialRefs": [],
+      "runtimeProfiles": [
+        "offline-bundle"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12l-tenant-website-bundle-integration-plan",
+        "lastVerifiedAt": null
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Bundle content should remain redacted and backup-aware."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Remove stale bundles from ignored output when no longer needed."
+      }
+    }
+  ],
+  "credentialReferences": [
+    {
+      "credentialRefId": "credential-cosmos-managed-identity-runtime",
+      "displayName": "Cosmos Runtime Managed Identity",
+      "envName": null,
+      "purpose": "future runtime access without committed keys",
+      "requiredFor": [
+        "runtime-cosmos-future"
+      ],
+      "resourceIds": [
+        "resource-ice-cosmos-account",
+        "resource-ice-cosmos-database",
+        "resource-ice-cosmos-container-set"
+      ],
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "owner": "operator",
+      "storageLocationCategory": "managed-identity",
+      "escrowEligible": false,
+      "escrowStatus": "not-required",
+      "rotationRequired": false,
+      "rotationCadence": null,
+      "lastVerifiedAt": null,
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "managed identity preferred",
+      "presence": "NOT_REQUIRED",
+      "valueIncluded": false
+    }
+  ],
+  "tenantMappings": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "domainNames": [
+        "IceSkatingRinkRentals.com"
+      ],
+      "resourceIds": [
+        "resource-ice-cosmos-resource-group",
+        "resource-ice-cosmos-account",
+        "resource-ice-cosmos-database",
+        "resource-ice-cosmos-container-set",
+        "resource-roller-api",
+        "resource-ice-tenant-website-bundle"
+      ],
+      "runtimeProfileIds": [
+        "runtime-cosmos-future",
+        "local-with-live-readonly",
+        "offline-bundle"
+      ],
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime",
+        "credential-roller-rink-rentals-api-key",
+        "credential-pumpkin-admin-jwt-session"
+      ],
+      "bundleRefs": [
+        "resource-ice-tenant-website-bundle"
+      ],
+      "status": "active"
+    }
+  ],
+  "runtimeProfiles": [
+    {
+      "runtimeProfileId": "runtime-cosmos-future",
+      "profileName": "runtime-cosmos-future",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "resourceIds": [
+        "resource-ice-cosmos-account",
+        "resource-ice-cosmos-database",
+        "resource-ice-cosmos-container-set"
+      ],
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime"
+      ],
+      "status": "blocked",
+      "liveDatabaseExportAllowed": false,
+      "runtimeSwitchAllowed": false,
+      "productionWritesAllowed": false,
+      "blockedReasonCodes": [
+        "future-target-not-runtime-switched",
+        "data-seed-not-approved",
+        "production-writes-hard-stopped"
+      ]
+    },
+    {
+      "runtimeProfileId": "local-with-live-readonly",
+      "profileName": "local-with-live-readonly",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "resourceIds": [
+        "resource-roller-api"
+      ],
+      "credentialRefs": [
+        "credential-roller-rink-rentals-api-key",
+        "credential-pumpkin-admin-jwt-session"
+      ],
+      "status": "blocked",
+      "liveDatabaseExportAllowed": false,
+      "runtimeSwitchAllowed": false,
+      "productionWritesAllowed": false,
+      "blockedReasonCodes": [
+        "cms-api-calls-not-approved",
+        "session-token-excluded-from-durable-escrow"
+      ]
+    },
+    {
+      "runtimeProfileId": "offline-bundle",
+      "profileName": "offline-bundle",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "local",
+      "resourceIds": [
+        "resource-ice-tenant-website-bundle"
+      ],
+      "credentialRefs": [],
+      "status": "planned",
+      "liveDatabaseExportAllowed": false,
+      "runtimeSwitchAllowed": false,
+      "productionWritesAllowed": false,
+      "blockedReasonCodes": [
+        "offline-only"
+      ]
+    }
+  ]
+}
