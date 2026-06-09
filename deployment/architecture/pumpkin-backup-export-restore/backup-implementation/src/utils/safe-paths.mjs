@@ -47,6 +47,7 @@ export function resolveTmpOutputPath(inputPath) {
 export function resolveTmpBundlePath(inputPath) {
   const resolved = path.resolve(packageRoot, inputPath);
   assertInsidePath(resolved, tmpRoot, 'bundle path');
+  assertNoArchivePath(resolved);
   assertNoProtectedPath(resolved);
   return resolved;
 }

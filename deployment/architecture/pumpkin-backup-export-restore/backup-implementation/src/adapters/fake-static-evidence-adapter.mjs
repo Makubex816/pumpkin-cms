@@ -11,6 +11,7 @@ export async function writeFakeStaticEvidence({ bundleRoot, request }) {
   const outputDir = path.join(bundleRoot, 'static');
   await fs.mkdir(outputDir, { recursive: true });
   await writeJson(path.join(outputDir, 'static-output-manifest.json'), {
+    schemaVersion: '0.2.0',
     source: 'fake-fixture',
     staticGenerationRun: false,
     routes

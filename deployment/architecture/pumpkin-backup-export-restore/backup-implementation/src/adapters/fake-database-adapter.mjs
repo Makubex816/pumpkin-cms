@@ -21,6 +21,7 @@ export async function writeFakeDatabasePlan({ bundleRoot, request, createdAt }) 
     'utf8'
   );
   await writeJson(path.join(outputDir, 'database-export-plan.json'), {
+    schemaVersion: '0.2.0',
     status: 'not_included',
     reason: 'local prototype uses placeholder database export planner only',
     scope: request.scope,

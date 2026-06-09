@@ -1,3 +1,5 @@
-# Next Phase 2F-4 Backup Validator Prompt
+# Superseded Phase 2F-4 Prompt
 
-Approve Phase 2F-4 Pumpkin Backup Center backup validator hardening only: harden the local backup validator created in Phase 2F-3 with stricter schema validation, fixture coverage, manifest/file-list checks, checksum checks, secret-pattern detection, protected-path detection, standard-mode escrow rejection, non-technical validation output, and operator handoff reporting. Do not create production backup zips, do not export a real database, do not export secrets, do not create escrow payloads, do not restore data, do not call CMS/API or external systems, do not read protected config, do not modify CMS/Azure/Cloudflare/DNS/deployment/email/Search Console, and do not publish live pages.
+Phase 2F-4 backup validator hardening has now been implemented in this package.
+
+Use `NEXT_PHASE_2F5_RESTORE_VALIDATION_PROMPT.md` for the next approval gate. Do not proceed to real backup export, encrypted escrow, restore execution, CMS/API calls, deployment, external systems, or live-page publication from this superseded prompt.

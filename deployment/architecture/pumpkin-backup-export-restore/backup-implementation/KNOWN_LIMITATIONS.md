@@ -1,15 +1,31 @@
 # Known Limitations
 
-- Fake adapters only.
-- No real database export.
-- No real CMS/API export.
-- No real media blob inventory or copy.
-- No real static output export.
-- No encrypted escrow payload support.
-- No restore execution.
-- No background job queue.
-- No API endpoints.
-- No Admin UI.
-- No production backup artifact storage.
+Phase 2F-4 hardens validation only. It does not make the Backup Center production-ready.
 
-These are intentional Phase 2F-3 limits. Future phases harden the validator, then add real adapters and escrow only behind separate approvals.
+## Still Not Implemented
+
+- Real database exporter.
+- Real CMS/API exporter.
+- Real MediaAsset export.
+- Real blob/media download.
+- Real static output export.
+- Encrypted secret escrow payload flow.
+- Restore validation sandbox.
+- Restore execution.
+- Backup zip/package writer.
+- Admin UI.
+- API endpoints.
+- Job queue/worker execution.
+- Production retention policies.
+- Operator approval workflow enforcement outside this local CLI.
+
+## Validator Limits
+
+- Secret detection is heuristic and must be treated as a safety net, not proof that all possible secrets are impossible.
+- Schema checks are local contract checks, not a finalized production JSON Schema package.
+- Failure fixtures are generated fake bundles, not production corruption samples.
+- Reports are local `.tmp` artifacts and must not be treated as a production audit log.
+
+## Future Approval Required
+
+The first real IceSkatingRinkRentals.com backup proof requires a separate preflight approval after restore validation and encrypted escrow are implemented and validated.

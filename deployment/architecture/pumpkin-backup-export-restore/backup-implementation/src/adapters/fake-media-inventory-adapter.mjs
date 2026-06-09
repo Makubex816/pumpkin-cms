@@ -11,6 +11,7 @@ export async function writeFakeMediaInventory({ bundleRoot, request }) {
   const outputDir = path.join(bundleRoot, 'media');
   await fs.mkdir(outputDir, { recursive: true });
   await writeJson(path.join(outputDir, 'media-assets.json'), {
+    schemaVersion: '0.2.0',
     source: 'fake-fixture',
     mediaAssets: assets,
     blobsCopied: false

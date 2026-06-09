@@ -8,7 +8,7 @@ export async function writeFakeConfigInventory({ bundleRoot, request }) {
   const outputDir = path.join(bundleRoot, 'config-inventory');
   await fs.mkdir(outputDir, { recursive: true });
   await writeJson(path.join(outputDir, 'env-inventory.redacted.json'), {
-    schemaVersion: '0.1.0',
+    schemaVersion: '0.2.0',
     source: 'fake-fixture',
     scope: request.scope,
     valuesIncluded: false,

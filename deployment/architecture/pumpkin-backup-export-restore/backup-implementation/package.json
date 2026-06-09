@@ -1,9 +1,9 @@
 {
   "name": "pumpkin-backup-center-local-prototype",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Local-only standard backup folder-bundle prototype for Pumpkin Backup Center Phase 2F-3.",
+  "description": "Local-only standard backup folder-bundle validator hardening prototype for Pumpkin Backup Center Phase 2F-4.",
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "check": "node --check src/backup-cli.mjs && node --check src/standard-backup-runner.mjs && node --check src/backup-scope-resolver.mjs && node --check src/backup-manifest-writer.mjs && node --check src/checksum-writer.mjs && node --check src/standard-bundle-writer.mjs && node --check src/adapters/fake-cms-content-adapter.mjs && node --check src/adapters/fake-database-adapter.mjs && node --check src/adapters/fake-media-inventory-adapter.mjs && node --check src/adapters/fake-static-evidence-adapter.mjs && node --check src/adapters/fake-config-inventory-adapter.mjs && node --check src/validators/backup-validator.mjs && node --check src/utils/safe-paths.mjs && node --check src/utils/json-writer.mjs && node --check src/utils/file-hash.mjs && node --check test/backup.test.mjs && npm test",

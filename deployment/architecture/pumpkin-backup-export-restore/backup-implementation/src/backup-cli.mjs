@@ -5,7 +5,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.1.0';
+const version = '0.2.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;

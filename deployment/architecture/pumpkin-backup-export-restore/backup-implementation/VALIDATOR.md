@@ -1,21 +1,63 @@
 # Validator
 
-The backup validator checks:
+Phase 2F-4 hardens the local-only standard backup validator. It still validates fake fixture bundles only and reads/writes only inside this package's ignored `.tmp/` output.
 
-- bundle is a folder;
-- required files exist;
-- manifest parses and declares standard folder mode;
-- `includesEscrow` is false;
+## Contract Checks
+
+The validator enforces:
+
+- bundle path resolves under package `.tmp/`;
+- bundle is folder format, not a zip or archive-style path;
+- required folders and files exist;
+- `manifest.json` parses as JSON;
+- manifest contract version fields are `0.2.0`;
+- `backupMode` is `standard`;
+- `bundleFormat` is `folder`;
+- `includesEscrow` is `false`;
+- checksum algorithm is `sha256`;
+- tenant and platform scope fields are internally consistent;
+- manifest file entries are safe bundle-relative paths;
 - manifest file list matches generated content files;
-- checksums exist and match;
+- generated JSON envelopes include schema versions;
+- `checksums.sha256` parses and does not include itself;
+- checksums match current file contents;
 - `escrow/ESCROW_NOT_INCLUDED.md` exists;
-- standard backup contains no escrow payload files;
-- generated file paths avoid protected config names;
-- generated text has no obvious secret-like values.
+- no encrypted escrow payload is present;
+- config inventory contains presence/redacted markers only;
+- no protected or secret-risk paths are present;
+- no obvious secret-like values are present.
 
-The validator writes:
+## Reports
+
+Validation writes both reports by default:
 
 - `validation-result.json`
 - `VALIDATION_RESULT.md`
 
-Secret scan failures, protected path hits, missing required files, checksum mismatches, and escrow payloads fail validation.
+Reports include status, generated timestamp, checks, warnings, failures, checked file count, checksum result, escrow exclusion result, secret-leak scan result, path safety result, and manifest file-list result.
+
+Reports must not include raw secrets. Failure messages identify paths and stable error codes only.
+
+## Stable Failure Codes
+
+The Phase 2F-4 test suite covers these negative cases:
+
+- `MANIFEST_MISSING`
+- `MANIFEST_PARSE_ERROR`
+- `REQUIRED_FILE_MISSING`
+- `RESTORE_INSTRUCTIONS_MISSING`
+- `CHECKSUM_MISMATCH`
+- `FILE_NOT_IN_MANIFEST`
+- `MANIFEST_FILE_MISSING_ON_DISK`
+- `ESCROW_PAYLOAD_PRESENT`
+- `SECRET_LIKE_VALUE`
+- `MANIFEST_FILE_PATH_INVALID`
+- `SCOPE_TENANT_MISMATCH`
+- `CONFIG_INVENTORY_MISSING`
+- `CHECKSUM_PARSE_ERROR`
+- `CHECKSUM_INCLUDES_SELF`
+- `CONFIG_VALUES_INCLUDED`
+
+## Boundary
+
+The validator does not call CMS/API endpoints, export a real database, read protected config, create encrypted escrow payloads, execute restore logic, create zips, deploy, or touch external systems.

@@ -3,7 +3,9 @@ import { writeJson } from './utils/json-writer.mjs';
 
 export async function writeBackupManifest({ bundleRoot, request, fileEntries, createdAt }) {
   const manifest = {
-    manifestVersion: '0.1.0',
+    manifestVersion: '0.2.0',
+    bundleContractVersion: '0.2.0',
+    validatorContractVersion: '0.2.0',
     backupMode: 'standard',
     scope: request.scope,
     tenantKey: request.scope.tenantKey,
@@ -14,9 +16,10 @@ export async function writeBackupManifest({ bundleRoot, request, fileEntries, cr
     bundleFormat: 'folder',
     includesEscrow: false,
     checksumAlgorithm: 'sha256',
+    contentFileCount: fileEntries.length,
     schemaReferences: {
       backupManifest: '../schemas/backup-manifest.schema.json',
-      note: 'Phase 2F-3 prototype manifest shape; production schema hardening continues in Phase 2F-4.'
+      note: 'Phase 2F-4 local validator hardening contract; production schema hardening remains gated.'
     },
     files: fileEntries.sort((a, b) => a.path.localeCompare(b.path)),
     warnings: [

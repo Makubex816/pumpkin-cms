@@ -1,20 +1,36 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createStandardBackup } from '../src/standard-backup-runner.mjs';
-import { validateBackupBundle } from '../src/validators/backup-validator.mjs';
-import { readJson } from '../src/utils/json-writer.mjs';
+import { validateBackupBundle, writeValidationReports } from '../src/validators/backup-validator.mjs';
+import { readJson, writeJson } from '../src/utils/json-writer.mjs';
 import { packageRoot } from '../src/utils/safe-paths.mjs';
 
 const fixedDate = new Date('2026-01-01T00:00:00.000Z');
+const tenantAnswers = 'fixtures/tenant-standard-backup.answers.json';
+const platformAnswers = 'fixtures/platform-standard-backup.answers.json';
 const testBundleNames = [
   'test-tenant',
   'test-platform',
-  'test-missing-file',
+  'test-missing-manifest',
+  'test-invalid-manifest-json',
+  'test-missing-required-file',
+  'test-missing-restore-instructions',
   'test-checksum',
+  'test-extra-file',
+  'test-manifest-listed-missing',
   'test-escrow-payload',
-  'test-secret-like'
+  'test-secret-like',
+  'test-path-traversal',
+  'test-scope-mismatch',
+  'test-missing-config-inventory',
+  'test-malformed-checksum',
+  'test-checksum-self',
+  'test-config-not-redacted',
+  'test-report-output',
+  'test-cli-invalid'
 ];
 
 after(async () => {
@@ -25,113 +41,247 @@ async function clean(name) {
   await fs.rm(path.join(packageRoot, '.tmp', name), { recursive: true, force: true });
 }
 
-test('tenant standard backup generation writes manifest, checksums, escrow marker, and passes validator', async () => {
-  await clean('test-tenant');
-  const result = await createStandardBackup({
-    answersPath: 'fixtures/tenant-standard-backup.answers.json',
-    outputPath: '.tmp/test-tenant',
+async function createTenantBundle(name) {
+  await clean(name);
+  return createStandardBackup({
+    answersPath: tenantAnswers,
+    outputPath: `.tmp/${name}`,
     scopeOverride: 'tenant',
     overwrite: true,
     now: fixedDate
   });
+}
+
+async function createPlatformBundle(name) {
+  await clean(name);
+  return createStandardBackup({
+    answersPath: platformAnswers,
+    outputPath: `.tmp/${name}`,
+    scopeOverride: 'platform',
+    overwrite: true,
+    now: fixedDate
+  });
+}
+
+async function expectFailure(name, mutate, expectedCode) {
+  const result = await createTenantBundle(name);
+  await mutate(result.bundleRoot);
+  const validation = await validateBackupBundle({ bundlePath: result.bundleRoot });
+  assert.equal(validation.status, 'failed');
+  assert(
+    validation.failures.some((failure) => failure.code === expectedCode),
+    `expected ${expectedCode}; saw ${validation.failures.map((failure) => failure.code).join(', ')}`
+  );
+  return validation;
+}
+
+async function updateJson(relativeOrAbsolutePath, updater) {
+  const filePath = path.isAbsolute(relativeOrAbsolutePath)
+    ? relativeOrAbsolutePath
+    : path.join(packageRoot, relativeOrAbsolutePath);
+  const value = await readJson(filePath);
+  updater(value);
+  await writeJson(filePath, value);
+}
+
+test('tenant standard backup generation writes hardened manifest, reports, checksums, escrow marker, and passes validator', async () => {
+  const result = await createTenantBundle('test-tenant');
   assert.equal(result.validation.status, 'passed');
   const manifest = await readJson(path.join(result.bundleRoot, 'manifest.json'));
+  assert.equal(manifest.manifestVersion, '0.2.0');
+  assert.equal(manifest.bundleContractVersion, '0.2.0');
+  assert.equal(manifest.validatorContractVersion, '0.2.0');
   assert.equal(manifest.backupMode, 'standard');
   assert.equal(manifest.bundleFormat, 'folder');
   assert.equal(manifest.includesEscrow, false);
   assert.equal(manifest.scope.scopeType, 'tenant');
   assert.equal(manifest.scope.tenantKey, 'example-tenant');
+  assert.equal(manifest.contentFileCount, manifest.files.length);
   await fs.access(path.join(result.bundleRoot, 'checksums.sha256'));
   await fs.access(path.join(result.bundleRoot, 'escrow', 'ESCROW_NOT_INCLUDED.md'));
+  await fs.access(path.join(result.bundleRoot, 'validation-result.json'));
+  await fs.access(path.join(result.bundleRoot, 'VALIDATION_RESULT.md'));
 });
 
-test('platform standard backup generation works with fake platform fixture', async () => {
-  await clean('test-platform');
-  const result = await createStandardBackup({
-    answersPath: 'fixtures/platform-standard-backup.answers.json',
-    outputPath: '.tmp/test-platform',
-    scopeOverride: 'platform',
-    overwrite: true,
-    now: fixedDate
-  });
+test('platform standard backup generation passes hardened validator with no tenant key', async () => {
+  const result = await createPlatformBundle('test-platform');
   assert.equal(result.validation.status, 'passed');
   const manifest = await readJson(path.join(result.bundleRoot, 'manifest.json'));
   assert.equal(manifest.scope.scopeType, 'platform');
+  assert.equal(manifest.scope.tenantKey, null);
+  assert.equal(manifest.tenantKey, null);
   const tenants = await readJson(path.join(result.bundleRoot, 'cms-content', 'tenants.json'));
   assert.equal(tenants.length, 2);
 });
 
-test('validator fails when a required file is missing', async () => {
-  await clean('test-missing-file');
-  const result = await createStandardBackup({
-    answersPath: 'fixtures/tenant-standard-backup.answers.json',
-    outputPath: '.tmp/test-missing-file',
-    overwrite: true,
-    now: fixedDate
-  });
-  await fs.rm(path.join(result.bundleRoot, 'RESTORE_INSTRUCTIONS.md'));
-  const validation = await validateBackupBundle({ bundlePath: result.bundleRoot });
-  assert.equal(validation.status, 'failed');
-  assert(validation.failures.some((failure) => failure.code === 'REQUIRED_FILE_MISSING'));
+test('validator fails when manifest is missing', async () => {
+  await expectFailure('test-missing-manifest', async (bundleRoot) => {
+    await fs.rm(path.join(bundleRoot, 'manifest.json'));
+  }, 'MANIFEST_MISSING');
+});
+
+test('validator fails when manifest JSON is invalid', async () => {
+  await expectFailure('test-invalid-manifest-json', async (bundleRoot) => {
+    await fs.writeFile(path.join(bundleRoot, 'manifest.json'), '{\n', 'utf8');
+  }, 'MANIFEST_PARSE_ERROR');
+});
+
+test('validator fails when a non-restore required file is missing', async () => {
+  await expectFailure('test-missing-required-file', async (bundleRoot) => {
+    await fs.rm(path.join(bundleRoot, 'media', 'MEDIA_BLOBS_NOT_INCLUDED.md'));
+  }, 'REQUIRED_FILE_MISSING');
+});
+
+test('validator fails when restore instructions are missing', async () => {
+  await expectFailure('test-missing-restore-instructions', async (bundleRoot) => {
+    await fs.rm(path.join(bundleRoot, 'RESTORE_INSTRUCTIONS.md'));
+  }, 'RESTORE_INSTRUCTIONS_MISSING');
 });
 
 test('validator fails when a checksum mismatches', async () => {
-  await clean('test-checksum');
-  const result = await createStandardBackup({
-    answersPath: 'fixtures/tenant-standard-backup.answers.json',
-    outputPath: '.tmp/test-checksum',
-    overwrite: true,
-    now: fixedDate
-  });
-  await fs.appendFile(path.join(result.bundleRoot, 'BACKUP_SUMMARY.md'), '\nChanged after checksum.\n', 'utf8');
-  const validation = await validateBackupBundle({ bundlePath: result.bundleRoot });
-  assert.equal(validation.status, 'failed');
-  assert(validation.failures.some((failure) => failure.code === 'CHECKSUM_MISMATCH'));
+  await expectFailure('test-checksum', async (bundleRoot) => {
+    await fs.appendFile(path.join(bundleRoot, 'BACKUP_SUMMARY.md'), '\nChanged after checksum.\n', 'utf8');
+  }, 'CHECKSUM_MISMATCH');
+});
+
+test('validator fails when an extra generated file is not listed in manifest', async () => {
+  await expectFailure('test-extra-file', async (bundleRoot) => {
+    await writeJson(path.join(bundleRoot, 'cms-content', 'extra.json'), { schemaVersion: '0.2.0', fake: true });
+  }, 'FILE_NOT_IN_MANIFEST');
+});
+
+test('validator fails when a manifest-listed file is missing from disk', async () => {
+  await expectFailure('test-manifest-listed-missing', async (bundleRoot) => {
+    await fs.rm(path.join(bundleRoot, 'media', 'media-assets.json'));
+  }, 'MANIFEST_FILE_MISSING_ON_DISK');
 });
 
 test('validator rejects escrow payloads in a standard backup', async () => {
-  await clean('test-escrow-payload');
-  const result = await createStandardBackup({
-    answersPath: 'fixtures/tenant-standard-backup.answers.json',
-    outputPath: '.tmp/test-escrow-payload',
-    overwrite: true,
-    now: fixedDate
-  });
-  await fs.writeFile(path.join(result.bundleRoot, 'escrow', 'encrypted-secrets.fake'), 'not real encrypted data\n', 'utf8');
-  const validation = await validateBackupBundle({ bundlePath: result.bundleRoot });
-  assert.equal(validation.status, 'failed');
-  assert(validation.failures.some((failure) => failure.code === 'ESCROW_PAYLOAD_PRESENT'));
+  await expectFailure('test-escrow-payload', async (bundleRoot) => {
+    await fs.writeFile(path.join(bundleRoot, 'escrow', 'escrow-payload.fake'), 'not real encrypted data\n', 'utf8');
+  }, 'ESCROW_PAYLOAD_PRESENT');
 });
 
 test('validator rejects secret-like values in generated bundle files', async () => {
-  await clean('test-secret-like');
-  const result = await createStandardBackup({
-    answersPath: 'fixtures/tenant-standard-backup.answers.json',
-    outputPath: '.tmp/test-secret-like',
-    overwrite: true,
-    now: fixedDate
-  });
-  const unsafePayload = '{"api_' + 'key":"not-a-real-but-secret-looking-value"}\n';
-  await fs.writeFile(path.join(result.bundleRoot, 'cms-content', 'unsafe.json'), unsafePayload, 'utf8');
-  const validation = await validateBackupBundle({ bundlePath: result.bundleRoot });
-  assert.equal(validation.status, 'failed');
-  assert(validation.failures.some((failure) => failure.code === 'SECRET_LIKE_VALUE'));
+  await expectFailure('test-secret-like', async (bundleRoot) => {
+    const unsafePayload = '{"api_' + 'key":"not-a-real-but-secret-looking-value"}\n';
+    await fs.writeFile(path.join(bundleRoot, 'cms-content', 'unsafe.json'), unsafePayload, 'utf8');
+  }, 'SECRET_LIKE_VALUE');
 });
 
-test('output path safety rejects writes outside .tmp', async () => {
+test('validator rejects path traversal entries in manifest file list', async () => {
+  await expectFailure('test-path-traversal', async (bundleRoot) => {
+    await updateJson(path.join(bundleRoot, 'manifest.json'), (manifest) => {
+      manifest.files.push({
+        path: '../escape.txt',
+        kind: 'cms-content',
+        required: true,
+        sensitivity: 'redacted',
+        schemaRef: null
+      });
+      manifest.contentFileCount = manifest.files.length;
+    });
+  }, 'MANIFEST_FILE_PATH_INVALID');
+});
+
+test('validator rejects bad platform scope with tenant fields', async () => {
+  await expectFailure('test-scope-mismatch', async (bundleRoot) => {
+    await updateJson(path.join(bundleRoot, 'manifest.json'), (manifest) => {
+      manifest.scope = {
+        scopeType: 'platform',
+        tenantKey: 'example-tenant',
+        siteKey: 'example-site'
+      };
+    });
+  }, 'SCOPE_TENANT_MISMATCH');
+});
+
+test('validator fails when redacted config inventory is missing', async () => {
+  await expectFailure('test-missing-config-inventory', async (bundleRoot) => {
+    await fs.rm(path.join(bundleRoot, 'config-inventory', 'env-inventory.redacted.json'));
+  }, 'CONFIG_INVENTORY_MISSING');
+});
+
+test('validator fails when checksum file is malformed', async () => {
+  await expectFailure('test-malformed-checksum', async (bundleRoot) => {
+    await fs.writeFile(path.join(bundleRoot, 'checksums.sha256'), 'not-a-valid-checksum-line\n', 'utf8');
+  }, 'CHECKSUM_PARSE_ERROR');
+});
+
+test('validator fails when checksum file includes itself', async () => {
+  await expectFailure('test-checksum-self', async (bundleRoot) => {
+    await fs.appendFile(path.join(bundleRoot, 'checksums.sha256'), `${'0'.repeat(64)}  checksums.sha256\n`, 'utf8');
+  }, 'CHECKSUM_INCLUDES_SELF');
+});
+
+test('validator fails when config inventory includes non-redacted values', async () => {
+  await expectFailure('test-config-not-redacted', async (bundleRoot) => {
+    await updateJson(path.join(bundleRoot, 'config-inventory', 'env-inventory.redacted.json'), (inventory) => {
+      inventory.valuesIncluded = true;
+      inventory.variables[0].value = 'NOT_REDACTED_TEST_VALUE';
+    });
+  }, 'CONFIG_VALUES_INCLUDED');
+});
+
+test('validator report JSON and Markdown are written with hardened summary fields', async () => {
+  const result = await createTenantBundle('test-report-output');
+  const validation = await validateBackupBundle({ bundlePath: result.bundleRoot });
+  await writeValidationReports({ bundleRoot: result.bundleRoot, validation });
+  const report = await readJson(path.join(result.bundleRoot, 'validation-result.json'));
+  const markdown = await fs.readFile(path.join(result.bundleRoot, 'VALIDATION_RESULT.md'), 'utf8');
+  assert.equal(report.schemaVersion, '0.2.0');
+  assert.equal(report.status, 'passed');
+  assert.equal(report.summary.checksumResult, 'passed');
+  assert.equal(report.summary.escrowExclusionResult, 'passed');
+  assert.equal(report.summary.secretLeakScanResult, 'passed');
+  assert.match(markdown, /Secret-leak scan/);
+  assert.match(markdown, /Manifest file list/);
+});
+
+test('CLI validate returns non-zero for invalid bundles and writes reports', async () => {
+  const result = await createTenantBundle('test-cli-invalid');
+  await fs.rm(path.join(result.bundleRoot, 'RESTORE_INSTRUCTIONS.md'));
+  const outcome = await runCli(['src/backup-cli.mjs', 'validate', '--bundle', '.tmp/test-cli-invalid']);
+  assert.equal(outcome.code, 1);
+  assert.match(outcome.stdout, /validation: failed/);
+  await fs.access(path.join(result.bundleRoot, 'validation-result.json'));
+  await fs.access(path.join(result.bundleRoot, 'VALIDATION_RESULT.md'));
+});
+
+test('output and validation path safety rejects paths outside .tmp and archive-style bundles', async () => {
   await assert.rejects(
     () =>
       createStandardBackup({
-        answersPath: 'fixtures/tenant-standard-backup.answers.json',
+        answersPath: tenantAnswers,
         outputPath: '../unsafe-output',
         overwrite: true,
         now: fixedDate
       }),
     /output path must stay inside/
   );
+  await assert.rejects(
+    () => validateBackupBundle({ bundlePath: '../unsafe-bundle' }),
+    /bundle path must stay inside/
+  );
+  await assert.rejects(
+    () => validateBackupBundle({ bundlePath: '.tmp/test-bundle.zip' }),
+    /archive outputs are blocked/
+  );
 });
 
 test('source does not include external HTTP call patterns or protected config reads', async () => {
+  const blockedSourcePattern = new RegExp(
+    [
+      'fe' + 'tch\\s*\\(',
+      'http' + '\\.request',
+      'https' + '\\.request',
+      'Invoke-' + 'WebRequest',
+      'appsettings' + '\\.Development',
+      'local' + '\\.settings',
+      '\\.env' + '\\.local'
+    ].join('|'),
+    'i'
+  );
   const sourceFiles = [
     'src/backup-cli.mjs',
     'src/standard-backup-runner.mjs',
@@ -141,13 +291,27 @@ test('source does not include external HTTP call patterns or protected config re
   ];
   for (const relativePath of sourceFiles) {
     const text = await fs.readFile(path.join(packageRoot, relativePath), 'utf8');
-    assert.equal(/fetch\s*\(|http\.request|https\.request|Invoke-WebRequest|appsettings\.Development|local\.settings|\.env\.local/i.test(text), false);
+    assert.equal(blockedSourcePattern.test(text), false);
   }
 });
 
-test('.tmp output is ignored by package gitignore', async () => {
+test('.tmp output and production backup artifacts are ignored or blocked by package gitignore', async () => {
   const gitignore = await fs.readFile(path.join(packageRoot, '.gitignore'), 'utf8');
   assert.match(gitignore, /^\.tmp\/$/m);
   assert.match(gitignore, /^\*\.zip$/m);
+  assert.match(gitignore, /^\*\.bacpac$/m);
   assert.match(gitignore, /^encrypted-secrets\.\*$/m);
+  assert.match(gitignore, /^escrow-payload\*$/m);
 });
+
+async function runCli(args) {
+  return new Promise((resolve) => {
+    execFile(process.execPath, args, { cwd: packageRoot }, (error, stdout, stderr) => {
+      resolve({
+        code: error?.code ?? 0,
+        stdout,
+        stderr
+      });
+    });
+  });
+}

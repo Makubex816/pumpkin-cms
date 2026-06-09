@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureType": "generated-negative-bundle-cases",
+  "realBackupDataIncluded": false,
+  "cases": [
+    {
+      "id": "missing-manifest",
+      "expectedCode": "MANIFEST_MISSING"
+    },
+    {
+      "id": "invalid-manifest-json",
+      "expectedCode": "MANIFEST_PARSE_ERROR"
+    },
+    {
+      "id": "missing-required-file",
+      "expectedCode": "REQUIRED_FILE_MISSING"
+    },
+    {
+      "id": "missing-restore-instructions",
+      "expectedCode": "RESTORE_INSTRUCTIONS_MISSING"
+    },
+    {
+      "id": "checksum-mismatch",
+      "expectedCode": "CHECKSUM_MISMATCH"
+    },
+    {
+      "id": "extra-file-not-in-manifest",
+      "expectedCode": "FILE_NOT_IN_MANIFEST"
+    },
+    {
+      "id": "manifest-listed-file-missing",
+      "expectedCode": "MANIFEST_FILE_MISSING_ON_DISK"
+    },
+    {
+      "id": "escrow-payload-present",
+      "expectedCode": "ESCROW_PAYLOAD_PRESENT"
+    },
+    {
+      "id": "secret-like-value-present",
+      "expectedCode": "SECRET_LIKE_VALUE"
+    },
+    {
+      "id": "path-traversal-entry",
+      "expectedCode": "MANIFEST_FILE_PATH_INVALID"
+    },
+    {
+      "id": "scope-tenant-mismatch",
+      "expectedCode": "SCOPE_TENANT_MISMATCH"
+    },
+    {
+      "id": "missing-redacted-config-inventory",
+      "expectedCode": "CONFIG_INVENTORY_MISSING"
+    },
+    {
+      "id": "malformed-checksum-file",
+      "expectedCode": "CHECKSUM_PARSE_ERROR"
+    },
+    {
+      "id": "checksum-file-includes-itself",
+      "expectedCode": "CHECKSUM_INCLUDES_SELF"
+    },
+    {
+      "id": "config-values-included",
+      "expectedCode": "CONFIG_VALUES_INCLUDED"
+    }
+  ]
+}
