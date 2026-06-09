@@ -8,6 +8,11 @@ import { createRestorePlan } from './restore/restore-plan-runner.mjs';
 import { validateBackupBundle, writeValidationReports } from './validators/backup-validator.mjs';
 import { resolveProviderSourceFromFixture } from './provider/provider-resolver.mjs';
 import { buildRuntimeProfileBridge } from './provider/runtime-profile-bridge.mjs';
+import {
+  listRuntimeProfileDefinitions,
+  resolveRuntimeProfileFromFixture,
+  resolveRuntimeProfileWithProviderFixture
+} from './provider/runtime-profile-model.mjs';
 import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
@@ -129,7 +134,8 @@ async function main(argv) {
       environment: options.environment,
       profile: options.profile
     });
-    const bridge = buildRuntimeProfileBridge(result);
+    const bridge = buildRuntimeProfileBridge(result, { runtimeProfileName: options['runtime-profile'] ?? null });
+    printRuntimeProfileSummary(bridge.runtimeProfile);
     console.log(`providerType: ${bridge.response.providerType}`);
     console.log(`providerStatus: ${bridge.response.providerStatus}`);
     console.log(`provisioningStatus: ${bridge.response.provisioningStatus}`);
@@ -137,6 +143,44 @@ async function main(argv) {
     console.log(`liveDatabaseExportAllowed: ${bridge.readiness.liveDatabaseExportAllowed}`);
     console.log(`nextAction: ${bridge.readiness.nextAction}`);
     if (result.validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'runtime-profile:list') {
+    for (const definition of listRuntimeProfileDefinitions()) {
+      console.log(`${definition.profileName}: ${definition.category}; liveDatabaseExportAllowed=${definition.liveDatabaseExportAllowed}; fakeCompleteExportAllowed=${definition.fakeCompleteExportAllowed}`);
+    }
+    return;
+  }
+  if (command === 'runtime-profile:inspect') {
+    const resolved = options['runtime-fixture']
+      ? await resolveRuntimeProfileFromFixture({ fixturePath: options['runtime-fixture'] })
+      : await resolveRuntimeProfileWithProviderFixture({
+        providerFixturePath: options.fixture,
+        runtimeProfileName: options['runtime-profile'] ?? null,
+        tenantKey: options.tenant,
+        siteKey: options.site,
+        environment: options.environment,
+        providerProfile: options.profile
+      });
+    printRuntimeProfileSummary(resolved.profile);
+    return;
+  }
+  if (command === 'runtime-profile:validate') {
+    const resolved = options['runtime-fixture']
+      ? await resolveRuntimeProfileFromFixture({ fixturePath: options['runtime-fixture'] })
+      : await resolveRuntimeProfileWithProviderFixture({
+        providerFixturePath: options.fixture,
+        runtimeProfileName: options['runtime-profile'] ?? null,
+        tenantKey: options.tenant,
+        siteKey: options.site,
+        environment: options.environment,
+        providerProfile: options.profile
+      });
+    printRuntimeProfileSummary(resolved.profile);
+    console.log(`validation: ${resolved.validation.status}`);
+    if (resolved.validation.status !== 'passed') {
       process.exitCode = 1;
     }
     return;
@@ -207,7 +251,8 @@ function connectorOptionsFromCli(options) {
     fakeCosmos: Boolean(options['with-fake-cosmos']),
     fakeMediaCopy: Boolean(options['with-fake-media-copy']),
     tenantWebsiteBundle: Boolean(options['tenant-website-bundle']),
-    providerSourceFixture: options['provider-source-fixture'] ?? null
+    providerSourceFixture: options['provider-source-fixture'] ?? null,
+    runtimeProfile: options['runtime-profile'] ?? null
   };
 }
 
@@ -224,12 +269,15 @@ function printHelp() {
 Commands:
   help
   version
-  create-standard --scope tenant|platform --answers <fixture.json> --out .tmp/<bundle> [--with-fake-cosmos] [--with-fake-media-copy] [--tenant-website-bundle] [--overwrite]
+  create-standard --scope tenant|platform --answers <fixture.json> --out .tmp/<bundle> [--runtime-profile local-dev] [--with-fake-cosmos] [--with-fake-media-copy] [--tenant-website-bundle] [--overwrite]
   create-ice-standard --out .tmp/ice-full-standard-backup [--overwrite]
   validate --bundle .tmp/<bundle> [--mode baseline|production-restore-proof]
   restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--mode baseline|production-restore-proof] [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
   resolve-provider --fixture fixtures/provider-source.ice.missing.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--profile fixture]
-  resolve-runtime-profile --fixture fixtures/provider-source.ice.future-target-cosmos.json [--tenant ice-rink-rentals] [--site ice-rink-rentals]
+  resolve-runtime-profile --fixture fixtures/provider-source.ice.future-target-cosmos.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--runtime-profile local-dev]
+  runtime-profile:list
+  runtime-profile:inspect --runtime-fixture fixtures/runtime-profile.ice.future-target-cosmos.json
+  runtime-profile:validate --runtime-fixture fixtures/runtime-profile.production-write-approved.blocked.json
   escrow-create-fake --request fixtures/fake-escrow-request.json --out .tmp/<fake-escrow> [--overwrite]
   escrow-validate --escrow .tmp/<fake-escrow>
   escrow-inspect --escrow .tmp/<fake-escrow>
@@ -241,6 +289,21 @@ Example fake complete connector bundle:
 Boundary:
   Local-only. Folder bundles, restore-plan dry-runs, fake connector output, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API calls, no real Cosmos export, no real blob download.
 `);
+}
+
+function printRuntimeProfileSummary(profile) {
+  console.log(`runtimeProfile: ${profile.profileName}`);
+  console.log(`providerClassifiedProfile: ${profile.providerClassifiedProfileName}`);
+  console.log(`profileReadiness: ${profile.readiness.status}`);
+  console.log(`providerType: ${profile.provider.providerType}`);
+  console.log(`providerStatus: ${profile.provider.providerStatus}`);
+  console.log(`runtimeStatus: ${profile.provider.runtimeStatus}`);
+  console.log(`fakeCompleteExportAllowed: ${profile.guards.fakeCompleteExport.allowed}`);
+  console.log(`liveDatabaseExportAllowed: ${profile.guards.liveDatabaseExport.allowed}`);
+  console.log(`runtimeSwitchAllowed: ${profile.guards.runtimeSwitch.allowed}`);
+  console.log(`productionWritesAllowed: ${profile.guards.productionWrites.allowed}`);
+  console.log(`blockedReasonCodes: ${profile.readiness.blockedReasonCodes.join(',')}`);
+  console.log(`nextAction: ${profile.readiness.nextAction}`);
 }
 
 main(process.argv.slice(2)).catch((error) => {

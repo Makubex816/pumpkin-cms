@@ -1,6 +1,6 @@
 # Known Limitations
 
-Phase 2F-12I adds a non-secret provider metadata endpoint foundation and local runtime profile bridge on top of the fake/local provider resolver foundation. It does not make the Backup Center production-ready or prove IceSkatingRinkRentals.com is fully backupable today.
+Phase 2F-12K adds local runtime profile models, fixture-backed profile resolution, export guards, CLI checks, and Backup Center bundle integration on top of the provider resolver foundation. It does not make the Backup Center production-ready or prove IceSkatingRinkRentals.com is fully backupable today.
 
 ## Still Not Implemented
 
@@ -42,9 +42,11 @@ Phase 2F-12I adds a non-secret provider metadata endpoint foundation and local r
 - Fake media copies are text fixtures only, not real media files.
 - Fake Cosmos records are local fixtures only, not exported production documents.
 - Provider resolver records still use local fixtures for Backup Center tests.
-- The CMS provider metadata endpoint returns a static non-secret Ice future-target profile only.
+- Runtime profile records still use local fixtures for Backup Center tests.
+- The CMS provider metadata endpoint foundation returns a static non-secret Ice future-target profile only.
 - The endpoint does not prove CMS runtime is using Cosmos.
+- `production-write-approved` is present as a future profile name, but it is hard-stopped in this phase.
 
 ## Future Approval Required
 
-The next IceSkatingRinkRentals.com step is runtime profile wiring preflight. It must remain no-mutation until a separate runtime wiring execution approval exists.
+The next IceSkatingRinkRentals.com step is data seed and migration preflight planning. It must remain no-mutation until a separate seed/migration execution approval exists.

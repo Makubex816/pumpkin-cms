@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "0.1.0",
+  "profileName": "production-write-approved",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "environment": "production",
+  "requestedOperation": "future-production-write-check",
+  "providerSourceFixture": "fixtures/provider-source.cosmos.configured.json",
+  "gates": {
+    "seedMigrationPassed": true,
+    "runtimeSwitchApproved": true,
+    "liveDatabaseExportApproved": true,
+    "productionWriteApproved": true
+  }
+}
+

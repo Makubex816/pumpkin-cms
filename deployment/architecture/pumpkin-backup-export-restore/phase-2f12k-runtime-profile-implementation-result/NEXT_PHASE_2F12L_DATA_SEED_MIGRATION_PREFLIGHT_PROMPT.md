@@ -1,0 +1,4 @@
+# Next Phase 2F-12L Data Seed Migration Preflight Prompt
+
+Approve Phase 2F-12L Ice Cosmos data seed and migration preflight only: using the Phase 2F-12K runtime profile implementation result, create a no-write seed/migration preflight for IceSkatingRinkRentals.com that identifies the current CMS source of truth, expected tenant/site/page/route/form/media/config inventory counts, proposed Cosmos container mapping, idempotency strategy, conflict handling, rollback capture, readback verification plan, Backup Center proof requirements, operator checklist, go/no-go criteria, and next seed/migration execution prompt. No CMS runtime switch, no CMS writes, no data migration or seed execution, no database export/import, no Cosmos document export/import, no protected config reads, no secret printing, no Azure mutation, no deployment, no Search Console/indexing, and no live-page publication.
+

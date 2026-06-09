@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "0.1.0",
+  "profileName": "live-readonly",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "environment": "production",
+  "requestedOperation": "readonly-provider-metadata-status",
+  "providerSourceFixture": "fixtures/provider-source.cosmos.configured.json",
+  "gates": {
+    "seedMigrationPassed": false,
+    "runtimeSwitchApproved": false,
+    "liveDatabaseExportApproved": false,
+    "productionWriteApproved": false
+  }
+}
+

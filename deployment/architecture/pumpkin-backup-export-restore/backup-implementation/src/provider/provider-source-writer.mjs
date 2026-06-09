@@ -76,7 +76,8 @@ export async function writeFakeProviderSource({ bundleRoot, request, createdAt, 
       nextAction: resolved.readiness.nextAction
     },
     metadata: resolved.metadata,
-    readiness: resolved.readiness
+    readiness: resolved.readiness,
+    resolved
   };
 }
 

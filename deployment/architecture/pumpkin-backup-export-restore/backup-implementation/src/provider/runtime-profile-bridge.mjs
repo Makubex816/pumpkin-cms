@@ -58,13 +58,22 @@ const secretValueMarkers = Object.freeze([
   ['Account', 'Endpoint='].join('')
 ]);
 
-export function buildRuntimeProfileBridge(resolved) {
+export function buildRuntimeProfileBridge(resolved, { runtimeProfileName = null } = {}) {
   const endpointResponse = buildProviderMetadataEndpointResponse(resolved);
+  const runtimeProfile = resolveRuntimeProfile({
+    profileName: runtimeProfileName,
+    tenantKey: endpointResponse.tenantKey,
+    siteKey: endpointResponse.siteKey,
+    environment: endpointResponse.environment,
+    requestedOperation: 'provider-metadata-runtime-bridge',
+    providerResolution: resolved
+  }).profile;
   return {
     schemaVersion: '0.1.0',
     bridgeMode: 'local-runtime-profile',
     endpointContractPath: '/api/admin/provider-metadata',
     response: endpointResponse,
+    runtimeProfile,
     readiness: {
       exportReadiness: resolved.readiness.exportReadiness,
       reason: resolved.readiness.reason,
@@ -80,7 +89,8 @@ export function buildRuntimeProfileBridge(resolved) {
       cosmosDocumentExportPerformed: false,
       externalSystemMutation: false,
       secretsIncluded: false,
-      runtimeConfigured: endpointResponse.runtimeStatus === 'runtime-configured'
+      runtimeConfigured: endpointResponse.runtimeStatus === 'runtime-configured',
+      runtimeSwitchPerformed: false
     }
   };
 }
@@ -197,3 +207,4 @@ function isForbiddenKey(key) {
   const normalized = key.replace(/[^a-z0-9]/gi, '').toLowerCase();
   return forbiddenNormalizedKeys.has(normalized);
 }
+import { resolveRuntimeProfile } from './runtime-profile-model.mjs';

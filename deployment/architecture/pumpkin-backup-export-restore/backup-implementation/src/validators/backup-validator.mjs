@@ -53,6 +53,7 @@ const generatedSchemaFiles = [
   'database/cosmos-json/containers/publish-runs.json',
   'database/cosmos-json/containers/import-runs.json',
   'database/platform-evidence/cosmos/cosmos-platform-backup-evidence.json',
+  'database/runtime-profile/runtime-profile.json',
   'media/media-assets.json',
   'media/blob-map/blob-inventory.json',
   'media/blob-map/blob-copy-plan.json',
@@ -77,6 +78,7 @@ const allowedKinds = new Set([
   'config-inventory',
   'escrow-marker',
   'provider-source-metadata',
+  'runtime-profile',
   'tenant-website-bundle'
 ]);
 const allowedSensitivity = new Set(['redacted']);

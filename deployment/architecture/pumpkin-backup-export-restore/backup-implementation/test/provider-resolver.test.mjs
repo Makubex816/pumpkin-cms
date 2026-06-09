@@ -12,6 +12,11 @@ import {
   endpointAllowedResponseKeys,
   validateProviderMetadataEndpointResponse
 } from '../src/provider/runtime-profile-bridge.mjs';
+import {
+  listRuntimeProfileDefinitions,
+  resolveRuntimeProfileFromFixture,
+  resolveRuntimeProfileWithProviderFixture
+} from '../src/provider/runtime-profile-model.mjs';
 import { readJson } from '../src/utils/json-writer.mjs';
 import { packageRoot } from '../src/utils/safe-paths.mjs';
 
@@ -19,7 +24,8 @@ const fixedDate = new Date('2026-01-01T00:00:00.000Z');
 const iceAnswers = 'fixtures/ice-cosmos-media-standard-backup.answers.json';
 const testBundleNames = [
   'test-provider-source-missing',
-  'test-provider-source-future-target'
+  'test-provider-source-future-target',
+  'test-runtime-profile-live-readonly-blocked'
 ];
 
 after(async () => {
@@ -88,7 +94,93 @@ test('runtime profile bridge emits endpoint-safe provisioned future target metad
   assert.equal(bridge.response.runtimeStatus, 'metadata-endpoint-runtime-wiring-required');
   assert.equal(bridge.response.secretsIncluded, false);
   assert.equal(bridge.readiness.liveDatabaseExportAllowed, false);
+  assert.equal(bridge.runtimeProfile.profileName, 'runtime-cosmos-future');
+  assert.equal(bridge.runtimeProfile.guards.liveDatabaseExport.allowed, false);
+  assert(bridge.runtimeProfile.readiness.blockedReasonCodes.includes('provider-is-future-target-not-active-runtime'));
   assert.deepEqual(Object.keys(bridge.response).sort(), endpointAllowedResponseKeys().sort());
+});
+
+test('runtime profile definitions cover local, read-only, future, and hard-stopped write modes', () => {
+  const names = listRuntimeProfileDefinitions().map((definition) => definition.profileName);
+  assert.deepEqual(names, [
+    'local-dev',
+    'offline-bundle',
+    'fake-provider',
+    'local-with-live-readonly',
+    'live-readonly',
+    'runtime-cosmos-future',
+    'production-write-approved'
+  ]);
+});
+
+test('local-dev runtime profile is offline capable and allows fake proof only', async () => {
+  const result = await resolveRuntimeProfileFromFixture({
+    fixturePath: 'fixtures/runtime-profile.local-dev.json'
+  });
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.profile.profileName, 'local-dev');
+  assert.equal(result.profile.boundaries.offlineCapable, true);
+  assert.equal(result.profile.guards.fakeCompleteExport.allowed, true);
+  assert.equal(result.profile.guards.liveDatabaseExport.allowed, false);
+  assert.equal(result.profile.boundaries.azureCalled, false);
+});
+
+test('offline-bundle runtime profile resolves without provider source and blocks live export', async () => {
+  const result = await resolveRuntimeProfileFromFixture({
+    fixturePath: 'fixtures/runtime-profile.offline-bundle.json'
+  });
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.profile.profileName, 'offline-bundle');
+  assert.equal(result.profile.provider.providerStatus, 'missing');
+  assert.equal(result.profile.guards.fakeCompleteExport.allowed, false);
+  assert.equal(result.profile.guards.liveDatabaseExport.allowed, false);
+  assert(result.profile.readiness.blockedReasonCodes.includes('provider-source-missing'));
+});
+
+test('fake-provider runtime profile allows local fake proof but blocks live database export', async () => {
+  const result = await resolveRuntimeProfileFromFixture({
+    fixturePath: 'fixtures/runtime-profile.fake-provider.json'
+  });
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.profile.profileName, 'fake-provider');
+  assert.equal(result.profile.guards.fakeCompleteExport.allowed, true);
+  assert.equal(result.profile.guards.liveDatabaseExport.allowed, false);
+});
+
+test('Ice future-target Cosmos maps to runtime-cosmos-future and remains export-blocked', async () => {
+  const result = await resolveRuntimeProfileFromFixture({
+    fixturePath: 'fixtures/runtime-profile.ice.future-target-cosmos.json'
+  });
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.profile.profileName, 'runtime-cosmos-future');
+  assert.equal(result.profile.provider.providerType, 'cosmos');
+  assert.equal(result.profile.provider.providerStatus, 'future-target');
+  assert.equal(result.profile.provider.provisioningStatus, 'provisioned');
+  assert.equal(result.profile.guards.liveDatabaseExport.allowed, false);
+  assert.equal(result.profile.guards.runtimeSwitch.allowed, false);
+  assert.equal(result.profile.readiness.nextAction, 'data-seed-migration-preflight-required');
+});
+
+test('production-write-approved fixture remains blocked even when future gates are true', async () => {
+  const result = await resolveRuntimeProfileFromFixture({
+    fixturePath: 'fixtures/runtime-profile.production-write-approved.blocked.json'
+  });
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.profile.profileName, 'production-write-approved');
+  assert.equal(result.profile.guards.liveDatabaseExport.allowed, false);
+  assert.equal(result.profile.guards.productionWrites.allowed, false);
+  assert(result.profile.readiness.blockedReasonCodes.includes('production-write-profile-disabled-in-phase-2f12k'));
+});
+
+test('provider resolver output maps configured Cosmos to read-only planning by default', async () => {
+  const result = await resolveRuntimeProfileWithProviderFixture({
+    providerFixturePath: 'fixtures/provider-source.cosmos.configured.json'
+  });
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.profile.profileName, 'live-readonly');
+  assert.equal(result.profile.provider.providerType, 'cosmos');
+  assert.equal(result.profile.guards.liveDatabaseExport.allowed, false);
+  assert(result.profile.readiness.blockedReasonCodes.includes('read-only-profile-disallows-live-export'));
 });
 
 test('provider metadata endpoint response rejects forbidden fields', async () => {
@@ -132,6 +224,8 @@ test('standard bundle can include missing provider source metadata without enabl
   assert.equal(providerSource.readiness.liveDatabaseExportAllowed, false);
   assert.equal(result.manifest.componentStatus.providerSource.status, 'missing');
   assert.equal(result.manifest.componentStatus.providerSource.liveDatabaseExportAllowed, false);
+  assert.equal(result.manifest.componentStatus.runtimeProfile.profileName, 'local-dev');
+  assert.equal(result.manifest.componentStatus.runtimeProfile.liveDatabaseExportAllowed, false);
 });
 
 test('standard bundle can include future-target Cosmos metadata without creating export artifacts', async () => {
@@ -152,8 +246,30 @@ test('standard bundle can include future-target Cosmos metadata without creating
   assert.equal(result.manifest.componentStatus.providerSource.sourceResolutionStatus, 'provisioned');
   assert.equal(result.manifest.componentStatus.providerSource.cosmosProvisioningRequired, false);
   assert.equal(result.manifest.componentStatus.providerSource.nextAction, 'metadata-endpoint-runtime-wiring-approval-required');
+  assert.equal(result.manifest.componentStatus.runtimeProfile.profileName, 'runtime-cosmos-future');
+  assert.equal(result.manifest.componentStatus.runtimeProfile.liveDatabaseExportAllowed, false);
+  assert.equal(result.manifest.componentStatus.runtimeProfile.runtimeSwitchAllowed, false);
   assert.equal(result.manifest.connectorFoundation.liveCosmosExportPerformed, false);
   await assert.rejects(() => fs.access(path.join(result.bundleRoot, 'database', 'cosmos-json', 'export-manifest.json')));
+});
+
+test('standard bundle blocks fake complete export outside fake/local profiles', async () => {
+  await clean('test-runtime-profile-live-readonly-blocked');
+  await assert.rejects(
+    () => createStandardBackup({
+      answersPath: iceAnswers,
+      outputPath: '.tmp/test-runtime-profile-live-readonly-blocked',
+      scopeOverride: 'tenant',
+      overwrite: true,
+      now: fixedDate,
+      connectors: {
+        runtimeProfile: 'live-readonly',
+        fakeCosmos: true,
+        fakeMediaCopy: true
+      }
+    }),
+    /fake complete export is blocked/
+  );
 });
 
 test('CLI resolve-provider prints only non-secret summary fields', async () => {
@@ -182,8 +298,25 @@ test('CLI resolve-runtime-profile prints only non-secret runtime summary fields'
   ]);
   assert.equal(outcome.code, 0);
   assert.match(outcome.stdout, /providerType: cosmos/);
+  assert.match(outcome.stdout, /runtimeProfile: runtime-cosmos-future/);
   assert.match(outcome.stdout, /provisioningStatus: provisioned/);
   assert.match(outcome.stdout, /runtimeStatus: metadata-endpoint-runtime-wiring-required/);
+  assert.doesNotMatch(outcome.stdout, /connection/i);
+  assert.doesNotMatch(outcome.stdout, /token/i);
+});
+
+test('CLI runtime-profile:validate prints guard status without secrets', async () => {
+  const cliPath = path.join(packageRoot, 'src', 'backup-cli.mjs');
+  const outcome = await runNode([
+    cliPath,
+    'runtime-profile:validate',
+    '--runtime-fixture',
+    'fixtures/runtime-profile.ice.future-target-cosmos.json'
+  ]);
+  assert.equal(outcome.code, 0);
+  assert.match(outcome.stdout, /runtimeProfile: runtime-cosmos-future/);
+  assert.match(outcome.stdout, /liveDatabaseExportAllowed: false/);
+  assert.match(outcome.stdout, /validation: passed/);
   assert.doesNotMatch(outcome.stdout, /connection/i);
   assert.doesNotMatch(outcome.stdout, /token/i);
 });

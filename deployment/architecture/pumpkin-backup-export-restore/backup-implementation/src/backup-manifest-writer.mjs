@@ -32,6 +32,8 @@ export async function writeBackupManifest({
       fakeMediaCopy: connectorOptions.fakeMediaCopy === true,
       tenantWebsiteBundle: connectorOptions.tenantWebsiteBundle === true,
       providerResolver: Boolean(connectorOptions.providerSourceFixture),
+      runtimeProfileGuard: true,
+      runtimeProfile: connectorResults.runtimeProfile?.component?.profileName ?? 'local-dev',
       liveCosmosExportPerformed: false,
       liveBlobDownloadPerformed: false,
       externalSystemMutation: false,
@@ -98,6 +100,14 @@ function buildComponentStatus({ connectorOptions, connectorResults }) {
       status: connectorOptions.providerSourceFixture ? 'blocked' : 'not-run',
       fakeOnly: true,
       liveDatabaseExportAllowed: false
+    },
+    runtimeProfile: connectorResults.runtimeProfile?.component ?? {
+      profileName: 'local-dev',
+      status: 'local-default',
+      fakeOnly: true,
+      liveDatabaseExportAllowed: false,
+      runtimeSwitchAllowed: false,
+      nextAction: 'continue-local-development-or-request-live-readonly-approval'
     }
   };
 }

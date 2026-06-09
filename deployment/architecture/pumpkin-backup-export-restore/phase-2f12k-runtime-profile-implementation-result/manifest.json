@@ -1,0 +1,83 @@
+{
+  "phase": "2F-12K",
+  "title": "Runtime profile implementation without production switch",
+  "status": "complete",
+  "packageType": "implementation-result",
+  "primaryImplementationPath": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/",
+  "implementedFiles": [
+    "src/provider/runtime-profile-model.mjs",
+    "src/provider/runtime-profile-writer.mjs",
+    "src/provider/runtime-profile-bridge.mjs",
+    "src/provider/provider-source-writer.mjs",
+    "src/standard-bundle-writer.mjs",
+    "src/backup-manifest-writer.mjs",
+    "src/validators/backup-validator.mjs",
+    "src/backup-cli.mjs",
+    "fixtures/runtime-profile.local-dev.json",
+    "fixtures/runtime-profile.offline-bundle.json",
+    "fixtures/runtime-profile.fake-provider.json",
+    "fixtures/runtime-profile.local-with-live-readonly.json",
+    "fixtures/runtime-profile.live-readonly.json",
+    "fixtures/runtime-profile.ice.future-target-cosmos.json",
+    "fixtures/runtime-profile.production-write-approved.blocked.json",
+    "test/provider-resolver.test.mjs"
+  ],
+  "runtimeProfiles": {
+    "localDev": true,
+    "offlineBundle": true,
+    "fakeProvider": true,
+    "localWithLiveReadonly": true,
+    "liveReadonly": true,
+    "runtimeCosmosFuture": true,
+    "productionWriteApprovedHardStopped": true
+  },
+  "iceClassification": {
+    "providerType": "cosmos",
+    "providerStatus": "future-target",
+    "provisioningStatus": "provisioned",
+    "runtimeProfile": "runtime-cosmos-future",
+    "runtimeStatus": "metadata-endpoint-runtime-wiring-required",
+    "liveDatabaseExportAllowed": false,
+    "runtimeSwitchAllowed": false,
+    "productionWritesAllowed": false,
+    "nextAction": "data-seed-migration-preflight-required"
+  },
+  "validation": {
+    "npmTest": "passed",
+    "npmRunCheck": "passed",
+    "testCount": 68,
+    "runtimeProfileCliChecks": "passed"
+  },
+  "readiness": {
+    "phase2f12jRuntimeWiringPreflight": "complete",
+    "phase2f12kRuntimeProfileImplementation": true,
+    "localDevProfile": true,
+    "offlineBundleProfile": true,
+    "fakeProviderProfile": true,
+    "liveReadonlyModel": true,
+    "runtimeCosmosFutureProfile": true,
+    "productionWriteApprovedRemainsBlocked": true,
+    "backupCenterLiveExportBlockedUntilGatesPass": true,
+    "readyForDataSeedMigrationPreflight": true,
+    "readyForCmsRuntimeSwitch": false,
+    "readyForLiveDatabaseConnectorExecution": false,
+    "iceFullyBackupableToday": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "boundaries": {
+    "cmsRuntimeSwitchPerformed": false,
+    "cmsWritesPerformed": false,
+    "dataMigrationPerformed": false,
+    "databaseExportPerformed": false,
+    "cosmosDocumentExportPerformed": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "azureMutationPerformed": false,
+    "deploymentPerformed": false,
+    "searchConsoleOrIndexingPerformed": false,
+    "livePagePublicationPerformed": false
+  },
+  "nextPromptFile": "NEXT_PHASE_2F12L_DATA_SEED_MIGRATION_PREFLIGHT_PROMPT.md"
+}
+

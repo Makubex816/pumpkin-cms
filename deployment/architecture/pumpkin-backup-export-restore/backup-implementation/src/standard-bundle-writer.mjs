@@ -11,6 +11,8 @@ import { writeTenantWebsiteBundleIndex } from './bundles/tenant-website-bundle-w
 import { writeFakeCosmosExport } from './connectors/cosmos/cosmos-export-runner.mjs';
 import { writeFakeMediaCopy } from './connectors/media/media-copy-runner.mjs';
 import { writeFakeProviderSource } from './provider/provider-source-writer.mjs';
+import { assertFakeCompleteExportAllowed } from './provider/runtime-profile-model.mjs';
+import { writeRuntimeProfileStatus } from './provider/runtime-profile-writer.mjs';
 
 export async function writeStandardBundle({ bundleRoot, request, createdAt, connectors = {} }) {
   await fs.mkdir(bundleRoot, { recursive: true });
@@ -32,6 +34,17 @@ export async function writeStandardBundle({ bundleRoot, request, createdAt, conn
       fixturePath: connectorOptions.providerSourceFixture
     });
     fileEntries.push(...connectorResults.providerSource.entries);
+  }
+  connectorResults.runtimeProfile = await writeRuntimeProfileStatus({
+    bundleRoot,
+    request,
+    createdAt,
+    runtimeProfileName: connectorOptions.runtimeProfile,
+    providerResolution: connectorResults.providerSource?.resolved ?? null
+  });
+  fileEntries.push(...connectorResults.runtimeProfile.entries);
+  if (connectorOptions.fakeCosmos || connectorOptions.fakeMediaCopy) {
+    assertFakeCompleteExportAllowed(connectorResults.runtimeProfile.profile);
   }
   if (connectorOptions.fakeCosmos) {
     connectorResults.cosmos = await writeFakeCosmosExport({ bundleRoot, request, createdAt });
@@ -69,7 +82,8 @@ function normalizeConnectorOptions(connectors) {
     fakeCosmos: connectors.fakeCosmos === true,
     fakeMediaCopy: connectors.fakeMediaCopy === true,
     tenantWebsiteBundle: connectors.tenantWebsiteBundle === true,
-    providerSourceFixture: typeof connectors.providerSourceFixture === 'string' ? connectors.providerSourceFixture : null
+    providerSourceFixture: typeof connectors.providerSourceFixture === 'string' ? connectors.providerSourceFixture : null,
+    runtimeProfile: typeof connectors.runtimeProfile === 'string' ? connectors.runtimeProfile : null
   };
 }
 
@@ -90,6 +104,7 @@ async function writeTopLevelDocs({ bundleRoot, request, createdAt, connectorOpti
       '## Connector Foundation',
       '',
       `- Provider source resolver metadata: ${connectorOptions.providerSourceFixture ? 'included' : 'not included'}`,
+      `- Runtime profile guard metadata: included (${connectorOptions.runtimeProfile ?? 'auto'})`,
       `- Fake Cosmos portable JSON export: ${connectorOptions.fakeCosmos ? 'included' : 'not included'}`,
       `- Fake media blob copy: ${connectorOptions.fakeMediaCopy ? 'included' : 'not included'}`,
       `- Tenant website bundle index: ${connectorOptions.tenantWebsiteBundle ? 'included' : 'not included'}`,

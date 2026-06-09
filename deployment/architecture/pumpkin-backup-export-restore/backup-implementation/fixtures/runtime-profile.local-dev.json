@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "0.1.0",
+  "profileName": "local-dev",
+  "tenantKey": "example-tenant",
+  "siteKey": "example-site",
+  "environment": "local",
+  "requestedOperation": "status-report",
+  "providerSourceFixture": "fixtures/provider-source.local-provider.json",
+  "gates": {
+    "seedMigrationPassed": false,
+    "runtimeSwitchApproved": false,
+    "liveDatabaseExportApproved": false,
+    "productionWriteApproved": false
+  }
+}
+
