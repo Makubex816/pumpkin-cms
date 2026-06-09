@@ -1,0 +1,121 @@
+{
+  "phase": "2F-2",
+  "packageName": "phase-2f2-implementation-plan",
+  "createdAtLocal": "2026-06-08T21:51:58-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "baselineCommit": {
+    "short": "0bd9751",
+    "subject": "Design Pumpkin Backup Center architecture"
+  },
+  "milestoneModel": {
+    "updatedObjectiveCount": 45,
+    "completedObjectives": 29,
+    "activePhase": "2F",
+    "activePriority": "Backup Center / Export / Restore / Encrypted Escrow Foundation",
+    "phase2ePausedUntilBackupCenterApproved": true
+  },
+  "inputs": [
+    "deployment/architecture/pumpkin-backup-export-restore/",
+    "PUMPKIN_BACKUP_EXPORT_RESTORE_ESCROW_ARCHITECTURE_REPORT.md",
+    "deployment/architecture/multi-tenant-onboarding-system/validator-implementation/",
+    "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/",
+    "PUMPKIN_MULTI_TENANT_ONBOARDING_PHASE_2E3_ROLLER_RECONCILIATION_WRITE_PLAN_REPORT.md"
+  ],
+  "startState": {
+    "recentCommitSubjectsConfirmed": [
+      "Design Pumpkin Backup Center architecture",
+      "Plan Roller reconciliation writes",
+      "Refresh Roller reconciliation read-only evidence",
+      "Plan Roller CMS reconciliation",
+      "Close onboarding repo hygiene path guard cleanup"
+    ],
+    "worktreeClassification": [
+      "pre-existing modified onboarding docs",
+      "pre-existing apps/ice-rink-web source changes",
+      "pre-existing static/Azure backlog changes",
+      "raw content-review folders untracked and untouched",
+      "ignored generated output not read or staged",
+      "Phase 2F-2 implementation planning docs newly created"
+    ]
+  },
+  "recommendation": {
+    "phase2f3FirstImplementationTarget": "local standard backup exporter prototype",
+    "recommendedInitialPackagePath": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/",
+    "recommendedRuntime": "Node.js ESM .mjs local-only package",
+    "readyForPhase2F3ApprovalDecision": true,
+    "readyForRealBackupExport": false,
+    "readyForEscrowExport": false,
+    "readyForRestore": false,
+    "readyForCmsWriteImportExecution": false,
+    "readyForAdminUiImplementation": false,
+    "readyForLivePages": false
+  },
+  "boundaries": {
+    "implementation": false,
+    "backupCreated": false,
+    "backupZipCreated": false,
+    "databaseExport": false,
+    "secretExport": false,
+    "secretRead": false,
+    "escrowPayloadCreated": false,
+    "restore": false,
+    "cmsApiCalls": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "postPutPatchDeleteRequests": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "functionAppSettingsChanged": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "protectedConfigRead": false,
+    "externalChecks": false,
+    "livePagePublication": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "manifestFileList": "passed, 24 files",
+    "changedJsonParse": "passed, 5 files",
+    "nodeCheckChangedJsMjs": "passed, 3 pre-existing changed files",
+    "gitDiffCheck": "passed with existing CRLF/LF conversion warnings only",
+    "phase2f2TrailingWhitespaceScan": "passed, 25 files",
+    "phase2f2SecretValuePatternScan": "passed, 25 files",
+    "stagedPathCount": 0,
+    "stagedGuardHitCount": 0,
+    "protectedSecretRiskChangedPathScan": "passed",
+    "backupZipCreated": false,
+    "escrowPayloadCreated": false,
+    "databaseExportArtifactCreated": false,
+    "rawContentReviewStaged": false,
+    "ignoredGeneratedOutputStaged": false,
+    "protectedConfigStaged": false
+  },
+  "files": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "NON_GOALS.md",
+    "PROPOSED_PACKAGE_LOCATIONS.md",
+    "MODULE_BOUNDARIES.md",
+    "DATA_MODEL_PLAN.md",
+    "SCHEMA_CONTRACT_PLAN.md",
+    "BACKUP_JOB_MODEL_PLAN.md",
+    "BACKUP_ARTIFACT_MODEL_PLAN.md",
+    "STANDARD_BACKUP_EXPORTER_PLAN.md",
+    "ENCRYPTED_ESCROW_EXPORTER_PLAN.md",
+    "BACKUP_VALIDATOR_PLAN.md",
+    "RESTORE_VALIDATION_PLAN.md",
+    "API_ENDPOINT_PLAN.md",
+    "CLI_COMMAND_PLAN.md",
+    "ADMIN_UI_IMPLEMENTATION_PLAN.md",
+    "ACCESS_CONTROL_IMPLEMENTATION_PLAN.md",
+    "AUDIT_LOGGING_IMPLEMENTATION_PLAN.md",
+    "RETENTION_EXPIRATION_IMPLEMENTATION_PLAN.md",
+    "TEST_FIXTURE_PLAN.md",
+    "ACCEPTANCE_CRITERIA.md",
+    "RISKS_AND_OPEN_DECISIONS.md",
+    "NEXT_PHASE_2F3_STANDARD_BACKUP_EXPORTER_PROMPT.md",
+    "manifest.json"
+  ]
+}
