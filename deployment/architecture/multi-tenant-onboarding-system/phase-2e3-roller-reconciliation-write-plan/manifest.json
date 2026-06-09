@@ -1,0 +1,190 @@
+{
+  "phase": "2E-3",
+  "packageName": "phase-2e3-roller-reconciliation-write-plan",
+  "createdAtLocal": "2026-06-08T21:01:45-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "baselineCommit": {
+    "short": "27a00df",
+    "subject": "Refresh Roller reconciliation read-only evidence"
+  },
+  "inputs": [
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2e2-roller-reconciliation-read-only-refresh-result/",
+    "PUMPKIN_MULTI_TENANT_ONBOARDING_PHASE_2E2_ROLLER_RECONCILIATION_READ_ONLY_REFRESH_REPORT.md",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2e1-roller-cms-reconciliation-plan/",
+    "PUMPKIN_MULTI_TENANT_ONBOARDING_PHASE_2E1_ROLLER_CMS_RECONCILIATION_PLAN_REPORT.md",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c6b-roller-cms-read-only-current-state-env-ready-result/",
+    "PUMPKIN_MULTI_TENANT_ONBOARDING_PHASE_2C6B_ROLLER_CMS_READ_ONLY_CURRENT_STATE_ENV_READY_REPORT.md",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c5-roller-cms-import-execution-preflight/",
+    "deployment/architecture/multi-tenant-onboarding-system/import-package-spec/"
+  ],
+  "startState": {
+    "recentCommitSubjectsConfirmed": [
+      "Refresh Roller reconciliation read-only evidence",
+      "Plan Roller CMS reconciliation",
+      "Close onboarding repo hygiene path guard cleanup",
+      "Resolve onboarding path guard documentation false positives",
+      "Record Roller CMS read-only current-state evidence",
+      "Plan Roller CMS import"
+    ],
+    "recentCommitSubjectNotFound": [
+      "Prepare Roller CMS import execution preflight"
+    ],
+    "phase2c5PackageExists": true,
+    "worktreeClassification": [
+      "pre-existing modified onboarding docs",
+      "pre-existing apps/ice-rink-web source changes",
+      "pre-existing static/Azure backlog changes",
+      "raw content-review folders untracked and untouched",
+      "ignored generated output not read or staged",
+      "Phase 2E-3 docs newly created"
+    ]
+  },
+  "evidenceBaseline": {
+    "phase2e2ReadOnlyRefreshComplete": true,
+    "phase2e2GetRequests": 22,
+    "phase2e2HeadRequests": 0,
+    "phase2e2MutationRequests": 0,
+    "activeRollerTenantExists": true,
+    "tenantPagesCount": 4,
+    "publicSitemapCount": 3,
+    "publishedSitemapIncludedPages": [
+      "home",
+      "contact",
+      "roller-rink-rentals"
+    ],
+    "missingExpectedPage": "service-areas",
+    "importRunsReturned": 0,
+    "mediaAssetsReturned": 0,
+    "localPackageValidationErrors": 0,
+    "localPackageValidationWarnings": 0
+  },
+  "proposedFutureWriteBatches": [
+    {
+      "batch": 0,
+      "entity": "tenant/site/domain",
+      "futureOperation": "preserve/adopt existing active tenant",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 1,
+      "entity": "rollback snapshots",
+      "futureOperation": "capture sanitized before-state evidence before any write",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 2,
+      "entity": "home",
+      "futureOperation": "optional owner-approved field-level update or adopt existing",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 3,
+      "entity": "contact",
+      "futureOperation": "optional owner-approved field-level update or adopt existing",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 4,
+      "entity": "service-areas",
+      "futureOperation": "create missing page only under later explicit CMS write approval",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 5,
+      "entity": "roller-rink-rentals",
+      "futureOperation": "preserve until owner purpose decision",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 6,
+      "entity": "form recipient",
+      "futureOperation": "blocked until storage and owner-approved mapping are proven",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 7,
+      "entity": "SEO/sitemap",
+      "futureOperation": "preserve unless separate SEO/sitemap approval exists",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 8,
+      "entity": "media refs/assets",
+      "futureOperation": "no MediaAsset write; preserve package refs until separate media gate",
+      "writesPlannedForExecutionNow": false
+    },
+    {
+      "batch": 9,
+      "entity": "post-write readback",
+      "futureOperation": "GET-only verification after any later approved write",
+      "writesPlannedForExecutionNow": false
+    }
+  ],
+  "readiness": {
+    "phase2e2ReadOnlyReconciliationRefresh": "complete",
+    "phase2e3WritePlanning": "yes",
+    "readyForReconciliationWritePreflightApproval": "yes, approval decision only",
+    "readyForCmsReconciliationWrites": false,
+    "readyForCmsImportExecutionApproval": false,
+    "readyForStaticReadinessPlanning": false,
+    "readyForProductionReadinessPlanning": false,
+    "readyForLivePages": "no, hard-stopped",
+    "cmsWritesPerformed": false,
+    "externalSystemsChanged": false,
+    "searchConsoleOrIndexingAffected": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "manifestFileList": "passed, 20 files",
+    "changedJsonParse": "passed, 5 files",
+    "nodeCheckChangedJsMjs": "passed, 3 files",
+    "gitDiffCheck": "passed with existing CRLF/LF conversion warnings only",
+    "phase2e3TrailingWhitespaceScan": "passed, 21 files",
+    "phase2e3SecretPatternScan": "passed, 21 files",
+    "stagedPathCount": 0,
+    "stagedGuardHitCount": 0,
+    "protectedSecretRiskChangedPathScan": "passed",
+    "rawContentReviewStaged": false,
+    "ignoredGeneratedOutputStaged": false,
+    "protectedConfigStaged": false
+  },
+  "boundaries": {
+    "cmsApiCallsMadeInPhase2E3": false,
+    "cmsWrites": false,
+    "tenantCreation": false,
+    "mediaAssetWrites": false,
+    "postPutPatchDeleteRequests": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "functionAppSettingsChanged": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "WRITE_PLANNING_SCOPE.md",
+    "NON_GOALS.md",
+    "READ_ONLY_EVIDENCE_BASELINE.md",
+    "PROPOSED_WRITE_OPERATION_SUMMARY.md",
+    "PRESERVE_ADOPT_UPDATE_CREATE_MATRIX.md",
+    "SERVICE_AREAS_WRITE_PLAN.md",
+    "HOME_PAGE_DECISION_PLAN.md",
+    "CONTACT_PAGE_DECISION_PLAN.md",
+    "ROLLER_RINK_RENTALS_PAGE_DECISION_PLAN.md",
+    "FORM_RECIPIENT_WRITE_PLAN.md",
+    "SEO_SITEMAP_WRITE_PLAN.md",
+    "MEDIA_REFERENCE_WRITE_PLAN.md",
+    "OWNER_DECISION_GATES.md",
+    "WRITE_PREFLIGHT_REQUIREMENTS.md",
+    "ROLLBACK_CAPTURE_PLAN.md",
+    "POST_WRITE_READBACK_VERIFICATION_PLAN.md",
+    "RISK_REGISTER.md",
+    "NEXT_RECONCILIATION_WRITE_PREFLIGHT_APPROVAL_PROMPT.md",
+    "manifest.json"
+  ]
+}
