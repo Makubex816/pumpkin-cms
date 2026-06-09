@@ -1,0 +1,4 @@
+# Next DB/Media Connector Implementation Prompt
+
+Approve Phase 2F-10B Backup Center source profile and DB/media connector implementation planning only: use the Phase 2F-10A source wiring and tenant bundle plan to define exact code changes for the Backup Center profile resolver, database provider discovery connector, Cosmos backup connector, optional Azure SQL connector, media blob discovery/copy connector, tenant website bundle writer, validator modes, restore-plan modes, tests, fixtures, docs, and acceptance criteria. No implementation, no database export, no blob download, no protected config reads, no secret export, no encrypted escrow payload, no CMS writes, no MediaAsset writes, no Azure mutations, no Cloudflare/DNS/deployment/email/Search Console actions, no generated backup artifact staging, and no live-page publication.
+

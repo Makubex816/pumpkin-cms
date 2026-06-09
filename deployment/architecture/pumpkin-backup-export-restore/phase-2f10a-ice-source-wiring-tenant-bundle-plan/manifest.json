@@ -1,0 +1,98 @@
+{
+  "phase": "2F-10A",
+  "title": "Ice source-of-truth wiring and tenant website bundle architecture",
+  "date": "2026-06-09",
+  "target": {
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com"
+  },
+  "baseline": {
+    "phase2f10BlockerDocumented": "complete",
+    "databaseArtifact": "blocked",
+    "mediaBlobCopies": "blocked",
+    "productionRestoreProof": "not_achieved"
+  },
+  "readiness": {
+    "phase2f10aSourceWiringPlan": "yes",
+    "iceFullyBackupableToday": "no",
+    "dbSourceWiredForBackup": "partial",
+    "mediaBlobSourceWiredForBackup": "partial",
+    "tenantWebsiteBundleModelDefined": "yes",
+    "localDevProfilePreserved": "yes",
+    "liveAzureReadProfileDefined": "yes",
+    "implementationPerformed": "no",
+    "externalSystemsChanged": "no",
+    "livePagesAffected": "no"
+  },
+  "azureReadOnlyDiscovery": {
+    "azCli": "present",
+    "accountState": "Enabled",
+    "resourceGroups": [
+      "rg-ice-production-media",
+      "rg-ice-static-form-endpoint",
+      "DefaultResourceGroup-EUS",
+      "rg-ice-static-staging"
+    ],
+    "sqlServersReturned": 0,
+    "storageAccounts": [
+      "iceforms20260605",
+      "iceskatingmedia"
+    ],
+    "mediaContainer": "ice-rink-rentals-media",
+    "secretsPrinted": false,
+    "mutationsPerformed": false
+  },
+  "sourceStatus": {
+    "cmsApi": "wired_readonly",
+    "database": "partial_provider_discovery_required",
+    "mediaMetadata": "wired_readonly",
+    "mediaBlobs": "partial_storage_container_discovered",
+    "staticOutput": "partial_safe_docs_and_local_artifact_model",
+    "formEndpoint": "documented_no_email_endpoint",
+    "domainsDns": "documented_from_prior_safe_reports",
+    "configInventory": "presence_only_model",
+    "backupArtifacts": "local_tmp_only",
+    "restoreValidation": "dry_run_only"
+  },
+  "boundaries": {
+    "implementationPerformed": false,
+    "databaseExportPerformed": false,
+    "databaseImportPerformed": false,
+    "blobDownloadPerformed": false,
+    "protectedConfigRead": false,
+    "secretExported": false,
+    "escrowPayloadCreated": false,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesPerformed": false,
+    "postPutPatchDeleteRequests": false,
+    "azureMutationsPerformed": false,
+    "cloudflareMutationsPerformed": false,
+    "dnsChangesPerformed": false,
+    "deploymentPerformed": false,
+    "emailMicrosoft365WorkPerformed": false,
+    "searchConsoleIndexingPerformed": false,
+    "livePagePublicationPerformed": false
+  },
+  "files": [
+    "README.md",
+    "PHASE_2F10_BASELINE_SUMMARY.md",
+    "ICE_SOURCE_OF_TRUTH_MAP.md",
+    "LIVE_AZURE_WIRING_MODEL.md",
+    "LOCAL_DEVELOPMENT_WIRING_MODEL.md",
+    "DATABASE_BACKUP_SOURCE_PLAN.md",
+    "MEDIA_BLOB_BACKUP_SOURCE_PLAN.md",
+    "STATIC_AND_DEPLOYMENT_EVIDENCE_SOURCE_PLAN.md",
+    "CONFIG_AND_ENV_PROFILE_MODEL.md",
+    "TENANT_WEBSITE_BUNDLE_MODEL.md",
+    "PUBLIC_HTML_STYLE_BUNDLE_ANALOGY.md",
+    "TENANT_LAYERING_MODEL.md",
+    "SOURCE_OF_TRUTH_OWNERSHIP_MATRIX.md",
+    "AZURE_READ_ONLY_DISCOVERY_RESULT.md",
+    "TOOLING_AND_ENV_READINESS_MATRIX.md",
+    "BACKUP_CONNECTOR_IMPLEMENTATION_BACKLOG.md",
+    "RISKS_AND_OPEN_DECISIONS.md",
+    "NEXT_DB_MEDIA_CONNECTOR_IMPLEMENTATION_PROMPT.md"
+  ]
+}
+
