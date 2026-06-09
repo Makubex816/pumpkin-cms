@@ -1,0 +1,59 @@
+{
+  "phase": "2F-12A",
+  "title": "Ice database provider/source discovery expansion",
+  "site": "IceSkatingRinkRentals.com",
+  "status": "complete",
+  "readiness": {
+    "phase2f12LiveReadOnlyConnectorPreflight": "complete",
+    "phase2f12aDatabaseProviderSourceDiscovery": true,
+    "databaseProviderSourceIdentified": "partial",
+    "cosmosAccountIdentified": false,
+    "readyForLiveDatabaseConnectorExecutionApproval": false,
+    "readyForConnectorImplementationUpdate": true,
+    "iceFullyBackupableToday": false,
+    "liveCosmosExportPerformed": false,
+    "liveMediaBlobDownloadPerformed": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "envPresenceSummary": {
+    "pumpkinApiUrl": "PRESENT",
+    "pumpkinAdminJwt": "PRESENT",
+    "iceTenantScopeHints": "MISSING",
+    "databaseProviderHints": "MISSING",
+    "cosmosHints": "MISSING",
+    "mongoHints": "MISSING",
+    "azureSubscriptionId": "MISSING"
+  },
+  "azureDiscovery": {
+    "accessibleSubscriptions": 1,
+    "defaultSubscriptionState": "Enabled",
+    "resourceGroupsReturned": 4,
+    "cosmosAccountsReturned": 0,
+    "databaseProviderResourcesReturned": 0,
+    "storageAccountsReturned": 2,
+    "mediaStorageAccountVisible": true
+  },
+  "cmsApiMetadataDiscovery": {
+    "apiRootGetStatus": 200,
+    "authVerifyGetStatus": 401,
+    "responseBodiesSuppressed": true,
+    "safeProviderMetadataEndpointFound": false,
+    "rawTenantPayloadRead": false
+  },
+  "boundaries": {
+    "databaseExport": false,
+    "cosmosDocumentExport": false,
+    "blobDownload": false,
+    "storageKeysListed": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "secretPrinted": false,
+    "secretExport": false,
+    "cmsWrite": false,
+    "azureMutation": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  }
+}
