@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/resource-registry.schema.json",
+  "title": "Pumpkin Redacted Resource Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "registryId",
+    "generatedAt",
+    "environment",
+    "resources",
+    "credentialReferences",
+    "tenantMappings",
+    "validation"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1.0"
+    },
+    "registryId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "environment": {
+      "enum": [
+        "local",
+        "dev",
+        "staging",
+        "production"
+      ]
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "$ref": "./resource-entry.schema.json"
+      }
+    },
+    "credentialReferences": {
+      "type": "array",
+      "items": {
+        "$ref": "./credential-reference.schema.json"
+      }
+    },
+    "tenantMappings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "valuesIncluded"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "not-run",
+            "passed",
+            "failed"
+          ]
+        },
+        "valuesIncluded": {
+          "const": false
+        }
+      }
+    }
+  }
+}
+

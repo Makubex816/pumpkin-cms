@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "0.1.0",
+  "registryId": "registry-example-placeholder",
+  "generatedAt": "YYYY-MM-DDTHH:MM:SSZ",
+  "environment": "production",
+  "resources": [
+    {
+      "resourceId": "resource-example-cosmos-account",
+      "resourceType": "cosmos-account",
+      "displayName": "PLACEHOLDER_COSMOS_ACCOUNT_NAME",
+      "environment": "production",
+      "status": "planned",
+      "tenantKeys": [
+        "PLACEHOLDER_TENANT_KEY"
+      ],
+      "siteKeys": [
+        "PLACEHOLDER_SITE_KEY"
+      ],
+      "provider": "azure-cosmos",
+      "nonSecretIdentifiers": {
+        "subscriptionHint": "PLACEHOLDER_SUBSCRIPTION_HINT",
+        "resourceGroup": "PLACEHOLDER_RESOURCE_GROUP",
+        "accountName": "PLACEHOLDER_ACCOUNT_NAME",
+        "databaseName": "PLACEHOLDER_DATABASE_NAME"
+      },
+      "credentialRefs": [
+        "credential-reference-example-runtime-access"
+      ],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "PLACEHOLDER_OWNER"
+      },
+      "audit": {
+        "createdFromEvidence": "PLACEHOLDER_EVIDENCE_REF",
+        "lastVerifiedAt": null
+      },
+      "rotation": {
+        "required": false,
+        "notes": "No credential value is stored in this registry."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "PLACEHOLDER_CLEANUP_NOTES"
+      }
+    }
+  ],
+  "credentialReferences": [
+    {
+      "credentialRefId": "credential-reference-example-runtime-access",
+      "displayName": "PLACEHOLDER_RUNTIME_ACCESS_REFERENCE",
+      "purpose": "runtime provider access",
+      "requiredFor": [
+        "runtime-cosmos-future"
+      ],
+      "resourceIds": [
+        "resource-example-cosmos-account"
+      ],
+      "tenantKeys": [
+        "PLACEHOLDER_TENANT_KEY"
+      ],
+      "environment": "production",
+      "owner": "PLACEHOLDER_OWNER",
+      "storageLocationCategory": "managed-identity",
+      "escrowEligible": false,
+      "escrowStatus": "not-required",
+      "rotationRequired": false,
+      "rotationCadence": null,
+      "lastVerifiedAt": null,
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "managed identity preferred",
+      "valueIncluded": false
+    }
+  ],
+  "tenantMappings": [
+    {
+      "tenantKey": "PLACEHOLDER_TENANT_KEY",
+      "siteKey": "PLACEHOLDER_SITE_KEY",
+      "resourceIds": [
+        "resource-example-cosmos-account"
+      ],
+      "runtimeProfileIds": [
+        "runtime-cosmos-future"
+      ],
+      "status": "planned"
+    }
+  ],
+  "validation": {
+    "status": "not-run",
+    "valuesIncluded": false
+  }
+}
+

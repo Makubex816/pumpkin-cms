@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/resource-entry.schema.json",
+  "title": "Pumpkin Resource Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resourceId",
+    "resourceType",
+    "displayName",
+    "environment",
+    "status",
+    "tenantKeys",
+    "siteKeys",
+    "provider",
+    "nonSecretIdentifiers",
+    "credentialRefs",
+    "runtimeProfiles",
+    "owner",
+    "audit",
+    "rotation",
+    "cleanup"
+  ],
+  "properties": {
+    "resourceId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resourceType": {
+      "enum": [
+        "azure-subscription",
+        "azure-resource-group",
+        "cosmos-account",
+        "cosmos-database",
+        "cosmos-container",
+        "media-storage-account",
+        "media-storage-container",
+        "static-web-app",
+        "function-app",
+        "cloudflare-zone",
+        "cloudflare-dns-record",
+        "cloudflare-worker",
+        "domain",
+        "media-domain",
+        "cms-tenant",
+        "cms-site",
+        "api-runtime-profile",
+        "admin-app-profile",
+        "tenant-website-bundle",
+        "backup-artifact",
+        "restore-validation-artifact"
+      ]
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "environment": {
+      "enum": [
+        "local",
+        "dev",
+        "staging",
+        "production"
+      ]
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "provisioned",
+        "verified",
+        "attached",
+        "blocked",
+        "retired"
+      ]
+    },
+    "tenantKeys": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "siteKeys": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provider": {
+      "type": "string"
+    },
+    "nonSecretIdentifiers": {
+      "type": "object"
+    },
+    "credentialRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "runtimeProfiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "owner": {
+      "type": "object"
+    },
+    "audit": {
+      "type": "object"
+    },
+    "rotation": {
+      "type": "object"
+    },
+    "cleanup": {
+      "type": "object"
+    }
+  }
+}
+

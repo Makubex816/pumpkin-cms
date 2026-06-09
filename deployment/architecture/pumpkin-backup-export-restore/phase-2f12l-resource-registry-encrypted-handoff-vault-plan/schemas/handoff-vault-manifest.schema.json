@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/handoff-vault-manifest.schema.json",
+  "title": "Pumpkin Encrypted Handoff Vault Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "vaultId",
+    "createdAt",
+    "approvalRecordId",
+    "encryptedPayloadIncluded",
+    "plaintextValuesIncluded",
+    "recipientMetadata",
+    "credentialRefs",
+    "checksums",
+    "rotationAndCleanup"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1.0"
+    },
+    "vaultId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "approvalRecordId": {
+      "type": "string"
+    },
+    "encryptedPayloadIncluded": {
+      "type": "boolean"
+    },
+    "plaintextValuesIncluded": {
+      "const": false
+    },
+    "recipientMetadata": {
+      "type": "object"
+    },
+    "credentialRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checksums": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "rotationAndCleanup": {
+      "type": "object"
+    }
+  }
+}
+

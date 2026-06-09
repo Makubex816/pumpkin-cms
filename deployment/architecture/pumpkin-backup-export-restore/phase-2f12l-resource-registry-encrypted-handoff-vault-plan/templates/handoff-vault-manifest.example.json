@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "0.1.0",
+  "vaultId": "vault-example-placeholder",
+  "createdAt": "YYYY-MM-DDTHH:MM:SSZ",
+  "approvalRecordId": "approval-example-placeholder",
+  "encryptedPayloadIncluded": false,
+  "plaintextValuesIncluded": false,
+  "recipientMetadata": {
+    "recipientId": "PLACEHOLDER_RECIPIENT",
+    "encryptionMode": "PLACEHOLDER_FUTURE_MODE",
+    "publicKeyFingerprint": "PLACEHOLDER_FINGERPRINT_ONLY"
+  },
+  "credentialRefs": [
+    "credential-reference-example-runtime-access"
+  ],
+  "checksums": [],
+  "rotationAndCleanup": {
+    "rotationRequiredAfterHandoff": true,
+    "cleanupRequiredAfterHandoff": true,
+    "instructionsPath": "ROTATION_AND_CLEANUP.md"
+  }
+}
+
