@@ -1,0 +1,5 @@
+# Next Phase 2F-13 Provider Resolver Implementation Prompt
+
+Approve Phase 2F-13 Ice provider source resolver implementation foundation only: implement the local/non-mutating Backup Center provider-source resolver foundation for IceSkatingRinkRentals.com, including schemas, fake fixtures, resolver data model, runtime profile handling, missing-database classification, owner-selected Cosmos target handling, redaction/forbidden-field validation, CLI/report output, Backup Center readiness integration, tests, docs, and result package. The resolver must classify no existing database as `providerStatus = missing` with `selectedTargetProvider = cosmos`, not as a configured source.
+
+No Cosmos provisioning, no Azure mutation, no CMS/API calls, no CMS writes, no protected config reads, no database export/import, no blob download, no storage keys/listKeys, no SAS generation, no secret export, no deployment, no Search Console/indexing, no live-page publication, and no generated backup artifacts staged into Git.
