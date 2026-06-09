@@ -1,0 +1,4 @@
+# Next Backup Operational QA Prompt
+
+Approve Phase 2F-11 Backup Center operational QA and missing DB/media readiness closure only: use the Phase 2F-10 result package, complete candidate bundle, validator output, restore-plan dry-run, and blocker report to decide whether to provide the missing database export env/tooling and media copy env/tooling for a later execution. Define the exact approved database mode, exact approved media mode, storage/output target, retention/cleanup rules, and whether any Azure read-only evidence or export action is approved. No database export, no blob download, no protected config reads, no secret export, no encrypted escrow payload, no restore into real systems, no CMS writes, no MediaAsset writes, no Azure resource mutations, no Cloudflare/DNS/deployment/email/Search Console actions, no generated backup artifact staging, and no live-page publication.
+

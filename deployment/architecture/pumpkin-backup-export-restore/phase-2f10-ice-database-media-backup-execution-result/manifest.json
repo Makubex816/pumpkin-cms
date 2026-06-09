@@ -1,0 +1,85 @@
+{
+  "phase": "2F-10",
+  "title": "Ice database/media backup execution result",
+  "date": "2026-06-09",
+  "target": {
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com"
+  },
+  "generatedArtifacts": {
+    "completeCandidateBundle": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/ice-full-standard-backup-complete/",
+    "completeRestorePlan": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/ice-full-standard-restore-plan-complete/"
+  },
+  "envToolingStatus": {
+    "coreCmsReadOnlyEnv": "present",
+    "databaseExportReadiness": "blocked_missing_env_and_sqlpackage",
+    "mediaBlobCopyReadiness": "blocked_missing_env",
+    "node": "present",
+    "npm": "present",
+    "az": "present_but_not_used",
+    "sqlpackage": "missing"
+  },
+  "componentStatus": {
+    "cmsContent": "included",
+    "databaseArtifact": "not_included_no_approved_export_tooling_or_env",
+    "mediaBlobCopies": "not_included_missing_media_copy_env",
+    "mediaMetadataInventory": "included",
+    "staticEvidence": "included_from_local_artifacts_and_safe_reports",
+    "configInventory": "redacted_presence_only",
+    "escrow": "not_included_standard_backup"
+  },
+  "inventoryCounts": {
+    "tenants": 1,
+    "sites": 1,
+    "pages": 3,
+    "routes": 5,
+    "forms": 3,
+    "seoEntries": 3,
+    "redirects": 0,
+    "themeSettings": 1,
+    "mediaAssets": 12,
+    "staticEvidenceRoutes": 5,
+    "configVariables": 11
+  },
+  "validation": {
+    "backupValidator": "passed",
+    "restorePlanDryRun": "passed_for_available_inventory",
+    "productionRestoreProof": "not_achieved"
+  },
+  "boundaries": {
+    "encryptedEscrowIncluded": false,
+    "realSecretsExported": false,
+    "protectedConfigRead": false,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesPerformed": false,
+    "postPutPatchDeleteCmsApiRequests": false,
+    "databaseExportPerformed": false,
+    "databaseImportPerformed": false,
+    "blobCopyDownloadPerformed": false,
+    "azureCommandRun": false,
+    "azureResourceMutation": false,
+    "cloudflareMutation": false,
+    "dnsChange": false,
+    "deploymentAction": false,
+    "functionSettingChange": false,
+    "emailAction": false,
+    "searchConsoleAction": false,
+    "livePagePublication": false,
+    "generatedBackupArtifactsStaged": false
+  },
+  "files": [
+    "README.md",
+    "ENV_AND_TOOLING_RESULT.md",
+    "DATABASE_BACKUP_EXECUTION_RESULT.md",
+    "MEDIA_BLOB_BACKUP_EXECUTION_RESULT.md",
+    "COMPLETE_STANDARD_BACKUP_RESULT.md",
+    "MANIFEST_CHECKSUM_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "RESTORE_PLAN_RESULT.md",
+    "INCOMPLETE_OR_BLOCKED_COMPONENTS.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "NEXT_BACKUP_OPERATIONAL_QA_PROMPT.md"
+  ]
+}
+
