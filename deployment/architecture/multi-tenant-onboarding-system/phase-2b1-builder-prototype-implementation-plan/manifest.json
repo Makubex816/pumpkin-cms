@@ -1,0 +1,59 @@
+{
+  "package": "phase-2b1-builder-prototype-implementation-plan",
+  "generatedDate": "2026-06-08",
+  "phase": "2B-1",
+  "result": "planned",
+  "planningOnly": true,
+  "implementationPerformed": false,
+  "answersExampleIncluded": true,
+  "answersExampleDocumentationOnly": true,
+  "offlineOnly": true,
+  "newTenantCreated": false,
+  "externalSystemsChanged": false,
+  "searchConsoleIndexingAffected": false,
+  "roller": "paused",
+  "plannedInputs": [
+    "answers JSON file"
+  ],
+  "plannedOutputs": [
+    "tenant import package folder",
+    "validation report JSON",
+    "validation report Markdown",
+    "support packet files"
+  ],
+  "plannedModules": [
+    "answers-loader",
+    "answers-validator",
+    "package-generator",
+    "manifest-generator",
+    "tenant-generator",
+    "site-generator",
+    "route-generator",
+    "page-generator",
+    "media-generator",
+    "form-generator",
+    "seo-generator",
+    "theme-generator",
+    "redirect-generator",
+    "validator-runner",
+    "support-packet-runner",
+    "report-writer",
+    "cli"
+  ],
+  "hardStops": {
+    "implementationCode": false,
+    "tenantCreation": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "functionSettingChanges": false,
+    "emailMicrosoft365Work": false,
+    "searchConsoleIndexingActions": false,
+    "externalChecks": false,
+    "protectedConfigReads": false,
+    "rollerWork": false
+  }
+}
