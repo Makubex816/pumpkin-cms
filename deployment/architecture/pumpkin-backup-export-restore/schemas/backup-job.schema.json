@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/backup-job.schema.json",
+  "title": "Pumpkin Backup Job",
+  "type": "object",
+  "required": ["jobId", "requestedBy", "requestedAt", "mode", "scope", "status", "approvalRefs"],
+  "properties": {
+    "jobId": { "type": "string" },
+    "requestedBy": { "type": "string" },
+    "requestedAt": { "type": "string", "format": "date-time" },
+    "mode": { "type": "string" },
+    "scope": { "type": "object" },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "running",
+        "waiting-for-approval",
+        "validating",
+        "completed",
+        "completed-with-warnings",
+        "failed",
+        "expired",
+        "cancelled"
+      ]
+    },
+    "approvalRefs": { "type": "array", "items": { "type": "string" } },
+    "failureClass": { "type": "string" }
+  },
+  "additionalProperties": false
+}

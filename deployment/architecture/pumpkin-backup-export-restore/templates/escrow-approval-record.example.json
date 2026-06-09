@@ -1,0 +1,18 @@
+{
+  "approvalRecordId": "approval-example-escrow-create",
+  "requestId": "escrow-request-example-0001",
+  "approvedBy": "example-approver",
+  "approvedAt": "2026-01-01T00:00:00Z",
+  "scope": {
+    "scopeType": "tenant",
+    "tenantId": "example-tenant"
+  },
+  "approvedCategories": [
+    "tenant-api-keys"
+  ],
+  "recipientFingerprints": [
+    "PLACEHOLDER_PUBLIC_KEY_FINGERPRINT"
+  ],
+  "reason": "Example approval reason. No secret values are included.",
+  "expiresAt": "2026-01-02T00:00:00Z"
+}

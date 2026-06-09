@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/restore-validation.schema.json",
+  "title": "Pumpkin Restore Validation",
+  "type": "object",
+  "required": ["validationId", "backupId", "target", "startedAt", "status", "checks"],
+  "properties": {
+    "validationId": { "type": "string" },
+    "backupId": { "type": "string" },
+    "target": { "type": "string", "enum": ["local", "sandbox", "staging", "production"] },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["passed", "passed-with-warnings", "failed", "blocked"] },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["checkId", "status", "summary"],
+        "properties": {
+          "checkId": { "type": "string" },
+          "status": { "type": "string", "enum": ["passed", "warning", "failed", "blocked", "not-applicable"] },
+          "summary": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

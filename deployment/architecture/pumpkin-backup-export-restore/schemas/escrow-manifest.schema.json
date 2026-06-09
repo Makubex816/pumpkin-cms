@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/escrow-manifest.schema.json",
+  "title": "Pumpkin Escrow Manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "escrowId",
+    "backupId",
+    "approvalRecordId",
+    "createdAt",
+    "scope",
+    "encryptedPayload",
+    "recipientFingerprints",
+    "secretCategories",
+    "excludedCategories"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "escrowId": { "type": "string" },
+    "backupId": { "type": "string" },
+    "approvalRecordId": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "scope": { "type": "object" },
+    "encryptedPayload": {
+      "type": "object",
+      "required": ["path", "format", "sha256"],
+      "properties": {
+        "path": { "type": "string" },
+        "format": { "type": "string" },
+        "sha256": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "recipientFingerprints": { "type": "array", "items": { "type": "string" } },
+    "secretCategories": { "type": "array", "items": { "type": "string" } },
+    "excludedCategories": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

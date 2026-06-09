@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/escrow-recipient.schema.json",
+  "title": "Pumpkin Escrow Recipient",
+  "type": "object",
+  "required": ["recipientId", "displayName", "role", "publicKeyFingerprint", "algorithm", "createdAt", "expiresAt", "status"],
+  "properties": {
+    "recipientId": { "type": "string" },
+    "displayName": { "type": "string" },
+    "role": { "type": "string" },
+    "publicKeyFingerprint": { "type": "string" },
+    "algorithm": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["active", "expired", "revoked", "disabled"] },
+    "approvalScope": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "0.1.0",
+  "scope": {
+    "scopeType": "tenant",
+    "tenantId": "example-tenant"
+  },
+  "variables": [
+    {
+      "name": "EXAMPLE_RUNTIME_API_KEY",
+      "presence": "PRESENT",
+      "value": "REDACTED",
+      "escrowEligible": true,
+      "restoreImpact": "Required for runtime API access."
+    },
+    {
+      "name": "EXAMPLE_ADMIN_SESSION_TOKEN",
+      "presence": "EXCLUDED",
+      "value": "NOT_COLLECTED",
+      "escrowEligible": false,
+      "restoreImpact": "Short-lived session material is excluded."
+    }
+  ]
+}

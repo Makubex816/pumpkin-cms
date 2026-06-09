@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "0.1.0",
+  "escrowId": "escrow-example-0001",
+  "backupId": "backup-example-tenant-0001",
+  "approvalRecordId": "approval-example-escrow-create",
+  "createdAt": "2026-01-01T00:00:00Z",
+  "scope": {
+    "scopeType": "tenant",
+    "tenantId": "example-tenant"
+  },
+  "encryptedPayload": {
+    "path": "escrow/encrypted-secrets.example.enc",
+    "format": "placeholder-encrypted-format",
+    "sha256": "PLACEHOLDER_SHA256"
+  },
+  "recipientFingerprints": [
+    "PLACEHOLDER_PUBLIC_KEY_FINGERPRINT"
+  ],
+  "secretCategories": [
+    "tenant-api-keys"
+  ],
+  "excludedCategories": [
+    "admin-jwts",
+    "browser-session-cookies",
+    "temporary-signed-urls",
+    "personal-operator-credentials"
+  ]
+}

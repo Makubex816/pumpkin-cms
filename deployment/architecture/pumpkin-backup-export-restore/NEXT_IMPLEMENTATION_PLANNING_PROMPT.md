@@ -1,0 +1,3 @@
+# Next Implementation Planning Prompt
+
+Approve Phase 2F-2 Pumpkin Backup Center manifest/schema/job model implementation planning only: use the Phase 2F-1 backup/export/restore/encrypted escrow architecture package to plan the first implementation slice for backup manifest schemas, job records, artifact records, validation result records, escrow request/recipient records, audit event shapes, retention policies, and hard-stop validators. Include encrypted secret escrow data models and hard stops as first-class main-build components, but do not implement code, create backups, export databases, export secrets, create escrow payloads, restore data, read protected config, modify CMS/Azure/Cloudflare/DNS/deployment/email/Search Console, or publish live pages.

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/backup-manifest.schema.json",
+  "title": "Pumpkin Backup Manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "backupId",
+    "mode",
+    "scope",
+    "createdAt",
+    "createdBy",
+    "retention",
+    "artifacts",
+    "checksums",
+    "escrowIncluded"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "backupId": { "type": "string" },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "tenant-standard",
+        "platform-standard",
+        "tenant-recovery-escrow",
+        "platform-recovery-escrow",
+        "content-only",
+        "media-only",
+        "database-only",
+        "offline-editing",
+        "pre-write",
+        "pre-deployment"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "required": ["scopeType"],
+      "properties": {
+        "scopeType": { "type": "string", "enum": ["tenant", "platform"] },
+        "tenantId": { "type": "string" },
+        "siteKey": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "createdBy": { "type": "string" },
+    "retention": {
+      "type": "object",
+      "required": ["retentionClass", "expiresAt"],
+      "properties": {
+        "retentionClass": { "type": "string" },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["artifactId", "path", "kind", "sensitivity"],
+        "properties": {
+          "artifactId": { "type": "string" },
+          "path": { "type": "string" },
+          "kind": { "type": "string" },
+          "sensitivity": { "type": "string", "enum": ["redacted", "sensitive", "encrypted"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "checksums": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "escrowIncluded": { "type": "boolean" },
+    "validationStatus": { "type": "string", "enum": ["not-run", "passed", "passed-with-warnings", "failed", "blocked"] }
+  },
+  "additionalProperties": false
+}

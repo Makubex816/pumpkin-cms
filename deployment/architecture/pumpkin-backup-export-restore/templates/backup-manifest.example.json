@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "0.1.0",
+  "backupId": "backup-example-tenant-0001",
+  "mode": "tenant-standard",
+  "scope": {
+    "scopeType": "tenant",
+    "tenantId": "example-tenant",
+    "siteKey": "example-site"
+  },
+  "createdAt": "2026-01-01T00:00:00Z",
+  "createdBy": "example-operator",
+  "retention": {
+    "retentionClass": "pre-write",
+    "expiresAt": "2026-01-08T00:00:00Z"
+  },
+  "artifacts": [
+    {
+      "artifactId": "artifact-cms-content-example",
+      "path": "cms-content/pages.json",
+      "kind": "cms-content",
+      "sensitivity": "redacted"
+    }
+  ],
+  "checksums": [
+    {
+      "path": "cms-content/pages.json",
+      "sha256": "PLACEHOLDER_SHA256"
+    }
+  ],
+  "escrowIncluded": false,
+  "validationStatus": "not-run"
+}

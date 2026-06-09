@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/backup-artifact.schema.json",
+  "title": "Pumpkin Backup Artifact",
+  "type": "object",
+  "required": ["artifactId", "jobId", "kind", "storageClass", "sha256", "createdAt", "expiresAt", "sensitivity"],
+  "properties": {
+    "artifactId": { "type": "string" },
+    "jobId": { "type": "string" },
+    "kind": { "type": "string" },
+    "storageClass": { "type": "string", "enum": ["private-temp", "private-backup", "quarantined", "deleted"] },
+    "sha256": { "type": "string" },
+    "sizeBytes": { "type": "integer", "minimum": 0 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "sensitivity": { "type": "string", "enum": ["redacted", "sensitive", "encrypted"] },
+    "downloadAllowed": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}
