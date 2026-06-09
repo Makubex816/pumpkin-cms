@@ -8,6 +8,7 @@
 - Run local validation and local Node tests.
 - Write validation JSON/Markdown reports inside generated `.tmp` bundles.
 - Write restore-plan dry-run reports inside generated `.tmp` output.
+- Write fake encrypted escrow prototype output under generated `.tmp` output.
 
 ## Blocked
 
@@ -15,11 +16,14 @@
 - Environment secret reads.
 - Uploaded env/key file reads.
 - API key, JWT, auth header, cookie, token, connection string, storage key, or private key export.
+- Real secret export.
 - Real CMS/API calls.
 - Real database export commands.
 - Media/blob downloads.
 - Real static generation.
 - Encrypted escrow payload creation.
+- Production escrow payload creation.
+- Private key persistence.
 - Restore execution.
 - Real restore target writes.
 - Backup zip creation.
@@ -40,4 +44,4 @@ The validator rejects:
 
 ## Generated Output
 
-`.tmp/` output is ignored and must not be staged. Generated negative failure bundles and restore-plan reports are test artifacts only.
+`.tmp/` output is ignored and must not be staged. Generated negative failure bundles, restore-plan reports, and fake escrow outputs are test artifacts only.

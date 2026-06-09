@@ -41,6 +41,16 @@ node src/backup-cli.mjs restore-plan --bundle .tmp/tenant-standard-backup --out 
 
 `restore-plan` validates the backup bundle first, compares fake inventory counts, writes restore-plan JSON/Markdown reports, and exits non-zero if validation fails. It does not restore anything.
 
+## Fake Encrypted Escrow
+
+```powershell
+node src/backup-cli.mjs escrow-create-fake --request fixtures/fake-escrow-request.json --out .tmp/fake-escrow --overwrite
+node src/backup-cli.mjs escrow-validate --escrow .tmp/fake-escrow
+node src/backup-cli.mjs escrow-inspect --escrow .tmp/fake-escrow
+```
+
+`escrow-create-fake` uses fake fixtures only, generates runtime test keys, writes encrypted fake escrow output under `.tmp`, and does not print fake payload values.
+
 ## Inspect
 
 ```powershell
@@ -51,8 +61,8 @@ node src/backup-cli.mjs inspect --bundle .tmp/tenant-standard-backup
 
 ## Output Rule
 
-The CLI refuses to write outside package `.tmp/`. It writes folder bundles and restore-plan dry-run output only, and blocks archive-style paths such as `.zip`, `.backup`, `.bak`, and `.bacpac`.
+The CLI refuses to write outside package `.tmp/`. It writes folder bundles, restore-plan dry-run output, and fake encrypted escrow test output only, and blocks archive-style paths such as `.zip`, `.backup`, `.bak`, and `.bacpac`.
 
 ## Phase Boundary
 
-This CLI does not read protected config, inspect secret values, create production backup zips, call CMS/API endpoints, export/import a real database, export/restore real media, create encrypted escrow payloads, restore data into real systems, deploy, or publish live pages.
+This CLI does not read protected config, inspect real secret values, create production backup zips, call CMS/API endpoints, export/import a real database, export/restore real media, create production escrow payloads, restore data into real systems, deploy, or publish live pages.

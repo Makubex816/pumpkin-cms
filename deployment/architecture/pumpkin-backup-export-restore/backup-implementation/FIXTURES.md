@@ -11,6 +11,10 @@ All fixtures are fake and local. They are safe to use for Phase 2F-5 restore val
 - `fixtures/fake-static-evidence.json`
 - `fixtures/fake-config-inventory.redacted.json`
 - `fixtures/restore-expected-counts.json`
+- `fixtures/fake-escrow-request.json`
+- `fixtures/fake-escrow-policy.json`
+- `fixtures/fake-escrow-recipient.json`
+- `fixtures/fake-secret-catalog.json`
 
 ## Failure Case Manifest
 
@@ -26,6 +30,12 @@ The negative bundles themselves are generated during tests under ignored `.tmp/t
 - `platform`
 
 The Phase 2F-5 restore dry-run compares validated backup inventory counts against this fixture and writes JSON/Markdown restore-plan reports under ignored `.tmp` output.
+
+## Fake Escrow Fixtures
+
+The fake escrow fixtures contain fake placeholder values only. They drive the Phase 2F-6 local escrow prototype and are not production escrow records.
+
+Generated encrypted fake escrow output is written only under ignored `.tmp`.
 
 ## Covered Failure Cases
 
@@ -47,4 +57,4 @@ The Phase 2F-5 restore dry-run compares validated backup inventory counts agains
 
 ## Real-World Data
 
-The future IceSkatingRinkRentals.com real backup proof target requires a separate owner-approved preflight. It is not approved by these fixtures or by Phase 2F-5.
+The future IceSkatingRinkRentals.com real backup proof target requires a separate owner-approved preflight. It is not approved by these fixtures or by Phase 2F-6.

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "0.1.0",
+  "recipientId": "fake-recipient-001",
+  "displayName": "Fake Recovery Recipient",
+  "fakeOnly": true,
+  "keyUse": "fake-escrow-recovery-test",
+  "publicKeySource": "generated-at-runtime",
+  "privateKeyPersistence": "not-written"
+}

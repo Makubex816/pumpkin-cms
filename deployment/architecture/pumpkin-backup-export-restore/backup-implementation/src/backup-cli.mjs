@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+import { createFakeEscrow } from './escrow/escrow-create-runner.mjs';
+import { validateEscrowOutput } from './escrow/escrow-validator.mjs';
+import { writeEscrowValidationReports } from './escrow/escrow-report-writer.mjs';
 import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
 import { validateBackupBundle, writeValidationReports } from './validators/backup-validator.mjs';
@@ -6,7 +9,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.3.0';
+const version = '0.4.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -61,6 +64,41 @@ async function main(argv) {
     }
     return;
   }
+  if (command === 'escrow-create-fake') {
+    const requestPath = requiredOption(options, 'request');
+    const outputPath = requiredOption(options, 'out');
+    const result = await createFakeEscrow({
+      requestPath,
+      outputPath,
+      overwrite: Boolean(options.overwrite)
+    });
+    console.log(`escrow-create-fake: ${result.validation.status}`);
+    console.log(`output: ${path.relative(process.cwd(), result.outputRoot)}`);
+    console.log(`fakeOnly: ${result.manifest.fakeOnly}`);
+    console.log(`items: ${result.manifest.itemCount}`);
+    return;
+  }
+  if (command === 'escrow-validate') {
+    const escrowPath = requiredOption(options, 'escrow');
+    const validation = await validateEscrowOutput({ escrowPath });
+    const escrowRoot = resolveTmpBundlePath(escrowPath);
+    await writeEscrowValidationReports({ outputRoot: escrowRoot, validation });
+    console.log(`escrow-validation: ${validation.status}`);
+    if (validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'escrow-inspect') {
+    const escrowRoot = resolveTmpBundlePath(requiredOption(options, 'escrow'));
+    const manifest = await readJson(path.join(escrowRoot, 'escrow-manifest.json'));
+    console.log(`mode: ${manifest.mode}`);
+    console.log(`fakeOnly: ${manifest.fakeOnly}`);
+    console.log(`items: ${manifest.itemCount}`);
+    console.log(`algorithm: ${manifest.encryption?.contentEncryption?.algorithm}`);
+    console.log(`privateKeyWritten: ${manifest.boundaries?.privateKeyWritten}`);
+    return;
+  }
   if (command === 'inspect') {
     const bundleRoot = resolveTmpBundlePath(requiredOption(options, 'bundle'));
     const manifest = await readJson(path.join(bundleRoot, 'manifest.json'));
@@ -113,10 +151,13 @@ Commands:
   create-standard --scope tenant|platform --answers <fixture.json> --out .tmp/<bundle> [--overwrite]
   validate --bundle .tmp/<bundle>
   restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
+  escrow-create-fake --request fixtures/fake-escrow-request.json --out .tmp/<fake-escrow> [--overwrite]
+  escrow-validate --escrow .tmp/<fake-escrow>
+  escrow-inspect --escrow .tmp/<fake-escrow>
   inspect --bundle .tmp/<bundle>
 
 Boundary:
-  Local-only. Folder bundles and restore-plan dry-runs under .tmp only. No zips, no secrets, no escrow payloads, no real restore, no CMS/API calls.
+  Local-only. Folder bundles, restore-plan dry-runs, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API calls.
 `);
 }
 

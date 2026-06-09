@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "0.1.0",
+  "requestId": "fake-escrow-request-001",
+  "fakeOnly": true,
+  "mode": "recovery_escrow",
+  "reason": "Phase 2F-6 fake-only escrow lane validation",
+  "requestedBy": "local-prototype",
+  "policyRef": "fixtures/fake-escrow-policy.json",
+  "catalogRef": "fixtures/fake-secret-catalog.json",
+  "recipientRef": "fixtures/fake-escrow-recipient.json",
+  "selectedItemIds": [
+    "fixture-runtime-setting",
+    "fixture-database-setting",
+    "fixture-cms-setting"
+  ],
+  "approval": {
+    "approvalId": "fake-approval-001",
+    "approvedBy": "fake-owner",
+    "approvedAt": "2026-01-01T00:00:00.000Z",
+    "approvalScope": "fake-fixture-only"
+  }
+}

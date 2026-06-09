@@ -1,4 +1,10 @@
-# Next Phase 2F-6 Encrypted Escrow Prototype Prompt
+# Superseded Phase 2F-6 Encrypted Escrow Prototype Prompt
+
+Phase 2F-6 fake encrypted escrow prototype has now been implemented in this package.
+
+Use `NEXT_PHASE_2F7_ICE_REAL_BACKUP_PREFLIGHT_PROMPT.md` for the next approval gate. Do not proceed to real backup export, real secret export, protected config reads, encrypted production escrow payloads, restore execution, CMS/API calls, deployment, external systems, or live-page publication from this superseded prompt.
+
+## Original Prompt
 
 Approve Phase 2F-6 local encrypted secret escrow prototype only: use the Phase 2F-5 restore validation dry-run and hardened standard backup validator to design and implement a local-only encrypted escrow package prototype with fake secret fixtures only, deterministic test keys only, explicit no-real-secret boundaries, validation reports, and dry-run restore eligibility checks.
 

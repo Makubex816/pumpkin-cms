@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "0.1.0",
+  "policyId": "fake-escrow-policy-001",
+  "fakeOnly": true,
+  "mode": "recovery_escrow",
+  "requiresApproval": true,
+  "requiresRecipient": true,
+  "requiresRuntimeGeneratedKeys": true,
+  "allowedCategories": [
+    "runtime_config",
+    "database_config",
+    "cms_config"
+  ],
+  "blockedCategories": [
+    "short_lived_token",
+    "session_cookie",
+    "jwt"
+  ],
+  "standardBackupsIncludeEscrow": false
+}
