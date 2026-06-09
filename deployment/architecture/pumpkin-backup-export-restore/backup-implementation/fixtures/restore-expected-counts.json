@@ -23,6 +23,29 @@
         "configVariables": 3
       }
     },
+    "tenant:ice-rink-rentals": {
+      "scope": {
+        "scopeType": "tenant",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals"
+      },
+      "counts": {
+        "tenants": 1,
+        "sites": 1,
+        "pages": 3,
+        "routes": 3,
+        "forms": 1,
+        "seoEntries": 3,
+        "redirects": 0,
+        "themeSettings": 1,
+        "mediaAssets": 2,
+        "cosmosRecordSets": 9,
+        "cosmosRecords": 13,
+        "mediaCopiedBlobs": 2,
+        "staticEvidenceRoutes": 3,
+        "configVariables": 3
+      }
+    },
     "platform": {
       "scope": {
         "scopeType": "platform",

@@ -1,0 +1,5 @@
+# Next Phase 2F-12 Live Read-Only Connector Preflight Prompt
+
+Approve Phase 2F-12 Ice live read-only Cosmos/media connector preflight only: using the Phase 2F-11 local fake connector foundation, create the preflight package for live read-only Cosmos/provider discovery and Azure Blob media inventory readiness for IceSkatingRinkRentals.com, including presence-only env/tool checks, read-only Cosmos account/database/container discovery plan, Cosmos platform backup evidence collection plan, tenant-scoped portable JSON export approval boundary, Azure Blob inventory approval boundary, no-value logging rules, protected config hard stops, output safety rules, operator checklist, go/no-go criteria, and next execution prompt.
+
+No live Cosmos document export, no real blob download, no database import/export against production, no protected config reads, no storage keys, no connection strings, no SAS generation, no Azure mutation, no CMS writes, no MediaAsset writes, no deployment, no Search Console/indexing, and no live-page publication.

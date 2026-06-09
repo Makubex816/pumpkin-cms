@@ -1,15 +1,18 @@
 # Known Limitations
 
-Phase 2F-6 adds a fake encrypted escrow prototype only. It does not make the Backup Center production-ready.
+Phase 2F-11 adds a fake Cosmos/media connector foundation. It does not make the Backup Center production-ready or prove IceSkatingRinkRentals.com is fully backupable today.
 
 ## Still Not Implemented
 
-- Real database exporter.
+- Real Cosmos read-only discovery.
+- Real Cosmos platform backup evidence collection.
+- Real Cosmos portable JSON exporter.
 - Real database importer.
 - Real CMS/API exporter.
 - Real CMS/API restore adapter.
 - Real MediaAsset export.
 - Real MediaAsset restore.
+- Real blob/media listing.
 - Real blob/media download.
 - Real blob/media restore.
 - Real static output export.
@@ -34,7 +37,9 @@ Phase 2F-6 adds a fake encrypted escrow prototype only. It does not make the Bac
 - Escrow encryption uses fake fixture values and runtime test keys only.
 - Private keys are generated in memory for local round-trip validation and are not written.
 - Reports are local `.tmp` artifacts and must not be treated as a production audit log.
+- Fake media copies are text fixtures only, not real media files.
+- Fake Cosmos records are local fixtures only, not exported production documents.
 
 ## Future Approval Required
 
-The first real IceSkatingRinkRentals.com backup proof requires a separate preflight approval after owner approval, real-data boundaries, and key-management decisions are documented.
+The next IceSkatingRinkRentals.com step is a live read-only connector preflight. It must approve env/tool readiness checks and read-only discovery boundaries before any live Cosmos metadata discovery or Azure Blob inventory work.

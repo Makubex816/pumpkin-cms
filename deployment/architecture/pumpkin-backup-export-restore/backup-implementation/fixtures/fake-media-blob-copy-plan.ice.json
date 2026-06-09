@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureType": "fake-media-blob-copy-plan",
+  "source": "fake-fixture",
+  "copyItems": [
+    {
+      "mediaAssetId": "ice-hero-fixture",
+      "blobName": "ice/hero-placeholder.txt",
+      "sourceFixturePath": "fixtures/fake-media-blob-copy-source-files/ice-hero-placeholder.txt"
+    },
+    {
+      "mediaAssetId": "ice-contact-fixture",
+      "blobName": "ice/contact-placeholder.txt",
+      "sourceFixturePath": "fixtures/fake-media-blob-copy-source-files/ice-contact-placeholder.txt"
+    }
+  ],
+  "realBlobDownloadPerformed": false
+}

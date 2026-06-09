@@ -7,6 +7,7 @@ export function renderRestorePlanMarkdown(plan) {
     `Status: ${plan.status}`,
     `Generated: ${plan.generatedAt}`,
     `Dry run only: ${plan.dryRunOnly}`,
+    `Mode: ${plan.mode}`,
     `Source bundle: ${plan.sourceBundle}`,
     `Output: ${plan.outputRoot}`,
     '',
@@ -24,6 +25,10 @@ export function renderRestorePlanMarkdown(plan) {
   for (const step of plan.plannedSteps) {
     lines.push(`| ${step.stepId} | ${step.writesRealSystem} | ${escapeMarkdownCell(step.summary)} |`);
   }
+  lines.push('', '## Connector Components', '');
+  lines.push(`- Database: ${describeComponent(plan.connectorComponents?.database)}`);
+  lines.push(`- Media: ${describeComponent(plan.connectorComponents?.media)}`);
+  lines.push(`- Tenant website bundle: ${describeComponent(plan.connectorComponents?.tenantWebsiteBundle)}`);
   lines.push('', '## Inventory Counts', '', renderCountsTable(plan.inventoryCounts));
   lines.push('', '## Boundaries', '');
   for (const [name, value] of Object.entries(plan.boundaries)) {
@@ -31,6 +36,12 @@ export function renderRestorePlanMarkdown(plan) {
   }
   lines.push('');
   return `${lines.join('\n')}\n`;
+}
+
+function describeComponent(component) {
+  if (!component || typeof component !== 'object') return 'not-run';
+  const mode = component.mode ? `/${component.mode}` : '';
+  return `${component.status ?? 'unknown'}${mode}`;
 }
 
 export function renderRestoreValidationMarkdown(plan) {

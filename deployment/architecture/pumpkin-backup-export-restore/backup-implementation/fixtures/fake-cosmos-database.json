@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureType": "fake-cosmos-database",
+  "source": "fake-fixture",
+  "databaseName": "fakePumpkinCms",
+  "realDatabaseQueried": false
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureType": "fake-cosmos-containers",
+  "source": "fake-fixture",
+  "containers": [
+    {
+      "name": "tenants",
+      "partitionKeyPath": "/tenantKey",
+      "tenantScopedQueryAvailable": true
+    },
+    {
+      "name": "sites",
+      "partitionKeyPath": "/tenantKey",
+      "tenantScopedQueryAvailable": true
+    },
+    {
+      "name": "content",
+      "partitionKeyPath": "/tenantKey",
+      "tenantScopedQueryAvailable": true
+    },
+    {
+      "name": "media",
+      "partitionKeyPath": "/tenantKey",
+      "tenantScopedQueryAvailable": true
+    },
+    {
+      "name": "operations",
+      "partitionKeyPath": "/tenantKey",
+      "tenantScopedQueryAvailable": true
+    }
+  ],
+  "realContainersQueried": false
+}

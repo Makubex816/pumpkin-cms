@@ -1,0 +1,3 @@
+Fake Ice contact media fixture.
+No real blob content.
+No external system was contacted.

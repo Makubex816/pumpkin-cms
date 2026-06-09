@@ -1,0 +1,98 @@
+{
+  "tenants": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "displayName": "Ice Rink Rentals Fixture",
+      "status": "active-fixture"
+    }
+  ],
+  "sites": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "displayName": "Ice Rink Rentals Fixture Site",
+      "domainRefs": [
+        "iceskatingrinkrentals.example"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "slug": "home",
+      "title": "Fixture Home",
+      "published": true,
+      "sitemapIncluded": true
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "slug": "contact",
+      "title": "Fixture Contact",
+      "published": true,
+      "sitemapIncluded": true
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "slug": "service-areas",
+      "title": "Fixture Service Areas",
+      "published": true,
+      "sitemapIncluded": true
+    }
+  ],
+  "routes": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "path": "/",
+      "slug": "home"
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "path": "/contact/",
+      "slug": "contact"
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "path": "/service-areas/",
+      "slug": "service-areas"
+    }
+  ],
+  "forms": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "formId": "ice-contact-fixture",
+      "deliveryMode": "fixture-only",
+      "fields": [
+        "name",
+        "email",
+        "message"
+      ]
+    }
+  ],
+  "seo": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "slug": "home",
+      "robots": "index,follow"
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "slug": "contact",
+      "robots": "index,follow"
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "slug": "service-areas",
+      "robots": "index,follow"
+    }
+  ],
+  "redirects": [],
+  "theme": {
+    "themes": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "themeId": "ice-fixture-theme",
+        "isActive": true
+      }
+    ]
+  }
+}

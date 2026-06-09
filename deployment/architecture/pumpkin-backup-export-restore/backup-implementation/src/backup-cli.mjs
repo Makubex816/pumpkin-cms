@@ -10,7 +10,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.5.0';
+const version = '0.6.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -31,10 +31,12 @@ async function main(argv) {
       answersPath,
       outputPath,
       scopeOverride: options.scope,
-      overwrite: Boolean(options.overwrite)
+      overwrite: Boolean(options.overwrite),
+      connectors: connectorOptionsFromCli(options)
     });
     console.log(`created: ${path.relative(process.cwd(), result.bundleRoot)}`);
     console.log(`validation: ${result.validation.status}`);
+    console.log(`validationMode: ${result.validation.mode}`);
     return;
   }
   if (command === 'create-ice-standard') {
@@ -53,9 +55,10 @@ async function main(argv) {
   }
   if (command === 'validate') {
     const bundleRoot = resolveTmpBundlePath(requiredOption(options, 'bundle'));
-    const validation = await validateBackupBundle({ bundlePath: bundleRoot });
+    const validation = await validateBackupBundle({ bundlePath: bundleRoot, mode: options.mode });
     await writeValidationReports({ bundleRoot, validation });
     console.log(`validation: ${validation.status}`);
+    console.log(`mode: ${validation.mode}`);
     if (validation.status !== 'passed') {
       process.exitCode = 1;
     }
@@ -68,6 +71,7 @@ async function main(argv) {
       bundlePath,
       outputPath,
       expectedCountsPath: options['expected-counts'],
+      mode: options.mode,
       overwrite: Boolean(options.overwrite)
     });
     console.log(`restore-plan: ${result.plan.status}`);
@@ -140,6 +144,10 @@ function parseArgs(args) {
       options[key] = true;
       continue;
     }
+    if (key === 'with-fake-cosmos' || key === 'with-fake-media-copy' || key === 'tenant-website-bundle') {
+      options[key] = true;
+      continue;
+    }
     const value = args[index + 1];
     if (!value || value.startsWith('--')) {
       throw new Error(`missing value for --${key}`);
@@ -148,6 +156,14 @@ function parseArgs(args) {
     index += 1;
   }
   return options;
+}
+
+function connectorOptionsFromCli(options) {
+  return {
+    fakeCosmos: Boolean(options['with-fake-cosmos']),
+    fakeMediaCopy: Boolean(options['with-fake-media-copy']),
+    tenantWebsiteBundle: Boolean(options['tenant-website-bundle'])
+  };
 }
 
 function requiredOption(options, key) {
@@ -163,17 +179,20 @@ function printHelp() {
 Commands:
   help
   version
-  create-standard --scope tenant|platform --answers <fixture.json> --out .tmp/<bundle> [--overwrite]
+  create-standard --scope tenant|platform --answers <fixture.json> --out .tmp/<bundle> [--with-fake-cosmos] [--with-fake-media-copy] [--tenant-website-bundle] [--overwrite]
   create-ice-standard --out .tmp/ice-full-standard-backup [--overwrite]
-  validate --bundle .tmp/<bundle>
-  restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
+  validate --bundle .tmp/<bundle> [--mode baseline|production-restore-proof]
+  restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--mode baseline|production-restore-proof] [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
   escrow-create-fake --request fixtures/fake-escrow-request.json --out .tmp/<fake-escrow> [--overwrite]
   escrow-validate --escrow .tmp/<fake-escrow>
   escrow-inspect --escrow .tmp/<fake-escrow>
   inspect --bundle .tmp/<bundle>
 
+Example fake complete connector bundle:
+  create-standard --scope tenant --answers fixtures/ice-cosmos-media-standard-backup.answers.json --with-fake-cosmos --with-fake-media-copy --tenant-website-bundle --out .tmp/ice-cosmos-media-fake-complete --overwrite
+
 Boundary:
-  Local-only. Folder bundles, restore-plan dry-runs, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API calls.
+  Local-only. Folder bundles, restore-plan dry-runs, fake connector output, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API calls, no real Cosmos export, no real blob download.
 `);
 }
 

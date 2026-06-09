@@ -42,7 +42,21 @@ const requiredFiles = [
 
 const generatedSchemaFiles = [
   'database/database-export-plan.json',
+  'database/cosmos-json/export-manifest.json',
+  'database/cosmos-json/containers/tenants.json',
+  'database/cosmos-json/containers/sites.json',
+  'database/cosmos-json/containers/pages.json',
+  'database/cosmos-json/containers/routes.json',
+  'database/cosmos-json/containers/forms.json',
+  'database/cosmos-json/containers/media-assets.json',
+  'database/cosmos-json/containers/themes.json',
+  'database/cosmos-json/containers/publish-runs.json',
+  'database/cosmos-json/containers/import-runs.json',
+  'database/platform-evidence/cosmos/cosmos-platform-backup-evidence.json',
   'media/media-assets.json',
+  'media/blob-map/blob-inventory.json',
+  'media/blob-map/blob-copy-plan.json',
+  'media/blob-map/blob-map.json',
   'static/static-output-manifest.json',
   'config-inventory/env-inventory.redacted.json'
 ];
@@ -53,18 +67,24 @@ const allowedKinds = new Set([
   'summary',
   'restore-instructions',
   'database-plan',
+  'cosmos-export',
+  'cosmos-platform-evidence',
   'cms-content',
   'media-inventory',
+  'media-blob-map',
+  'media-blob-copy',
   'static-evidence',
   'config-inventory',
-  'escrow-marker'
+  'escrow-marker',
+  'tenant-website-bundle'
 ]);
 const allowedSensitivity = new Set(['redacted']);
 const allowedSources = new Set(['fake-fixture', 'real-ice-readonly-standard']);
 const allowedConfigPresence = new Set(['PRESENT', 'MISSING', 'EXCLUDED', 'UNKNOWN']);
 const allowedRedactedValues = new Set(['REDACTED', 'NOT_COLLECTED', 'EXCLUDED', 'NOT_INCLUDED', 'PRESENT', 'MISSING', 'UNKNOWN', null]);
 
-export async function validateBackupBundle({ bundlePath }) {
+export async function validateBackupBundle({ bundlePath, mode = 'baseline' }) {
+  const validationMode = normalizeValidationMode(mode);
   const bundleRoot = resolveTmpBundlePath(bundlePath);
   const context = {
     bundleRoot,
@@ -79,7 +99,8 @@ export async function validateBackupBundle({ bundlePath }) {
       escrowExclusionResult: 'not-run',
       secretLeakScanResult: 'not-run',
       pathSafetyResult: 'not-run',
-      manifestFileListResult: 'not-run'
+      manifestFileListResult: 'not-run',
+      connectorProofResult: 'not-run'
     }
   };
 
@@ -89,6 +110,7 @@ export async function validateBackupBundle({ bundlePath }) {
   const manifest = await checkManifest(context);
   await checkManifestFiles(context, manifest);
   await checkGeneratedJsonSchemas(context);
+  await checkConnectorProof(context, manifest, validationMode);
   await checkConfigInventory(context);
   await checkChecksums(context);
   await checkEscrowAbsent(context);
@@ -99,6 +121,7 @@ export async function validateBackupBundle({ bundlePath }) {
   return {
     schemaVersion: validationContractVersion,
     validator: 'pumpkin-backup-center-local-validator',
+    mode: validationMode,
     status,
     generatedAt: new Date().toISOString(),
     bundleFormat: 'folder',
@@ -111,6 +134,7 @@ export async function validateBackupBundle({ bundlePath }) {
       secretLeakScanResult: context.metrics.secretLeakScanResult,
       pathSafetyResult: context.metrics.pathSafetyResult,
       manifestFileListResult: context.metrics.manifestFileListResult,
+      connectorProofResult: context.metrics.connectorProofResult,
       warningCount: context.warnings.length,
       failureCount: context.failures.length
     },
@@ -140,6 +164,14 @@ function addFailure(context, code, pathValue, message) {
 
 function addWarning(context, code, pathValue, message) {
   context.warnings.push({ code, path: pathValue, message });
+}
+
+function normalizeValidationMode(mode) {
+  const selected = mode ?? 'baseline';
+  if (selected !== 'baseline' && selected !== 'production-restore-proof') {
+    throw new Error(`unsupported validation mode: ${selected}`);
+  }
+  return selected;
 }
 
 async function listBundleFiles(context) {
@@ -388,6 +420,124 @@ async function checkGeneratedJsonSchemas(context) {
     context.failures.length === before ? 'passed' : 'failed',
     context.failures.length === before ? 'Generated JSON envelopes include schema versions.' : 'Generated JSON schema version checks failed.'
   );
+}
+
+async function checkConnectorProof(context, manifest, mode) {
+  if (!manifest) {
+    return;
+  }
+  if (mode === 'baseline') {
+    context.metrics.connectorProofResult = 'not-required';
+    addCheck(context, 'connector-proof', 'passed', 'Baseline mode allows partial database/media connector components.');
+    return;
+  }
+
+  const before = context.failures.length;
+  await checkCosmosProof(context, manifest);
+  await checkMediaProof(context, manifest);
+  await checkTenantWebsiteBundleProof(context, manifest);
+
+  const passed = context.failures.length === before;
+  context.metrics.connectorProofResult = passed ? 'passed' : 'failed';
+  addCheck(
+    context,
+    'connector-proof',
+    passed ? 'passed' : 'failed',
+    passed
+      ? 'Production restore proof mode has complete fake Cosmos, fake media, and tenant website bundle components.'
+      : 'Production restore proof mode found missing connector artifacts.'
+  );
+}
+
+async function checkCosmosProof(context, manifest) {
+  const database = manifest.componentStatus?.database;
+  if (database?.provider !== 'cosmos' || database?.mode !== 'portable-json' || database?.status !== 'complete') {
+    addFailure(context, 'COSMOS_EXPORT_MISSING', 'manifest.json', 'production restore proof mode requires complete Cosmos portable JSON component status');
+    return;
+  }
+
+  const exportManifestPath = database.exportManifestPath ?? 'database/cosmos-json/export-manifest.json';
+  const exportManifest = await readRequiredJson(context, exportManifestPath, 'COSMOS_EXPORT_MISSING');
+  if (!exportManifest) return;
+  if (exportManifest.provider !== 'cosmos' || exportManifest.mode !== 'fake-portable-json') {
+    addFailure(context, 'COSMOS_EXPORT_INVALID', exportManifestPath, 'Cosmos export manifest provider/mode is invalid');
+  }
+  if (exportManifest.liveCosmosExportPerformed !== false || exportManifest.protectedConfigRead !== false) {
+    addFailure(context, 'COSMOS_EXPORT_BOUNDARY_INVALID', exportManifestPath, 'Cosmos fake export must not indicate live export or protected config reads');
+  }
+  if (!Array.isArray(exportManifest.recordSets) || exportManifest.recordSets.length === 0) {
+    addFailure(context, 'COSMOS_EXPORT_EMPTY', exportManifestPath, 'Cosmos export manifest must list record sets');
+    return;
+  }
+  for (const recordSet of exportManifest.recordSets) {
+    if (!isPlainObject(recordSet) || !isSafeBundleRelativePath(recordSet.path)) {
+      addFailure(context, 'COSMOS_EXPORT_INVALID', exportManifestPath, 'Cosmos record set path is invalid');
+      continue;
+    }
+    const envelope = await readRequiredJson(context, recordSet.path, 'COSMOS_EXPORT_MISSING');
+    if (!envelope) continue;
+    if (envelope.provider !== 'cosmos' || envelope.logicalCollection !== recordSet.logicalCollection) {
+      addFailure(context, 'COSMOS_EXPORT_INVALID', recordSet.path, 'Cosmos collection envelope does not match manifest');
+    }
+    if (!Array.isArray(envelope.records) || envelope.recordCount !== envelope.records.length) {
+      addFailure(context, 'COSMOS_EXPORT_COUNT_MISMATCH', recordSet.path, 'Cosmos collection record count does not match records array');
+    }
+  }
+}
+
+async function checkMediaProof(context, manifest) {
+  const media = manifest.componentStatus?.media;
+  if (media?.provider !== 'azure-blob' || media?.mode !== 'full-copy' || media?.status !== 'complete') {
+    addFailure(context, 'MEDIA_BLOB_COPY_MISSING', 'manifest.json', 'production restore proof mode requires complete fake media full-copy component status');
+    return;
+  }
+
+  const blobMapPath = media.blobMapPath ?? 'media/blob-map/blob-map.json';
+  const blobMap = await readRequiredJson(context, blobMapPath, 'MEDIA_BLOB_COPY_MISSING');
+  if (!blobMap) return;
+  if (blobMap.provider !== 'azure-blob' || blobMap.mode !== 'fake-full-copy') {
+    addFailure(context, 'MEDIA_BLOB_COPY_INVALID', blobMapPath, 'Media blob map provider/mode is invalid');
+  }
+  if (blobMap.liveBlobDownloadPerformed !== false || blobMap.storageCredentialUsed !== false) {
+    addFailure(context, 'MEDIA_BLOB_COPY_BOUNDARY_INVALID', blobMapPath, 'Media fake copy must not indicate live download or storage credential use');
+  }
+  if (!Array.isArray(blobMap.assets) || blobMap.copiedBlobCount < 1) {
+    addFailure(context, 'MEDIA_BLOB_COPY_MISSING', blobMapPath, 'Media blob map must include copied fake blobs');
+    return;
+  }
+  for (const asset of blobMap.assets) {
+    if (asset.copyStatus !== 'fake-copied' || !isSafeBundleRelativePath(asset.bundlePath)) {
+      addFailure(context, 'MEDIA_BLOB_COPY_MISSING', blobMapPath, 'Every media asset must include a copied fake blob path');
+      continue;
+    }
+    await readRequiredFile(context, asset.bundlePath, 'MEDIA_BLOB_COPY_MISSING');
+  }
+}
+
+async function checkTenantWebsiteBundleProof(context, manifest) {
+  const tenantWebsiteBundle = manifest.componentStatus?.tenantWebsiteBundle;
+  if (tenantWebsiteBundle?.status !== 'complete' || !isSafeBundleRelativePath(tenantWebsiteBundle.manifestPath)) {
+    addFailure(context, 'TENANT_WEBSITE_BUNDLE_MISSING', 'manifest.json', 'production restore proof mode requires a tenant website bundle manifest');
+    return;
+  }
+  await readRequiredJson(context, tenantWebsiteBundle.manifestPath, 'TENANT_WEBSITE_BUNDLE_MISSING');
+}
+
+async function readRequiredJson(context, relativePath, code) {
+  try {
+    return await readJson(path.join(context.bundleRoot, relativePath));
+  } catch (error) {
+    addFailure(context, code, relativePath, error.message);
+    return null;
+  }
+}
+
+async function readRequiredFile(context, relativePath, code) {
+  try {
+    await fs.access(path.join(context.bundleRoot, relativePath));
+  } catch (error) {
+    addFailure(context, code, relativePath, error.message);
+  }
 }
 
 async function checkConfigInventory(context) {
@@ -663,6 +813,7 @@ function renderValidationMarkdown(validation) {
     `| Secret-leak scan | ${validation.summary.secretLeakScanResult} |`,
     `| Path safety | ${validation.summary.pathSafetyResult} |`,
     `| Manifest file list | ${validation.summary.manifestFileListResult} |`,
+    `| Connector proof | ${validation.summary.connectorProofResult} |`,
     `| Warnings | ${validation.summary.warningCount} |`,
     `| Failures | ${validation.summary.failureCount} |`,
     '',

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureType": "fake-cosmos-platform-backup-evidence",
+  "source": "fake-fixture",
+  "backupPolicyMode": "continuous-fixture",
+  "restoreCapability": "fixture-available",
+  "retention": {
+    "description": "fake retention metadata for connector contract tests"
+  },
+  "liveAzureDiscoveryPerformed": false,
+  "realPlatformBackupVerified": false
+}

@@ -1,0 +1,19 @@
+{
+  "routes": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "path": "/",
+      "includedInFakeEvidence": true
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "path": "/contact/",
+      "includedInFakeEvidence": true
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "path": "/service-areas/",
+      "includedInFakeEvidence": true
+    }
+  ]
+}

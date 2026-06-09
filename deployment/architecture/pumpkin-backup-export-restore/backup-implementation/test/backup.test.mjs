@@ -13,6 +13,7 @@ import { packageRoot } from '../src/utils/safe-paths.mjs';
 const fixedDate = new Date('2026-01-01T00:00:00.000Z');
 const tenantAnswers = 'fixtures/tenant-standard-backup.answers.json';
 const platformAnswers = 'fixtures/platform-standard-backup.answers.json';
+const iceConnectorAnswers = 'fixtures/ice-cosmos-media-standard-backup.answers.json';
 const testBundleNames = [
   'test-tenant',
   'test-platform',
@@ -47,7 +48,14 @@ const testBundleNames = [
   'test-restore-secret-scan-bundle',
   'test-restore-secret-scan-plan',
   'test-restore-cli-bundle',
-  'test-restore-cli-plan'
+  'test-restore-cli-plan',
+  'test-ice-fake-complete',
+  'test-ice-fake-complete-restore-bundle',
+  'test-ice-fake-complete-plan',
+  'test-proof-missing-baseline',
+  'test-proof-missing-cosmos',
+  'test-proof-missing-media',
+  'test-proof-secret-like'
 ];
 
 after(async () => {
@@ -77,6 +85,22 @@ async function createPlatformBundle(name) {
     scopeOverride: 'platform',
     overwrite: true,
     now: fixedDate
+  });
+}
+
+async function createIceFakeCompleteBundle(name) {
+  await clean(name);
+  return createStandardBackup({
+    answersPath: iceConnectorAnswers,
+    outputPath: `.tmp/${name}`,
+    scopeOverride: 'tenant',
+    overwrite: true,
+    now: fixedDate,
+    connectors: {
+      fakeCosmos: true,
+      fakeMediaCopy: true,
+      tenantWebsiteBundle: true
+    }
   });
 }
 
@@ -398,6 +422,102 @@ test('restore-plan generated reports contain no secret-like values', async () =>
   }
 });
 
+test('fake Ice Cosmos/media connector bundle writes portable export, media copies, manifest status, and passes proof validator', async () => {
+  const result = await createIceFakeCompleteBundle('test-ice-fake-complete');
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.validation.mode, 'production-restore-proof');
+  const manifest = await readJson(path.join(result.bundleRoot, 'manifest.json'));
+  assert.equal(manifest.connectorFoundation.fakeCosmosExport, true);
+  assert.equal(manifest.connectorFoundation.fakeMediaCopy, true);
+  assert.equal(manifest.connectorFoundation.tenantWebsiteBundle, true);
+  assert.equal(manifest.componentStatus.database.provider, 'cosmos');
+  assert.equal(manifest.componentStatus.database.mode, 'portable-json');
+  assert.equal(manifest.componentStatus.database.status, 'complete');
+  assert.equal(manifest.componentStatus.database.recordCount, 13);
+  assert.equal(manifest.componentStatus.media.provider, 'azure-blob');
+  assert.equal(manifest.componentStatus.media.mode, 'full-copy');
+  assert.equal(manifest.componentStatus.media.copiedBlobCount, 2);
+  assert.equal(manifest.componentStatus.tenantWebsiteBundle.status, 'complete');
+  await fs.access(path.join(result.bundleRoot, 'database', 'cosmos-json', 'export-manifest.json'));
+  await fs.access(path.join(result.bundleRoot, 'database', 'platform-evidence', 'cosmos', 'cosmos-platform-backup-evidence.json'));
+  await fs.access(path.join(result.bundleRoot, 'media', 'blob-map', 'blob-map.json'));
+  await fs.access(path.join(result.bundleRoot, 'media', 'blobs', 'ice', 'hero-placeholder.txt'));
+  await fs.access(path.join(result.bundleRoot, 'tenants', 'ice-rink-rentals', 'sites', 'ice-rink-rentals', 'tenant-website-bundle-manifest.json'));
+});
+
+test('restore-plan passes in production proof mode for fake complete Ice Cosmos/media bundle', async () => {
+  const backup = await createIceFakeCompleteBundle('test-ice-fake-complete-restore-bundle');
+  await clean('test-ice-fake-complete-plan');
+  const result = await createRestorePlan({
+    bundlePath: backup.bundleRoot,
+    outputPath: '.tmp/test-ice-fake-complete-plan',
+    mode: 'production-restore-proof',
+    overwrite: true,
+    now: fixedDate
+  });
+  assert.equal(result.plan.status, 'passed');
+  assert.equal(result.plan.mode, 'production-restore-proof');
+  assert.equal(result.plan.inventoryCounts.cosmosRecordSets, 9);
+  assert.equal(result.plan.inventoryCounts.cosmosRecords, 13);
+  assert.equal(result.plan.inventoryCounts.mediaCopiedBlobs, 2);
+  assert(
+    result.plan.plannedSteps.some((step) => step.stepId === 'plan-cosmos-portable-json-restore' && step.status === 'complete')
+  );
+  assert(
+    result.plan.plannedSteps.some((step) => step.stepId === 'plan-media-blob-restore' && step.status === 'complete')
+  );
+  await assertRestoreOutputFiles(result.outputRoot);
+});
+
+test('proof validator fails baseline bundle when Cosmos/media proof is required', async () => {
+  const result = await createTenantBundle('test-proof-missing-baseline');
+  const validation = await validateBackupBundle({
+    bundlePath: result.bundleRoot,
+    mode: 'production-restore-proof'
+  });
+  assert.equal(validation.status, 'failed');
+  assert(validation.failures.some((failure) => failure.code === 'COSMOS_EXPORT_MISSING'));
+  assert(validation.failures.some((failure) => failure.code === 'MEDIA_BLOB_COPY_MISSING'));
+});
+
+test('proof validator fails when fake Cosmos export manifest is missing', async () => {
+  const result = await createIceFakeCompleteBundle('test-proof-missing-cosmos');
+  await fs.rm(path.join(result.bundleRoot, 'database', 'cosmos-json', 'export-manifest.json'));
+  const validation = await validateBackupBundle({
+    bundlePath: result.bundleRoot,
+    mode: 'production-restore-proof'
+  });
+  assert.equal(validation.status, 'failed');
+  assert(validation.failures.some((failure) => failure.code === 'COSMOS_EXPORT_MISSING'));
+});
+
+test('proof validator fails when a fake copied media blob is missing', async () => {
+  const result = await createIceFakeCompleteBundle('test-proof-missing-media');
+  await fs.rm(path.join(result.bundleRoot, 'media', 'blobs', 'ice', 'hero-placeholder.txt'));
+  const validation = await validateBackupBundle({
+    bundlePath: result.bundleRoot,
+    mode: 'production-restore-proof'
+  });
+  assert.equal(validation.status, 'failed');
+  assert(validation.failures.some((failure) => failure.code === 'MEDIA_BLOB_COPY_MISSING'));
+});
+
+test('validator rejects secret-like values in fake connector output', async () => {
+  const result = await createIceFakeCompleteBundle('test-proof-secret-like');
+  const unsafeField = 'access_' + 'token';
+  await fs.appendFile(
+    path.join(result.bundleRoot, 'database', 'cosmos-json', 'containers', 'pages.json'),
+    `\n{"${unsafeField}":"fixture-secret-like-value"}\n`,
+    'utf8'
+  );
+  const validation = await validateBackupBundle({
+    bundlePath: result.bundleRoot,
+    mode: 'production-restore-proof'
+  });
+  assert.equal(validation.status, 'failed');
+  assert(validation.failures.some((failure) => failure.code === 'SECRET_LIKE_VALUE'));
+});
+
 test('CLI restore-plan writes dry-run output for valid bundles', async () => {
   await createTenantBundle('test-restore-cli-bundle');
   await clean('test-restore-cli-plan');
@@ -455,6 +575,15 @@ test('source does not include external HTTP call patterns or protected config re
     'src/standard-bundle-writer.mjs',
     'src/adapters/fake-cms-content-adapter.mjs',
     'src/adapters/fake-config-inventory-adapter.mjs',
+    'src/connectors/cosmos/fake-cosmos-export-adapter.mjs',
+    'src/connectors/cosmos/cosmos-export-manifest.mjs',
+    'src/connectors/cosmos/cosmos-platform-evidence-writer.mjs',
+    'src/connectors/cosmos/cosmos-export-runner.mjs',
+    'src/connectors/media/fake-media-copy-adapter.mjs',
+    'src/connectors/media/media-copy-manifest.mjs',
+    'src/connectors/media/media-checksum-writer.mjs',
+    'src/connectors/media/media-copy-runner.mjs',
+    'src/bundles/tenant-website-bundle-writer.mjs',
     'src/restore/restore-plan-runner.mjs',
     'src/restore/restore-plan-writer.mjs',
     'src/restore/restore-inventory-reader.mjs',

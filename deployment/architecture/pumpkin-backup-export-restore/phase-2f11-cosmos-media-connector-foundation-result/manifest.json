@@ -1,0 +1,45 @@
+{
+  "phase": "2F-11",
+  "title": "Ice Cosmos/media backup connector foundation result",
+  "site": "IceSkatingRinkRentals.com",
+  "status": "complete",
+  "implementation": "local-fake-only",
+  "readiness": {
+    "phase2f10bConnectorImplementationPlan": "complete",
+    "phase2f11ConnectorFoundation": true,
+    "fakeCosmosExportConnector": true,
+    "fakeMediaCopyConnector": true,
+    "tenantWebsiteBundleIntegration": true,
+    "liveCosmosExport": false,
+    "liveMediaBlobDownload": false,
+    "iceFullyBackupableToday": false,
+    "readyForLiveReadOnlyConnectorPreflight": true,
+    "implementationPerformed": "local-fake-only",
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "validation": {
+    "npmTest": "passed",
+    "npmRunCheck": "passed",
+    "createIceFakeComplete": "passed",
+    "validateIceFakeComplete": "passed",
+    "restoreIceFakeComplete": "passed",
+    "testCount": 48
+  },
+  "boundaries": {
+    "realCosmosExport": false,
+    "realDatabaseExport": false,
+    "realBlobDownload": false,
+    "protectedConfigRead": false,
+    "storageCredentialUsed": false,
+    "azureMutation": false,
+    "cmsWrite": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "generatedOutput": {
+    "path": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/",
+    "staged": false
+  }
+}

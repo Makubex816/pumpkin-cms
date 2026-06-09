@@ -1,8 +1,8 @@
 # Pumpkin Backup Center Local Prototype
 
-Phase 2F-6 adds a local-only encrypted escrow prototype with fake fixture values on top of the standard backup exporter, hardened validator, and restore validation dry-run.
+Phase 2F-11 adds a local-only Cosmos/media connector foundation on top of the standard backup exporter, hardened validator, restore validation dry-run, and fake encrypted escrow prototype.
 
-It creates and validates folder-based standard backup bundles from fake fixtures only, can generate a restore plan without restoring into any real system, and can generate fake encrypted escrow output under ignored `.tmp`. It does not create production backup zips, export or import a real database, call CMS/API endpoints, export real secrets, create production escrow payloads, restore data, deploy, or touch external systems.
+It creates and validates folder-based standard backup bundles from fake fixtures only, can generate fake Cosmos portable JSON export artifacts, can copy fake media text fixtures, can generate a tenant website bundle index, can generate a restore plan without restoring into any real system, and can generate fake encrypted escrow output under ignored `.tmp`. It does not create production backup zips, export or import a real database, call CMS/API endpoints, export real secrets, create production escrow payloads, download real blobs, restore data, deploy, or touch external systems.
 
 ## Implemented
 
@@ -15,6 +15,11 @@ It creates and validates folder-based standard backup bundles from fake fixtures
 - Fake media inventory adapter.
 - Fake static evidence adapter.
 - Fake redacted config inventory adapter.
+- Fake Cosmos/provider portable JSON export connector.
+- Fake Cosmos platform backup evidence writer.
+- Fake Azure Blob media copy connector using text fixtures only.
+- Tenant website bundle index writer.
+- Production-restore-proof validator mode for fake complete bundles.
 - `escrow/ESCROW_NOT_INCLUDED.md` standard-mode marker.
 - JSON and Markdown validation reports.
 - Failure case manifest and generated negative bundle tests.
@@ -33,6 +38,9 @@ npm run check
 npm run create:tenant
 npm run validate:tenant
 npm run restore:tenant
+npm run create:ice-fake-complete
+npm run validate:ice-fake-complete
+npm run restore:ice-fake-complete
 npm run escrow:create
 npm run escrow:validate
 npm run escrow:inspect
@@ -47,6 +55,9 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 
 - `USAGE.md`
 - `STANDARD_BACKUP_FORMAT.md`
+- `COSMOS_CONNECTOR_FAKE_MODE.md`
+- `MEDIA_CONNECTOR_FAKE_MODE.md`
+- `TENANT_WEBSITE_BUNDLE_INTEGRATION.md`
 - `VALIDATOR.md`
 - `RESTORE_VALIDATION.md`
 - `ESCROW_FAKE_PROTOTYPE.md`
@@ -56,8 +67,8 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 - `FIXTURES.md`
 - `SECURITY_BOUNDARIES.md`
 - `KNOWN_LIMITATIONS.md`
-- `NEXT_PHASE_2F7_ICE_REAL_BACKUP_PREFLIGHT_PROMPT.md`
+- `NEXT_PHASE_2F12_LIVE_READONLY_CONNECTOR_PREFLIGHT_PROMPT.md`
 
 ## Boundary
 
-Local prototype only. Fake adapters only. No real secrets, no protected config, no database export/import, no real CMS export/restore, no MediaAsset restore, no blob copy, no static generation/restore, no production escrow payload, no real restore, no external HTTP calls, and no live-page publication.
+Local prototype only. Fake adapters only. No real secrets, no protected config, no real Cosmos export/import, no real CMS export/restore, no MediaAsset restore, no real blob download/copy, no static generation/restore, no production escrow payload, no real restore, no external HTTP calls from the fake connector path, and no live-page publication.

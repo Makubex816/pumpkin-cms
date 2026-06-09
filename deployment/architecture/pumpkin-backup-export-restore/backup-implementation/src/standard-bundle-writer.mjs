@@ -7,25 +7,62 @@ import { writeFakeDatabasePlan } from './adapters/fake-database-adapter.mjs';
 import { writeFakeMediaInventory } from './adapters/fake-media-inventory-adapter.mjs';
 import { writeFakeStaticEvidence } from './adapters/fake-static-evidence-adapter.mjs';
 import { writeFakeConfigInventory } from './adapters/fake-config-inventory-adapter.mjs';
+import { writeTenantWebsiteBundleIndex } from './bundles/tenant-website-bundle-writer.mjs';
+import { writeFakeCosmosExport } from './connectors/cosmos/cosmos-export-runner.mjs';
+import { writeFakeMediaCopy } from './connectors/media/media-copy-runner.mjs';
 
-export async function writeStandardBundle({ bundleRoot, request, createdAt }) {
+export async function writeStandardBundle({ bundleRoot, request, createdAt, connectors = {} }) {
   await fs.mkdir(bundleRoot, { recursive: true });
   const fileEntries = [];
+  const connectorOptions = normalizeConnectorOptions(connectors);
+  const connectorResults = {};
 
-  fileEntries.push(...(await writeTopLevelDocs({ bundleRoot, request, createdAt })));
+  fileEntries.push(...(await writeTopLevelDocs({ bundleRoot, request, createdAt, connectorOptions })));
   fileEntries.push(...(await writeFakeDatabasePlan({ bundleRoot, request, createdAt })));
   fileEntries.push(...(await writeFakeCmsContent({ bundleRoot, request })));
-  fileEntries.push(...(await writeFakeMediaInventory({ bundleRoot, request })));
+  fileEntries.push(...(await writeFakeMediaInventory({ bundleRoot, request, fakeMediaCopy: connectorOptions.fakeMediaCopy })));
   fileEntries.push(...(await writeFakeStaticEvidence({ bundleRoot, request })));
   fileEntries.push(...(await writeFakeConfigInventory({ bundleRoot, request })));
+  if (connectorOptions.fakeCosmos) {
+    connectorResults.cosmos = await writeFakeCosmosExport({ bundleRoot, request, createdAt });
+    fileEntries.push(...connectorResults.cosmos.entries);
+  }
+  if (connectorOptions.fakeMediaCopy) {
+    connectorResults.media = await writeFakeMediaCopy({ bundleRoot, request, createdAt });
+    fileEntries.push(...connectorResults.media.entries);
+  }
+  if (connectorOptions.tenantWebsiteBundle) {
+    connectorResults.tenantWebsiteBundle = await writeTenantWebsiteBundleIndex({
+      bundleRoot,
+      request,
+      createdAt,
+      connectorResults
+    });
+    fileEntries.push(...connectorResults.tenantWebsiteBundle.entries);
+  }
   fileEntries.push(...(await writeEscrowMarker({ bundleRoot })));
 
-  const manifest = await writeBackupManifest({ bundleRoot, request, fileEntries, createdAt });
+  const manifest = await writeBackupManifest({
+    bundleRoot,
+    request,
+    fileEntries,
+    createdAt,
+    connectorOptions,
+    connectorResults
+  });
   const checksums = await writeChecksums(bundleRoot);
-  return { manifest, checksums, fileEntries };
+  return { manifest, checksums, fileEntries, connectorResults };
 }
 
-async function writeTopLevelDocs({ bundleRoot, request, createdAt }) {
+function normalizeConnectorOptions(connectors) {
+  return {
+    fakeCosmos: connectors.fakeCosmos === true,
+    fakeMediaCopy: connectors.fakeMediaCopy === true,
+    tenantWebsiteBundle: connectors.tenantWebsiteBundle === true
+  };
+}
+
+async function writeTopLevelDocs({ bundleRoot, request, createdAt, connectorOptions }) {
   await fs.writeFile(
     path.join(bundleRoot, 'BACKUP_SUMMARY.md'),
     [
@@ -39,9 +76,17 @@ async function writeTopLevelDocs({ bundleRoot, request, createdAt }) {
       '',
       'This is a local-only fake-fixture prototype bundle.',
       '',
+      '## Connector Foundation',
+      '',
+      `- Fake Cosmos portable JSON export: ${connectorOptions.fakeCosmos ? 'included' : 'not included'}`,
+      `- Fake media blob copy: ${connectorOptions.fakeMediaCopy ? 'included' : 'not included'}`,
+      `- Tenant website bundle index: ${connectorOptions.tenantWebsiteBundle ? 'included' : 'not included'}`,
+      '',
       '- No production backup zip was created.',
       '- No real database export was run.',
       '- No real CMS/API export was run.',
+      '- No real Cosmos export was run.',
+      '- No real media blob download was run.',
       '- No real secret export occurred.',
       '- No encrypted escrow payload is included.',
       '- No restore was performed.',

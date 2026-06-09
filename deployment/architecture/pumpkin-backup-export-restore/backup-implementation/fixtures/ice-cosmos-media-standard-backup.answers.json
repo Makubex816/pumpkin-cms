@@ -1,0 +1,16 @@
+{
+  "backupName": "ice-cosmos-media-fake-standard-fixture",
+  "requestedBy": "phase-2f11-local-fake-foundation",
+  "retentionClass": "pre_write",
+  "scope": {
+    "scopeType": "tenant",
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals"
+  },
+  "fixtureRefs": {
+    "cmsContent": "fixtures/fake-cms-content.ice.json",
+    "mediaInventory": "fixtures/fake-media-inventory.ice.json",
+    "staticEvidence": "fixtures/fake-static-evidence.ice.json",
+    "configInventory": "fixtures/fake-config-inventory.redacted.json"
+  }
+}

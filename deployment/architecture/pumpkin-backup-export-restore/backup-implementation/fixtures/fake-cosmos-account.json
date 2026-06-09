@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureType": "fake-cosmos-account",
+  "source": "fake-fixture",
+  "accountName": "fake-ice-cosmos-account",
+  "resourceGroup": "fake-ice-resource-group",
+  "subscription": "fake-subscription-not-real",
+  "api": "nosql",
+  "backupPolicyMode": "continuous-fixture",
+  "realAccountQueried": false
+}

@@ -27,6 +27,26 @@ The validator enforces:
 - no protected or secret-risk paths are present;
 - no obvious secret-like values are present.
 
+## Validation Modes
+
+### `baseline`
+
+`baseline` is the default. It accepts the existing partial local standard backup contract where database export is represented by a plan and media is metadata-only.
+
+### `production-restore-proof`
+
+`production-restore-proof` requires the fake complete connector foundation artifacts:
+
+- manifest database component status is `cosmos` / `portable-json` / `complete`;
+- Cosmos export manifest exists under `database/cosmos-json/export-manifest.json`;
+- Cosmos collection envelopes exist and record counts match;
+- manifest media component status is `azure-blob` / `full-copy` / `complete`;
+- media blob map exists under `media/blob-map/blob-map.json`;
+- every media asset has a copied fake blob file;
+- tenant website bundle index exists.
+
+This mode still uses fake fixtures only. It proves the local contract, not live production backup completeness.
+
 ## Reports
 
 Validation writes both reports by default:
@@ -61,7 +81,13 @@ The Phase 2F-4 test suite covers these negative cases:
 - `CHECKSUM_PARSE_ERROR`
 - `CHECKSUM_INCLUDES_SELF`
 - `CONFIG_VALUES_INCLUDED`
+- `COSMOS_EXPORT_MISSING`
+- `COSMOS_EXPORT_INVALID`
+- `COSMOS_EXPORT_COUNT_MISMATCH`
+- `MEDIA_BLOB_COPY_MISSING`
+- `MEDIA_BLOB_COPY_INVALID`
+- `TENANT_WEBSITE_BUNDLE_MISSING`
 
 ## Boundary
 
-The validator does not call CMS/API endpoints, export a real database, read protected config, create encrypted escrow payloads, execute restore logic, create zips, deploy, or touch external systems.
+The validator does not call CMS/API endpoints, export a real database, read protected config, create encrypted escrow payloads, execute restore logic, create zips, deploy, touch external systems, call Cosmos, or download blobs.

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureType": "fake-cosmos-documents",
+  "source": "fake-fixture",
+  "tenantScope": {
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals"
+  },
+  "logicalCollections": {
+    "tenants": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "displayName": "Ice Rink Rentals Fixture",
+        "status": "active-fixture"
+      }
+    ],
+    "sites": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "primaryDomain": "iceskatingrinkrentals.example",
+        "mediaDomain": "media.iceskatingrinkrentals.example"
+      }
+    ],
+    "pages": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "slug": "home",
+        "title": "Fixture Home",
+        "published": true,
+        "sitemapIncluded": true
+      },
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "slug": "contact",
+        "title": "Fixture Contact",
+        "published": true,
+        "sitemapIncluded": true
+      },
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "slug": "service-areas",
+        "title": "Fixture Service Areas",
+        "published": true,
+        "sitemapIncluded": true
+      }
+    ],
+    "routes": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "path": "/",
+        "slug": "home"
+      },
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "path": "/contact/",
+        "slug": "contact"
+      },
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "path": "/service-areas/",
+        "slug": "service-areas"
+      }
+    ],
+    "forms": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "formId": "ice-contact-fixture",
+        "deliveryMode": "fixture-only",
+        "formEntriesExported": false
+      }
+    ],
+    "mediaAssets": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "mediaAssetId": "ice-hero-fixture",
+        "blobName": "ice/hero-placeholder.txt",
+        "contentType": "text/plain",
+        "publicUrl": "https://media.iceskatingrinkrentals.example/ice/hero-placeholder.txt"
+      },
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "mediaAssetId": "ice-contact-fixture",
+        "blobName": "ice/contact-placeholder.txt",
+        "contentType": "text/plain",
+        "publicUrl": "https://media.iceskatingrinkrentals.example/ice/contact-placeholder.txt"
+      }
+    ],
+    "themes": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "themeId": "ice-fixture-theme",
+        "isActive": true
+      }
+    ],
+    "publishRuns": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "runId": "fake-publish-run-001",
+        "status": "fixture-complete"
+      }
+    ],
+    "importRuns": []
+  },
+  "realDocumentsExported": false
+}

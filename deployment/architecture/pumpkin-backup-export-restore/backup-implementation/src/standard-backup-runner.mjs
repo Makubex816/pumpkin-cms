@@ -5,7 +5,14 @@ import { writeStandardBundle } from './standard-bundle-writer.mjs';
 import { validateBackupBundle, writeValidationReports } from './validators/backup-validator.mjs';
 import { resolveTmpOutputPath } from './utils/safe-paths.mjs';
 
-export async function createStandardBackup({ answersPath, outputPath, scopeOverride, overwrite = false, now = new Date() }) {
+export async function createStandardBackup({
+  answersPath,
+  outputPath,
+  scopeOverride,
+  overwrite = false,
+  now = new Date(),
+  connectors = {}
+}) {
   const bundleRoot = resolveTmpOutputPath(outputPath);
   const request = await resolveBackupRequest({ answersPath, scopeOverride });
 
@@ -18,8 +25,9 @@ export async function createStandardBackup({ answersPath, outputPath, scopeOverr
 
   await fs.mkdir(path.dirname(bundleRoot), { recursive: true });
   const createdAt = now.toISOString();
-  const writeResult = await writeStandardBundle({ bundleRoot, request, createdAt });
-  const validation = await validateBackupBundle({ bundlePath: bundleRoot });
+  const writeResult = await writeStandardBundle({ bundleRoot, request, createdAt, connectors });
+  const validationMode = connectors.fakeCosmos && connectors.fakeMediaCopy ? 'production-restore-proof' : 'baseline';
+  const validation = await validateBackupBundle({ bundlePath: bundleRoot, mode: validationMode });
   await writeValidationReports({ bundleRoot, validation });
 
   if (validation.status !== 'passed') {
@@ -31,6 +39,7 @@ export async function createStandardBackup({ answersPath, outputPath, scopeOverr
     request,
     manifest: writeResult.manifest,
     checksums: writeResult.checksums,
-    validation
+    validation,
+    connectors: writeResult.connectorResults
   };
 }

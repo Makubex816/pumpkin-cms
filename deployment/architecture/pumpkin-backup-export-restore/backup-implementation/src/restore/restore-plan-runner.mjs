@@ -9,11 +9,12 @@ export async function createRestorePlan({
   bundlePath,
   outputPath,
   expectedCountsPath,
+  mode = 'baseline',
   overwrite = false,
   now = new Date()
 }) {
   const bundleRoot = resolveTmpBundlePath(bundlePath);
-  const validation = await validateBackupBundle({ bundlePath: bundleRoot });
+  const validation = await validateBackupBundle({ bundlePath: bundleRoot, mode });
   await writeValidationReports({ bundleRoot, validation });
   if (validation.status !== 'passed') {
     const codes = validation.failures.map((failure) => failure.code).join(', ');
@@ -34,6 +35,7 @@ export async function createRestorePlan({
     validation,
     inventory,
     comparison,
+    mode,
     createdAt: now.toISOString()
   });
 

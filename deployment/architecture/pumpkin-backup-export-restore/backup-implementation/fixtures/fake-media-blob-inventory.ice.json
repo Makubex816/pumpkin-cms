@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureType": "fake-media-blob-inventory",
+  "source": {
+    "provider": "azure-blob",
+    "storageAccount": "iceskatingmedia",
+    "resourceGroup": "rg-ice-production-media",
+    "container": "ice-rink-rentals-media",
+    "publicHost": "media.iceskatingrinkrentals.com",
+    "fixtureOnly": true
+  },
+  "assets": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "mediaAssetId": "ice-hero-fixture",
+      "publicUrl": "https://media.iceskatingrinkrentals.example/ice/hero-placeholder.txt",
+      "blobName": "ice/hero-placeholder.txt",
+      "contentType": "text/plain",
+      "cacheControl": "public, max-age=3600",
+      "size": 69
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "mediaAssetId": "ice-contact-fixture",
+      "publicUrl": "https://media.iceskatingrinkrentals.example/ice/contact-placeholder.txt",
+      "blobName": "ice/contact-placeholder.txt",
+      "contentType": "text/plain",
+      "cacheControl": "public, max-age=3600",
+      "size": 73
+    }
+  ],
+  "realBlobInventoryListed": false
+}

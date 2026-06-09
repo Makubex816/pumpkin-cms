@@ -8,8 +8,8 @@ import {
   renderRestoreValidationMarkdown
 } from './restore-validation-reporter.mjs';
 
-export async function writeRestorePlanReports({ outputRoot, bundleRoot, validation, inventory, comparison, createdAt }) {
-  const plan = buildRestorePlan({ outputRoot, bundleRoot, validation, inventory, comparison, createdAt });
+export async function writeRestorePlanReports({ outputRoot, bundleRoot, validation, inventory, comparison, mode, createdAt }) {
+  const plan = buildRestorePlan({ outputRoot, bundleRoot, validation, inventory, comparison, mode, createdAt });
   await writeJson(path.join(outputRoot, 'restore-plan.json'), plan);
   await fs.writeFile(path.join(outputRoot, 'RESTORE_PLAN.md'), renderRestorePlanMarkdown(plan), 'utf8');
   await writeJson(path.join(outputRoot, 'RESTORE_VALIDATION_RESULT.json'), {
@@ -35,7 +35,7 @@ export async function writeRestorePlanReports({ outputRoot, bundleRoot, validati
   return plan;
 }
 
-function buildRestorePlan({ outputRoot, bundleRoot, validation, inventory, comparison, createdAt }) {
+function buildRestorePlan({ outputRoot, bundleRoot, validation, inventory, comparison, mode, createdAt }) {
   const failures = [
     ...comparison.failures,
     ...buildBoundaryFailures(inventory)
@@ -45,6 +45,7 @@ function buildRestorePlan({ outputRoot, bundleRoot, validation, inventory, compa
     schemaVersion: '0.1.0',
     restoreValidationContractVersion: '0.1.0',
     generatedAt: createdAt,
+    mode: mode ?? validation.mode ?? 'baseline',
     status,
     dryRunOnly: true,
     restoreExecuted: false,
@@ -58,6 +59,7 @@ function buildRestorePlan({ outputRoot, bundleRoot, validation, inventory, compa
     },
     inventoryCounts: inventory.counts,
     countComparison: comparison,
+    connectorComponents: inventory.connectorComponents,
     configInventory: inventory.configInventory,
     escrow: inventory.escrow,
     plannedSteps: buildPlannedSteps(inventory),
@@ -79,6 +81,9 @@ function buildRestorePlan({ outputRoot, bundleRoot, validation, inventory, compa
 }
 
 function buildPlannedSteps(inventory) {
+  const databaseStep = buildDatabaseStep(inventory.connectorComponents?.database);
+  const mediaStep = buildMediaStep(inventory.connectorComponents?.media);
+  const tenantBundleStep = buildTenantBundleStep(inventory.connectorComponents?.tenantWebsiteBundle);
   return [
     {
       stepId: 'validate-backup-bundle',
@@ -95,12 +100,66 @@ function buildPlannedSteps(inventory) {
       writesRealSystem: false,
       summary: 'Compared backup inventory counts against approved local expected-count evidence.'
     },
+    databaseStep,
+    mediaStep,
+    tenantBundleStep,
     {
       stepId: 'prepare-dry-run-plan',
       writesRealSystem: false,
       summary: 'Prepared a restore plan only; no target database, CMS, media, static output, or config store was written.'
     }
   ];
+}
+
+function buildDatabaseStep(database) {
+  if (database?.provider === 'cosmos' && database?.mode === 'portable-json' && database?.status === 'complete') {
+    return {
+      stepId: 'plan-cosmos-portable-json-restore',
+      writesRealSystem: false,
+      status: 'complete',
+      summary: `Cosmos portable JSON export is present with ${database.recordSetCount} record sets and ${database.recordCount} records.`
+    };
+  }
+  return {
+    stepId: 'plan-cosmos-portable-json-restore',
+    writesRealSystem: false,
+    status: 'blocked',
+    summary: 'Cosmos portable JSON export is not complete; database restore proof remains blocked.'
+  };
+}
+
+function buildMediaStep(media) {
+  if (media?.provider === 'azure-blob' && media?.mode === 'full-copy' && media?.status === 'complete') {
+    return {
+      stepId: 'plan-media-blob-restore',
+      writesRealSystem: false,
+      status: 'complete',
+      summary: `Fake media full-copy proof is present with ${media.copiedBlobCount} copied fixture blobs.`
+    };
+  }
+  return {
+    stepId: 'plan-media-blob-restore',
+    writesRealSystem: false,
+    status: 'blocked',
+    summary: 'Media blob full-copy proof is not complete; media restore proof remains blocked.'
+  };
+}
+
+function buildTenantBundleStep(tenantWebsiteBundle) {
+  if (tenantWebsiteBundle?.status === 'complete') {
+    return {
+      stepId: 'plan-tenant-website-bundle-layout',
+      writesRealSystem: false,
+      status: 'complete',
+      summary: `Tenant website bundle index is present at ${tenantWebsiteBundle.manifestPath}.`
+    };
+  }
+  return {
+    stepId: 'plan-tenant-website-bundle-layout',
+    writesRealSystem: false,
+    status: 'blocked',
+    summary: 'Tenant website bundle index is not complete.'
+  };
 }
 
 function buildBoundaryFailures(inventory) {

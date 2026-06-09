@@ -1,0 +1,28 @@
+{
+  "mediaAssets": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "mediaRef": "ice-hero-fixture",
+      "mediaAssetId": "ice-hero-fixture",
+      "fileName": "hero-placeholder.txt",
+      "contentType": "text/plain",
+      "byteSize": 69,
+      "sha256": "PLACEHOLDER_SHA256",
+      "blobCopied": false,
+      "altText": "Fixture hero media"
+    },
+    {
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "mediaRef": "ice-contact-fixture",
+      "mediaAssetId": "ice-contact-fixture",
+      "fileName": "contact-placeholder.txt",
+      "contentType": "text/plain",
+      "byteSize": 73,
+      "sha256": "PLACEHOLDER_SHA256",
+      "blobCopied": false,
+      "altText": "Fixture contact media"
+    }
+  ]
+}

@@ -28,7 +28,8 @@ The restore dry-run:
 - compares inventory counts against `fixtures/restore-expected-counts.json`;
 - writes JSON and Markdown restore validation reports;
 - writes `RESTORE_TARGET_NOT_WRITTEN.md`;
-- stops before any real restore.
+- stops before any real restore;
+- in `production-restore-proof` mode, confirms fake Cosmos export, fake media copy, and tenant website bundle steps are complete before writing the plan.
 
 ## Output
 
@@ -47,6 +48,20 @@ Generated restore-plan output includes:
 
 The dry-run compares tenants, sites, pages, routes, forms, SEO entries, redirects, theme/settings entries, media asset entries, static evidence routes, and config inventory entries.
 
+For fake complete Cosmos/media bundles it also reports:
+
+- Cosmos record-set count;
+- Cosmos total record count;
+- fake copied media blob count.
+
+## Fake Complete Connector Mode
+
+```powershell
+node src/backup-cli.mjs restore-plan --bundle .tmp/ice-cosmos-media-fake-complete --out .tmp/ice-cosmos-media-fake-complete-restore-plan --mode production-restore-proof --overwrite
+```
+
+The resulting restore plan marks Cosmos portable JSON restore planning, fake media blob restore planning, and tenant website bundle layout planning as complete. It remains a dry run and writes no target system.
+
 ## Boundary
 
-No real restore occurs. The dry-run does not import a database, call CMS/API endpoints, restore MediaAssets, copy blobs, restore static output, read protected config, export secrets, create encrypted escrow payloads, modify external systems, or publish live pages.
+No real restore occurs. The dry-run does not import a database, call CMS/API endpoints, restore MediaAssets, copy real blobs, restore static output, read protected config, export secrets, create encrypted escrow payloads, modify external systems, or publish live pages.

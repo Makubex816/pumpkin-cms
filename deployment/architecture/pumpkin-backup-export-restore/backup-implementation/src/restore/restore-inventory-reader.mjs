@@ -10,17 +10,21 @@ export async function readRestoreInventory({ bundleRoot }) {
   const mediaInventory = await readJson(path.join(bundleRoot, 'media', 'media-assets.json'));
   const staticEvidence = await readJson(path.join(bundleRoot, 'static', 'static-output-manifest.json'));
   const configInventory = await readJson(path.join(bundleRoot, 'config-inventory', 'env-inventory.redacted.json'));
+  const connectorInventory = await readConnectorInventory({ bundleRoot, manifest });
   const escrow = await readEscrowState(bundleRoot);
-  const counts = buildCounts({ cmsContent, mediaInventory, staticEvidence, configInventory });
+  const counts = buildCounts({ cmsContent, mediaInventory, staticEvidence, configInventory, connectorInventory });
 
   return {
     manifest,
     counts,
     scope: manifest.scope,
+    connectorComponents: manifest.componentStatus ?? {},
     sourceFiles: {
       manifest: 'manifest.json',
       cmsContent: 'cms-content/*.json',
       mediaInventory: 'media/media-assets.json',
+      cosmosExport: connectorInventory.cosmos?.exportManifestPath ?? null,
+      mediaBlobMap: connectorInventory.media?.blobMapPath ?? null,
       staticEvidence: 'static/static-output-manifest.json',
       configInventory: 'config-inventory/env-inventory.redacted.json',
       escrowMarker: 'escrow/ESCROW_NOT_INCLUDED.md'
@@ -61,7 +65,16 @@ async function readEscrowState(bundleRoot) {
   };
 }
 
-function buildCounts({ cmsContent, mediaInventory, staticEvidence, configInventory }) {
+async function readConnectorInventory({ bundleRoot, manifest }) {
+  const cosmosPath = manifest.componentStatus?.database?.exportManifestPath;
+  const blobMapPath = manifest.componentStatus?.media?.blobMapPath;
+  return {
+    cosmos: cosmosPath ? await readOptionalJson(path.join(bundleRoot, cosmosPath)) : null,
+    media: blobMapPath ? await readOptionalJson(path.join(bundleRoot, blobMapPath)) : null
+  };
+}
+
+function buildCounts({ cmsContent, mediaInventory, staticEvidence, configInventory, connectorInventory }) {
   return {
     tenants: countArray(cmsContent.tenants),
     sites: countArray(cmsContent.sites),
@@ -72,6 +85,9 @@ function buildCounts({ cmsContent, mediaInventory, staticEvidence, configInvento
     redirects: countArray(cmsContent.redirects),
     themeSettings: countArray(cmsContent.theme?.themes),
     mediaAssets: countArray(mediaInventory.mediaAssets),
+    cosmosRecordSets: countArray(connectorInventory.cosmos?.recordSets),
+    cosmosRecords: typeof connectorInventory.cosmos?.totalRecordCount === 'number' ? connectorInventory.cosmos.totalRecordCount : 0,
+    mediaCopiedBlobs: typeof connectorInventory.media?.copiedBlobCount === 'number' ? connectorInventory.media.copiedBlobCount : 0,
     staticEvidenceRoutes: countArray(staticEvidence.routes),
     configVariables: countArray(configInventory.variables)
   };
@@ -92,5 +108,13 @@ async function fileExists(filePath) {
     return true;
   } catch {
     return false;
+  }
+}
+
+async function readOptionalJson(filePath) {
+  try {
+    return await readJson(filePath);
+  } catch {
+    return null;
   }
 }
