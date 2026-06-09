@@ -1,0 +1,68 @@
+{
+  "phase": "2F-10B",
+  "title": "Ice Cosmos/media backup connector implementation plan",
+  "site": "IceSkatingRinkRentals.com",
+  "createdBy": "Codex",
+  "status": "planning-complete",
+  "readiness": {
+    "phase2f10aSourceWiringPlan": "complete",
+    "phase2f10bConnectorImplementationPlan": true,
+    "iceFullyBackupableToday": false,
+    "cosmosDatabaseConnectorPlan": true,
+    "mediaBlobConnectorPlan": true,
+    "tenantWebsiteBundleIntegrationPlan": true,
+    "readyForConnectorImplementationApproval": true,
+    "implementationPerformed": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "databaseDirection": {
+    "primaryAssumption": "cosmos-provider-based-storage",
+    "azureSqlStatus": "optional-fallback-if-future-evidence-proves-required",
+    "requiredFutureLayers": [
+      "cosmos-platform-backup-evidence",
+      "tenant-scoped-portable-cosmos-json-export"
+    ]
+  },
+  "mediaDirection": {
+    "provider": "azure-blob",
+    "knownStorageAccount": "iceskatingmedia",
+    "knownResourceGroup": "rg-ice-production-media",
+    "knownContainer": "ice-rink-rentals-media",
+    "knownPublicHost": "media.iceskatingrinkrentals.com"
+  },
+  "boundaries": {
+    "implementation": false,
+    "cosmosExport": false,
+    "blobDownload": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "azureMutation": false,
+    "cmsWrite": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "NON_GOALS.md",
+    "PHASE_2F10A_FINDINGS_SUMMARY.md",
+    "COSMOS_DATABASE_BACKUP_DIRECTION.md",
+    "COSMOS_READ_ONLY_DISCOVERY_PLAN.md",
+    "COSMOS_PLATFORM_BACKUP_EVIDENCE_PLAN.md",
+    "PORTABLE_COSMOS_JSON_EXPORT_PLAN.md",
+    "MEDIA_BLOB_CONNECTOR_PLAN.md",
+    "TENANT_WEBSITE_BUNDLE_INTEGRATION_PLAN.md",
+    "LOCAL_DEV_AND_LIVE_AZURE_PROFILE_PLAN.md",
+    "ENV_AND_TOOLING_READINESS_MATRIX.md",
+    "MANIFEST_CHECKSUM_INTEGRATION_PLAN.md",
+    "VALIDATOR_CONTRACT_UPDATE_PLAN.md",
+    "RESTORE_PLAN_UPDATE_PLAN.md",
+    "IMPLEMENTATION_BATCHES.md",
+    "TEST_FIXTURE_PLAN.md",
+    "RISK_REGISTER.md",
+    "NEXT_COSMOS_MEDIA_CONNECTOR_IMPLEMENTATION_PROMPT.md",
+    "manifest.json"
+  ]
+}
