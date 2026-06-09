@@ -1,0 +1,4 @@
+# Next Runtime Profile Implementation Prompt
+
+Approve Phase 2F-12K Ice Cosmos runtime profile implementation foundation only: using the Phase 2F-12J no-switch runtime wiring preflight, implement the local/repo runtime profile foundation that lets Pumpkin identify IceSkatingRinkRentals.com as a provisioned future Cosmos target without switching CMS runtime storage. Add non-secret runtime profile options, provider resolver integration, disabled Cosmos runtime adapter wiring, metadata endpoint mapping, fail-closed profile selection, tests, docs, and a result package. No CMS runtime switch, no CMS writes, no data migration or seed, no database export/import, no Cosmos document export, no protected config reads, no secret printing, no Azure mutation, no deployment, no Search Console/indexing, and no live-page publication.
+
