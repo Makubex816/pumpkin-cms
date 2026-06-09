@@ -1,0 +1,57 @@
+{
+  "phase": "2F-12",
+  "title": "Ice live read-only connector preflight",
+  "site": "IceSkatingRinkRentals.com",
+  "status": "complete",
+  "readiness": {
+    "phase2f11ConnectorFoundation": "complete",
+    "phase2f12LiveReadOnlyPreflight": true,
+    "cosmosLiveDiscoveryEvidenceGathered": false,
+    "mediaLiveMetadataEvidenceGathered": true,
+    "readyForLiveConnectorExecutionApproval": false,
+    "iceFullyBackupableToday": false,
+    "liveCosmosExportPerformed": false,
+    "liveMediaBlobDownloadPerformed": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "envPresenceSummary": {
+    "azureCli": "PRESENT",
+    "azureCliLoggedIn": "PRESENT",
+    "pumpkinApiUrl": "PRESENT",
+    "pumpkinAdminJwt": "PRESENT",
+    "cosmosHints": "MISSING",
+    "mediaHints": "MISSING"
+  },
+  "azureDiscovery": {
+    "accountState": "Enabled",
+    "resourceGroupsReturned": 4,
+    "cosmosAccountsReturned": 0,
+    "storageAccountsReturned": 2,
+    "mediaStorageAccountConfirmed": true,
+    "mediaContainerConfirmed": true,
+    "blobMetadataEntriesReturned": 9,
+    "blobContentDownloaded": false
+  },
+  "regression": {
+    "npmTest": "passed",
+    "npmRunCheck": "passed-on-rerun",
+    "fakeConnectorCreate": "passed",
+    "fakeConnectorValidate": "passed",
+    "fakeConnectorRestorePlan": "passed"
+  },
+  "boundaries": {
+    "cosmosDataExport": false,
+    "databaseExport": false,
+    "blobDownload": false,
+    "storageKeysListed": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "cmsWrite": false,
+    "azureMutation": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  }
+}

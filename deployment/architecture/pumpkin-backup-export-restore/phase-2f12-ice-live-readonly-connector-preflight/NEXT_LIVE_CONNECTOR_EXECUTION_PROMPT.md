@@ -1,0 +1,5 @@
+# Next Live Connector Execution Prompt
+
+Approve Phase 2F-13 Ice database-provider source resolution and live read-only Cosmos discovery retry only: after the owner confirms the live database provider and the correct Azure subscription/resource group/account scope or equivalent provider scope, run presence-only env checks, verify Azure CLI is already logged in, perform read-only Cosmos/provider account discovery, database/container metadata discovery, and platform backup-policy evidence collection without keys, connection strings, SAS, protected config reads, document exports, database exports, blob downloads, or Azure mutations, then update the live connector readiness matrix and go/no-go recommendation.
+
+No Cosmos document export, no database export/import, no blob/media download, no storage keys/listKeys, no SAS generation, no protected config reads, no secret export, no CMS writes, no MediaAsset writes, no Azure mutations, no Cloudflare/DNS/deployment/email/Search Console actions, no escrow payload, and no live-page publication.
