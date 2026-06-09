@@ -1,22 +1,20 @@
 # Remaining Blocked Paths
 
-## Still Blocked
+## Resolved In Phase 2D-3
 
-- `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/SECURITY_AND_SECRET_AUDIT.md`
+- `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/ACCESS_SAFETY_AUDIT.md`
 
 ## Decision
 
-Leave this path uncommitted in Phase 2D-2A.
+Phase 2D-2A left this path uncommitted.
 
-It is part of the separate architecture QA audit batch. A later explicit owner decision can rename it and update:
+Phase 2D-3 renamed it and updated:
 
 - `PUMPKIN_MULTI_TENANT_ONBOARDING_ARCHITECTURE_QA_AUDIT_REPORT.md`
 - `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/manifest.json`
 
 ## Recommended Later Rename
 
-Suggested neutral name:
+Final neutral name:
 
-- `SECURITY_AND_CREDENTIAL_BOUNDARY_AUDIT.md`
-
-No rename was performed in Phase 2D-2A.
+- `ACCESS_SAFETY_AUDIT.md`

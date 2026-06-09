@@ -10,7 +10,7 @@
 
 | Path | Decision |
 | --- | --- |
-| `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/SECURITY_AND_SECRET_AUDIT.md` | Leave uncommitted for a later explicit owner decision because it belongs to the separate architecture QA audit batch. |
+| `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/ACCESS_SAFETY_AUDIT.md` | Resolved in Phase 2D-3 by renaming the remaining architecture QA audit documentation path. |
 
 ## Cleanup
 

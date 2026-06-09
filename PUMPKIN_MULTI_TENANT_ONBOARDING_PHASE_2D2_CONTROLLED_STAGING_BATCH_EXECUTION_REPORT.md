@@ -20,9 +20,9 @@ Batch 1 was already committed as `14e4947 Plan onboarding safe cleanup execution
 
 ## Blocked Batch
 
-Batch 6 was not committed. The required staged-path safety check matched:
+Batch 6 was not committed in Phase 2D-2. The required staged-path safety check matched the architecture QA audit documentation filename before Phase 2D-3 renamed it.
 
-- `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/SECURITY_AND_SECRET_AUDIT.md`
+- Current safe path: `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/ACCESS_SAFETY_AUDIT.md`
 
 The batch was unstaged and left uncommitted.
 

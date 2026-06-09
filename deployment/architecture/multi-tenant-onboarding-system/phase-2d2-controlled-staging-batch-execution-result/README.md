@@ -10,7 +10,8 @@ The run used only targeted `git add --` commands, ran the required staged-path s
 
 - Batch 1 was already committed before this run as `14e4947 Plan onboarding safe cleanup execution`.
 - Batches 2, 3, 4, 5, and 7 were staged with exact paths and committed locally.
-- Batch 6 was blocked by the required staged-path safety rule because `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/SECURITY_AND_SECRET_AUDIT.md` contains the word `SECRET` in the path.
+- Batch 6 was blocked by the required staged-path safety rule because one architecture QA audit documentation filename contained a high-risk guard term.
+- Phase 2D-3 renamed that documentation file to `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/ACCESS_SAFETY_AUDIT.md`.
 - No unsafe path was committed from Batch 6.
 - No files were deleted.
 - No files were pushed.

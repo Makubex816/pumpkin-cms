@@ -62,7 +62,7 @@
     {
       "batch": 6,
       "status": "blocked",
-      "reason": "staged-path safety guard matched SECURITY_AND_SECRET_AUDIT.md"
+      "reason": "staged-path safety guard matched an architecture QA audit documentation filename later renamed to ACCESS_SAFETY_AUDIT.md"
     },
     {
       "batch": "large modified architecture docs",

@@ -10,11 +10,11 @@ Before each successful commit, the staged-path safety check returned no blocked 
 
 ## Blocked Path Found
 
-Batch 6 was blocked by this path:
+Batch 6 was blocked by an architecture QA audit documentation path that was later renamed in Phase 2D-3.
 
-- `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/SECURITY_AND_SECRET_AUDIT.md`
+- Current safe path: `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/ACCESS_SAFETY_AUDIT.md`
 
-No content from this path was committed during Phase 2D-2.
+No content from the blocked path was committed during Phase 2D-2.
 
 ## Protected Config Handling
 

@@ -12,11 +12,11 @@ Commit:
 
 Reason: the user-provided staged-path safety guard returned a path.
 
-Blocked path:
+Original blocked documentation path was renamed in Phase 2D-3.
 
-- `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/SECURITY_AND_SECRET_AUDIT.md`
+- Current safe path: `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/ACCESS_SAFETY_AUDIT.md`
 
-This appears to be a filename false positive for the word `SECRET`, but the Phase 2D-2 rule was explicit:
+This was a documentation filename false positive for a high-risk guard term, but the Phase 2D-2 rule was explicit:
 
 - if the staged-path safety check returns any path, do not commit;
 - unstage the unsafe path;

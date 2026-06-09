@@ -17,11 +17,11 @@ The documentation content was preserved and references were updated.
 
 ## Remaining Blocked Path
 
-Left uncommitted:
+Left uncommitted at Phase 2D-2A, then resolved in Phase 2D-3:
 
-- `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/SECURITY_AND_SECRET_AUDIT.md`
+- `deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/ACCESS_SAFETY_AUDIT.md`
 
-This path belongs to the separate architecture QA audit batch. A later owner decision can rename it to a neutral documentation filename and update its root report and manifest references.
+This path belongs to the separate architecture QA audit batch. Phase 2D-3 renamed it to a neutral documentation filename and updated its root report and manifest references.
 
 ## Policy
 

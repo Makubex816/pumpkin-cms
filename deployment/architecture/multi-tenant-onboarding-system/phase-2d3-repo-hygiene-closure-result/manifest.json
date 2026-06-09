@@ -1,0 +1,60 @@
+{
+  "phase": "2D-3",
+  "packageName": "phase-2d3-repo-hygiene-closure-result",
+  "createdAtLocal": "2026-06-08T20:25:14.7711078-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "baselineCommit": {
+    "short": "cd51449",
+    "full": "cd51449c5fbaa88b7e9215edd4b2936c611cfe38",
+    "subject": "Resolve onboarding path guard documentation false positives"
+  },
+  "blockedPathReview": {
+    "classification": "safe markdown documentation",
+    "secretLikeValuePatterns": 0,
+    "protectedConfigRead": false
+  },
+  "renamedDocs": [
+    {
+      "to": "deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/ACCESS_SAFETY_AUDIT.md",
+      "reason": "neutral documentation filename avoids staged-path false positive"
+    }
+  ],
+  "guardPolicy": {
+    "guardWeakened": false,
+    "stagedPathGuardRequiredBeforeCommit": true,
+    "gitAddAUsed": false,
+    "candidatePathGuardHitCount": 0,
+    "candidatePathCount": 41,
+    "oldAuditBasenameReferences": 0
+  },
+  "stagingScope": {
+    "rawContentReviewInputs": false,
+    "ignoredGeneratedOutput": false,
+    "protectedConfig": false,
+    "envKeyJwtTokenFiles": false,
+    "unrelatedBacklog": false
+  },
+  "externalSystems": {
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "closureAssessment": "Repo hygiene is closed enough to proceed to Roller reconciliation planning only.",
+  "files": [
+    "README.md",
+    "REMAINING_BLOCKED_PATH_REVIEW.md",
+    "DOC_PATH_RENAME_RESULT.md",
+    "REFERENCE_UPDATE_RESULT.md",
+    "STAGED_PATH_GUARD_RESULT.md",
+    "REMAINING_WORKTREE_STATUS.md",
+    "REPO_HYGIENE_CLOSURE_ASSESSMENT.md",
+    "NEXT_ROLLER_RECONCILIATION_PLANNING_PROMPT.md",
+    "manifest.json"
+  ]
+}
