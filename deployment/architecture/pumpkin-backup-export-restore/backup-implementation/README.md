@@ -1,8 +1,8 @@
 # Pumpkin Backup Center Local Prototype
 
-Phase 2F-4 hardens the local-only standard backup validator and bundle contract that began in Phase 2F-3.
+Phase 2F-5 adds a local-only restore validation dry-run on top of the standard backup exporter and hardened validator.
 
-It creates and validates folder-based standard backup bundles from fake fixtures only. It does not create production backup zips, export a real database, call CMS/API endpoints, export secrets, create encrypted escrow payloads, restore data, deploy, or touch external systems.
+It creates and validates folder-based standard backup bundles from fake fixtures only, then can generate a restore plan without restoring into any real system. It does not create production backup zips, export or import a real database, call CMS/API endpoints, export secrets, create encrypted escrow payloads, restore data, deploy, or touch external systems.
 
 ## Implemented
 
@@ -18,6 +18,9 @@ It creates and validates folder-based standard backup bundles from fake fixtures
 - `escrow/ESCROW_NOT_INCLUDED.md` standard-mode marker.
 - JSON and Markdown validation reports.
 - Failure case manifest and generated negative bundle tests.
+- Restore validation dry-run command.
+- Restore inventory count comparison.
+- Restore-plan JSON and Markdown reports.
 - Node built-in tests.
 
 ## Quick Start
@@ -27,8 +30,10 @@ npm test
 npm run check
 npm run create:tenant
 npm run validate:tenant
+npm run restore:tenant
 npm run create:platform
 npm run validate:platform
+npm run restore:platform
 ```
 
 Generated bundles are written only under `.tmp/`, which is ignored by this package.
@@ -38,11 +43,12 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 - `USAGE.md`
 - `STANDARD_BACKUP_FORMAT.md`
 - `VALIDATOR.md`
+- `RESTORE_VALIDATION.md`
 - `FIXTURES.md`
 - `SECURITY_BOUNDARIES.md`
 - `KNOWN_LIMITATIONS.md`
-- `NEXT_PHASE_2F5_RESTORE_VALIDATION_PROMPT.md`
+- `NEXT_PHASE_2F6_ENCRYPTED_ESCROW_PROTOTYPE_PROMPT.md`
 
 ## Boundary
 
-Local prototype only. Fake adapters only. No secrets, no protected config, no database export, no real CMS export, no MediaAsset export, no blob copy, no static generation, no escrow payload, no restore, no external HTTP calls, and no live-page publication.
+Local prototype only. Fake adapters only. No secrets, no protected config, no database export/import, no real CMS export/restore, no MediaAsset restore, no blob copy, no static generation/restore, no escrow payload, no real restore, no external HTTP calls, and no live-page publication.

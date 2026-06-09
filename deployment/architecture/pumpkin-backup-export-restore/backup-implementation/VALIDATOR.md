@@ -38,6 +38,10 @@ Reports include status, generated timestamp, checks, warnings, failures, checked
 
 Reports must not include raw secrets. Failure messages identify paths and stable error codes only.
 
+## Restore Dry-Run Use
+
+The Phase 2F-5 `restore-plan` command runs this validator before reading any fake restore inventory. Invalid bundles, checksum mismatches, secret-like values, protected paths, or escrow payloads stop the restore dry-run before output is created.
+
 ## Stable Failure Codes
 
 The Phase 2F-4 test suite covers these negative cases:

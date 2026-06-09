@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 import { createStandardBackup } from './standard-backup-runner.mjs';
+import { createRestorePlan } from './restore/restore-plan-runner.mjs';
 import { validateBackupBundle, writeValidationReports } from './validators/backup-validator.mjs';
 import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.2.0';
+const version = '0.3.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -38,6 +39,24 @@ async function main(argv) {
     await writeValidationReports({ bundleRoot, validation });
     console.log(`validation: ${validation.status}`);
     if (validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'restore-plan') {
+    const bundlePath = requiredOption(options, 'bundle');
+    const outputPath = requiredOption(options, 'out');
+    const result = await createRestorePlan({
+      bundlePath,
+      outputPath,
+      expectedCountsPath: options['expected-counts'],
+      overwrite: Boolean(options.overwrite)
+    });
+    console.log(`restore-plan: ${result.plan.status}`);
+    console.log(`output: ${path.relative(process.cwd(), result.outputRoot)}`);
+    console.log(`scope: ${result.plan.scope.scopeType}`);
+    console.log(`dryRunOnly: ${result.plan.dryRunOnly}`);
+    if (result.plan.status !== 'passed') {
       process.exitCode = 1;
     }
     return;
@@ -93,10 +112,11 @@ Commands:
   version
   create-standard --scope tenant|platform --answers <fixture.json> --out .tmp/<bundle> [--overwrite]
   validate --bundle .tmp/<bundle>
+  restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
   inspect --bundle .tmp/<bundle>
 
 Boundary:
-  Local-only. Folder bundles under .tmp only. No zips, no secrets, no escrow payloads, no restore, no CMS/API calls.
+  Local-only. Folder bundles and restore-plan dry-runs under .tmp only. No zips, no secrets, no escrow payloads, no real restore, no CMS/API calls.
 `);
 }
 

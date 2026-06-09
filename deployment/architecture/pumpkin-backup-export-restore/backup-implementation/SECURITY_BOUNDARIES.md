@@ -7,6 +7,7 @@
 - Compute SHA-256 checksums for local generated files.
 - Run local validation and local Node tests.
 - Write validation JSON/Markdown reports inside generated `.tmp` bundles.
+- Write restore-plan dry-run reports inside generated `.tmp` output.
 
 ## Blocked
 
@@ -20,6 +21,7 @@
 - Real static generation.
 - Encrypted escrow payload creation.
 - Restore execution.
+- Real restore target writes.
 - Backup zip creation.
 - External HTTP checks.
 - Azure, Cloudflare, DNS, deployment, Function App setting, email, Microsoft 365, Search Console, indexing, or live-page actions.
@@ -38,4 +40,4 @@ The validator rejects:
 
 ## Generated Output
 
-`.tmp/` output is ignored and must not be staged. Generated negative failure bundles are test artifacts only.
+`.tmp/` output is ignored and must not be staged. Generated negative failure bundles and restore-plan reports are test artifacts only.

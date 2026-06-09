@@ -75,4 +75,4 @@ Standard backups exclude secrets. They must include `escrow/ESCROW_NOT_INCLUDED.
 
 ## Output Policy
 
-Generated test bundles are local folders under `.tmp/`. Production backup zips, real database exports, real CMS/API exports, media blob downloads, real static output, encrypted escrow payloads, restore output, and external system mutations are outside this phase.
+Generated test bundles and restore-plan dry-run outputs are local folders under `.tmp/`. Production backup zips, real database exports/imports, real CMS/API exports/restores, media blob downloads/restores, real static output/restores, encrypted escrow payloads, real restore output, and external system mutations are outside this phase.

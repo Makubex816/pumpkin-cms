@@ -3,8 +3,10 @@ import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { createRestorePlan } from '../src/restore/restore-plan-runner.mjs';
 import { createStandardBackup } from '../src/standard-backup-runner.mjs';
-import { validateBackupBundle, writeValidationReports } from '../src/validators/backup-validator.mjs';
+import { validateBackupBundle, writeValidationReports, hasSecretLikeValue } from '../src/validators/backup-validator.mjs';
+import { listFilesRecursive } from '../src/utils/file-hash.mjs';
 import { readJson, writeJson } from '../src/utils/json-writer.mjs';
 import { packageRoot } from '../src/utils/safe-paths.mjs';
 
@@ -30,7 +32,22 @@ const testBundleNames = [
   'test-checksum-self',
   'test-config-not-redacted',
   'test-report-output',
-  'test-cli-invalid'
+  'test-cli-invalid',
+  'test-restore-tenant-bundle',
+  'test-restore-tenant-plan',
+  'test-restore-platform-bundle',
+  'test-restore-platform-plan',
+  'test-restore-invalid-bundle',
+  'test-restore-invalid-plan',
+  'test-restore-checksum-bundle',
+  'test-restore-checksum-plan',
+  'test-restore-escrow-bundle',
+  'test-restore-escrow-plan',
+  'test-restore-output-safety-bundle',
+  'test-restore-secret-scan-bundle',
+  'test-restore-secret-scan-plan',
+  'test-restore-cli-bundle',
+  'test-restore-cli-plan'
 ];
 
 after(async () => {
@@ -248,6 +265,156 @@ test('CLI validate returns non-zero for invalid bundles and writes reports', asy
   await fs.access(path.join(result.bundleRoot, 'VALIDATION_RESULT.md'));
 });
 
+test('restore-plan passes for valid tenant standard backup and writes reports', async () => {
+  const backup = await createTenantBundle('test-restore-tenant-bundle');
+  await clean('test-restore-tenant-plan');
+  const result = await createRestorePlan({
+    bundlePath: backup.bundleRoot,
+    outputPath: '.tmp/test-restore-tenant-plan',
+    overwrite: true,
+    now: fixedDate
+  });
+  assert.equal(result.plan.status, 'passed');
+  assert.equal(result.plan.dryRunOnly, true);
+  assert.equal(result.plan.restoreExecuted, false);
+  assert.equal(result.plan.inventoryCounts.tenants, 1);
+  assert.equal(result.plan.inventoryCounts.pages, 2);
+  assert.equal(result.plan.inventoryCounts.routes, 2);
+  assert.equal(result.plan.inventoryCounts.forms, 1);
+  assert.equal(result.plan.inventoryCounts.mediaAssets, 1);
+  assert.equal(result.plan.inventoryCounts.configVariables, 3);
+  assert(result.plan.countComparison.comparisons.every((comparison) => comparison.status === 'passed'));
+  await assertRestoreOutputFiles(result.outputRoot);
+});
+
+test('restore-plan passes for valid platform standard backup and compares platform inventory counts', async () => {
+  const backup = await createPlatformBundle('test-restore-platform-bundle');
+  await clean('test-restore-platform-plan');
+  const result = await createRestorePlan({
+    bundlePath: backup.bundleRoot,
+    outputPath: '.tmp/test-restore-platform-plan',
+    overwrite: true,
+    now: fixedDate
+  });
+  assert.equal(result.plan.status, 'passed');
+  assert.equal(result.plan.scope.scopeType, 'platform');
+  assert.equal(result.plan.inventoryCounts.tenants, 2);
+  assert.equal(result.plan.inventoryCounts.pages, 3);
+  assert.equal(result.plan.inventoryCounts.routes, 3);
+  assert.equal(result.plan.inventoryCounts.mediaAssets, 2);
+  assert.equal(result.plan.inventoryCounts.staticEvidenceRoutes, 3);
+  await assertRestoreOutputFiles(result.outputRoot);
+});
+
+test('restore-plan refuses invalid backup bundle before writing restore output', async () => {
+  const backup = await createTenantBundle('test-restore-invalid-bundle');
+  await clean('test-restore-invalid-plan');
+  await fs.rm(path.join(backup.bundleRoot, 'RESTORE_INSTRUCTIONS.md'));
+  await assert.rejects(
+    () =>
+      createRestorePlan({
+        bundlePath: backup.bundleRoot,
+        outputPath: '.tmp/test-restore-invalid-plan',
+        overwrite: true,
+        now: fixedDate
+      }),
+    /refused invalid backup bundle/
+  );
+  await assert.rejects(() => fs.access(path.join(packageRoot, '.tmp', 'test-restore-invalid-plan')));
+});
+
+test('restore-plan refuses checksum-tampered bundle', async () => {
+  const backup = await createTenantBundle('test-restore-checksum-bundle');
+  await clean('test-restore-checksum-plan');
+  await fs.appendFile(path.join(backup.bundleRoot, 'BACKUP_SUMMARY.md'), '\nChanged before restore validation.\n', 'utf8');
+  await assert.rejects(
+    () =>
+      createRestorePlan({
+        bundlePath: backup.bundleRoot,
+        outputPath: '.tmp/test-restore-checksum-plan',
+        overwrite: true,
+        now: fixedDate
+      }),
+    /CHECKSUM_MISMATCH/
+  );
+});
+
+test('restore-plan refuses escrow payload in standard backup', async () => {
+  const backup = await createTenantBundle('test-restore-escrow-bundle');
+  await clean('test-restore-escrow-plan');
+  await fs.writeFile(path.join(backup.bundleRoot, 'escrow', 'escrow-' + 'payload.fake'), 'fake escrow payload marker\n', 'utf8');
+  await assert.rejects(
+    () =>
+      createRestorePlan({
+        bundlePath: backup.bundleRoot,
+        outputPath: '.tmp/test-restore-escrow-plan',
+        overwrite: true,
+        now: fixedDate
+      }),
+    /ESCROW_PAYLOAD_PRESENT/
+  );
+});
+
+test('restore-plan refuses output outside .tmp and output overlapping source bundle', async () => {
+  const backup = await createTenantBundle('test-restore-output-safety-bundle');
+  await assert.rejects(
+    () =>
+      createRestorePlan({
+        bundlePath: backup.bundleRoot,
+        outputPath: '../restore-outside',
+        overwrite: true,
+        now: fixedDate
+      }),
+    /output path must stay inside/
+  );
+  await assert.rejects(
+    () =>
+      createRestorePlan({
+        bundlePath: backup.bundleRoot,
+        outputPath: '.tmp/test-restore-output-safety-bundle/nested-plan',
+        overwrite: true,
+        now: fixedDate
+      }),
+    /must not be inside source backup bundle/
+  );
+});
+
+test('restore-plan generated reports contain no secret-like values', async () => {
+  const backup = await createTenantBundle('test-restore-secret-scan-bundle');
+  await clean('test-restore-secret-scan-plan');
+  const result = await createRestorePlan({
+    bundlePath: backup.bundleRoot,
+    outputPath: '.tmp/test-restore-secret-scan-plan',
+    overwrite: true,
+    now: fixedDate
+  });
+  const files = await listFilesRecursive(result.outputRoot);
+  for (const filePath of files) {
+    const text = await fs.readFile(filePath, 'utf8');
+    const lines = text.split(/\r?\n/);
+    for (const line of lines) {
+      assert.equal(hasSecretLikeValue(line), false, `secret-like value in ${filePath}`);
+    }
+  }
+});
+
+test('CLI restore-plan writes dry-run output for valid bundles', async () => {
+  await createTenantBundle('test-restore-cli-bundle');
+  await clean('test-restore-cli-plan');
+  const outcome = await runCli([
+    'src/backup-cli.mjs',
+    'restore-plan',
+    '--bundle',
+    '.tmp/test-restore-cli-bundle',
+    '--out',
+    '.tmp/test-restore-cli-plan',
+    '--overwrite'
+  ]);
+  assert.equal(outcome.code, 0);
+  assert.match(outcome.stdout, /restore-plan: passed/);
+  await assertRestoreOutputFiles(path.join(packageRoot, '.tmp', 'test-restore-cli-plan'));
+});
+
 test('output and validation path safety rejects paths outside .tmp and archive-style bundles', async () => {
   await assert.rejects(
     () =>
@@ -287,7 +454,12 @@ test('source does not include external HTTP call patterns or protected config re
     'src/standard-backup-runner.mjs',
     'src/standard-bundle-writer.mjs',
     'src/adapters/fake-cms-content-adapter.mjs',
-    'src/adapters/fake-config-inventory-adapter.mjs'
+    'src/adapters/fake-config-inventory-adapter.mjs',
+    'src/restore/restore-plan-runner.mjs',
+    'src/restore/restore-plan-writer.mjs',
+    'src/restore/restore-inventory-reader.mjs',
+    'src/restore/restore-count-comparator.mjs',
+    'src/restore/restore-target-safety.mjs'
   ];
   for (const relativePath of sourceFiles) {
     const text = await fs.readFile(path.join(packageRoot, relativePath), 'utf8');
@@ -303,6 +475,17 @@ test('.tmp output and production backup artifacts are ignored or blocked by pack
   assert.match(gitignore, /^encrypted-secrets\.\*$/m);
   assert.match(gitignore, /^escrow-payload\*$/m);
 });
+
+async function assertRestoreOutputFiles(outputRoot) {
+  await fs.access(path.join(outputRoot, 'restore-plan.json'));
+  await fs.access(path.join(outputRoot, 'RESTORE_PLAN.md'));
+  await fs.access(path.join(outputRoot, 'RESTORE_VALIDATION_RESULT.json'));
+  await fs.access(path.join(outputRoot, 'RESTORE_VALIDATION_RESULT.md'));
+  await fs.access(path.join(outputRoot, 'RESTORE_TARGET_NOT_WRITTEN.md'));
+  const validation = await readJson(path.join(outputRoot, 'RESTORE_VALIDATION_RESULT.json'));
+  assert.equal(validation.status, 'passed');
+  assert.equal(validation.dryRunOnly, true);
+}
 
 async function runCli(args) {
   return new Promise((resolve) => {
