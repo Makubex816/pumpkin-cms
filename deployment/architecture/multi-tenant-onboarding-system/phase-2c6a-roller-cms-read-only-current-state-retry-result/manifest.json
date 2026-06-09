@@ -1,0 +1,61 @@
+{
+  "phase": "2C-6A",
+  "packageName": "roller-cms-read-only-current-state-retry-result",
+  "tenant": "Roller Rink Rentals",
+  "status": "blocked-before-cms-current-state-evidence",
+  "recommendation": "conditional-go-pending-pumpkin-api-url-and-cms-current-state-evidence",
+  "phase2c6Evidence": "complete-with-env-blocker",
+  "phase2c6aRetryPackageCreated": true,
+  "envPresenceReady": false,
+  "cmsCurrentStateEvidenceGathered": false,
+  "localPackageRevalidation": "passed",
+  "validatorErrors": 0,
+  "validatorWarnings": 0,
+  "cmsGetRequests": 0,
+  "cmsHeadRequests": 0,
+  "cmsMutationRequests": 0,
+  "cmsWritesPerformed": false,
+  "tenantCreated": false,
+  "mediaAssetWrites": false,
+  "externalSystemsChanged": false,
+  "searchConsoleOrIndexingAffected": false,
+  "livePagesPublished": false,
+  "readyForCmsImportExecutionApprovalDecision": false,
+  "readyForCmsImportExecution": false,
+  "readyForStaticReadinessPlanning": false,
+  "readyForProductionReadinessPlanning": false,
+  "readyForLivePages": false,
+  "envPresence": {
+    "PUMPKIN_API_URL": "MISSING",
+    "PUMPKIN_ADMIN_JWT": "PRESENT",
+    "ROLLER_RINK_RENTALS_API_KEY": "MISSING",
+    "ROLLER_RINK_RENTALS_TENANT_ID": "MISSING"
+  },
+  "localValidationEvidence": {
+    "builderTest": "passed",
+    "builderCheck": "passed",
+    "validatorTest": "passed",
+    "validatorCheck": "passed",
+    "rollerDryRun": "passed",
+    "rollerGenerateValidateSupport": "passed",
+    "directValidatorSupportRun": "passed"
+  },
+  "generatedOutput": [
+    "deployment/architecture/multi-tenant-onboarding-system/import-package-builder/.tmp/real-dry-run-roller-rink-rentals/",
+    "deployment/architecture/multi-tenant-onboarding-system/validator-implementation/.tmp/roller-phase-2c6a-current-state-retry-validation/"
+  ],
+  "files": [
+    "README.md",
+    "ENV_PRESENCE_RECHECK_RESULT.md",
+    "LOCAL_PACKAGE_REVALIDATION_RESULT.md",
+    "CMS_READ_ONLY_RETRY_BOUNDARIES.md",
+    "CMS_CURRENT_STATE_RETRY_RESULT.md",
+    "TENANT_CONFLICT_RETRY_RESULT.md",
+    "SITE_DOMAIN_ROUTE_CONFLICT_RETRY_RESULT.md",
+    "READ_ONLY_AUDIT_LOG.md",
+    "GO_NO_GO_RECOMMENDATION.md",
+    "BLOCKERS_OR_WARNINGS.md",
+    "NEXT_CMS_IMPORT_EXECUTION_APPROVAL_PROMPT.md",
+    "manifest.json"
+  ]
+}
