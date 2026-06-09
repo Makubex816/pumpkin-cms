@@ -16,7 +16,7 @@ The provider resolver records non-secret metadata about the database/provider so
 
 - configured Cosmos source;
 - Ice missing provider source;
-- Ice future-target Cosmos;
+- Ice provisioned future-target Cosmos;
 - local-dev provider;
 - forbidden-field failure fixture.
 

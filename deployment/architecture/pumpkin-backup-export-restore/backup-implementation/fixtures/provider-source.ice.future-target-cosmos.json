@@ -2,37 +2,57 @@
   "contractVersion": "0.1.0",
   "tenantKey": "ice-rink-rentals",
   "siteKey": "ice-rink-rentals",
-  "environment": "fixture",
-  "profile": "fixture",
+  "environment": "production",
+  "profile": "future-target-cosmos-provisioned",
   "providerType": "cosmos",
   "providerStatus": "future-target",
-  "sourceResolutionStatus": "planned",
+  "sourceResolutionStatus": "provisioned",
   "selectedTargetProvider": "cosmos",
   "targetProviderReason": "owner-selected-default-if-no-existing-database",
-  "accountName": null,
-  "resourceGroup": null,
-  "subscriptionHint": null,
-  "databaseName": null,
-  "containerNames": [],
-  "backupPolicyMode": "unknown",
+  "accountName": "cosmos-pumpkin-prod-eastus",
+  "resourceGroup": "rg-ice-production-cosmos",
+  "subscriptionHint": "ff887def-fd83-4a19-9298-13d4b1687873",
+  "databaseName": "pumpkin-prod-cms",
+  "containerNames": [
+    "tenants",
+    "sites",
+    "pages",
+    "routes",
+    "forms",
+    "mediaAssets",
+    "themes",
+    "publishRuns",
+    "importRuns",
+    "users"
+  ],
+  "backupPolicyMode": "Continuous30Days",
   "portableExportSupported": false,
-  "platformBackupEvidenceSupported": false,
-  "readOnlyDiscoveryAllowed": false,
+  "platformBackupEvidenceSupported": true,
+  "readOnlyDiscoveryAllowed": true,
   "liveConnectorExecutionAllowed": false,
   "redactionStatus": "passed",
   "secretsIncluded": false,
   "blockers": [
-    "cosmos-not-provisioned",
-    "live-export-not-approved"
+    "cms-runtime-not-wired",
+    "metadata-endpoint-not-refreshed",
+    "live-export-not-approved",
+    "ice-data-not-migrated"
   ],
   "warnings": [
-    "future target only"
+    "provisioned future target only",
+    "no runtime connection configured",
+    "no tenant data seeded"
   ],
   "evidence": [
     {
-      "source": "phase-2f12c",
-      "kind": "owner-direction",
-      "result": "cosmos-selected-if-no-existing-database"
+      "source": "phase-2f12g",
+      "kind": "azure-provisioning",
+      "result": "cosmos-account-database-containers-created"
+    },
+    {
+      "source": "phase-2f12h",
+      "kind": "readback",
+      "result": "non-secret-metadata-verified"
     }
   ]
 }

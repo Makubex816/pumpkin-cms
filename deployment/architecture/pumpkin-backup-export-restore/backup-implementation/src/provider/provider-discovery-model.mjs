@@ -160,6 +160,19 @@ export function buildProviderConnectorReadiness(metadata) {
   if (metadata.providerStatus === 'blocked') {
     return readiness('blocked', 'provider-source-blocked', metadata);
   }
+  if (isProvisionedFutureTargetCosmos(metadata)) {
+    return {
+      exportReadiness: 'metadata-endpoint-runtime-wiring-required',
+      reason: 'cosmos-future-target-provisioned-not-runtime-configured',
+      providerType: metadata.providerType,
+      providerStatus: metadata.providerStatus,
+      sourceResolutionStatus: metadata.sourceResolutionStatus,
+      selectedTargetProvider: metadata.selectedTargetProvider,
+      cosmosProvisioningRequired: false,
+      liveDatabaseExportAllowed: false,
+      nextAction: 'metadata-endpoint-runtime-wiring-approval-required'
+    };
+  }
   if (metadata.providerStatus === 'future-target') {
     return readiness('provisioning-required', 'provider-is-future-target-only', metadata);
   }
@@ -184,12 +197,19 @@ export function buildProviderConnectorReadiness(metadata) {
   return readiness('blocked', 'provider-not-ready-for-export', metadata);
 }
 
+function isProvisionedFutureTargetCosmos(metadata) {
+  return metadata.providerType === 'cosmos'
+    && metadata.providerStatus === 'future-target'
+    && metadata.sourceResolutionStatus === 'provisioned';
+}
+
 function readiness(exportReadiness, reason, metadata) {
   return {
     exportReadiness,
     reason,
     providerType: metadata.providerType,
     providerStatus: metadata.providerStatus,
+    sourceResolutionStatus: metadata.sourceResolutionStatus,
     selectedTargetProvider: metadata.selectedTargetProvider,
     cosmosProvisioningRequired: metadata.selectedTargetProvider === 'cosmos' && ['missing', 'future-target'].includes(metadata.providerStatus),
     liveDatabaseExportAllowed: false,

@@ -23,7 +23,8 @@ The command prints only summary fields and never prints secrets or raw fixture J
 Provider source states map to readiness:
 
 - `missing`: blocked, Cosmos provisioning preflight required.
-- `future-target`: provisioning required, export blocked.
+- `future-target` + planned/unprovisioned source: provisioning required, export blocked.
+- `future-target` + `sourceResolutionStatus: provisioned`: metadata endpoint/runtime wiring required, export blocked.
 - `configured` + `cosmos`: ready only for later read-only verification or export preflight approval.
 - `local-provider`: blocked for production restore proof.
 

@@ -1,0 +1,127 @@
+{
+  "phase": "2F-12H",
+  "title": "Cosmos post-provisioning readback and provider resolver refresh",
+  "site": "IceSkatingRinkRentals.com",
+  "status": "complete",
+  "azureContext": {
+    "environmentName": "AzureCloud",
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a"
+  },
+  "readback": {
+    "resourceGroup": {
+      "name": "rg-ice-production-cosmos",
+      "location": "eastus",
+      "provisioningState": "Succeeded"
+    },
+    "cosmosAccount": {
+      "name": "cosmos-pumpkin-prod-eastus",
+      "location": "East US",
+      "provisioningState": "Succeeded",
+      "kind": "GlobalDocumentDB",
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "consistencyPolicy": "Session",
+      "publicNetworkAccess": "Enabled",
+      "documentEndpoint": "https://cosmos-pumpkin-prod-eastus.documents.azure.com:443/"
+    },
+    "backupPolicy": {
+      "type": "Continuous",
+      "tier": "Continuous30Days"
+    },
+    "database": {
+      "name": "pumpkin-prod-cms",
+      "throughput": 400,
+      "minimumThroughput": "400"
+    },
+    "containers": {
+      "countExpected": 10,
+      "countVerified": 10,
+      "partitionKeyPath": "/tenantKey",
+      "names": [
+        "tenants",
+        "sites",
+        "pages",
+        "routes",
+        "forms",
+        "mediaAssets",
+        "themes",
+        "publishRuns",
+        "importRuns",
+        "users"
+      ]
+    }
+  },
+  "providerResolver": {
+    "fixture": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/fixtures/provider-source.ice.future-target-cosmos.json",
+    "providerType": "cosmos",
+    "providerStatus": "future-target",
+    "sourceResolutionStatus": "provisioned",
+    "exportReadiness": "metadata-endpoint-runtime-wiring-required",
+    "cosmosProvisioningRequired": false,
+    "liveDatabaseExportAllowed": false,
+    "nextAction": "metadata-endpoint-runtime-wiring-approval-required"
+  },
+  "readiness": {
+    "phase2f12gCosmosProvisioningExecution": "complete",
+    "phase2f12hPostProvisioningReadback": true,
+    "resourceGroupVerified": true,
+    "cosmosAccountVerified": true,
+    "databaseVerified": true,
+    "containersVerified": true,
+    "backupPolicyVerified": true,
+    "providerResolverRefreshedAsFutureTarget": true,
+    "readyForMetadataEndpointRuntimeWiringApproval": true,
+    "readyForLiveDatabaseConnectorExecution": false,
+    "cmsRuntimeSwitchPerformed": false,
+    "iceDataMigrationPerformed": false,
+    "iceFullyBackupableToday": false,
+    "livePagesAffected": false
+  },
+  "localRegression": {
+    "npmTest": "pass",
+    "npmRunCheck": "pass",
+    "resolveProviderFixture": "pass"
+  },
+  "securityBoundaries": {
+    "azureReadOnly": true,
+    "azureMutation": false,
+    "keysListed": false,
+    "connectionStringsPrinted": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "cmsRuntimeSwitch": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "dataMigration": false,
+    "databaseExport": false,
+    "databaseImport": false,
+    "cosmosDocumentExport": false,
+    "cloudflareMutation": false,
+    "dnsChange": false,
+    "deployment": false,
+    "functionAppSettingsChange": false,
+    "emailOrMicrosoft365Work": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false,
+    "gitStaging": false
+  },
+  "files": [
+    "README.md",
+    "READBACK_SCOPE.md",
+    "AZURE_SUBSCRIPTION_ALIGNMENT_RESULT.md",
+    "RESOURCE_GROUP_READBACK_RESULT.md",
+    "COSMOS_ACCOUNT_READBACK_RESULT.md",
+    "DATABASE_READBACK_RESULT.md",
+    "CONTAINER_READBACK_RESULT.md",
+    "BACKUP_POLICY_READBACK_RESULT.md",
+    "PROVIDER_RESOLVER_REFRESH_RESULT.md",
+    "LOCAL_REGRESSION_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "BLOCKERS_OR_WARNINGS.md",
+    "NEXT_METADATA_ENDPOINT_RUNTIME_WIRING_PROMPT.md",
+    "manifest.json"
+  ]
+}
+

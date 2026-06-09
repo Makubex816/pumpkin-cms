@@ -49,15 +49,19 @@ test('Ice missing provider source resolves as blocked with Cosmos provisioning n
   assert.equal(result.readiness.nextAction, 'cosmos-provisioning-preflight-required');
 });
 
-test('Ice future-target Cosmos resolves as provisioning-required but never export-ready', async () => {
+test('Ice provisioned future-target Cosmos resolves as runtime-wiring-required but never export-ready', async () => {
   const result = await resolveProviderSourceFromFixture({
     fixturePath: 'fixtures/provider-source.ice.future-target-cosmos.json'
   });
   assert.equal(result.validation.status, 'passed');
   assert.equal(result.metadata.providerType, 'cosmos');
   assert.equal(result.metadata.providerStatus, 'future-target');
-  assert.equal(result.readiness.exportReadiness, 'provisioning-required');
+  assert.equal(result.metadata.sourceResolutionStatus, 'provisioned');
+  assert.equal(result.metadata.accountName, 'cosmos-pumpkin-prod-eastus');
+  assert.equal(result.readiness.exportReadiness, 'metadata-endpoint-runtime-wiring-required');
+  assert.equal(result.readiness.cosmosProvisioningRequired, false);
   assert.equal(result.readiness.liveDatabaseExportAllowed, false);
+  assert.equal(result.readiness.nextAction, 'metadata-endpoint-runtime-wiring-approval-required');
 });
 
 test('provider metadata contract rejects forbidden fields', async () => {
@@ -111,7 +115,9 @@ test('standard bundle can include future-target Cosmos metadata without creating
   });
   assert.equal(result.validation.status, 'passed');
   assert.equal(result.manifest.componentStatus.providerSource.status, 'future-target');
-  assert.equal(result.manifest.componentStatus.providerSource.cosmosProvisioningRequired, true);
+  assert.equal(result.manifest.componentStatus.providerSource.sourceResolutionStatus, 'provisioned');
+  assert.equal(result.manifest.componentStatus.providerSource.cosmosProvisioningRequired, false);
+  assert.equal(result.manifest.componentStatus.providerSource.nextAction, 'metadata-endpoint-runtime-wiring-approval-required');
   assert.equal(result.manifest.connectorFoundation.liveCosmosExportPerformed, false);
   await assert.rejects(() => fs.access(path.join(result.bundleRoot, 'database', 'cosmos-json', 'export-manifest.json')));
 });
@@ -127,6 +133,7 @@ test('CLI resolve-provider prints only non-secret summary fields', async () => {
   assert.equal(outcome.code, 0);
   assert.match(outcome.stdout, /providerType: missing/);
   assert.match(outcome.stdout, /selectedTargetProvider: cosmos/);
+  assert.match(outcome.stdout, /nextAction: cosmos-provisioning-preflight-required/);
   assert.doesNotMatch(outcome.stdout, /connection/i);
   assert.doesNotMatch(outcome.stdout, /token/i);
 });

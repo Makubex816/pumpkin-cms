@@ -109,9 +109,11 @@ async function main(argv) {
     });
     console.log(`providerType: ${result.metadata.providerType}`);
     console.log(`providerStatus: ${result.metadata.providerStatus}`);
+    console.log(`sourceResolutionStatus: ${result.metadata.sourceResolutionStatus}`);
     console.log(`selectedTargetProvider: ${result.metadata.selectedTargetProvider ?? 'none'}`);
     console.log(`exportReadiness: ${result.readiness.exportReadiness}`);
     console.log(`liveDatabaseExportAllowed: ${result.readiness.liveDatabaseExportAllowed}`);
+    console.log(`nextAction: ${result.readiness.nextAction}`);
     if (result.validation.status !== 'passed') {
       process.exitCode = 1;
     }
