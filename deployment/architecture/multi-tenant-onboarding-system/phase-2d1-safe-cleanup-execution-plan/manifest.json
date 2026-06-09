@@ -1,0 +1,92 @@
+{
+  "phase": "2D-1",
+  "packageName": "phase-2d1-safe-cleanup-execution-plan",
+  "createdAtLocal": "2026-06-08T19:51:47.1713833-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "baselineCommit": {
+    "short": "516f5a9",
+    "full": "516f5a9279985e39390d6ed71b4d717c9f22b4c0",
+    "subject": "Document onboarding repo hygiene checkpoint"
+  },
+  "inputBaseline": "Phase 2D-0 repo hygiene cleanup checkpoint",
+  "worktreeSnapshotBeforePackageWrite": {
+    "modifiedTrackedEntries": 149,
+    "untrackedEntries": 16,
+    "ignoredEntries": 62,
+    "stagedEntries": 0,
+    "deletedTrackedEntries": 0
+  },
+  "approvedDeletion": {
+    "performed": true,
+    "paths": [
+      "tatus --short"
+    ],
+    "classification": "accidental terminal/help-output junk",
+    "secretLikePatternDetected": false,
+    "postDeleteStatusEntries": 0
+  },
+  "staging": {
+    "performed": false,
+    "gitAddAUsed": false,
+    "plannedExactDocsBatches": [
+      "Phase 2D-1 cleanup execution package",
+      "Phase 2C-6 and Phase 2C-6A blocker history",
+      "Phase 2A2 validator hardening evidence",
+      "Phase 2B1 builder prototype plan",
+      "Phase 2B3 builder usability QA",
+      "Architecture QA audit and simulation",
+      "User help walkthrough doc"
+    ]
+  },
+  "untouched": {
+    "rawContentReviewInputs": true,
+    "ignoredGeneratedOutput": true,
+    "protectedConfigContents": true,
+    "appSourceChanges": true,
+    "staticAzureChanges": true
+  },
+  "externalSystems": {
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "functionAppSettings": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "phase2d1TrailingWhitespaceScan": "passed",
+    "phase2d1TargetedSecretLikeScan": "passed",
+    "stagedPathCount": 0,
+    "blockedStagedPathCount": 0,
+    "nodeCheckChangedMjsFiles": "passed, 3 pre-existing changed files",
+    "gitDiffCheck": "passed with existing line-ending warnings"
+  },
+  "hardStopsRemain": [
+    "No CMS import approval",
+    "No CMS write approval",
+    "No static generation approval",
+    "No deployment approval",
+    "No production readiness execution approval",
+    "No Search Console/indexing approval",
+    "No live-page publication approval"
+  ],
+  "files": [
+    "README.md",
+    "CURRENT_WORKTREE_RECHECK.md",
+    "SAFE_STAGING_BATCH_PLAN.md",
+    "DO_NOT_TOUCH_LIST.md",
+    "GENERATED_OUTPUT_STATUS.md",
+    "RAW_INPUT_STATUS.md",
+    "SECRET_PROTECTED_PATH_STATUS.md",
+    "APPROVED_ARTIFACT_DELETION_RESULT.md",
+    "OWNER_DECISION_REQUIRED_LIST.md",
+    "NEXT_ROLLER_RECONCILIATION_PLANNING_PROMPT.md",
+    "manifest.json"
+  ],
+  "recommendation": "Go for later docs-only path-specific staging after owner review; no-go for cleanup beyond the approved artifact deletion or any live/external execution."
+}
