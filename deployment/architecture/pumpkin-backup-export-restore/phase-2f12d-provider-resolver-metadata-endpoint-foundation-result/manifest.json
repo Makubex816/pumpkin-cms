@@ -1,0 +1,44 @@
+{
+  "phase": "2F-12D",
+  "title": "Provider resolver and non-secret metadata endpoint foundation",
+  "site": "IceSkatingRinkRentals.com",
+  "status": "complete",
+  "readiness": {
+    "phase2f12cProvisioningReadinessFlow": "complete",
+    "phase2f12dProviderResolverFoundation": true,
+    "providerResolverImplemented": true,
+    "nonSecretMetadataContractImplemented": true,
+    "apiEndpointImplemented": "deferred",
+    "backupCenterResolverIntegrationHook": true,
+    "readyForCosmosProvisioningPreflightApproval": true,
+    "readyForLiveDatabaseConnectorExecution": false,
+    "iceFullyBackupableToday": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "implementedFiles": [
+    "backup-implementation/src/provider/provider-discovery-model.mjs",
+    "backup-implementation/src/provider/provider-resolver.mjs",
+    "backup-implementation/src/provider/provider-source-writer.mjs",
+    "backup-implementation/test/provider-resolver.test.mjs",
+    "backup-implementation/fixtures/provider-source.cosmos.configured.json",
+    "backup-implementation/fixtures/provider-source.ice.missing.json",
+    "backup-implementation/fixtures/provider-source.ice.future-target-cosmos.json",
+    "backup-implementation/fixtures/provider-source.local-provider.json",
+    "backup-implementation/fixtures/provider-source.forbidden-field.json"
+  ],
+  "boundaries": {
+    "cosmosProvisioning": false,
+    "databaseExport": false,
+    "databaseImport": false,
+    "cmsWrite": false,
+    "cmsApiMutation": false,
+    "protectedConfigRead": false,
+    "secretPrinted": false,
+    "secretExport": false,
+    "azureMutation": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  }
+}

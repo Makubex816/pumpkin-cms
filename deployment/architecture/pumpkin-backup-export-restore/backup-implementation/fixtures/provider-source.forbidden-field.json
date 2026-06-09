@@ -1,0 +1,13 @@
+{
+  "contractVersion": "0.1.0",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "environment": "fixture",
+  "profile": "fixture",
+  "providerType": "cosmos",
+  "providerStatus": "configured",
+  "sourceResolutionStatus": "resolved",
+  "connectionString": "blocked-fixture-value",
+  "redactionStatus": "passed",
+  "secretsIncluded": false
+}

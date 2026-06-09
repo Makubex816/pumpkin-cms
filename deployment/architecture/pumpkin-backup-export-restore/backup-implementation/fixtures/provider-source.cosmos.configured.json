@@ -1,0 +1,38 @@
+{
+  "contractVersion": "0.1.0",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "environment": "fixture",
+  "profile": "fixture",
+  "providerType": "cosmos",
+  "providerStatus": "configured",
+  "sourceResolutionStatus": "resolved",
+  "selectedTargetProvider": null,
+  "accountName": "fixture-cosmos-account",
+  "resourceGroup": "fixture-resource-group",
+  "subscriptionHint": "fixture-subscription",
+  "databaseName": "fixture-pumpkin-cms",
+  "containerNames": [
+    "Tenant",
+    "Page",
+    "MediaAsset"
+  ],
+  "backupPolicyMode": "fixture-known",
+  "portableExportSupported": true,
+  "platformBackupEvidenceSupported": true,
+  "readOnlyDiscoveryAllowed": true,
+  "liveConnectorExecutionAllowed": false,
+  "redactionStatus": "passed",
+  "secretsIncluded": false,
+  "blockers": [],
+  "warnings": [
+    "fixture metadata only"
+  ],
+  "evidence": [
+    {
+      "source": "fixture",
+      "kind": "provider-source",
+      "result": "configured-cosmos"
+    }
+  ]
+}

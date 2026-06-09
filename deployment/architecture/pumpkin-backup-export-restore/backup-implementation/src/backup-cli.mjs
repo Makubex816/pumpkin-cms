@@ -6,11 +6,12 @@ import { createIceStandardBackup } from './ice/ice-standard-backup-runner.mjs';
 import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
 import { validateBackupBundle, writeValidationReports } from './validators/backup-validator.mjs';
+import { resolveProviderSourceFromFixture } from './provider/provider-resolver.mjs';
 import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.6.0';
+const version = '0.7.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -97,6 +98,25 @@ async function main(argv) {
     console.log(`items: ${result.manifest.itemCount}`);
     return;
   }
+  if (command === 'resolve-provider') {
+    const fixturePath = requiredOption(options, 'fixture');
+    const result = await resolveProviderSourceFromFixture({
+      fixturePath,
+      tenantKey: options.tenant,
+      siteKey: options.site,
+      environment: options.environment,
+      profile: options.profile
+    });
+    console.log(`providerType: ${result.metadata.providerType}`);
+    console.log(`providerStatus: ${result.metadata.providerStatus}`);
+    console.log(`selectedTargetProvider: ${result.metadata.selectedTargetProvider ?? 'none'}`);
+    console.log(`exportReadiness: ${result.readiness.exportReadiness}`);
+    console.log(`liveDatabaseExportAllowed: ${result.readiness.liveDatabaseExportAllowed}`);
+    if (result.validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
   if (command === 'escrow-validate') {
     const escrowPath = requiredOption(options, 'escrow');
     const validation = await validateEscrowOutput({ escrowPath });
@@ -162,7 +182,8 @@ function connectorOptionsFromCli(options) {
   return {
     fakeCosmos: Boolean(options['with-fake-cosmos']),
     fakeMediaCopy: Boolean(options['with-fake-media-copy']),
-    tenantWebsiteBundle: Boolean(options['tenant-website-bundle'])
+    tenantWebsiteBundle: Boolean(options['tenant-website-bundle']),
+    providerSourceFixture: options['provider-source-fixture'] ?? null
   };
 }
 
@@ -183,6 +204,7 @@ Commands:
   create-ice-standard --out .tmp/ice-full-standard-backup [--overwrite]
   validate --bundle .tmp/<bundle> [--mode baseline|production-restore-proof]
   restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--mode baseline|production-restore-proof] [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
+  resolve-provider --fixture fixtures/provider-source.ice.missing.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--profile fixture]
   escrow-create-fake --request fixtures/fake-escrow-request.json --out .tmp/<fake-escrow> [--overwrite]
   escrow-validate --escrow .tmp/<fake-escrow>
   escrow-inspect --escrow .tmp/<fake-escrow>

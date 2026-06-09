@@ -1,0 +1,38 @@
+{
+  "contractVersion": "0.1.0",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "environment": "fixture",
+  "profile": "fixture",
+  "providerType": "missing",
+  "providerStatus": "missing",
+  "sourceResolutionStatus": "unresolved",
+  "selectedTargetProvider": "cosmos",
+  "targetProviderReason": "owner-selected-default-if-no-existing-database",
+  "accountName": null,
+  "resourceGroup": null,
+  "subscriptionHint": null,
+  "databaseName": null,
+  "containerNames": [],
+  "backupPolicyMode": "unknown",
+  "portableExportSupported": false,
+  "platformBackupEvidenceSupported": false,
+  "readOnlyDiscoveryAllowed": false,
+  "liveConnectorExecutionAllowed": false,
+  "redactionStatus": "passed",
+  "secretsIncluded": false,
+  "blockers": [
+    "database-source-not-identified",
+    "cosmos-provisioning-preflight-required"
+  ],
+  "warnings": [
+    "fixture represents Ice current blocker state"
+  ],
+  "evidence": [
+    {
+      "source": "phase-2f12a",
+      "kind": "provider-source-discovery",
+      "result": "source-missing-in-accessible-scope"
+    }
+  ]
+}

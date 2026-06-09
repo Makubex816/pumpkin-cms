@@ -31,6 +31,7 @@ export async function writeBackupManifest({
       fakeCosmosExport: connectorOptions.fakeCosmos === true,
       fakeMediaCopy: connectorOptions.fakeMediaCopy === true,
       tenantWebsiteBundle: connectorOptions.tenantWebsiteBundle === true,
+      providerResolver: Boolean(connectorOptions.providerSourceFixture),
       liveCosmosExportPerformed: false,
       liveBlobDownloadPerformed: false,
       externalSystemMutation: false,
@@ -92,6 +93,11 @@ function buildComponentStatus({ connectorOptions, connectorResults }) {
     tenantWebsiteBundle: connectorResults.tenantWebsiteBundle?.component ?? {
       status: connectorOptions.tenantWebsiteBundle === true ? 'blocked' : 'not-run',
       fakeOnly: true
+    },
+    providerSource: connectorResults.providerSource?.component ?? {
+      status: connectorOptions.providerSourceFixture ? 'blocked' : 'not-run',
+      fakeOnly: true,
+      liveDatabaseExportAllowed: false
     }
   };
 }

@@ -1,8 +1,8 @@
 # Pumpkin Backup Center Local Prototype
 
-Phase 2F-11 adds a local-only Cosmos/media connector foundation on top of the standard backup exporter, hardened validator, restore validation dry-run, and fake encrypted escrow prototype.
+Phase 2F-12D adds a local-only provider source resolver foundation on top of the standard backup exporter, hardened validator, restore validation dry-run, fake encrypted escrow prototype, and fake Cosmos/media connector foundation.
 
-It creates and validates folder-based standard backup bundles from fake fixtures only, can generate fake Cosmos portable JSON export artifacts, can copy fake media text fixtures, can generate a tenant website bundle index, can generate a restore plan without restoring into any real system, and can generate fake encrypted escrow output under ignored `.tmp`. It does not create production backup zips, export or import a real database, call CMS/API endpoints, export real secrets, create production escrow payloads, download real blobs, restore data, deploy, or touch external systems.
+It creates and validates folder-based standard backup bundles from fake fixtures only, can resolve non-secret provider source fixture metadata, can generate fake Cosmos portable JSON export artifacts, can copy fake media text fixtures, can generate a tenant website bundle index, can generate a restore plan without restoring into any real system, and can generate fake encrypted escrow output under ignored `.tmp`. It does not create production backup zips, export or import a real database, call CMS/API endpoints, export real secrets, create production escrow payloads, download real blobs, restore data, deploy, or touch external systems.
 
 ## Implemented
 
@@ -15,6 +15,7 @@ It creates and validates folder-based standard backup bundles from fake fixtures
 - Fake media inventory adapter.
 - Fake static evidence adapter.
 - Fake redacted config inventory adapter.
+- Fake provider source resolver.
 - Fake Cosmos/provider portable JSON export connector.
 - Fake Cosmos platform backup evidence writer.
 - Fake Azure Blob media copy connector using text fixtures only.
@@ -44,6 +45,7 @@ npm run restore:ice-fake-complete
 npm run escrow:create
 npm run escrow:validate
 npm run escrow:inspect
+node src/backup-cli.mjs resolve-provider --fixture fixtures/provider-source.ice.missing.json
 npm run create:platform
 npm run validate:platform
 npm run restore:platform
@@ -57,6 +59,10 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 - `STANDARD_BACKUP_FORMAT.md`
 - `COSMOS_CONNECTOR_FAKE_MODE.md`
 - `MEDIA_CONNECTOR_FAKE_MODE.md`
+- `PROVIDER_RESOLVER.md`
+- `NON_SECRET_PROVIDER_METADATA.md`
+- `PROVIDER_RESOLVER_FIXTURES.md`
+- `BACKUP_CENTER_RESOLVER_INTEGRATION.md`
 - `TENANT_WEBSITE_BUNDLE_INTEGRATION.md`
 - `VALIDATOR.md`
 - `RESTORE_VALIDATION.md`

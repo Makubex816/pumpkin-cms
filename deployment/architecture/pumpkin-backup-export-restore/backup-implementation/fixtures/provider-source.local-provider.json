@@ -1,0 +1,36 @@
+{
+  "contractVersion": "0.1.0",
+  "tenantKey": "example-tenant",
+  "siteKey": "example-site",
+  "environment": "local",
+  "profile": "local-dev",
+  "providerType": "local-provider",
+  "providerStatus": "configured",
+  "sourceResolutionStatus": "resolved",
+  "selectedTargetProvider": null,
+  "accountName": null,
+  "resourceGroup": null,
+  "subscriptionHint": null,
+  "databaseName": "local-fixture-store",
+  "containerNames": [],
+  "backupPolicyMode": "not-applicable",
+  "portableExportSupported": false,
+  "platformBackupEvidenceSupported": false,
+  "readOnlyDiscoveryAllowed": false,
+  "liveConnectorExecutionAllowed": false,
+  "redactionStatus": "passed",
+  "secretsIncluded": false,
+  "blockers": [
+    "local-provider-is-not-production-proof"
+  ],
+  "warnings": [
+    "local development only"
+  ],
+  "evidence": [
+    {
+      "source": "fixture",
+      "kind": "local-provider",
+      "result": "configured-local-dev"
+    }
+  ]
+}

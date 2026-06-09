@@ -27,9 +27,11 @@ export async function writeTenantWebsiteBundleIndex({ bundleRoot, request, creat
     siteKey,
     layout: 'tenant-site-public-html-style-index',
     standardBackupRoot: '../../..',
+    providerSource: connectorResults.providerSource?.component ?? null,
     database: connectorResults.cosmos?.component ?? null,
     media: connectorResults.media?.component ?? null,
     paths: {
+      providerSource: 'database/provider-source/',
       cmsContent: 'cms-content/',
       cosmosJson: 'database/cosmos-json/',
       cosmosPlatformEvidence: 'database/platform-evidence/cosmos/',

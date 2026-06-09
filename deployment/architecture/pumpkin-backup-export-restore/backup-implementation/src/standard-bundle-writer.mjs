@@ -10,6 +10,7 @@ import { writeFakeConfigInventory } from './adapters/fake-config-inventory-adapt
 import { writeTenantWebsiteBundleIndex } from './bundles/tenant-website-bundle-writer.mjs';
 import { writeFakeCosmosExport } from './connectors/cosmos/cosmos-export-runner.mjs';
 import { writeFakeMediaCopy } from './connectors/media/media-copy-runner.mjs';
+import { writeFakeProviderSource } from './provider/provider-source-writer.mjs';
 
 export async function writeStandardBundle({ bundleRoot, request, createdAt, connectors = {} }) {
   await fs.mkdir(bundleRoot, { recursive: true });
@@ -23,6 +24,15 @@ export async function writeStandardBundle({ bundleRoot, request, createdAt, conn
   fileEntries.push(...(await writeFakeMediaInventory({ bundleRoot, request, fakeMediaCopy: connectorOptions.fakeMediaCopy })));
   fileEntries.push(...(await writeFakeStaticEvidence({ bundleRoot, request })));
   fileEntries.push(...(await writeFakeConfigInventory({ bundleRoot, request })));
+  if (connectorOptions.providerSourceFixture) {
+    connectorResults.providerSource = await writeFakeProviderSource({
+      bundleRoot,
+      request,
+      createdAt,
+      fixturePath: connectorOptions.providerSourceFixture
+    });
+    fileEntries.push(...connectorResults.providerSource.entries);
+  }
   if (connectorOptions.fakeCosmos) {
     connectorResults.cosmos = await writeFakeCosmosExport({ bundleRoot, request, createdAt });
     fileEntries.push(...connectorResults.cosmos.entries);
@@ -58,7 +68,8 @@ function normalizeConnectorOptions(connectors) {
   return {
     fakeCosmos: connectors.fakeCosmos === true,
     fakeMediaCopy: connectors.fakeMediaCopy === true,
-    tenantWebsiteBundle: connectors.tenantWebsiteBundle === true
+    tenantWebsiteBundle: connectors.tenantWebsiteBundle === true,
+    providerSourceFixture: typeof connectors.providerSourceFixture === 'string' ? connectors.providerSourceFixture : null
   };
 }
 
@@ -78,6 +89,7 @@ async function writeTopLevelDocs({ bundleRoot, request, createdAt, connectorOpti
       '',
       '## Connector Foundation',
       '',
+      `- Provider source resolver metadata: ${connectorOptions.providerSourceFixture ? 'included' : 'not included'}`,
       `- Fake Cosmos portable JSON export: ${connectorOptions.fakeCosmos ? 'included' : 'not included'}`,
       `- Fake media blob copy: ${connectorOptions.fakeMediaCopy ? 'included' : 'not included'}`,
       `- Tenant website bundle index: ${connectorOptions.tenantWebsiteBundle ? 'included' : 'not included'}`,

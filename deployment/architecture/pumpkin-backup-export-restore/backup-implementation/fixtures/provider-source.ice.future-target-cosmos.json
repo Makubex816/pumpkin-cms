@@ -1,0 +1,38 @@
+{
+  "contractVersion": "0.1.0",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "environment": "fixture",
+  "profile": "fixture",
+  "providerType": "cosmos",
+  "providerStatus": "future-target",
+  "sourceResolutionStatus": "planned",
+  "selectedTargetProvider": "cosmos",
+  "targetProviderReason": "owner-selected-default-if-no-existing-database",
+  "accountName": null,
+  "resourceGroup": null,
+  "subscriptionHint": null,
+  "databaseName": null,
+  "containerNames": [],
+  "backupPolicyMode": "unknown",
+  "portableExportSupported": false,
+  "platformBackupEvidenceSupported": false,
+  "readOnlyDiscoveryAllowed": false,
+  "liveConnectorExecutionAllowed": false,
+  "redactionStatus": "passed",
+  "secretsIncluded": false,
+  "blockers": [
+    "cosmos-not-provisioned",
+    "live-export-not-approved"
+  ],
+  "warnings": [
+    "future target only"
+  ],
+  "evidence": [
+    {
+      "source": "phase-2f12c",
+      "kind": "owner-direction",
+      "result": "cosmos-selected-if-no-existing-database"
+    }
+  ]
+}

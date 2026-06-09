@@ -76,6 +76,7 @@ const allowedKinds = new Set([
   'static-evidence',
   'config-inventory',
   'escrow-marker',
+  'provider-source-metadata',
   'tenant-website-bundle'
 ]);
 const allowedSensitivity = new Set(['redacted']);
