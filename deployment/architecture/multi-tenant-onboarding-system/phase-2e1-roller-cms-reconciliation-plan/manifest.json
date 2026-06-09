@@ -1,0 +1,109 @@
+{
+  "phase": "2E-1",
+  "packageName": "phase-2e1-roller-cms-reconciliation-plan",
+  "createdAtLocal": "2026-06-08T20:25:14-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "baselineCommit": {
+    "short": "9c4b7d1",
+    "subject": "Close onboarding repo hygiene path guard cleanup"
+  },
+  "inputs": [
+    "PUMPKIN_MULTI_TENANT_ONBOARDING_PHASE_2C6B_ROLLER_CMS_READ_ONLY_CURRENT_STATE_ENV_READY_REPORT.md",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c6b-roller-cms-read-only-current-state-env-ready-result/",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c5-roller-cms-import-execution-preflight/",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c4-roller-cms-import-plan/",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c3-first-real-tenant-dry-run-result/",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c3a-paused-tenant-guardrail-repair-result/"
+  ],
+  "evidenceSummary": {
+    "localPackageValidationErrors": 0,
+    "localPackageValidationWarnings": 0,
+    "activeRollerTenantExists": true,
+    "publishedSitemapIncludedPages": [
+      "home",
+      "contact",
+      "roller-rink-rentals"
+    ],
+    "missingExpectedPage": "service-areas",
+    "mediaAssetsReturned": 0,
+    "importRunsReturned": 0,
+    "activeThemeExists": true,
+    "formRecipientRegistryEvidence": "inconclusive"
+  },
+  "recommendation": {
+    "readyForReconciliationReadOnlyRefreshApproval": true,
+    "readyForCmsReconciliationWrites": false,
+    "readyForCmsImportExecutionApproval": false,
+    "readyForStaticReadinessPlanning": false,
+    "readyForProductionReadinessPlanning": false,
+    "readyForLivePages": false
+  },
+  "startState": {
+    "latestCommit": {
+      "short": "9c4b7d1",
+      "subject": "Close onboarding repo hygiene path guard cleanup"
+    },
+    "recentCommitsConfirmed": [
+      "Close onboarding repo hygiene path guard cleanup",
+      "Resolve onboarding path guard documentation false positives",
+      "Record Roller CMS read-only current-state evidence",
+      "Plan Roller CMS import",
+      "Repair paused tenant guardrail and complete Roller dry run"
+    ],
+    "exactCommitSubjectNotFoundInRecentLog": [
+      "Prepare Roller CMS import execution preflight"
+    ],
+    "worktreeClassification": [
+      "pre-existing modified onboarding docs",
+      "pre-existing apps/ice-rink-web source changes",
+      "pre-existing static/Azure backlog changes",
+      "raw content-review folders untracked and untouched",
+      "ignored generated output untouched",
+      "Phase 2E-1 docs newly created"
+    ]
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "changedTrackedJsonParse": "passed, 5 files including Phase 2E-1 manifest",
+    "phase2e1TrailingWhitespaceScan": "passed, 18 files",
+    "gitDiffCheck": "passed with existing line-ending warnings suppressed",
+    "nodeCheckChangedMjsFiles": "passed, 3 pre-existing changed files",
+    "stagedPathCount": 0,
+    "stagedPathGuardHitCount": 0
+  },
+  "boundaries": {
+    "cmsApiCallsMadeInPhase2E1": false,
+    "externalChecksMade": false,
+    "cmsWrites": false,
+    "tenantCreation": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false
+  },
+  "files": [
+    "README.md",
+    "RECONCILIATION_SCOPE.md",
+    "NON_GOALS.md",
+    "READ_ONLY_EVIDENCE_SUMMARY.md",
+    "EXPECTED_IMPORT_PACKAGE_SUMMARY.md",
+    "EXISTING_CMS_STATE_SUMMARY.md",
+    "ROUTE_AND_PAGE_MAPPING.md",
+    "PRESERVE_ADOPT_UPDATE_CREATE_DECISIONS.md",
+    "SERVICE_AREAS_GAP_PLAN.md",
+    "FORM_RECIPIENT_RECONCILIATION.md",
+    "SEO_AND_SITEMAP_RECONCILIATION.md",
+    "MEDIA_REFERENCE_RECONCILIATION.md",
+    "APPROVAL_GATES.md",
+    "ROLLBACK_AND_ABORT_PLAN.md",
+    "RISK_REGISTER.md",
+    "NEXT_RECONCILIATION_PREFLIGHT_APPROVAL_PROMPT.md",
+    "manifest.json"
+  ]
+}
