@@ -1,0 +1,107 @@
+{
+  "tenants": [
+    {
+      "tenantKey": "example-tenant",
+      "displayName": "Example Tenant",
+      "status": "active"
+    },
+    {
+      "tenantKey": "example-second-tenant",
+      "displayName": "Example Second Tenant",
+      "status": "paused"
+    }
+  ],
+  "sites": [
+    {
+      "tenantKey": "example-tenant",
+      "siteKey": "example-site",
+      "displayName": "Example Site",
+      "domainRefs": [
+        "example.invalid"
+      ]
+    },
+    {
+      "tenantKey": "example-second-tenant",
+      "siteKey": "example-second-site",
+      "displayName": "Example Second Site",
+      "domainRefs": [
+        "example-second.invalid"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "tenantKey": "example-tenant",
+      "slug": "home",
+      "title": "Example Home",
+      "published": false,
+      "sitemapIncluded": false
+    },
+    {
+      "tenantKey": "example-tenant",
+      "slug": "contact",
+      "title": "Example Contact",
+      "published": false,
+      "sitemapIncluded": false
+    },
+    {
+      "tenantKey": "example-second-tenant",
+      "slug": "home",
+      "title": "Second Example Home",
+      "published": false,
+      "sitemapIncluded": false
+    }
+  ],
+  "routes": [
+    {
+      "tenantKey": "example-tenant",
+      "path": "/",
+      "slug": "home"
+    },
+    {
+      "tenantKey": "example-tenant",
+      "path": "/contact/",
+      "slug": "contact"
+    },
+    {
+      "tenantKey": "example-second-tenant",
+      "path": "/",
+      "slug": "home"
+    }
+  ],
+  "forms": [
+    {
+      "tenantKey": "example-tenant",
+      "formId": "contact-form",
+      "deliveryMode": "no-email",
+      "leadRecipientRef": "example-leads",
+      "fields": [
+        "name",
+        "email",
+        "message"
+      ]
+    }
+  ],
+  "seo": [
+    {
+      "tenantKey": "example-tenant",
+      "slug": "home",
+      "robots": "noindex,nofollow"
+    },
+    {
+      "tenantKey": "example-tenant",
+      "slug": "contact",
+      "robots": "noindex,nofollow"
+    }
+  ],
+  "redirects": [],
+  "theme": {
+    "themes": [
+      {
+        "tenantKey": "example-tenant",
+        "themeId": "example-theme",
+        "isActive": true
+      }
+    ]
+  }
+}

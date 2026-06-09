@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1.0",
+  "valuesIncluded": false,
+  "variables": [
+    {
+      "name": "EXAMPLE_RUNTIME_API_KEY",
+      "presence": "PRESENT",
+      "value": "REDACTED",
+      "escrowEligible": true,
+      "source": "fake-fixture"
+    },
+    {
+      "name": "EXAMPLE_DATABASE_CONNECTION",
+      "presence": "PRESENT",
+      "value": "REDACTED",
+      "escrowEligible": true,
+      "source": "fake-fixture"
+    },
+    {
+      "name": "EXAMPLE_ADMIN_SESSION_TOKEN",
+      "presence": "EXCLUDED",
+      "value": "NOT_COLLECTED",
+      "escrowEligible": false,
+      "source": "fake-fixture"
+    }
+  ]
+}

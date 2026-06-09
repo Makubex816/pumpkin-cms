@@ -1,0 +1,11 @@
+.tmp/
+*.zip
+*.backup
+*.bak
+*.bacpac
+encrypted-secrets.*
+escrow-payload*
+decrypted*
+plaintext*
+backup.zip/
+backup-output/

@@ -1,0 +1,24 @@
+{
+  "mediaAssets": [
+    {
+      "tenantKey": "example-tenant",
+      "mediaRef": "example-hero",
+      "fileName": "example-hero-placeholder.jpg",
+      "contentType": "image/jpeg",
+      "byteSize": 12345,
+      "sha256": "PLACEHOLDER_SHA256",
+      "blobCopied": false,
+      "altText": "Example placeholder hero image"
+    },
+    {
+      "tenantKey": "example-second-tenant",
+      "mediaRef": "example-second-hero",
+      "fileName": "example-second-hero-placeholder.jpg",
+      "contentType": "image/jpeg",
+      "byteSize": 23456,
+      "sha256": "PLACEHOLDER_SHA256",
+      "blobCopied": false,
+      "altText": "Second example placeholder hero image"
+    }
+  ]
+}

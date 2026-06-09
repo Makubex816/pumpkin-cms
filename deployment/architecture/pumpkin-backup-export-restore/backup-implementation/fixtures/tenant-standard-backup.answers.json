@@ -1,0 +1,16 @@
+{
+  "backupName": "tenant-standard-fixture",
+  "requestedBy": "local-prototype",
+  "retentionClass": "pre_write",
+  "scope": {
+    "scopeType": "tenant",
+    "tenantKey": "example-tenant",
+    "siteKey": "example-site"
+  },
+  "fixtureRefs": {
+    "cmsContent": "fixtures/fake-cms-content.json",
+    "mediaInventory": "fixtures/fake-media-inventory.json",
+    "staticEvidence": "fixtures/fake-static-evidence.json",
+    "configInventory": "fixtures/fake-config-inventory.redacted.json"
+  }
+}

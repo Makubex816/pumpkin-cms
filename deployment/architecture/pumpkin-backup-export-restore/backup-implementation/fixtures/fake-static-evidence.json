@@ -1,0 +1,19 @@
+{
+  "routes": [
+    {
+      "tenantKey": "example-tenant",
+      "path": "/",
+      "includedInFakeEvidence": true
+    },
+    {
+      "tenantKey": "example-tenant",
+      "path": "/contact/",
+      "includedInFakeEvidence": true
+    },
+    {
+      "tenantKey": "example-second-tenant",
+      "path": "/",
+      "includedInFakeEvidence": true
+    }
+  ]
+}

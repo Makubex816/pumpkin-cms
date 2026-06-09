@@ -1,0 +1,16 @@
+{
+  "backupName": "platform-standard-fixture",
+  "requestedBy": "local-prototype",
+  "retentionClass": "platform_release",
+  "scope": {
+    "scopeType": "platform",
+    "tenantKey": null,
+    "siteKey": null
+  },
+  "fixtureRefs": {
+    "cmsContent": "fixtures/fake-cms-content.json",
+    "mediaInventory": "fixtures/fake-media-inventory.json",
+    "staticEvidence": "fixtures/fake-static-evidence.json",
+    "configInventory": "fixtures/fake-config-inventory.redacted.json"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "phase": "2F-3",
+  "packageName": "phase-2f3-local-standard-backup-exporter-result",
+  "createdAtLocal": "2026-06-08T22:10:29-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "baselineCommit": {
+    "short": "e639016",
+    "subject": "Plan Backup Center implementation"
+  },
+  "inputs": [
+    "deployment/architecture/pumpkin-backup-export-restore/",
+    "deployment/architecture/pumpkin-backup-export-restore/phase-2f2-implementation-plan/",
+    "PUMPKIN_BACKUP_EXPORT_RESTORE_ESCROW_ARCHITECTURE_REPORT.md",
+    "PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F2_IMPLEMENTATION_PLAN_REPORT.md"
+  ],
+  "implementation": {
+    "packagePath": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/",
+    "runtime": "Node.js ESM .mjs",
+    "localOnly": true,
+    "folderBundlesOnly": true,
+    "fakeAdaptersOnly": true,
+    "standardBackupMode": true,
+    "backupValidatorPrototype": true,
+    "escrowNotIncludedMarker": true
+  },
+  "generatedLocalTestOutput": [
+    "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/tenant-standard-backup/",
+    "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/platform-standard-backup/"
+  ],
+  "readiness": {
+    "phase2f2ImplementationPlan": "complete",
+    "phase2f3LocalStandardBackupExporterPrototype": "yes",
+    "standardBackupFolderBundlePrototype": "yes",
+    "backupValidatorPrototype": "yes",
+    "fakeAdaptersOnly": true,
+    "realDatabaseExport": false,
+    "realCmsExport": false,
+    "realSecretExport": false,
+    "escrowPayloadCreated": false,
+    "restorePerformed": false,
+    "cmsWritesPerformed": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false,
+    "readyForPhase2F4BackupValidatorHardening": true
+  },
+  "validation": {
+    "npmTest": "passed, 9 tests",
+    "npmRunCheck": "passed, syntax checks plus 9 tests",
+    "tenantStandardBackupGenerated": true,
+    "tenantStandardBackupValidation": "passed",
+    "platformStandardBackupGenerated": true,
+    "platformStandardBackupValidation": "passed",
+    "tenantInspect": "passed, standard mode with escrow disabled",
+    "jsonParse": "passed, 12 files",
+    "gitDiffCheck": "passed, CRLF warnings only",
+    "trailingWhitespaceScan": "passed, 91 files",
+    "secretValueScan": "passed, 91 files",
+    "forbiddenBackupArtifactScan": "passed",
+    "tmpIgnoredAndUnstaged": "passed",
+    "stagedPathGuard": "passed, 0 staged paths, 0 guard hits"
+  },
+  "boundaries": {
+    "productionBackupZipCreated": false,
+    "realDatabaseExport": false,
+    "realCmsApiExport": false,
+    "realMediaAssetExport": false,
+    "realBlobDownload": false,
+    "realStaticOutputExport": false,
+    "realProtectedConfigRead": false,
+    "realSecretExport": false,
+    "encryptedEscrowPayloadCreated": false,
+    "restore": false,
+    "cmsApiCalls": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "postPutPatchDeleteRequests": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "functionAppSettingsChanged": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "IMPLEMENTATION_RESULT.md",
+    "CLI_RESULT.md",
+    "BUNDLE_FORMAT_RESULT.md",
+    "MANIFEST_AND_CHECKSUM_RESULT.md",
+    "FAKE_ADAPTER_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "TEST_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "KNOWN_LIMITATIONS.md",
+    "NEXT_PHASE_2F4_BACKUP_VALIDATOR_HARDENING_PROMPT.md",
+    "manifest.json"
+  ]
+}
