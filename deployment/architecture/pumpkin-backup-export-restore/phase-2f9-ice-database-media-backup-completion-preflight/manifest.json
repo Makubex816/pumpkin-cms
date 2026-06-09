@@ -1,0 +1,86 @@
+{
+  "phase": "2F-9",
+  "title": "Ice database/media backup completion preflight",
+  "date": "2026-06-09",
+  "target": {
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com"
+  },
+  "baseline": {
+    "phase": "2F-8",
+    "status": "complete_standard_backup_baseline",
+    "databaseArtifact": "not_included",
+    "mediaBlobCopies": "not_included",
+    "productionRestoreProof": "blocked"
+  },
+  "preflightStatus": {
+    "phase2f9Preflight": "complete",
+    "readyForDatabaseArtifactExecutionApproval": "conditional",
+    "readyForMediaBlobBackupExecutionApproval": "conditional",
+    "readyForCompleteProductionRestoreProof": "no"
+  },
+  "plannedComponents": {
+    "databaseBackupExport": {
+      "executionPerformed": false,
+      "options": [
+        "azure_sql_automatic_backup_evidence",
+        "bacpac_export_to_private_storage",
+        "sqlpackage_local_export_to_ignored_output",
+        "azure_cli_database_export_job",
+        "no_direct_database_artifact"
+      ],
+      "recommendedForProof": "portable_bacpac_or_equivalent_export_with_encryption_checksum_and_restore_validation"
+    },
+    "mediaBlobBackup": {
+      "executionPerformed": false,
+      "options": [
+        "metadata_inventory_only",
+        "blob_copy_to_ignored_local_output",
+        "blob_copy_to_private_backup_storage",
+        "manifest_only_evidence"
+      ],
+      "recommendedForProof": "bounded_blob_copy_with_checksums_for_all_phase_2f8_media_assets"
+    }
+  },
+  "boundaries": {
+    "databaseExportPerformed": false,
+    "databaseImportPerformed": false,
+    "blobDownloadPerformed": false,
+    "protectedConfigRead": false,
+    "secretExported": false,
+    "escrowPayloadCreated": false,
+    "cmsApiCallsPerformed": false,
+    "cmsWritesPerformed": false,
+    "mediaAssetWritesPerformed": false,
+    "azureActionsPerformed": false,
+    "cloudflareActionsPerformed": false,
+    "dnsActionsPerformed": false,
+    "deploymentActionsPerformed": false,
+    "emailActionsPerformed": false,
+    "searchConsoleActionsPerformed": false,
+    "livePagePublicationPerformed": false
+  },
+  "files": [
+    "README.md",
+    "PREFLIGHT_SCOPE.md",
+    "PHASE_2F8_BASELINE_SUMMARY.md",
+    "DATABASE_BACKUP_OPTIONS.md",
+    "DATABASE_EXPORT_TOOLING_REQUIREMENTS.md",
+    "DATABASE_ENV_PRESENCE_PLAN.md",
+    "DATABASE_ARTIFACT_SECURITY_RULES.md",
+    "MEDIA_BLOB_BACKUP_OPTIONS.md",
+    "MEDIA_BLOB_TOOLING_REQUIREMENTS.md",
+    "MEDIA_ENV_PRESENCE_PLAN.md",
+    "MEDIA_ARTIFACT_SECURITY_RULES.md",
+    "MANIFEST_CHECKSUM_INTEGRATION_PLAN.md",
+    "VALIDATOR_INTEGRATION_PLAN.md",
+    "RESTORE_VALIDATION_INTEGRATION_PLAN.md",
+    "OUTPUT_STORAGE_AND_RETENTION_PLAN.md",
+    "OPERATOR_CHECKLIST.md",
+    "GO_NO_GO_CRITERIA.md",
+    "RISK_REGISTER.md",
+    "NEXT_ICE_DATABASE_MEDIA_BACKUP_EXECUTION_PROMPT.md"
+  ]
+}
+
