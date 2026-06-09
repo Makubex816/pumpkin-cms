@@ -1,12 +1,12 @@
 # Known Limitations
 
-Phase 2F-12D adds a fake/local provider resolver foundation on top of the fake Cosmos/media connector foundation. It does not make the Backup Center production-ready or prove IceSkatingRinkRentals.com is fully backupable today.
+Phase 2F-12I adds a non-secret provider metadata endpoint foundation and local runtime profile bridge on top of the fake/local provider resolver foundation. It does not make the Backup Center production-ready or prove IceSkatingRinkRentals.com is fully backupable today.
 
 ## Still Not Implemented
 
 - Real Cosmos read-only discovery.
-- Real provider-source resolver execution against live metadata.
-- Real CMS provider metadata endpoint.
+- Real provider-source resolver execution against live runtime data.
+- Runtime-configured CMS provider metadata endpoint backed by live configuration.
 - Real Cosmos platform backup evidence collection.
 - Real Cosmos portable JSON exporter.
 - Real database importer.
@@ -25,7 +25,7 @@ Phase 2F-12D adds a fake/local provider resolver foundation on top of the fake C
 - Restore execution.
 - Backup zip/package writer.
 - Admin UI.
-- API endpoints.
+- Backup Center job API endpoints.
 - Job queue/worker execution.
 - Production retention policies.
 - Operator approval workflow enforcement outside this local CLI.
@@ -41,8 +41,10 @@ Phase 2F-12D adds a fake/local provider resolver foundation on top of the fake C
 - Reports are local `.tmp` artifacts and must not be treated as a production audit log.
 - Fake media copies are text fixtures only, not real media files.
 - Fake Cosmos records are local fixtures only, not exported production documents.
-- Provider resolver records are local fixtures only, not live CMS/runtime metadata.
+- Provider resolver records still use local fixtures for Backup Center tests.
+- The CMS provider metadata endpoint returns a static non-secret Ice future-target profile only.
+- The endpoint does not prove CMS runtime is using Cosmos.
 
 ## Future Approval Required
 
-The next IceSkatingRinkRentals.com step is a Cosmos provisioning preflight if the owner confirms no existing database source. It must remain no-mutation until a separate Azure provisioning approval exists.
+The next IceSkatingRinkRentals.com step is runtime profile wiring preflight. It must remain no-mutation until a separate runtime wiring execution approval exists.

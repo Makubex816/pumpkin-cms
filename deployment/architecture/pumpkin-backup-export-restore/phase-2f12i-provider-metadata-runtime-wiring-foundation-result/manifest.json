@@ -1,0 +1,96 @@
+{
+  "phase": "2F-12I",
+  "title": "Non-secret provider metadata endpoint and runtime wiring foundation",
+  "site": "IceSkatingRinkRentals.com",
+  "status": "complete",
+  "implemented": {
+    "providerMetadataEndpoint": true,
+    "runtimeProfileBridge": true,
+    "backupCenterResolverIntegration": true,
+    "apiEndpointDeferred": false
+  },
+  "endpoint": {
+    "method": "GET",
+    "path": "/api/admin/provider-metadata",
+    "allowedQueryParams": [
+      "tenantKey",
+      "siteKey",
+      "environment"
+    ],
+    "authRequired": true,
+    "allowedRoles": [
+      "SuperAdmin",
+      "TenantAdmin",
+      "Operator"
+    ],
+    "returnsSecrets": false
+  },
+  "iceRuntimeProfile": {
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "environment": "production",
+    "profile": "future-target-cosmos-provisioned",
+    "providerType": "cosmos",
+    "providerStatus": "future-target",
+    "provisioningStatus": "provisioned",
+    "runtimeStatus": "metadata-endpoint-runtime-wiring-required",
+    "accountName": "cosmos-pumpkin-prod-eastus",
+    "resourceGroup": "rg-ice-production-cosmos",
+    "subscriptionHint": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "databaseName": "pumpkin-prod-cms",
+    "backupPolicyMode": "Continuous30Days",
+    "portableExportSupported": false,
+    "platformBackupEvidenceSupported": true,
+    "redactionStatus": "passed",
+    "secretsIncluded": false,
+    "liveDatabaseExportAllowed": false
+  },
+  "readiness": {
+    "phase2f12hPostProvisioningReadback": "complete",
+    "phase2f12iMetadataRuntimeFoundation": true,
+    "providerMetadataEndpointImplemented": true,
+    "runtimeProfileBridgeImplemented": true,
+    "backupCenterLiveExportStillBlocked": true,
+    "readyForRuntimeProfileWiringApproval": true,
+    "readyForDataSeedMigrationApproval": false,
+    "readyForLiveDatabaseConnectorExecution": false,
+    "iceFullyBackupableToday": false,
+    "livePagesAffected": false
+  },
+  "tests": {
+    "backupImplementationNpmTest": "pass",
+    "backupImplementationNpmRunCheck": "pass",
+    "runtimeProfileCli": "pass",
+    "apiDotnetBuild": "pass"
+  },
+  "boundaries": {
+    "cmsRuntimeSwitch": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "dataMigration": false,
+    "seedImport": false,
+    "databaseExport": false,
+    "databaseImport": false,
+    "cosmosDocumentExport": false,
+    "protectedConfigRead": false,
+    "azureMutation": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false,
+    "gitStaging": false
+  },
+  "files": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "PROVIDER_METADATA_ENDPOINT_RESULT.md",
+    "RUNTIME_PROFILE_BRIDGE_RESULT.md",
+    "BACKUP_CENTER_RESOLVER_INTEGRATION_RESULT.md",
+    "API_ENDPOINT_BLOCKER_OR_TEST_RESULT.md",
+    "TEST_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "KNOWN_LIMITATIONS.md",
+    "NEXT_RUNTIME_WIRING_OR_DATA_SEED_PREFLIGHT_PROMPT.md",
+    "manifest.json"
+  ]
+}
+

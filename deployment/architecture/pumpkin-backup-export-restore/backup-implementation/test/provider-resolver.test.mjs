@@ -6,6 +6,12 @@ import path from 'node:path';
 import { createStandardBackup } from '../src/standard-backup-runner.mjs';
 import { buildProviderConnectorReadiness, validateProviderMetadata } from '../src/provider/provider-discovery-model.mjs';
 import { resolveProviderSourceFromFixture } from '../src/provider/provider-resolver.mjs';
+import {
+  buildProviderMetadataEndpointResponse,
+  buildRuntimeProfileBridge,
+  endpointAllowedResponseKeys,
+  validateProviderMetadataEndpointResponse
+} from '../src/provider/runtime-profile-bridge.mjs';
 import { readJson } from '../src/utils/json-writer.mjs';
 import { packageRoot } from '../src/utils/safe-paths.mjs';
 
@@ -68,6 +74,34 @@ test('provider metadata contract rejects forbidden fields', async () => {
   const fixture = await readJson(path.join(packageRoot, 'fixtures', 'provider-source.forbidden-field.json'));
   const validation = validateProviderMetadata(fixture);
   assert.equal(validation.status, 'failed');
+  assert(validation.failures.some((failure) => failure.code === 'FORBIDDEN_FIELD'));
+});
+
+test('runtime profile bridge emits endpoint-safe provisioned future target metadata', async () => {
+  const result = await resolveProviderSourceFromFixture({
+    fixturePath: 'fixtures/provider-source.ice.future-target-cosmos.json'
+  });
+  const bridge = buildRuntimeProfileBridge(result);
+  assert.equal(bridge.response.providerType, 'cosmos');
+  assert.equal(bridge.response.providerStatus, 'future-target');
+  assert.equal(bridge.response.provisioningStatus, 'provisioned');
+  assert.equal(bridge.response.runtimeStatus, 'metadata-endpoint-runtime-wiring-required');
+  assert.equal(bridge.response.secretsIncluded, false);
+  assert.equal(bridge.readiness.liveDatabaseExportAllowed, false);
+  assert.deepEqual(Object.keys(bridge.response).sort(), endpointAllowedResponseKeys().sort());
+});
+
+test('provider metadata endpoint response rejects forbidden fields', async () => {
+  const result = await resolveProviderSourceFromFixture({
+    fixturePath: 'fixtures/provider-source.ice.future-target-cosmos.json'
+  });
+  const response = buildProviderMetadataEndpointResponse(result);
+  const validation = validateProviderMetadataEndpointResponse({
+    ...response,
+    connectionString: 'redacted'
+  });
+  assert.equal(validation.status, 'failed');
+  assert(validation.failures.some((failure) => failure.code === 'UNKNOWN_FIELD'));
   assert(validation.failures.some((failure) => failure.code === 'FORBIDDEN_FIELD'));
 });
 
@@ -134,6 +168,22 @@ test('CLI resolve-provider prints only non-secret summary fields', async () => {
   assert.match(outcome.stdout, /providerType: missing/);
   assert.match(outcome.stdout, /selectedTargetProvider: cosmos/);
   assert.match(outcome.stdout, /nextAction: cosmos-provisioning-preflight-required/);
+  assert.doesNotMatch(outcome.stdout, /connection/i);
+  assert.doesNotMatch(outcome.stdout, /token/i);
+});
+
+test('CLI resolve-runtime-profile prints only non-secret runtime summary fields', async () => {
+  const cliPath = path.join(packageRoot, 'src', 'backup-cli.mjs');
+  const outcome = await runNode([
+    cliPath,
+    'resolve-runtime-profile',
+    '--fixture',
+    'fixtures/provider-source.ice.future-target-cosmos.json'
+  ]);
+  assert.equal(outcome.code, 0);
+  assert.match(outcome.stdout, /providerType: cosmos/);
+  assert.match(outcome.stdout, /provisioningStatus: provisioned/);
+  assert.match(outcome.stdout, /runtimeStatus: metadata-endpoint-runtime-wiring-required/);
   assert.doesNotMatch(outcome.stdout, /connection/i);
   assert.doesNotMatch(outcome.stdout, /token/i);
 });

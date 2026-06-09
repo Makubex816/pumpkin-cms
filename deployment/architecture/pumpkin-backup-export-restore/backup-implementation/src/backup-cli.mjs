@@ -7,6 +7,7 @@ import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
 import { validateBackupBundle, writeValidationReports } from './validators/backup-validator.mjs';
 import { resolveProviderSourceFromFixture } from './provider/provider-resolver.mjs';
+import { buildRuntimeProfileBridge } from './provider/runtime-profile-bridge.mjs';
 import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
@@ -119,6 +120,27 @@ async function main(argv) {
     }
     return;
   }
+  if (command === 'resolve-runtime-profile') {
+    const fixturePath = requiredOption(options, 'fixture');
+    const result = await resolveProviderSourceFromFixture({
+      fixturePath,
+      tenantKey: options.tenant,
+      siteKey: options.site,
+      environment: options.environment,
+      profile: options.profile
+    });
+    const bridge = buildRuntimeProfileBridge(result);
+    console.log(`providerType: ${bridge.response.providerType}`);
+    console.log(`providerStatus: ${bridge.response.providerStatus}`);
+    console.log(`provisioningStatus: ${bridge.response.provisioningStatus}`);
+    console.log(`runtimeStatus: ${bridge.response.runtimeStatus}`);
+    console.log(`liveDatabaseExportAllowed: ${bridge.readiness.liveDatabaseExportAllowed}`);
+    console.log(`nextAction: ${bridge.readiness.nextAction}`);
+    if (result.validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
   if (command === 'escrow-validate') {
     const escrowPath = requiredOption(options, 'escrow');
     const validation = await validateEscrowOutput({ escrowPath });
@@ -207,6 +229,7 @@ Commands:
   validate --bundle .tmp/<bundle> [--mode baseline|production-restore-proof]
   restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--mode baseline|production-restore-proof] [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
   resolve-provider --fixture fixtures/provider-source.ice.missing.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--profile fixture]
+  resolve-runtime-profile --fixture fixtures/provider-source.ice.future-target-cosmos.json [--tenant ice-rink-rentals] [--site ice-rink-rentals]
   escrow-create-fake --request fixtures/fake-escrow-request.json --out .tmp/<fake-escrow> [--overwrite]
   escrow-validate --escrow .tmp/<fake-escrow>
   escrow-inspect --escrow .tmp/<fake-escrow>
