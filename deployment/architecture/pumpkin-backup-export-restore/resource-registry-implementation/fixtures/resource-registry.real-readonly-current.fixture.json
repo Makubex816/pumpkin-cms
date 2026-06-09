@@ -1,0 +1,1251 @@
+{
+  "registryId": "pumpkin-phase-2f12n-real-readonly-current-redacted-registry",
+  "environment": "production",
+  "resources": [
+    {
+      "resourceId": "resource-azure-subscription-1",
+      "resourceType": "azure-subscription",
+      "displayName": "Azure subscription 1",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "pumpkin-platform",
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [],
+      "provider": "azure",
+      "nonSecretIdentifiers": {
+        "environmentName": "AzureCloud",
+        "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+        "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a",
+        "state": "Enabled"
+      },
+      "credentialRefs": [
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly",
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az account show non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "No Azure credential values are stored in the registry."
+      },
+      "cleanup": {
+        "requiredWhenRetired": false,
+        "notes": "Subscription-level reference only."
+      }
+    },
+    {
+      "resourceId": "resource-rg-ice-production-media",
+      "resourceType": "azure-resource-group",
+      "displayName": "rg-ice-production-media",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure",
+      "nonSecretIdentifiers": {
+        "resourceGroup": "rg-ice-production-media",
+        "location": "eastus",
+        "provisioningState": "Succeeded"
+      },
+      "credentialRefs": [
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az group list non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Resource group has no credential value."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retire only after media delivery replacement and backup verification."
+      }
+    },
+    {
+      "resourceId": "resource-rg-ice-static-form-endpoint",
+      "resourceType": "azure-resource-group",
+      "displayName": "rg-ice-static-form-endpoint",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure",
+      "nonSecretIdentifiers": {
+        "resourceGroup": "rg-ice-static-form-endpoint",
+        "location": "eastus",
+        "provisioningState": "Succeeded"
+      },
+      "credentialRefs": [
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az group list non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Resource group has no credential value."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retire only after form endpoint replacement and validation."
+      }
+    },
+    {
+      "resourceId": "resource-rg-ice-production-cosmos",
+      "resourceType": "azure-resource-group",
+      "displayName": "rg-ice-production-cosmos",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure",
+      "nonSecretIdentifiers": {
+        "resourceGroup": "rg-ice-production-cosmos",
+        "location": "eastus",
+        "provisioningState": "Succeeded"
+      },
+      "credentialRefs": [
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az group list non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Resource group has no credential value."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retire only after seed/migration, backup proof, and owner approval."
+      }
+    },
+    {
+      "resourceId": "resource-rg-ice-static-staging",
+      "resourceType": "azure-resource-group",
+      "displayName": "rg-ice-static-staging",
+      "environment": "staging",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure",
+      "nonSecretIdentifiers": {
+        "resourceGroup": "rg-ice-static-staging",
+        "location": "eastus2",
+        "provisioningState": "Succeeded"
+      },
+      "credentialRefs": [
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az group list non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Resource group has no credential value."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retire staging resources only after replacement or closure."
+      }
+    },
+    {
+      "resourceId": "resource-ice-media-storage-account",
+      "resourceType": "media-storage-account",
+      "displayName": "iceskatingmedia",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-storage",
+      "nonSecretIdentifiers": {
+        "resourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-media/providers/Microsoft.Storage/storageAccounts/iceskatingmedia",
+        "storageAccount": "iceskatingmedia",
+        "resourceGroup": "rg-ice-production-media",
+        "location": "eastus",
+        "kind": "StorageV2",
+        "skuName": "Standard_LRS",
+        "primaryLocation": "eastus",
+        "statusOfPrimary": "available",
+        "allowBlobPublicAccess": true,
+        "minimumTlsVersion": "TLS1_2"
+      },
+      "credentialRefs": [
+        "credential-ice-media-storage-rbac"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az storage account show non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Storage keys were not listed or stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retire only after media delivery replacement and backup validation."
+      }
+    },
+    {
+      "resourceId": "resource-ice-media-storage-container",
+      "resourceType": "media-storage-container",
+      "displayName": "ice-rink-rentals-media",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-storage",
+      "nonSecretIdentifiers": {
+        "storageAccount": "iceskatingmedia",
+        "resourceGroup": "rg-ice-production-media",
+        "containerName": "ice-rink-rentals-media",
+        "publicAccess": "blob",
+        "lastModified": "2026-06-05T14:11:32+00:00",
+        "mediaDomain": "media.iceskatingrinkrentals.com",
+        "publicUrlPattern": "https://media.iceskatingrinkrentals.com/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}",
+        "originUrlPattern": "https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media/ice-rink-rentals/assets/{assetId}/{checksum}/{safeFileName}"
+      },
+      "credentialRefs": [
+        "credential-ice-media-storage-rbac",
+        "credential-cloudflare-api-token"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az storage container list non-secret projection and media connector result",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Cloudflare credential reference should be rotated if future API work is approved."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Media blobs were not downloaded in this phase."
+      }
+    },
+    {
+      "resourceId": "resource-ice-cosmos-account",
+      "resourceType": "cosmos-account",
+      "displayName": "cosmos-pumpkin-prod-eastus",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-cosmos",
+      "nonSecretIdentifiers": {
+        "resourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-cosmos/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-pumpkin-prod-eastus",
+        "accountName": "cosmos-pumpkin-prod-eastus",
+        "resourceGroup": "rg-ice-production-cosmos",
+        "location": "East US",
+        "kind": "GlobalDocumentDB",
+        "provisioningState": "Succeeded",
+        "publicNetworkAccess": "Enabled",
+        "documentEndpoint": "https://cosmos-pumpkin-prod-eastus.documents.azure.com:443/",
+        "backupPolicyType": "Continuous",
+        "backupPolicyTier": "Continuous30Days",
+        "defaultConsistencyLevel": "Session"
+      },
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime",
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az cosmosdb show non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "No keys, connection strings, or SAS values were listed or stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Future target only; not runtime-switched."
+      }
+    },
+    {
+      "resourceId": "resource-ice-cosmos-database",
+      "resourceType": "cosmos-database",
+      "displayName": "pumpkin-prod-cms",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-cosmos",
+      "nonSecretIdentifiers": {
+        "resourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-cosmos/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-pumpkin-prod-eastus/sqlDatabases/pumpkin-prod-cms",
+        "accountName": "cosmos-pumpkin-prod-eastus",
+        "databaseName": "pumpkin-prod-cms"
+      },
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime"
+      ],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az cosmosdb sql database list non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "No database credentials are stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retain until data migration and restore validation are complete."
+      }
+    },
+    {
+      "resourceId": "resource-ice-cosmos-container-set",
+      "resourceType": "cosmos-container-set",
+      "displayName": "pumpkin-prod-cms model-aligned containers",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-cosmos",
+      "nonSecretIdentifiers": {
+        "databaseName": "pumpkin-prod-cms",
+        "partitionKey": "/tenantKey",
+        "indexingMode": "consistent",
+        "containerNames": [
+          "forms",
+          "importRuns",
+          "routes",
+          "mediaAssets",
+          "users",
+          "themes",
+          "pages",
+          "sites",
+          "tenants",
+          "publishRuns"
+        ]
+      },
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime"
+      ],
+      "runtimeProfiles": [
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az cosmosdb sql container list non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "No container credentials are stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Container cleanup requires explicit owner approval."
+      }
+    },
+    {
+      "resourceId": "resource-ice-static-web-app-staging",
+      "resourceType": "static-web-app",
+      "displayName": "swa-ice-static-staging",
+      "environment": "staging",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-static-web-apps",
+      "nonSecretIdentifiers": {
+        "resourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-static-staging/providers/Microsoft.Web/staticSites/swa-ice-static-staging",
+        "name": "swa-ice-static-staging",
+        "resourceGroup": "rg-ice-static-staging",
+        "location": "East US 2",
+        "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+        "skuName": "Free",
+        "skuTier": "Free",
+        "repositoryUrl": null,
+        "branch": null
+      },
+      "credentialRefs": [
+        "credential-static-web-app-deployment-credential"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az staticwebapp show non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Deployment credential values were not listed or stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Staging target only; no deployment occurred in this phase."
+      }
+    },
+    {
+      "resourceId": "resource-ice-static-form-function",
+      "resourceType": "function-app",
+      "displayName": "func-ice-static-contact-20260605",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-functions",
+      "nonSecretIdentifiers": {
+        "resourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-static-form-endpoint/providers/Microsoft.Web/sites/func-ice-static-contact-20260605",
+        "name": "func-ice-static-contact-20260605",
+        "resourceGroup": "rg-ice-static-form-endpoint",
+        "location": "East US",
+        "kind": "functionapp",
+        "state": "Running",
+        "defaultHostName": "func-ice-static-contact-20260605.azurewebsites.net",
+        "hostNames": [
+          "func-ice-static-contact-20260605.azurewebsites.net"
+        ],
+        "httpsOnly": true,
+        "serverFarmId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-static-form-endpoint/providers/Microsoft.Web/serverfarms/EastUSPlan"
+      },
+      "credentialRefs": [
+        "credential-function-app-settings-platform",
+        "credential-microsoft-graph-mail-app"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az functionapp show non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Function app settings were not listed. App setting values were not read."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "No deployment occurred in this phase."
+      }
+    },
+    {
+      "resourceId": "resource-ice-static-form-app-service-plan",
+      "resourceType": "app-service-plan",
+      "displayName": "EastUSPlan",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-functions",
+      "nonSecretIdentifiers": {
+        "resourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-static-form-endpoint/providers/Microsoft.Web/serverFarms/EastUSPlan",
+        "name": "EastUSPlan",
+        "resourceGroup": "rg-ice-static-form-endpoint",
+        "location": "eastus"
+      },
+      "credentialRefs": [
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az resource list non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Plan has no credential value."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Retire with function app after approval."
+      }
+    },
+    {
+      "resourceId": "resource-ice-static-form-storage-account",
+      "resourceType": "function-storage-account",
+      "displayName": "iceforms20260605",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "azure-storage",
+      "nonSecretIdentifiers": {
+        "resourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-static-form-endpoint/providers/Microsoft.Storage/storageAccounts/iceforms20260605",
+        "storageAccount": "iceforms20260605",
+        "resourceGroup": "rg-ice-static-form-endpoint",
+        "location": "eastus",
+        "kind": "StorageV2",
+        "skuName": "Standard_LRS",
+        "primaryLocation": "eastus",
+        "statusOfPrimary": "available",
+        "allowBlobPublicAccess": false,
+        "minimumTlsVersion": "TLS1_2",
+        "platformContainerNames": [
+          "azure-webjobs-hosts",
+          "azure-webjobs-secrets",
+          "function-releases",
+          "scm-releases"
+        ]
+      },
+      "credentialRefs": [
+        "credential-function-app-settings-platform",
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n az storage account show and container list non-secret projection",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Storage keys and connection strings were not listed or stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Azure-managed containers were identified by name only."
+      }
+    },
+    {
+      "resourceId": "resource-ice-primary-domain",
+      "resourceType": "domain",
+      "displayName": "iceskatingrinkrentals.com",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "cloudflare",
+      "nonSecretIdentifiers": {
+        "domain": "iceskatingrinkrentals.com",
+        "wwwDomain": "www.iceskatingrinkrentals.com",
+        "dnsProvider": "Cloudflare",
+        "zoneName": "iceskatingrinkrentals.com",
+        "zoneStatus": "active",
+        "assignedNameservers": [
+          "amy.ns.cloudflare.com",
+          "bob.ns.cloudflare.com"
+        ],
+        "indexingStatus": "hard-stopped pending owner approval"
+      },
+      "credentialRefs": [
+        "credential-cloudflare-api-token"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "ice-cloudflare-zone-activation-status and ice backup target profile",
+        "lastVerifiedAt": "2026-06-05T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Cloudflare credential value is not stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "No DNS changes occurred in this phase."
+      }
+    },
+    {
+      "resourceId": "resource-ice-media-domain",
+      "resourceType": "media-domain",
+      "displayName": "media.iceskatingrinkrentals.com",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "cloudflare",
+      "nonSecretIdentifiers": {
+        "host": "media.iceskatingrinkrentals.com",
+        "recordType": "CNAME",
+        "target": "iceskatingmedia.blob.core.windows.net",
+        "proxied": true,
+        "workerRoute": "media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*",
+        "workerScript": "ice-media-delivery"
+      },
+      "credentialRefs": [
+        "credential-cloudflare-api-token"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "ice-production-media-worker-delivery-result",
+        "lastVerifiedAt": "2026-06-05T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Cloudflare credential value is not stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "No Cloudflare API call occurred in this phase."
+      }
+    },
+    {
+      "resourceId": "resource-ice-media-worker",
+      "resourceType": "cloudflare-worker",
+      "displayName": "ice-media-delivery",
+      "environment": "production",
+      "status": "verified",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "cloudflare-workers",
+      "nonSecretIdentifiers": {
+        "script": "ice-media-delivery",
+        "route": "media.iceskatingrinkrentals.com/ice-rink-rentals/assets/*",
+        "validatedPublicUrls": 9,
+        "originHost": "iceskatingmedia.blob.core.windows.net"
+      },
+      "credentialRefs": [
+        "credential-cloudflare-api-token"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "ice-production-media-worker-delivery-result/WORKER_ROUTE_RESULT.md",
+        "lastVerifiedAt": "2026-06-05T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Cloudflare credential value is not stored."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "No Worker changes occurred in this phase."
+      }
+    },
+    {
+      "resourceId": "resource-ice-cms-tenant",
+      "resourceType": "cms-tenant",
+      "displayName": "Ice Skating Rink Rentals",
+      "environment": "production",
+      "status": "attached",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "pumpkin-cms",
+      "nonSecretIdentifiers": {
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "primaryDomain": "iceskatingrinkrentals.com",
+        "approvedLiveRoutes": [
+          "/",
+          "/contact",
+          "/service-areas"
+        ],
+        "searchIndexing": "hard-stopped pending owner approval"
+      },
+      "credentialRefs": [
+        "credential-pumpkin-admin-jwt-session"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly",
+        "offline-bundle"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "ice backup target profile and prior safe reports",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": false,
+        "notes": "Admin session token is excluded from durable escrow."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "No CMS/API call occurred in this phase."
+      }
+    },
+    {
+      "resourceId": "resource-roller-tenant-api",
+      "resourceType": "external-tenant-api",
+      "displayName": "Roller Rink Rentals tenant API",
+      "environment": "production",
+      "status": "blocked",
+      "tenantKeys": [
+        "roller-rink-rentals"
+      ],
+      "siteKeys": [
+        "roller-rink-rentals"
+      ],
+      "provider": "roller-rink-rentals",
+      "nonSecretIdentifiers": {
+        "tenantKey": "roller-rink-rentals",
+        "siteKey": "roller-rink-rentals",
+        "domain": "RollerRinkRentals.com",
+        "trackStatus": "paused behind Backup Center operational readiness"
+      },
+      "credentialRefs": [
+        "credential-roller-rink-rentals-api-key"
+      ],
+      "runtimeProfiles": [
+        "local-with-live-readonly"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12n env presence and task scope",
+        "lastVerifiedAt": null
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Durable API key is encrypted-vault eligible when present."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Roller writes and imports remain paused."
+      }
+    },
+    {
+      "resourceId": "resource-ice-backup-center-status",
+      "resourceType": "backup-artifact-reference",
+      "displayName": "Ice Backup Center operational status",
+      "environment": "local",
+      "status": "attached",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "siteKeys": [
+        "ice-rink-rentals"
+      ],
+      "provider": "pumpkin-backup-center",
+      "nonSecretIdentifiers": {
+        "runtimeProfile": "runtime-cosmos-future",
+        "standardBackupPrototype": "implemented",
+        "restoreValidationDryRun": "implemented",
+        "resourceRegistryHandoffVault": "implemented",
+        "liveDatabaseExport": "blocked",
+        "cosmosDocumentExport": "blocked",
+        "mediaDownload": "blocked"
+      },
+      "credentialRefs": [
+        "credential-pumpkin-admin-jwt-session",
+        "credential-roller-rink-rentals-api-key"
+      ],
+      "runtimeProfiles": [
+        "offline-bundle",
+        "runtime-cosmos-future"
+      ],
+      "owner": {
+        "team": "operator"
+      },
+      "audit": {
+        "createdFromEvidence": "phase-2f12m result and phase-2f12k runtime profile result",
+        "lastVerifiedAt": "2026-06-09T00:00:00.000Z"
+      },
+      "rotation": {
+        "required": true,
+        "notes": "Handoff vault credential references require post-build rotation review."
+      },
+      "cleanup": {
+        "requiredWhenRetired": true,
+        "notes": "Generated vault/handoff outputs remain ignored and unstaged."
+      }
+    }
+  ],
+  "credentialReferences": [
+    {
+      "credentialRefId": "credential-azure-operator-rbac-readonly",
+      "displayName": "Azure Operator Read-Only Login",
+      "envName": null,
+      "purpose": "read-only Azure metadata inventory",
+      "requiredFor": [
+        "phase-2f12n live inventory"
+      ],
+      "resourceIds": [
+        "resource-azure-subscription-1"
+      ],
+      "tenantKeys": [
+        "pumpkin-platform",
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "owner": "operator",
+      "storageLocationCategory": "operator-local-vault",
+      "escrowEligible": false,
+      "escrowStatus": "not-required",
+      "rotationRequired": false,
+      "rotationCadence": null,
+      "lastVerifiedAt": "2026-06-09T00:00:00.000Z",
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "interactive read-only metadata session, no credential value collected",
+      "presence": "PRESENT",
+      "valueIncluded": false
+    },
+    {
+      "credentialRefId": "credential-cosmos-managed-identity-runtime",
+      "displayName": "Cosmos Runtime Managed Identity",
+      "envName": null,
+      "purpose": "future runtime access without committed keys",
+      "requiredFor": [
+        "runtime-cosmos-future"
+      ],
+      "resourceIds": [
+        "resource-ice-cosmos-account",
+        "resource-ice-cosmos-database",
+        "resource-ice-cosmos-container-set"
+      ],
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "owner": "operator",
+      "storageLocationCategory": "managed-identity",
+      "escrowEligible": false,
+      "escrowStatus": "not-required",
+      "rotationRequired": false,
+      "rotationCadence": null,
+      "lastVerifiedAt": null,
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "managed identity preferred",
+      "presence": "NOT_REQUIRED",
+      "valueIncluded": false
+    },
+    {
+      "credentialRefId": "credential-ice-media-storage-rbac",
+      "displayName": "Ice Media Storage RBAC Access",
+      "envName": null,
+      "purpose": "Azure Blob media metadata and future approved media copy",
+      "requiredFor": [
+        "media inventory",
+        "future approved media backup copy"
+      ],
+      "resourceIds": [
+        "resource-ice-media-storage-account",
+        "resource-ice-media-storage-container"
+      ],
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "owner": "operator",
+      "storageLocationCategory": "operator-local-vault",
+      "escrowEligible": false,
+      "escrowStatus": "not-collected",
+      "rotationRequired": false,
+      "rotationCadence": null,
+      "lastVerifiedAt": "2026-06-09T00:00:00.000Z",
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "RBAC login used for metadata only; no storage key collected",
+      "presence": "PRESENT",
+      "valueIncluded": false
+    },
+    {
+      "credentialRefId": "credential-static-web-app-deployment-credential",
+      "displayName": "Static Web App Deployment Credential Reference",
+      "envName": null,
+      "purpose": "future deployment pipeline authorization",
+      "requiredFor": [
+        "future staging deployment automation"
+      ],
+      "resourceIds": [
+        "resource-ice-static-web-app-staging"
+      ],
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "staging",
+      "owner": "operator",
+      "storageLocationCategory": "not-collected",
+      "escrowEligible": false,
+      "escrowStatus": "not-collected",
+      "rotationRequired": true,
+      "rotationCadence": "before deployment automation",
+      "lastVerifiedAt": null,
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "deployment not approved in this phase",
+      "presence": "UNKNOWN",
+      "valueIncluded": false
+    },
+    {
+      "credentialRefId": "credential-function-app-settings-platform",
+      "displayName": "Function App Platform Settings Reference",
+      "envName": null,
+      "purpose": "function runtime platform settings managed outside registry",
+      "requiredFor": [
+        "contact form function runtime"
+      ],
+      "resourceIds": [
+        "resource-ice-static-form-function",
+        "resource-ice-static-form-storage-account"
+      ],
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "owner": "operator",
+      "storageLocationCategory": "platform-secret-store",
+      "escrowEligible": false,
+      "escrowStatus": "not-collected",
+      "rotationRequired": true,
+      "rotationCadence": "after approved function settings work",
+      "lastVerifiedAt": null,
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "app setting values were not read",
+      "presence": "UNKNOWN",
+      "valueIncluded": false
+    },
+    {
+      "credentialRefId": "credential-microsoft-graph-mail-app",
+      "displayName": "Microsoft Graph Mail App Credential Reference",
+      "envName": null,
+      "purpose": "future real email delivery for contact form",
+      "requiredFor": [
+        "contact form production email"
+      ],
+      "resourceIds": [
+        "resource-ice-static-form-function"
+      ],
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "owner": "operator",
+      "storageLocationCategory": "platform-secret-store",
+      "escrowEligible": false,
+      "escrowStatus": "not-collected",
+      "rotationRequired": true,
+      "rotationCadence": "after approved email setup work",
+      "lastVerifiedAt": null,
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "not collected by registry inventory",
+      "presence": "UNKNOWN",
+      "valueIncluded": false
+    },
+    {
+      "credentialRefId": "credential-cloudflare-api-token",
+      "displayName": "Cloudflare API Credential Reference",
+      "envName": null,
+      "purpose": "future approved DNS or worker maintenance",
+      "requiredFor": [
+        "Cloudflare DNS and Worker administration"
+      ],
+      "resourceIds": [
+        "resource-ice-primary-domain",
+        "resource-ice-media-domain",
+        "resource-ice-media-worker"
+      ],
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "owner": "operator",
+      "storageLocationCategory": "operator-local-vault",
+      "escrowEligible": false,
+      "escrowStatus": "not-collected",
+      "rotationRequired": true,
+      "rotationCadence": "after approved Cloudflare mutation work",
+      "lastVerifiedAt": null,
+      "cleanupRequiredAfterBuild": false,
+      "nonEscrowReason": "not approved for durable escrow in this phase",
+      "presence": "UNKNOWN",
+      "valueIncluded": false
+    }
+  ],
+  "tenantMappings": [
+    {
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "domainNames": [
+        "iceskatingrinkrentals.com",
+        "www.iceskatingrinkrentals.com",
+        "media.iceskatingrinkrentals.com"
+      ],
+      "resourceIds": [
+        "resource-rg-ice-production-media",
+        "resource-rg-ice-static-form-endpoint",
+        "resource-rg-ice-production-cosmos",
+        "resource-rg-ice-static-staging",
+        "resource-ice-media-storage-account",
+        "resource-ice-media-storage-container",
+        "resource-ice-cosmos-account",
+        "resource-ice-cosmos-database",
+        "resource-ice-cosmos-container-set",
+        "resource-ice-static-web-app-staging",
+        "resource-ice-static-form-function",
+        "resource-ice-static-form-app-service-plan",
+        "resource-ice-static-form-storage-account",
+        "resource-ice-primary-domain",
+        "resource-ice-media-domain",
+        "resource-ice-media-worker",
+        "resource-ice-cms-tenant",
+        "resource-ice-backup-center-status"
+      ],
+      "runtimeProfileIds": [
+        "runtime-cosmos-future",
+        "local-with-live-readonly",
+        "offline-bundle"
+      ],
+      "credentialRefs": [
+        "credential-azure-operator-rbac-readonly",
+        "credential-cosmos-managed-identity-runtime",
+        "credential-ice-media-storage-rbac",
+        "credential-static-web-app-deployment-credential",
+        "credential-function-app-settings-platform",
+        "credential-microsoft-graph-mail-app",
+        "credential-cloudflare-api-token",
+        "credential-pumpkin-admin-jwt-session"
+      ],
+      "bundleRefs": [
+        "resource-ice-backup-center-status"
+      ],
+      "status": "active"
+    },
+    {
+      "tenantKey": "roller-rink-rentals",
+      "siteKey": "roller-rink-rentals",
+      "domainNames": [
+        "RollerRinkRentals.com"
+      ],
+      "resourceIds": [
+        "resource-roller-tenant-api"
+      ],
+      "runtimeProfileIds": [
+        "local-with-live-readonly"
+      ],
+      "credentialRefs": [
+        "credential-roller-rink-rentals-api-key"
+      ],
+      "bundleRefs": [],
+      "status": "paused"
+    }
+  ],
+  "runtimeProfiles": [
+    {
+      "runtimeProfileId": "runtime-cosmos-future",
+      "profileName": "runtime-cosmos-future",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "production",
+      "resourceIds": [
+        "resource-ice-cosmos-account",
+        "resource-ice-cosmos-database",
+        "resource-ice-cosmos-container-set",
+        "resource-ice-backup-center-status"
+      ],
+      "credentialRefs": [
+        "credential-cosmos-managed-identity-runtime",
+        "credential-azure-operator-rbac-readonly"
+      ],
+      "status": "blocked",
+      "liveDatabaseExportAllowed": false,
+      "runtimeSwitchAllowed": false,
+      "productionWritesAllowed": false,
+      "blockedReasonCodes": [
+        "future-target-not-runtime-switched",
+        "data-seed-not-approved",
+        "production-writes-hard-stopped",
+        "live-database-export-blocked"
+      ]
+    },
+    {
+      "runtimeProfileId": "local-with-live-readonly",
+      "profileName": "local-with-live-readonly",
+      "tenantKeys": [
+        "ice-rink-rentals",
+        "roller-rink-rentals"
+      ],
+      "environment": "production",
+      "resourceIds": [
+        "resource-azure-subscription-1",
+        "resource-ice-media-storage-account",
+        "resource-ice-media-storage-container",
+        "resource-ice-static-web-app-staging",
+        "resource-ice-static-form-function",
+        "resource-ice-static-form-storage-account",
+        "resource-ice-primary-domain",
+        "resource-ice-media-domain",
+        "resource-ice-media-worker",
+        "resource-roller-tenant-api"
+      ],
+      "credentialRefs": [
+        "credential-azure-operator-rbac-readonly",
+        "credential-ice-media-storage-rbac",
+        "credential-cloudflare-api-token",
+        "credential-pumpkin-admin-jwt-session",
+        "credential-roller-rink-rentals-api-key"
+      ],
+      "status": "blocked",
+      "liveDatabaseExportAllowed": false,
+      "runtimeSwitchAllowed": false,
+      "productionWritesAllowed": false,
+      "blockedReasonCodes": [
+        "metadata-only-inventory",
+        "cms-api-calls-not-approved",
+        "session-token-excluded-from-durable-escrow",
+        "roller-track-paused"
+      ]
+    },
+    {
+      "runtimeProfileId": "offline-bundle",
+      "profileName": "offline-bundle",
+      "tenantKeys": [
+        "ice-rink-rentals"
+      ],
+      "environment": "local",
+      "resourceIds": [
+        "resource-ice-backup-center-status"
+      ],
+      "credentialRefs": [],
+      "status": "planned",
+      "liveDatabaseExportAllowed": false,
+      "runtimeSwitchAllowed": false,
+      "productionWritesAllowed": false,
+      "blockedReasonCodes": [
+        "offline-only"
+      ]
+    }
+  ]
+}

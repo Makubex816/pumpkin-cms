@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2F-12N",
+  "title": "Real Redacted Resource Registry Live Inventory",
+  "status": "complete",
+  "generatedAt": "2026-06-09T00:00:00.000Z",
+  "resultPackage": "deployment/architecture/pumpkin-backup-export-restore/phase-2f12n-real-resource-registry-live-inventory-result/",
+  "registryFixture": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation/fixtures/resource-registry.real-readonly-current.fixture.json",
+  "credentialReferenceFixture": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation/fixtures/credential-references.real-readonly-current.fixture.json",
+  "generatedRegistryOutput": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation/.tmp/phase-2f12n-real-redacted-registry/",
+  "generatedSecureHandoffOutput": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation/.tmp/phase-2f12n-secure-handoff/",
+  "readiness": {
+    "phase2f12mImplementation": "complete",
+    "phase2f12nLiveInventory": true,
+    "realRedactedRegistryGenerated": true,
+    "encryptedHandoffRegenerated": true,
+    "generatedOutputStaged": false,
+    "azureMutations": false,
+    "protectedConfigRead": false,
+    "plaintextSecretExport": false,
+    "readyForBackupCenterOperationalizationPrompt": true
+  }
+}
