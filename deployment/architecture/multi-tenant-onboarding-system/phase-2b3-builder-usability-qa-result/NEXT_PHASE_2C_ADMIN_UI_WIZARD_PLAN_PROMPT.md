@@ -1,0 +1,3 @@
+# Next Phase 2C Admin UI Wizard Plan Prompt
+
+Approve Phase 2C import package builder Admin UI wizard planning only: design a local/offline guided wizard that helps non-technical users create safe answers JSON without hand-editing JSON, integrates the existing offline builder and validator, previews package changes before writing, exports the support packet, records manual owner approval statuses, explains errors in plain language, supports save/resume without secrets, and preserves hard stops for Search Console/indexing, deployment, DNS, CMS, Azure, Cloudflare, MediaAsset, email, external checks, and Roller. No implementation, no tenant creation, no CMS/Azure/Cloudflare/DNS/deployment/email/Search Console actions, no external checks, and Roller remains paused.
