@@ -1,0 +1,4 @@
+# Next Ice Backup QA And Operationalization Prompt
+
+Approve Phase 2F-9 Ice backup QA and database/media operationalization planning only: use the Phase 2F-8 standard backup bundle, validation report, restore-plan dry-run, and incomplete-component report to define the next approved path for completing IceSkatingRinkRentals.com production recovery proof, including database backup/export approval options, media blob copy/inventory approval options, protected-config and secret boundaries, encrypted escrow decision gate, operator runbook updates, retention/storage requirements, validation rerun criteria, and go/no-go rules. No database export, no media copy, no secret export, no encrypted escrow payload, no restore execution, no CMS writes, no MediaAsset writes, no Azure/Cloudflare/DNS/deployment/email/Search Console actions, no protected config reads, and no live-page publication.
+

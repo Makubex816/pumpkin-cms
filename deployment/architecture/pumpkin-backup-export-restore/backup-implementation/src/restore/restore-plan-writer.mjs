@@ -86,14 +86,14 @@ function buildPlannedSteps(inventory) {
       summary: 'Backup manifest, file list, checksums, path safety, config redaction, and escrow exclusion were validated first.'
     },
     {
-      stepId: 'read-fake-inventory',
+      stepId: 'read-backup-inventory',
       writesRealSystem: false,
-      summary: `Read fake inventory counts for ${inventory.counts.tenants} tenant entries, ${inventory.counts.pages} page entries, and ${inventory.counts.mediaAssets} media asset entries.`
+      summary: `Read backup inventory counts for ${inventory.counts.tenants} tenant entries, ${inventory.counts.pages} page entries, and ${inventory.counts.mediaAssets} media asset entries.`
     },
     {
       stepId: 'compare-expected-counts',
       writesRealSystem: false,
-      summary: 'Compared fake inventory counts against approved local expected-count fixtures.'
+      summary: 'Compared backup inventory counts against approved local expected-count evidence.'
     },
     {
       stepId: 'prepare-dry-run-plan',

@@ -60,6 +60,7 @@ const allowedKinds = new Set([
   'escrow-marker'
 ]);
 const allowedSensitivity = new Set(['redacted']);
+const allowedSources = new Set(['fake-fixture', 'real-ice-readonly-standard']);
 const allowedConfigPresence = new Set(['PRESENT', 'MISSING', 'EXCLUDED', 'UNKNOWN']);
 const allowedRedactedValues = new Set(['REDACTED', 'NOT_COLLECTED', 'EXCLUDED', 'NOT_INCLUDED', 'PRESENT', 'MISSING', 'UNKNOWN', null]);
 
@@ -240,7 +241,7 @@ async function checkManifest(context) {
   if (typeof manifest.createdAt !== 'string' || Number.isNaN(Date.parse(manifest.createdAt))) problems.push('createdAt');
   if (typeof manifest.createdBy !== 'string' || manifest.createdBy.length === 0) problems.push('createdBy');
   if (typeof manifest.requestedBy !== 'string' || manifest.requestedBy.length === 0) problems.push('requestedBy');
-  if (typeof manifest.source !== 'string' || manifest.source !== 'fake-fixture') problems.push('source');
+  if (typeof manifest.source !== 'string' || !allowedSources.has(manifest.source)) problems.push('source');
   if (!Array.isArray(manifest.files) || manifest.files.length === 0) problems.push('files');
   if (typeof manifest.contentFileCount !== 'number' || manifest.contentFileCount !== manifest.files?.length) {
     problems.push('contentFileCount');

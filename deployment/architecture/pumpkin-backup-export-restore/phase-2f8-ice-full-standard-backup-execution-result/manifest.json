@@ -1,0 +1,73 @@
+{
+  "phase": "2F-8",
+  "title": "Ice full standard backup execution result",
+  "date": "2026-06-09",
+  "target": {
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com"
+  },
+  "generatedArtifacts": {
+    "backupBundle": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/ice-full-standard-backup/",
+    "restorePlan": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/ice-full-standard-restore-plan/",
+    "expectedCounts": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/ice-full-standard-backup-expected-counts.json"
+  },
+  "componentStatus": {
+    "cmsContent": "included",
+    "database": "not_included_no_approved_export_tooling_or_env",
+    "media": "metadata_inventory_included_blob_copies_not_included",
+    "staticEvidence": "included_from_local_artifacts_and_safe_reports",
+    "configInventory": "redacted_presence_only",
+    "escrow": "not_included_standard_backup"
+  },
+  "inventoryCounts": {
+    "tenants": 1,
+    "sites": 1,
+    "pages": 3,
+    "routes": 5,
+    "forms": 3,
+    "seoEntries": 3,
+    "redirects": 0,
+    "themeSettings": 1,
+    "mediaAssets": 12,
+    "staticEvidenceRoutes": 5,
+    "configVariables": 11
+  },
+  "validation": {
+    "backupValidator": "passed",
+    "restorePlanDryRun": "passed",
+    "fullProductionRecoveryProof": "blocked_by_missing_database_artifact"
+  },
+  "boundaries": {
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "databaseExport": false,
+    "databaseImport": false,
+    "protectedConfigRead": false,
+    "realSecretExport": false,
+    "encryptedEscrowPayload": false,
+    "azureActions": false,
+    "cloudflareActions": false,
+    "dnsActions": false,
+    "deploymentActions": false,
+    "emailActions": false,
+    "searchConsoleActions": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "ENV_PRESENCE_RESULT.md",
+    "CMS_CONTENT_EXPORT_RESULT.md",
+    "DATABASE_BACKUP_RESULT.md",
+    "MEDIA_BLOB_BACKUP_RESULT.md",
+    "STATIC_EVIDENCE_BACKUP_RESULT.md",
+    "CONFIG_REDACTION_RESULT.md",
+    "STANDARD_BACKUP_BUNDLE_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "RESTORE_PLAN_RESULT.md",
+    "INCOMPLETE_OR_BLOCKED_COMPONENTS.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "NEXT_ICE_BACKUP_QA_AND_OPERATIONALIZATION_PROMPT.md"
+  ]
+}
+

@@ -1,10 +1,12 @@
 import { readJson } from '../utils/json-writer.mjs';
-import { resolveFixturePath } from '../utils/safe-paths.mjs';
+import { resolveFixturePath, resolvePackagePath } from '../utils/safe-paths.mjs';
 
 const defaultExpectedCountsPath = 'fixtures/restore-expected-counts.json';
 
 export async function loadExpectedRestoreCounts(expectedCountsPath = defaultExpectedCountsPath) {
-  const expectedPath = resolveFixturePath(expectedCountsPath);
+  const expectedPath = expectedCountsPath === defaultExpectedCountsPath
+    ? resolveFixturePath(expectedCountsPath)
+    : resolvePackagePath(expectedCountsPath);
   return readJson(expectedPath);
 }
 

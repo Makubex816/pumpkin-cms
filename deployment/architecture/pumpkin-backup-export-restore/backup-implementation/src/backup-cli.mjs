@@ -2,6 +2,7 @@
 import { createFakeEscrow } from './escrow/escrow-create-runner.mjs';
 import { validateEscrowOutput } from './escrow/escrow-validator.mjs';
 import { writeEscrowValidationReports } from './escrow/escrow-report-writer.mjs';
+import { createIceStandardBackup } from './ice/ice-standard-backup-runner.mjs';
 import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
 import { validateBackupBundle, writeValidationReports } from './validators/backup-validator.mjs';
@@ -9,7 +10,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.4.0';
+const version = '0.5.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -34,6 +35,20 @@ async function main(argv) {
     });
     console.log(`created: ${path.relative(process.cwd(), result.bundleRoot)}`);
     console.log(`validation: ${result.validation.status}`);
+    return;
+  }
+  if (command === 'create-ice-standard') {
+    const outputPath = requiredOption(options, 'out');
+    const result = await createIceStandardBackup({
+      outputPath,
+      overwrite: Boolean(options.overwrite)
+    });
+    console.log(`created: ${path.relative(process.cwd(), result.bundleRoot)}`);
+    console.log(`validation: ${result.validation.status}`);
+    console.log(`cmsContent: ${result.componentStatus.cmsContent}`);
+    console.log(`database: ${result.componentStatus.database}`);
+    console.log(`media: ${result.componentStatus.media}`);
+    console.log(`expectedCounts: ${path.relative(process.cwd(), result.expectedCountsPath)}`);
     return;
   }
   if (command === 'validate') {
@@ -149,6 +164,7 @@ Commands:
   help
   version
   create-standard --scope tenant|platform --answers <fixture.json> --out .tmp/<bundle> [--overwrite]
+  create-ice-standard --out .tmp/ice-full-standard-backup [--overwrite]
   validate --bundle .tmp/<bundle>
   restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
   escrow-create-fake --request fixtures/fake-escrow-request.json --out .tmp/<fake-escrow> [--overwrite]
