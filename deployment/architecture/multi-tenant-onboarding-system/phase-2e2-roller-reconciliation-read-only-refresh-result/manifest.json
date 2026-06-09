@@ -1,0 +1,175 @@
+{
+  "phase": "2E-2",
+  "packageName": "phase-2e2-roller-reconciliation-read-only-refresh-result",
+  "createdAtLocal": "2026-06-08T20:51:58-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "baselineCommit": {
+    "short": "72c8247",
+    "subject": "Plan Roller CMS reconciliation"
+  },
+  "inputs": [
+    "PUMPKIN_MULTI_TENANT_ONBOARDING_PHASE_2E1_ROLLER_CMS_RECONCILIATION_PLAN_REPORT.md",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2e1-roller-cms-reconciliation-plan/",
+    "PUMPKIN_MULTI_TENANT_ONBOARDING_PHASE_2C6B_ROLLER_CMS_READ_ONLY_CURRENT_STATE_ENV_READY_REPORT.md",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c6b-roller-cms-read-only-current-state-env-ready-result/",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c5-roller-cms-import-execution-preflight/",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c4-roller-cms-import-plan/",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c3-first-real-tenant-dry-run-result/",
+    "deployment/architecture/multi-tenant-onboarding-system/phase-2c3a-paused-tenant-guardrail-repair-result/"
+  ],
+  "envPresence": {
+    "PUMPKIN_API_URL": "PRESENT",
+    "PUMPKIN_ADMIN_JWT": "PRESENT",
+    "ROLLER_RINK_RENTALS_API_KEY": "PRESENT",
+    "ROLLER_RINK_RENTALS_TENANT_ID": "PRESENT"
+  },
+  "readOnlyRefresh": {
+    "usableEvidenceGetRequests": 22,
+    "headRequests": 0,
+    "mutationRequests": 0,
+    "methodsUsedForUsableEvidence": [
+      "GET"
+    ],
+    "earlierGetOnlyClientSummaryRetries": {
+      "attempts": 2,
+      "excludedFromEvidenceConclusions": true,
+      "reason": "local response summarizer produced unusable success summaries",
+      "mutationRequests": 0,
+      "secretsPrinted": false,
+      "rawPayloadsPrinted": false
+    }
+  },
+  "refreshedCmsState": {
+    "adminAuthVerifyStatus": 200,
+    "tenantListStatus": 200,
+    "tenantListCount": 3,
+    "targetTenantStatus": 200,
+    "targetTenantActiveTextSignal": true,
+    "targetTenantRollerDomainTextSignal": true,
+    "tenantPagesStatus": 200,
+    "tenantPagesCount": 4,
+    "globalPagesStatus": 200,
+    "globalPagesCount": 9,
+    "importRunsStatus": 200,
+    "importRunsReturned": 0,
+    "mediaAssetsStatus": 200,
+    "mediaAssetsReturned": 0,
+    "adminThemesStatus": 200,
+    "adminThemesReturned": 1,
+    "activeThemeStatus": 200,
+    "publicThemesStatus": 200,
+    "publicSitemapStatus": 200,
+    "publicSitemapCount": 3,
+    "formRecipientRefMentionsAcrossRefreshedPageIndexes": 0,
+    "mediaRefMentionsAcrossRefreshedPageIndexes": 0
+  },
+  "pageState": [
+    {
+      "slug": "roller-rink-rentals",
+      "adminStatus": 200,
+      "publicStatus": 200,
+      "presentInAdminList": true,
+      "presentInSitemapText": true,
+      "published": true,
+      "sitemapIncluded": true
+    },
+    {
+      "slug": "home",
+      "adminStatus": 200,
+      "publicStatus": 200,
+      "presentInAdminList": true,
+      "presentInSitemapText": true,
+      "published": true,
+      "sitemapIncluded": true
+    },
+    {
+      "slug": "contact",
+      "adminStatus": 200,
+      "publicStatus": 200,
+      "presentInAdminList": true,
+      "presentInSitemapText": true,
+      "published": true,
+      "sitemapIncluded": true
+    },
+    {
+      "slug": "service-areas",
+      "adminStatus": 404,
+      "publicStatus": 404,
+      "presentInAdminList": false,
+      "presentInSitemapText": false,
+      "published": false,
+      "sitemapIncluded": false
+    },
+    {
+      "slug": "roller-phase-3-duplicate-test-51412237",
+      "adminStatus": null,
+      "publicStatus": null,
+      "presentInAdminList": true,
+      "presentInSitemapText": false,
+      "published": false,
+      "sitemapIncluded": false
+    }
+  ],
+  "routeConflictChecks": [
+    {
+      "slug": "old-roller-rink-rentals",
+      "adminStatus": 404,
+      "presentInAdminList": false,
+      "presentInSitemapText": false
+    },
+    {
+      "slug": "preview",
+      "adminStatus": 404,
+      "presentInAdminList": false,
+      "presentInSitemapText": false
+    },
+    {
+      "slug": "draft",
+      "adminStatus": 404,
+      "presentInSitemapText": false
+    }
+  ],
+  "recommendation": {
+    "readyForReconciliationWritePlanning": "conditional-go",
+    "readyForCmsReconciliationWrites": false,
+    "readyForCmsImportExecutionApproval": false,
+    "readyForTenantCreation": false,
+    "readyForMediaAssetWrites": false,
+    "readyForStaticGeneration": false,
+    "readyForDeployment": false,
+    "readyForSearchConsoleOrIndexing": false,
+    "readyForLivePages": false
+  },
+  "boundaries": {
+    "cmsWrites": false,
+    "tenantCreation": false,
+    "mediaAssetWrites": false,
+    "postPutPatchDeleteRequests": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "functionAppSettingsChanged": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "READ_ONLY_REFRESH_SCOPE.md",
+    "ENV_PRESENCE_RESULT.md",
+    "CMS_READ_ONLY_BOUNDARIES.md",
+    "REFRESHED_CMS_STATE_RESULT.md",
+    "TENANT_SITE_DOMAIN_RESULT.md",
+    "PAGE_ROUTE_SITEMAP_RESULT.md",
+    "FORM_RECIPIENT_RESULT.md",
+    "EXPECTED_VS_EXISTING_COMPARISON.md",
+    "OWNER_DECISION_REQUIRED_LIST.md",
+    "GO_NO_GO_RECOMMENDATION.md",
+    "BLOCKERS_OR_WARNINGS.md",
+    "NEXT_RECONCILIATION_WRITE_PLANNING_PROMPT.md",
+    "manifest.json"
+  ]
+}
