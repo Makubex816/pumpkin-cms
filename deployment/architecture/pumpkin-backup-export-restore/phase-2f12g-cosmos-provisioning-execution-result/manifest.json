@@ -1,0 +1,147 @@
+{
+  "phase": "2F-12G",
+  "title": "Ice Cosmos provisioning execution",
+  "site": "IceSkatingRinkRentals.com",
+  "status": "complete_after_owner_approved_provider_registration",
+  "azureContext": {
+    "environmentName": "AzureCloud",
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a"
+  },
+  "approvedTarget": {
+    "resourceGroup": "rg-ice-production-cosmos",
+    "region": "eastus",
+    "cosmosAccount": "cosmos-pumpkin-prod-eastus",
+    "database": "pumpkin-prod-cms",
+    "partitionKeyPath": "/tenantKey",
+    "backupPolicy": "continuous",
+    "containers": [
+      "tenants",
+      "sites",
+      "pages",
+      "routes",
+      "forms",
+      "mediaAssets",
+      "themes",
+      "publishRuns",
+      "importRuns",
+      "users"
+    ]
+  },
+  "results": {
+    "providerRegistration": {
+      "status": "registered",
+      "namespace": "Microsoft.DocumentDB",
+      "registrationState": "Registered",
+      "ownerApprovedAfterBlocker": true
+    },
+    "resourceGroup": {
+      "status": "created_or_verified",
+      "exists": true,
+      "location": "eastus",
+      "provisioningState": "Succeeded",
+      "id": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-cosmos"
+    },
+    "cosmosAccount": {
+      "status": "created",
+      "exists": true,
+      "provisioningState": "Succeeded",
+      "kind": "GlobalDocumentDB",
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "location": "East US",
+      "consistencyPolicy": "Session",
+      "publicNetworkAccess": "Enabled",
+      "documentEndpoint": "https://cosmos-pumpkin-prod-eastus.documents.azure.com:443/",
+      "id": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-cosmos/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-pumpkin-prod-eastus"
+    },
+    "database": {
+      "status": "created",
+      "exists": true,
+      "throughput": 400,
+      "minimumThroughput": 400,
+      "id": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-production-cosmos/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-pumpkin-prod-eastus/sqlDatabases/pumpkin-prod-cms"
+    },
+    "containers": {
+      "status": "created",
+      "countExpected": 10,
+      "countCreated": 10,
+      "partitionKeyPath": "/tenantKey"
+    },
+    "backupPolicy": {
+      "status": "applied",
+      "policy": "Continuous",
+      "tier": "Continuous30Days"
+    }
+  },
+  "readiness": {
+    "phase2f12fProvisioningApprovalPackage": "complete",
+    "phase2f12gCosmosProvisioningExecution": "complete",
+    "resourceGroupExists": true,
+    "cosmosAccountExists": true,
+    "databaseExists": true,
+    "containersExist": true,
+    "providerResolverRefreshReady": true,
+    "cmsRuntimeSwitchPerformed": false,
+    "iceDataMigrationPerformed": false,
+    "liveDatabaseConnectorExecutionReady": false,
+    "iceFullyBackupableToday": false,
+    "livePagesAffected": false
+  },
+  "securityBoundaries": {
+    "providerRegistrationPerformed": true,
+    "providerRegistrationOwnerApproved": true,
+    "keysListed": false,
+    "connectionStringsPrinted": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "encryptedEscrowPayload": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "databaseExport": false,
+    "databaseImport": false,
+    "cosmosDocumentExport": false,
+    "cloudflareMutation": false,
+    "dnsChange": false,
+    "deployment": false,
+    "functionAppSettingsChange": false,
+    "emailOrMicrosoft365Work": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false,
+    "gitStaging": false
+  },
+  "commandsUsed": [
+    "az provider show",
+    "az provider register",
+    "az account show",
+    "az group show",
+    "az group create",
+    "az cosmosdb show",
+    "az cosmosdb create",
+    "az cosmosdb sql database show",
+    "az cosmosdb sql database create",
+    "az cosmosdb sql database throughput show",
+    "az cosmosdb sql container list",
+    "az cosmosdb sql container show",
+    "az cosmosdb sql container create"
+  ],
+  "forbiddenCommandsUsed": [],
+  "files": [
+    "README.md",
+    "PROVISIONING_SCOPE.md",
+    "AZURE_SUBSCRIPTION_RESULT.md",
+    "PROVIDER_REGISTRATION_RESULT.md",
+    "RESOURCE_GROUP_RESULT.md",
+    "COSMOS_ACCOUNT_RESULT.md",
+    "DATABASE_RESULT.md",
+    "CONTAINER_RESULT.md",
+    "BACKUP_POLICY_RESULT.md",
+    "READBACK_VERIFICATION_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "BLOCKERS_OR_WARNINGS.md",
+    "NEXT_PROVIDER_RESOLVER_REFRESH_PROMPT.md",
+    "manifest.json"
+  ]
+}
+
