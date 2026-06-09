@@ -1,0 +1,56 @@
+{
+  "phase": "2D-2A",
+  "packageName": "phase-2d2a-path-guard-false-positive-resolution",
+  "createdAtLocal": "2026-06-08T20:16:54.5494165-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "baselineCommit": {
+    "short": "39b394c",
+    "full": "39b394c408072c5b362a90bcad6447954721a252",
+    "subject": "Add onboarding help escalation guide"
+  },
+  "renamedDocs": [
+    {
+      "from": "deployment/architecture/multi-tenant-onboarding-system/phase-2d2-controlled-staging-batch-execution-result/SECRET_PROTECTED_PATH_CHECK_RESULT.md",
+      "to": "deployment/architecture/multi-tenant-onboarding-system/phase-2d2-controlled-staging-batch-execution-result/PROTECTED_PATH_CHECK_RESULT.md",
+      "reason": "documentation filename false positive against strict staged-path guard"
+    }
+  ],
+  "remainingBlockedPaths": [
+    {
+      "path": "deployment/architecture/multi-tenant-onboarding-system/architecture-qa-audit/SECURITY_AND_SECRET_AUDIT.md",
+      "decision": "left uncommitted for separate owner decision"
+    }
+  ],
+  "safety": {
+    "guardWeakened": false,
+    "gitAddAUsed": false,
+    "rawContentReviewStaged": false,
+    "ignoredGeneratedOutputStaged": false,
+    "protectedConfigRead": false,
+    "protectedConfigStaged": false,
+    "filesDeletedExceptRenameCleanup": false,
+    "pushed": false
+  },
+  "externalSystems": {
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "FALSE_POSITIVE_SUMMARY.md",
+    "RENAMED_DOC_PATHS.md",
+    "SAFETY_GUARD_POLICY.md",
+    "STAGED_PATH_CHECK_RESULT.md",
+    "REMAINING_BLOCKED_PATHS.md",
+    "COMMIT_RESULT.md",
+    "NEXT_ROLLER_RECONCILIATION_PLANNING_PROMPT.md",
+    "manifest.json"
+  ]
+}

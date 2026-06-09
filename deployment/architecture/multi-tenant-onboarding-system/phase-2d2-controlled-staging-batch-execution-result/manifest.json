@@ -1,0 +1,130 @@
+{
+  "phase": "2D-2",
+  "packageName": "phase-2d2-controlled-staging-batch-execution-result",
+  "createdAtLocal": "2026-06-08T20:09:40.9610725-04:00",
+  "branch": "feature/admin-page-editor-import-export",
+  "startCommit": {
+    "short": "14e4947",
+    "subject": "Plan onboarding safe cleanup execution"
+  },
+  "finalCommit": {
+    "short": "39b394c",
+    "full": "39b394c408072c5b362a90bcad6447954721a252",
+    "subject": "Add onboarding help escalation guide"
+  },
+  "startingWorktree": {
+    "modifiedTrackedEntries": 149,
+    "untrackedEntries": 16,
+    "ignoredEntries": 62,
+    "stagedEntries": 0,
+    "deletedTrackedEntries": 0
+  },
+  "remainingWorktreeBeforeResultPackage": {
+    "modifiedTrackedEntries": 149,
+    "untrackedEntries": 5,
+    "ignoredEntries": 62,
+    "stagedEntries": 0,
+    "deletedTrackedEntries": 0
+  },
+  "commitsCreated": [
+    {
+      "batch": 2,
+      "short": "1aa20b0",
+      "subject": "Record Roller read-only preflight blockers"
+    },
+    {
+      "batch": 3,
+      "short": "7931263",
+      "subject": "Record validator hardening evidence"
+    },
+    {
+      "batch": 4,
+      "short": "b488aab",
+      "subject": "Plan import package builder prototype"
+    },
+    {
+      "batch": 5,
+      "short": "6884b1c",
+      "subject": "Record builder usability QA"
+    },
+    {
+      "batch": 7,
+      "short": "39b394c",
+      "subject": "Add onboarding help escalation guide"
+    }
+  ],
+  "skippedOrBlocked": [
+    {
+      "batch": 1,
+      "status": "skipped",
+      "reason": "already committed as 14e4947"
+    },
+    {
+      "batch": 6,
+      "status": "blocked",
+      "reason": "staged-path safety guard matched SECURITY_AND_SECRET_AUDIT.md"
+    },
+    {
+      "batch": "large modified architecture docs",
+      "status": "skipped",
+      "reason": "Phase 2D-1 marked not yet safe as exact batch"
+    },
+    {
+      "batch": "Phase 2D-2 result package",
+      "status": "resolved-by-phase-2d2a",
+      "reason": "documentation filename was renamed to PROTECTED_PATH_CHECK_RESULT.md so the strict staged-path guard can remain unchanged"
+    }
+  ],
+  "safety": {
+    "gitAddAUsed": false,
+    "exactGitAddPathsOnly": true,
+    "safetyCheckBeforeEveryCommit": true,
+    "gitDiffCachedCheckBeforeEveryCommit": true,
+    "rawContentReviewStaged": false,
+    "ignoredGeneratedOutputStaged": false,
+    "protectedConfigRead": false,
+    "protectedConfigStaged": false,
+    "filesDeleted": false,
+    "pushed": false
+  },
+  "validation": {
+    "manifestJsonParse": "passed",
+    "resultPackageTrailingWhitespaceScan": "passed",
+    "finalStagedPathCount": 0,
+    "finalBlockedStagedPathCount": 0,
+    "gitDiffCheck": "passed with existing line-ending warnings suppressed",
+    "phase2d2OriginalResultPackagePathGuardHitCount": 1,
+    "phase2d2OriginalResultPackagePathGuardHits": [
+      "deployment/architecture/multi-tenant-onboarding-system/phase-2d2-controlled-staging-batch-execution-result/SECRET_PROTECTED_PATH_CHECK_RESULT.md"
+    ],
+    "phase2d2aResolvedResultPackagePathGuardHitCount": 0,
+    "finalWorktreeStatusEntries": 156,
+    "finalTrackedModifiedEntries": 149,
+    "finalUntrackedEntries": 7,
+    "finalIgnoredEntries": 62
+  },
+  "externalSystems": {
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "azureChanges": false,
+    "cloudflareChanges": false,
+    "dnsChanges": false,
+    "deployment": false,
+    "emailOrMicrosoft365": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "STARTING_WORKTREE_STATUS.md",
+    "EXECUTED_BATCHES.md",
+    "COMMIT_RESULTS.md",
+    "SKIPPED_OR_BLOCKED_BATCHES.md",
+    "DO_NOT_STAGE_CONFIRMATION.md",
+    "PROTECTED_PATH_CHECK_RESULT.md",
+    "RAW_INPUT_AND_IGNORED_OUTPUT_STATUS.md",
+    "REMAINING_WORKTREE_STATUS.md",
+    "NEXT_ROLLER_RECONCILIATION_PLANNING_PROMPT.md",
+    "manifest.json"
+  ]
+}
