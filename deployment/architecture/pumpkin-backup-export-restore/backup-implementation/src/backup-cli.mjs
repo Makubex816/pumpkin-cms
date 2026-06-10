@@ -8,6 +8,8 @@ import { createIceCosmosSeedDryRun } from './cosmos-seed/ice-seed-dry-runner.mjs
 import { runGuardedLiveCosmosSeed } from './cosmos-seed/guarded-live-seed-runner.mjs';
 import { runLiveCosmosReadonlyExport, validateLiveCosmosExportPackage, writeLiveCosmosExportValidationReports } from './connectors/cosmos/live-cosmos-export-runner.mjs';
 import { runLiveMediaBlobCopyProof, validateLiveMediaCopyProof, writeLiveMediaCopyValidationReports } from './connectors/media/live-media-copy-runner.mjs';
+import { createCompleteStandardBackupWorkflow, createIceCompleteStandardBackupWorkflow } from './generator/complete-standard-backup-runner.mjs';
+import { createDownloadPackage } from './generator/download-package-writer.mjs';
 import { validateSeedDryRunPackage, writeSeedValidationReports } from './cosmos-seed/tenant-partition-validator.mjs';
 import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
@@ -23,7 +25,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.12.0';
+const version = '0.13.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -64,6 +66,52 @@ async function main(argv) {
     console.log(`database: ${result.componentStatus.database}`);
     console.log(`media: ${result.componentStatus.media}`);
     console.log(`expectedCounts: ${path.relative(process.cwd(), result.expectedCountsPath)}`);
+    return;
+  }
+  if (command === 'create-complete-standard') {
+    const outputPath = requiredOption(options, 'out');
+    const profile = options.profile ?? 'fake-complete';
+    const result = await createCompleteStandardBackupWorkflow({
+      profile,
+      outputPath,
+      overwrite: Boolean(options.overwrite),
+      download: Boolean(options.download),
+      downloadOutputPath: options['download-out'] ?? null
+    });
+    console.log(`created: ${path.relative(process.cwd(), result.bundleRoot)}`);
+    console.log(`profile: ${result.profile}`);
+    console.log(`validation: ${result.validation.status}`);
+    console.log(`validationMode: ${result.validation.mode}`);
+    console.log(`restorePlan: ${result.restorePlan.status}`);
+    console.log(`restoreOutput: ${path.relative(process.cwd(), result.restoreOutputRoot)}`);
+    console.log(`download: ${result.download?.status ?? 'not-run'}`);
+    if (result.validation.status !== 'passed' || result.restorePlan.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'create-ice-complete-standard') {
+    const outputPath = requiredOption(options, 'out');
+    const profile = options.profile ?? 'live-readonly';
+    const result = await createIceCompleteStandardBackupWorkflow({
+      profile,
+      outputPath,
+      overwrite: Boolean(options.overwrite),
+      download: Boolean(options.download),
+      downloadOutputPath: options['download-out'] ?? null
+    });
+    console.log(`created: ${path.relative(process.cwd(), result.bundleRoot)}`);
+    console.log(`profile: ${result.profile}`);
+    console.log(`validation: ${result.validation.status}`);
+    console.log(`validationMode: ${result.validation.mode}`);
+    console.log(`restorePlan: ${result.restorePlan.status}`);
+    console.log(`restoreOutput: ${path.relative(process.cwd(), result.restoreOutputRoot)}`);
+    console.log(`cosmosProof: ${result.liveProofs?.cosmosStatus ?? 'not-run'}`);
+    console.log(`mediaProof: ${result.liveProofs?.mediaStatus ?? 'not-run'}`);
+    console.log(`download: ${result.download?.status ?? 'not-run'}`);
+    if (result.validation.status !== 'passed' || result.restorePlan.status !== 'passed') {
+      process.exitCode = 1;
+    }
     return;
   }
   if (command === 'validate') {
@@ -248,6 +296,25 @@ async function main(argv) {
     }
     return;
   }
+  if (command === 'package-download') {
+    const bundlePath = requiredOption(options, 'bundle');
+    const outputPath = requiredOption(options, 'out');
+    const result = await createDownloadPackage({
+      bundlePath,
+      outputPath,
+      overwrite: Boolean(options.overwrite),
+      mode: options.mode ?? 'production-restore-proof'
+    });
+    console.log(`download-package: ${result.status}`);
+    console.log(`output: ${path.relative(process.cwd(), result.outputRoot)}`);
+    console.log(`zip: ${path.relative(process.cwd(), result.zipPath)}`);
+    console.log(`files: ${result.fileCount}`);
+    console.log(`sha256: ${result.zipSha256}`);
+    if (result.status !== 'packaged') {
+      process.exitCode = 1;
+    }
+    return;
+  }
   if (command === 'escrow-create-fake') {
     const requestPath = requiredOption(options, 'request');
     const outputPath = requiredOption(options, 'out');
@@ -386,7 +453,7 @@ function parseArgs(args) {
       throw new Error(`unexpected positional argument: ${arg}`);
     }
     const key = arg.slice(2);
-    if (key === 'overwrite' || key === 'help') {
+    if (key === 'overwrite' || key === 'help' || key === 'download') {
       options[key] = true;
       continue;
     }
@@ -429,6 +496,8 @@ Commands:
   version
   create-standard --scope tenant|platform --answers <fixture.json> --out .tmp/<bundle> [--runtime-profile local-dev] [--with-fake-cosmos] [--with-fake-media-copy] [--tenant-website-bundle] [--overwrite]
   create-ice-standard --out .tmp/ice-full-standard-backup [--overwrite]
+  create-complete-standard --profile fake-complete --out .tmp/<bundle> [--download] [--download-out .tmp/<download>] [--overwrite]
+  create-ice-complete-standard --profile live-readonly --out .tmp/<bundle> [--download] [--download-out .tmp/<download>] [--overwrite]
   validate --bundle .tmp/<bundle> [--mode baseline|production-restore-proof]
   restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--mode baseline|production-restore-proof] [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
   cosmos-seed:ice-dry-run --source .tmp/ice-full-standard-backup --out .tmp/phase-2f12o-ice-cosmos-seed-dry-run [--overwrite]
@@ -440,6 +509,7 @@ Commands:
   media-copy:live-readonly --out .tmp/phase-2f12s-media-blob-copy [--overwrite]
   media-copy:validate --media .tmp/phase-2f12s-media-blob-copy
   create-ice-complete-standard-backup --export .tmp/phase-2f12r-live-cosmos-export --media .tmp/phase-2f12s-media-blob-copy --out .tmp/phase-2f12s-complete-ice-standard-backup [--overwrite]
+  package-download --bundle .tmp/<bundle> --out .tmp/<download> [--mode production-restore-proof] [--overwrite]
   resolve-provider --fixture fixtures/provider-source.ice.missing.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--profile fixture]
   resolve-runtime-profile --fixture fixtures/provider-source.ice.future-target-cosmos.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--runtime-profile local-dev]
   runtime-profile:list
@@ -454,7 +524,7 @@ Example fake complete connector bundle:
   create-standard --scope tenant --answers fixtures/ice-cosmos-media-standard-backup.answers.json --with-fake-cosmos --with-fake-media-copy --tenant-website-bundle --out .tmp/ice-cosmos-media-fake-complete --overwrite
 
 Boundary:
-  Folder bundles, restore-plan dry-runs, Cosmos seed dry-run documents, explicitly approved live read-only Cosmos export output, fake connector output, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API writes, no unapproved Cosmos write, no real blob download.
+  Folder bundles, restore-plan dry-runs, optional download zips, Cosmos seed dry-run documents, explicitly approved live read-only Cosmos export output, fake connector output, and fake escrow test output under .tmp only. No real secrets, no production escrow payloads, no real restore, no CMS/API writes, no unapproved Cosmos write, no storage mutation.
 `);
 }
 

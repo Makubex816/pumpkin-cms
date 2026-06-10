@@ -1,21 +1,17 @@
 # Known Limitations
 
-Phase 2F-12K adds local runtime profile models, fixture-backed profile resolution, export guards, CLI checks, and Backup Center bundle integration on top of the provider resolver foundation. It does not make the Backup Center production-ready or prove IceSkatingRinkRentals.com is fully backupable today.
+Phase 2F-13 adds a unified local/live-readonly Backup Generator workflow, operator product files, Resource Registry reference inclusion, and optional `.tmp` ZIP packaging. It does not make the Backup Center a deployed production service or approve CMS runtime cutover.
 
 ## Still Not Implemented
 
-- Real Cosmos read-only discovery.
 - Real provider-source resolver execution against live runtime data.
 - Runtime-configured CMS provider metadata endpoint backed by live configuration.
 - Real Cosmos platform backup evidence collection.
-- Real Cosmos portable JSON exporter.
 - Real database importer.
 - Real CMS/API exporter.
 - Real CMS/API restore adapter.
 - Real MediaAsset export.
 - Real MediaAsset restore.
-- Real blob/media listing.
-- Real blob/media download.
 - Real blob/media restore.
 - Real static output export.
 - Real static output restore.
@@ -28,7 +24,9 @@ Phase 2F-12K adds local runtime profile models, fixture-backed profile resolutio
 - Backup Center job API endpoints.
 - Job queue/worker execution.
 - Production retention policies.
+- Deployed Backup Center job orchestration.
 - Operator approval workflow enforcement outside this local CLI.
+- Durable artifact storage outside owner-approved local `.tmp` handling.
 
 ## Validator Limits
 
@@ -41,6 +39,7 @@ Phase 2F-12K adds local runtime profile models, fixture-backed profile resolutio
 - Reports are local `.tmp` artifacts and must not be treated as a production audit log.
 - Fake media copies are text fixtures only, not real media files.
 - Fake Cosmos records are local fixtures only, not exported production documents.
+- Optional generator ZIP files are local convenience packages, not durable escrow or production retention.
 - Provider resolver records still use local fixtures for Backup Center tests.
 - Runtime profile records still use local fixtures for Backup Center tests.
 - The CMS provider metadata endpoint foundation returns a static non-secret Ice future-target profile only.
@@ -49,4 +48,4 @@ Phase 2F-12K adds local runtime profile models, fixture-backed profile resolutio
 
 ## Future Approval Required
 
-The next IceSkatingRinkRentals.com step is data seed and migration preflight planning. It must remain no-mutation until a separate seed/migration execution approval exists.
+The next IceSkatingRinkRentals.com step is Backup Generator QA and owner signoff. It must remain validation/signoff only until separate approvals exist for any runtime switch, restore execution, Admin integration, Electron packaging, Outbound Link Manager execution, or live publication.

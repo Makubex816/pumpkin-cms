@@ -1,8 +1,8 @@
 # Pumpkin Backup Center Local Prototype
 
-Phase 2F-12O adds a local-only Ice Cosmos seed/migration dry-run on top of the standard backup exporter, hardened validator, restore validation dry-run, fake encrypted escrow prototype, fake Cosmos/media connector foundation, provider source resolver, and runtime profile model.
+Phase 2F-13 productizes the Backup Center generator into a repeatable local/live-readonly standard backup workflow for Ice on top of the standard backup exporter, hardened validator, restore validation dry-run, fake encrypted escrow prototype, fake Cosmos/media connector foundation, provider source resolver, runtime profile model, Cosmos seed tooling, live-readonly Cosmos export proof, and media full-copy proof.
 
-It creates and validates folder-based standard backup bundles, can resolve non-secret provider source fixture metadata, can generate fake Cosmos portable JSON export artifacts, can map a validated Ice standard backup baseline into Cosmos-ready seed dry-run documents, can copy fake media text fixtures, can generate a tenant website bundle index, can generate a restore plan without restoring into any real system, and can generate fake encrypted escrow output under ignored `.tmp`. It does not create production backup zips, export or import a real database, call CMS/API endpoints during seed dry-runs, export real secrets, create production escrow payloads, download real blobs, restore data, deploy, or touch external systems.
+It creates and validates folder-based standard backup bundles, can resolve non-secret provider source fixture metadata, can generate fake Cosmos portable JSON export artifacts, can map a validated Ice standard backup baseline into Cosmos-ready seed dry-run documents, can copy fake media text fixtures, can use approved live-readonly Cosmos/media proof paths, can include a redacted Resource Registry reference, can write operator summaries and retention guidance, can generate a restore plan without restoring into any real system, can optionally create a downloadable ZIP under ignored `.tmp`, and can generate fake encrypted escrow output under ignored `.tmp`. It does not switch CMS runtime, write CMS content, write Cosmos data, mutate storage, read protected config, export real secrets, create production escrow payloads, restore data, deploy, index, or publish live pages.
 
 ## Implemented
 
@@ -34,6 +34,11 @@ It creates and validates folder-based standard backup bundles, can resolve non-s
 - `/tenantKey` partition validator for seed dry-run packages.
 - Seed readback and rollback plan writers.
 - Guarded live Cosmos seed runner with Azure AD/RBAC-only data-plane access.
+- Unified complete standard backup generator workflow.
+- Live-readonly Ice complete standard backup orchestration.
+- Redacted Resource Registry reference inclusion.
+- Operator summary and retention/cleanup writers.
+- Optional local ZIP download package writer under ignored `.tmp`.
 - Node built-in tests.
 
 ## Quick Start
@@ -50,6 +55,9 @@ npm run restore:ice-fake-complete
 npm run cosmos-seed:ice-dry-run
 npm run cosmos-seed:validate
 npm run cosmos-seed:live-execute
+npm run create:complete-standard-fake
+npm run create:complete-standard-fake-download
+npm run package-download:fake
 npm run escrow:create
 npm run escrow:validate
 npm run escrow:inspect
@@ -64,6 +72,11 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 ## Key Docs
 
 - `USAGE.md`
+- `BACKUP_GENERATOR.md`
+- `COMPLETE_STANDARD_BACKUP_WORKFLOW.md`
+- `DOWNLOAD_PACKAGE_WORKFLOW.md`
+- `LOCAL_VS_LIVE_READONLY_GENERATOR_MODES.md`
+- `OPERATOR_GENERATOR_RUNBOOK.md`
 - `STANDARD_BACKUP_FORMAT.md`
 - `COSMOS_CONNECTOR_FAKE_MODE.md`
 - `MEDIA_CONNECTOR_FAKE_MODE.md`
@@ -82,8 +95,8 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 - `FIXTURES.md`
 - `SECURITY_BOUNDARIES.md`
 - `KNOWN_LIMITATIONS.md`
-- `NEXT_PHASE_2F12_LIVE_READONLY_CONNECTOR_PREFLIGHT_PROMPT.md`
+- `NEXT_BACKUP_GENERATOR_QA_AND_SIGNOFF_PROMPT.md`
 
 ## Boundary
 
-Local prototype by default. Seed dry-runs read validated local backup bundles and non-secret fixtures only. The guarded live seed command may use Azure AD/RBAC data-plane access only when explicitly approved, and it blocks before writing if Cosmos native RBAC is unavailable. No real secrets, no protected config, no real Cosmos export/import, no real CMS export/restore/write during seed dry-runs, no MediaAsset restore, no real blob download/copy, no static generation/restore, no production escrow payload, no real restore, no keys/listKeys, no connection strings, no SAS generation, no deployment, no indexing, and no live-page publication.
+Local prototype by default. Seed dry-runs read validated local backup bundles and non-secret fixtures only. The guarded live seed command may use Azure AD/RBAC data-plane access only when explicitly approved, and it blocks before writing if Cosmos native RBAC is unavailable. The live-readonly generator may use only the approved read-only Cosmos export and media copy paths. No real secrets, no protected config, no CMS runtime switch, no CMS writes, no Cosmos writes from the generator, no storage mutation, no MediaAsset restore, no static generation/restore, no production escrow payload, no real restore, no keys/listKeys, no connection strings, no SAS generation, no deployment, no indexing, and no live-page publication.

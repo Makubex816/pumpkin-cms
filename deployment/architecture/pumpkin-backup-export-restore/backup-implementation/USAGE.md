@@ -39,6 +39,36 @@ Proof-mode validation for the fake complete Cosmos/media bundle:
 node src/backup-cli.mjs validate --bundle .tmp/ice-cosmos-media-fake-complete --mode production-restore-proof
 ```
 
+## Unified Complete Standard Backup Generator
+
+Local fake complete workflow:
+
+```powershell
+node src/backup-cli.mjs create-complete-standard --profile fake-complete --out .tmp/phase-2f13-unified-backup-generator/fake-complete --download --download-out .tmp/phase-2f13-unified-backup-generator/fake-download --overwrite
+```
+
+Approved live-readonly Ice workflow:
+
+```powershell
+node src/backup-cli.mjs create-ice-complete-standard --profile live-readonly --out .tmp/phase-2f13-unified-backup-generator/ice-complete-standard --download --download-out .tmp/phase-2f13-unified-backup-generator/ice-download --overwrite
+```
+
+Package an existing validated standard bundle:
+
+```powershell
+node src/backup-cli.mjs package-download --bundle .tmp/phase-2f13-unified-backup-generator/fake-complete --out .tmp/phase-2f13-unified-backup-generator/fake-download --overwrite
+```
+
+Equivalent local package scripts:
+
+```powershell
+npm run create:complete-standard-fake
+npm run create:complete-standard-fake-download
+npm run package-download:fake
+```
+
+The generator writes a complete folder bundle, redacted Resource Registry reference files, operator summary, retention instructions, validation reports, dry-run restore plan summary, and optional ZIP download package under ignored `.tmp`. The fake profile is offline. The live-readonly profile may use only the approved read-only Cosmos export and media copy paths.
+
 ## Restore Validation Dry-Run
 
 ```powershell
@@ -110,8 +140,8 @@ node src/backup-cli.mjs inspect --bundle .tmp/tenant-standard-backup
 
 ## Output Rule
 
-The CLI refuses to write generated output outside package `.tmp/`. It writes folder bundles, restore-plan dry-run output, Cosmos seed dry-run/live execution reports, fake connector output, and fake encrypted escrow test output only, and blocks archive-style paths such as `.zip`, `.backup`, `.bak`, and `.bacpac`.
+The CLI refuses to write generated output outside package `.tmp/`. It writes folder bundles, restore-plan dry-run output, Cosmos seed dry-run/live execution reports, fake connector output, optional generator download ZIPs, and fake encrypted escrow test output only, and blocks archive-style bundle paths such as `.zip`, `.backup`, `.bak`, and `.bacpac`.
 
 ## Phase Boundary
 
-This CLI does not read protected config, inspect real secret values, create production backup zips, perform a real Cosmos export/write, call live Azure Blob Storage, call CMS/API endpoints from the fake connector or seed dry-run flow, export/import a real database, export/restore real media, create production escrow payloads, restore data into real systems, deploy, or publish live pages.
+This CLI does not read protected config, inspect real secret values, perform Cosmos writes from the generator, mutate storage, call CMS/API endpoints from the fake connector or seed dry-run flow, export/import a real database outside the approved read-only Cosmos proof path, create production escrow payloads, restore data into real systems, deploy, index, or publish live pages.

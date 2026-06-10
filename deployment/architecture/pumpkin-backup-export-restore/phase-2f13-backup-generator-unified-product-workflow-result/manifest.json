@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2F-13",
+  "title": "Backup Generator Unified Product Workflow Implementation",
+  "status": "complete",
+  "generatedAt": "2026-06-10T03:05:17.290Z",
+  "resultPackage": "deployment/architecture/pumpkin-backup-export-restore/phase-2f13-backup-generator-unified-product-workflow-result/",
+  "implementation": {
+    "backupImplementationVersion": "0.13.0",
+    "newCliCommands": [
+      "create-complete-standard",
+      "create-ice-complete-standard",
+      "package-download"
+    ],
+    "generatorProfiles": [
+      "fake-complete",
+      "live-readonly"
+    ],
+    "resourceRegistryInclusion": "redacted-reference-only",
+    "downloadPackage": "optional-local-zip-under-tmp"
+  },
+  "generatedOutput": {
+    "fakeBundle": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f13-unified-backup-generator/fake-complete/",
+    "fakeRestorePlan": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f13-unified-backup-generator/fake-complete-restore-plan/",
+    "fakeDownloadRecheck": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f13-unified-backup-generator/fake-download-recheck/",
+    "liveReadonlyBundle": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f13-unified-backup-generator/ice-complete-standard/",
+    "liveReadonlyRestorePlan": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f13-unified-backup-generator/ice-complete-standard-restore-plan/",
+    "liveReadonlyDownloadRecheck": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f13-unified-backup-generator/ice-download-recheck/"
+  },
+  "liveReadonlyProof": {
+    "status": "passed",
+    "cosmos": {
+      "accountName": "cosmos-pumpkin-prod-eastus",
+      "databaseName": "pumpkin-prod-cms",
+      "tenantKey": "ice-rink-rentals",
+      "recordSetCount": 10,
+      "totalRecordCount": 27,
+      "proofStatus": "exported-and-validated"
+    },
+    "media": {
+      "storageAccount": "iceskatingmedia",
+      "container": "ice-rink-rentals-media",
+      "copiedBlobCount": 9,
+      "copiedTotalBytes": 22639448,
+      "proofStatus": "copied-and-validated"
+    }
+  },
+  "validation": {
+    "fakeComplete": {
+      "status": "passed",
+      "mode": "production-restore-proof",
+      "checkedFiles": 54,
+      "checksumEntries": 50,
+      "secretScan": "passed"
+    },
+    "liveReadonlyIce": {
+      "status": "passed",
+      "mode": "production-restore-proof",
+      "checkedFiles": 62,
+      "checksumEntries": 58,
+      "secretScan": "passed"
+    }
+  },
+  "downloadPackage": {
+    "fakeRecheck": {
+      "status": "packaged",
+      "fileCount": 54,
+      "zipBytes": 69236,
+      "zipSha256": "2529e6e92e737f025e470763c1b40acc92dd8c55bbc268dc97fd01138f2c62f8"
+    },
+    "liveReadonlyRecheck": {
+      "status": "packaged",
+      "fileCount": 62,
+      "zipBytes": 23329756,
+      "zipSha256": "8fea85b83fd3dbc5e27574edb0f9acd68d7ac2f3bdcf499c4c27cec5c236fa28"
+    }
+  },
+  "security": {
+    "cmsRuntimeSwitch": false,
+    "cmsWrites": false,
+    "cosmosWrites": false,
+    "storageMutation": false,
+    "keysListed": false,
+    "connectionStringsRead": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "encryptedVaultPayloadIncluded": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false,
+    "generatedTmpOutputStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "UNIFIED_GENERATOR_RESULT.md",
+    "CLI_RESULT.md",
+    "COMPLETE_BACKUP_OUTPUT_RESULT.md",
+    "DOWNLOAD_PACKAGE_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "RESTORE_PLAN_RESULT.md",
+    "TEST_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "KNOWN_LIMITATIONS.md",
+    "NEXT_BACKUP_GENERATOR_QA_AND_SIGNOFF_PROMPT.md",
+    "manifest.json"
+  ]
+}

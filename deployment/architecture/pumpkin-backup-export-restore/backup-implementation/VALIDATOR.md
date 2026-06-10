@@ -18,6 +18,7 @@ The validator enforces:
 - tenant and platform scope fields are internally consistent;
 - manifest file entries are safe bundle-relative paths;
 - manifest file list matches generated content files;
+- generator product files use approved manifest kinds when present;
 - generated JSON envelopes include schema versions;
 - `checksums.sha256` parses and does not include itself;
 - checksums match current file contents;
@@ -45,13 +46,14 @@ The validator enforces:
 - every media asset has a copied fake blob file;
 - tenant website bundle index exists.
 
-This mode still uses fake fixtures only. It proves the local contract, not live production backup completeness.
+This mode is also used by the Phase 2F-13 generator for complete local and approved live-readonly proof bundles. It proves the local bundle contract and read-only proof packaging; it does not perform a restore or approve a runtime cutover.
 
 ## Reports
 
 Validation writes both reports by default:
 
 - `validation-result.json`
+- `VALIDATION_RESULT.json`
 - `VALIDATION_RESULT.md`
 
 Reports include status, generated timestamp, checks, warnings, failures, checked file count, checksum result, escrow exclusion result, secret-leak scan result, path safety result, and manifest file-list result.
@@ -60,7 +62,7 @@ Reports must not include raw secrets. Failure messages identify paths and stable
 
 ## Restore Dry-Run Use
 
-The Phase 2F-5 `restore-plan` command runs this validator before reading any fake restore inventory. Invalid bundles, checksum mismatches, secret-like values, protected paths, or escrow payloads stop the restore dry-run before output is created.
+The Phase 2F-5 `restore-plan` command and Phase 2F-13 generator run this validator before reading restore inventory. Invalid bundles, checksum mismatches, secret-like values, protected paths, or escrow payloads stop the restore dry-run before output is created.
 
 ## Stable Failure Codes
 
@@ -90,4 +92,4 @@ The Phase 2F-4 test suite covers these negative cases:
 
 ## Boundary
 
-The validator does not call CMS/API endpoints, export a real database, read protected config, create encrypted escrow payloads, execute restore logic, create zips, deploy, touch external systems, call Cosmos, or download blobs.
+The validator does not call CMS/API endpoints, export a real database, read protected config, create encrypted escrow payloads, execute restore logic, deploy, touch external systems, call Cosmos, download blobs, mutate storage, or write Cosmos. ZIP creation is handled by the separate generator download package writer after validation.

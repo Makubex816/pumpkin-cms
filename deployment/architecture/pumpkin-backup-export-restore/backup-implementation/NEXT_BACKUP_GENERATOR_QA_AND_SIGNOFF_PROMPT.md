@@ -1,0 +1,3 @@
+# Next Backup Generator QA And Signoff Prompt
+
+Approve Backup Generator QA and owner signoff only: run the Phase 2F-13 unified Backup Center generator workflow for Ice from the checked-in implementation, review the generated standard backup bundle under ignored `.tmp`, confirm manifest/checksum/validator/restore-plan/download-package reports, confirm no generated backup artifacts are staged into Git, and prepare owner signoff notes for Backup Center readiness. This is QA and signoff only. No CMS runtime switch, no CMS writes, no Cosmos writes, no storage mutation, no keys/listKeys, no connection strings, no SAS, no protected config reads, no deployment, no Search Console/indexing, no live-page publication, and no generated `.tmp` artifacts staged into Git.

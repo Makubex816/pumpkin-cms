@@ -62,6 +62,10 @@ node src/backup-cli.mjs restore-plan --bundle .tmp/ice-cosmos-media-fake-complet
 
 The resulting restore plan marks Cosmos portable JSON restore planning, fake media blob restore planning, and tenant website bundle layout planning as complete. It remains a dry run and writes no target system.
 
+## Generator Integration
+
+The Phase 2F-13 generator runs `restore-plan` automatically after building a complete standard bundle. It writes the full dry-run restore output beside the bundle as `<bundle>-restore-plan/` and writes a bundle-level `RESTORE_PLAN.md` operator summary inside the bundle.
+
 ## Boundary
 
 No real restore occurs. The dry-run does not import a database, call CMS/API endpoints, restore MediaAssets, copy real blobs, restore static output, read protected config, export secrets, create encrypted escrow payloads, modify external systems, or publish live pages.

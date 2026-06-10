@@ -63,7 +63,7 @@ const generatedSchemaFiles = [
   'config-inventory/env-inventory.redacted.json'
 ];
 
-const volatileReportFiles = new Set(['VALIDATION_RESULT.md', 'validation-result.json']);
+const volatileReportFiles = new Set(['VALIDATION_RESULT.md', 'VALIDATION_RESULT.json', 'validation-result.json']);
 const manifestExcludedFiles = new Set(['manifest.json', 'checksums.sha256', ...volatileReportFiles]);
 const allowedKinds = new Set([
   'summary',
@@ -80,7 +80,10 @@ const allowedKinds = new Set([
   'escrow-marker',
   'provider-source-metadata',
   'runtime-profile',
-  'tenant-website-bundle'
+  'tenant-website-bundle',
+  'resource-registry',
+  'operator-report',
+  'restore-plan'
 ]);
 const allowedSensitivity = new Set(['redacted']);
 const allowedSources = new Set(['fake-fixture', 'real-ice-readonly-standard']);
@@ -150,6 +153,7 @@ export async function validateBackupBundle({ bundlePath, mode = 'baseline' }) {
 }
 
 export async function writeValidationReports({ bundleRoot, validation }) {
+  await writeJson(path.join(bundleRoot, 'VALIDATION_RESULT.json'), validation);
   await writeJson(path.join(bundleRoot, 'validation-result.json'), validation);
   await fs.writeFile(
     path.join(bundleRoot, 'VALIDATION_RESULT.md'),
@@ -462,7 +466,7 @@ async function checkConnectorProof(context, manifest, mode) {
     'connector-proof',
     passed ? 'passed' : 'failed',
     passed
-      ? 'Production restore proof mode has complete fake Cosmos, fake media, and tenant website bundle components.'
+      ? 'Production restore proof mode has complete Cosmos, media, and tenant website bundle components.'
       : 'Production restore proof mode found missing connector artifacts.'
   );
 }
@@ -552,7 +556,7 @@ function hasValidCosmosExportBoundaries(exportManifest) {
 async function checkMediaProof(context, manifest) {
   const media = manifest.componentStatus?.media;
   if (media?.provider !== 'azure-blob' || media?.mode !== 'full-copy' || media?.status !== 'complete') {
-    addFailure(context, 'MEDIA_BLOB_COPY_MISSING', 'manifest.json', 'production restore proof mode requires complete fake media full-copy component status');
+    addFailure(context, 'MEDIA_BLOB_COPY_MISSING', 'manifest.json', 'production restore proof mode requires complete media full-copy component status');
     return;
   }
 
