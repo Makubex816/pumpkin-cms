@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "api-role-tenant-admin",
+  "actor": {
+    "role": "TenantAdmin",
+    "assignedTenants": [
+      "fixture-tenant"
+    ],
+    "assignedSites": [
+      "fixture-site"
+    ]
+  },
+  "expected": {
+    "readAllowed": true
+  }
+}
+

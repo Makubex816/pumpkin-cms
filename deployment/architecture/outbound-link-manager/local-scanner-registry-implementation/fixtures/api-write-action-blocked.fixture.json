@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "api-write-action-blocked",
+  "action": "set-link-status",
+  "query": {
+    "tenantKey": "fixture-tenant",
+    "siteKey": "fixture-site"
+  },
+  "expected": {
+    "code": "OUTBOUND_LINK_WRITE_NOT_APPROVED",
+    "localStoreMutation": false
+  }
+}
+

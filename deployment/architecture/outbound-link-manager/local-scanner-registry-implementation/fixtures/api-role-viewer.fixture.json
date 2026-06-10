@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "api-role-viewer",
+  "actor": {
+    "role": "Viewer",
+    "assignedTenants": [
+      "fixture-tenant"
+    ],
+    "assignedSites": [
+      "fixture-site"
+    ]
+  },
+  "expected": {
+    "readAllowed": true,
+    "writeAllowed": false
+  }
+}
+

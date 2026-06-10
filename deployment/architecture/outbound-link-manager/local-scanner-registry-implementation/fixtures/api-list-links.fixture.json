@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "api-list-links",
+  "store": ".tmp/test-api-contract-local-service/local-store-policy",
+  "query": {
+    "tenantKey": "fixture-tenant",
+    "siteKey": "fixture-site",
+    "page": 1,
+    "pageSize": 10,
+    "sort": "domain",
+    "sortDirection": "asc"
+  },
+  "actor": {
+    "role": "SuperAdmin",
+    "assignedTenants": []
+  }
+}
+

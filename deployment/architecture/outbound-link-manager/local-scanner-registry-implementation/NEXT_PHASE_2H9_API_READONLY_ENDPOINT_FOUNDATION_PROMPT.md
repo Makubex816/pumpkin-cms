@@ -1,0 +1,4 @@
+# Next Phase 2H-9 API Readonly Endpoint Foundation Prompt
+
+Approve Phase 2H-9 Outbound Link Manager API read-only endpoint foundation only: wire the completed Phase 2H-8 local/offline API contract and service-layer foundation into guarded Pumpkin API read-only endpoints using local/fake provider mode only. Implement GET endpoint route handlers for outbound links, link detail, instances, policies, scan runs, audit logs, and dashboard summary; add auth/tenant guard integration in local/fake mode, response envelope preservation, API tests, docs, result package, and root report. No database migration, no live provider writes, no Admin UI implementation, no CMS writes, no external link crawling, no protected config reads, no Azure/CMS/API mutations, no deployment, no Search Console/indexing, and no live-page publication.
+

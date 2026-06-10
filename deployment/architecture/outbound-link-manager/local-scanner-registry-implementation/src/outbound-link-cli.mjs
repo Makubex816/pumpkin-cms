@@ -2,8 +2,8 @@
 import path from 'node:path';
 import { runScan } from './scan-runs/scan-run-writer.mjs';
 import { validateScanOutput } from './validators/outbound-link-validator.mjs';
-import { readJson } from './utils/json-writer.mjs';
-import { resolveFixturePath, resolveTmpRenderPath, resolveTmpScanPath, toPackageRelative } from './utils/safe-paths.mjs';
+import { readJson, writeJson } from './utils/json-writer.mjs';
+import { resolveFixturePath, resolveTmpOutputPath, resolveTmpRenderPath, resolveTmpScanPath, toPackageRelative } from './utils/safe-paths.mjs';
 import { createEmptyLocalStore } from './store/local-store-initializer.mjs';
 import { writeLocalStore } from './store/local-store-writer.mjs';
 import { mergeScanIntoStore } from './store/store-merger.mjs';
@@ -25,8 +25,17 @@ import { validateTenantBundle } from './integrations/tenant-bundle-validator.mjs
 import { createOnboardingImport } from './integrations/onboarding-import-writer.mjs';
 import { validateOnboardingImport } from './integrations/onboarding-import-validator.mjs';
 import { simulateRestoreValidation } from './integrations/restore-validation-simulator.mjs';
+import { listOutboundLinks } from './api/services/outbound-link-query-service.mjs';
+import { getOutboundLink } from './api/services/outbound-link-detail-service.mjs';
+import { listOutboundLinkInstances } from './api/services/outbound-link-instance-service.mjs';
+import { listOutboundLinkPolicies } from './api/services/outbound-link-policy-service.mjs';
+import { listOutboundLinkScanRuns } from './api/services/outbound-link-scan-run-service.mjs';
+import { listOutboundLinkAuditLogs } from './api/services/outbound-link-audit-service.mjs';
+import { getOutboundLinkDashboardSummary } from './api/services/outbound-link-dashboard-service.mjs';
+import { requestWriteAction } from './api/services/write-action-guard-service.mjs';
+import { validateApiResponse } from './validators/api-response-validator.mjs';
 
-const version = '0.4.0';
+const version = '0.5.0';
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
@@ -100,6 +109,33 @@ async function main() {
         break;
       case 'simulate-restore-validation':
         await simulateRestoreValidationCommand(args);
+        break;
+      case 'api-list-links':
+        await apiListLinksCommand(args);
+        break;
+      case 'api-get-link':
+        await apiGetLinkCommand(args);
+        break;
+      case 'api-list-instances':
+        await apiListInstancesCommand(args);
+        break;
+      case 'api-list-policies':
+        await apiListPoliciesCommand(args);
+        break;
+      case 'api-list-scan-runs':
+        await apiListScanRunsCommand(args);
+        break;
+      case 'api-list-audit':
+        await apiListAuditCommand(args);
+        break;
+      case 'api-dashboard-summary':
+        await apiDashboardSummaryCommand(args);
+        break;
+      case 'api-request-write':
+        await apiRequestWriteCommand(args);
+        break;
+      case 'validate-api-response':
+        await validateApiResponseCommand(args);
         break;
       default:
         throw new Error(`unknown command: ${command}`);
@@ -503,6 +539,163 @@ async function simulateRestoreValidationCommand(args) {
   }
 }
 
+async function apiListLinksCommand(args) {
+  const options = parseArgs(args);
+  const response = await listOutboundLinks({
+    storePath: required(options.store, '--store is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-list-links', response);
+}
+
+async function apiGetLinkCommand(args) {
+  const options = parseArgs(args);
+  const response = await getOutboundLink({
+    storePath: required(options.store, '--store is required'),
+    linkId: required(options['link-id'], '--link-id is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-get-link', response);
+}
+
+async function apiListInstancesCommand(args) {
+  const options = parseArgs(args);
+  const response = await listOutboundLinkInstances({
+    storePath: required(options.store, '--store is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-list-instances', response);
+}
+
+async function apiListPoliciesCommand(args) {
+  const options = parseArgs(args);
+  const response = await listOutboundLinkPolicies({
+    storePath: required(options.store, '--store is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-list-policies', response);
+}
+
+async function apiListScanRunsCommand(args) {
+  const options = parseArgs(args);
+  const response = await listOutboundLinkScanRuns({
+    storePath: required(options.store, '--store is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-list-scan-runs', response);
+}
+
+async function apiListAuditCommand(args) {
+  const options = parseArgs(args);
+  const response = await listOutboundLinkAuditLogs({
+    storePath: required(options.store, '--store is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-list-audit', response);
+}
+
+async function apiDashboardSummaryCommand(args) {
+  const options = parseArgs(args);
+  const response = await getOutboundLinkDashboardSummary({
+    storePath: required(options.store, '--store is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-dashboard-summary', response);
+}
+
+async function apiRequestWriteCommand(args) {
+  const options = parseArgs(args);
+  const response = await requestWriteAction({
+    storePath: required(options.store, '--store is required'),
+    action: required(options.action, '--action is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-request-write', response);
+}
+
+async function validateApiResponseCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateApiResponse({ responsePath: required(options.response, '--response is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`code: ${validation.summary.code}`);
+  console.log(`failures: ${validation.summary.failureCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function writeApiResponse({ response, outputPath }) {
+  const outputRoot = resolveTmpOutputPath(outputPath);
+  await writeJson(path.join(outputRoot, 'API_RESPONSE.json'), response);
+  return outputRoot;
+}
+
+function collectApiQuery(options) {
+  return {
+    tenantKey: options.tenant ?? options.tenantKey,
+    siteKey: options.site ?? options.siteKey,
+    domain: options.domain,
+    status: options.status,
+    pageId: options['page-id'] ?? options.pageId,
+    anchorText: options['anchor-text'] ?? options.anchorText,
+    firstDetectedFrom: options['first-detected-from'] ?? options.firstDetectedFrom,
+    lastDetectedTo: options['last-detected-to'] ?? options.lastDetectedTo,
+    reviewRequired: options['review-required'] ?? options.reviewRequired,
+    page: options.page,
+    pageSize: options['page-size'] ?? options.pageSize,
+    sort: options.sort,
+    sortDirection: options['sort-direction'] ?? options.sortDirection,
+    linkId: options['link-id'] ?? options.linkId
+  };
+}
+
+function collectApiActor(options) {
+  return {
+    actorId: options.actor ?? 'local-cli',
+    role: options.role ?? 'SuperAdmin',
+    assignedTenants: splitCsv(options['assigned-tenants'] ?? options.assignedTenants ?? options.tenant),
+    assignedSites: splitCsv(options['assigned-sites'] ?? options.assignedSites ?? options.site),
+    mode: 'local-offline'
+  };
+}
+
+function splitCsv(value) {
+  if (!value) {
+    return [];
+  }
+  return String(value).split(',').map((item) => item.trim()).filter(Boolean);
+}
+
+function printApiResponseSummary(label, response) {
+  const itemCount = Array.isArray(response.data?.items)
+    ? response.data.items.length
+    : response.data?.link
+      ? 1
+      : response.data
+        ? 1
+        : 0;
+  console.log(`${label}: ${response.ok ? 'ok' : 'blocked'}`);
+  console.log(`code: ${response.code}`);
+  console.log(`status: ${response.status}`);
+  console.log(`items: ${itemCount}`);
+}
+
 function required(value, message) {
   if (!value) {
     throw new Error(message);
@@ -537,6 +730,15 @@ Commands:
   create-onboarding-import --store .tmp/local-store-policy --out .tmp/onboarding-import [--overwrite]
   validate-onboarding-import --import .tmp/onboarding-import
   simulate-restore-validation --export .tmp/backup-center-export --out .tmp/restore-validation [--overwrite]
+  api-list-links --store .tmp/local-store-policy --tenant fixture-tenant --site fixture-site --out .tmp/api-list-links
+  api-get-link --store .tmp/local-store-policy --link-id ol_example --tenant fixture-tenant --site fixture-site --out .tmp/api-get-link
+  api-list-instances --store .tmp/local-store-policy --tenant fixture-tenant --site fixture-site --out .tmp/api-list-instances
+  api-list-policies --store .tmp/local-store-policy --tenant fixture-tenant --site fixture-site --out .tmp/api-list-policies
+  api-list-scan-runs --store .tmp/local-store-policy --tenant fixture-tenant --site fixture-site --out .tmp/api-list-scan-runs
+  api-list-audit --store .tmp/local-store-policy --tenant fixture-tenant --site fixture-site --out .tmp/api-list-audit
+  api-dashboard-summary --store .tmp/local-store-policy --tenant fixture-tenant --site fixture-site --out .tmp/api-dashboard-summary
+  api-request-write --store .tmp/local-store-policy --action set-link-status --tenant fixture-tenant --site fixture-site --out .tmp/api-write-blocked
+  validate-api-response --response .tmp/api-list-links
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

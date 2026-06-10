@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "api-filter-domain",
+  "query": {
+    "tenantKey": "fixture-tenant",
+    "siteKey": "fixture-site",
+    "domain": "partner.example",
+    "page": 1,
+    "pageSize": 10
+  },
+  "expected": {
+    "domain": "partner.example",
+    "linkCount": 1
+  }
+}
+

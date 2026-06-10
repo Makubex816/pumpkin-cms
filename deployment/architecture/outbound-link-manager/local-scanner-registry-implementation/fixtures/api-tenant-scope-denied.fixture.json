@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "api-tenant-scope-denied",
+  "query": {
+    "tenantKey": "fixture-tenant",
+    "siteKey": "fixture-site"
+  },
+  "actor": {
+    "role": "TenantAdmin",
+    "assignedTenants": [
+      "other-tenant"
+    ]
+  },
+  "expected": {
+    "code": "OUTBOUND_LINK_FORBIDDEN_TENANT"
+  }
+}
+
