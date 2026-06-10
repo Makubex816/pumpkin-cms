@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://pumpkincms.local/schemas/outbound-link-audit-log.schema.json",
+  "title": "Outbound Link Audit Log",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "tenant_id",
+    "site_id",
+    "action",
+    "performed_by",
+    "performed_at"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "0.1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "site_id": { "type": "string", "minLength": 1 },
+    "outbound_link_id": { "type": ["string", "null"] },
+    "outbound_link_instance_id": { "type": ["string", "null"] },
+    "action": { "type": "string", "minLength": 1 },
+    "previous_value": { "type": ["object", "null"] },
+    "new_value": { "type": ["object", "null"] },
+    "performed_by": { "type": "string", "minLength": 1 },
+    "performed_at": { "type": "string", "format": "date-time" },
+    "reason": { "type": ["string", "null"] }
+  }
+}

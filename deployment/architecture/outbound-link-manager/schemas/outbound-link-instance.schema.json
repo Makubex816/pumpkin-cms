@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://pumpkincms.local/schemas/outbound-link-instance.schema.json",
+  "title": "Outbound Link Instance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "tenant_id",
+    "site_id",
+    "outbound_link_id",
+    "content_type",
+    "field_name",
+    "anchor_text",
+    "location_path",
+    "is_enabled",
+    "status",
+    "first_detected_at",
+    "last_detected_at"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "0.1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "site_id": { "type": "string", "minLength": 1 },
+    "outbound_link_id": { "type": "string", "minLength": 1 },
+    "page_id": { "type": ["string", "null"] },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "page",
+        "navigation",
+        "footer",
+        "form",
+        "theme",
+        "component",
+        "import_package",
+        "backup_bundle"
+      ]
+    },
+    "content_block_id": { "type": ["string", "null"] },
+    "field_name": { "type": "string", "minLength": 1 },
+    "anchor_text": { "type": ["string", "null"] },
+    "location_path": { "type": "string", "minLength": 1 },
+    "is_enabled": { "type": "boolean" },
+    "status": {
+      "type": "string",
+      "enum": [
+        "enabled",
+        "disabled",
+        "hidden",
+        "plain_text",
+        "fallback",
+        "pending_review",
+        "stale"
+      ]
+    },
+    "first_detected_at": { "type": "string", "format": "date-time" },
+    "last_detected_at": { "type": "string", "format": "date-time" }
+  }
+}

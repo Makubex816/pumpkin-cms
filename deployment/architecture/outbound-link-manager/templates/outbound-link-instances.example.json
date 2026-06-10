@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "0.1.0",
+  "tenant_id": "example-tenant",
+  "site_id": "example-site",
+  "outbound_link_instances": [
+    {
+      "schemaVersion": "0.1.0",
+      "id": "oli_example_home_cta",
+      "tenant_id": "example-tenant",
+      "site_id": "example-site",
+      "outbound_link_id": "ol_example_safety",
+      "page_id": "home",
+      "content_type": "page",
+      "content_block_id": "hero",
+      "field_name": "ctaLinks[0].url",
+      "anchor_text": "Review safety guidance",
+      "location_path": "pages/home/blocks/hero/ctaLinks/0/url",
+      "is_enabled": true,
+      "status": "pending_review",
+      "first_detected_at": "2026-06-10T00:00:00.000Z",
+      "last_detected_at": "2026-06-10T00:00:00.000Z"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://pumpkincms.local/schemas/outbound-link-policy.schema.json",
+  "title": "Outbound Link Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "tenant_id",
+    "site_id",
+    "default_disabled_behavior",
+    "default_rel",
+    "external_target_behavior",
+    "allowed_domains",
+    "blocked_domains",
+    "review_required_for_new_domains",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "0.1.0" },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "site_id": { "type": "string", "minLength": 1 },
+    "default_disabled_behavior": {
+      "type": "string",
+      "enum": ["plain_text", "hidden", "disabled_state", "fallback"]
+    },
+    "default_rel": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["noopener", "noreferrer", "nofollow", "sponsored", "ugc"]
+      },
+      "uniqueItems": true
+    },
+    "external_target_behavior": {
+      "type": "string",
+      "enum": ["same_tab", "new_tab"]
+    },
+    "allowed_domains": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "blocked_domains": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "review_required_for_new_domains": { "type": "boolean" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}

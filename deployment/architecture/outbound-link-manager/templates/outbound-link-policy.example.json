@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "0.1.0",
+  "tenant_id": "example-tenant",
+  "site_id": "example-site",
+  "default_disabled_behavior": "plain_text",
+  "default_rel": ["noopener", "noreferrer"],
+  "external_target_behavior": "same_tab",
+  "allowed_domains": ["example.com"],
+  "blocked_domains": [],
+  "review_required_for_new_domains": true,
+  "created_at": "2026-06-10T00:00:00.000Z",
+  "updated_at": "2026-06-10T00:00:00.000Z"
+}

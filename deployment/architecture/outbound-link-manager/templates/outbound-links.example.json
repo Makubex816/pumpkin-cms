@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "0.1.0",
+  "tenant_id": "example-tenant",
+  "site_id": "example-site",
+  "outbound_links": [
+    {
+      "schemaVersion": "0.1.0",
+      "id": "ol_example_safety",
+      "tenant_id": "example-tenant",
+      "site_id": "example-site",
+      "original_url": "https://example.com/resources/rink-safety",
+      "normalized_url": "https://example.com/resources/rink-safety",
+      "domain": "example.com",
+      "status": "pending_review",
+      "created_at": "2026-06-10T00:00:00.000Z",
+      "updated_at": "2026-06-10T00:00:00.000Z",
+      "created_by": "system-scanner",
+      "disabled_by": null,
+      "disabled_at": null,
+      "disabled_reason": null
+    }
+  ]
+}

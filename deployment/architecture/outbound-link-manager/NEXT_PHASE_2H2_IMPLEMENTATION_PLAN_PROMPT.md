@@ -1,0 +1,3 @@
+# Next Phase 2H-2 Implementation Plan Prompt
+
+Approve Phase 2H-2 Outbound Link Manager implementation plan only: convert the Phase 2H-1 architecture package into a scoped implementation plan for a local-first tenant-scoped outbound link registry and scanner foundation, including tickets, file ownership, contracts, fixtures, validator plan, test plan, Backup Center integration plan, Admin/API future gates, renderer future gates, migration/backfill future gates, and security boundaries. No implementation, no database migration, no CMS writes, no external link crawling, no protected config reads, no Azure/CMS/API mutations, no deployment, no Search Console/indexing, and no live-page publication.
