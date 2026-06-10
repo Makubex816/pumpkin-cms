@@ -54,6 +54,11 @@ export function resolveTmpRenderPath(inputPath) {
   return resolved;
 }
 
+export function resolveTmpIntegrationPath(inputPath) {
+  const resolved = resolveTmpOutputPath(inputPath);
+  return resolved;
+}
+
 export function toPackageRelative(resolvedPath) {
   return path.relative(packageRoot, resolvedPath).replace(/\\/g, '/');
 }

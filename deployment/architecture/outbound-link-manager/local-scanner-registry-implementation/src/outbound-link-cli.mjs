@@ -18,8 +18,15 @@ import { setInstanceStatus } from './lifecycle/instance-status-service.mjs';
 import { validateLocalStore } from './validators/local-store-validator.mjs';
 import { runRenderFixture } from './rendering/render-output-writer.mjs';
 import { validateRenderOutput } from './validators/render-output-validator.mjs';
+import { exportBackupCenter } from './integrations/backup-center-export-writer.mjs';
+import { validateBackupCenterExport } from './integrations/backup-center-export-validator.mjs';
+import { exportTenantBundle } from './integrations/tenant-bundle-export-writer.mjs';
+import { validateTenantBundle } from './integrations/tenant-bundle-validator.mjs';
+import { createOnboardingImport } from './integrations/onboarding-import-writer.mjs';
+import { validateOnboardingImport } from './integrations/onboarding-import-validator.mjs';
+import { simulateRestoreValidation } from './integrations/restore-validation-simulator.mjs';
 
-const version = '0.3.0';
+const version = '0.4.0';
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
@@ -72,6 +79,27 @@ async function main() {
         break;
       case 'inspect-render':
         await inspectRenderCommand(args);
+        break;
+      case 'export-backup':
+        await exportBackupCommand(args);
+        break;
+      case 'validate-backup-export':
+        await validateBackupExportCommand(args);
+        break;
+      case 'export-tenant-bundle':
+        await exportTenantBundleCommand(args);
+        break;
+      case 'validate-tenant-bundle':
+        await validateTenantBundleCommand(args);
+        break;
+      case 'create-onboarding-import':
+        await createOnboardingImportCommand(args);
+        break;
+      case 'validate-onboarding-import':
+        await validateOnboardingImportCommand(args);
+        break;
+      case 'simulate-restore-validation':
+        await simulateRestoreValidationCommand(args);
         break;
       default:
         throw new Error(`unknown command: ${command}`);
@@ -370,6 +398,111 @@ async function inspectRenderCommand(args) {
   console.log(`blockedOrDisabled: ${report.summary.blockedOrDisabledCount}`);
 }
 
+async function exportBackupCommand(args) {
+  const options = parseArgs(args);
+  const result = await exportBackupCenter({
+    storePath: required(options.store, '--store is required'),
+    renderedPath: options.rendered ?? null,
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  const validation = await validateBackupCenterExport({ exportPath: options.out });
+  console.log(`export: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`validation: ${validation.status}`);
+  console.log(`links: ${validation.summary.linkCount}`);
+  console.log(`instances: ${validation.summary.instanceCount}`);
+  console.log(`renderDecisions: ${validation.summary.renderDecisionCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateBackupExportCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateBackupCenterExport({ exportPath: required(options.export, '--export is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`links: ${validation.summary.linkCount}`);
+  console.log(`instances: ${validation.summary.instanceCount}`);
+  console.log(`renderDecisions: ${validation.summary.renderDecisionCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function exportTenantBundleCommand(args) {
+  const options = parseArgs(args);
+  const result = await exportTenantBundle({
+    storePath: required(options.store, '--store is required'),
+    renderedPath: options.rendered ?? null,
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  const validation = await validateTenantBundle({ bundlePath: options.out });
+  console.log(`bundle: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`validation: ${validation.status}`);
+  console.log(`links: ${validation.summary.linkCount}`);
+  console.log(`instances: ${validation.summary.instanceCount}`);
+  console.log(`renderDecisions: ${validation.summary.renderDecisionCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateTenantBundleCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateTenantBundle({ bundlePath: required(options.bundle, '--bundle is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`links: ${validation.summary.linkCount}`);
+  console.log(`instances: ${validation.summary.instanceCount}`);
+  console.log(`renderDecisions: ${validation.summary.renderDecisionCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function createOnboardingImportCommand(args) {
+  const options = parseArgs(args);
+  const result = await createOnboardingImport({
+    storePath: required(options.store, '--store is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  console.log(`import: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`readiness: ${result.validationReport.status}`);
+  console.log(`links: ${result.validationReport.summary.linkCount}`);
+  console.log(`instances: ${result.validationReport.summary.instanceCount}`);
+  console.log(`failures: ${result.validationReport.summary.failureCount}`);
+}
+
+async function validateOnboardingImportCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateOnboardingImport({ importPath: required(options.import, '--import is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`links: ${validation.summary.linkCount}`);
+  console.log(`instances: ${validation.summary.instanceCount}`);
+  console.log(`failures: ${validation.summary.failureCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function simulateRestoreValidationCommand(args) {
+  const options = parseArgs(args);
+  const result = await simulateRestoreValidation({
+    exportPath: required(options.export, '--export is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  console.log(`restore: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`status: ${result.result.status}`);
+  console.log(`links: ${result.result.summary.linkCount}`);
+  console.log(`instances: ${result.result.summary.instanceCount}`);
+  console.log(`renderDecisions: ${result.result.summary.renderDecisionCount}`);
+  if (result.result.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
 function required(value, message) {
   if (!value) {
     throw new Error(message);
@@ -397,6 +530,13 @@ Commands:
   render-fixture --fixture fixtures/render-active-links.fixture.json --store .tmp/local-store-policy --out .tmp/render-active [--overwrite]
   validate-render --rendered .tmp/render-active
   inspect-render --rendered .tmp/render-active
+  export-backup --store .tmp/local-store-policy --rendered .tmp/render-active --out .tmp/backup-center-export [--overwrite]
+  validate-backup-export --export .tmp/backup-center-export
+  export-tenant-bundle --store .tmp/local-store-policy --rendered .tmp/render-active --out .tmp/tenant-bundle-export [--overwrite]
+  validate-tenant-bundle --bundle .tmp/tenant-bundle-export
+  create-onboarding-import --store .tmp/local-store-policy --out .tmp/onboarding-import [--overwrite]
+  validate-onboarding-import --import .tmp/onboarding-import
+  simulate-restore-validation --export .tmp/backup-center-export --out .tmp/restore-validation [--overwrite]
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

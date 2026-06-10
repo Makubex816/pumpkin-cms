@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "0.4.0",
+  "fixtureName": "onboarding-import-unreviewed-domain",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "expected_status": "failed",
+  "expected_failures": [
+    "ONBOARDING_UNREVIEWED_DOMAIN"
+  ]
+}

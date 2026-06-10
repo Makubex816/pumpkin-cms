@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "0.4.0",
+  "fixtureName": "tenant-bundle-export",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "required_files": [
+    "outbound-links/outbound-links.json",
+    "outbound-links/outbound-link-instances.json",
+    "outbound-links/outbound-link-policies.json",
+    "outbound-links/outbound-link-scan-runs.json",
+    "outbound-links/outbound-link-audit-summary.json",
+    "outbound-links/outbound-link-render-decisions.json",
+    "outbound-links/EXTERNAL_DOMAIN_REVIEW.md",
+    "outbound-links/VALIDATION_RESULT.md"
+  ]
+}

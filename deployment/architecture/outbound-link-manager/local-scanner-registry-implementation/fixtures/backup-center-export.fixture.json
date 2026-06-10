@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "0.4.0",
+  "fixtureName": "backup-center-export",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "required_files": [
+    "cms-content/outbound-links.json",
+    "cms-content/outbound-link-instances.json",
+    "cms-content/outbound-link-policies.json",
+    "cms-content/outbound-link-scan-runs.json",
+    "cms-content/outbound-link-audit-summary.json",
+    "cms-content/outbound-link-render-decisions.json",
+    "cms-content/outbound-link-validation-report.json",
+    "cms-content/OUTBOUND_LINK_VALIDATION_REPORT.md"
+  ]
+}

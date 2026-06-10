@@ -80,6 +80,33 @@ node src/outbound-link-cli.mjs inspect-render --rendered .tmp/render-active
 
 Render commands write `render-decisions.json`, `render-report.json`, `RENDER_REPORT.md`, `static-export.html`, and validation files under `.tmp`.
 
+## Export Backup Center Files
+
+```powershell
+node src/outbound-link-cli.mjs export-backup --store .tmp/local-store-merged --rendered .tmp/render-active --out .tmp/backup-center-export --overwrite
+node src/outbound-link-cli.mjs validate-backup-export --export .tmp/backup-center-export
+```
+
+## Export Tenant Bundle Files
+
+```powershell
+node src/outbound-link-cli.mjs export-tenant-bundle --store .tmp/local-store-merged --rendered .tmp/render-active --out .tmp/tenant-bundle-export --overwrite
+node src/outbound-link-cli.mjs validate-tenant-bundle --bundle .tmp/tenant-bundle-export
+```
+
+## Create Onboarding Import Files
+
+```powershell
+node src/outbound-link-cli.mjs create-onboarding-import --store .tmp/local-store-merged --out .tmp/onboarding-import --overwrite
+node src/outbound-link-cli.mjs validate-onboarding-import --import .tmp/onboarding-import
+```
+
+## Simulate Restore Validation
+
+```powershell
+node src/outbound-link-cli.mjs simulate-restore-validation --export .tmp/backup-center-export --out .tmp/restore-validation --overwrite
+```
+
 ## Scripts
 
 ```powershell
@@ -95,6 +122,8 @@ npm run store:validate
 npm run store:inspect
 npm run render:active
 npm run render:validate
+npm run integration:backup
+npm run integration:tenant-bundle
 ```
 
-The scanner, store writer, exporter, and render writer refuse output outside `.tmp`.
+The scanner, store writer, exporter, render writer, and integration writers refuse output outside `.tmp`.
