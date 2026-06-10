@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2F-12R",
+  "title": "Live Cosmos Export Backup Proof And Restore-Plan Validation",
+  "status": "complete",
+  "generatedAt": "2026-06-10T01:18:55.049Z",
+  "resultPackage": "deployment/architecture/pumpkin-backup-export-restore/phase-2f12r-live-cosmos-export-backup-proof-result/",
+  "generatedOutput": {
+    "liveCosmosExport": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f12r-live-cosmos-export/",
+    "standardBackupCandidate": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f12r-ice-standard-backup-with-cosmos-export/",
+    "restorePlan": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f12r-restore-plan/"
+  },
+  "target": {
+    "accountName": "cosmos-pumpkin-prod-eastus",
+    "resourceGroup": "rg-ice-production-cosmos",
+    "databaseName": "pumpkin-prod-cms",
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "partitionKeyPath": "/tenantKey"
+  },
+  "export": {
+    "status": "exported-and-validated",
+    "mode": "live-readonly-portable-json",
+    "authMode": "azure-ad-rbac",
+    "recordSetCount": 10,
+    "totalRecordCount": 27,
+    "validationStatus": "passed",
+    "exportManifestSha256": "FE415D249BD17EF3CC0E4B027A5530E8247C4E96E8CD4E6EA3C62FC8B1AFD14F",
+    "counts": {
+      "tenants": 1,
+      "sites": 1,
+      "pages": 3,
+      "routes": 5,
+      "forms": 3,
+      "mediaAssets": 12,
+      "themes": 1,
+      "publishRuns": 0,
+      "importRuns": 1,
+      "users": 0,
+      "total": 27
+    }
+  },
+  "backupCandidate": {
+    "status": "passed",
+    "mode": "standard",
+    "validatorMode": "database-backup-proof",
+    "includesEscrow": false,
+    "databaseComponent": "complete",
+    "mediaComponent": "partial",
+    "contentFileCount": 35,
+    "manifestSha256": "18BA56200DF00F5A118414DBDD5AC022E222911EDF5D4DC1117C8A5D60718521"
+  },
+  "restorePlan": {
+    "status": "passed",
+    "mode": "database-backup-proof",
+    "dryRunOnly": true,
+    "restoreExecuted": false,
+    "cosmosRestorePlanningStep": "complete",
+    "mediaBlobRestoreStep": "blocked",
+    "tenantWebsiteBundleStep": "blocked",
+    "restorePlanSha256": "4FB692F8E90E49F872F9A8FBBDA691764A83F946A6CA46AF75E79695B8C0D2DB"
+  },
+  "readiness": {
+    "phase2f12qLiveSeed": "complete",
+    "phase2f12rLiveCosmosExportProof": "yes",
+    "liveCosmosExportCompleted": true,
+    "databaseBackupProofAchieved": true,
+    "backupValidatorResult": "pass",
+    "restorePlanResult": "pass_database_proof_with_media_pending",
+    "mediaFullCopyProof": "pending",
+    "cmsRuntimeSwitchPerformed": false,
+    "cosmosWritesPerformed": false,
+    "iceFullyBackupableToday": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "security": {
+    "keysListed": false,
+    "connectionStringsRead": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "tokensPrinted": false,
+    "tokensPersistedByRunner": false,
+    "cosmosWrites": false,
+    "cmsRuntimeSwitch": false,
+    "cmsWrites": false,
+    "mediaBlobDownload": false,
+    "mediaAssetWrites": false,
+    "azureMutations": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false,
+    "generatedTmpOutputStaged": false
+  }
+}

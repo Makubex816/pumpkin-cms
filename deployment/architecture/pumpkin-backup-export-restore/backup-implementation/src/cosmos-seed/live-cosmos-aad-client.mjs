@@ -62,6 +62,36 @@ export class CosmosAadDataPlaneClient {
     return count;
   }
 
+  async queryTenantDocuments({ containerName, tenantKey }) {
+    const documents = [];
+    let continuation = null;
+    do {
+      const response = await this.request({
+        method: 'POST',
+        path: `/dbs/${encodePathSegment(this.databaseName)}/colls/${encodePathSegment(containerName)}/docs`,
+        operation: `query-documents:${containerName}`,
+        partitionKey: tenantKey,
+        continuation,
+        includeResponseHeaders: true,
+        headers: {
+          'Content-Type': 'application/query+json',
+          'x-ms-documentdb-isquery': 'true',
+          'x-ms-max-item-count': '100'
+        },
+        body: {
+          query: 'SELECT * FROM c WHERE c.tenantKey = @tenantKey',
+          parameters: [{ name: '@tenantKey', value: tenantKey }]
+        }
+      });
+      documents.push(...(Array.isArray(response.body?.Documents) ? response.body.Documents : []));
+      continuation = response.headers.continuation;
+    } while (continuation);
+
+    return documents
+      .map((document) => sortObjectKeys(stripCosmosSystemFields(document)))
+      .sort((left, right) => String(left.id ?? '').localeCompare(String(right.id ?? '')));
+  }
+
   async readDocument({ containerName, id, tenantKey }) {
     try {
       return await this.request({
@@ -91,7 +121,16 @@ export class CosmosAadDataPlaneClient {
     });
   }
 
-  async request({ method, path, operation, partitionKey = null, headers = {}, body = null }) {
+  async request({
+    method,
+    path,
+    operation,
+    partitionKey = null,
+    headers = {},
+    body = null,
+    continuation = null,
+    includeResponseHeaders = false
+  }) {
     const token = await this.getAccessToken();
     const serializedBody = body === null ? undefined : JSON.stringify(body);
     for (let attempt = 1; attempt <= 6; attempt += 1) {
@@ -104,6 +143,9 @@ export class CosmosAadDataPlaneClient {
       };
       if (partitionKey !== null) {
         requestHeaders['x-ms-documentdb-partitionkey'] = JSON.stringify([partitionKey]);
+      }
+      if (continuation) {
+        requestHeaders['x-ms-continuation'] = continuation;
       }
 
       const response = await this.fetchImpl(`${this.endpoint}${path}`, {
@@ -124,12 +166,16 @@ export class CosmosAadDataPlaneClient {
           operation
         });
       }
-      if (!text) return {};
-      try {
-        return JSON.parse(text);
-      } catch {
-        return {};
+      const parsed = parseJsonResponse(text);
+      if (includeResponseHeaders) {
+        return {
+          body: parsed,
+          headers: {
+            continuation: response.headers.get('x-ms-continuation') || null
+          }
+        };
       }
+      return parsed;
     }
     throw new Error(`Cosmos request retry loop exited unexpectedly for ${operation}`);
   }
@@ -172,6 +218,15 @@ export function buildComparableDocument(document) {
 
 function buildCosmosAadAuthorizationHeader(token) {
   return encodeURIComponent(`type=aad&ver=1.0&sig=${token}`);
+}
+
+function parseJsonResponse(text) {
+  if (!text) return {};
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {};
+  }
 }
 
 function retryDelayMs(response, attempt) {

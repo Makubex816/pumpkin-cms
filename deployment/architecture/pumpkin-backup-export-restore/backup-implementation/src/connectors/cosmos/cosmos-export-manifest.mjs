@@ -16,13 +16,25 @@ export function fileNameForLogicalCollection(name) {
   return logicalCollectionFileNames[name] ?? `${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}.json`;
 }
 
-export function buildCosmosCollectionEnvelope({ name, records, scope, createdAt }) {
+export function buildCosmosCollectionEnvelope({
+  name,
+  records,
+  scope,
+  createdAt,
+  mode = 'fake-portable-json',
+  fakeOnly = true,
+  liveCosmosExportPerformed = false,
+  source = 'fake-fixture'
+}) {
   return {
     schemaVersion: '0.2.0',
     connectorContractVersion: cosmosConnectorContractVersion,
     provider: 'cosmos',
-    mode: 'fake-portable-json',
+    mode,
     logicalCollection: name,
+    fakeOnly,
+    liveCosmosExportPerformed,
+    source,
     tenantScope: {
       scopeType: scope.scopeType,
       tenantKey: scope.tenantKey,
@@ -35,17 +47,61 @@ export function buildCosmosCollectionEnvelope({ name, records, scope, createdAt 
   };
 }
 
-export function buildCosmosExportManifest({ scope, account, database, containers, recordSets, createdAt }) {
+export function buildCosmosExportManifest({
+  scope,
+  account,
+  database,
+  containers,
+  recordSets,
+  createdAt,
+  mode = 'fake-portable-json',
+  fakeOnly = true,
+  liveCosmosExportPerformed = false,
+  source = 'fake-fixture',
+  dataPlaneAccess = null,
+  boundaries = {}
+}) {
   return {
     schemaVersion: '0.2.0',
     connectorContractVersion: cosmosConnectorContractVersion,
     provider: 'cosmos',
-    mode: 'fake-portable-json',
+    mode,
     generatedAt: createdAt,
-    fakeOnly: true,
-    liveCosmosExportPerformed: false,
+    fakeOnly,
+    liveCosmosExportPerformed,
+    source,
+    readOnlyDataPlaneAccess: liveCosmosExportPerformed === true,
     protectedConfigRead: false,
     storageCredentialUsed: false,
+    keysListed: false,
+    connectionStringsRead: false,
+    sasGenerated: false,
+    tokensPrinted: false,
+    tokensPersisted: false,
+    cosmosWritesPerformed: false,
+    cmsRuntimeSwitchPerformed: false,
+    cmsWritesPerformed: false,
+    mediaBlobDownloadPerformed: false,
+    deploymentPerformed: false,
+    searchConsoleOrIndexingPerformed: false,
+    livePagePublicationPerformed: false,
+    dataPlaneAccess,
+    boundaries: {
+      protectedConfigRead: false,
+      keysListed: false,
+      connectionStringsRead: false,
+      sasGenerated: false,
+      tokensPrinted: false,
+      tokensPersisted: false,
+      cosmosWritesPerformed: false,
+      cmsRuntimeSwitchPerformed: false,
+      cmsWritesPerformed: false,
+      mediaBlobDownloadPerformed: false,
+      deploymentPerformed: false,
+      searchConsoleOrIndexingPerformed: false,
+      livePagePublicationPerformed: false,
+      ...boundaries
+    },
     account: {
       name: account.accountName,
       source: account.source

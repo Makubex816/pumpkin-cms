@@ -3,8 +3,10 @@ import { createFakeEscrow } from './escrow/escrow-create-runner.mjs';
 import { validateEscrowOutput } from './escrow/escrow-validator.mjs';
 import { writeEscrowValidationReports } from './escrow/escrow-report-writer.mjs';
 import { createIceStandardBackup } from './ice/ice-standard-backup-runner.mjs';
+import { createIceBackupFromLiveCosmosExport } from './ice/ice-live-cosmos-backup-runner.mjs';
 import { createIceCosmosSeedDryRun } from './cosmos-seed/ice-seed-dry-runner.mjs';
 import { runGuardedLiveCosmosSeed } from './cosmos-seed/guarded-live-seed-runner.mjs';
+import { runLiveCosmosReadonlyExport, validateLiveCosmosExportPackage, writeLiveCosmosExportValidationReports } from './connectors/cosmos/live-cosmos-export-runner.mjs';
 import { validateSeedDryRunPackage, writeSeedValidationReports } from './cosmos-seed/tenant-partition-validator.mjs';
 import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
@@ -20,7 +22,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.10.0';
+const version = '0.11.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -140,6 +142,54 @@ async function main(argv) {
     console.log(`skippedExisting: ${result.execution.skippedExistingCount}`);
     console.log(`readback: ${result.readback?.status ?? 'not-run'}`);
     if (result.status === 'failed' || result.status === 'partial') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'cosmos-export:live-readonly') {
+    const outputPath = requiredOption(options, 'out');
+    const result = await runLiveCosmosReadonlyExport({
+      outputPath,
+      overwrite: Boolean(options.overwrite)
+    });
+    console.log(`cosmos-export-live-readonly: ${result.status}`);
+    console.log(`output: ${path.relative(process.cwd(), result.outputRoot)}`);
+    console.log(`dataPlaneAccess: ${result.dataPlaneAccess?.status ?? 'not-run'}`);
+    console.log(`recordSets: ${result.recordSetCount}`);
+    console.log(`totalRecords: ${result.totalRecordCount}`);
+    console.log(`validation: ${result.validation?.status ?? 'not-run'}`);
+    if (result.status !== 'exported-and-validated') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'cosmos-export:validate') {
+    const exportRoot = resolveTmpBundlePath(requiredOption(options, 'export'));
+    const validation = await validateLiveCosmosExportPackage({ exportPath: exportRoot });
+    await writeLiveCosmosExportValidationReports({ exportRoot, validation });
+    console.log(`cosmos-export-validation: ${validation.status}`);
+    console.log(`totalRecords: ${validation.summary.totalRecordCount}`);
+    if (validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'create-ice-cosmos-export-backup') {
+    const exportPath = requiredOption(options, 'export');
+    const outputPath = requiredOption(options, 'out');
+    const result = await createIceBackupFromLiveCosmosExport({
+      exportPath,
+      outputPath,
+      overwrite: Boolean(options.overwrite)
+    });
+    console.log(`created: ${path.relative(process.cwd(), result.bundleRoot)}`);
+    console.log(`validation: ${result.validation.status}`);
+    console.log(`validationMode: ${result.validation.mode}`);
+    console.log(`database: ${result.componentStatus.database.status}`);
+    console.log(`cosmosRecords: ${result.componentStatus.database.recordCount}`);
+    console.log(`media: ${result.componentStatus.media.status}`);
+    console.log(`expectedCounts: ${path.relative(process.cwd(), result.expectedCountsPath)}`);
+    if (result.validation.status !== 'passed') {
       process.exitCode = 1;
     }
     return;
@@ -330,6 +380,9 @@ Commands:
   cosmos-seed:ice-dry-run --source .tmp/ice-full-standard-backup --out .tmp/phase-2f12o-ice-cosmos-seed-dry-run [--overwrite]
   cosmos-seed:validate --seed .tmp/phase-2f12o-ice-cosmos-seed-dry-run
   cosmos-seed:live-execute --seed .tmp/phase-2f12o-ice-cosmos-seed-dry-run --out .tmp/phase-2f12p-live-cosmos-seed [--overwrite]
+  cosmos-export:live-readonly --out .tmp/phase-2f12r-live-cosmos-export [--overwrite]
+  cosmos-export:validate --export .tmp/phase-2f12r-live-cosmos-export
+  create-ice-cosmos-export-backup --export .tmp/phase-2f12r-live-cosmos-export --out .tmp/phase-2f12r-ice-standard-backup-with-cosmos-export [--overwrite]
   resolve-provider --fixture fixtures/provider-source.ice.missing.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--profile fixture]
   resolve-runtime-profile --fixture fixtures/provider-source.ice.future-target-cosmos.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--runtime-profile local-dev]
   runtime-profile:list
@@ -344,7 +397,7 @@ Example fake complete connector bundle:
   create-standard --scope tenant --answers fixtures/ice-cosmos-media-standard-backup.answers.json --with-fake-cosmos --with-fake-media-copy --tenant-website-bundle --out .tmp/ice-cosmos-media-fake-complete --overwrite
 
 Boundary:
-  Local-only. Folder bundles, restore-plan dry-runs, Cosmos seed dry-run documents, fake connector output, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API calls, no real Cosmos export/write, no real blob download.
+  Folder bundles, restore-plan dry-runs, Cosmos seed dry-run documents, explicitly approved live read-only Cosmos export output, fake connector output, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API writes, no unapproved Cosmos write, no real blob download.
 `);
 }
 

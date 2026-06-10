@@ -52,6 +52,7 @@ const generatedSchemaFiles = [
   'database/cosmos-json/containers/themes.json',
   'database/cosmos-json/containers/publish-runs.json',
   'database/cosmos-json/containers/import-runs.json',
+  'database/cosmos-json/containers/users.json',
   'database/platform-evidence/cosmos/cosmos-platform-backup-evidence.json',
   'database/runtime-profile/runtime-profile.json',
   'media/media-assets.json',
@@ -171,7 +172,7 @@ function addWarning(context, code, pathValue, message) {
 
 function normalizeValidationMode(mode) {
   const selected = mode ?? 'baseline';
-  if (selected !== 'baseline' && selected !== 'production-restore-proof') {
+  if (selected !== 'baseline' && selected !== 'database-backup-proof' && selected !== 'production-restore-proof') {
     throw new Error(`unsupported validation mode: ${selected}`);
   }
   return selected;
@@ -437,6 +438,20 @@ async function checkConnectorProof(context, manifest, mode) {
 
   const before = context.failures.length;
   await checkCosmosProof(context, manifest);
+  if (mode === 'database-backup-proof') {
+    const passed = context.failures.length === before;
+    context.metrics.connectorProofResult = passed ? 'passed' : 'failed';
+    addCheck(
+      context,
+      'connector-proof',
+      passed ? 'passed' : 'failed',
+      passed
+        ? 'Database backup proof mode has a complete Cosmos portable JSON component.'
+        : 'Database backup proof mode found missing or invalid Cosmos export artifacts.'
+    );
+    return;
+  }
+
   await checkMediaProof(context, manifest);
   await checkTenantWebsiteBundleProof(context, manifest);
 
@@ -462,30 +477,76 @@ async function checkCosmosProof(context, manifest) {
   const exportManifestPath = database.exportManifestPath ?? 'database/cosmos-json/export-manifest.json';
   const exportManifest = await readRequiredJson(context, exportManifestPath, 'COSMOS_EXPORT_MISSING');
   if (!exportManifest) return;
-  if (exportManifest.provider !== 'cosmos' || exportManifest.mode !== 'fake-portable-json') {
+  if (exportManifest.provider !== 'cosmos' || !isSupportedCosmosExportMode(exportManifest.mode)) {
     addFailure(context, 'COSMOS_EXPORT_INVALID', exportManifestPath, 'Cosmos export manifest provider/mode is invalid');
   }
-  if (exportManifest.liveCosmosExportPerformed !== false || exportManifest.protectedConfigRead !== false) {
-    addFailure(context, 'COSMOS_EXPORT_BOUNDARY_INVALID', exportManifestPath, 'Cosmos fake export must not indicate live export or protected config reads');
+  if (!hasValidCosmosExportBoundaries(exportManifest)) {
+    addFailure(context, 'COSMOS_EXPORT_BOUNDARY_INVALID', exportManifestPath, 'Cosmos export boundary fields are invalid for the selected export mode');
   }
   if (!Array.isArray(exportManifest.recordSets) || exportManifest.recordSets.length === 0) {
     addFailure(context, 'COSMOS_EXPORT_EMPTY', exportManifestPath, 'Cosmos export manifest must list record sets');
     return;
   }
   for (const recordSet of exportManifest.recordSets) {
-    if (!isPlainObject(recordSet) || !isSafeBundleRelativePath(recordSet.path)) {
+    const recordSetPath = resolveCosmosRecordSetPath(exportManifestPath, recordSet?.path);
+    if (!isPlainObject(recordSet) || !recordSetPath || !isSafeBundleRelativePath(recordSetPath)) {
       addFailure(context, 'COSMOS_EXPORT_INVALID', exportManifestPath, 'Cosmos record set path is invalid');
       continue;
     }
-    const envelope = await readRequiredJson(context, recordSet.path, 'COSMOS_EXPORT_MISSING');
+    const envelope = await readRequiredJson(context, recordSetPath, 'COSMOS_EXPORT_MISSING');
     if (!envelope) continue;
     if (envelope.provider !== 'cosmos' || envelope.logicalCollection !== recordSet.logicalCollection) {
-      addFailure(context, 'COSMOS_EXPORT_INVALID', recordSet.path, 'Cosmos collection envelope does not match manifest');
+      addFailure(context, 'COSMOS_EXPORT_INVALID', recordSetPath, 'Cosmos collection envelope does not match manifest');
+    }
+    if (envelope.mode !== exportManifest.mode || envelope.fakeOnly !== exportManifest.fakeOnly) {
+      addFailure(context, 'COSMOS_EXPORT_INVALID', recordSetPath, 'Cosmos collection envelope mode/fakeOnly does not match manifest');
     }
     if (!Array.isArray(envelope.records) || envelope.recordCount !== envelope.records.length) {
-      addFailure(context, 'COSMOS_EXPORT_COUNT_MISMATCH', recordSet.path, 'Cosmos collection record count does not match records array');
+      addFailure(context, 'COSMOS_EXPORT_COUNT_MISMATCH', recordSetPath, 'Cosmos collection record count does not match records array');
+    }
+    for (const [index, record] of (envelope.records ?? []).entries()) {
+      if (record?.tenantKey !== exportManifest.tenantScope?.tenantKey) {
+        addFailure(context, 'COSMOS_EXPORT_TENANT_MISMATCH', `${recordSetPath}[${index}]`, 'Cosmos export record tenantKey does not match export scope');
+      }
     }
   }
+}
+
+function resolveCosmosRecordSetPath(exportManifestPath, recordSetPath) {
+  if (typeof recordSetPath !== 'string' || recordSetPath.length === 0) return null;
+  if (recordSetPath.startsWith('database/')) return recordSetPath;
+  return path.posix.join(path.posix.dirname(exportManifestPath), recordSetPath);
+}
+
+function isSupportedCosmosExportMode(mode) {
+  return mode === 'fake-portable-json' || mode === 'live-readonly-portable-json';
+}
+
+function hasValidCosmosExportBoundaries(exportManifest) {
+  if (exportManifest.mode === 'fake-portable-json') {
+    return exportManifest.liveCosmosExportPerformed === false && exportManifest.protectedConfigRead === false;
+  }
+  if (exportManifest.mode !== 'live-readonly-portable-json') {
+    return false;
+  }
+  return (
+    exportManifest.fakeOnly === false &&
+    exportManifest.liveCosmosExportPerformed === true &&
+    exportManifest.readOnlyDataPlaneAccess === true &&
+    exportManifest.protectedConfigRead === false &&
+    exportManifest.keysListed === false &&
+    exportManifest.connectionStringsRead === false &&
+    exportManifest.sasGenerated === false &&
+    exportManifest.tokensPrinted === false &&
+    exportManifest.tokensPersisted === false &&
+    exportManifest.cosmosWritesPerformed === false &&
+    exportManifest.cmsRuntimeSwitchPerformed === false &&
+    exportManifest.cmsWritesPerformed === false &&
+    exportManifest.mediaBlobDownloadPerformed === false &&
+    exportManifest.deploymentPerformed === false &&
+    exportManifest.searchConsoleOrIndexingPerformed === false &&
+    exportManifest.livePagePublicationPerformed === false
+  );
 }
 
 async function checkMediaProof(context, manifest) {
