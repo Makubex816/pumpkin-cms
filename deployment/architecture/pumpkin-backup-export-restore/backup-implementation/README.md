@@ -33,6 +33,7 @@ It creates and validates folder-based standard backup bundles, can resolve non-s
 - Approved Cosmos container router.
 - `/tenantKey` partition validator for seed dry-run packages.
 - Seed readback and rollback plan writers.
+- Guarded live Cosmos seed runner with Azure AD/RBAC-only data-plane access.
 - Node built-in tests.
 
 ## Quick Start
@@ -48,6 +49,7 @@ npm run validate:ice-fake-complete
 npm run restore:ice-fake-complete
 npm run cosmos-seed:ice-dry-run
 npm run cosmos-seed:validate
+npm run cosmos-seed:live-execute
 npm run escrow:create
 npm run escrow:validate
 npm run escrow:inspect
@@ -84,4 +86,4 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 
 ## Boundary
 
-Local prototype only. Seed dry-runs read validated local backup bundles and non-secret fixtures only. No real secrets, no protected config, no real Cosmos export/import/write, no real CMS export/restore/write during seed dry-runs, no MediaAsset restore, no real blob download/copy, no static generation/restore, no production escrow payload, no real restore, no Azure mutation, no external HTTP calls from the seed/fake connector path, and no live-page publication.
+Local prototype by default. Seed dry-runs read validated local backup bundles and non-secret fixtures only. The guarded live seed command may use Azure AD/RBAC data-plane access only when explicitly approved, and it blocks before writing if Cosmos native RBAC is unavailable. No real secrets, no protected config, no real Cosmos export/import, no real CMS export/restore/write during seed dry-runs, no MediaAsset restore, no real blob download/copy, no static generation/restore, no production escrow payload, no real restore, no keys/listKeys, no connection strings, no SAS generation, no deployment, no indexing, and no live-page publication.

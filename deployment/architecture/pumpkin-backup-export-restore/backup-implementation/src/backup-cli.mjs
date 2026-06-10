@@ -4,6 +4,7 @@ import { validateEscrowOutput } from './escrow/escrow-validator.mjs';
 import { writeEscrowValidationReports } from './escrow/escrow-report-writer.mjs';
 import { createIceStandardBackup } from './ice/ice-standard-backup-runner.mjs';
 import { createIceCosmosSeedDryRun } from './cosmos-seed/ice-seed-dry-runner.mjs';
+import { runGuardedLiveCosmosSeed } from './cosmos-seed/guarded-live-seed-runner.mjs';
 import { validateSeedDryRunPackage, writeSeedValidationReports } from './cosmos-seed/tenant-partition-validator.mjs';
 import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
@@ -19,7 +20,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.8.0';
+const version = '0.10.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -120,6 +121,25 @@ async function main(argv) {
     console.log(`cosmos-seed-validation: ${validation.status}`);
     console.log(`totalDocuments: ${validation.summary.totalDocuments}`);
     if (validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'cosmos-seed:live-execute') {
+    const seedPath = requiredOption(options, 'seed');
+    const outputPath = requiredOption(options, 'out');
+    const result = await runGuardedLiveCosmosSeed({
+      seedPath,
+      outputPath,
+      overwrite: Boolean(options.overwrite)
+    });
+    console.log(`cosmos-seed-live: ${result.status}`);
+    console.log(`output: ${path.relative(process.cwd(), result.outputRoot)}`);
+    console.log(`dataPlaneAccess: ${result.dataPlaneAccess?.status ?? 'not-run'}`);
+    console.log(`created: ${result.execution.createdCount}`);
+    console.log(`skippedExisting: ${result.execution.skippedExistingCount}`);
+    console.log(`readback: ${result.readback?.status ?? 'not-run'}`);
+    if (result.status === 'failed' || result.status === 'partial') {
       process.exitCode = 1;
     }
     return;
@@ -309,6 +329,7 @@ Commands:
   restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--mode baseline|production-restore-proof] [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
   cosmos-seed:ice-dry-run --source .tmp/ice-full-standard-backup --out .tmp/phase-2f12o-ice-cosmos-seed-dry-run [--overwrite]
   cosmos-seed:validate --seed .tmp/phase-2f12o-ice-cosmos-seed-dry-run
+  cosmos-seed:live-execute --seed .tmp/phase-2f12o-ice-cosmos-seed-dry-run --out .tmp/phase-2f12p-live-cosmos-seed [--overwrite]
   resolve-provider --fixture fixtures/provider-source.ice.missing.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--profile fixture]
   resolve-runtime-profile --fixture fixtures/provider-source.ice.future-target-cosmos.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--runtime-profile local-dev]
   runtime-profile:list

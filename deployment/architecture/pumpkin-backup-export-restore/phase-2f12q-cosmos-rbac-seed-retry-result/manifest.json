@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2F-12Q",
+  "title": "Cosmos Native Data-Plane RBAC Assignment And Guarded Ice Seed Retry",
+  "status": "complete",
+  "generatedAt": "2026-06-10T00:44:34.773Z",
+  "resultPackage": "deployment/architecture/pumpkin-backup-export-restore/phase-2f12q-cosmos-rbac-seed-retry-result/",
+  "generatedExecutionOutput": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f12q-rbac-seed-retry/",
+  "target": {
+    "accountName": "cosmos-pumpkin-prod-eastus",
+    "resourceGroup": "rg-ice-production-cosmos",
+    "databaseName": "pumpkin-prod-cms",
+    "tenantKey": "ice-rink-rentals",
+    "partitionKeyPath": "/tenantKey"
+  },
+  "rbac": {
+    "principalId": "66783b82-3ed1-48c6-8a99-ca190faae1e0",
+    "roleName": "Cosmos DB Built-in Data Contributor",
+    "roleDefinitionId": "00000000-0000-0000-0000-000000000002",
+    "assignmentId": "ffa1665c-c783-4f51-a9e5-2a68c3abfc67",
+    "scope": "cosmos-pumpkin-prod-eastus/dbs/pumpkin-prod-cms",
+    "accountLevelScopeUsed": false,
+    "subscriptionLevelRoleChange": false
+  },
+  "seedExecution": {
+    "status": "seeded-and-verified",
+    "expectedDocuments": 27,
+    "createdDocuments": 23,
+    "skippedMatchingExistingDocuments": 4,
+    "conflicts": 0,
+    "failedWrites": 0,
+    "readbackStatus": "passed"
+  },
+  "readbackCounts": {
+    "tenants": 1,
+    "sites": 1,
+    "pages": 3,
+    "routes": 5,
+    "forms": 3,
+    "mediaAssets": 12,
+    "themes": 1,
+    "publishRuns": 0,
+    "importRuns": 1,
+    "users": 0,
+    "total": 27
+  },
+  "readiness": {
+    "phase2f12pGuardedSeedAttempt": "complete",
+    "phase2f12qRbacAssignment": true,
+    "safeDataPlaneAccessAfterRbac": true,
+    "liveSeedDocumentsWritten": true,
+    "readbackVerification": true,
+    "cmsRuntimeSwitchPerformed": false,
+    "liveDatabaseExportPerformed": false,
+    "iceFullyBackupableToday": false,
+    "externalSystemsChanged": "approved-rbac-assignment-and-approved-cosmos-data-plane-seed-documents",
+    "livePagesAffected": false,
+    "generatedOutputStaged": false
+  },
+  "security": {
+    "keysListed": false,
+    "connectionStringsRead": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "tokensPrinted": false,
+    "tokensPersistedByRunner": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  }
+}

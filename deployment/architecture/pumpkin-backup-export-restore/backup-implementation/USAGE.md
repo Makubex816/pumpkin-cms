@@ -59,9 +59,18 @@ Equivalent package scripts:
 ```powershell
 npm run cosmos-seed:ice-dry-run
 npm run cosmos-seed:validate
+npm run cosmos-seed:live-execute
 ```
 
 The dry-run validates the source backup bundle first, maps Ice tenant/site/page/route/form/media/theme metadata into approved Cosmos container JSON arrays, writes `SEED_PLAN.md`, `READBACK_PLAN.md`, `ROLLBACK_PLAN.md`, checksums, and validation reports, and exits non-zero if any container, partition, checksum, path, or secret-scan check fails. It does not write Cosmos, call Azure, call CMS APIs, read protected config, export a database, download media, switch runtime, deploy, or publish live pages.
+
+## Guarded Live Cosmos Seed
+
+```powershell
+node src/backup-cli.mjs cosmos-seed:live-execute --seed .tmp/phase-2f12o-ice-cosmos-seed-dry-run --out .tmp/phase-2f12p-live-cosmos-seed --overwrite
+```
+
+The guarded command validates the 12O seed package, attempts Azure AD/RBAC data-plane access without printing or persisting tokens, reads existing tenant-scoped state, blocks on conflicts, and creates only missing approved seed documents. It never falls back to keys/listKeys, connection strings, SAS, or protected config. If Cosmos native RBAC is unavailable, it writes a blocked execution manifest with zero writes.
 
 ## Fake Ice Cosmos/Media Connector Bundle
 
@@ -101,7 +110,7 @@ node src/backup-cli.mjs inspect --bundle .tmp/tenant-standard-backup
 
 ## Output Rule
 
-The CLI refuses to write outside package `.tmp/`. It writes folder bundles, restore-plan dry-run output, Cosmos seed dry-run output, fake connector output, and fake encrypted escrow test output only, and blocks archive-style paths such as `.zip`, `.backup`, `.bak`, and `.bacpac`.
+The CLI refuses to write generated output outside package `.tmp/`. It writes folder bundles, restore-plan dry-run output, Cosmos seed dry-run/live execution reports, fake connector output, and fake encrypted escrow test output only, and blocks archive-style paths such as `.zip`, `.backup`, `.bak`, and `.bacpac`.
 
 ## Phase Boundary
 

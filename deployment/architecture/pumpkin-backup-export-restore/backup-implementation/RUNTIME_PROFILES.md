@@ -31,6 +31,8 @@ That classification means:
 
 The Ice Cosmos seed dry-run uses the `runtime-cosmos-future` profile as non-secret target context. Generated import-run documents and seed manifests record that runtime switch, production writes, and live database export remain blocked. A future live seed execution still requires a fresh owner approval, live-write tooling, readback approval, and rollback readiness.
 
+Phase 2F-12P attempted the approved guarded live seed path and stopped before writing because Cosmos native RBAC data-plane access was not assigned to the signed-in principal. Runtime remains `not-runtime-configured`, and live database export remains blocked.
+
 ## Source Files
 
 - `src/provider/runtime-profile-model.mjs`
