@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "0.3.0",
+  "phase": "2H-5",
+  "title": "Outbound Link Manager rendering control prototype",
+  "status": "complete",
+  "generatedAt": "2026-06-10T06:02:22.184Z",
+  "implementationPackage": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/",
+  "proofOutput": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/.tmp/phase-2h5-rendering-control-prototype/",
+  "rootReport": "PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H5_RENDERING_CONTROL_PROTOTYPE_REPORT.md",
+  "resultFiles": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "RENDER_DECISION_MODEL_RESULT.md",
+    "RENDERING_CONTROLLER_RESULT.md",
+    "ACTIVE_LINK_RENDERING_RESULT.md",
+    "DISABLED_LINK_RENDERING_RESULT.md",
+    "POLICY_RENDERING_RESULT.md",
+    "RENDER_VALIDATOR_RESULT.md",
+    "FIXTURE_RESULT.md",
+    "TEST_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "KNOWN_LIMITATIONS.md",
+    "NEXT_PHASE_2H6_BACKUP_ONBOARDING_TENANT_BUNDLE_INTEGRATION_PROMPT.md",
+    "manifest.json"
+  ],
+  "qa": {
+    "npmRunCheck": "passed",
+    "testsPassed": 43,
+    "testsFailed": 0,
+    "activeRenderValidation": "passed",
+    "disabledRenderValidation": "passed",
+    "domainBlockedRenderValidation": "passed",
+    "pendingReviewRenderValidation": "passed",
+    "generatedOutputIgnored": true,
+    "generatedOutputStaged": false
+  },
+  "boundaries": {
+    "localOnly": true,
+    "productionRendererIntegration": false,
+    "databaseMigration": false,
+    "cmsWrites": false,
+    "adminUiApiImplementation": false,
+    "externalHttpCrawling": false,
+    "liveHttpChecks": false,
+    "protectedConfigReads": false,
+    "azureCmsApiMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  }
+}

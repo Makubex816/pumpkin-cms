@@ -1,12 +1,12 @@
 {
   "name": "pumpkin-outbound-link-manager-local-scanner",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "Local/offline fixture-only outbound link scanner and registry foundation for Pumpkin CMS.",
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "check": "node --check src/outbound-link-cli.mjs && node --check src/scanner/local-content-scanner.mjs && node --check src/scanner/url-extractor.mjs && node --check src/scanner/field-path-walker.mjs && node --check src/scanner/anchor-text-extractor.mjs && node --check src/registry/url-normalizer.mjs && node --check src/registry/domain-normalizer.mjs && node --check src/registry/registry-builder.mjs && node --check src/registry/instance-builder.mjs && node --check src/scan-runs/scan-run-writer.mjs && node --check src/reports/scan-report-writer.mjs && node --check src/store/local-store-initializer.mjs && node --check src/store/local-store-reader.mjs && node --check src/store/local-store-writer.mjs && node --check src/store/store-files.mjs && node --check src/store/store-merger.mjs && node --check src/store/store-exporter.mjs && node --check src/store/store-inspector.mjs && node --check src/policies/policy-normalizer.mjs && node --check src/policies/policy-applier.mjs && node --check src/lifecycle/link-status-service.mjs && node --check src/lifecycle/instance-status-service.mjs && node --check src/audit/audit-log-writer.mjs && node --check src/validators/outbound-link-validator.mjs && node --check src/validators/local-store-validator.mjs && node --check src/utils/safe-paths.mjs && node --check src/utils/json-writer.mjs && node --check test/outbound-link-scanner.test.mjs && node --check test/local-store.test.mjs && npm test",
+    "check": "node --check src/outbound-link-cli.mjs && node --check src/scanner/local-content-scanner.mjs && node --check src/scanner/url-extractor.mjs && node --check src/scanner/field-path-walker.mjs && node --check src/scanner/anchor-text-extractor.mjs && node --check src/registry/url-normalizer.mjs && node --check src/registry/domain-normalizer.mjs && node --check src/registry/registry-builder.mjs && node --check src/registry/instance-builder.mjs && node --check src/scan-runs/scan-run-writer.mjs && node --check src/reports/scan-report-writer.mjs && node --check src/store/local-store-initializer.mjs && node --check src/store/local-store-reader.mjs && node --check src/store/local-store-writer.mjs && node --check src/store/store-files.mjs && node --check src/store/store-merger.mjs && node --check src/store/store-exporter.mjs && node --check src/store/store-inspector.mjs && node --check src/policies/policy-normalizer.mjs && node --check src/policies/policy-applier.mjs && node --check src/lifecycle/link-status-service.mjs && node --check src/lifecycle/instance-status-service.mjs && node --check src/audit/audit-log-writer.mjs && node --check src/rendering/render-decision-model.mjs && node --check src/rendering/rendering-controller.mjs && node --check src/rendering/link-renderer.mjs && node --check src/rendering/render-policy-resolver.mjs && node --check src/rendering/render-output-writer.mjs && node --check src/rendering/render-report-writer.mjs && node --check src/validators/outbound-link-validator.mjs && node --check src/validators/local-store-validator.mjs && node --check src/validators/render-output-validator.mjs && node --check src/utils/safe-paths.mjs && node --check src/utils/json-writer.mjs && node --check test/outbound-link-scanner.test.mjs && node --check test/local-store.test.mjs && node --check test/rendering-control.test.mjs && npm test",
     "scan:single": "node src/outbound-link-cli.mjs scan --fixture fixtures/single-link.fixture.json --out .tmp/single-link-scan --overwrite",
     "scan:tenant-bundle": "node src/outbound-link-cli.mjs scan --fixture fixtures/tenant-bundle.fixture.json --out .tmp/tenant-bundle-scan --overwrite",
     "validate:tenant-bundle": "node src/outbound-link-cli.mjs validate --scan .tmp/tenant-bundle-scan",
@@ -14,7 +14,9 @@
     "store:init": "node src/outbound-link-cli.mjs init-store --tenant fixture-tenant --site fixture-site --out .tmp/local-store --overwrite",
     "store:merge": "node src/outbound-link-cli.mjs merge-scan --store .tmp/local-store --scan .tmp/tenant-bundle-scan --out .tmp/local-store-merged --overwrite",
     "store:validate": "node src/outbound-link-cli.mjs validate-store --store .tmp/local-store-merged",
-    "store:inspect": "node src/outbound-link-cli.mjs inspect-store --store .tmp/local-store-merged"
+    "store:inspect": "node src/outbound-link-cli.mjs inspect-store --store .tmp/local-store-merged",
+    "render:active": "node src/outbound-link-cli.mjs render-fixture --fixture fixtures/render-active-links.fixture.json --store .tmp/local-store-merged --out .tmp/render-active --overwrite",
+    "render:validate": "node src/outbound-link-cli.mjs validate-render --rendered .tmp/render-active"
   },
   "engines": {
     "node": ">=20"

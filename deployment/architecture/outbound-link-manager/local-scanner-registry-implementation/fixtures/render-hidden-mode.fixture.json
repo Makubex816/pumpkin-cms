@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "0.3.0",
+  "fixtureName": "render-hidden-mode",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "render_targets": [
+    {
+      "domain": "docs.example",
+      "render_mode": "hidden",
+      "anchor_text": "Docs"
+    }
+  ]
+}

@@ -70,6 +70,16 @@ node src/outbound-link-cli.mjs validate-store --store .tmp/local-store-policy
 node src/outbound-link-cli.mjs inspect-store --store .tmp/local-store-policy
 ```
 
+## Render Fixture Decisions
+
+```powershell
+node src/outbound-link-cli.mjs render-fixture --fixture fixtures/render-active-links.fixture.json --store .tmp/local-store-merged --out .tmp/render-active --overwrite
+node src/outbound-link-cli.mjs validate-render --rendered .tmp/render-active
+node src/outbound-link-cli.mjs inspect-render --rendered .tmp/render-active
+```
+
+Render commands write `render-decisions.json`, `render-report.json`, `RENDER_REPORT.md`, `static-export.html`, and validation files under `.tmp`.
+
 ## Scripts
 
 ```powershell
@@ -83,6 +93,8 @@ npm run store:init
 npm run store:merge
 npm run store:validate
 npm run store:inspect
+npm run render:active
+npm run render:validate
 ```
 
-The scanner and store writer refuse output outside `.tmp`.
+The scanner, store writer, exporter, and render writer refuse output outside `.tmp`.

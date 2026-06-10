@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.3.0",
+  "fixtureName": "render-active-links",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "render_policy": {
+    "open_external_in_new_tab": true,
+    "allow_pending_review_active": false
+  },
+  "render_targets": []
+}

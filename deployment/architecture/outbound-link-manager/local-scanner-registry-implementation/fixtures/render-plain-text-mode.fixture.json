@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "0.3.0",
+  "fixtureName": "render-plain-text-mode",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "render_targets": [
+    {
+      "domain": "docs.example",
+      "render_mode": "plain_text",
+      "anchor_text": "Docs"
+    }
+  ]
+}

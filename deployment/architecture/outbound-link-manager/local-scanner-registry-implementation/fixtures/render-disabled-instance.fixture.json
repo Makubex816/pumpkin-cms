@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.3.0",
+  "fixtureName": "render-disabled-instance",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "render_targets": [
+    {
+      "domain": "docs.example",
+      "anchor_text": "Docs"
+    }
+  ]
+}

@@ -3,7 +3,7 @@ import path from 'node:path';
 import { runScan } from './scan-runs/scan-run-writer.mjs';
 import { validateScanOutput } from './validators/outbound-link-validator.mjs';
 import { readJson } from './utils/json-writer.mjs';
-import { resolveFixturePath, resolveTmpScanPath, toPackageRelative } from './utils/safe-paths.mjs';
+import { resolveFixturePath, resolveTmpRenderPath, resolveTmpScanPath, toPackageRelative } from './utils/safe-paths.mjs';
 import { createEmptyLocalStore } from './store/local-store-initializer.mjs';
 import { writeLocalStore } from './store/local-store-writer.mjs';
 import { mergeScanIntoStore } from './store/store-merger.mjs';
@@ -16,8 +16,10 @@ import { appendAuditLog } from './audit/audit-log-writer.mjs';
 import { setLinkStatus } from './lifecycle/link-status-service.mjs';
 import { setInstanceStatus } from './lifecycle/instance-status-service.mjs';
 import { validateLocalStore } from './validators/local-store-validator.mjs';
+import { runRenderFixture } from './rendering/render-output-writer.mjs';
+import { validateRenderOutput } from './validators/render-output-validator.mjs';
 
-const version = '0.2.0';
+const version = '0.3.0';
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
@@ -61,6 +63,15 @@ async function main() {
         break;
       case 'inspect-store':
         await inspectStoreCommand(args);
+        break;
+      case 'render-fixture':
+        await renderFixtureCommand(args);
+        break;
+      case 'validate-render':
+        await validateRenderCommand(args);
+        break;
+      case 'inspect-render':
+        await inspectRenderCommand(args);
         break;
       default:
         throw new Error(`unknown command: ${command}`);
@@ -316,6 +327,49 @@ async function inspectStoreCommand(args) {
   console.log(`domains: ${summary.domains.join(',')}`);
 }
 
+async function renderFixtureCommand(args) {
+  const options = parseArgs(args);
+  const result = await runRenderFixture({
+    fixturePath: required(options.fixture, '--fixture is required'),
+    storePath: required(options.store, '--store is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  const validation = await validateRenderOutput({ renderedPath: options.out });
+  console.log(`render: ${validation.status}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`decisions: ${result.renderResult.summary.decisionCount}`);
+  console.log(`activeAnchors: ${result.renderResult.summary.activeAnchorCount}`);
+  console.log(`blockedOrDisabled: ${result.renderResult.summary.blockedOrDisabledCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateRenderCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateRenderOutput({ renderedPath: required(options.rendered, '--rendered is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`decisions: ${validation.summary.decisionCount}`);
+  console.log(`activeAnchors: ${validation.summary.activeAnchorCount}`);
+  console.log(`blockedOrDisabled: ${validation.summary.blockedOrDisabledCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function inspectRenderCommand(args) {
+  const options = parseArgs(args);
+  const renderRoot = resolveTmpRenderPath(required(options.rendered, '--rendered is required'));
+  const report = await readJson(path.join(renderRoot, 'render-report.json'));
+  console.log(`tenant: ${report.tenant_id}`);
+  console.log(`site: ${report.site_id}`);
+  console.log(`fixture: ${report.fixtureName}`);
+  console.log(`decisions: ${report.summary.decisionCount}`);
+  console.log(`activeAnchors: ${report.summary.activeAnchorCount}`);
+  console.log(`blockedOrDisabled: ${report.summary.blockedOrDisabledCount}`);
+}
+
 function required(value, message) {
   if (!value) {
     throw new Error(message);
@@ -340,6 +394,9 @@ Commands:
   export-store --store .tmp/local-store-policy --out .tmp/local-store-export [--overwrite]
   validate-store --store .tmp/local-store-policy
   inspect-store --store .tmp/local-store-policy
+  render-fixture --fixture fixtures/render-active-links.fixture.json --store .tmp/local-store-policy --out .tmp/render-active [--overwrite]
+  validate-render --rendered .tmp/render-active
+  inspect-render --rendered .tmp/render-active
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

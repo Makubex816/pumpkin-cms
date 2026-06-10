@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "0.3.0",
+  "fixtureName": "render-fallback-mode",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "render_targets": [
+    {
+      "domain": "docs.example",
+      "render_mode": "fallback",
+      "anchor_text": "Docs",
+      "fallback_anchor_text": "Fallback docs",
+      "fallback_url": "https://example.com/safe-fallback"
+    }
+  ]
+}

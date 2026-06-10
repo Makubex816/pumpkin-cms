@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.3.0",
+  "fixtureName": "render-domain-blocked",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "render_targets": [
+    {
+      "domain": "partner.example",
+      "anchor_text": "Partner vendors"
+    }
+  ]
+}
