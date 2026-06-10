@@ -34,8 +34,12 @@ import { listOutboundLinkAuditLogs } from './api/services/outbound-link-audit-se
 import { getOutboundLinkDashboardSummary } from './api/services/outbound-link-dashboard-service.mjs';
 import { requestWriteAction } from './api/services/write-action-guard-service.mjs';
 import { validateApiResponse } from './validators/api-response-validator.mjs';
+import { simulateAction } from './actions/action-simulation-runner.mjs';
+import { validateActionResult } from './actions/action-result-validator.mjs';
+import { runApiWritePreflight } from './api/write-guard/local-api-write-guard-adapter.mjs';
+import { validateApiWritePreflight } from './api/write-guard/write-action-preflight-validator.mjs';
 
-const version = '0.5.0';
+const version = '0.7.0';
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
@@ -136,6 +140,18 @@ async function main() {
         break;
       case 'validate-api-response':
         await validateApiResponseCommand(args);
+        break;
+      case 'simulate-action':
+        await simulateActionCommand(args);
+        break;
+      case 'validate-action-result':
+        await validateActionResultCommand(args);
+        break;
+      case 'api-write-preflight':
+        await apiWritePreflightCommand(args);
+        break;
+      case 'validate-api-write-preflight':
+        await validateApiWritePreflightCommand(args);
         break;
       default:
         throw new Error(`unknown command: ${command}`);
@@ -640,6 +656,75 @@ async function validateApiResponseCommand(args) {
   }
 }
 
+async function simulateActionCommand(args) {
+  const options = parseArgs(args);
+  const result = await simulateAction({
+    storePath: required(options.store, '--store is required'),
+    requestPath: required(options.request, '--request is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  const validation = await validateActionResult({ resultPath: options.out });
+  console.log(`action: ${result.actionResult.action}`);
+  console.log(`status: ${result.actionResult.status}`);
+  console.log(`code: ${result.actionResult.code}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`validation: ${validation.status}`);
+  console.log(`changes: ${result.actionResult.summary.changeCount}`);
+  console.log(`affectedLinks: ${result.actionResult.summary.affectedLinkCount}`);
+  console.log(`affectedInstances: ${result.actionResult.summary.affectedInstanceCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateActionResultCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateActionResult({ resultPath: required(options.result, '--result is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`action: ${validation.summary.action}`);
+  console.log(`resultStatus: ${validation.summary.resultStatus}`);
+  console.log(`failures: ${validation.summary.failureCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function apiWritePreflightCommand(args) {
+  const options = parseArgs(args);
+  const result = await runApiWritePreflight({
+    storePath: required(options.store, '--store is required'),
+    requestPath: required(options.request, '--request is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  const validation = await validateApiWritePreflight({ resultPath: options.out });
+  console.log(`apiWrite: ${result.response.ok ? 'ok' : 'blocked'}`);
+  console.log(`code: ${result.response.code}`);
+  console.log(`providerMode: ${result.response.providerMode}`);
+  console.log(`requestId: ${result.response.requestId}`);
+  console.log(`actionId: ${result.response.actionId}`);
+  console.log(`correlationId: ${result.response.correlationId}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`validation: ${validation.status}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateApiWritePreflightCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateApiWritePreflight({ resultPath: required(options.result, '--result is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`requestId: ${validation.summary.requestId}`);
+  console.log(`actionId: ${validation.summary.actionId}`);
+  console.log(`providerMode: ${validation.summary.providerMode}`);
+  console.log(`failures: ${validation.summary.failureCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
 async function writeApiResponse({ response, outputPath }) {
   const outputRoot = resolveTmpOutputPath(outputPath);
   await writeJson(path.join(outputRoot, 'API_RESPONSE.json'), response);
@@ -739,6 +824,10 @@ Commands:
   api-dashboard-summary --store .tmp/local-store-policy --tenant fixture-tenant --site fixture-site --out .tmp/api-dashboard-summary
   api-request-write --store .tmp/local-store-policy --action set-link-status --tenant fixture-tenant --site fixture-site --out .tmp/api-write-blocked
   validate-api-response --response .tmp/api-list-links
+  simulate-action --store .tmp/local-store-policy --request fixtures/action-approve-review.fixture.json --out .tmp/action-approve-review [--overwrite]
+  validate-action-result --result .tmp/action-approve-review
+  api-write-preflight --store .tmp/local-store-policy --request fixtures/api-write-preflight-approve-review.fixture.json --out .tmp/api-write-preflight-approve-review [--overwrite]
+  validate-api-write-preflight --result .tmp/api-write-preflight-approve-review
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

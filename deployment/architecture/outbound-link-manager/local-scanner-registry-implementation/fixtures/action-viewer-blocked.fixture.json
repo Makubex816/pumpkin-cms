@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "set_link_status",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "reason": "local fixture viewer should be blocked from write simulation",
+  "approvalReference": "OLM-LOCAL-VIEWER-BLOCKED-001",
+  "operationId": "oloa_fixture_viewer_blocked",
+  "requestId": "req_fixture_viewer_blocked",
+  "idempotencyKey": "idempotency_fixture_viewer_blocked",
+  "now": "2026-06-10T12:35:00.000Z",
+  "actor": {
+    "actorId": "local-viewer",
+    "role": "Viewer",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"],
+    "mode": "local-offline"
+  },
+  "target": {
+    "domain": "docs.example",
+    "status": "disabled"
+  },
+  "payload": {},
+  "profile": {
+    "name": "local-dev"
+  }
+}

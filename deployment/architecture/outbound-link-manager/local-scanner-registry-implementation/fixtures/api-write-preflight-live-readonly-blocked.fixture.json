@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "setLinkStatus",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "providerMode": "live-readonly",
+  "reason": "live-readonly write attempt should be blocked",
+  "approvalReference": "OLM-LIVE-READONLY-BLOCKED-001",
+  "requestId": "olwr_fixture_live_readonly_blocked",
+  "actionId": "olwa_fixture_live_readonly_blocked",
+  "correlationId": "olwc_fixture_live_readonly_blocked",
+  "now": "2026-06-10T13:10:00.000Z",
+  "actor": {
+    "actorId": "local-api-tenant-admin",
+    "actorEmail": "tenant-admin@example.test",
+    "actorRole": "TenantAdmin",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"]
+  },
+  "target": {
+    "domain": "docs.example",
+    "status": "disabled"
+  },
+  "payload": {}
+}

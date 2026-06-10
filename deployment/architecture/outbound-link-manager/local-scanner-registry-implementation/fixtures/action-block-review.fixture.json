@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "block_review",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "reason": "local fixture review blocked docs domain for policy demonstration",
+  "approvalReference": "OLM-LOCAL-BLOCK-001",
+  "operationId": "oloa_fixture_block_review",
+  "requestId": "req_fixture_block_review",
+  "idempotencyKey": "idempotency_fixture_block_review",
+  "now": "2026-06-10T12:05:00.000Z",
+  "actor": {
+    "actorId": "local-operator",
+    "role": "Operator",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"],
+    "mode": "local-offline"
+  },
+  "target": {
+    "domain": "docs.example"
+  },
+  "payload": {
+    "decisionNote": "local sandbox block only"
+  },
+  "profile": {
+    "name": "local-dev",
+    "localOfflineDefault": true
+  }
+}

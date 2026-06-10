@@ -116,6 +116,7 @@ builder.Services.AddSingleton<MongoDataConnection>();
 builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
 builder.Services.AddSingleton<IMediaStorageService, MediaStorageService>();
 builder.Services.AddOutboundLinkReadOnlyFoundation();
+builder.Services.AddOutboundLinkWriteFoundation();
 
 var app = builder.Build();
 
@@ -523,6 +524,7 @@ app.MapGet("/api/admin/provider-metadata",
     .WithDescription("Returns allowlisted non-secret provider metadata for Backup Center. Requires JWT authentication and TenantAdmin, Operator, or SuperAdmin authorization. Does not read protected config, list keys, return connection strings, export data, or switch runtime providers.");
 
 app.MapOutboundLinkReadOnlyEndpoints();
+app.MapOutboundLinkWriteEndpoints();
 
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2H-12",
+  "package": "phase-2h12-local-write-action-guards-result",
+  "generatedAt": "2026-06-10T00:00:00.000Z",
+  "scope": "local/offline write-action approval guards and sandbox simulations",
+  "sourcePackage": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation",
+  "localEvidenceRoot": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/.tmp/phase-2h12",
+  "generatedEvidenceTracked": false,
+  "tests": {
+    "writeActionGuards": "passed",
+    "packageCheck": "passed",
+    "cliActionResultValidation": "passed"
+  },
+  "boundaries": {
+    "productionApiWriteRoutes": false,
+    "databaseMigration": false,
+    "cmsWrites": false,
+    "liveProviderWrites": false,
+    "externalCrawling": false,
+    "protectedConfigReads": false,
+    "azureCmsApiMutations": false,
+    "deployment": false,
+    "indexing": false,
+    "livePagePublication": false
+  },
+  "artifacts": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "APPROVAL_GUARD_RESULT.md",
+    "REVIEW_DECISION_SIMULATION_RESULT.md",
+    "STATUS_CHANGE_SIMULATION_RESULT.md",
+    "POLICY_UPDATE_SIMULATION_RESULT.md",
+    "BULK_ACTION_PREFLIGHT_RESULT.md",
+    "PUBLISHING_IMPACT_RESULT.md",
+    "AUDIT_ROLLBACK_RESULT.md",
+    "OFFLINE_LIVE_PROFILE_PRESERVATION_RESULT.md",
+    "ADMIN_UI_FUTURE_GATED_ACTION_RESULT.md",
+    "TEST_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "KNOWN_LIMITATIONS.md",
+    "NEXT_PHASE_2H13_PRODUCTION_WRITE_IMPLEMENTATION_PREFLIGHT_PROMPT.md",
+    "manifest.json"
+  ]
+}

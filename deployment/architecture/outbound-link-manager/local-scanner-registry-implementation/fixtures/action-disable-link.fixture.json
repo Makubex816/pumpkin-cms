@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "set_link_status",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "reason": "local fixture disables docs link for status simulation",
+  "approvalReference": "OLM-LOCAL-DISABLE-LINK-001",
+  "operationId": "oloa_fixture_disable_link",
+  "requestId": "req_fixture_disable_link",
+  "idempotencyKey": "idempotency_fixture_disable_link",
+  "now": "2026-06-10T12:10:00.000Z",
+  "actor": {
+    "actorId": "local-tenant-admin",
+    "role": "TenantAdmin",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"],
+    "mode": "local-offline"
+  },
+  "target": {
+    "domain": "docs.example",
+    "status": "disabled"
+  },
+  "payload": {},
+  "profile": {
+    "name": "local-dev"
+  }
+}

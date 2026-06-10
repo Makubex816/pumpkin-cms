@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "set_instance_status",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "reason": "local fixture converts docs instance to plain text",
+  "approvalReference": "OLM-LOCAL-DISABLE-INSTANCE-001",
+  "operationId": "oloa_fixture_disable_instance",
+  "requestId": "req_fixture_disable_instance",
+  "idempotencyKey": "idempotency_fixture_disable_instance",
+  "now": "2026-06-10T12:15:00.000Z",
+  "actor": {
+    "actorId": "local-operator",
+    "role": "Operator",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"],
+    "mode": "local-offline"
+  },
+  "target": {
+    "domain": "docs.example",
+    "instanceStatus": "plain_text"
+  },
+  "payload": {},
+  "profile": {
+    "name": "local-dev"
+  }
+}

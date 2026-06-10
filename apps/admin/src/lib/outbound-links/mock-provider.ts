@@ -15,6 +15,9 @@ import type {
   OutboundLinkSortField,
   OutboundLinkStatus,
   OutboundLinkStoreSnapshot,
+  OutboundLinkWriteAction,
+  OutboundLinkWriteActionResponse,
+  OutboundLinkWriteProviderMode,
 } from './types'
 
 export const OUTBOUND_LINK_READONLY_MODE = 'admin-local-fake-readonly'
@@ -502,6 +505,129 @@ export function getOutboundLinkExportStatuses(snapshot: OutboundLinkStoreSnapsho
   ]
 }
 
+export function createLocalWriteActionResponse(
+  snapshot: OutboundLinkStoreSnapshot,
+  options: {
+    action: OutboundLinkWriteAction
+    link?: OutboundLinkRecord | null
+    providerMode?: OutboundLinkWriteProviderMode
+  },
+): OutboundLinkWriteActionResponse {
+  const providerMode = options.providerMode ?? 'local-api-fake-provider'
+  const link = options.link ?? snapshot.links[0] ?? null
+  const affectedInstances = link
+    ? snapshot.instances.filter((instance) => instance.outboundLinkId === link.id)
+    : snapshot.instances.slice(0, 3)
+  const affectedPageIds = Array.from(new Set(affectedInstances.map((instance) => instance.pageId).filter(Boolean) as string[]))
+  const affectedInstanceIds = affectedInstances.map((instance) => instance.id)
+  const policy = snapshot.policies.find((item) => item.id === snapshot.activePolicyId) ?? snapshot.policies[0] ?? null
+  const scanRunId = options.action === 'createScanRun' ? `olsr_local_preflight_${hashText(`${snapshot.tenantKey}:${timestamp.latest}`)}` : null
+  const bulkActionId = options.action.startsWith('bulk') ? `olbulk_${hashText(`${options.action}:${link?.domain || 'all'}`)}` : null
+  const outboundLinkInstanceId = options.action === 'setInstanceStatus' || options.action === 'bulkPageInstanceUpdate'
+    ? affectedInstanceIds[0] ?? null
+    : null
+  const entityIds = [
+    link?.id,
+    outboundLinkInstanceId,
+    policy?.id,
+    scanRunId,
+    bulkActionId,
+  ].filter(Boolean) as string[]
+  const requestId = `olreq_${hashText(`${snapshot.tenantKey}:${snapshot.siteKey}:${options.action}:${link?.id || 'none'}`)}`
+  const actionId = `olact_${hashText(`${requestId}:action`)}`
+  const correlationId = `olcorr_${hashText(`${requestId}:correlation`)}`
+  const auditEventIds = [`ola_${hashText(`${requestId}:audit`)}`]
+  const rollbackPlanId = `olrb_${hashText(`${requestId}:rollback`)}`
+  const beforeStateHash = `local:${hashText(JSON.stringify({
+    link: link ? redactLinkForTrace(link) : null,
+    instances: affectedInstances.map((instance) => ({ id: instance.id, status: instance.status, enabled: instance.isEnabled })),
+    policyId: policy?.id ?? null,
+  }))}`
+  const afterStateHash = `local:${hashText(JSON.stringify({
+    link: link ? { ...redactLinkForTrace(link), previewStatus: previewStatusForAction(options.action, link.status) } : null,
+    instances: affectedInstances.map((instance) => ({
+      id: instance.id,
+      status: previewInstanceStatusForAction(options.action, instance.status),
+      enabled: previewInstanceEnabledForAction(options.action, instance.isEnabled),
+    })),
+    policyId: policy?.id ?? null,
+    action: options.action,
+  }))}`
+  const renderActions = Array.from(new Set([
+    previewRenderActionForAction(options.action, link),
+    ...affectedInstances.map((instance) => instance.renderAction),
+  ].filter(Boolean) as string[]))
+  const publishingImpact = {
+    summary: `${affectedPageIds.length} page(s) and ${affectedInstanceIds.length} instance(s) would be included in the local sandbox impact report.`,
+    affectedPageIds,
+    affectedInstanceIds,
+    renderActions,
+  }
+  const traceLog = {
+    requestId,
+    actionId,
+    correlationId,
+    tenantKey: snapshot.tenantKey,
+    siteKey: snapshot.siteKey,
+    providerMode,
+    action: options.action,
+    outcome: 'local_sandbox_applied',
+    actorIdentity: 'local-admin-fixture',
+    actorRole: 'TenantAdmin',
+    reason: 'Admin local sandbox write preflight.',
+    approvalReference: `local-approval-${requestId}`,
+    entityIds,
+    outboundLinkId: link?.id ?? null,
+    outboundLinkInstanceId,
+    policyId: options.action === 'setPolicy' ? policy?.id ?? null : null,
+    scanRunId,
+    bulkActionId,
+    auditEventIds,
+    rollbackPlanId,
+    beforeStateHash,
+    afterStateHash,
+    affectedPageIds,
+    affectedInstanceIds,
+    localOnly: true,
+    simulatedOnly: true,
+    liveWriteAllowed: false,
+    createdAt: timestamp.latest,
+  }
+
+  return {
+    ok: true,
+    status: 200,
+    code: 'OUTBOUND_LINK_WRITE_PREFLIGHT_LOCAL_ONLY',
+    message: 'Local/fake sandbox write preflight recorded.',
+    requestId,
+    actionId,
+    correlationId,
+    tenantKey: snapshot.tenantKey,
+    siteKey: snapshot.siteKey,
+    providerMode,
+    action: options.action,
+    outboundLinkId: link?.id ?? null,
+    outboundLinkInstanceId,
+    policyId: options.action === 'setPolicy' ? policy?.id ?? null : null,
+    scanRunId,
+    bulkActionId,
+    approvalRequired: true,
+    approvalState: 'local_sandbox_approval_present',
+    approvalReference: traceLog.approvalReference,
+    reason: traceLog.reason,
+    liveWriteAllowed: false,
+    simulatedOnly: true,
+    applied: true,
+    publishingImpact,
+    auditEventIds,
+    rollbackPlanId,
+    beforeStateHash,
+    afterStateHash,
+    traceLog,
+    errors: [],
+  }
+}
+
 export function createOutboundLinkEnvelope<T>(
   tenantKey: string,
   siteKey: string,
@@ -717,6 +843,86 @@ function sortLinks(links: OutboundLinkRecord[], field: OutboundLinkSortField, di
 function getSortValue(link: OutboundLinkRecord, field: OutboundLinkSortField) {
   if (field === 'instanceCount') return String(link.instanceCount).padStart(5, '0')
   return String(link[field] || '')
+}
+
+function previewStatusForAction(action: OutboundLinkWriteAction, current: OutboundLinkStatus): OutboundLinkStatus {
+  if (action === 'approveReviewDecision' || action === 'restorePriorStatus') return 'active'
+  if (action === 'blockReviewDecision' || action === 'bulkDomainDisable') return 'domain_blocked'
+  if (action === 'ignoreReviewDecision') return 'disabled'
+  if (action === 'setLinkStatus') return current === 'disabled' ? 'active' : 'disabled'
+  if (action === 'bulkDomainRequireReview') return 'pending_review'
+  return current
+}
+
+function previewInstanceStatusForAction(
+  action: OutboundLinkWriteAction,
+  current: OutboundLinkInstanceRecord['status'],
+): OutboundLinkInstanceRecord['status'] {
+  if (action === 'approveReviewDecision' || action === 'restorePriorStatus') return 'enabled'
+  if (action === 'blockReviewDecision' || action === 'bulkDomainDisable' || action === 'setInstanceStatus') return 'disabled'
+  if (action === 'bulkDomainRequireReview' || action === 'bulkPageInstanceUpdate') return 'pending_review'
+  return current
+}
+
+function previewInstanceEnabledForAction(action: OutboundLinkWriteAction, current: boolean) {
+  if (action === 'approveReviewDecision' || action === 'restorePriorStatus') return true
+  if (action === 'blockReviewDecision' || action === 'bulkDomainDisable' || action === 'setInstanceStatus') return false
+  return current
+}
+
+function previewRenderActionForAction(action: OutboundLinkWriteAction, link: OutboundLinkRecord | null) {
+  if (action === 'approveReviewDecision' || action === 'restorePriorStatus') return 'active_link'
+  if (action === 'blockReviewDecision' || action === 'bulkDomainDisable') return 'hidden'
+  if (action === 'ignoreReviewDecision' || action === 'setLinkStatus') return 'plain_text'
+  return link?.renderAction ?? 'plain_text'
+}
+
+function redactLinkForTrace(link: OutboundLinkRecord) {
+  return {
+    id: link.id,
+    domain: link.domain,
+    status: link.status,
+    normalizedUrl: redactUrlForTrace(link.normalizedUrl),
+    renderAction: link.renderAction,
+  }
+}
+
+function redactUrlForTrace(value: string) {
+  try {
+    const url = new URL(value)
+    for (const key of Array.from(url.searchParams.keys())) {
+      if (isSensitiveQueryKey(key)) {
+        url.searchParams.set(key, 'redacted')
+      }
+    }
+    return url.toString()
+  } catch {
+    return value
+  }
+}
+
+function isSensitiveQueryKey(value: string) {
+  const normalized = value.toLowerCase()
+  return normalized === 'token' ||
+    normalized === 'key' ||
+    normalized === 'api_key' ||
+    normalized === 'apikey' ||
+    normalized === 'signature' ||
+    normalized === 'sig' ||
+    normalized === 'auth' ||
+    normalized === 'password' ||
+    normalized === 'access_token' ||
+    normalized === 'code'
+}
+
+function hashText(value: string) {
+  let hash = 2166136261
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index)
+    hash = Math.imul(hash, 16777619)
+  }
+
+  return (hash >>> 0).toString(16).padStart(8, '0')
 }
 
 function createReadOnlyMeta(

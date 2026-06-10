@@ -1,24 +1,18 @@
 # Write Action Guards
 
-Phase 2H-8 implements write-action guard stubs only.
+Phase 2H-12 adds a local/offline write-action guard layer for sandbox simulation only.
 
-Implemented guard methods:
+The guard requires:
 
-- `requestSetLinkStatus`
-- `requestSetInstanceStatus`
-- `requestSetPolicy`
-- `requestCreateScanRun`
-- `requestBulkAction`
+- known action type
+- tenant and site matching the local store
+- reason text
+- allowed actor role
+- assigned tenant/site scope for non-SuperAdmin actors
+- approval reference for bulk actions
+- `productionWriteApproved: false`
+- `liveWriteApproved: false`
 
-All write-action guard methods return:
+Approved requests mutate only a cloned sandbox store under `.tmp/<action-output>/sandbox-store`. Blocked requests write `ACTION_RESULT.json`, `PUBLISHING_IMPACT.json`, and `ROLLBACK_PLAN.json` without writing a sandbox store.
 
-- `ok: false`
-- `status: 403`
-- `code: OUTBOUND_LINK_WRITE_NOT_APPROVED`
-- `meta.writeApproved: false`
-- `meta.localStoreMutation: false`
-
-No local store mutation happens through these API guard methods in Phase 2H-8.
-
-Future write-capable phases must add explicit approvals, preview output, reason text, audit logging, tenant isolation, ETag/conflict handling, backup readiness, and rollback/readback plans.
-
+The existing API write guard service remains blocked and returns `OUTBOUND_LINK_WRITE_NOT_APPROVED`. Phase 2H-12 does not create production POST, PUT, PATCH, or DELETE routes.

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "create_scan_run",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "reason": "local fixture creates a simulated scan run record without crawling",
+  "approvalReference": "OLM-LOCAL-SCAN-001",
+  "operationId": "oloa_fixture_scan_run",
+  "requestId": "req_fixture_scan_run",
+  "idempotencyKey": "idempotency_fixture_scan_run",
+  "now": "2026-06-10T12:25:00.000Z",
+  "actor": {
+    "actorId": "local-operator",
+    "role": "Operator",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"],
+    "mode": "local-offline"
+  },
+  "target": {},
+  "payload": {
+    "pagesScanned": 3
+  },
+  "profile": {
+    "name": "local-dev"
+  }
+}

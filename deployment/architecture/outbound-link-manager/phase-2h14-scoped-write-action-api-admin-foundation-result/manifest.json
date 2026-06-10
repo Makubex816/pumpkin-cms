@@ -1,0 +1,37 @@
+{
+  "phase": "2H-14",
+  "title": "Outbound Link Manager scoped write-action API/Admin foundation with trace logging",
+  "status": "complete",
+  "generatedArtifactsIgnored": true,
+  "liveWritesPerformed": false,
+  "protectedConfigRead": false,
+  "azureMutationPerformed": false,
+  "cmsWritesPerformed": false,
+  "externalCrawlingPerformed": false,
+  "deploymentPerformed": false,
+  "searchConsoleIndexingPerformed": false,
+  "livePagePublicationPerformed": false,
+  "validation": {
+    "localPackageCheck": "passed",
+    "localPackageTests": 87,
+    "apiBuild": "passed",
+    "apiBuildWarnings": 0,
+    "apiBuildErrors": 0,
+    "phase2h14ApiTests": "passed",
+    "phase2h9RegressionTests": "passed",
+    "adminTypeCheck": "passed",
+    "apiWritePreflightFixtures": [
+      "approve-review",
+      "bulk-domain-disable",
+      "live-readonly-blocked",
+      "redacted-url"
+    ]
+  },
+  "primaryFiles": [
+    "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/src/api/write-guard/",
+    "apps/pumpkin-api/Services/OutboundLinks/",
+    "apps/admin/src/components/outbound-links/OutboundLinkAdmin.tsx",
+    "apps/admin/src/lib/outbound-links/mock-provider.ts",
+    "apps/admin/src/lib/outbound-links/types.ts"
+  ]
+}

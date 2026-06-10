@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "approve_review",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "reason": "local fixture owner approved partner domain for rendering review",
+  "approvalReference": "OLM-LOCAL-APPROVE-001",
+  "policyReference": "policy_block_partner_example",
+  "operationId": "oloa_fixture_approve_review",
+  "requestId": "req_fixture_approve_review",
+  "idempotencyKey": "idempotency_fixture_approve_review",
+  "now": "2026-06-10T12:00:00.000Z",
+  "actor": {
+    "actorId": "local-tenant-admin",
+    "role": "TenantAdmin",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"],
+    "mode": "local-offline"
+  },
+  "target": {
+    "domain": "partner.example"
+  },
+  "payload": {
+    "decisionNote": "local sandbox approval only"
+  },
+  "profile": {
+    "name": "local-dev",
+    "localOfflineDefault": true,
+    "fakeProvider": true,
+    "offlineBundle": true,
+    "localFileBackedStore": true
+  }
+}

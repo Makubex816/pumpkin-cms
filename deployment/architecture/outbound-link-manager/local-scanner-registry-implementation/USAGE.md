@@ -107,6 +107,30 @@ node src/outbound-link-cli.mjs validate-onboarding-import --import .tmp/onboardi
 node src/outbound-link-cli.mjs simulate-restore-validation --export .tmp/backup-center-export --out .tmp/restore-validation --overwrite
 ```
 
+## Simulate Local Write-Action Guards
+
+```powershell
+node src/outbound-link-cli.mjs simulate-action --store .tmp/local-store-policy --request fixtures/action-approve-review.fixture.json --out .tmp/action-approve-review --overwrite
+node src/outbound-link-cli.mjs simulate-action --store .tmp/local-store-policy --request fixtures/action-block-review.fixture.json --out .tmp/action-block-review --overwrite
+node src/outbound-link-cli.mjs simulate-action --store .tmp/local-store-policy --request fixtures/action-disable-link.fixture.json --out .tmp/action-disable-link --overwrite
+node src/outbound-link-cli.mjs simulate-action --store .tmp/local-store-policy --request fixtures/action-bulk-domain-disable.fixture.json --out .tmp/action-bulk-domain-disable --overwrite
+node src/outbound-link-cli.mjs validate-action-result --result .tmp/action-disable-link
+```
+
+Each simulation reads an existing `.tmp` local store, evaluates tenant/role/reason/profile guards, writes sandbox mutations only under the requested `.tmp` output, and emits `ACTION_RESULT.json`, `PUBLISHING_IMPACT.json`, `ACTION_AUDIT_LOG.json` for approved simulations, `ROLLBACK_PLAN.json`, and validation files.
+
+## API Write Preflight Bridge
+
+```powershell
+node src/outbound-link-cli.mjs api-write-preflight --store .tmp/local-store-policy --request fixtures/api-write-preflight-approve-review.fixture.json --out .tmp/api-write-preflight-approve-review --overwrite
+node src/outbound-link-cli.mjs api-write-preflight --store .tmp/local-store-policy --request fixtures/api-write-preflight-bulk-domain-disable.fixture.json --out .tmp/api-write-preflight-bulk-domain-disable --overwrite
+node src/outbound-link-cli.mjs api-write-preflight --store .tmp/local-store-policy --request fixtures/api-write-preflight-live-readonly-blocked.fixture.json --out .tmp/api-write-preflight-live-readonly-blocked --overwrite
+node src/outbound-link-cli.mjs validate-api-write-preflight --result .tmp/api-write-preflight-approve-review
+node src/outbound-link-cli.mjs validate-api-write-preflight --result .tmp/api-write-preflight-live-readonly-blocked
+```
+
+The bridge accepts API-shaped requests, maps approved local/fake actions to the Phase 2H-12 simulator, writes `API_WRITE_RESPONSE.json`, writes `TRACE_LOG.json`, records before/after state hashes, captures entity/audit/rollback IDs, and blocks live-readonly or live-write-approved provider modes in this local package.
+
 ## Scripts
 
 ```powershell

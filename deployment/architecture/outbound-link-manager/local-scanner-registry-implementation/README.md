@@ -1,8 +1,8 @@
 # Outbound Link Manager Local Scanner And Store
 
-Phase 2H-8 extends the local/offline Outbound Link Manager package with API-style response contracts, local read-only service methods, tenant/role guard simulation, blocked write-action guard stubs, and response validation.
+Phase 2H-14 extends the local/offline Outbound Link Manager package with API-style write-action preflight requests, local/fake provider mutation support, scoped trace logging, before/after state hashes, audit IDs, rollback IDs, provider-mode gates, and validation for the guarded write-action bridge.
 
-This package scans fake fixture JSON only. It extracts outbound web URLs, normalizes them, builds tenant/site-scoped `outbound_links` records, builds per-placement `outbound_link_instances`, writes scan output, merges scan output into a local store, applies local policy, records local audit logs, validates the store, produces local render decisions, exports local integration artifacts, and exercises API-style read contracts under ignored `.tmp`.
+This package scans fake fixture JSON only. It extracts outbound web URLs, normalizes them, builds tenant/site-scoped `outbound_links` records, builds per-placement `outbound_link_instances`, writes scan output, merges scan output into a local store, applies local policy, records local audit logs, validates the store, produces local render decisions, exports local integration artifacts, exercises API-style read contracts, simulates future write actions against cloned sandbox stores under ignored `.tmp`, and produces API-style local/fake write preflight responses.
 
 It does not integrate with production renderers, crawl external links, call CMS/API/Azure services, write CMS data, run database migrations, implement Admin UI/API screens, deploy, index, or publish live pages.
 
@@ -52,6 +52,10 @@ node src/outbound-link-cli.mjs api-list-links --store .tmp/local-store-policy --
 node src/outbound-link-cli.mjs api-dashboard-summary --store .tmp/local-store-policy --tenant fixture-tenant --site fixture-site --out .tmp/api-dashboard-summary
 node src/outbound-link-cli.mjs api-request-write --store .tmp/local-store-policy --action set-link-status --tenant fixture-tenant --site fixture-site --out .tmp/api-write-blocked
 node src/outbound-link-cli.mjs validate-api-response --response .tmp/api-list-links
+node src/outbound-link-cli.mjs simulate-action --store .tmp/local-store-policy --request fixtures/action-approve-review.fixture.json --out .tmp/action-approve-review --overwrite
+node src/outbound-link-cli.mjs validate-action-result --result .tmp/action-approve-review
+node src/outbound-link-cli.mjs api-write-preflight --store .tmp/local-store-policy --request fixtures/api-write-preflight-approve-review.fixture.json --out .tmp/api-write-preflight-approve-review --overwrite
+node src/outbound-link-cli.mjs validate-api-write-preflight --result .tmp/api-write-preflight-approve-review
 ```
 
 Generated output stays under `.tmp/`, which is ignored by this package.

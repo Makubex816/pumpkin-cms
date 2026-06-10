@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "bulk_domain_disable",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "reason": "local fixture bulk disables example.com links in sandbox only",
+  "approvalReference": "OLM-LOCAL-BULK-DOMAIN-DISABLE-001",
+  "operationId": "oloa_fixture_bulk_domain_disable",
+  "requestId": "req_fixture_bulk_domain_disable",
+  "idempotencyKey": "idempotency_fixture_bulk_domain_disable",
+  "now": "2026-06-10T12:30:00.000Z",
+  "actor": {
+    "actorId": "local-tenant-admin",
+    "role": "TenantAdmin",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"],
+    "mode": "local-offline"
+  },
+  "target": {
+    "domain": "example.com"
+  },
+  "payload": {
+    "scope": "domain"
+  },
+  "profile": {
+    "name": "local-dev"
+  }
+}

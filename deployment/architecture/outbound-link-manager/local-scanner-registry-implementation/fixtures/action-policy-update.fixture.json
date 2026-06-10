@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "0.1.0",
+  "action": "update_policy",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "reason": "local fixture updates policy in sandbox only",
+  "approvalReference": "OLM-LOCAL-POLICY-001",
+  "policyReference": "policy_phase_2h12_local_simulated",
+  "operationId": "oloa_fixture_policy_update",
+  "requestId": "req_fixture_policy_update",
+  "idempotencyKey": "idempotency_fixture_policy_update",
+  "now": "2026-06-10T12:20:00.000Z",
+  "actor": {
+    "actorId": "local-tenant-admin",
+    "role": "TenantAdmin",
+    "assignedTenants": ["fixture-tenant"],
+    "assignedSites": ["fixture-site"],
+    "mode": "local-offline"
+  },
+  "target": {},
+  "payload": {
+    "policyPatch": {
+      "id": "policy_phase_2h12_local_simulated",
+      "name": "phase 2h12 local simulated policy",
+      "allowed_domains": ["example.com"],
+      "blocked_domains": ["partner.example"],
+      "pending_review_domains": ["docs.example"],
+      "review_required_for_new_domains": true,
+      "source": "local-action-simulation"
+    }
+  },
+  "profile": {
+    "name": "local-dev"
+  }
+}

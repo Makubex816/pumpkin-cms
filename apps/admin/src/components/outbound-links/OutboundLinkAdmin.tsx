@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import {
+  createLocalWriteActionResponse,
   createOutboundLinkEnvelope,
   defaultOutboundLinkQuery,
   getOutboundLinkAdminSnapshot,
@@ -28,6 +29,8 @@ import type {
   OutboundLinkSeverity,
   OutboundLinkStatus,
   OutboundLinkStoreSnapshot,
+  OutboundLinkWriteAction,
+  OutboundLinkWriteActionResponse,
 } from '@/lib/outbound-links/types'
 import {
   Activity,
@@ -202,6 +205,7 @@ function OutboundLinkFrame({ children }: { children: (state: FrameRenderState) =
 function OutboundLinkDashboard({ snapshot, tenantLabel }: { snapshot: OutboundLinkStoreSnapshot; tenantLabel: string }) {
   const [query, setQuery] = useState<OutboundLinkQueryState>(defaultOutboundLinkQuery)
   const [selectedLinkId, setSelectedLinkId] = useState<string | null>(null)
+  const [localWriteResponse, setLocalWriteResponse] = useState<OutboundLinkWriteActionResponse | null>(null)
   const domains = useMemo(() => getOutboundLinkDomains(snapshot), [snapshot])
   const list = useMemo(() => listOutboundLinks(snapshot, query), [snapshot, query])
   const selectedDetail = selectedLinkId ? getOutboundLinkDetail(snapshot, selectedLinkId) : null
@@ -215,10 +219,19 @@ function OutboundLinkDashboard({ snapshot, tenantLabel }: { snapshot: OutboundLi
     }),
     [snapshot, list, query],
   )
+  const runLocalSandboxAction = (action: OutboundLinkWriteAction, link?: OutboundLinkRecord | null) => {
+    const targetLink = link ?? selectedDetail?.link ?? list.items[0] ?? snapshot.links[0] ?? null
+    setLocalWriteResponse(createLocalWriteActionResponse(snapshot, { action, link: targetLink }))
+  }
 
   return (
     <>
-      <ActionCenter snapshot={snapshot} onQuickFilter={(quickFilter) => setQuery({ ...query, quickFilter, page: 1 })} />
+      <ActionCenter
+        snapshot={snapshot}
+        onQuickFilter={(quickFilter) => setQuery({ ...query, quickFilter, page: 1 })}
+        onLocalAction={runLocalSandboxAction}
+      />
+      {localWriteResponse && <LocalWriteTracePanel response={localWriteResponse} onClear={() => setLocalWriteResponse(null)} />}
       <OperationalSummaryGrid snapshot={snapshot} />
       <section className="card">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -238,7 +251,12 @@ function OutboundLinkDashboard({ snapshot, tenantLabel }: { snapshot: OutboundLi
         <PaginationControls query={query} pagination={list.pagination} onChange={setQuery} />
       </section>
       <ExportsView statuses={getOutboundLinkExportStatuses(snapshot)} compact />
-      <LinkDetailDrawer detail={selectedDetail} snapshot={snapshot} onClose={() => setSelectedLinkId(null)} />
+      <LinkDetailDrawer
+        detail={selectedDetail}
+        snapshot={snapshot}
+        onClose={() => setSelectedLinkId(null)}
+        onLocalAction={runLocalSandboxAction}
+      />
     </>
   )
 }
@@ -246,9 +264,11 @@ function OutboundLinkDashboard({ snapshot, tenantLabel }: { snapshot: OutboundLi
 function ActionCenter({
   snapshot,
   onQuickFilter,
+  onLocalAction,
 }: {
   snapshot: OutboundLinkStoreSnapshot
   onQuickFilter: (filter: OutboundLinkQuickFilter) => void
+  onLocalAction: (action: OutboundLinkWriteAction) => void
 }) {
   const summary = snapshot.dashboardSummary
   const actionItems = [
@@ -301,8 +321,8 @@ function ActionCenter({
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <ReadOnlyActionButton label="Run Scan" />
-            <ReadOnlyActionButton label="Bulk Resolve" />
+            <LocalSandboxActionButton label="Run Scan" onClick={() => onLocalAction('createScanRun')} />
+            <LocalSandboxActionButton label="Bulk Resolve" onClick={() => onLocalAction('bulkDomainRequireReview')} />
           </div>
         </div>
         <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
@@ -321,6 +341,51 @@ function ActionCenter({
         </div>
       </div>
       <RecentAuditActivity snapshot={snapshot} />
+    </section>
+  )
+}
+
+function LocalWriteTracePanel({
+  response,
+  onClear,
+}: {
+  response: OutboundLinkWriteActionResponse
+  onClear: () => void
+}) {
+  return (
+    <section className="card border-green-200 bg-green-50">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <p className="text-sm font-medium uppercase tracking-wide text-green-700">Local Sandbox Trace</p>
+          <h2 className="mt-1 text-lg font-semibold text-green-950">{response.action.replace(/([A-Z])/g, ' $1')}</h2>
+          <p className="mt-1 text-sm text-green-900">{response.message}</p>
+        </div>
+        <button
+          type="button"
+          onClick={onClear}
+          className="inline-flex items-center gap-2 rounded-md border border-green-300 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100"
+        >
+          <X className="h-4 w-4" />
+          Clear
+        </button>
+      </div>
+      <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <ReadOnlyDetail label="Request ID" value={response.requestId} />
+        <ReadOnlyDetail label="Action ID" value={response.actionId} />
+        <ReadOnlyDetail label="Correlation ID" value={response.correlationId} />
+        <ReadOnlyDetail label="Provider Mode" value={response.providerMode} />
+        <ReadOnlyDetail label="Actor" value={`${response.traceLog.actorIdentity} / ${response.traceLog.actorRole}`} />
+        <ReadOnlyDetail label="Outcome" value={response.traceLog.outcome} />
+        <ReadOnlyDetail label="Audit IDs" value={response.auditEventIds.join(', ')} />
+        <ReadOnlyDetail label="Rollback ID" value={response.rollbackPlanId} />
+        <ReadOnlyDetail label="Before Hash" value={response.beforeStateHash} />
+        <ReadOnlyDetail label="After Hash" value={response.afterStateHash} />
+        <ReadOnlyDetail label="Entity IDs" value={response.traceLog.entityIds.join(', ') || 'not recorded'} />
+        <ReadOnlyDetail label="Affected Pages" value={response.publishingImpact.affectedPageIds.join(', ') || 'none'} />
+      </div>
+      <div className="mt-4 rounded-lg border border-green-200 bg-white px-4 py-3 text-sm text-green-950">
+        {response.publishingImpact.summary} Affected instances: {response.publishingImpact.affectedInstanceIds.join(', ') || 'none'}.
+      </div>
     </section>
   )
 }
@@ -675,10 +740,12 @@ function LinkDetailDrawer({
   detail,
   snapshot,
   onClose,
+  onLocalAction,
 }: {
   detail: OutboundLinkDetailResult | null
   snapshot: OutboundLinkStoreSnapshot
   onClose: () => void
+  onLocalAction: (action: OutboundLinkWriteAction, link: OutboundLinkRecord) => void
 }) {
   if (!detail) return null
 
@@ -783,13 +850,13 @@ function LinkDetailDrawer({
 
           <section className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3">
             <h3 className="text-sm font-semibold text-blue-950">Future-Gated Actions</h3>
-            <p className="mt-1 text-sm text-blue-900">These actions are intentionally disabled until a future write-action approval and preflight exists.</p>
+            <p className="mt-1 text-sm text-blue-900">Production writes remain disabled. Local/fake preflight records scoped trace, audit, rollback, and publishing-impact data.</p>
             <div className="mt-3 flex flex-wrap gap-2">
-              <ReadOnlyActionButton label="Approve" />
-              <ReadOnlyActionButton label="Block" />
-              <ReadOnlyActionButton label="Ignore" />
-              <ReadOnlyActionButton label="Disable" />
-              <ReadOnlyActionButton label="Enable" />
+              <LocalSandboxActionButton label="Approve" onClick={() => onLocalAction('approveReviewDecision', detail.link)} />
+              <LocalSandboxActionButton label="Block" onClick={() => onLocalAction('blockReviewDecision', detail.link)} />
+              <LocalSandboxActionButton label="Ignore" onClick={() => onLocalAction('ignoreReviewDecision', detail.link)} />
+              <LocalSandboxActionButton label="Disable" onClick={() => onLocalAction('setLinkStatus', detail.link)} />
+              <LocalSandboxActionButton label="Restore" onClick={() => onLocalAction('restorePriorStatus', detail.link)} />
             </div>
           </section>
         </div>
@@ -1193,9 +1260,23 @@ function ReadOnlyActionButton({ label }: { label: string }) {
       type="button"
       disabled
       className="inline-flex cursor-not-allowed items-center gap-2 rounded-md border border-neutral-200 bg-neutral-100 px-3 py-2 text-sm font-medium text-neutral-500"
-      title="Future approval required before write actions are enabled."
+      title="Future production write approval required. Local sandbox preflight is available through the Phase 2H-12 CLI."
     >
       <Lock className="h-4 w-4" />
+      {label}
+    </button>
+  )
+}
+
+function LocalSandboxActionButton({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center gap-2 rounded-md border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-800 hover:bg-green-50"
+      title="Run local/fake sandbox preflight only."
+    >
+      <ShieldCheck className="h-4 w-4" />
       {label}
     </button>
   )
@@ -1207,7 +1288,7 @@ function ReadOnlyInlineAction({ label }: { label: string }) {
       type="button"
       disabled
       className="cursor-not-allowed text-xs font-medium text-neutral-400"
-      title="Future approval required before write actions are enabled."
+      title="Future production write approval required. Local sandbox preflight is available through the Phase 2H-12 CLI."
     >
       {label}
     </button>
