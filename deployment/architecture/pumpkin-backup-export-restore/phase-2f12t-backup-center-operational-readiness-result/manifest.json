@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2F-12T",
+  "title": "Backup Center Operational Readiness Consolidation",
+  "status": "complete",
+  "generatedAt": "2026-06-10T02:13:21.903Z",
+  "resultPackage": "deployment/architecture/pumpkin-backup-export-restore/phase-2f12t-backup-center-operational-readiness-result/",
+  "scope": {
+    "docsReadinessOnly": true,
+    "localValidationOnly": true,
+    "newLiveExports": false,
+    "newMediaDownloads": false,
+    "cosmosWrites": false,
+    "cmsRuntimeSwitch": false,
+    "cmsWrites": false,
+    "azureMutations": false,
+    "protectedConfigReads": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "evidence": {
+    "resourceRegistryImplementation": "complete",
+    "realRedactedInventory": "complete",
+    "cosmosProvisioningAndReadback": "complete",
+    "cosmosSeedReadback": "complete",
+    "liveCosmosExportProof": {
+      "status": "complete",
+      "recordSetCount": 10,
+      "totalRecordCount": 27,
+      "validationStatus": "passed"
+    },
+    "mediaFullCopyProof": {
+      "status": "complete",
+      "copiedBlobCount": 9,
+      "copiedTotalBytes": 22639448,
+      "validationStatus": "passed"
+    },
+    "completeStandardBackupCandidate": {
+      "status": "passed",
+      "validatorMode": "production-restore-proof",
+      "includesEscrow": false,
+      "contentFileCount": 51,
+      "databaseComponent": "complete",
+      "mediaComponent": "complete",
+      "tenantWebsiteBundle": "complete"
+    },
+    "restorePlan": {
+      "status": "passed",
+      "mode": "production-restore-proof",
+      "dryRunOnly": true,
+      "restoreExecuted": false
+    }
+  },
+  "localValidation": {
+    "backupImplementationNpmRunCheck": {
+      "status": "passed-on-rerun",
+      "finalPassCount": 78,
+      "finalFailCount": 0,
+      "note": "Initial run hit transient fake escrow ESCROW_PAYLOAD_PLAINTEXT validator false positive; rerun passed."
+    },
+    "resourceRegistryImplementationNpmRunCheck": {
+      "status": "passed",
+      "passCount": 13,
+      "failCount": 0
+    }
+  },
+  "readiness": {
+    "phase2fStandardBackupProof": "complete",
+    "backupCenterOperationalReadinessPackage": true,
+    "readyForOwnerBackupCenterSignoff": true,
+    "readyForOutboundLinkManagerArchitecture": true,
+    "readyForCmsRuntimeSwitch": false,
+    "readyForLivePagePublication": false,
+    "externalSystemsChangedIn12T": false,
+    "livePagesAffectedIn12T": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "OPERATIONAL_READINESS_SCOPE.md",
+    "PHASE_2F_EVIDENCE_MATRIX.md",
+    "ICE_STANDARD_BACKUP_PROOF_SUMMARY.md",
+    "COSMOS_DATABASE_PROOF_SUMMARY.md",
+    "MEDIA_FULL_COPY_PROOF_SUMMARY.md",
+    "RESTORE_PLAN_PROOF_SUMMARY.md",
+    "RESOURCE_REGISTRY_AND_HANDOFF_STATUS.md",
+    "RUNTIME_PROFILE_AND_PROVIDER_STATUS.md",
+    "LOCAL_FIRST_LIVE_ON_DEMAND_STATUS.md",
+    "RETENTION_AND_CLEANUP_PLAN.md",
+    "OPERATOR_RUNBOOK.md",
+    "OWNER_SIGNOFF_CHECKLIST.md",
+    "REMAINING_GATES.md",
+    "OUTBOUND_LINK_MANAGER_NEXT_LAYER_PROMPT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "manifest.json"
+  ]
+}
