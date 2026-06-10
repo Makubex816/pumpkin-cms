@@ -31,6 +31,7 @@ export const defaultOutboundLinkQuery: OutboundLinkQueryState = {
   search: '',
   domain: 'all',
   status: 'all',
+  quickFilter: 'all',
   reviewOnly: false,
   page: 1,
   pageSize: 5,
@@ -51,8 +52,19 @@ interface BaseLinkInput {
   originalUrl: string
   domain: string
   status: OutboundLinkStatus
+  severity: OutboundLinkRecord['severity']
+  riskReason: string
   policyStatus: string
+  policyExplanation: string
+  policyRuleReference: string
   renderAction: OutboundLinkRecord['renderAction']
+  sourceContent: string
+  sourceType: string
+  owner: string
+  isBroken: boolean
+  isSuspicious: boolean
+  isNew: boolean
+  hasPolicyViolation: boolean
   createdAt: string
   updatedAt: string
   firstDetectedAt: string
@@ -68,8 +80,19 @@ const baseLinks: BaseLinkInput[] = [
     originalUrl: 'https://docs.example/help',
     domain: 'docs.example',
     status: 'active',
+    severity: 'low',
+    riskReason: 'Allowed support documentation domain.',
     policyStatus: 'allowed domain',
+    policyExplanation: 'This domain appears on the allowed-domain list and keeps the standard safe rel values.',
+    policyRuleReference: 'OLM-POLICY-ALLOW-001',
     renderAction: 'active_link',
+    sourceContent: 'Header Navigation: Help Docs',
+    sourceType: 'Navigation',
+    owner: 'Admin',
+    isBroken: false,
+    isSuspicious: false,
+    isNew: false,
+    hasPolicyViolation: false,
     createdAt: timestamp.first,
     updatedAt: timestamp.latest,
     firstDetectedAt: timestamp.first,
@@ -80,8 +103,19 @@ const baseLinks: BaseLinkInput[] = [
     originalUrl: 'https://example.com/home-cta',
     domain: 'example.com',
     status: 'active',
+    severity: 'low',
+    riskReason: 'Allowed marketing CTA domain.',
     policyStatus: 'allowed domain',
+    policyExplanation: 'The selected policy allows example.com and renders this as a normal outbound link.',
+    policyRuleReference: 'OLM-POLICY-ALLOW-001',
     renderAction: 'active_link',
+    sourceContent: 'Homepage Hero CTA',
+    sourceType: 'Landing Page',
+    owner: 'Marketing',
+    isBroken: false,
+    isSuspicious: false,
+    isNew: false,
+    hasPolicyViolation: false,
     createdAt: timestamp.first,
     updatedAt: timestamp.latest,
     firstDetectedAt: timestamp.first,
@@ -92,8 +126,19 @@ const baseLinks: BaseLinkInput[] = [
     originalUrl: 'https://partner.example/vendors',
     domain: 'partner.example',
     status: 'pending_review',
+    severity: 'medium',
+    riskReason: 'New partner domain needs owner review before it should render as a live link.',
     policyStatus: 'pending domain review',
+    policyExplanation: 'The default policy requires review for new partner domains. The fixture renders this as plain text until approval is allowed.',
+    policyRuleReference: 'OLM-POLICY-REVIEW-NEW-DOMAIN',
     renderAction: 'plain_text',
+    sourceContent: 'Homepage Partner Vendors Section',
+    sourceType: 'Landing Page',
+    owner: 'Marketing',
+    isBroken: false,
+    isSuspicious: false,
+    isNew: true,
+    hasPolicyViolation: false,
     createdAt: timestamp.second,
     updatedAt: timestamp.latest,
     firstDetectedAt: timestamp.second,
@@ -104,8 +149,19 @@ const baseLinks: BaseLinkInput[] = [
     originalUrl: 'https://social.example/fixture-rink',
     domain: 'social.example',
     status: 'disabled',
+    severity: 'medium',
+    riskReason: 'Disabled social profile remains visible for audit and restore context.',
     policyStatus: 'disabled by local policy',
+    policyExplanation: 'A local fixture decision disables this social profile and renders the placement as plain text.',
+    policyRuleReference: 'OLM-DECISION-DISABLED-LOCAL',
     renderAction: 'plain_text',
+    sourceContent: 'Footer Social Link',
+    sourceType: 'Footer',
+    owner: 'SEO',
+    isBroken: false,
+    isSuspicious: true,
+    isNew: false,
+    hasPolicyViolation: false,
     createdAt: timestamp.third,
     updatedAt: timestamp.fourth,
     firstDetectedAt: timestamp.third,
@@ -119,8 +175,19 @@ const baseLinks: BaseLinkInput[] = [
     originalUrl: 'https://blocked.example/coupon',
     domain: 'blocked.example',
     status: 'domain_blocked',
+    severity: 'high',
+    riskReason: 'Blocked coupon domain should not render publicly until policy changes are approved.',
     policyStatus: 'blocked domain',
+    policyExplanation: 'The active policy blocks blocked.example. Current render behavior hides the link in fixture output.',
+    policyRuleReference: 'OLM-POLICY-BLOCK-002',
     renderAction: 'hidden',
+    sourceContent: 'Birthday Parties Promo CTA',
+    sourceType: 'Event Page',
+    owner: 'Marketing',
+    isBroken: false,
+    isSuspicious: true,
+    isNew: false,
+    hasPolicyViolation: true,
     createdAt: timestamp.third,
     updatedAt: timestamp.latest,
     firstDetectedAt: timestamp.third,
@@ -134,12 +201,46 @@ const baseLinks: BaseLinkInput[] = [
     originalUrl: 'https://example.com/theme-reference',
     domain: 'example.com',
     status: 'active',
+    severity: 'low',
+    riskReason: 'Allowed theme reference, but the only placement is stale.',
     policyStatus: 'allowed domain',
+    policyExplanation: 'The domain is allowed, but the latest scan marks its only placement stale.',
+    policyRuleReference: 'OLM-SCAN-STALE-INSTANCE',
     renderAction: 'active_link',
+    sourceContent: 'Theme Reference Field',
+    sourceType: 'Theme',
+    owner: 'System',
+    isBroken: false,
+    isSuspicious: false,
+    isNew: false,
+    hasPolicyViolation: false,
     createdAt: timestamp.second,
     updatedAt: timestamp.third,
     firstDetectedAt: timestamp.second,
     lastDetectedAt: timestamp.third,
+  },
+  {
+    id: 'ol_broken_booking',
+    originalUrl: 'https://booking.example/checkout',
+    domain: 'booking.example',
+    status: 'policy_conflict',
+    severity: 'critical',
+    riskReason: 'Critical booking CTA is fixture-marked as broken and outside allowed policy.',
+    policyStatus: 'policy conflict',
+    policyExplanation: 'The domain is not allowed yet, the CTA is business-critical, and fixture scan metadata marks it as broken. Future write approval must decide whether to approve, replace, or remove it.',
+    policyRuleReference: 'OLM-POLICY-CONFLICT-CRITICAL-CTA',
+    renderAction: 'fallback',
+    sourceContent: 'Private Event Booking CTA',
+    sourceType: 'Event Page',
+    owner: 'Admin',
+    isBroken: true,
+    isSuspicious: true,
+    isNew: true,
+    hasPolicyViolation: true,
+    createdAt: timestamp.latest,
+    updatedAt: timestamp.latest,
+    firstDetectedAt: timestamp.latest,
+    lastDetectedAt: timestamp.latest,
   },
 ]
 
@@ -154,6 +255,8 @@ interface BaseInstanceInput {
   locationPath: string
   isEnabled: boolean
   status: OutboundLinkInstanceRecord['status']
+  sourceContent: string
+  owner: string
   firstDetectedAt: string
   lastDetectedAt: string
 }
@@ -170,6 +273,8 @@ const baseInstances: BaseInstanceInput[] = [
     locationPath: '$.navigation.items[1].href',
     isEnabled: true,
     status: 'enabled',
+    sourceContent: 'Header Navigation: Help Docs',
+    owner: 'Admin',
     firstDetectedAt: timestamp.first,
     lastDetectedAt: timestamp.latest,
   },
@@ -184,6 +289,8 @@ const baseInstances: BaseInstanceInput[] = [
     locationPath: '$.pages.home.blocks.hero.ctaUrl',
     isEnabled: true,
     status: 'enabled',
+    sourceContent: 'Homepage Hero CTA',
+    owner: 'Marketing',
     firstDetectedAt: timestamp.first,
     lastDetectedAt: timestamp.latest,
   },
@@ -198,6 +305,8 @@ const baseInstances: BaseInstanceInput[] = [
     locationPath: '$.pages.home.blocks.partners.html',
     isEnabled: false,
     status: 'pending_review',
+    sourceContent: 'Homepage Partner Vendors Section',
+    owner: 'Marketing',
     firstDetectedAt: timestamp.second,
     lastDetectedAt: timestamp.latest,
   },
@@ -212,6 +321,8 @@ const baseInstances: BaseInstanceInput[] = [
     locationPath: '$.footer.socialLinks[0].url',
     isEnabled: false,
     status: 'disabled',
+    sourceContent: 'Footer Social Link',
+    owner: 'SEO',
     firstDetectedAt: timestamp.third,
     lastDetectedAt: timestamp.fourth,
   },
@@ -226,6 +337,8 @@ const baseInstances: BaseInstanceInput[] = [
     locationPath: '$.pages.birthday-parties.blocks.promo.buttonLink',
     isEnabled: false,
     status: 'pending_review',
+    sourceContent: 'Birthday Parties Promo CTA',
+    owner: 'Marketing',
     firstDetectedAt: timestamp.third,
     lastDetectedAt: timestamp.latest,
   },
@@ -240,8 +353,26 @@ const baseInstances: BaseInstanceInput[] = [
     locationPath: '$.theme.externalUrl',
     isEnabled: false,
     status: 'stale',
+    sourceContent: 'Theme Reference Field',
+    owner: 'System',
     firstDetectedAt: timestamp.second,
     lastDetectedAt: timestamp.third,
+  },
+  {
+    id: 'oli_booking_cta',
+    outboundLinkId: 'ol_broken_booking',
+    pageId: 'private-events',
+    contentType: 'page',
+    contentBlockId: 'booking',
+    fieldName: 'bookingUrl',
+    anchorText: 'Book private event',
+    locationPath: '$.pages.private-events.blocks.booking.bookingUrl',
+    isEnabled: false,
+    status: 'pending_review',
+    sourceContent: 'Private Event Booking CTA',
+    owner: 'Admin',
+    firstDetectedAt: timestamp.second,
+    lastDetectedAt: timestamp.latest,
   },
 ]
 
@@ -249,14 +380,14 @@ export function getOutboundLinkAdminSnapshot(tenantKey: string, siteKey?: string
   const normalizedTenant = normalizeKey(tenantKey || 'fixture-tenant')
   const normalizedSite = normalizeKey(siteKey || normalizedTenant || 'fixture-site')
   const linksWithoutCounts = baseLinks.map((link) => ({
-    ...link,
-    tenantKey: normalizedTenant,
+      ...link,
+      tenantKey: normalizedTenant,
     siteKey: normalizedSite,
     normalizedUrl: link.originalUrl,
     createdBy: 'local-admin-fixture',
     disabledBy: link.disabledBy ?? null,
     disabledAt: link.disabledAt ?? null,
-    disabledReason: link.disabledReason ?? null,
+      disabledReason: link.disabledReason ?? null,
     instanceCount: 0,
     activeInstanceCount: 0,
     staleInstanceCount: 0,
@@ -349,24 +480,24 @@ export function listReviewQueue(snapshot: OutboundLinkStoreSnapshot) {
 export function getOutboundLinkExportStatuses(snapshot: OutboundLinkStoreSnapshot): OutboundLinkExportStatus[] {
   return [
     {
-      label: 'Backup Center export',
+      label: 'Registry Export: Backup Center',
       status: 'included',
-      detail: `${snapshot.links.length} registry records and ${snapshot.instances.length} placement records are available to local backup candidates.`,
+      detail: `Includes links, domains, policy decisions, scan history, and ${snapshot.instances.length} placement records for standard backup candidates.`,
     },
     {
-      label: 'Tenant website bundle',
+      label: 'Registry Export: Tenant Website Bundle',
       status: 'ready',
-      detail: 'Registry, policy, scan-run, audit, and render-decision summaries match the local bundle handoff shape.',
+      detail: 'The local registry can be bundled with tenant website files so operators can restore link governance with page content.',
     },
     {
-      label: 'Onboarding import validation',
+      label: 'Registry Export: Onboarding Review',
       status: 'ready',
-      detail: 'Pending-review domains remain visible for operator review before future write approval.',
+      detail: 'Pending and blocked domains stay visible for onboarding review before any future approval changes status.',
     },
     {
-      label: 'Write action escrow',
+      label: 'Future Action Gate',
       status: 'blocked',
-      detail: 'Enable, disable, policy edit, and scan execution are intentionally not approved in this phase.',
+      detail: 'Approve, block, ignore, enable, disable, policy edit, and live scan actions require a separate write-action approval.',
     },
   ]
 }
@@ -513,6 +644,33 @@ function buildDashboardSummary(
     disabledLinkCount: links.filter((link) => link.status === 'disabled').length,
     domainBlockedLinkCount: links.filter((link) => link.status === 'domain_blocked').length,
     staleInstanceCount: instances.filter((instance) => instance.status === 'stale').length,
+    policyConflictCount: links.filter((link) => link.status === 'policy_conflict' || link.hasPolicyViolation).length,
+    brokenLinkCount: links.filter((link) => link.isBroken).length,
+    suspiciousDomainCount: links.filter((link) => link.isSuspicious).length,
+    newLinkCount: links.filter((link) => link.isNew).length,
+    lastScan: {
+      id: scanRuns[0]?.id || 'not-recorded',
+      status: scanRuns[0]?.status || 'not recorded',
+      timestamp: scanRuns[0]?.completedAt || scanRuns[0]?.startedAt || '',
+      durationSeconds: 42,
+      linksScanned: links.length,
+      newLinks: links.filter((link) => link.isNew).length,
+      violations: links.filter((link) => link.hasPolicyViolation || link.isBroken).length,
+    },
+    registryActivity: {
+      todayDelta: links.filter((link) => link.updatedAt === '2026-06-10T12:00:00.000Z').length,
+      weekDelta: 4,
+      monthDelta: links.length,
+      domainsAdded: 3,
+      domainsRemoved: 1,
+    },
+    domainHealth: {
+      allowedDomains: policies.reduce((count, policy) => count + policy.allowedDomains.length, 0),
+      pendingDomains: policies.reduce((count, policy) => count + policy.pendingReviewDomains.length, 0),
+      blockedDomains: policies.reduce((count, policy) => count + policy.blockedDomains.length, 0),
+      brokenDomains: new Set(links.filter((link) => link.isBroken).map((link) => link.domain)).size,
+      suspiciousDomains: new Set(links.filter((link) => link.isSuspicious).map((link) => link.domain)).size,
+    },
   }
 }
 
@@ -525,13 +683,26 @@ function filterLinks(links: OutboundLinkRecord[], query: OutboundLinkQueryState)
       link.id.toLowerCase().includes(search)
     const matchesDomain = query.domain === 'all' || link.domain === query.domain
     const matchesStatus = query.status === 'all' || link.status === query.status
+    const matchesQuickFilter = matchesQuickFilterValue(link, query.quickFilter)
     const matchesReview = !query.reviewOnly ||
       link.status === 'pending_review' ||
       link.status === 'domain_blocked' ||
+      link.status === 'policy_conflict' ||
       link.pendingReviewCount > 0
 
-    return matchesSearch && matchesDomain && matchesStatus && matchesReview
+    return matchesSearch && matchesDomain && matchesStatus && matchesQuickFilter && matchesReview
   })
+}
+
+function matchesQuickFilterValue(link: OutboundLinkRecord, filter: OutboundLinkQueryState['quickFilter']) {
+  if (filter === 'all') return true
+  if (filter === 'pending') return link.status === 'pending_review' || link.pendingReviewCount > 0
+  if (filter === 'blocked') return link.status === 'domain_blocked'
+  if (filter === 'disabled') return link.status === 'disabled'
+  if (filter === 'stale') return link.staleInstanceCount > 0
+  if (filter === 'broken') return link.isBroken
+  if (filter === 'new') return link.isNew
+  return link.status === 'policy_conflict' || link.hasPolicyViolation
 }
 
 function sortLinks(links: OutboundLinkRecord[], field: OutboundLinkSortField, direction: OutboundLinkSortDirection) {

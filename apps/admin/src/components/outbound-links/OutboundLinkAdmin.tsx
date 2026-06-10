@@ -17,20 +17,27 @@ import {
 } from '@/lib/outbound-links/mock-provider'
 import type {
   OutboundLinkAuditLogRecord,
+  OutboundLinkDetailResult,
   OutboundLinkExportStatus,
   OutboundLinkInstanceRecord,
   OutboundLinkPolicyRecord,
+  OutboundLinkQuickFilter,
   OutboundLinkQueryState,
   OutboundLinkRecord,
   OutboundLinkScanRunRecord,
+  OutboundLinkSeverity,
   OutboundLinkStatus,
   OutboundLinkStoreSnapshot,
 } from '@/lib/outbound-links/types'
 import {
+  Activity,
+  AlertTriangle,
   Ban,
-  ClipboardList,
+  BarChart3,
+  CheckCircle2,
+  ChevronRight,
+  Clock3,
   Eye,
-  FileArchive,
   Filter,
   History,
   Link2,
@@ -39,6 +46,7 @@ import {
   RefreshCw,
   Search,
   ShieldCheck,
+  X,
 } from 'lucide-react'
 
 const viewLinks = [
@@ -56,7 +64,19 @@ const statusLabels: Record<OutboundLinkStatus, string> = {
   disabled: 'Disabled',
   pending_review: 'Pending Review',
   domain_blocked: 'Domain Blocked',
+  policy_conflict: 'Policy Conflict',
 }
+
+const quickFilters: Array<{ value: OutboundLinkQuickFilter; label: string }> = [
+  { value: 'all', label: 'All' },
+  { value: 'pending', label: 'Pending' },
+  { value: 'blocked', label: 'Blocked' },
+  { value: 'disabled', label: 'Disabled' },
+  { value: 'stale', label: 'Stale' },
+  { value: 'broken', label: 'Broken' },
+  { value: 'new', label: 'New' },
+  { value: 'policy_violations', label: 'Policy Violations' },
+]
 
 interface FrameRenderState {
   snapshot: OutboundLinkStoreSnapshot
@@ -181,12 +201,15 @@ function OutboundLinkFrame({ children }: { children: (state: FrameRenderState) =
 
 function OutboundLinkDashboard({ snapshot, tenantLabel }: { snapshot: OutboundLinkStoreSnapshot; tenantLabel: string }) {
   const [query, setQuery] = useState<OutboundLinkQueryState>(defaultOutboundLinkQuery)
+  const [selectedLinkId, setSelectedLinkId] = useState<string | null>(null)
   const domains = useMemo(() => getOutboundLinkDomains(snapshot), [snapshot])
   const list = useMemo(() => listOutboundLinks(snapshot, query), [snapshot, query])
+  const selectedDetail = selectedLinkId ? getOutboundLinkDetail(snapshot, selectedLinkId) : null
   const envelope = useMemo(
     () => createOutboundLinkEnvelope(snapshot.tenantKey, snapshot.siteKey, { items: list.items }, list.pagination, {
       domain: query.domain,
       status: query.status,
+      quickFilter: query.quickFilter,
       reviewOnly: String(query.reviewOnly),
       search: query.search || null,
     }),
@@ -195,25 +218,211 @@ function OutboundLinkDashboard({ snapshot, tenantLabel }: { snapshot: OutboundLi
 
   return (
     <>
-      <MetricGrid snapshot={snapshot} />
+      <ActionCenter snapshot={snapshot} onQuickFilter={(quickFilter) => setQuery({ ...query, quickFilter, page: 1 })} />
+      <OperationalSummaryGrid snapshot={snapshot} />
       <section className="card">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-neutral-900">Registry</h2>
+            <h2 className="text-lg font-semibold text-neutral-900">Registry Review Queue</h2>
             <p className="mt-1 text-sm text-neutral-600">
-              Search and filter tenant-scoped outbound links for {tenantLabel}.
+              Triage tenant-scoped outbound links for {tenantLabel}. Select any row to inspect its source, policy, scan, and audit context.
             </p>
           </div>
           <div className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-xs text-neutral-600">
             Envelope: {envelope.code} / {envelope.meta.mode}
           </div>
         </div>
+        <QuickFilterBar query={query} onChange={setQuery} />
         <OutboundLinkFilters query={query} domains={domains} onChange={setQuery} />
-        <OutboundLinksTable links={list.items} />
+        <OutboundLinksTable links={list.items} onSelectLink={setSelectedLinkId} selectedLinkId={selectedLinkId} />
         <PaginationControls query={query} pagination={list.pagination} onChange={setQuery} />
       </section>
       <ExportsView statuses={getOutboundLinkExportStatuses(snapshot)} compact />
+      <LinkDetailDrawer detail={selectedDetail} snapshot={snapshot} onClose={() => setSelectedLinkId(null)} />
     </>
+  )
+}
+
+function ActionCenter({
+  snapshot,
+  onQuickFilter,
+}: {
+  snapshot: OutboundLinkStoreSnapshot
+  onQuickFilter: (filter: OutboundLinkQuickFilter) => void
+}) {
+  const summary = snapshot.dashboardSummary
+  const actionItems = [
+    {
+      label: 'Review Required',
+      count: summary.pendingReviewCount,
+      detail: 'New or pending domains need owner review.',
+      tone: 'amber' as const,
+      filter: 'pending' as OutboundLinkQuickFilter,
+    },
+    {
+      label: 'Blocked Domains',
+      count: summary.domainBlockedLinkCount,
+      detail: 'Blocked domains are hidden or downgraded at render time.',
+      tone: 'red' as const,
+      filter: 'blocked' as OutboundLinkQuickFilter,
+    },
+    {
+      label: 'Stale Placements',
+      count: summary.staleInstanceCount,
+      detail: 'Placements no longer detected in the latest scan.',
+      tone: 'amber' as const,
+      filter: 'stale' as OutboundLinkQuickFilter,
+    },
+    {
+      label: 'Disabled Links',
+      count: summary.disabledLinkCount,
+      detail: 'Disabled links remain visible for audit and restore.',
+      tone: 'neutral' as const,
+      filter: 'disabled' as OutboundLinkQuickFilter,
+    },
+    {
+      label: 'Policy Conflicts',
+      count: summary.policyConflictCount,
+      detail: 'Fixture records where policy and source intent disagree.',
+      tone: 'purple' as const,
+      filter: 'policy_violations' as OutboundLinkQuickFilter,
+    },
+  ]
+
+  return (
+    <section className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.6fr)]">
+      <div className="card">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Action Center</p>
+            <h2 className="mt-1 text-2xl font-bold text-neutral-900">What needs attention</h2>
+            <p className="mt-2 text-sm text-neutral-600">
+              Prioritized read-only triage for outbound link governance. Future actions are visible but locked.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <ReadOnlyActionButton label="Run Scan" />
+            <ReadOnlyActionButton label="Bulk Resolve" />
+          </div>
+        </div>
+        <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
+          {actionItems.map((item) => (
+            <button
+              key={item.label}
+              type="button"
+              onClick={() => onQuickFilter(item.filter)}
+              className={`rounded-lg border p-4 text-left transition-colors hover:bg-white ${toneCardClass(item.tone)}`}
+            >
+              <div className="text-2xl font-bold">{item.count}</div>
+              <div className="mt-1 text-sm font-semibold">{item.label}</div>
+              <div className="mt-2 text-xs leading-5 opacity-80">{item.detail}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <RecentAuditActivity snapshot={snapshot} />
+    </section>
+  )
+}
+
+function OperationalSummaryGrid({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
+  const summary = snapshot.dashboardSummary
+  return (
+    <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+      <LastScanCard snapshot={snapshot} />
+      <RegistryActivityCard snapshot={snapshot} />
+      <DomainHealthCard snapshot={snapshot} />
+    </section>
+  )
+}
+
+function LastScanCard({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
+  const scan = snapshot.dashboardSummary.lastScan
+  return (
+    <section className="card">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Last Scan</p>
+          <h2 className="mt-1 text-lg font-semibold text-neutral-900">{scan.status.replace(/_/g, ' ')}</h2>
+        </div>
+        <Clock3 className="h-5 w-5 text-neutral-500" />
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <ReadOnlyDetail label="Timestamp" value={formatDateTime(scan.timestamp)} />
+        <ReadOnlyDetail label="Duration" value={`${scan.durationSeconds}s`} />
+        <ReadOnlyDetail label="Links Scanned" value={String(scan.linksScanned)} />
+        <ReadOnlyDetail label="New Links" value={String(scan.newLinks)} />
+        <ReadOnlyDetail label="Violations" value={String(scan.violations)} />
+        <ReadOnlyDetail label="Run ID" value={scan.id} />
+      </div>
+    </section>
+  )
+}
+
+function RegistryActivityCard({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
+  const activitySummary = snapshot.dashboardSummary.registryActivity
+  return (
+    <section className="card">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Registry Activity</p>
+          <h2 className="mt-1 text-lg font-semibold text-neutral-900">Recent movement</h2>
+        </div>
+        <BarChart3 className="h-5 w-5 text-neutral-500" />
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <ReadOnlyDetail label="Today" value={signedCount(activitySummary.todayDelta)} />
+        <ReadOnlyDetail label="This Week" value={signedCount(activitySummary.weekDelta)} />
+        <ReadOnlyDetail label="This Month" value={signedCount(activitySummary.monthDelta)} />
+        <ReadOnlyDetail label="Domains Added" value={String(activitySummary.domainsAdded)} />
+        <ReadOnlyDetail label="Domains Removed" value={String(activitySummary.domainsRemoved)} />
+      </div>
+    </section>
+  )
+}
+
+function DomainHealthCard({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
+  const health = snapshot.dashboardSummary.domainHealth
+  return (
+    <section className="card">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Domain Health</p>
+          <h2 className="mt-1 text-lg font-semibold text-neutral-900">Policy posture</h2>
+        </div>
+        <ShieldCheck className="h-5 w-5 text-neutral-500" />
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <ReadOnlyDetail label="Allowed" value={String(health.allowedDomains)} />
+        <ReadOnlyDetail label="Pending" value={String(health.pendingDomains)} />
+        <ReadOnlyDetail label="Blocked" value={String(health.blockedDomains)} />
+        <ReadOnlyDetail label="Broken" value={String(health.brokenDomains)} />
+        <ReadOnlyDetail label="Suspicious" value={String(health.suspiciousDomains)} />
+      </div>
+    </section>
+  )
+}
+
+function RecentAuditActivity({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
+  return (
+    <section className="card">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Recent Activity</p>
+          <h2 className="mt-1 text-lg font-semibold text-neutral-900">Latest registry events</h2>
+        </div>
+        <Activity className="h-5 w-5 text-neutral-500" />
+      </div>
+      <div className="mt-4 space-y-3">
+        {snapshot.auditLogs.slice(0, 3).map((event) => (
+          <div key={event.id} className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2">
+            <div className="text-sm font-medium text-neutral-900">{event.action.replace(/_/g, ' ')}</div>
+            <div className="mt-1 text-xs text-neutral-600">{event.recordType}: {event.recordId}</div>
+            <div className="mt-1 text-xs text-neutral-500">{formatDateTime(event.createdAt)}</div>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }
 
@@ -311,7 +520,45 @@ function OutboundLinkFilters({
   )
 }
 
-function OutboundLinksTable({ links }: { links: OutboundLinkRecord[] }) {
+function QuickFilterBar({
+  query,
+  onChange,
+}: {
+  query: OutboundLinkQueryState
+  onChange: (query: OutboundLinkQueryState) => void
+}) {
+  return (
+    <div className="mt-5 flex flex-wrap gap-2">
+      {quickFilters.map((filter) => {
+        const isActive = query.quickFilter === filter.value
+        return (
+          <button
+            key={filter.value}
+            type="button"
+            onClick={() => onChange({ ...query, quickFilter: filter.value, page: 1 })}
+            className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+              isActive
+                ? 'border-primary-300 bg-primary-50 text-primary-800'
+                : 'border-neutral-200 bg-white text-neutral-700 hover:border-primary-200 hover:bg-primary-50'
+            }`}
+          >
+            {filter.label}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+function OutboundLinksTable({
+  links,
+  onSelectLink,
+  selectedLinkId,
+}: {
+  links: OutboundLinkRecord[]
+  onSelectLink: (linkId: string) => void
+  selectedLinkId: string | null
+}) {
   if (links.length === 0) {
     return <p className="mt-5 rounded-md border border-neutral-200 bg-neutral-50 px-4 py-6 text-sm text-neutral-600">No outbound links match the current filters.</p>
   }
@@ -322,40 +569,60 @@ function OutboundLinksTable({ links }: { links: OutboundLinkRecord[] }) {
         <thead className="bg-neutral-50">
           <tr>
             <Th>URL</Th>
+            <Th>Risk</Th>
             <Th>Domain</Th>
             <Th>Status</Th>
-            <Th>Instances</Th>
-            <Th>Render</Th>
+            <Th>Source</Th>
+            <Th>Owner</Th>
+            <Th>Policy</Th>
             <Th>Last Detected</Th>
             <Th>Actions</Th>
           </tr>
         </thead>
         <tbody className="divide-y divide-neutral-100 bg-white">
           {links.map((link) => (
-            <tr key={link.id} className="align-top hover:bg-neutral-50">
+            <tr
+              key={link.id}
+              onClick={() => onSelectLink(link.id)}
+              className={`cursor-pointer align-top transition-colors hover:bg-neutral-50 ${
+                selectedLinkId === link.id ? 'bg-primary-50/70' : ''
+              }`}
+            >
               <Td>
                 <div className="max-w-md break-words font-medium text-neutral-900">{link.normalizedUrl}</div>
-                <div className="mt-1 text-xs text-neutral-500">{link.id}</div>
+                <div className="mt-1 flex flex-wrap gap-2 text-xs text-neutral-500">
+                  <span>{link.id}</span>
+                  <span>{link.instanceCount} placement{link.instanceCount === 1 ? '' : 's'}</span>
+                </div>
+              </Td>
+              <Td>
+                <SeverityBadge severity={link.severity} />
+                <div className="mt-1 max-w-[12rem] text-xs text-neutral-500">{link.riskReason}</div>
               </Td>
               <Td>{link.domain}</Td>
               <Td>
                 <StatusBadge status={link.status} />
-                <div className="mt-1 text-xs text-neutral-500">{link.policyStatus}</div>
+                {link.isNew && <div className="mt-1 text-xs font-medium text-blue-700">New in latest scan</div>}
               </Td>
               <Td>
-                <div>{link.instanceCount} total</div>
-                <div className="mt-1 text-xs text-neutral-500">{link.activeInstanceCount} active, {link.staleInstanceCount} stale</div>
+                <div className="font-medium text-neutral-900">{link.sourceContent}</div>
+                <div className="mt-1 text-xs text-neutral-500">{link.sourceType}</div>
               </Td>
-              <Td>{formatRenderAction(link.renderAction)}</Td>
+              <Td>{link.owner}</Td>
+              <Td>
+                <div className="font-medium text-neutral-900">{link.policyStatus}</div>
+                <div className="mt-1 text-xs text-neutral-500">{link.policyRuleReference}</div>
+              </Td>
               <Td>{formatDateTime(link.lastDetectedAt)}</Td>
               <Td>
-                <div className="flex flex-wrap gap-2">
-                  <Link href={`/dashboard/outbound-links/${encodeURIComponent(link.id)}`} className="text-xs font-medium text-primary-700 hover:text-primary-900">
-                    Detail
-                  </Link>
-                  <Link href={`/dashboard/outbound-links/${encodeURIComponent(link.id)}/instances`} className="text-xs font-medium text-primary-700 hover:text-primary-900">
-                    Instances
-                  </Link>
+                <div className="flex flex-wrap items-center gap-2" onClick={(event) => event.stopPropagation()}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectLink(link.id)}
+                    className="inline-flex items-center gap-1 text-xs font-medium text-primary-700 hover:text-primary-900"
+                  >
+                    Open <ChevronRight className="h-3 w-3" />
+                  </button>
                   <ReadOnlyInlineAction label="Enable" />
                   <ReadOnlyInlineAction label="Disable" />
                 </div>
@@ -400,6 +667,133 @@ function PaginationControls({
           Next
         </button>
       </div>
+    </div>
+  )
+}
+
+function LinkDetailDrawer({
+  detail,
+  snapshot,
+  onClose,
+}: {
+  detail: OutboundLinkDetailResult | null
+  snapshot: OutboundLinkStoreSnapshot
+  onClose: () => void
+}) {
+  if (!detail) return null
+
+  const linkAudit = snapshot.auditLogs.filter((event) => event.recordId === detail.link.id || event.recordId === snapshot.dashboardSummary.lastScan.id)
+  const latestScan = snapshot.scanRuns[0] || null
+
+  return (
+    <div className="fixed inset-0 z-[60] flex justify-end bg-neutral-950/30" role="dialog" aria-modal="true" aria-label="Outbound link detail">
+      <aside className="h-full w-full max-w-2xl overflow-y-auto border-l border-neutral-200 bg-white shadow-xl">
+        <div className="sticky top-0 z-10 border-b border-neutral-200 bg-white px-5 py-4">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Read-only link detail</p>
+              <h2 className="mt-1 break-words text-xl font-bold text-neutral-900">{detail.link.domain}</h2>
+              <p className="mt-1 break-all text-sm text-neutral-600">{detail.link.normalizedUrl}</p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-md p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800"
+              aria-label="Close outbound link detail"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-5 px-5 py-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge status={detail.link.status} />
+            <SeverityBadge severity={detail.link.severity} />
+            <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-semibold text-neutral-700">
+              {detail.link.owner}
+            </span>
+          </div>
+
+          <section className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3">
+            <h3 className="text-sm font-semibold text-neutral-900">Policy Explanation</h3>
+            <p className="mt-2 text-sm text-neutral-700">{detail.link.policyExplanation}</p>
+            <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+              <ReadOnlyDetail label="Policy Status" value={detail.link.policyStatus} />
+              <ReadOnlyDetail label="Rule Reference" value={detail.link.policyRuleReference} />
+              <ReadOnlyDetail label="Render Action" value={formatRenderAction(detail.link.renderAction)} />
+              <ReadOnlyDetail label="Risk Reason" value={detail.link.riskReason} />
+            </div>
+          </section>
+
+          <section className="rounded-lg border border-neutral-200 bg-white px-4 py-3">
+            <h3 className="text-sm font-semibold text-neutral-900">Source Content</h3>
+            <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+              <ReadOnlyDetail label="Source" value={detail.link.sourceContent} />
+              <ReadOnlyDetail label="Type" value={detail.link.sourceType} />
+              <ReadOnlyDetail label="Owner" value={detail.link.owner} />
+              <ReadOnlyDetail label="First Detected" value={formatDateTime(detail.link.firstDetectedAt)} />
+            </div>
+          </section>
+
+          <section className="rounded-lg border border-neutral-200 bg-white px-4 py-3">
+            <h3 className="text-sm font-semibold text-neutral-900">Instance Locations</h3>
+            <div className="mt-3 space-y-3">
+              {detail.instances.map((instance) => (
+                <div key={instance.id} className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2">
+                  <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                    <div>
+                      <div className="font-medium text-neutral-900">{instance.sourceContent}</div>
+                      <div className="mt-1 text-xs text-neutral-600">{instance.anchorText || 'No anchor text'} / {instance.fieldName}</div>
+                    </div>
+                    <span className="rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-neutral-700">{instance.status.replace(/_/g, ' ')}</span>
+                  </div>
+                  <div className="mt-2 break-words font-mono text-xs text-neutral-500">{instance.locationPath}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-lg border border-neutral-200 bg-white px-4 py-3">
+            <h3 className="text-sm font-semibold text-neutral-900">Scan History</h3>
+            {latestScan ? (
+              <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+                <ReadOnlyDetail label="Latest Run" value={latestScan.id} />
+                <ReadOnlyDetail label="Status" value={latestScan.status.replace(/_/g, ' ')} />
+                <ReadOnlyDetail label="Completed" value={formatDateTime(latestScan.completedAt)} />
+                <ReadOnlyDetail label="Stale Found" value={String(latestScan.staleInstancesFound)} />
+              </div>
+            ) : (
+              <p className="mt-2 text-sm text-neutral-600">No scan history recorded.</p>
+            )}
+          </section>
+
+          <section className="rounded-lg border border-neutral-200 bg-white px-4 py-3">
+            <h3 className="text-sm font-semibold text-neutral-900">Audit History</h3>
+            <div className="mt-3 space-y-3">
+              {(linkAudit.length > 0 ? linkAudit : snapshot.auditLogs.slice(0, 2)).map((event) => (
+                <div key={event.id} className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2">
+                  <div className="font-medium text-neutral-900">{event.action.replace(/_/g, ' ')}</div>
+                  <div className="mt-1 text-xs text-neutral-600">{event.actor} / {formatDateTime(event.createdAt)}</div>
+                  {event.reason && <div className="mt-2 text-sm text-neutral-700">{event.reason}</div>}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3">
+            <h3 className="text-sm font-semibold text-blue-950">Future-Gated Actions</h3>
+            <p className="mt-1 text-sm text-blue-900">These actions are intentionally disabled until a future write-action approval and preflight exists.</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <ReadOnlyActionButton label="Approve" />
+              <ReadOnlyActionButton label="Block" />
+              <ReadOnlyActionButton label="Ignore" />
+              <ReadOnlyActionButton label="Disable" />
+              <ReadOnlyActionButton label="Enable" />
+            </div>
+          </section>
+        </div>
+      </aside>
     </div>
   )
 }
@@ -652,10 +1046,12 @@ function ExportsView({ statuses, compact = false }: { statuses: OutboundLinkExpo
     <section className="card">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-neutral-900">{compact ? 'Backup And Bundle Status' : 'Backup, Onboarding, And Tenant Bundle Status'}</h2>
-          <p className="mt-1 text-sm text-neutral-600">Read-only compatibility indicators for downstream operational packages.</p>
+          <h2 className="text-lg font-semibold text-neutral-900">{compact ? 'Registry Export Readiness' : 'Registry Export Package'}</h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            Admin-friendly export readiness for links, domains, policies, decisions, scan history, and audit context.
+          </p>
         </div>
-        <ReadOnlyActionButton label="Generate Export" />
+        <ReadOnlyActionButton label="Download Registry Export" />
       </div>
       <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2">
         {statuses.map((status) => (
@@ -723,11 +1119,33 @@ function StatusBadge({ status }: { status: OutboundLinkStatus }) {
       ? 'bg-neutral-200 text-neutral-800'
       : status === 'pending_review'
         ? 'bg-amber-100 text-amber-900'
-        : 'bg-red-100 text-red-800'
+        : status === 'policy_conflict'
+          ? 'bg-purple-100 text-purple-800'
+          : 'bg-red-100 text-red-800'
 
   return (
     <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${className}`}>
       {statusLabels[status]}
+    </span>
+  )
+}
+
+function SeverityBadge({ severity }: { severity: OutboundLinkSeverity }) {
+  const className = severity === 'low'
+    ? 'bg-green-100 text-green-800'
+    : severity === 'medium'
+      ? 'bg-amber-100 text-amber-900'
+      : severity === 'high'
+        ? 'bg-orange-100 text-orange-800'
+        : 'bg-red-100 text-red-800'
+  const icon = severity === 'low'
+    ? <CheckCircle2 className="h-3.5 w-3.5" />
+    : <AlertTriangle className="h-3.5 w-3.5" />
+
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${className}`}>
+      {icon}
+      {capitalize(severity)}
     </span>
   )
 }
@@ -760,6 +1178,13 @@ function DomainList({ title, domains, tone }: { title: string; domains: string[]
       </div>
     </div>
   )
+}
+
+function toneCardClass(tone: 'neutral' | 'amber' | 'red' | 'purple') {
+  if (tone === 'amber') return 'border-amber-200 bg-amber-50 text-amber-950'
+  if (tone === 'red') return 'border-red-200 bg-red-50 text-red-950'
+  if (tone === 'purple') return 'border-purple-200 bg-purple-50 text-purple-950'
+  return 'border-neutral-200 bg-neutral-50 text-neutral-900'
 }
 
 function ReadOnlyActionButton({ label }: { label: string }) {
@@ -831,4 +1256,13 @@ function formatDateTime(value: string | null) {
     hour: 'numeric',
     minute: '2-digit',
   })
+}
+
+function signedCount(value: number) {
+  if (value > 0) return `+${value}`
+  return String(value)
+}
+
+function capitalize(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1)
 }
