@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2F-14",
+  "title": "Backup Generator QA, Operator Signoff, And Outbound Link Manager Transition Gate",
+  "status": "complete",
+  "generatedAt": "2026-06-10T03:21:20.310Z",
+  "resultPackage": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/",
+  "qa": {
+    "npmRunCheck": {
+      "status": "passed",
+      "testCount": 83,
+      "failCount": 0
+    },
+    "fakeComplete": {
+      "status": "passed",
+      "bundle": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f14-backup-generator-qa/fake-complete/",
+      "checkedFiles": 54,
+      "checksumEntries": 50,
+      "contentFileCount": 49,
+      "restorePlan": "passed",
+      "downloadPackage": "packaged",
+      "zipSha256": "0aa2a48c71db4cc65fa2308196fe6abd99253cd2c7260858a0a0841c09fa2a3c"
+    },
+    "liveReadonlyIce": {
+      "status": "passed",
+      "bundle": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f14-backup-generator-qa/ice-complete-standard/",
+      "checkedFiles": 62,
+      "checksumEntries": 58,
+      "contentFileCount": 57,
+      "restorePlan": "passed",
+      "downloadPackage": "packaged",
+      "zipSha256": "50440433a25a1a1607efc1676c7504d2543e50daa85862545553c4d34425d847",
+      "cosmos": {
+        "accountName": "cosmos-pumpkin-prod-eastus",
+        "databaseName": "pumpkin-prod-cms",
+        "tenantKey": "ice-rink-rentals",
+        "recordSetCount": 10,
+        "totalRecordCount": 27,
+        "proofStatus": "exported-and-validated"
+      },
+      "media": {
+        "storageAccount": "iceskatingmedia",
+        "container": "ice-rink-rentals-media",
+        "copiedBlobCount": 9,
+        "copiedTotalBytes": 22639448,
+        "proofStatus": "copied-and-validated"
+      }
+    }
+  },
+  "readiness": {
+    "phase2f13UnifiedGenerator": "complete",
+    "phase2f14QaSignoffPackage": true,
+    "backupGeneratorReadyForOwnerSignoff": true,
+    "backupGeneratorReadyForLocalOperatorUse": true,
+    "outboundLinkManagerArchitectureCanBeginNext": true,
+    "cmsRuntimeSwitchPerformed": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "artifactHandling": {
+    "generatedTmpOutputIgnored": true,
+    "generatedBackupArtifactsStaged": false,
+    "zipArtifactsStaged": false,
+    "mediaCopyArtifactsStaged": false,
+    "vaultOrHandoffArtifactsStaged": false,
+    "preExistingStagedPhase2F13SourceFilesLeftUntouched": true
+  },
+  "security": {
+    "cmsRuntimeSwitch": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "cosmosWrites": false,
+    "storageMutation": false,
+    "azureMutation": false,
+    "keysListed": false,
+    "connectionStringsRead": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "encryptedEscrowExecution": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "QA_SCOPE.md",
+    "PHASE_2F13_RESULT_SUMMARY.md",
+    "LOCAL_FAKE_GENERATOR_QA_RESULT.md",
+    "ICE_LIVE_READONLY_GENERATOR_QA_RESULT.md",
+    "DOWNLOAD_PACKAGE_QA_RESULT.md",
+    "BACKUP_VALIDATOR_QA_RESULT.md",
+    "RESTORE_PLAN_QA_RESULT.md",
+    "ARTIFACT_IGNORE_AND_STAGING_RESULT.md",
+    "OPERATOR_RUNBOOK_REVIEW.md",
+    "OWNER_SIGNOFF_CHECKLIST.md",
+    "OUTBOUND_LINK_MANAGER_TRANSITION_GATE.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "BLOCKERS_OR_WARNINGS.md",
+    "NEXT_OUTBOUND_LINK_MANAGER_ARCHITECTURE_PROMPT.md",
+    "manifest.json"
+  ]
+}
