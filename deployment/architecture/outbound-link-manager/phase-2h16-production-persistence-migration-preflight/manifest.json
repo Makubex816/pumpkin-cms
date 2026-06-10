@@ -1,0 +1,49 @@
+{
+  "phase": "2H-16",
+  "title": "Outbound Link Manager production persistence and migration preflight",
+  "status": "complete",
+  "trackerCount": "81/100",
+  "preflightOnly": true,
+  "implementationPerformed": false,
+  "databaseMigrationPerformed": false,
+  "productionWritesPerformed": false,
+  "liveProviderWritesPerformed": false,
+  "cmsWritesPerformed": false,
+  "protectedConfigRead": false,
+  "externalCrawlingPerformed": false,
+  "azureMutationPerformed": false,
+  "deploymentPerformed": false,
+  "searchConsoleIndexingPerformed": false,
+  "livePagePublicationPerformed": false,
+  "providerProfilesDocumented": [
+    "local-dev",
+    "fake-provider",
+    "offline-bundle",
+    "local-file-backed",
+    "local-api-fake-provider",
+    "live-readonly",
+    "live-write-approved",
+    "production-runtime"
+  ],
+  "productionEntitiesMapped": [
+    "outbound_links",
+    "outbound_link_instances",
+    "outbound_link_policies",
+    "outbound_link_scan_runs",
+    "outbound_link_audit_logs",
+    "outbound_link_render_decisions",
+    "outbound_link_review_decisions",
+    "outbound_link_bulk_actions",
+    "outbound_link_rollback_plans",
+    "outbound_link_trace_logs"
+  ],
+  "readinessClassification": {
+    "phase2h15QaPreflight": "complete",
+    "phase2h16PersistenceMigrationPreflight": "yes",
+    "readyForPhase2h17LocalToProductionMigrationDryRun": "yes",
+    "readyForProductionDbMigration": "no",
+    "readyForLiveProductionWrites": "no",
+    "offlineLocalPreservationDocumented": "yes",
+    "runtimeBrowserQaRequiredBeforeLiveWrites": "yes"
+  }
+}
