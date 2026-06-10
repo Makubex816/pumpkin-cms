@@ -2,7 +2,7 @@
 
 This is a local foundation, not a production Outbound Link Manager.
 
-Current Phase 2H-14 limitations:
+Current Phase 2H-17 limitations:
 
 - fixture JSON only
 - file-backed local `.tmp` persistence only
@@ -10,6 +10,9 @@ Current Phase 2H-14 limitations:
 - local write-action simulations and API-shaped preflight only
 - Admin write controls call local/fake preflight models only
 - API write routes use scoped local/fake providers only
+- migration dry-run output is local production-candidate JSON only
+- no production provider implementation exists
+- no migration execution implementation exists
 - rollback plans are evidence artifacts, not executable production tooling
 - scan-run simulation does not crawl or verify live external links
 - policy update simulation does not save to any production provider

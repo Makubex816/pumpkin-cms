@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "0.1.0",
+  "profileName": "phase-2h17-production-candidate-dry-run",
+  "providerMode": "local-to-production-dry-run",
+  "generatedAt": "2026-06-10T15:00:00.000Z",
+  "migrationRunId": "olmr_phase_2h17_fixture",
+  "targetProvider": {
+    "providerType": "cosmos-nosql-candidate",
+    "environment": "production-candidate",
+    "accountReference": "resource-registry:cosmos-pumpkin-prod-eastus",
+    "databaseName": "pumpkin-prod-cms",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "credential-reference-outbound-link-production-no-value"
+  },
+  "targetContainers": {
+    "outbound_links": "outbound-links",
+    "outbound_link_instances": "outbound-link-instances",
+    "outbound_link_policies": "outbound-link-policies",
+    "outbound_link_scan_runs": "outbound-link-scan-runs",
+    "outbound_link_audit_logs": "outbound-link-audit-logs",
+    "outbound_link_render_decisions": "outbound-link-render-decisions",
+    "outbound_link_review_decisions": "outbound-link-review-decisions",
+    "outbound_link_bulk_actions": "outbound-link-bulk-actions",
+    "outbound_link_rollback_plans": "outbound-link-rollback-plans",
+    "outbound_link_trace_logs": "outbound-link-trace-logs"
+  },
+  "boundaries": {
+    "localOnly": true,
+    "dryRunOnly": true,
+    "productionWrites": false,
+    "liveProviderWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "externalCrawling": false
+  }
+}

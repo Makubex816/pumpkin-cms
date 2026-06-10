@@ -38,8 +38,10 @@ import { simulateAction } from './actions/action-simulation-runner.mjs';
 import { validateActionResult } from './actions/action-result-validator.mjs';
 import { runApiWritePreflight } from './api/write-guard/local-api-write-guard-adapter.mjs';
 import { validateApiWritePreflight } from './api/write-guard/write-action-preflight-validator.mjs';
+import { inspectMigrationDryRun, runMigrationDryRun } from './migration/migration-dry-runner.mjs';
+import { validateMigrationDryRun } from './migration/schema-contract-validator.mjs';
 
-const version = '0.7.0';
+const version = '0.8.0';
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
@@ -152,6 +154,15 @@ async function main() {
         break;
       case 'validate-api-write-preflight':
         await validateApiWritePreflightCommand(args);
+        break;
+      case 'migration-dry-run':
+        await migrationDryRunCommand(args);
+        break;
+      case 'validate-migration-dry-run':
+        await validateMigrationDryRunCommand(args);
+        break;
+      case 'inspect-migration-dry-run':
+        await inspectMigrationDryRunCommand(args);
         break;
       default:
         throw new Error(`unknown command: ${command}`);
@@ -725,6 +736,47 @@ async function validateApiWritePreflightCommand(args) {
   }
 }
 
+async function migrationDryRunCommand(args) {
+  const options = parseArgs(args);
+  const result = await runMigrationDryRun({
+    storePath: required(options.store, '--store is required'),
+    profilePath: required(options.profile, '--profile is required'),
+    renderedPath: options.rendered ?? null,
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  console.log(`migration: ${result.validation.status}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`migrationRunId: ${result.summary.migrationRunId}`);
+  console.log(`records: ${Object.values(result.summary.countsByEntity).reduce((sum, count) => sum + count, 0)}`);
+  if (result.validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateMigrationDryRunCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateMigrationDryRun({ migrationPath: required(options.migration, '--migration is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`migrationRunId: ${validation.migrationRunId}`);
+  console.log(`failures: ${validation.summary.failureCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function inspectMigrationDryRunCommand(args) {
+  const options = parseArgs(args);
+  const summary = await inspectMigrationDryRun({ migrationPath: required(options.migration, '--migration is required') });
+  console.log(`migration: ${summary.migrationRunId}`);
+  console.log(`tenant: ${summary.tenantKey}`);
+  console.log(`site: ${summary.siteKey}`);
+  console.log(`providerMode: ${summary.providerMode}`);
+  console.log(`status: ${summary.status}`);
+  console.log(`records: ${summary.totalCandidateRecords}`);
+  console.log(`failures: ${summary.failureCount}`);
+}
+
 async function writeApiResponse({ response, outputPath }) {
   const outputRoot = resolveTmpOutputPath(outputPath);
   await writeJson(path.join(outputRoot, 'API_RESPONSE.json'), response);
@@ -828,6 +880,9 @@ Commands:
   validate-action-result --result .tmp/action-approve-review
   api-write-preflight --store .tmp/local-store-policy --request fixtures/api-write-preflight-approve-review.fixture.json --out .tmp/api-write-preflight-approve-review [--overwrite]
   validate-api-write-preflight --result .tmp/api-write-preflight-approve-review
+  migration-dry-run --store .tmp/local-store-policy --profile fixtures/migration-production-provider-profile.fixture.json --out .tmp/phase-2h17-migration-dry-run [--rendered .tmp/render-active] [--overwrite]
+  validate-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
+  inspect-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

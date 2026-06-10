@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureName": "migration-invalid-tenant-mismatch",
+  "expectedStatus": "failed",
+  "expectedFailure": "TENANT_PARTITION_MISMATCH",
+  "mutation": {
+    "targetCollection": "outbound_links",
+    "targetIndex": 0,
+    "field": "tenantKey",
+    "value": "other-tenant"
+  }
+}

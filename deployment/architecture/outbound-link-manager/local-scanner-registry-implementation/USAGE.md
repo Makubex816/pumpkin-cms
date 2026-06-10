@@ -131,6 +131,16 @@ node src/outbound-link-cli.mjs validate-api-write-preflight --result .tmp/api-wr
 
 The bridge accepts API-shaped requests, maps approved local/fake actions to the Phase 2H-12 simulator, writes `API_WRITE_RESPONSE.json`, writes `TRACE_LOG.json`, records before/after state hashes, captures entity/audit/rollback IDs, and blocks live-readonly or live-write-approved provider modes in this local package.
 
+## Migration Dry-Run
+
+```powershell
+node src/outbound-link-cli.mjs migration-dry-run --store .tmp/local-store-policy --profile fixtures/migration-production-provider-profile.fixture.json --out .tmp/phase-2h17-migration-dry-run --overwrite
+node src/outbound-link-cli.mjs validate-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
+node src/outbound-link-cli.mjs inspect-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
+```
+
+The migration dry-run transforms the local store into production-shaped candidate records under `.tmp`, writes `production-records/*.json`, `migration-manifest.json`, `checksums.sha256`, `ROLLBACK_PACKAGE.md`, `RESOURCE_REGISTRY_UPDATE_CANDIDATE.json`, `BACKUP_BEFORE_MIGRATION_REQUIREMENTS.md`, and validation reports. It does not write any live provider.
+
 ## Scripts
 
 ```powershell

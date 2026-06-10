@@ -1,8 +1,8 @@
 # Outbound Link Manager Local Scanner And Store
 
-Phase 2H-14 extends the local/offline Outbound Link Manager package with API-style write-action preflight requests, local/fake provider mutation support, scoped trace logging, before/after state hashes, audit IDs, rollback IDs, provider-mode gates, and validation for the guarded write-action bridge.
+Phase 2H-17 extends the local/offline Outbound Link Manager package with a local-to-production migration dry-run tool, deterministic production candidate records, schema validation, manifest/checksum generation, rollback package output, Resource Registry update candidates, and Backup Center pre-migration requirements.
 
-This package scans fake fixture JSON only. It extracts outbound web URLs, normalizes them, builds tenant/site-scoped `outbound_links` records, builds per-placement `outbound_link_instances`, writes scan output, merges scan output into a local store, applies local policy, records local audit logs, validates the store, produces local render decisions, exports local integration artifacts, exercises API-style read contracts, simulates future write actions against cloned sandbox stores under ignored `.tmp`, and produces API-style local/fake write preflight responses.
+This package scans fake fixture JSON only. It extracts outbound web URLs, normalizes them, builds tenant/site-scoped `outbound_links` records, builds per-placement `outbound_link_instances`, writes scan output, merges scan output into a local store, applies local policy, records local audit logs, validates the store, produces local render decisions, exports local integration artifacts, exercises API-style read contracts, simulates future write actions against cloned sandbox stores under ignored `.tmp`, produces API-style local/fake write preflight responses, and generates production-shaped migration dry-run candidates without live writes.
 
 It does not integrate with production renderers, crawl external links, call CMS/API/Azure services, write CMS data, run database migrations, implement Admin UI/API screens, deploy, index, or publish live pages.
 
@@ -56,6 +56,9 @@ node src/outbound-link-cli.mjs simulate-action --store .tmp/local-store-policy -
 node src/outbound-link-cli.mjs validate-action-result --result .tmp/action-approve-review
 node src/outbound-link-cli.mjs api-write-preflight --store .tmp/local-store-policy --request fixtures/api-write-preflight-approve-review.fixture.json --out .tmp/api-write-preflight-approve-review --overwrite
 node src/outbound-link-cli.mjs validate-api-write-preflight --result .tmp/api-write-preflight-approve-review
+node src/outbound-link-cli.mjs migration-dry-run --store .tmp/local-store-policy --profile fixtures/migration-production-provider-profile.fixture.json --out .tmp/phase-2h17-migration-dry-run --overwrite
+node src/outbound-link-cli.mjs validate-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
+node src/outbound-link-cli.mjs inspect-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
 ```
 
 Generated output stays under `.tmp/`, which is ignored by this package.
