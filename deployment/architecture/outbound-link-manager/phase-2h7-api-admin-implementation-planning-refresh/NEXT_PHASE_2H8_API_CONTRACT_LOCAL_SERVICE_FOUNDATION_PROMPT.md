@@ -1,0 +1,4 @@
+# Next Phase 2H-8 API Contract Local Service Foundation Prompt
+
+Approve Phase 2H-8 Outbound Link Manager API contract and local service foundation only: implement the first Pumpkin API-side local/fake service foundation for the tenant-scoped Outbound Link Manager using the completed Phase 2H-7 plan. Add shared request/response contract models, local/fake provider interfaces, service-layer filtering, pagination, tenant/site scoping, status/policy validation, audit event model stubs, bulk preview model stubs, scan-run model stubs, fixtures, unit tests, docs, result package, and root report. This phase must not expose live Admin UI screens, must not perform database migrations, must not write CMS data, must not call Azure/CMS/API live services, must not crawl external links, must not read protected config, must not deploy, must not index, and must not publish live pages. Write-capable production persistence and Admin UI implementation remain future approval gates.
+
