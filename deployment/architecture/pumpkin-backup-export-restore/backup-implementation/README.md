@@ -1,8 +1,8 @@
 # Pumpkin Backup Center Local Prototype
 
-Phase 2F-12D adds a local-only provider source resolver foundation on top of the standard backup exporter, hardened validator, restore validation dry-run, fake encrypted escrow prototype, and fake Cosmos/media connector foundation.
+Phase 2F-12O adds a local-only Ice Cosmos seed/migration dry-run on top of the standard backup exporter, hardened validator, restore validation dry-run, fake encrypted escrow prototype, fake Cosmos/media connector foundation, provider source resolver, and runtime profile model.
 
-It creates and validates folder-based standard backup bundles from fake fixtures only, can resolve non-secret provider source fixture metadata, can generate fake Cosmos portable JSON export artifacts, can copy fake media text fixtures, can generate a tenant website bundle index, can generate a restore plan without restoring into any real system, and can generate fake encrypted escrow output under ignored `.tmp`. It does not create production backup zips, export or import a real database, call CMS/API endpoints, export real secrets, create production escrow payloads, download real blobs, restore data, deploy, or touch external systems.
+It creates and validates folder-based standard backup bundles, can resolve non-secret provider source fixture metadata, can generate fake Cosmos portable JSON export artifacts, can map a validated Ice standard backup baseline into Cosmos-ready seed dry-run documents, can copy fake media text fixtures, can generate a tenant website bundle index, can generate a restore plan without restoring into any real system, and can generate fake encrypted escrow output under ignored `.tmp`. It does not create production backup zips, export or import a real database, call CMS/API endpoints during seed dry-runs, export real secrets, create production escrow payloads, download real blobs, restore data, deploy, or touch external systems.
 
 ## Implemented
 
@@ -29,6 +29,10 @@ It creates and validates folder-based standard backup bundles from fake fixtures
 - Restore-plan JSON and Markdown reports.
 - Fake encrypted escrow command.
 - Fake escrow policy, approval, recipient metadata, manifest, and validator.
+- Ice Cosmos seed/migration dry-run writer.
+- Approved Cosmos container router.
+- `/tenantKey` partition validator for seed dry-run packages.
+- Seed readback and rollback plan writers.
 - Node built-in tests.
 
 ## Quick Start
@@ -42,6 +46,8 @@ npm run restore:tenant
 npm run create:ice-fake-complete
 npm run validate:ice-fake-complete
 npm run restore:ice-fake-complete
+npm run cosmos-seed:ice-dry-run
+npm run cosmos-seed:validate
 npm run escrow:create
 npm run escrow:validate
 npm run escrow:inspect
@@ -62,6 +68,7 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 - `PROVIDER_RESOLVER.md`
 - `NON_SECRET_PROVIDER_METADATA.md`
 - `PROVIDER_RESOLVER_FIXTURES.md`
+- `RUNTIME_PROFILES.md`
 - `BACKUP_CENTER_RESOLVER_INTEGRATION.md`
 - `TENANT_WEBSITE_BUNDLE_INTEGRATION.md`
 - `VALIDATOR.md`
@@ -77,4 +84,4 @@ Generated bundles are written only under `.tmp/`, which is ignored by this packa
 
 ## Boundary
 
-Local prototype only. Fake adapters only. No real secrets, no protected config, no real Cosmos export/import, no real CMS export/restore, no MediaAsset restore, no real blob download/copy, no static generation/restore, no production escrow payload, no real restore, no external HTTP calls from the fake connector path, and no live-page publication.
+Local prototype only. Seed dry-runs read validated local backup bundles and non-secret fixtures only. No real secrets, no protected config, no real Cosmos export/import/write, no real CMS export/restore/write during seed dry-runs, no MediaAsset restore, no real blob download/copy, no static generation/restore, no production escrow payload, no real restore, no Azure mutation, no external HTTP calls from the seed/fake connector path, and no live-page publication.

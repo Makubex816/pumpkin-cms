@@ -6,6 +6,7 @@ import { bundleRelativePath } from './utils/safe-paths.mjs';
 export const checksumExcludedPaths = new Set([
   'checksums.sha256',
   'VALIDATION_RESULT.md',
+  'VALIDATION_RESULT.json',
   'validation-result.json'
 ]);
 

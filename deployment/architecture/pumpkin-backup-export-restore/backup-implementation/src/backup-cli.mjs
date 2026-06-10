@@ -3,6 +3,8 @@ import { createFakeEscrow } from './escrow/escrow-create-runner.mjs';
 import { validateEscrowOutput } from './escrow/escrow-validator.mjs';
 import { writeEscrowValidationReports } from './escrow/escrow-report-writer.mjs';
 import { createIceStandardBackup } from './ice/ice-standard-backup-runner.mjs';
+import { createIceCosmosSeedDryRun } from './cosmos-seed/ice-seed-dry-runner.mjs';
+import { validateSeedDryRunPackage, writeSeedValidationReports } from './cosmos-seed/tenant-partition-validator.mjs';
 import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
 import { validateBackupBundle, writeValidationReports } from './validators/backup-validator.mjs';
@@ -17,7 +19,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.7.0';
+const version = '0.8.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -86,6 +88,38 @@ async function main(argv) {
     console.log(`scope: ${result.plan.scope.scopeType}`);
     console.log(`dryRunOnly: ${result.plan.dryRunOnly}`);
     if (result.plan.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'cosmos-seed:ice-dry-run') {
+    const sourcePath = requiredOption(options, 'source');
+    const outputPath = requiredOption(options, 'out');
+    const result = await createIceCosmosSeedDryRun({
+      sourcePath,
+      outputPath,
+      overwrite: Boolean(options.overwrite),
+      providerFixturePath: options['provider-fixture'] ?? undefined,
+      runtimeFixturePath: options['runtime-fixture'] ?? undefined
+    });
+    console.log(`cosmos-seed-dry-run: ${result.validation.status}`);
+    console.log(`output: ${path.relative(process.cwd(), result.outputRoot)}`);
+    console.log(`sourceValidation: ${result.baselineValidation.status}`);
+    console.log(`tenantKey: ${result.seed.tenantKey}`);
+    console.log(`partitionKey: ${result.manifest.target.partitionKeyPath}`);
+    console.log(`totalDocuments: ${result.manifest.totalDocuments}`);
+    if (result.validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'cosmos-seed:validate') {
+    const seedRoot = resolveTmpBundlePath(requiredOption(options, 'seed'));
+    const validation = await validateSeedDryRunPackage({ seedPath: seedRoot });
+    await writeSeedValidationReports({ seedRoot, validation });
+    console.log(`cosmos-seed-validation: ${validation.status}`);
+    console.log(`totalDocuments: ${validation.summary.totalDocuments}`);
+    if (validation.status !== 'passed') {
       process.exitCode = 1;
     }
     return;
@@ -273,6 +307,8 @@ Commands:
   create-ice-standard --out .tmp/ice-full-standard-backup [--overwrite]
   validate --bundle .tmp/<bundle> [--mode baseline|production-restore-proof]
   restore-plan --bundle .tmp/<bundle> --out .tmp/<restore-plan> [--mode baseline|production-restore-proof] [--expected-counts fixtures/restore-expected-counts.json] [--overwrite]
+  cosmos-seed:ice-dry-run --source .tmp/ice-full-standard-backup --out .tmp/phase-2f12o-ice-cosmos-seed-dry-run [--overwrite]
+  cosmos-seed:validate --seed .tmp/phase-2f12o-ice-cosmos-seed-dry-run
   resolve-provider --fixture fixtures/provider-source.ice.missing.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--profile fixture]
   resolve-runtime-profile --fixture fixtures/provider-source.ice.future-target-cosmos.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--runtime-profile local-dev]
   runtime-profile:list
@@ -287,7 +323,7 @@ Example fake complete connector bundle:
   create-standard --scope tenant --answers fixtures/ice-cosmos-media-standard-backup.answers.json --with-fake-cosmos --with-fake-media-copy --tenant-website-bundle --out .tmp/ice-cosmos-media-fake-complete --overwrite
 
 Boundary:
-  Local-only. Folder bundles, restore-plan dry-runs, fake connector output, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API calls, no real Cosmos export, no real blob download.
+  Local-only. Folder bundles, restore-plan dry-runs, Cosmos seed dry-run documents, fake connector output, and fake escrow test output under .tmp only. No zips, no real secrets, no production escrow payloads, no real restore, no CMS/API calls, no real Cosmos export/write, no real blob download.
 `);
 }
 

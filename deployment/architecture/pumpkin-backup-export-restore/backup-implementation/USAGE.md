@@ -47,6 +47,22 @@ node src/backup-cli.mjs restore-plan --bundle .tmp/tenant-standard-backup --out 
 
 `restore-plan` validates the backup bundle first, compares fake inventory counts, writes restore-plan JSON/Markdown reports, and exits non-zero if validation fails. It does not restore anything.
 
+## Ice Cosmos Seed/Migration Dry-Run
+
+```powershell
+node src/backup-cli.mjs cosmos-seed:ice-dry-run --source .tmp/ice-full-standard-backup --out .tmp/phase-2f12o-ice-cosmos-seed-dry-run --overwrite
+node src/backup-cli.mjs cosmos-seed:validate --seed .tmp/phase-2f12o-ice-cosmos-seed-dry-run
+```
+
+Equivalent package scripts:
+
+```powershell
+npm run cosmos-seed:ice-dry-run
+npm run cosmos-seed:validate
+```
+
+The dry-run validates the source backup bundle first, maps Ice tenant/site/page/route/form/media/theme metadata into approved Cosmos container JSON arrays, writes `SEED_PLAN.md`, `READBACK_PLAN.md`, `ROLLBACK_PLAN.md`, checksums, and validation reports, and exits non-zero if any container, partition, checksum, path, or secret-scan check fails. It does not write Cosmos, call Azure, call CMS APIs, read protected config, export a database, download media, switch runtime, deploy, or publish live pages.
+
 ## Fake Ice Cosmos/Media Connector Bundle
 
 ```powershell
@@ -85,8 +101,8 @@ node src/backup-cli.mjs inspect --bundle .tmp/tenant-standard-backup
 
 ## Output Rule
 
-The CLI refuses to write outside package `.tmp/`. It writes folder bundles, restore-plan dry-run output, fake connector output, and fake encrypted escrow test output only, and blocks archive-style paths such as `.zip`, `.backup`, `.bak`, and `.bacpac`.
+The CLI refuses to write outside package `.tmp/`. It writes folder bundles, restore-plan dry-run output, Cosmos seed dry-run output, fake connector output, and fake encrypted escrow test output only, and blocks archive-style paths such as `.zip`, `.backup`, `.bak`, and `.bacpac`.
 
 ## Phase Boundary
 
-This CLI does not read protected config, inspect real secret values, create production backup zips, perform a real Cosmos export, call live Azure Blob Storage, call CMS/API endpoints from the fake connector flow, export/import a real database, export/restore real media, create production escrow payloads, restore data into real systems, deploy, or publish live pages.
+This CLI does not read protected config, inspect real secret values, create production backup zips, perform a real Cosmos export/write, call live Azure Blob Storage, call CMS/API endpoints from the fake connector or seed dry-run flow, export/import a real database, export/restore real media, create production escrow payloads, restore data into real systems, deploy, or publish live pages.

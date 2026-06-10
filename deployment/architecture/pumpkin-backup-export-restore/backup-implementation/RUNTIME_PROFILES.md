@@ -25,6 +25,11 @@ That classification means:
 - Ice tenant data has not been seeded or migrated.
 - Live database export remains blocked.
 - Production restore proof is not complete.
+- Phase 2F-12O may generate a local seed/migration dry-run package only; it does not satisfy the future live seed migration gate.
+
+## Seed Dry-Run Relationship
+
+The Ice Cosmos seed dry-run uses the `runtime-cosmos-future` profile as non-secret target context. Generated import-run documents and seed manifests record that runtime switch, production writes, and live database export remain blocked. A future live seed execution still requires a fresh owner approval, live-write tooling, readback approval, and rollback readiness.
 
 ## Source Files
 
@@ -32,4 +37,3 @@ That classification means:
 - `src/provider/runtime-profile-writer.mjs`
 - `src/provider/runtime-profile-bridge.mjs`
 - `fixtures/runtime-profile.*.json`
-
