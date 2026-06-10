@@ -1,0 +1,4 @@
+# Next Phase 2H-10 Admin Readonly UI Foundation Prompt
+
+Approve Phase 2H-10 Outbound Link Manager Admin read-only UI foundation only: implement the first Admin dashboard read-only views for the completed Phase 2H-9 GET-only Outbound Link Manager API foundation using local/fake API mode. Add Admin routes, API client methods, list/detail/instances/policies/scan-runs/audit/dashboard summary screens, filters, pagination controls, read-only banners, disabled write controls, tests, docs, result package, and root report. No write actions, no CMS writes, no database migration, no production renderer integration, no external link crawling, no protected config reads, no Azure/CMS/API mutations beyond local API/Admin build and tests, no deployment, no Search Console/indexing, and no live-page publication.
+

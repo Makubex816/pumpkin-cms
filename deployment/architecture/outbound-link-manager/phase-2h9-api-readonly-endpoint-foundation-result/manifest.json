@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2H-9",
+  "title": "Outbound Link Manager API read-only endpoint foundation",
+  "status": "complete",
+  "generatedAt": "2026-06-10T12:41:36.255Z",
+  "tracker": {
+    "completedObjectives": "73 / 100",
+    "nextMilestone": "75 / 100"
+  },
+  "rootReport": "PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H9_API_READONLY_ENDPOINT_FOUNDATION_REPORT.md",
+  "resultFiles": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "API_ENDPOINT_RESULT.md",
+    "API_CONTRACT_RESULT.md",
+    "READONLY_SERVICE_RESULT.md",
+    "AUTHORIZATION_GATE_RESULT.md",
+    "WRITE_ACTION_BLOCK_RESULT.md",
+    "TEST_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "KNOWN_LIMITATIONS.md",
+    "NEXT_PHASE_2H10_ADMIN_READONLY_UI_FOUNDATION_PROMPT.md",
+    "manifest.json"
+  ],
+  "api": {
+    "getEndpointsImplemented": true,
+    "writeEndpointsImplemented": false,
+    "provider": "fake-local-readonly",
+    "productionDatabaseProvider": false,
+    "adminUiImplementation": false
+  },
+  "qa": {
+    "dotnetBuild": "passed",
+    "phase2h9TestRunner": "passed",
+    "writeRouteAbsenceScan": "passed",
+    "generatedOutputIgnored": true,
+    "generatedOutputStaged": false
+  },
+  "readiness": {
+    "phase2h8LocalApiContractFoundation": "complete",
+    "phase2h9ApiReadonlyEndpointFoundation": true,
+    "readyForPhase2h10AdminReadonlyUiFoundation": true
+  },
+  "boundaries": {
+    "databaseMigration": false,
+    "cmsWrites": false,
+    "adminUiImplementation": false,
+    "productionRendererIntegration": false,
+    "externalLinkCrawling": false,
+    "protectedConfigReads": false,
+    "azureCmsApiMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  }
+}
+

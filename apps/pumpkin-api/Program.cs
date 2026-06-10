@@ -115,6 +115,7 @@ builder.Services.AddSingleton<MongoDataConnection>();
 // Register the main database service (singleton for connection reuse)
 builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
 builder.Services.AddSingleton<IMediaStorageService, MediaStorageService>();
+builder.Services.AddOutboundLinkReadOnlyFoundation();
 
 var app = builder.Build();
 
@@ -479,6 +480,49 @@ var allowedFormEntryStatuses = new HashSet<string>(StringComparer.OrdinalIgnoreC
     "suspected-spam",
     "archived"
 };
+
+// Admin: Get non-secret provider metadata for Backup Center resolver wiring
+app.MapGet("/api/admin/provider-metadata",
+    (string? tenantKey, string? siteKey, string? environment, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        var requestedTenantKey = (tenantKey ?? string.Empty).Trim().ToLowerInvariant();
+        if (string.IsNullOrWhiteSpace(requestedTenantKey))
+        {
+            return Results.BadRequest("tenantKey is required.");
+        }
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+        if (string.IsNullOrWhiteSpace(userTenantId))
+        {
+            return Results.BadRequest("User tenant ID not found in token");
+        }
+
+        if (!ProviderMetadataService.IsAuthorizedForMetadata(userTenantId, userRole, requestedTenantKey))
+        {
+            return Results.Forbid();
+        }
+
+        var lookup = ProviderMetadataService.Lookup(requestedTenantKey, siteKey, environment);
+        return lookup.Status switch
+        {
+            "found" => Results.Ok(lookup.Response),
+            "bad-request" => Results.BadRequest(lookup.Error),
+            _ => Results.NotFound("Provider metadata profile not found.")
+        };
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Provider Metadata")
+    .WithName("GetProviderMetadata")
+    .WithSummary("Get non-secret provider metadata")
+    .WithDescription("Returns allowlisted non-secret provider metadata for Backup Center. Requires JWT authentication and TenantAdmin, Operator, or SuperAdmin authorization. Does not read protected config, list keys, return connection strings, export data, or switch runtime providers.");
+
+app.MapOutboundLinkReadOnlyEndpoints();
 
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",
