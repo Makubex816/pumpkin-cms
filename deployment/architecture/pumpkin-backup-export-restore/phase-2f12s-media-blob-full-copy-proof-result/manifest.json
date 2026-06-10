@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "2F-12S",
+  "title": "Media Blob Full-Copy Proof And Complete Ice Standard Backup Candidate",
+  "status": "complete",
+  "generatedAt": "2026-06-10T01:50:44.900Z",
+  "resultPackage": "deployment/architecture/pumpkin-backup-export-restore/phase-2f12s-media-blob-full-copy-proof-result/",
+  "generatedOutput": {
+    "mediaCopyProof": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f12s-media-blob-copy/",
+    "completeStandardBackupCandidate": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f12s-complete-ice-standard-backup/",
+    "restorePlan": "deployment/architecture/pumpkin-backup-export-restore/backup-implementation/.tmp/phase-2f12s-restore-plan/"
+  },
+  "storageTarget": {
+    "accountName": "iceskatingmedia",
+    "resourceGroup": "rg-ice-production-media",
+    "containerName": "ice-rink-rentals-media",
+    "prefix": "ice-rink-rentals/assets/",
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals"
+  },
+  "mediaCopy": {
+    "status": "copied-and-validated",
+    "authMode": "azure-ad-rbac",
+    "expectedBlobCount": 9,
+    "copiedBlobCount": 9,
+    "expectedTotalBytes": 22639448,
+    "copiedTotalBytes": 22639448,
+    "contentType": "image/png",
+    "extension": ".png",
+    "validationStatus": "passed",
+    "localBundlePathStrategy": "hash-addressed-short-paths-with-source-blob-names-in-blob-map",
+    "maxBundlePathLength": 97,
+    "maxSourceBlobNameLength": 196,
+    "blobMapSha256": "003593C262224A8875471BC5045ED8F049EB1F3BE16736CEEA44BC6BAF1A44EA"
+  },
+  "backupCandidate": {
+    "status": "passed",
+    "mode": "standard",
+    "validatorMode": "production-restore-proof",
+    "includesEscrow": false,
+    "contentFileCount": 51,
+    "databaseComponent": "complete",
+    "cosmosRecords": 27,
+    "mediaComponent": "complete",
+    "mediaCopiedBlobs": 9,
+    "tenantWebsiteBundle": "complete",
+    "manifestSha256": "72185294647D5A25F067F13803315DBA82C26C2B34BEC572DB3F228D1C93F068"
+  },
+  "restorePlan": {
+    "status": "passed",
+    "mode": "production-restore-proof",
+    "dryRunOnly": true,
+    "restoreExecuted": false,
+    "cosmosRestorePlanningStep": "complete",
+    "mediaBlobRestoreStep": "complete",
+    "tenantWebsiteBundleStep": "complete",
+    "restorePlanSha256": "D1A9109A122CFCBC8CF3242C25471A72DADBC942EE0716E009F41E28B103BAE2"
+  },
+  "readiness": {
+    "phase2f12rLiveCosmosExportProof": "complete",
+    "phase2f12sMediaFullCopyProof": "yes",
+    "mediaBlobCopiesCompleted": true,
+    "mediaChecksumValidation": "pass",
+    "completeIceStandardBackupCandidate": true,
+    "fullStandardBackupProofAchieved": true,
+    "backupValidatorResult": "pass",
+    "restorePlanResult": "pass",
+    "cmsRuntimeSwitchPerformed": false,
+    "cosmosWritesPerformed": false,
+    "storageMutationsPerformed": false,
+    "externalSystemsChanged": false,
+    "livePagesAffected": false
+  },
+  "security": {
+    "storageMutation": false,
+    "storageKeysListed": false,
+    "connectionStringsRead": false,
+    "sasGenerated": false,
+    "protectedConfigRead": false,
+    "tokensPrinted": false,
+    "tokensPersistedByRunner": false,
+    "cosmosWrites": false,
+    "cmsRuntimeSwitch": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "deployment": false,
+    "searchConsoleOrIndexing": false,
+    "livePagePublication": false,
+    "generatedTmpOutputStaged": false
+  }
+}

@@ -1,0 +1,3 @@
+# Next Backup Center Operational Readiness Prompt
+
+Approve Phase 2F-12T Backup Center operational readiness closeout only: use the completed Phase 2F-12R live Cosmos export proof and Phase 2F-12S media full-copy proof to update Backup Center operational readiness docs, resource registry readiness, restore/runbook gates, and final go/no-go criteria for Ice. Run local validators and documentation QA. No CMS runtime switch, no CMS writes, no Cosmos writes, no storage mutation, no deployment, no Search Console/indexing, no live-page publication, no protected config reads, no keys/listKeys, no connection strings, no SAS generation, and no generated `.tmp` artifacts staged into Git.

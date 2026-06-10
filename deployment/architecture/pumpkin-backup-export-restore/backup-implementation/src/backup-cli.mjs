@@ -7,6 +7,7 @@ import { createIceBackupFromLiveCosmosExport } from './ice/ice-live-cosmos-backu
 import { createIceCosmosSeedDryRun } from './cosmos-seed/ice-seed-dry-runner.mjs';
 import { runGuardedLiveCosmosSeed } from './cosmos-seed/guarded-live-seed-runner.mjs';
 import { runLiveCosmosReadonlyExport, validateLiveCosmosExportPackage, writeLiveCosmosExportValidationReports } from './connectors/cosmos/live-cosmos-export-runner.mjs';
+import { runLiveMediaBlobCopyProof, validateLiveMediaCopyProof, writeLiveMediaCopyValidationReports } from './connectors/media/live-media-copy-runner.mjs';
 import { validateSeedDryRunPackage, writeSeedValidationReports } from './cosmos-seed/tenant-partition-validator.mjs';
 import { createStandardBackup } from './standard-backup-runner.mjs';
 import { createRestorePlan } from './restore/restore-plan-runner.mjs';
@@ -22,7 +23,7 @@ import { readJson } from './utils/json-writer.mjs';
 import { resolveTmpBundlePath } from './utils/safe-paths.mjs';
 import path from 'node:path';
 
-const version = '0.11.0';
+const version = '0.12.0';
 
 async function main(argv) {
   const [command, ...rest] = argv;
@@ -188,6 +189,59 @@ async function main(argv) {
     console.log(`database: ${result.componentStatus.database.status}`);
     console.log(`cosmosRecords: ${result.componentStatus.database.recordCount}`);
     console.log(`media: ${result.componentStatus.media.status}`);
+    console.log(`expectedCounts: ${path.relative(process.cwd(), result.expectedCountsPath)}`);
+    if (result.validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'media-copy:live-readonly') {
+    const outputPath = requiredOption(options, 'out');
+    const result = await runLiveMediaBlobCopyProof({
+      outputPath,
+      overwrite: Boolean(options.overwrite)
+    });
+    console.log(`media-copy-live-readonly: ${result.status}`);
+    console.log(`output: ${path.relative(process.cwd(), result.outputRoot)}`);
+    console.log(`dataPlaneAccess: ${result.dataPlaneAccess?.status ?? 'not-run'}`);
+    console.log(`approvedBlobs: ${result.listing?.approvedBlobCount ?? 0}`);
+    console.log(`copiedBlobs: ${result.copy?.copiedBlobCount ?? 0}`);
+    console.log(`totalBytes: ${result.copy?.totalCopiedBytes ?? result.listing?.totalBytes ?? 0}`);
+    console.log(`validation: ${result.validation?.status ?? 'not-run'}`);
+    if (result.status !== 'copied-and-validated') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'media-copy:validate') {
+    const mediaRoot = resolveTmpBundlePath(requiredOption(options, 'media'));
+    const validation = await validateLiveMediaCopyProof({ mediaPath: mediaRoot });
+    await writeLiveMediaCopyValidationReports({ mediaRoot, validation });
+    console.log(`media-copy-validation: ${validation.status}`);
+    console.log(`copiedBlobs: ${validation.summary.copiedBlobCount}`);
+    console.log(`totalBytes: ${validation.summary.totalCopiedBytes}`);
+    if (validation.status !== 'passed') {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (command === 'create-ice-complete-standard-backup') {
+    const exportPath = requiredOption(options, 'export');
+    const mediaProofPath = requiredOption(options, 'media');
+    const outputPath = requiredOption(options, 'out');
+    const result = await createIceBackupFromLiveCosmosExport({
+      exportPath,
+      mediaProofPath,
+      outputPath,
+      overwrite: Boolean(options.overwrite)
+    });
+    console.log(`created: ${path.relative(process.cwd(), result.bundleRoot)}`);
+    console.log(`validation: ${result.validation.status}`);
+    console.log(`validationMode: ${result.validation.mode}`);
+    console.log(`database: ${result.componentStatus.database.status}`);
+    console.log(`cosmosRecords: ${result.componentStatus.database.recordCount}`);
+    console.log(`media: ${result.componentStatus.media.status}`);
+    console.log(`copiedBlobs: ${result.componentStatus.media.copiedBlobCount}`);
     console.log(`expectedCounts: ${path.relative(process.cwd(), result.expectedCountsPath)}`);
     if (result.validation.status !== 'passed') {
       process.exitCode = 1;
@@ -383,6 +437,9 @@ Commands:
   cosmos-export:live-readonly --out .tmp/phase-2f12r-live-cosmos-export [--overwrite]
   cosmos-export:validate --export .tmp/phase-2f12r-live-cosmos-export
   create-ice-cosmos-export-backup --export .tmp/phase-2f12r-live-cosmos-export --out .tmp/phase-2f12r-ice-standard-backup-with-cosmos-export [--overwrite]
+  media-copy:live-readonly --out .tmp/phase-2f12s-media-blob-copy [--overwrite]
+  media-copy:validate --media .tmp/phase-2f12s-media-blob-copy
+  create-ice-complete-standard-backup --export .tmp/phase-2f12r-live-cosmos-export --media .tmp/phase-2f12s-media-blob-copy --out .tmp/phase-2f12s-complete-ice-standard-backup [--overwrite]
   resolve-provider --fixture fixtures/provider-source.ice.missing.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--profile fixture]
   resolve-runtime-profile --fixture fixtures/provider-source.ice.future-target-cosmos.json [--tenant ice-rink-rentals] [--site ice-rink-rentals] [--runtime-profile local-dev]
   runtime-profile:list

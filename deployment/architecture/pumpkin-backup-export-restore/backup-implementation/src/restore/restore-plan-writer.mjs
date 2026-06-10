@@ -134,7 +134,7 @@ function buildMediaStep(media) {
       stepId: 'plan-media-blob-restore',
       writesRealSystem: false,
       status: 'complete',
-      summary: `Fake media full-copy proof is present with ${media.copiedBlobCount} copied fixture blobs.`
+      summary: `Media full-copy proof is present with ${media.copiedBlobCount} copied blobs.`
     };
   }
   return {

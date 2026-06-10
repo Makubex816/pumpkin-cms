@@ -4,6 +4,7 @@ import { writeChecksums } from '../checksum-writer.mjs';
 import { listApprovedCosmosContainerNames } from '../cosmos-seed/cosmos-container-router.mjs';
 import { fileNameForLogicalCollection } from '../connectors/cosmos/cosmos-export-manifest.mjs';
 import { validateLiveCosmosExportPackage } from '../connectors/cosmos/live-cosmos-export-runner.mjs';
+import { validateLiveMediaCopyProof } from '../connectors/media/live-media-copy-runner.mjs';
 import { validateBackupBundle, writeValidationReports } from '../validators/backup-validator.mjs';
 import { readJson, writeJson } from '../utils/json-writer.mjs';
 import { resolveTmpBundlePath, resolveTmpOutputPath } from '../utils/safe-paths.mjs';
@@ -22,7 +23,10 @@ export async function createIceBackupFromLiveCosmosExport({
   outputPath,
   overwrite = false,
   now = new Date(),
-  expectedTotalDocuments = 27
+  expectedTotalDocuments = 27,
+  mediaProofPath = null,
+  expectedMediaBlobCount = 9,
+  expectedMediaBytes = 22639448
 }) {
   const exportRoot = resolveTmpBundlePath(exportPath);
   const bundleRoot = resolveTmpOutputPath(outputPath);
@@ -37,22 +41,29 @@ export async function createIceBackupFromLiveCosmosExport({
   if (exportValidation.status !== 'passed') {
     throw new Error(`live Cosmos export failed validation: ${exportValidation.failures.map((failure) => failure.code).join(', ')}`);
   }
+  const mediaProof = mediaProofPath
+    ? await loadValidatedMediaProof({ mediaProofPath, expectedMediaBlobCount, expectedMediaBytes })
+    : null;
   const exportData = await readLiveExport({ exportRoot });
-  const bundleData = buildBundleData({ exportData, createdAt });
+  const bundleData = buildBundleData({ exportData, mediaProof, createdAt });
   const fileEntries = [];
 
   fileEntries.push(...(await writeTopLevelDocs({ bundleRoot, bundleData, createdAt })));
-  fileEntries.push(...(await writeDatabaseComponent({ bundleRoot, exportRoot, exportData, createdAt })));
+  fileEntries.push(...(await writeDatabaseComponent({ bundleRoot, exportRoot, exportData, bundleData, createdAt })));
   fileEntries.push(...(await writeCmsContent({ bundleRoot, bundleData })));
-  fileEntries.push(...(await writeMediaInventory({ bundleRoot, bundleData })));
+  fileEntries.push(...(await writeMediaInventory({ bundleRoot, bundleData, mediaProof })));
   fileEntries.push(...(await writeStaticEvidence({ bundleRoot, bundleData })));
   fileEntries.push(...(await writeConfigInventory({ bundleRoot, bundleData })));
+  if (mediaProof) {
+    fileEntries.push(...(await writeTenantWebsiteBundleIndex({ bundleRoot, bundleData, createdAt })));
+  }
   fileEntries.push(...(await writeEscrowMarker({ bundleRoot })));
 
   const manifest = await writeManifest({ bundleRoot, bundleData, fileEntries, createdAt });
   const checksums = await writeChecksums(bundleRoot);
   const expectedCountsPath = await writeExpectedRestoreCounts({ bundleRoot, bundleData, createdAt });
-  const validation = await validateBackupBundle({ bundlePath: bundleRoot, mode: 'database-backup-proof' });
+  const validationMode = mediaProof ? 'production-restore-proof' : 'database-backup-proof';
+  const validation = await validateBackupBundle({ bundlePath: bundleRoot, mode: validationMode });
   await writeValidationReports({ bundleRoot, validation });
 
   return {
@@ -62,6 +73,7 @@ export async function createIceBackupFromLiveCosmosExport({
     expectedCountsPath,
     validation,
     exportValidation,
+    mediaValidation: mediaProof?.validation ?? null,
     exportManifest: exportData.manifest,
     componentStatus: bundleData.componentStatus
   };
@@ -80,7 +92,21 @@ async function readLiveExport({ exportRoot }) {
   return { manifest, recordsByContainer };
 }
 
-function buildBundleData({ exportData, createdAt }) {
+async function loadValidatedMediaProof({ mediaProofPath, expectedMediaBlobCount, expectedMediaBytes }) {
+  const mediaRoot = resolveTmpBundlePath(mediaProofPath);
+  const validation = await validateLiveMediaCopyProof({
+    mediaPath: mediaRoot,
+    expectedCount: expectedMediaBlobCount,
+    expectedBytes: expectedMediaBytes
+  });
+  if (validation.status !== 'passed') {
+    throw new Error(`live media copy proof failed validation: ${validation.failures.map((failure) => failure.code).join(', ')}`);
+  }
+  const blobMap = await readJson(path.join(mediaRoot, 'media', 'blob-map', 'blob-map.json'));
+  return { mediaRoot, validation, blobMap };
+}
+
+function buildBundleData({ exportData, mediaProof, createdAt }) {
   const records = exportData.recordsByContainer;
   const pages = records.pages;
   const routes = records.routes;
@@ -101,7 +127,7 @@ function buildBundleData({ exportData, createdAt }) {
     mediaAssets: mediaAssets.length,
     cosmosRecordSets: exportData.manifest.recordSets.length,
     cosmosRecords: exportData.manifest.totalRecordCount,
-    mediaCopiedBlobs: 0,
+    mediaCopiedBlobs: mediaProof?.blobMap?.copiedBlobCount ?? 0,
     staticEvidenceRoutes: staticEvidence.routes.length,
     configVariables: configInventory.variables.length
   };
@@ -155,17 +181,32 @@ function buildBundleData({ exportData, createdAt }) {
       },
       media: {
         provider: 'azure-blob',
-        mode: 'metadata-only',
-        status: 'partial',
+        mode: mediaProof ? 'full-copy' : 'metadata-only',
+        status: mediaProof ? 'complete' : 'partial',
         fakeOnly: false,
-        copiedBlobCount: 0,
-        blobMapPath: null,
-        reason: 'MediaAsset metadata is included from Cosmos, but media blob copy/download proof is outside Phase 2F-12R scope.'
+        liveBlobListingPerformed: mediaProof ? true : false,
+        liveBlobDownloadPerformed: mediaProof ? true : false,
+        storageMutationPerformed: false,
+        storageCredentialUsed: false,
+        keysListed: false,
+        connectionStringsRead: false,
+        sasGenerated: false,
+        copiedBlobCount: mediaProof?.blobMap?.copiedBlobCount ?? 0,
+        copiedByteCount: mediaProof ? sumBlobMapBytes(mediaProof.blobMap) : 0,
+        blobMapPath: mediaProof ? 'media/blob-map/blob-map.json' : null,
+        blobInventoryPath: mediaProof ? 'media/blob-map/blob-inventory.json' : null,
+        blobChecksumPath: mediaProof ? 'media/blob-map/blob-checksums.sha256' : null,
+        reason: mediaProof
+          ? 'Live Azure Blob media full-copy proof is included from Phase 2F-12S.'
+          : 'MediaAsset metadata is included from Cosmos, but media blob copy/download proof is outside Phase 2F-12R scope.'
       },
       tenantWebsiteBundle: {
-        status: 'not-run',
+        status: mediaProof ? 'complete' : 'not-run',
         fakeOnly: false,
-        reason: 'Tenant website bundle copy proof remains pending until media/static copy proof is approved.'
+        manifestPath: mediaProof ? `tenants/${tenantKey}/sites/${siteKey}/tenant-website-bundle-manifest.json` : null,
+        reason: mediaProof
+          ? 'Tenant/site website bundle index maps complete database and media proof artifacts.'
+          : 'Tenant website bundle copy proof remains pending until media/static copy proof is approved.'
       },
       providerSource: {
         status: 'live-cosmos-export-proof',
@@ -178,21 +219,28 @@ function buildBundleData({ exportData, createdAt }) {
         fakeOnly: false,
         liveDatabaseExportAllowed: true,
         runtimeSwitchAllowed: false,
-        nextAction: 'complete-media-blob-copy-proof-before-full-production-restore-readiness'
+        nextAction: mediaProof
+          ? 'backup-center-standard-backup-operationalization-review'
+          : 'complete-media-blob-copy-proof-before-full-production-restore-readiness'
       }
     },
     counts,
     warnings: [
       'Live Cosmos portable JSON export is included and validated.',
-      'Media blob copies are not included; media restore proof remains pending.',
+      mediaProof
+        ? 'Live media blob full-copy proof is included and validated.'
+        : 'Media blob copies are not included; media restore proof remains pending.',
       'CMS runtime was not switched to Cosmos.',
       'No CMS/API read or write was performed by this backup candidate writer.',
-      'No media/blob download, deployment, indexing, or live-page publication was performed.'
+      mediaProof
+        ? 'No storage mutation, deployment, indexing, or live-page publication was performed.'
+        : 'No media/blob download, deployment, indexing, or live-page publication was performed.'
     ]
   };
 }
 
 async function writeTopLevelDocs({ bundleRoot, bundleData, createdAt }) {
+  const mediaComplete = bundleData.componentStatus.media.status === 'complete';
   await fs.writeFile(
     path.join(bundleRoot, 'BACKUP_SUMMARY.md'),
     [
@@ -202,7 +250,9 @@ async function writeTopLevelDocs({ bundleRoot, bundleData, createdAt }) {
       'Target: Ice Skating Rink Rentals',
       `Tenant key: ${tenantKey}`,
       `Created: ${createdAt}`,
-      'Source: Phase 2F-12R live Cosmos AAD/RBAC read-only export proof',
+      mediaComplete
+        ? 'Source: Phase 2F-12R live Cosmos AAD/RBAC read-only export proof plus Phase 2F-12S live media read-only full-copy proof'
+        : 'Source: Phase 2F-12R live Cosmos AAD/RBAC read-only export proof',
       '',
       '## Included',
       '',
@@ -215,11 +265,15 @@ async function writeTopLevelDocs({ bundleRoot, bundleData, createdAt }) {
       '',
       '## Not Included',
       '',
-      '- Media blob copies/downloads: not included.',
+      bundleData.componentStatus.media.status === 'complete'
+        ? '- Media blob copies: included under `media/blobs/` with checksums.'
+        : '- Media blob copies/downloads: not included.',
       '- Encrypted escrow: not included; this is standard backup mode.',
       '- Secret values: not included.',
       '',
-      'No Cosmos writes, CMS runtime switch, CMS writes, media/blob download, deployment, Search Console/indexing, or live-page publication were performed.',
+      mediaComplete
+        ? 'Media blob downloads were performed only by the approved Phase 2F-12S read-only proof. No Cosmos writes, CMS runtime switch, CMS writes, storage mutation, deployment, Search Console/indexing, or live-page publication were performed.'
+        : 'No Cosmos writes, CMS runtime switch, CMS writes, media/blob download, deployment, Search Console/indexing, or live-page publication were performed.',
       ''
     ].join('\n'),
     'utf8'
@@ -235,7 +289,9 @@ async function writeTopLevelDocs({ bundleRoot, bundleData, createdAt }) {
       '1. Validate `manifest.json`, `checksums.sha256`, and `database/cosmos-json/export-manifest.json`.',
       '2. Confirm `escrow/ESCROW_NOT_INCLUDED.md` is the only escrow file.',
       '3. Use the Cosmos portable JSON export for database restore planning in an approved sandbox only.',
-      '4. Treat media blob restore as blocked until a separately approved media copy proof exists.',
+      mediaComplete
+        ? '4. Validate `media/blob-map/blob-map.json` and `media/blob-map/blob-checksums.sha256` before any approved media restore rehearsal.'
+        : '4. Treat media blob restore as blocked until a separately approved media copy proof exists.',
       '5. Do not restore into live systems without separate recovery approval.',
       '',
       'No secret restore is possible from this standard backup candidate.',
@@ -247,7 +303,8 @@ async function writeTopLevelDocs({ bundleRoot, bundleData, createdAt }) {
   return [entry('BACKUP_SUMMARY.md', 'summary'), entry('RESTORE_INSTRUCTIONS.md', 'restore-instructions')];
 }
 
-async function writeDatabaseComponent({ bundleRoot, exportRoot, exportData, createdAt }) {
+async function writeDatabaseComponent({ bundleRoot, exportRoot, exportData, bundleData, createdAt }) {
+  const mediaComplete = bundleData.componentStatus.media.status === 'complete';
   const outputDir = path.join(bundleRoot, 'database');
   const cosmosDir = path.join(outputDir, 'cosmos-json');
   await fs.mkdir(cosmosDir, { recursive: true });
@@ -285,7 +342,9 @@ async function writeDatabaseComponent({ bundleRoot, exportRoot, exportData, crea
     cosmosWritesPerformed: false,
     exportManifestPath: 'database/cosmos-json/export-manifest.json',
     totalRecordCount: exportData.manifest.totalRecordCount,
-    recoveryImpact: 'database backup proof achieved for tenant-scoped Cosmos portable JSON; media restore proof remains pending'
+    recoveryImpact: mediaComplete
+      ? 'database backup proof achieved for tenant-scoped Cosmos portable JSON; media full-copy proof is included separately under media/'
+      : 'database backup proof achieved for tenant-scoped Cosmos portable JSON; media restore proof remains pending'
   });
 
   const entries = [
@@ -335,10 +394,40 @@ async function writeCmsContent({ bundleRoot, bundleData }) {
   return entries;
 }
 
-async function writeMediaInventory({ bundleRoot, bundleData }) {
+async function writeMediaInventory({ bundleRoot, bundleData, mediaProof }) {
   const outputDir = path.join(bundleRoot, 'media');
   await fs.mkdir(outputDir, { recursive: true });
   await writeJson(path.join(outputDir, 'media-assets.json'), bundleData.mediaInventory);
+  if (mediaProof) {
+    await copyMediaProofIntoBundle({ bundleRoot, mediaProof });
+    await fs.writeFile(
+      path.join(outputDir, 'MEDIA_BLOBS_NOT_INCLUDED.md'),
+      [
+        '# Media Blobs Included',
+        '',
+        'This compatibility marker is retained for the standard backup validator file contract.',
+        '',
+        'Phase 2F-12S includes live Azure Blob media copies under `media/blobs/` with checksums and a blob map.',
+        '',
+        '- No storage key was used.',
+        '- No connection string was read.',
+        '- No SAS was generated.',
+        '- No storage mutation occurred.',
+        ''
+      ].join('\n'),
+      'utf8'
+    );
+    return [
+      entry('media/media-assets.json', 'media-inventory'),
+      entry('media/MEDIA_BLOBS_NOT_INCLUDED.md', 'media-inventory'),
+      entry('media/MEDIA_BLOBS_INCLUDED.md', 'media-blob-copy'),
+      entry('media/blob-map/blob-inventory.json', 'media-blob-map'),
+      entry('media/blob-map/blob-copy-plan.json', 'media-blob-map'),
+      entry('media/blob-map/blob-map.json', 'media-blob-map'),
+      entry('media/blob-map/blob-checksums.sha256', 'media-blob-map'),
+      ...mediaProof.blobMap.assets.map((asset) => entry(asset.bundlePath, 'media-blob-copy'))
+    ];
+  }
   await fs.writeFile(
     path.join(outputDir, 'MEDIA_BLOBS_NOT_INCLUDED.md'),
     [
@@ -355,6 +444,75 @@ async function writeMediaInventory({ bundleRoot, bundleData }) {
     'utf8'
   );
   return [entry('media/media-assets.json', 'media-inventory'), entry('media/MEDIA_BLOBS_NOT_INCLUDED.md', 'media-inventory')];
+}
+
+async function copyMediaProofIntoBundle({ bundleRoot, mediaProof }) {
+  const relativePaths = [
+    'media/MEDIA_BLOBS_INCLUDED.md',
+    'media/blob-map/blob-inventory.json',
+    'media/blob-map/blob-copy-plan.json',
+    'media/blob-map/blob-map.json',
+    'media/blob-map/blob-checksums.sha256',
+    ...mediaProof.blobMap.assets.map((asset) => asset.bundlePath)
+  ];
+  for (const relativePath of relativePaths) {
+    const source = path.join(mediaProof.mediaRoot, relativePath);
+    const destination = path.join(bundleRoot, relativePath);
+    await fs.mkdir(path.dirname(destination), { recursive: true });
+    await fs.copyFile(source, destination);
+  }
+}
+
+async function writeTenantWebsiteBundleIndex({ bundleRoot, bundleData, createdAt }) {
+  const outputDir = path.join(bundleRoot, 'tenants', tenantKey, 'sites', siteKey);
+  await fs.mkdir(outputDir, { recursive: true });
+  await writeJson(path.join(outputDir, 'tenant-website-bundle-manifest.json'), {
+    schemaVersion: '0.2.0',
+    bundleContractVersion: '0.2.0',
+    generatedAt: createdAt,
+    fakeOnly: false,
+    tenantKey,
+    siteKey,
+    layout: 'tenant-site-public-html-style-index',
+    standardBackupRoot: '../../..',
+    database: bundleData.componentStatus.database,
+    media: bundleData.componentStatus.media,
+    paths: {
+      cmsContent: 'cms-content/',
+      cosmosJson: 'database/cosmos-json/',
+      mediaMetadata: 'media/media-assets.json',
+      mediaBlobMap: 'media/blob-map/',
+      mediaBlobs: 'media/blobs/',
+      restore: 'restore/'
+    },
+    boundaries: {
+      liveRestorePerformed: false,
+      externalSystemMutation: false,
+      protectedConfigRead: false,
+      secretExport: false
+    }
+  });
+  await fs.writeFile(
+    path.join(outputDir, 'README.md'),
+    [
+      '# Tenant Website Bundle Index',
+      '',
+      'This index maps the standard backup artifacts into a tenant/site website-bundle shape.',
+      '',
+      '- Cosmos JSON export artifacts remain under `database/cosmos-json/`.',
+      '- Media metadata, blob map, checksums, and copied blobs remain under `media/`.',
+      '- This index does not copy or restore into any live system.',
+      '',
+      `Tenant: ${tenantKey}`,
+      `Site: ${siteKey}`,
+      ''
+    ].join('\n'),
+    'utf8'
+  );
+  return [
+    entry(`tenants/${tenantKey}/sites/${siteKey}/tenant-website-bundle-manifest.json`, 'tenant-website-bundle'),
+    entry(`tenants/${tenantKey}/sites/${siteKey}/README.md`, 'tenant-website-bundle')
+  ];
 }
 
 async function writeStaticEvidence({ bundleRoot, bundleData }) {
@@ -421,6 +579,7 @@ async function writeEscrowMarker({ bundleRoot }) {
 }
 
 async function writeManifest({ bundleRoot, bundleData, fileEntries, createdAt }) {
+  const mediaComplete = bundleData.componentStatus.media.status === 'complete';
   const manifest = {
     manifestVersion: '0.2.0',
     bundleContractVersion: '0.2.0',
@@ -436,8 +595,12 @@ async function writeManifest({ bundleRoot, bundleData, fileEntries, createdAt })
       mediaDomain: targetProfile.mediaDomain
     },
     createdAt,
-    createdBy: 'backup-center-phase-2f12r-runner',
-    requestedBy: 'phase-2f12r-approved-live-cosmos-export-proof',
+    createdBy: mediaComplete
+      ? 'backup-center-phase-2f12s-complete-standard-backup-runner'
+      : 'backup-center-phase-2f12r-runner',
+    requestedBy: mediaComplete
+      ? 'phase-2f12s-approved-media-blob-full-copy-proof'
+      : 'phase-2f12r-approved-live-cosmos-export-proof',
     source: 'real-ice-readonly-standard',
     bundleFormat: 'folder',
     includesEscrow: false,
@@ -447,12 +610,12 @@ async function writeManifest({ bundleRoot, bundleData, fileEntries, createdAt })
       fakeOnly: false,
       fakeCosmosExport: false,
       fakeMediaCopy: false,
-      tenantWebsiteBundle: false,
+      tenantWebsiteBundle: mediaComplete,
       providerResolver: true,
       runtimeProfileGuard: true,
       runtimeProfile: 'ice-cosmos-live-readonly-export-proof',
       liveCosmosExportPerformed: true,
-      liveBlobDownloadPerformed: false,
+      liveBlobDownloadPerformed: mediaComplete,
       cosmosWritesPerformed: false,
       externalSystemMutation: false,
       protectedConfigRead: false,
@@ -467,14 +630,15 @@ async function writeManifest({ bundleRoot, bundleData, fileEntries, createdAt })
     inventoryCounts: bundleData.counts,
     schemaReferences: {
       backupManifest: '../schemas/backup-manifest.schema.json',
-      note: 'Phase 2F-12R live Cosmos read-only export proof standard backup candidate.'
+      note: mediaComplete
+        ? 'Phase 2F-12S complete Ice standard backup candidate with live Cosmos export and live media full-copy proof.'
+        : 'Phase 2F-12R live Cosmos read-only export proof standard backup candidate.'
     },
     files: fileEntries.sort((a, b) => a.path.localeCompare(b.path)),
     warnings: bundleData.warnings,
     exclusions: [
       'secret values',
       'protected config files',
-      'media blob copies',
       'encrypted escrow payloads',
       'backup zip archives',
       'Cosmos writes',
@@ -484,7 +648,7 @@ async function writeManifest({ bundleRoot, bundleData, fileEntries, createdAt })
       'deployment',
       'Search Console/indexing',
       'live-page publication'
-    ]
+    ].concat(mediaComplete ? [] : ['media blob copies'])
   };
   await writeJson(path.join(bundleRoot, 'manifest.json'), manifest);
   return manifest;
@@ -570,6 +734,10 @@ function buildConfigInventory({ createdAt }) {
     valuesIncluded: false,
     variables
   };
+}
+
+function sumBlobMapBytes(blobMap) {
+  return (blobMap.assets ?? []).reduce((sum, asset) => sum + Number(asset.byteSize ?? 0), 0);
 }
 
 function getSlug(page) {

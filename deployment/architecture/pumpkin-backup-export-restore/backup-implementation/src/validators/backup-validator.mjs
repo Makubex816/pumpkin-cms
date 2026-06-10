@@ -559,23 +559,53 @@ async function checkMediaProof(context, manifest) {
   const blobMapPath = media.blobMapPath ?? 'media/blob-map/blob-map.json';
   const blobMap = await readRequiredJson(context, blobMapPath, 'MEDIA_BLOB_COPY_MISSING');
   if (!blobMap) return;
-  if (blobMap.provider !== 'azure-blob' || blobMap.mode !== 'fake-full-copy') {
+  if (blobMap.provider !== 'azure-blob' || !isSupportedMediaBlobMapMode(blobMap.mode)) {
     addFailure(context, 'MEDIA_BLOB_COPY_INVALID', blobMapPath, 'Media blob map provider/mode is invalid');
   }
-  if (blobMap.liveBlobDownloadPerformed !== false || blobMap.storageCredentialUsed !== false) {
-    addFailure(context, 'MEDIA_BLOB_COPY_BOUNDARY_INVALID', blobMapPath, 'Media fake copy must not indicate live download or storage credential use');
+  if (!hasValidMediaBlobMapBoundaries(blobMap)) {
+    addFailure(context, 'MEDIA_BLOB_COPY_BOUNDARY_INVALID', blobMapPath, 'Media blob map boundary fields are invalid for the selected proof mode');
   }
   if (!Array.isArray(blobMap.assets) || blobMap.copiedBlobCount < 1) {
     addFailure(context, 'MEDIA_BLOB_COPY_MISSING', blobMapPath, 'Media blob map must include copied fake blobs');
     return;
   }
   for (const asset of blobMap.assets) {
-    if (asset.copyStatus !== 'fake-copied' || !isSafeBundleRelativePath(asset.bundlePath)) {
+    if (!isCopiedMediaStatus(asset.copyStatus) || !isSafeBundleRelativePath(asset.bundlePath)) {
       addFailure(context, 'MEDIA_BLOB_COPY_MISSING', blobMapPath, 'Every media asset must include a copied fake blob path');
       continue;
     }
     await readRequiredFile(context, asset.bundlePath, 'MEDIA_BLOB_COPY_MISSING');
   }
+}
+
+function isSupportedMediaBlobMapMode(mode) {
+  return mode === 'fake-full-copy' || mode === 'live-readonly-full-copy';
+}
+
+function hasValidMediaBlobMapBoundaries(blobMap) {
+  if (blobMap.mode === 'fake-full-copy') {
+    return blobMap.liveBlobDownloadPerformed === false && blobMap.storageCredentialUsed === false;
+  }
+  if (blobMap.mode !== 'live-readonly-full-copy') {
+    return false;
+  }
+  return (
+    blobMap.fakeOnly === false &&
+    blobMap.liveBlobListingPerformed === true &&
+    blobMap.liveBlobDownloadPerformed === true &&
+    blobMap.azureMutationPerformed === false &&
+    blobMap.protectedConfigRead === false &&
+    blobMap.storageCredentialUsed === false &&
+    blobMap.keysListed === false &&
+    blobMap.connectionStringsRead === false &&
+    blobMap.sasGenerated === false &&
+    blobMap.tokensPrinted === false &&
+    blobMap.tokensPersisted === false
+  );
+}
+
+function isCopiedMediaStatus(status) {
+  return status === 'fake-copied' || status === 'copied';
 }
 
 async function checkTenantWebsiteBundleProof(context, manifest) {
