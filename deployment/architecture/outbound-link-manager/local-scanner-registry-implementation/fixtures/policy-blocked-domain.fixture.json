@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "0.2.0",
+  "id": "policy_block_partner_example",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "name": "block partner.example fixture policy",
+  "allowed_domains": [
+    "docs.example",
+    "example.com"
+  ],
+  "blocked_domains": [
+    "partner.example"
+  ],
+  "pending_review_domains": [],
+  "review_required_for_new_domains": true,
+  "source": "fixture"
+}

@@ -200,7 +200,12 @@ test('CLI scan, validate, and inspect commands work without live calls', async (
 
 test('source does not include external HTTP client or protected config read patterns', async () => {
   const sourceFiles = await listSourceFiles(path.join(packageRoot, 'src'));
-  const forbidden = /(fetch\s*\(|node:https|node:http|https\.request|http\.request|axios|\.env\.local|appsettings\.Development\.json|local\.settings\.json)/i;
+  const protectedConfigPattern = [
+    '\\.env\\.local',
+    'appsettings\\.Development\\.json',
+    'local\\.settings\\.json'
+  ].join('|');
+  const forbidden = new RegExp(`(fetch\\s*\\(|node:https|node:http|https\\.request|http\\.request|axios|${protectedConfigPattern})`, 'i');
   for (const file of sourceFiles) {
     const text = await fs.readFile(file, 'utf8');
     assert.equal(forbidden.test(text), false, `forbidden pattern in ${path.relative(packageRoot, file)}`);

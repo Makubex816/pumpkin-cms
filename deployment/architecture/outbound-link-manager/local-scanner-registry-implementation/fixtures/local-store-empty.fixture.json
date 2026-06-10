@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureName": "local-store-empty",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "outbound_links": [],
+  "outbound_link_instances": [],
+  "outbound_link_policies": [
+    {
+      "schemaVersion": "0.2.0",
+      "id": "policy_default_local",
+      "tenant_id": "fixture-tenant",
+      "site_id": "fixture-site",
+      "name": "default local outbound link policy",
+      "allowed_domains": [],
+      "blocked_domains": [],
+      "pending_review_domains": [],
+      "review_required_for_new_domains": false,
+      "source": "fixture"
+    }
+  ]
+}

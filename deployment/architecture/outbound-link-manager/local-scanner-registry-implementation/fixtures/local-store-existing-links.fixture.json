@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureName": "local-store-existing-links",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "outbound_links": [
+    {
+      "schemaVersion": "0.2.0",
+      "id": "ol_02ac173aecdc04a3",
+      "tenant_id": "fixture-tenant",
+      "site_id": "fixture-site",
+      "original_url": "https://partner.example/vendors",
+      "normalized_url": "https://partner.example/vendors",
+      "domain": "partner.example",
+      "status": "disabled",
+      "created_at": "2026-06-09T00:00:00.000Z",
+      "updated_at": "2026-06-09T00:00:00.000Z",
+      "first_detected_at": "2026-06-09T00:00:00.000Z",
+      "last_detected_at": "2026-06-09T00:00:00.000Z",
+      "detection_count": 1,
+      "created_by": "fixture",
+      "disabled_by": "local-cli",
+      "disabled_at": "2026-06-09T00:00:00.000Z",
+      "disabled_reason": "fixture disabled state"
+    }
+  ],
+  "outbound_link_instances": [],
+  "outbound_link_policies": []
+}

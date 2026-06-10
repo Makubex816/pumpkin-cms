@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.2.0",
+  "fixtureName": "audit-actions",
+  "actions": [
+    "scan_merged",
+    "link_status_changed",
+    "instance_status_changed",
+    "policy_set"
+  ],
+  "actor": "local-cli",
+  "boundary": "local-offline-only"
+}

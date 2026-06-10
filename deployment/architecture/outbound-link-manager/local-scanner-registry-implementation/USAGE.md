@@ -31,6 +31,45 @@ node src/outbound-link-cli.mjs validate --scan .tmp/single-link-scan
 node src/outbound-link-cli.mjs inspect --scan .tmp/single-link-scan
 ```
 
+## Initialize A Local Store
+
+```powershell
+node src/outbound-link-cli.mjs init-store --tenant fixture-tenant --site fixture-site --out .tmp/local-store --overwrite
+```
+
+## Merge A Scan Into A Local Store
+
+```powershell
+node src/outbound-link-cli.mjs scan --fixture fixtures/tenant-bundle.fixture.json --out .tmp/tenant-bundle-scan --overwrite
+node src/outbound-link-cli.mjs merge-scan --store .tmp/local-store --scan .tmp/tenant-bundle-scan --out .tmp/local-store-merged --overwrite
+```
+
+## Change Local Status
+
+```powershell
+node src/outbound-link-cli.mjs set-link-status --store .tmp/local-store-merged --link-domain partner.example --status disabled --reason "local fixture test" --out .tmp/local-store-disabled --overwrite
+node src/outbound-link-cli.mjs set-instance-status --store .tmp/local-store-merged --instance-id fixture-instance-id --status plain_text --reason "local fixture test" --out .tmp/local-store-instance-disabled --overwrite
+```
+
+## Apply Local Policy
+
+```powershell
+node src/outbound-link-cli.mjs set-policy --store .tmp/local-store-merged --policy fixtures/policy-blocked-domain.fixture.json --out .tmp/local-store-policy --overwrite
+```
+
+## Export Store
+
+```powershell
+node src/outbound-link-cli.mjs export-store --store .tmp/local-store-policy --out .tmp/local-store-export --overwrite
+```
+
+## Validate And Inspect Store
+
+```powershell
+node src/outbound-link-cli.mjs validate-store --store .tmp/local-store-policy
+node src/outbound-link-cli.mjs inspect-store --store .tmp/local-store-policy
+```
+
 ## Scripts
 
 ```powershell
@@ -40,6 +79,10 @@ npm run scan:single
 npm run scan:tenant-bundle
 npm run validate:tenant-bundle
 npm run inspect:tenant-bundle
+npm run store:init
+npm run store:merge
+npm run store:validate
+npm run store:inspect
 ```
 
-The scanner refuses output outside `.tmp`.
+The scanner and store writer refuse output outside `.tmp`.

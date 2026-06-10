@@ -1,8 +1,8 @@
-# Outbound Link Manager Local Scanner
+# Outbound Link Manager Local Scanner And Store
 
-Phase 2H-3 implements the first local/offline Outbound Link Manager scanner and registry foundation.
+Phase 2H-4 extends the local/offline Outbound Link Manager package with file-backed local persistence.
 
-This package scans fake fixture JSON only. It extracts outbound web URLs, normalizes them, builds tenant/site-scoped `outbound_links` records, builds per-placement `outbound_link_instances`, writes a scan run summary, validates output, and produces local reports under ignored `.tmp`.
+This package scans fake fixture JSON only. It extracts outbound web URLs, normalizes them, builds tenant/site-scoped `outbound_links` records, builds per-placement `outbound_link_instances`, writes scan output, merges scan output into a local store, applies local policy, records local audit logs, validates the store, and exports tenant-bundle/Backup Center compatible files under ignored `.tmp`.
 
 It does not crawl external links, call CMS/API/Azure services, write CMS data, run database migrations, implement Admin UI/API screens, deploy, index, or publish live pages.
 
@@ -14,6 +14,10 @@ npm run scan:single
 npm run scan:tenant-bundle
 npm run validate:tenant-bundle
 npm run inspect:tenant-bundle
+npm run store:init
+npm run store:merge
+npm run store:validate
+npm run store:inspect
 ```
 
 ## CLI
@@ -23,6 +27,13 @@ node src/outbound-link-cli.mjs help
 node src/outbound-link-cli.mjs scan --fixture fixtures/single-link.fixture.json --out .tmp/single-link-scan --overwrite
 node src/outbound-link-cli.mjs validate --scan .tmp/single-link-scan
 node src/outbound-link-cli.mjs inspect --scan .tmp/single-link-scan
+node src/outbound-link-cli.mjs init-store --tenant fixture-tenant --site fixture-site --out .tmp/local-store --overwrite
+node src/outbound-link-cli.mjs merge-scan --store .tmp/local-store --scan .tmp/tenant-bundle-scan --out .tmp/local-store-merged --overwrite
+node src/outbound-link-cli.mjs set-link-status --store .tmp/local-store-merged --link-domain partner.example --status disabled --reason "local fixture test" --out .tmp/local-store-disabled --overwrite
+node src/outbound-link-cli.mjs set-policy --store .tmp/local-store-merged --policy fixtures/policy-blocked-domain.fixture.json --out .tmp/local-store-policy --overwrite
+node src/outbound-link-cli.mjs export-store --store .tmp/local-store-policy --out .tmp/local-store-export --overwrite
+node src/outbound-link-cli.mjs validate-store --store .tmp/local-store-policy
+node src/outbound-link-cli.mjs inspect-store --store .tmp/local-store-policy
 ```
 
 Generated output stays under `.tmp/`, which is ignored by this package.

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "0.2.0",
+  "phase": "2H-4",
+  "title": "Outbound Link Manager local data model and persistence foundation",
+  "status": "complete",
+  "generatedAt": "2026-06-10T05:43:31.193Z",
+  "implementationPackage": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/",
+  "proofOutput": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/.tmp/phase-2h4-local-data-model-persistence-foundation/",
+  "rootReport": "PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H4_LOCAL_DATA_MODEL_PERSISTENCE_FOUNDATION_REPORT.md",
+  "resultFiles": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "LOCAL_STORE_RESULT.md",
+    "MERGE_BEHAVIOR_RESULT.md",
+    "STATUS_LIFECYCLE_RESULT.md",
+    "POLICY_HANDLING_RESULT.md",
+    "AUDIT_LOG_RESULT.md",
+    "EXPORT_RESULT.md",
+    "VALIDATOR_RESULT.md",
+    "TEST_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "KNOWN_LIMITATIONS.md",
+    "NEXT_PHASE_2H5_RENDERING_CONTROL_PROTOTYPE_PROMPT.md",
+    "manifest.json"
+  ],
+  "qa": {
+    "npmRunCheck": "passed",
+    "testsPassed": 29,
+    "testsFailed": 0,
+    "storeValidation": "passed",
+    "generatedOutputIgnored": true,
+    "generatedOutputStaged": false
+  },
+  "boundaries": {
+    "localOnly": true,
+    "databaseMigration": false,
+    "cmsWrites": false,
+    "adminUiApiImplementation": false,
+    "productionRendererIntegration": false,
+    "externalHttpCrawling": false,
+    "liveHttpChecks": false,
+    "protectedConfigReads": false,
+    "azureCmsApiMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  }
+}
