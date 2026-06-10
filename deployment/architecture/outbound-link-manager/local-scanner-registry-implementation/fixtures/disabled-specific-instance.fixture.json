@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "disabled-specific-instance",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "mode": "local-fixture",
+  "policy": {
+    "allowed_domains": ["example.com"],
+    "blocked_domains": [],
+    "review_required_for_new_domains": true
+  },
+  "priorState": {
+    "outbound_link_instances": [
+      {
+        "schemaVersion": "0.1.0",
+        "id": "oli_prior_specific",
+        "tenant_id": "fixture-tenant",
+        "site_id": "fixture-site",
+        "outbound_link_id": "prior-link-id",
+        "page_id": "home",
+        "content_type": "page",
+        "content_block_id": null,
+        "field_name": "ctaUrl",
+        "anchor_text": "ctaUrl",
+        "location_path": "pages/home/ctaUrl",
+        "is_enabled": false,
+        "status": "plain_text",
+        "first_detected_at": "2026-06-01T00:00:00.000Z",
+        "last_detected_at": "2026-06-01T00:00:00.000Z"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "sourceType": "page",
+      "page_id": "home",
+      "rootPath": "pages/home",
+      "content": {
+        "ctaUrl": "https://example.com/specific-instance"
+      }
+    }
+  ]
+}

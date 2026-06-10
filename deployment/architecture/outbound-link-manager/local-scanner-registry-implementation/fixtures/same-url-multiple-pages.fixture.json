@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "same-url-multiple-pages",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "mode": "local-fixture",
+  "policy": {
+    "allowed_domains": ["example.com"],
+    "blocked_domains": [],
+    "review_required_for_new_domains": true
+  },
+  "sources": [
+    {
+      "sourceType": "page",
+      "page_id": "home",
+      "rootPath": "pages/home",
+      "content": {
+        "ctaUrl": "https://example.com/shared-resource"
+      }
+    },
+    {
+      "sourceType": "page",
+      "page_id": "about",
+      "rootPath": "pages/about",
+      "content": {
+        "body": "See [shared resource](https://example.com/shared-resource#about)."
+      }
+    }
+  ]
+}

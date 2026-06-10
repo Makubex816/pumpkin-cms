@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "import-package-unreviewed-domain",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "mode": "import-package",
+  "policy": {
+    "allowed_domains": ["example.com"],
+    "blocked_domains": [],
+    "review_required_for_new_domains": true
+  },
+  "sources": [
+    {
+      "sourceType": "import_package",
+      "page_id": "imported-home",
+      "rootPath": "import/pages/imported-home",
+      "content": {
+        "body": "Review [vendor onboarding](https://vendor.example/onboarding)."
+      }
+    }
+  ]
+}

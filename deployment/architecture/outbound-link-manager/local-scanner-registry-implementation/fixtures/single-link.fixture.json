@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "single-link",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "mode": "local-fixture",
+  "policy": {
+    "allowed_domains": ["example.com"],
+    "blocked_domains": [],
+    "review_required_for_new_domains": true
+  },
+  "sources": [
+    {
+      "sourceType": "page",
+      "page_id": "home",
+      "rootPath": "pages/home",
+      "content": {
+        "title": "Home",
+        "ctaUrl": "https://example.com/resources/rink-safety#top",
+        "internalUrl": "/contact",
+        "contactEmail": "mailto:hello@example.com"
+      }
+    }
+  ]
+}

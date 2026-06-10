@@ -1,0 +1,18 @@
+{
+  "name": "pumpkin-outbound-link-manager-local-scanner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local/offline fixture-only outbound link scanner and registry foundation for Pumpkin CMS.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/outbound-link-cli.mjs && node --check src/scanner/local-content-scanner.mjs && node --check src/scanner/url-extractor.mjs && node --check src/scanner/field-path-walker.mjs && node --check src/scanner/anchor-text-extractor.mjs && node --check src/registry/url-normalizer.mjs && node --check src/registry/domain-normalizer.mjs && node --check src/registry/registry-builder.mjs && node --check src/registry/instance-builder.mjs && node --check src/scan-runs/scan-run-writer.mjs && node --check src/reports/scan-report-writer.mjs && node --check src/validators/outbound-link-validator.mjs && node --check src/utils/safe-paths.mjs && node --check src/utils/json-writer.mjs && node --check test/outbound-link-scanner.test.mjs && npm test",
+    "scan:single": "node src/outbound-link-cli.mjs scan --fixture fixtures/single-link.fixture.json --out .tmp/single-link-scan --overwrite",
+    "scan:tenant-bundle": "node src/outbound-link-cli.mjs scan --fixture fixtures/tenant-bundle.fixture.json --out .tmp/tenant-bundle-scan --overwrite",
+    "validate:tenant-bundle": "node src/outbound-link-cli.mjs validate --scan .tmp/tenant-bundle-scan",
+    "inspect:tenant-bundle": "node src/outbound-link-cli.mjs inspect --scan .tmp/tenant-bundle-scan"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

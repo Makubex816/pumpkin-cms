@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "duplicate-url-multiple-fields",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "mode": "local-fixture",
+  "policy": {
+    "allowed_domains": ["example.com"],
+    "blocked_domains": [],
+    "review_required_for_new_domains": true
+  },
+  "sources": [
+    {
+      "sourceType": "page",
+      "page_id": "home",
+      "rootPath": "pages/home",
+      "content": {
+        "hero": {
+          "ctaUrl": "https://example.com/vendor-guide#hero",
+          "body": "Read the [vendor guide](https://example.com/vendor-guide#body)."
+        },
+        "footerNote": "<a href=\"https://example.com/vendor-guide#footer\">Vendor guide</a>"
+      }
+    }
+  ]
+}

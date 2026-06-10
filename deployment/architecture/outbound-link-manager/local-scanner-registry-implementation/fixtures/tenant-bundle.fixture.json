@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "tenant-bundle",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "mode": "tenant-bundle",
+  "policy": {
+    "allowed_domains": ["example.com", "partner.example", "docs.example"],
+    "blocked_domains": [],
+    "review_required_for_new_domains": true
+  },
+  "sources": [
+    {
+      "sourceType": "tenant-bundle",
+      "page_id": "bundle-home",
+      "rootPath": "tenants/fixture-tenant/sites/fixture-site",
+      "content": {
+        "pages": [
+          {
+            "page_id": "home",
+            "blocks": [
+              {
+                "id": "hero",
+                "type": "hero",
+                "ctaUrl": "https://example.com/home-cta"
+              },
+              {
+                "id": "rich-text",
+                "type": "richText",
+                "html": "<p>Visit <a href=\"https://partner.example/vendors\">partner vendors</a>.</p>"
+              }
+            ]
+          }
+        ],
+        "navigation": {
+          "items": [
+            {
+              "label": "Internal Contact",
+              "href": "/contact"
+            },
+            {
+              "label": "Docs",
+              "href": "https://docs.example/help"
+            }
+          ]
+        },
+        "footer": {
+          "socialLinks": [
+            {
+              "label": "Example",
+              "url": "https://example.com/social"
+            }
+          ]
+        },
+        "theme": {
+          "externalUrl": "https://example.com/theme-reference"
+        }
+      }
+    }
+  ]
+}

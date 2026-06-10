@@ -1,0 +1,3 @@
+# Next Phase 2H-4 Data Model Local Persistence Prompt
+
+Approve Phase 2H-4 Outbound Link Manager data model and local persistence foundation only: extend the Phase 2H-3 local scanner package with stronger schema contracts, local persistence fixtures, deterministic registry merge/update behavior, audit-like local change summaries, richer negative validators, and Backup Center/onboarding contract preparation. Keep it local/offline and fixture-only. No database migration, no CMS writes, no Admin UI/API implementation, no rendering integration into production apps, no external HTTP crawling, no protected config reads, no Azure/CMS/API mutations, no deployment, no Search Console/indexing, no live-page publication, and no generated `.tmp` artifacts staged into Git.

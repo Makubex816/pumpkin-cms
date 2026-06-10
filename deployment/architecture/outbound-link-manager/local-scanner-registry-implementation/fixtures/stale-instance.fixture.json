@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureName": "stale-instance",
+  "tenant_id": "fixture-tenant",
+  "site_id": "fixture-site",
+  "mode": "local-fixture",
+  "policy": {
+    "allowed_domains": ["example.com"],
+    "blocked_domains": [],
+    "review_required_for_new_domains": true
+  },
+  "priorState": {
+    "outbound_links": [
+      {
+        "schemaVersion": "0.1.0",
+        "id": "ol_stale_fixture",
+        "tenant_id": "fixture-tenant",
+        "site_id": "fixture-site",
+        "original_url": "https://example.com/old-resource",
+        "normalized_url": "https://example.com/old-resource",
+        "domain": "example.com",
+        "status": "active",
+        "created_at": "2026-06-01T00:00:00.000Z",
+        "updated_at": "2026-06-01T00:00:00.000Z",
+        "created_by": "fixture",
+        "disabled_by": null,
+        "disabled_at": null,
+        "disabled_reason": null
+      }
+    ],
+    "outbound_link_instances": [
+      {
+        "schemaVersion": "0.1.0",
+        "id": "oli_stale_fixture",
+        "tenant_id": "fixture-tenant",
+        "site_id": "fixture-site",
+        "outbound_link_id": "ol_stale_fixture",
+        "page_id": "home",
+        "content_type": "page",
+        "content_block_id": null,
+        "field_name": "ctaUrl",
+        "anchor_text": "Old resource",
+        "location_path": "pages/home/ctaUrl",
+        "is_enabled": true,
+        "status": "enabled",
+        "first_detected_at": "2026-06-01T00:00:00.000Z",
+        "last_detected_at": "2026-06-01T00:00:00.000Z"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "sourceType": "page",
+      "page_id": "home",
+      "rootPath": "pages/home",
+      "content": {
+        "title": "Home without prior outbound link",
+        "internalUrl": "/contact"
+      }
+    }
+  ]
+}
