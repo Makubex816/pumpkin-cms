@@ -1147,7 +1147,7 @@ function ReadOnlyBanner({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
         <div>
           <div className="font-semibold">Read-only Admin foundation</div>
           <div className="mt-1">
-            Local fixture mode for tenant {snapshot.tenantKey} with {OUTBOUND_LINK_PROVIDER_MODE_MESSAGE.stagingProviderMode} readiness metadata. live-readonly/write profiles remain blocked; no write actions, crawler execution, production renderer integration, or protected configuration reads are wired.
+            Local fixture mode for tenant {snapshot.tenantKey} with {OUTBOUND_LINK_PROVIDER_MODE_MESSAGE.stagingProviderMode} readiness metadata. Live-write profiles remain blocked; No write actions, crawler execution, production renderer integration, or protected configuration reads are wired.
           </div>
           <ProviderReadinessStrip readiness={readiness} />
         </div>

@@ -10,7 +10,8 @@
 | Azure staging RBAC/profile/OLM contract finalization | Complete | V2.3.4 / L07 / L08 / L09 / L11 / L12 | Staging DB-scoped Cosmos RBAC assigned; provider profile and Resource Registry candidates created; OLM contract passed. |
 | First scoped OLM staging write gate | Complete | V2.2.2 / L08 / L12 | Approved batch `olbatch_b08e184fdc6565aa` wrote 48 records and passed readback. |
 | OLM staging hardening/readback gate | Complete, carried forward into V2.2.4 | V2.2.3 / L06 / L08 / L09 / L10 / L12 | Repeat readback/reconciliation passed; remaining blockers were resolved in V2.2.4. |
-| OLM Admin/API staging read-only and Backup Center storage proof | Complete, ready for final signoff | V2.2.4 / L06 / L08 / L09 / L10 / L11 / L12 | Bridge, API QA refresh, repeat readback sanity, and Backup Center storage proof passed. |
+| OLM Admin/API staging read-only and Backup Center storage proof | Complete, carried into V2.2.5 final signoff | V2.2.4 / L06 / L08 / L09 / L10 / L11 / L12 | Bridge, API QA refresh, repeat readback sanity, and Backup Center storage proof passed. |
+| OLM final stage-ready signoff and evidence freeze | Complete | V2.2.5 / L01 / L06 / L08 / L09 / L10 / L11 / L12 | Final readback sanity, Admin/API QA, Backup Center proof list, and evidence freeze passed. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -22,9 +23,13 @@
 
 ## Remaining OLM Stage-Ready Gates
 
-- Final no-write V2.2 stage-ready owner signoff.
+No V2.2 stage-ready blockers remain.
+
+Still separately gated:
+
 - Keep `production-runtime` blocked and keep any additional `live-write-approved` operation scoped to a future explicit approval.
-- Validate non-destructive rollback readiness without executing rollback deletion unless separately approved.
+- Validate destructive rollback deletion only under a future separate approval.
+- Do not perform production migration, production writes, CMS writes, deployment, indexing, or live publication without explicit approval.
 
 ## Resolved Or Supplyable OLM Staging Resource Values
 
@@ -95,3 +100,9 @@
 - V2.2.4 Backup Center staging proof: `uploaded`
 - V2.2.4 Storage RBAC assignments: `1` container-scoped Storage Blob Data Contributor
 - V2.2.4 stage-ready gate: `ready_for_final_signoff`
+- V2.2.5 final readback sanity: `passed`
+- V2.2.5 final readback records: `48`
+- V2.2.5 additional OLM staging writes: `0`
+- V2.2.5 Backup Center proof blobs listed: `4`
+- V2.2.5 OLM package tests: `132` passed
+- V2.2.5 final stage-ready gate: `complete_stage_ready`

@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.2.4, Admin/API Staging Read-only Bridge, Backup Center Storage Proof, and API QA Refresh |
-| Current V2 status | Complete; V2.2 blockers resolved and ready for final stage-ready signoff |
-| Provisional V2 overall completion | `74%` |
+| Current V2 reference | V2.2.5, Outbound Link Manager Final Stage-ready Signoff and Evidence Freeze |
+| Current V2 status | Complete; V2.2 final signoff passed and evidence package frozen |
+| Provisional V2 overall completion | `76%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
-| Active product lane | V2.2 Outbound Link Manager Stage-Ready with V2.3 Azure staging foundation support |
+| Active product lane | V2.5 Resource Registry / Provider Profiles operationalization after V2.2 closure |
 | Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| Safety posture | Staging-backed read-only bridge complete; repeat readback passed; Backup Center storage proof uploaded with one container-scoped Storage Blob RBAC assignment; no additional OLM staging write, no destructive rollback, no production/CMS write, no protected-config read, no app deployment |
-| Next gate | V2.2.5 OLM final stage-ready signoff and transition gate |
+| Safety posture | V2.2 final signoff complete; final readback sanity passed with 48 records and zero writes; Backup Center storage proof read-only verified; no additional OLM staging write, no destructive rollback, no Azure mutation/RBAC change, no production/CMS write, no protected-config read, no app deployment |
+| Next gate | V2.5.1 Resource Registry and Provider Profile Operationalization Hardening |
 
 ## V2 Reference System
 
@@ -53,8 +53,10 @@ Use this first before choosing a next prompt, reading historical result packages
 | OLM Azure Identity/RBAC Cosmos executor/readback package | `deployment/architecture/outbound-link-manager/v2-2-2-azure-identity-rbac-cosmos-executor-readback-result/` | V2.2.2 result package |
 | OLM staging hardening/stage-ready evidence | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_3_STAGING_HARDENING_STAGE_READY_REPORT.md` | V2.2.3 repeat readback passed, partial stage-ready |
 | OLM staging hardening/stage-ready package | `deployment/architecture/outbound-link-manager/v2-2-3-staging-hardening-stage-ready-result/` | V2.2.3 result package |
-| OLM Admin/API staging read-only and Backup Center storage proof | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_4_ADMIN_API_STAGING_READONLY_BACKUP_STORAGE_REPORT.md` | V2.2.4 blockers resolved, ready for final signoff |
+| OLM Admin/API staging read-only and Backup Center storage proof | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_4_ADMIN_API_STAGING_READONLY_BACKUP_STORAGE_REPORT.md` | V2.2.4 blockers resolved, carried into V2.2.5 |
 | OLM Admin/API staging read-only and Backup Center storage proof package | `deployment/architecture/outbound-link-manager/v2-2-4-admin-api-staging-readonly-backup-storage-result/` | V2.2.4 result package |
+| OLM final stage-ready signoff | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_5_FINAL_STAGE_READY_SIGNOFF_REPORT.md` | V2.2.5 final signoff complete |
+| OLM final stage-ready signoff package | `deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/` | V2.2.5 final evidence-freeze package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -62,7 +64,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2.3 repeat readback/reconciliation passed, and V2.2.4 resolved the remaining Admin/API bridge, Backup Center storage proof, and API QA build-lock blockers. The platform can proceed to final V2.2 stage-ready signoff.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2.3 repeat readback/reconciliation passed, V2.2.4 resolved the Admin/API bridge, Backup Center storage proof, and API QA blockers, and V2.2.5 completed final signoff. V2.2 has no remaining stage-ready blockers.
 
 Immutable current facts:
 
@@ -88,7 +90,12 @@ Immutable current facts:
 - V2.2.4 Storage RBAC assignments: `1` container-scoped assignment
 - V2.2.4 additional OLM staging writes: `0`
 - V2.2.4 stage-ready gate: `ready_for_final_signoff`
+- V2.2.5 final readback records: `48`
+- V2.2.5 additional OLM staging writes: `0`
+- V2.2.5 Backup Center storage proof list: `4` expected blobs
+- V2.2.5 OLM package tests: `132` passed
+- V2.2.5 final stage-ready gate: `complete_stage_ready`
 
 ## Next Recommended Phase
 
-Approve V2.2.5 Outbound Link Manager final stage-ready signoff and transition gate only. The phase should perform a no-write final review over V2.2.2, V2.2.3, and V2.2.4 evidence, confirm stage-ready status, produce owner signoff materials, and keep all additional staging writes, production writes, CMS writes, deployment, indexing, and live publication blocked without a new explicit approval.
+Approve V2.5.1 Resource Registry and Provider Profile Operationalization Hardening only. The phase should use the frozen V2.2 final signoff and existing Resource Registry/provider profile candidates to consolidate canonical registry/profile bindings for the OLM staging target, Backup Center staging proof, Azure staging resources, runtime modes, tenant/site scopes, proof packages, and operator-readiness surfaces. Keep the phase local/read-only: no Azure mutation, no RBAC changes, no provider writes, no protected config reads, no keys/listKeys, no connection strings, no SAS, no CMS writes, no deployment, no indexing, and no live publication.

@@ -1,0 +1,4 @@
+# Next Phase Prompt
+
+Approve V2.5.1 Resource Registry and Provider Profile Operationalization Hardening only: using the frozen V2.2 final stage-ready signoff and existing Resource Registry/provider profile candidates, consolidate the canonical registry/profile bindings for the OLM staging target, Backup Center staging proof, Azure staging resources, runtime modes, tenant/site scopes, proof packages, and operator-readiness surfaces into a complete local/read-only operational package. Run local validators and read-only consistency checks only, update source-of-truth docs, and produce a result package plus root report. No Azure mutation, no RBAC changes, no provider writes, no protected config reads, no secret export, no keys/listKeys, no connection strings, no SAS, no CMS writes, no external crawling, no deployment, no Search Console/indexing, no live-page publication, and no generated `.tmp` artifacts staged into Git.
+
