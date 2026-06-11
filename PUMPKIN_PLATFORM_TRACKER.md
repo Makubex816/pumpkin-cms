@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.5.1 |
-| currentReferenceName | Resource Registry and Provider Profile Operationalization Hardening |
-| currentReferenceStatus | Complete; local/read-only registry/profile control layer operationalized |
-| provisionalV2OverallCompletion | `78%` |
+| currentReference | V2.6.1 |
+| currentReferenceName | Runtime QA Harness Operationalization and Evidence Binding |
+| currentReferenceStatus | Complete; local/read-only reusable runtime QA harness and evidence binding operationalized |
+| provisionalV2OverallCompletion | `80%` |
 | currentLayerRefs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| nextReference | V2.6.1 |
-| nextReferenceName | Runtime QA Harness Platform Operationalization and Evidence Binding |
-| nextGate | Local/read-only runtime QA evidence binding against registry/profile states |
-| safetyPosture | Registry/profile validator passed; staging resource/container checks were read-only; production-runtime blocked; live-write-approved scoped-only; no provider write, Azure mutation/RBAC change, production/CMS write, protected-config read |
-| blockedState | No V2.5.1 hardening blockers remain; future uploads/writes, production actions, Azure mutations, and deployment remain separately gated |
+| nextReference | V2.7.1 |
+| nextReferenceName | Admin/API Operator Console Runtime-QA-Bound Readiness |
+| nextGate | Local/read-only operator console readiness bound to Runtime QA evidence |
+| safetyPosture | Runtime QA harness validator passed; local evidence is ignored; runtime-qa-staging upload blocked before upload by missing Storage data-plane RBAC; production-runtime blocked; live-write-approved scoped-only; no provider write, Azure mutation/RBAC change, production/CMS write, protected-config read |
+| blockedState | No V2.6.1 local operationalization blockers remain; runtime QA evidence upload requires future Storage data-plane RBAC; future writes, production actions, Azure mutations, and deployment remain separately gated |
 
 ## Legacy Tracker Freeze
 
@@ -38,7 +38,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.3 | `84%` | Staging Azure foundation, DB-scoped Cosmos RBAC, provider profile candidate, OLM contract, and container-scoped Backup Center Storage RBAC proof finalized |
 | V2.4 | `87%` | Backup Center proof and QA signoff strong; OLM staging storage proof uploaded |
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
-| V2.6 | `75%` | Runtime QA harness exists; broader module coverage pending |
+| V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `55%` | Admin/API operator surfaces exist; complete operator console pending |
 | V2.8 | `50%` | Tenant/static history exists; current publish readiness not active |
 | V2.9 | `20%` | Audit/jobs/production gates future |

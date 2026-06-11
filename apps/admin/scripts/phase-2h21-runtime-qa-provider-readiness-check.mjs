@@ -52,7 +52,7 @@ const result = runRuntimeQaHarness({
         'ReadinessPill',
         'LocalSandboxActionButton',
         'ReadOnlyActionButton',
-        'live-readonly/write profiles remain blocked',
+        'Live-write profiles remain blocked',
         'Live Writes',
       ],
     },

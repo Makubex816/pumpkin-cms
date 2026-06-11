@@ -13,6 +13,7 @@
 | OLM Admin/API staging read-only and Backup Center storage proof | Complete, carried into V2.2.5 final signoff | V2.2.4 / L06 / L08 / L09 / L10 / L11 / L12 | Bridge, API QA refresh, repeat readback sanity, and Backup Center storage proof passed. |
 | OLM final stage-ready signoff and evidence freeze | Complete | V2.2.5 / L01 / L06 / L08 / L09 / L10 / L11 / L12 | Final readback sanity, Admin/API QA, Backup Center proof list, and evidence freeze passed. |
 | Resource Registry / Provider Profile operationalization | Complete | V2.5.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Operational binding fixture, validator, schemas, matrices, and read-only staging checks passed. |
+| Runtime QA harness operationalization and evidence binding | Complete, upload blocked before upload | V2.6.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Reusable local/offline harness, registry, evidence manifest, Admin/API checks, and no-uncontrolled-write scan passed; upload requires future Storage data-plane RBAC. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -29,6 +30,7 @@ No V2.2 stage-ready blockers remain.
 Still separately gated:
 
 - Keep `production-runtime` blocked and keep any additional `live-write-approved` operation scoped to a future explicit approval.
+- Runtime QA evidence upload to `runtime-qa-staging` requires a future Storage data-plane RBAC approval/session. V2.6.1 did not assign RBAC or upload.
 - Validate destructive rollback deletion only under a future separate approval.
 - Do not perform production migration, production writes, CMS writes, deployment, indexing, or live publication without explicit approval.
 
@@ -116,3 +118,18 @@ Still separately gated:
 - V2.5.1 Resource Registry implementation tests: `15` passed
 - V2.5.1 production-runtime state: `blocked`
 - V2.5.1 live-write-approved state: `scoped-only`
+- V2.6.1 Runtime QA harness checks: `13` passed
+- V2.6.1 Runtime QA package tests: `4` passed
+- V2.6.1 Runtime QA evidence validation: `passed`
+- V2.6.1 Resource Registry operational binding validator: `passed`
+- V2.6.1 provider profile validation: `passed`
+- V2.6.1 OLM_STAGING env contract validation: `passed`
+- V2.6.1 Admin runtime QA: `passed`
+- V2.6.1 API read-only QA: `passed`
+- V2.6.1 API write guard QA: `passed`
+- V2.6.1 runtime-qa-staging container metadata check: `passed`
+- V2.6.1 runtime-qa-staging blob list: `blocked_missing_storage_data_plane_rbac`
+- V2.6.1 runtime QA evidence upload: `blocked_before_upload`
+- V2.6.1 additional OLM staging writes: `0`
+- V2.6.1 Azure infrastructure mutations: `0`
+- V2.6.1 RBAC assignments: `0`

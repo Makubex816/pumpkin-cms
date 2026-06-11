@@ -1,0 +1,18 @@
+{
+  "name": "pumpkin-platform-runtime-qa-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reusable local Runtime QA harness and evidence manifest tooling for PumpkinCMS.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/runtime-qa-cli.mjs && node --check src/runtime-qa-runner.mjs && node --check src/runtime-qa-validator.mjs && node --check src/safe-paths.mjs && node --check src/json-writer.mjs && node --check src/secret-scan.mjs && node --check test/runtime-qa.test.mjs && npm test",
+    "run:v2-6-1": "node src/runtime-qa-cli.mjs run --registry fixtures/runtime-qa-registry.v2-6-1.fixture.json --out .tmp/v2-6-1-runtime-qa-evidence --overwrite",
+    "validate:v2-6-1": "node src/runtime-qa-cli.mjs validate-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence",
+    "inspect:v2-6-1": "node src/runtime-qa-cli.mjs inspect-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
+
