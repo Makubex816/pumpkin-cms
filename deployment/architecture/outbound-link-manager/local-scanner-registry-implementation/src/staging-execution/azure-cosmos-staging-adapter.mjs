@@ -53,6 +53,17 @@ const outputFiles = [
   'VALIDATION_RESULT.json'
 ];
 
+const hardeningReadbackFiles = [
+  'readback-hardening-manifest.json',
+  'readback-gate-report.json',
+  'expected-record-targets.json',
+  'repeat-readback-result.json',
+  'repeat-reconciliation-result.json',
+  'trace-audit-rollback-validation.json',
+  'provider-state-result.json',
+  'VALIDATION_RESULT.json'
+];
+
 export async function runAzureCosmosStagingExecution({
   packagePath,
   profilePath,
@@ -208,6 +219,150 @@ export async function inspectAzureCosmosStagingExecution({ executionPath }) {
   };
 }
 
+export async function runAzureCosmosStagingReadbackHardening({
+  packagePath,
+  profilePath,
+  outputPath,
+  overwrite = false,
+  env = process.env,
+  clientFactory = createDefaultCosmosClient
+}) {
+  const outputRoot = resolveTmpOutputPath(outputPath);
+  if (await pathExists(outputRoot)) {
+    if (!overwrite) {
+      throw new Error(`Azure Cosmos staging readback output already exists: ${outputPath}`);
+    }
+    await fs.rm(outputRoot, { recursive: true, force: true });
+  }
+  await fs.mkdir(outputRoot, { recursive: true });
+
+  const context = await loadExecutionContext({ packagePath, profilePath, env });
+  const gate = evaluateAzureCosmosStagingReadbackGate(context);
+  await writeJson(path.join(outputRoot, 'readback-gate-report.json'), gate);
+
+  if (gate.status !== 'passed') {
+    return await writeReadbackHardeningBlockedResult({
+      outputRoot,
+      context,
+      gate,
+      blockReason: gate.failures[0]?.message ?? 'Azure Cosmos staging readback gate blocked'
+    });
+  }
+
+  const expectedWriteRecords = context.records.map((record) => {
+    const document = buildCosmosDocument({ context, record });
+    return writeResultRecord({ context, record, document, response: { statusCode: 'readback-only' } });
+  });
+
+  await writeJson(path.join(outputRoot, 'expected-record-targets.json'), {
+    schemaVersion: azureCosmosStagingSchemaVersion,
+    collectionType: 'pumpkin-outbound-link-azure-cosmos-staging-readback-expected-targets',
+    approvalManifestId: approvedAzureCosmosStaging.approvalManifestId,
+    firstWriteBatchId: approvedAzureCosmosStaging.firstWriteBatchId,
+    providerProfileId: context.profile.providerProfileId,
+    providerMode: context.profile.providerMode,
+    records: expectedWriteRecords.map((record) => ({
+      id: record.id,
+      targetRecordId: record.targetRecordId,
+      targetEntity: record.targetEntity,
+      targetContainer: record.targetContainer,
+      tenantKey: record.tenantKey,
+      siteKey: record.siteKey,
+      partitionKey: record.partitionKey,
+      approvalManifestId: record.approvalManifestId,
+      firstWriteBatchId: record.firstWriteBatchId,
+      providerProfileId: record.providerProfileId,
+      providerMode: record.providerMode,
+      sourceRecordId: record.sourceRecordId,
+      requestId: record.requestId,
+      actionId: record.actionId,
+      correlationId: record.correlationId,
+      rollbackPlanId: record.rollbackPlanId,
+      beforeStateHash: record.beforeStateHash,
+      afterStateHash: record.afterStateHash
+    })),
+    summary: {
+      expectedRecordCount: expectedWriteRecords.length,
+      countsByEntity: countByEntity(expectedWriteRecords)
+    },
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: false })
+  });
+
+  const client = await clientFactory({ target: gate.target });
+  const readback = await readBackWrittenRecords({
+    client,
+    context,
+    gate,
+    writeRecords: expectedWriteRecords,
+    liveProviderWrites: false
+  });
+  await writeJson(path.join(outputRoot, 'repeat-readback-result.json'), readback);
+  const reconciliation = buildReadbackReconciliation({ context, expectedWriteRecords, readback });
+  await writeJson(path.join(outputRoot, 'repeat-reconciliation-result.json'), reconciliation);
+  const traceAuditRollback = validateTraceAuditRollback({
+    context,
+    writeRecords: expectedWriteRecords,
+    readback,
+    liveProviderWrites: false
+  });
+  await writeJson(path.join(outputRoot, 'trace-audit-rollback-validation.json'), traceAuditRollback);
+  const providerState = buildProviderState({
+    context,
+    gate,
+    writeRecords: expectedWriteRecords,
+    readback,
+    traceAuditRollback,
+    liveProviderWrites: false
+  });
+  await writeJson(path.join(outputRoot, 'provider-state-result.json'), providerState);
+  const manifest = buildReadbackHardeningManifest({ context, gate, readback, reconciliation, traceAuditRollback, providerState });
+  await writeJson(path.join(outputRoot, 'readback-hardening-manifest.json'), manifest);
+  const validation = buildReadbackHardeningValidation({ context, manifest, readback, reconciliation, traceAuditRollback, providerState });
+  await writeJson(path.join(outputRoot, 'VALIDATION_RESULT.json'), validation);
+  await writeChecksums({ outputRoot });
+
+  return {
+    outputRoot,
+    context,
+    gate,
+    manifest,
+    validation,
+    readback,
+    reconciliation,
+    traceAuditRollback,
+    providerState,
+    summary: {
+      outputPath: toPackageRelative(outputRoot),
+      status: validation.status,
+      writeExecuted: false,
+      recordsWritten: 0,
+      readbackStatus: readback.status,
+      readbackRecords: readback.summary.readbackRecordCount,
+      reconciliationStatus: reconciliation.status,
+      providerProfileId: context.profile.providerProfileId,
+      providerMode: context.profile.providerMode
+    }
+  };
+}
+
+export async function inspectAzureCosmosStagingReadbackHardening({ readbackPath }) {
+  const outputRoot = resolveTmpOutputPath(readbackPath);
+  const validation = await readJson(path.join(outputRoot, 'VALIDATION_RESULT.json'));
+  const manifest = await readJson(path.join(outputRoot, 'readback-hardening-manifest.json'));
+  return {
+    readbackPath: toPackageRelative(outputRoot),
+    status: validation.status,
+    writeExecuted: manifest.writeExecuted,
+    recordsWritten: manifest.summary.recordsWritten,
+    readbackRecords: manifest.summary.readbackRecords,
+    readbackStatus: manifest.summary.readbackStatus,
+    reconciliationStatus: manifest.summary.reconciliationStatus,
+    providerProfileId: manifest.providerProfileId,
+    providerMode: manifest.providerMode,
+    failureCount: validation.summary.failureCount
+  };
+}
+
 export async function loadExecutionContext({ packagePath, profilePath, env = process.env }) {
   const packageRoot = resolveTmpOutputPath(packagePath);
   const rawProfile = await readJson(resolveFixturePath(profilePath));
@@ -231,6 +386,25 @@ export async function loadExecutionContext({ packagePath, profilePath, env = pro
     records,
     env,
     envContract
+  };
+}
+
+export function evaluateAzureCosmosStagingReadbackGate(context) {
+  const executionGate = evaluateAzureCosmosStagingGate({
+    ...context,
+    executeLiveWriteApproved: true
+  });
+  return {
+    ...executionGate,
+    gateType: 'pumpkin-outbound-link-azure-cosmos-staging-readback-only-gate',
+    status: executionGate.status,
+    summary: {
+      ...executionGate.summary,
+      readbackOnly: true,
+      liveWriteApprovedScoped: false,
+      additionalStagingWritesAllowed: false
+    },
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: false })
   };
 }
 
@@ -378,7 +552,7 @@ async function findConflicts({ client, records }) {
   return conflicts;
 }
 
-async function readBackWrittenRecords({ client, context, gate, writeRecords }) {
+async function readBackWrittenRecords({ client, context, gate, writeRecords, liveProviderWrites = true }) {
   const failures = [];
   const readbackRecords = [];
   for (const writeRecord of writeRecords) {
@@ -439,7 +613,7 @@ async function readBackWrittenRecords({ client, context, gate, writeRecords }) {
       failureCount: failures.length
     },
     failures,
-    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: true })
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites })
   };
 }
 
@@ -728,7 +902,7 @@ async function writePartialFailureResult({ outputRoot, context, gate, writeRecor
   };
 }
 
-function validateTraceAuditRollback({ context, writeRecords, readback }) {
+function validateTraceAuditRollback({ context, writeRecords, readback, liveProviderWrites = true }) {
   const failures = [];
   for (const writeRecord of writeRecords) {
     for (const field of [
@@ -771,11 +945,11 @@ function validateTraceAuditRollback({ context, writeRecords, readback }) {
       failureCount: failures.length
     },
     failures,
-    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: true, rollbackDeletionExecuted: false })
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites, rollbackDeletionExecuted: false })
   };
 }
 
-function buildProviderState({ context, gate, writeRecords, readback, traceAuditRollback }) {
+function buildProviderState({ context, gate, writeRecords, readback, traceAuditRollback, liveProviderWrites = true }) {
   const failures = [];
   for (const result of [readback, traceAuditRollback]) {
     if (result.status !== 'passed') {
@@ -795,7 +969,215 @@ function buildProviderState({ context, gate, writeRecords, readback, traceAuditR
       failureCount: failures.length
     },
     failures,
-    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: true })
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites })
+  };
+}
+
+function buildReadbackReconciliation({ context, expectedWriteRecords, readback }) {
+  const failures = [];
+  const expectedCounts = countByEntity(expectedWriteRecords);
+  const readbackCounts = countByEntity(readback.records ?? []);
+  if (readback.summary.readbackRecordCount !== approvedAzureCosmosStaging.expectedRecordCount) {
+    failures.push(failure('READBACK_RECORD_COUNT_MISMATCH', 'repeat readback must return the expected record count', 'readbackRecordCount'));
+  }
+  for (const entity of productionEntities) {
+    if (expectedCounts[entity] !== readbackCounts[entity]) {
+      failures.push(failure('READBACK_ENTITY_COUNT_MISMATCH', `${entity} readback count mismatch`, entity));
+    }
+  }
+  for (const record of readback.records ?? []) {
+    for (const [field, expected] of [
+      ['tenantKey', approvedAzureCosmosStaging.tenantKey],
+      ['siteKey', approvedAzureCosmosStaging.siteKey],
+      ['approvalManifestId', approvedAzureCosmosStaging.approvalManifestId],
+      ['firstWriteBatchId', approvedAzureCosmosStaging.firstWriteBatchId],
+      ['providerProfileId', approvedAzureCosmosStaging.providerProfileId],
+      ['providerMode', approvedAzureCosmosStaging.providerMode]
+    ]) {
+      if (record[field] !== expected) {
+        failures.push(failure('READBACK_SCOPE_FIELD_MISMATCH', `${field} mismatch`, `${record.targetRecordId}/${field}`));
+      }
+    }
+    if (record.readbackStatus !== 'matched') {
+      failures.push(failure('READBACK_RECORD_NOT_MATCHED', 'readback record must be matched', record.targetRecordId));
+    }
+  }
+  return {
+    schemaVersion: azureCosmosStagingSchemaVersion,
+    resultType: 'pumpkin-outbound-link-azure-cosmos-staging-readback-reconciliation',
+    status: failures.length === 0 && readback.status === 'passed' ? 'passed' : 'failed',
+    approvalManifestId: approvedAzureCosmosStaging.approvalManifestId,
+    firstWriteBatchId: approvedAzureCosmosStaging.firstWriteBatchId,
+    providerProfileId: context.profile.providerProfileId,
+    providerMode: context.profile.providerMode,
+    tenantKey: approvedAzureCosmosStaging.tenantKey,
+    siteKey: approvedAzureCosmosStaging.siteKey,
+    partitionKey: approvedAzureCosmosStaging.partitionKey,
+    expectedCountsByEntity: expectedCounts,
+    readbackCountsByEntity: readbackCounts,
+    fieldCoverage: {
+      firstWriteBatchId: 'verified',
+      approvalManifestId: 'verified',
+      providerProfileId: 'verified',
+      providerMode: 'verified',
+      tenantKey: 'verified',
+      siteKey: 'verified',
+      containerName: 'verified',
+      partitionKey: 'verified via tenantKey item reads and package mapping',
+      entityType: 'verified via targetEntity',
+      recordId: 'verified via targetRecordId',
+      sourceRecordId: 'verified in expected target mapping',
+      targetRecordId: 'verified',
+      traceId: 'represented by requestId/actionId/correlationId fields',
+      auditEventId: 'represented by auditEventIds arrays where applicable',
+      rollbackPlanId: 'verified',
+      beforeStateHash: 'verified in expected target mapping',
+      afterStateHash: 'verified in expected target mapping',
+      createdAt: 'carried by production candidate records',
+      updatedAt: 'carried by production candidate records'
+    },
+    summary: {
+      expectedRecordCount: expectedWriteRecords.length,
+      readbackRecordCount: readback.summary.readbackRecordCount,
+      failureCount: failures.length
+    },
+    failures,
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: false, rollbackDeletionExecuted: false })
+  };
+}
+
+function buildReadbackHardeningManifest({ context, gate, readback, reconciliation, traceAuditRollback, providerState }) {
+  return {
+    schemaVersion: azureCosmosStagingSchemaVersion,
+    manifestType: 'pumpkin-outbound-link-azure-cosmos-staging-readback-hardening-manifest',
+    reference: 'V2.2.3',
+    status: [readback.status, reconciliation.status, traceAuditRollback.status, providerState.status].every((status) => status === 'passed') ? 'passed' : 'failed',
+    writeExecuted: false,
+    approvalManifestId: approvedAzureCosmosStaging.approvalManifestId,
+    approvalReference: 'V2.2.3',
+    firstWriteBatchId: approvedAzureCosmosStaging.firstWriteBatchId,
+    providerProfileId: context.profile.providerProfileId,
+    providerMode: context.profile.providerMode,
+    target: gate.target,
+    tenantKey: approvedAzureCosmosStaging.tenantKey,
+    siteKey: approvedAzureCosmosStaging.siteKey,
+    summary: {
+      recordsWritten: 0,
+      expectedRecordCount: approvedAzureCosmosStaging.expectedRecordCount,
+      readbackRecords: readback.summary.readbackRecordCount,
+      countsByEntity: reconciliation.readbackCountsByEntity,
+      readbackStatus: readback.status,
+      reconciliationStatus: reconciliation.status,
+      traceAuditRollbackStatus: traceAuditRollback.status,
+      providerStateStatus: providerState.status
+    },
+    files: hardeningReadbackFiles,
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: false, rollbackDeletionExecuted: false })
+  };
+}
+
+function buildReadbackHardeningValidation({ context, manifest, readback, reconciliation, traceAuditRollback, providerState }) {
+  const failures = [];
+  if (manifest.writeExecuted !== false || manifest.summary.recordsWritten !== 0) {
+    failures.push(failure('READBACK_HARDENING_WRITE_BOUNDARY_FAILED', 'readback hardening must not execute provider writes', 'writeExecuted'));
+  }
+  if (readback.summary.readbackRecordCount !== approvedAzureCosmosStaging.expectedRecordCount) {
+    failures.push(failure('READBACK_HARDENING_COUNT_MISMATCH', 'readback count must match expected records', 'readbackRecordCount'));
+  }
+  for (const [code, result] of [
+    ['READBACK_HARDENING_READBACK_FAILED', readback],
+    ['READBACK_HARDENING_RECONCILIATION_FAILED', reconciliation],
+    ['READBACK_HARDENING_TRACE_AUDIT_ROLLBACK_FAILED', traceAuditRollback],
+    ['READBACK_HARDENING_PROVIDER_STATE_FAILED', providerState]
+  ]) {
+    if (result.status !== 'passed') {
+      failures.push(failure(code, `${code} must pass`, code));
+    }
+  }
+  return {
+    schemaVersion: azureCosmosStagingSchemaVersion,
+    validationType: 'pumpkin-outbound-link-azure-cosmos-staging-readback-hardening-validation',
+    status: failures.length === 0 ? 'passed' : 'failed',
+    providerProfileId: context.profile.providerProfileId,
+    providerMode: context.profile.providerMode,
+    approvalManifestId: approvedAzureCosmosStaging.approvalManifestId,
+    firstWriteBatchId: approvedAzureCosmosStaging.firstWriteBatchId,
+    summary: {
+      recordsWritten: 0,
+      expectedRecordCount: approvedAzureCosmosStaging.expectedRecordCount,
+      readbackRecordCount: readback.summary.readbackRecordCount,
+      readbackStatus: readback.status,
+      reconciliationStatus: reconciliation.status,
+      failureCount: failures.length
+    },
+    failures,
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: false, rollbackDeletionExecuted: false })
+  };
+}
+
+async function writeReadbackHardeningBlockedResult({ outputRoot, context, gate, blockReason }) {
+  const blocked = blockedEnvelope({ context, gate, blockReason });
+  await writeJson(path.join(outputRoot, 'expected-record-targets.json'), blocked);
+  await writeJson(path.join(outputRoot, 'repeat-readback-result.json'), blocked);
+  await writeJson(path.join(outputRoot, 'repeat-reconciliation-result.json'), blocked);
+  await writeJson(path.join(outputRoot, 'trace-audit-rollback-validation.json'), blocked);
+  await writeJson(path.join(outputRoot, 'provider-state-result.json'), blocked);
+  await writeJson(path.join(outputRoot, 'readback-hardening-manifest.json'), {
+    schemaVersion: azureCosmosStagingSchemaVersion,
+    manifestType: 'pumpkin-outbound-link-azure-cosmos-staging-readback-hardening-manifest',
+    reference: 'V2.2.3',
+    status: 'blocked',
+    writeExecuted: false,
+    approvalManifestId: approvedAzureCosmosStaging.approvalManifestId,
+    firstWriteBatchId: approvedAzureCosmosStaging.firstWriteBatchId,
+    providerProfileId: context.profile.providerProfileId,
+    providerMode: context.profile.providerMode,
+    blockReason,
+    summary: {
+      recordsWritten: 0,
+      expectedRecordCount: approvedAzureCosmosStaging.expectedRecordCount,
+      readbackRecords: 0,
+      failureCount: gate.failures.length
+    },
+    files: hardeningReadbackFiles,
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: false })
+  });
+  const validation = {
+    schemaVersion: azureCosmosStagingSchemaVersion,
+    validationType: 'pumpkin-outbound-link-azure-cosmos-staging-readback-hardening-validation',
+    status: 'blocked',
+    providerProfileId: context.profile.providerProfileId,
+    providerMode: context.profile.providerMode,
+    approvalManifestId: approvedAzureCosmosStaging.approvalManifestId,
+    firstWriteBatchId: approvedAzureCosmosStaging.firstWriteBatchId,
+    summary: {
+      recordsWritten: 0,
+      expectedRecordCount: approvedAzureCosmosStaging.expectedRecordCount,
+      readbackRecordCount: 0,
+      failureCount: gate.failures.length
+    },
+    failures: gate.failures,
+    boundaries: azureCosmosExecutionBoundaries({ liveProviderWrites: false })
+  };
+  await writeJson(path.join(outputRoot, 'VALIDATION_RESULT.json'), validation);
+  await writeChecksums({ outputRoot });
+  return {
+    outputRoot,
+    context,
+    gate,
+    validation,
+    summary: {
+      outputPath: toPackageRelative(outputRoot),
+      status: validation.status,
+      writeExecuted: false,
+      recordsWritten: 0,
+      readbackStatus: 'blocked',
+      readbackRecords: 0,
+      reconciliationStatus: 'blocked',
+      providerProfileId: context.profile.providerProfileId,
+      providerMode: context.profile.providerMode,
+      blockReason
+    }
   };
 }
 

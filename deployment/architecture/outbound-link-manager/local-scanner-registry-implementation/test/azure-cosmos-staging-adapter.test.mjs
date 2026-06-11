@@ -5,9 +5,12 @@ import test from 'node:test';
 import { spawnSync } from 'node:child_process';
 import {
   approvedAzureCosmosStaging,
+  evaluateAzureCosmosStagingReadbackGate,
   evaluateAzureCosmosStagingGate,
+  inspectAzureCosmosStagingReadbackHardening,
   loadExecutionContext,
-  runAzureCosmosStagingExecution
+  runAzureCosmosStagingExecution,
+  runAzureCosmosStagingReadbackHardening
 } from '../src/staging-execution/azure-cosmos-staging-adapter.mjs';
 import { runStagingExecution } from '../src/staging-execution/staging-apply-executor.mjs';
 import { readJson } from '../src/utils/json-writer.mjs';
@@ -43,6 +46,19 @@ test('scoped Azure Cosmos gate passes only with exact V2.2.2 values and explicit
   assert.equal(passed.status, 'passed');
   assert.equal(passed.summary.approvedRecordCount, 48);
   assert.equal(passed.summary.liveWriteApprovedScoped, true);
+});
+
+test('readback hardening gate passes without enabling a write execution flag', async () => {
+  const context = await loadExecutionContext({
+    packagePath,
+    profilePath,
+    env: validEnv()
+  });
+  const passed = evaluateAzureCosmosStagingReadbackGate(context);
+  assert.equal(passed.status, 'passed');
+  assert.equal(passed.summary.readbackOnly, true);
+  assert.equal(passed.summary.additionalStagingWritesAllowed, false);
+  assert.equal(passed.boundaries.liveProviderWrites, false);
 });
 
 test('scoped Azure Cosmos gate blocks missing env, wrong batch, and non-staging profiles', async () => {
@@ -109,6 +125,42 @@ test('fake client executes scoped write and readback without secrets or Azure ca
   assert.equal(manifest.boundaries.keysListKeys, false);
 });
 
+test('readback hardening reads existing scoped records without additional writes', async () => {
+  const fakeClient = new FakeCosmosClient();
+  await runAzureCosmosStagingExecution({
+    packagePath,
+    profilePath,
+    outputPath: '.tmp/test-azure-cosmos-staging-adapter/readback-seed',
+    overwrite: true,
+    executeLiveWriteApproved: true,
+    env: validEnv(),
+    clientFactory: async () => fakeClient
+  });
+  const writeCountAfterSeed = fakeClient.writeCount;
+  const result = await runAzureCosmosStagingReadbackHardening({
+    packagePath,
+    profilePath,
+    outputPath: '.tmp/test-azure-cosmos-staging-adapter/readback-hardening',
+    overwrite: true,
+    env: validEnv(),
+    clientFactory: async () => fakeClient
+  });
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.summary.writeExecuted, false);
+  assert.equal(result.summary.recordsWritten, 0);
+  assert.equal(result.summary.readbackRecords, 48);
+  assert.equal(result.reconciliation.status, 'passed');
+  assert.equal(result.providerState.boundaries.liveProviderWrites, false);
+  assert.equal(fakeClient.writeCount, writeCountAfterSeed);
+
+  const summary = await inspectAzureCosmosStagingReadbackHardening({
+    readbackPath: '.tmp/test-azure-cosmos-staging-adapter/readback-hardening'
+  });
+  assert.equal(summary.status, 'passed');
+  assert.equal(summary.writeExecuted, false);
+  assert.equal(summary.readbackRecords, 48);
+});
+
 test('fake client conflict blocks before writing', async () => {
   const fakeClient = new FakeCosmosClient({ conflictIds: new Set(['olp_edc9b74d5255ece6']) });
   const result = await runAzureCosmosStagingExecution({
@@ -168,6 +220,28 @@ test('CLI requires explicit live write flag and supports fake-free gate blocking
   assert.equal(blocked.status, 0);
   assert.match(blocked.stdout, /azureCosmosStagingExecution: blocked/);
   assert.match(blocked.stdout, /writeExecuted: false/);
+});
+
+test('CLI readback hardening blocks before Azure client when env contract is missing', () => {
+  const blocked = spawnSync(process.execPath, [
+    'src/outbound-link-cli.mjs',
+    'azure-cosmos-staging-readback-hardening',
+    '--package',
+    packagePath,
+    '--profile',
+    profilePath,
+    '--out',
+    '.tmp/test-azure-cosmos-staging-adapter/cli-readback-missing-env',
+    '--overwrite'
+  ], {
+    cwd: packageRoot,
+    encoding: 'utf8',
+    env: { ...process.env, OLM_STAGING_PROVIDER_PROFILE_ID: '' }
+  });
+  assert.equal(blocked.status, 0);
+  assert.match(blocked.stdout, /azureCosmosStagingReadbackHardening: blocked/);
+  assert.match(blocked.stdout, /writeExecuted: false/);
+  assert.match(blocked.stdout, /recordsWritten: 0/);
 });
 
 test('Azure Cosmos adapter source avoids protected config and key-based access', async () => {

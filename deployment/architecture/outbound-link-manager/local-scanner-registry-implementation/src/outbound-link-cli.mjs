@@ -45,7 +45,12 @@ import { inspectApplyPlan, runApplyPlanDryRun } from './apply-plan/apply-plan-dr
 import { validateApplyPlan } from './apply-plan/apply-plan-validator.mjs';
 import { inspectStagingExecution, runStagingExecution, runStagingReadback } from './staging-execution/staging-apply-executor.mjs';
 import { validateStagingExecution } from './staging-execution/staging-execution-validator.mjs';
-import { inspectAzureCosmosStagingExecution, runAzureCosmosStagingExecution } from './staging-execution/azure-cosmos-staging-adapter.mjs';
+import {
+  inspectAzureCosmosStagingExecution,
+  inspectAzureCosmosStagingReadbackHardening,
+  runAzureCosmosStagingExecution,
+  runAzureCosmosStagingReadbackHardening
+} from './staging-execution/azure-cosmos-staging-adapter.mjs';
 import { getOutboundLinkProviderState } from './api/services/outbound-link-provider-state-service.mjs';
 import { buildStagingExecutionPackage } from './execution-package/staging-execution-package-builder.mjs';
 import { inspectStagingExecutionPackage, validateStagingExecutionPackage } from './execution-package/execution-package-validator.mjs';
@@ -203,6 +208,12 @@ async function main() {
         break;
       case 'inspect-azure-cosmos-staging-execution':
         await inspectAzureCosmosStagingExecutionCommand(args);
+        break;
+      case 'azure-cosmos-staging-readback-hardening':
+        await azureCosmosStagingReadbackHardeningCommand(args);
+        break;
+      case 'inspect-azure-cosmos-staging-readback-hardening':
+        await inspectAzureCosmosStagingReadbackHardeningCommand(args);
         break;
       case 'api-provider-state':
         await apiProviderStateCommand(args);
@@ -994,6 +1005,45 @@ async function inspectAzureCosmosStagingExecutionCommand(args) {
   console.log(`failures: ${summary.failureCount}`);
 }
 
+async function azureCosmosStagingReadbackHardeningCommand(args) {
+  const options = parseArgs(args);
+  const result = await runAzureCosmosStagingReadbackHardening({
+    packagePath: required(options.package, '--package is required'),
+    profilePath: required(options.profile, '--profile is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  console.log(`azureCosmosStagingReadbackHardening: ${result.summary.status}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`providerProfileId: ${result.summary.providerProfileId}`);
+  console.log(`providerMode: ${result.summary.providerMode}`);
+  console.log(`writeExecuted: ${result.summary.writeExecuted}`);
+  console.log(`recordsWritten: ${result.summary.recordsWritten}`);
+  console.log(`readbackRecords: ${result.summary.readbackRecords}`);
+  console.log(`readbackStatus: ${result.summary.readbackStatus}`);
+  console.log(`reconciliationStatus: ${result.summary.reconciliationStatus}`);
+  if (result.summary.blockReason) {
+    console.log(`blockReason: ${result.summary.blockReason}`);
+  }
+  if (!['passed', 'blocked'].includes(result.summary.status)) {
+    process.exitCode = 1;
+  }
+}
+
+async function inspectAzureCosmosStagingReadbackHardeningCommand(args) {
+  const options = parseArgs(args);
+  const summary = await inspectAzureCosmosStagingReadbackHardening({ readbackPath: required(options.readback, '--readback is required') });
+  console.log(`azureCosmosStagingReadbackHardening: ${summary.status}`);
+  console.log(`writeExecuted: ${summary.writeExecuted}`);
+  console.log(`recordsWritten: ${summary.recordsWritten}`);
+  console.log(`readbackRecords: ${summary.readbackRecords}`);
+  console.log(`readbackStatus: ${summary.readbackStatus}`);
+  console.log(`reconciliationStatus: ${summary.reconciliationStatus}`);
+  console.log(`providerProfileId: ${summary.providerProfileId}`);
+  console.log(`providerMode: ${summary.providerMode}`);
+  console.log(`failures: ${summary.failureCount}`);
+}
+
 async function apiProviderStateCommand(args) {
   const options = parseArgs(args);
   const response = await getOutboundLinkProviderState({
@@ -1199,6 +1249,8 @@ Commands:
   validate-staging-execution-package --package .tmp/phase-2h22-staging-execution-package
   inspect-staging-execution-package --package .tmp/phase-2h22-staging-execution-package
   validate-staging-env-contract [--package .tmp/phase-2h22-staging-execution-package] [--json]
+  azure-cosmos-staging-readback-hardening --package .tmp/phase-2h22-staging-execution-package --profile fixtures/provider-profile-olm-staging-cosmos-nosql.fixture.json --out .tmp/v2-2-3-azure-cosmos-staging-readback-hardening [--overwrite]
+  inspect-azure-cosmos-staging-readback-hardening --readback .tmp/v2-2-3-azure-cosmos-staging-readback-hardening
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

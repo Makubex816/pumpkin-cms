@@ -9,8 +9,9 @@
 | Azure staging final parameter worksheet and creation retry | Complete | V2.3.3 / L07 / L09 / L11 / L12 | Staging resource group and resource foundation created; RBAC skipped. |
 | Azure staging RBAC/profile/OLM contract finalization | Complete | V2.3.4 / L07 / L08 / L09 / L11 / L12 | Staging DB-scoped Cosmos RBAC assigned; provider profile and Resource Registry candidates created; OLM contract passed. |
 | First scoped OLM staging write gate | Complete | V2.2.2 / L08 / L12 | Approved batch `olbatch_b08e184fdc6565aa` wrote 48 records and passed readback. |
-| OLM real staging provider target | Seeded for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
-| OLM readback/rollback | Readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
+| OLM staging hardening/readback gate | Complete, partial stage-ready | V2.2.3 / L06 / L08 / L09 / L10 / L12 | Repeat readback/reconciliation passed; final signoff still needs staging-backed Admin/API bridge. |
+| OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
+| OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
 | RBAC assignment | Complete for V2.3.4 staging database scope | V2.3 / L11 / L12 | Future RBAC changes require separate explicit approval. |
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
@@ -18,11 +19,11 @@
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
 | Deployment/indexing/publication | Closed | V2.8 / V2.9 / L15 | Separate deploy/index/publish approval required. |
 
-## Remaining OLM Staging Execution Gates
+## Remaining OLM Stage-Ready Gates
 
-- Refresh Backup Center evidence after the scoped staging write.
-- Re-run Runtime QA and provider-state checks against the post-write staging posture.
-- Preserve local/offline, fake, and staging-simulated profiles as the default development and QA paths.
+- Wire or validate Admin/API runtime against staging-backed read-only OLM state.
+- Add or approve Backup Center staging upload/storage proof path without keys, connection strings, or SAS.
+- Clear local API QA build-lock/stale assembly blocker and refresh API write-action QA.
 - Keep `production-runtime` blocked and keep any additional `live-write-approved` operation scoped to a future explicit approval.
 - Validate non-destructive rollback readiness without executing rollback deletion unless separately approved.
 
@@ -81,3 +82,9 @@
 - V2.2.2 Azure infrastructure mutations: `0`
 - V2.2.2 RBAC assignments: `0`
 - V2.2.2 production writes: `0`
+- V2.2.3 additional OLM staging writes: `0`
+- V2.2.3 repeat readback run: `true`
+- V2.2.3 repeat readback records: `48`
+- V2.2.3 entity reconciliation: `passed`
+- V2.2.3 Backup Center staging proof: `local_result_package_based`
+- V2.2.3 stage-ready gate: `partial`
