@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "0.1.0",
+  "reference": "V2.3.1",
+  "referenceName": "Azure Staging Foundation Inventory and IaC Package",
+  "resultType": "pumpkin-azure-staging-foundation-inventory-iac-package",
+  "status": "complete_no_deploy_no_mutation_package",
+  "createdAt": "2026-06-11",
+  "visibleTracker": {
+    "system": "V2.#",
+    "legacyTracker": "Legacy 2H Tracker v1 frozen at 92 / 100",
+    "previousVisibleReference": "V2.0",
+    "currentReference": "V2.3.1",
+    "provisionalV2OverallCompletion": "60%"
+  },
+  "layers": [
+    "L01",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10",
+    "L11",
+    "L12"
+  ],
+  "sourceInputsReviewed": [
+    "PUMPKIN_PLATFORM_SOURCE_OF_TRUTH.md",
+    "PUMPKIN_PLATFORM_TRACKER.md",
+    "PUMPKIN_PLATFORM_ACTIVE_BLOCKERS_AND_GATES.md",
+    "PUMPKIN_PLATFORM_CANONICAL_DOC_INDEX.md",
+    "deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/",
+    "deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/olm-staging-values-source-map.md"
+  ],
+  "azureInventory": {
+    "azureCliAvailable": true,
+    "alreadyLoggedIn": true,
+    "accountName": "Azure subscription 1",
+    "accountState": "Enabled",
+    "subscriptionId": "redacted",
+    "tenantId": "redacted",
+    "resourceGroupCount": 5,
+    "resourceCount": 7,
+    "resourceTypeSummary": [
+      "Microsoft.Storage/storageAccounts: 2",
+      "Microsoft.DocumentDB/databaseAccounts: 1",
+      "Microsoft.Web/staticSites: 1",
+      "Microsoft.Web/serverFarms: 1",
+      "Microsoft.OperationalInsights/workspaces: 1",
+      "Microsoft.Web/sites: 1"
+    ]
+  },
+  "olmStagingFacts": {
+    "approvalManifestId": "olapprove_508df3f03faa4f80",
+    "firstWriteBatchId": "olbatch_b08e184fdc6565aa",
+    "expectedRecords": 48,
+    "recordsWritten": 0,
+    "readbackRun": false,
+    "actualStagingWriteExecutionPercent": 0
+  },
+  "unresolvedFields": [
+    "OLM_STAGING_PROVIDER_PROFILE_ID",
+    "OLM_STAGING_PROVIDER_TYPE",
+    "OLM_STAGING_PROVIDER_MODE",
+    "OLM_STAGING_RESOURCE_SCOPE",
+    "OLM_STAGING_ACCOUNT_OR_HOST",
+    "OLM_STAGING_DATABASE_OR_NAMESPACE",
+    "OLM_STAGING_RBAC_OR_AUTH_MODE",
+    "OLM_STAGING_IDENTITY_OR_SESSION_TYPE",
+    "OLM_STAGING_READBACK_METHOD",
+    "OLM_STAGING_ROLLBACK_METHOD"
+  ],
+  "iacPackage": {
+    "path": "deployment/architecture/azure-staging-foundation/iac/",
+    "format": "Bicep",
+    "deploymentExecuted": false,
+    "whatIfExecuted": false,
+    "secretsInOutputs": false,
+    "productionDefaults": false,
+    "files": [
+      "README.md",
+      "main.bicep",
+      "parameters.example.json",
+      "outputs-contract.md"
+    ]
+  },
+  "boundaries": {
+    "azureResourceCreation": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "keysListKeys": false,
+    "connectionStringGeneration": false,
+    "sasGeneration": false,
+    "keyVaultSecretValueRead": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "stagingProviderWrite": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrite": false,
+    "cmsWrite": false,
+    "externalCrawl": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "readonly-azure-inventory-result.md",
+    "staging-resource-foundation-proposal.md",
+    "staging-resource-naming-plan.md",
+    "olm-staging-values-source-map.md",
+    "provider-profile-source-map.md",
+    "resource-registry-staging-mapping-plan.md",
+    "backup-center-staging-resource-map.md",
+    "runtime-qa-staging-evidence-map.md",
+    "rbac-and-identity-plan.md",
+    "key-vault-secret-boundary-plan.md",
+    "cost-guardrail-plan.md",
+    "iac-template-summary.md",
+    "azure-creation-approval-checklist.md",
+    "blockers-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+

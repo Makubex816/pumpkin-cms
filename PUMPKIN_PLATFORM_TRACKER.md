@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.0 |
-| currentReferenceName | Master Reference Rebaseline and Layer Alignment |
+| currentReference | V2.3.1 |
+| currentReferenceName | Azure Staging Foundation Inventory and IaC Package |
 | currentReferenceStatus | Complete |
-| provisionalV2OverallCompletion | `58%` |
-| currentLayerRefs | L01, L05, L08, L09, L10, L12 |
-| nextReference | V2.1 |
-| nextReferenceName | Source-of-Truth / Governance Control |
-| nextGate | V2.1 governance control hardening before V2.2 OLM Stage-Ready value capture |
+| provisionalV2OverallCompletion | `60%` |
+| currentLayerRefs | L01, L06, L07, L08, L09, L10, L11, L12 |
+| nextReference | V2.3.2 |
+| nextReferenceName | Azure Staging Foundation target finalization and deployment dry-run validation |
+| nextGate | Finalize non-secret staging target/profile values and validate IaC without creation |
 | safetyPosture | No-write, no-Azure-mutation, no protected-config-read |
-| blockedState | Missing canonical `OLM_STAGING_*` target/profile/session/readback/rollback contract |
+| blockedState | Missing canonical `OLM_STAGING_*` execution values; V2.3.1 source map exists |
 
 ## Legacy Tracker Freeze
 
@@ -35,7 +35,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.0 | `100%` | Master reference rebaseline complete |
 | V2.1 | `70%` | Source-of-truth governance foundation exists; hardening next |
 | V2.2 | `72%` | OLM stage-readiness advanced; value capture and real write still blocked |
-| V2.3 | `20%` | Azure staging resource foundation proposal pending |
+| V2.3 | `35%` | No-deploy Azure inventory, staging foundation proposal, and IaC draft complete |
 | V2.4 | `85%` | Backup Center proof and QA signoff strong; target-specific OLM pre-write evidence pending |
 | V2.5 | `65%` | Resource Registry and provider profile foundations exist; OLM target mapping pending |
 | V2.6 | `75%` | Runtime QA harness exists; broader module coverage pending |

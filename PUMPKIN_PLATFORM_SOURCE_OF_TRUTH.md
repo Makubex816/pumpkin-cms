@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.0, Master Reference Rebaseline and Layer Alignment |
+| Current V2 reference | V2.3.1, Azure Staging Foundation Inventory and IaC Package |
 | Current V2 status | Complete |
-| Provisional V2 overall completion | `58%` |
+| Provisional V2 overall completion | `60%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
-| Active product lane | V2.1 Source-of-Truth / Governance Control, then V2.2 Outbound Link Manager Stage-Ready |
-| Active layer refs | L01, L05, L08, L09, L10, L12 |
+| Active product lane | V2.2 Outbound Link Manager Stage-Ready with V2.3 Azure staging foundation support |
+| Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
 | Safety posture | No-write, no-Azure-mutation, no protected-config-read, no deployment |
-| Next gate | V2.1 governance control hardening |
+| Next gate | V2.3.2 Azure staging target finalization and deployment dry-run validation |
 
 ## V2 Reference System
 
@@ -39,6 +39,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | --- | --- | --- |
 | V2.0 rebaseline | `PUMPKIN_PLATFORM_V2_REFERENCE_REBASELINE_REPORT.md` | Current visible tracker model |
 | V2.0 result package | `deployment/architecture/platform-source-of-truth/v2-0-master-reference-rebaseline-layer-alignment-result/` | Current reference package |
+| Azure staging foundation | `PUMPKIN_AZURE_STAGING_FOUNDATION_V2_3_1_INVENTORY_IAC_PACKAGE_REPORT.md` | V2.3.1 no-deploy inventory and IaC package |
+| Azure staging foundation package | `deployment/architecture/azure-staging-foundation/v2-3-1-azure-staging-foundation-inventory-iac-package-result/` | V2.3.1 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -69,4 +71,4 @@ Immutable current facts:
 
 ## Next Recommended Phase
 
-Approve V2.1 Source-of-Truth / Governance Control hardening only. This should harden V2 references, layer references, blocker ownership, canonical package registration, operator response format, and no-write gate enforcement before continuing V2.2 Outbound Link Manager Stage-Ready work.
+Approve V2.3.2 Azure Staging Foundation target finalization and deployment dry-run validation only. This should finalize non-secret staging target values, provider profile candidates, Resource Registry mapping, Backup Center evidence requirements, Runtime QA evidence requirements, RBAC/identity plan, and Bicep parameters before any Azure creation or OLM staging write is considered.

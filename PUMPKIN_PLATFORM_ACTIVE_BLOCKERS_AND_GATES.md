@@ -4,9 +4,10 @@
 
 | Gate | Status | V2 refs | Required unblock |
 | --- | --- | --- | --- |
-| Source-of-truth governance hardening | Next | V2.1 / L01 | Register V2 response format, blocker ownership, and package registration rules. |
+| Azure staging foundation inventory and IaC package | Complete | V2.3.1 / L07 / L09 / L11 / L12 | No-deploy package created; no Azure mutation performed. |
+| Azure staging target finalization and deployment dry-run | Next | V2.3.2 / L07 / L09 / L11 / L12 | Finalize non-secret staging target/profile values and validate IaC without creation. |
 | First scoped OLM staging write | Blocked | V2.2 / L08 / L12 | Canonical `OLM_STAGING_*` contract must pass. |
-| OLM real staging provider target | Blocked | V2.2 / V2.3 / V2.5 | Non-secret target/resource values must be supplied and approved. |
+| OLM real staging provider target | Blocked | V2.2 / V2.3 / V2.5 | Non-secret target/resource values must be supplied, validated, and approved. |
 | OLM readback/rollback | Blocked | V2.2 / V2.4 / V2.9 | Concrete methods must be approved and tied to `olbatch_b08e184fdc6565aa`. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
 | RBAC assignment | Closed | V2.3 / L11 / L12 | Separate explicit approval required. |
@@ -39,3 +40,7 @@
 - V2.0 Azure resources created: `0`
 - V2.0 Azure resources mutated: `0`
 - V2.0 RBAC assignments: `0`
+- V2.3.1 Azure resources created: `0`
+- V2.3.1 Azure resources mutated: `0`
+- V2.3.1 RBAC assignments: `0`
+- V2.3.1 staging writes: `0`
