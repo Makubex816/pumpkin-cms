@@ -1,0 +1,4 @@
+# Later Approval Prompt: Azure Foundation Proposal
+
+Approve a later Outbound Link Manager Azure staging foundation proposal and resource review only: review the future Azure or provider foundation needed to supply the canonical `OLM_STAGING_*` values for the scoped OLM staging write path, including non-secret resource scope, provider type, account or host, database or namespace, RBAC/session mode, identity/session type, readback method, rollback method, Resource Registry mapping, Backup Center pre-write dependency, and no-go conditions. This is proposal/review only unless a separate approval explicitly authorizes resource creation or RBAC changes. Do not execute writes, create resources, mutate Azure, read protected config, export secrets, use keys/listKeys, generate connection strings, generate SAS, deploy, index, publish, or touch production.
+

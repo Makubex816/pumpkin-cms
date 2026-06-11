@@ -48,6 +48,7 @@ import { validateStagingExecution } from './staging-execution/staging-execution-
 import { getOutboundLinkProviderState } from './api/services/outbound-link-provider-state-service.mjs';
 import { buildStagingExecutionPackage } from './execution-package/staging-execution-package-builder.mjs';
 import { inspectStagingExecutionPackage, validateStagingExecutionPackage } from './execution-package/execution-package-validator.mjs';
+import { validateStagingEnvContract } from './staging-target/staging-env-contract.mjs';
 
 const version = '0.10.0';
 
@@ -208,6 +209,9 @@ async function main() {
       case 'inspect-staging-execution-package':
         await inspectStagingExecutionPackageCommand(args);
         break;
+      case 'validate-staging-env-contract':
+        await validateStagingEnvContractCommand(args);
+        break;
       default:
         throw new Error(`unknown command: ${command}`);
     }
@@ -226,7 +230,7 @@ function parseArgs(args) {
       continue;
     }
     const key = arg.slice(2);
-    if (key === 'overwrite') {
+    if (key === 'overwrite' || key === 'json') {
       parsed[key] = true;
       continue;
     }
@@ -1006,6 +1010,33 @@ async function inspectStagingExecutionPackageCommand(args) {
   console.log(`failures: ${summary.failureCount}`);
 }
 
+async function validateStagingEnvContractCommand(args) {
+  const options = parseArgs(args);
+  const result = await validateStagingEnvContract({
+    packagePath: options.package ?? null
+  });
+  console.log(`stagingEnvContract: ${result.status}`);
+  console.log(`fields: ${result.summary.fieldCount}`);
+  console.log(`present: ${result.summary.presentCount}`);
+  console.log(`missing: ${result.summary.missingCount}`);
+  console.log(`placeholder: ${result.summary.placeholderCount}`);
+  console.log(`blocked: ${result.summary.blockedCount}`);
+  console.log(`failures: ${result.summary.failureCount}`);
+  if (result.packageLinkage) {
+    console.log(`packageLinkage: ${result.packageLinkage.status}`);
+    console.log(`approvalManifestIdMatched: ${result.packageLinkage.approvalManifestIdMatched}`);
+    console.log(`firstWriteBatchIdMatched: ${result.packageLinkage.firstWriteBatchIdMatched}`);
+    console.log(`expectedRecordCountMatched: ${result.packageLinkage.expectedRecordCountMatched}`);
+    console.log(`realStagingProviderWritePerformed: ${result.packageLinkage.realStagingProviderWritePerformed}`);
+  }
+  if (options.json) {
+    console.log(JSON.stringify(result, null, 2));
+  }
+  if (result.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
 async function writeApiResponse({ response, outputPath }) {
   const outputRoot = resolveTmpOutputPath(outputPath);
   await writeJson(path.join(outputRoot, 'API_RESPONSE.json'), response);
@@ -1124,6 +1155,7 @@ Commands:
   build-staging-execution-package --source fixtures/execution-package-source.fixture.json --out .tmp/phase-2h22-staging-execution-package [--overwrite]
   validate-staging-execution-package --package .tmp/phase-2h22-staging-execution-package
   inspect-staging-execution-package --package .tmp/phase-2h22-staging-execution-package
+  validate-staging-env-contract [--package .tmp/phase-2h22-staging-execution-package] [--json]
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

@@ -1,0 +1,4 @@
+# Next Approval Prompt: Source-of-Truth Control Layer
+
+Approve Phase 2H-24 Outbound Link Manager Source-of-Truth Control Layer and staging target/profile governance only: create the no-write source-of-truth control layer that owns the approved OLM staging target/profile/session/readback/rollback contract before any first scoped staging write can be reattempted. Link approval manifest `olapprove_508df3f03faa4f80`, first-write batch `olbatch_b08e184fdc6565aa`, Backup Center pre-write evidence, Resource Registry candidate mapping, provider profile registry state, runtime QA evidence, no-go rules, and the canonical `OLM_STAGING_*` contract. Add local validators, docs, tests, result package, and root report as needed. Do not execute a staging write. Do not create or mutate Azure resources. Do not read protected config. Do not export secrets. Do not perform CMS writes, production database migration, production provider writes, deployment, indexing, or live publication.
+
