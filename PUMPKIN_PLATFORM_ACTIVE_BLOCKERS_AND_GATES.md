@@ -6,7 +6,8 @@
 | --- | --- | --- | --- |
 | Azure staging foundation inventory and IaC package | Complete | V2.3.1 / L07 / L09 / L11 / L12 | No-deploy package created; no Azure mutation performed. |
 | Azure staging creation and binding validation | Complete, blocked before mutation | V2.3.2 / L07 / L09 / L11 / L12 | V2.3.1 values were candidate/example-level; no resources created. |
-| Azure staging final parameter worksheet and creation retry | Next | V2.3.3 / L07 / L09 / L11 / L12 | Provide final non-placeholder parameters, reviewed subscription/tenant target, staging resource group, naming reconciliation, and RBAC decision. |
+| Azure staging final parameter worksheet and creation retry | Complete | V2.3.3 / L07 / L09 / L11 / L12 | Staging resource group and resource foundation created; RBAC skipped. |
+| Azure staging RBAC/profile/readback preflight | Next | V2.3.4 / L07 / L08 / L09 / L11 / L12 | Approve principal/role/scope, activate provider profile, and validate readback without keys. |
 | First scoped OLM staging write | Blocked | V2.2 / L08 / L12 | Canonical `OLM_STAGING_*` contract must pass. |
 | OLM real staging provider target | Blocked | V2.2 / V2.3 / V2.5 | Non-secret target/resource values must be supplied, validated, and approved. |
 | OLM readback/rollback | Blocked | V2.2 / V2.4 / V2.9 | Concrete methods must be approved and tied to `olbatch_b08e184fdc6565aa`. |
@@ -17,18 +18,21 @@
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
 | Deployment/indexing/publication | Closed | V2.8 / V2.9 / L15 | Separate deploy/index/publish approval required. |
 
-## Missing OLM Staging Contract
+## Remaining OLM Staging Execution Blockers
 
 - `OLM_STAGING_PROVIDER_PROFILE_ID`
-- `OLM_STAGING_PROVIDER_TYPE`
 - `OLM_STAGING_PROVIDER_MODE`
-- `OLM_STAGING_RESOURCE_SCOPE`
-- `OLM_STAGING_ACCOUNT_OR_HOST`
-- `OLM_STAGING_DATABASE_OR_NAMESPACE`
 - `OLM_STAGING_RBAC_OR_AUTH_MODE`
 - `OLM_STAGING_IDENTITY_OR_SESSION_TYPE`
-- `OLM_STAGING_READBACK_METHOD`
-- `OLM_STAGING_ROLLBACK_METHOD`
+
+## Resolved Or Supplyable OLM Staging Resource Values
+
+- `OLM_STAGING_PROVIDER_TYPE`: `azure-cosmos-nosql`
+- `OLM_STAGING_RESOURCE_SCOPE`: `resourceGroup:rg-pumpkincms-stg-eastus-olm`
+- `OLM_STAGING_ACCOUNT_OR_HOST`: `cosmos-pumpkincms-stg-olm01.documents.azure.com`
+- `OLM_STAGING_DATABASE_OR_NAMESPACE`: `pumpkincms-olm-staging`
+- `OLM_STAGING_READBACK_METHOD`: `cosmos-nosql-tenant-site-batch-id-readback`
+- `OLM_STAGING_ROLLBACK_METHOD`: `cosmos-nosql-first-write-batch-delete-or-restore-plan`
 
 ## Immutable Safety Facts
 
@@ -49,3 +53,7 @@
 - V2.3.2 Azure resources mutated: `0`
 - V2.3.2 RBAC assignments: `0`
 - V2.3.2 staging writes: `0`
+- V2.3.3 Azure staging resource group created/updated: `1`
+- V2.3.3 Azure staging foundation deployment: `Succeeded`
+- V2.3.3 RBAC assignments: `0`
+- V2.3.3 OLM staging writes: `0`

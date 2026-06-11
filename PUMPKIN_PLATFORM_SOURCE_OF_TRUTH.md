@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.3.2, Reviewed Azure Staging Resource Creation and Binding Validation |
-| Current V2 status | Complete, blocked before mutation |
-| Provisional V2 overall completion | `61%` |
+| Current V2 reference | V2.3.3, Azure Staging Target Finalization and Resource Creation Retry |
+| Current V2 status | Complete, staging resources created, RBAC skipped |
+| Provisional V2 overall completion | `64%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.2 Outbound Link Manager Stage-Ready with V2.3 Azure staging foundation support |
 | Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| Safety posture | No Azure resources created, no RBAC assigned, no protected-config-read, no deployment |
-| Next gate | V2.3.3 final parameter worksheet and scoped creation retry |
+| Safety posture | Staging Azure foundation created; no RBAC assigned, no OLM write, no protected-config-read, no app deployment |
+| Next gate | V2.3.4 Azure staging RBAC, provider profile activation, and readback preflight |
 
 ## V2 Reference System
 
@@ -43,6 +43,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Azure staging foundation package | `deployment/architecture/azure-staging-foundation/v2-3-1-azure-staging-foundation-inventory-iac-package-result/` | V2.3.1 result package |
 | Azure staging creation gate | `PUMPKIN_AZURE_STAGING_FOUNDATION_V2_3_2_RESOURCE_CREATION_BINDING_VALIDATION_REPORT.md` | V2.3.2 blocked-before-mutation result |
 | Azure staging creation gate package | `deployment/architecture/azure-staging-foundation/v2-3-2-reviewed-resource-creation-binding-validation-result/` | V2.3.2 result package |
+| Azure staging resource creation | `PUMPKIN_AZURE_STAGING_FOUNDATION_V2_3_3_TARGET_FINALIZATION_RESOURCE_CREATION_RETRY_REPORT.md` | V2.3.3 staging resources created |
+| Azure staging resource creation package | `deployment/architecture/azure-staging-foundation/v2-3-3-target-finalization-resource-creation-retry-result/` | V2.3.3 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -50,18 +52,12 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The current hard stop is the missing OLM staging target/profile/session/readback/rollback contract:
+The current hard stop is the remaining OLM staging provider profile, mode, RBAC, and identity/session contract:
 
 - `OLM_STAGING_PROVIDER_PROFILE_ID`
-- `OLM_STAGING_PROVIDER_TYPE`
 - `OLM_STAGING_PROVIDER_MODE`
-- `OLM_STAGING_RESOURCE_SCOPE`
-- `OLM_STAGING_ACCOUNT_OR_HOST`
-- `OLM_STAGING_DATABASE_OR_NAMESPACE`
 - `OLM_STAGING_RBAC_OR_AUTH_MODE`
 - `OLM_STAGING_IDENTITY_OR_SESSION_TYPE`
-- `OLM_STAGING_READBACK_METHOD`
-- `OLM_STAGING_ROLLBACK_METHOD`
 
 Immutable current facts:
 
@@ -73,4 +69,4 @@ Immutable current facts:
 
 ## Next Recommended Phase
 
-Approve V2.3.3 Azure Staging Foundation final parameter worksheet and scoped creation retry only. This should finalize the exact non-secret staging creation worksheet, remove placeholder/example values, confirm the stable reviewed subscription/tenant target, reconcile names, define RBAC or explicitly defer it, and only then retry scoped staging resource creation gates.
+Approve V2.3.4 Azure Staging RBAC, provider profile activation, and readback preflight only. This should bind the created staging resources into a repo-supported provider profile, approve the minimum staging-scoped RBAC principal/role/scope, validate readback without keys/listKeys, and keep the OLM first-write batch blocked until a separate approval.

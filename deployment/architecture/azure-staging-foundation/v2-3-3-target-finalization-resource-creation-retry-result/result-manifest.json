@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "0.1.0",
+  "reference": "V2.3.3",
+  "referenceName": "Azure Staging Target Finalization and Resource Creation Retry",
+  "resultType": "pumpkin-azure-staging-foundation-target-finalization-resource-creation-retry",
+  "status": "complete_staging_resources_created_rbac_skipped",
+  "createdAt": "2026-06-11",
+  "visibleTracker": {
+    "system": "V2.#",
+    "legacyTracker": "Legacy 2H Tracker v1 frozen at 92 / 100",
+    "previousReference": "V2.3.2",
+    "currentReference": "V2.3.3",
+    "provisionalV2OverallCompletion": "64%",
+    "v2AzureFoundationCompletion": "70%"
+  },
+  "layers": [
+    "L01",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10",
+    "L11",
+    "L12"
+  ],
+  "azureTarget": {
+    "subscriptionDisplayName": "Azure subscription 1",
+    "subscriptionId": "redacted",
+    "tenantId": "redacted",
+    "resourceGroupName": "rg-pumpkincms-stg-eastus-olm",
+    "resourceGroupId": "/subscriptions/<redacted>/resourceGroups/rg-pumpkincms-stg-eastus-olm",
+    "location": "eastus",
+    "environment": "staging"
+  },
+  "deployment": {
+    "name": "pumpkincms-v2-3-3-staging-foundation",
+    "provisioningState": "Succeeded",
+    "whatIfSummary": "21 create, 0 modify, 0 delete",
+    "bicepBuild": "passed"
+  },
+  "createdResources": {
+    "resourceGroupCreatedOrUpdated": true,
+    "topLevelResourceCount": 6,
+    "rbacAssignmentsCreated": 0,
+    "resources": [
+      {
+        "name": "cosmos-pumpkincms-stg-olm01",
+        "type": "Microsoft.DocumentDB/databaseAccounts",
+        "location": "eastus"
+      },
+      {
+        "name": "pumpkincmsstgolm01",
+        "type": "Microsoft.Storage/storageAccounts",
+        "location": "eastus"
+      },
+      {
+        "name": "kv-pumpkincms-stg-olm01",
+        "type": "Microsoft.KeyVault/vaults",
+        "location": "eastus"
+      },
+      {
+        "name": "id-pumpkincms-olm-stg",
+        "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+        "location": "eastus"
+      },
+      {
+        "name": "log-pumpkincms-stg-olm01",
+        "type": "Microsoft.OperationalInsights/workspaces",
+        "location": "eastus"
+      },
+      {
+        "name": "appi-pumpkincms-stg-olm01",
+        "type": "Microsoft.Insights/components",
+        "location": "eastus"
+      }
+    ]
+  },
+  "nonSecretOutputs": {
+    "cosmosAccountName": "cosmos-pumpkincms-stg-olm01",
+    "cosmosEndpoint": "https://cosmos-pumpkincms-stg-olm01.documents.azure.com:443/",
+    "cosmosEndpointHostname": "cosmos-pumpkincms-stg-olm01.documents.azure.com",
+    "cosmosDatabaseName": "pumpkincms-olm-staging",
+    "cosmosPartitionKey": "/tenantKey",
+    "evidenceStorageAccountName": "pumpkincmsstgolm01",
+    "keyVaultName": "kv-pumpkincms-stg-olm01",
+    "managedIdentityName": "id-pumpkincms-olm-stg",
+    "managedIdentityClientId": "c3220beb-79b9-403a-bf09-b6ce006380a1",
+    "managedIdentityPrincipalId": "f9e8a811-cd4f-4afb-9f39-9f2fece7e5e2",
+    "logAnalyticsWorkspaceName": "log-pumpkincms-stg-olm01",
+    "applicationInsightsName": "appi-pumpkincms-stg-olm01"
+  },
+  "olmStagingFacts": {
+    "approvalManifestId": "olapprove_508df3f03faa4f80",
+    "firstWriteBatchId": "olbatch_b08e184fdc6565aa",
+    "expectedRecords": 48,
+    "recordsWritten": 0,
+    "readbackRun": false,
+    "actualStagingWriteExecutionPercent": 0
+  },
+  "resolvedOlmStagingFields": [
+    "OLM_STAGING_PROVIDER_TYPE",
+    "OLM_STAGING_RESOURCE_SCOPE",
+    "OLM_STAGING_ACCOUNT_OR_HOST",
+    "OLM_STAGING_DATABASE_OR_NAMESPACE",
+    "OLM_STAGING_READBACK_METHOD",
+    "OLM_STAGING_ROLLBACK_METHOD"
+  ],
+  "stillUnresolvedForExecution": [
+    "OLM_STAGING_PROVIDER_PROFILE_ID",
+    "OLM_STAGING_PROVIDER_MODE",
+    "OLM_STAGING_RBAC_OR_AUTH_MODE",
+    "OLM_STAGING_IDENTITY_OR_SESSION_TYPE"
+  ],
+  "boundaries": {
+    "azureResourceCreation": true,
+    "azureMutation": true,
+    "rbacAssignment": false,
+    "keysListKeys": false,
+    "connectionStringGeneration": false,
+    "sasGeneration": false,
+    "keyVaultSecretValueRead": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "stagingProviderWrite": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrite": false,
+    "cmsWrite": false,
+    "externalCrawl": false,
+    "appDeployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-3-2-blocker-resolution.md",
+    "final-parameter-set.md",
+    "reconciled-naming-worksheet.md",
+    "tagging-and-metadata-result.md",
+    "pre-mutation-gate-result.md",
+    "azure-account-subscription-check.md",
+    "iac-build-validation.md",
+    "what-if-preview-result.md",
+    "resource-creation-result.md",
+    "rbac-assignment-result.md",
+    "created-resource-inventory.md",
+    "non-secret-output-capture.md",
+    "olm-staging-values-resolution-result.md",
+    "resource-registry-binding-candidate.md",
+    "provider-profile-binding-candidate.md",
+    "backup-center-staging-binding-result.md",
+    "runtime-qa-staging-binding-result.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+
