@@ -9,7 +9,8 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test:phase-2h10": "node scripts/phase-2h10-admin-readonly-ui-check.mjs",
-    "test:phase-2h10a": "node scripts/phase-2h10a-admin-ux-check.mjs"
+    "test:phase-2h10a": "node scripts/phase-2h10a-admin-ux-check.mjs",
+    "test:phase-2h21": "node scripts/phase-2h21-runtime-qa-provider-readiness-check.mjs"
   },
   "dependencies": {
     "@dagrejs/dagre": "^2.0.4",
