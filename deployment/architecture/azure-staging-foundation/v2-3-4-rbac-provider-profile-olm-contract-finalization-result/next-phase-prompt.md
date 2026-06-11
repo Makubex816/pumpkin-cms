@@ -1,0 +1,6 @@
+# Next Phase Prompt
+
+```text
+Approve V2.2.1 first scoped Outbound Link Manager staging provider write reattempt only: use the V2.3.4 finalized staging RBAC/provider profile/OLM_STAGING contract, the created Azure staging foundation, approval manifest olapprove_508df3f03faa4f80, and first-write batch olbatch_b08e184fdc6565aa to revalidate package linkage, Backup Center evidence, Runtime QA evidence, provider profile candidate olm-staging-cosmos-nosql-v1, Cosmos data-plane RBAC propagation, tenant/site partitioning, readback plan, and rollback plan. If every gate passes, write only the approved 48 OLM staging records to the staging Cosmos database pumpkincms-olm-staging under /tenantKey, then perform readback verification and rollback-plan validation. Stop before writing if package linkage, approval, record count, tenant/site scope, provider profile, RBAC propagation, backup evidence, runtime QA evidence, readback, or rollback is missing or mismatched. Do not perform production database migration or production writes, do not perform CMS writes, do not create production resources, do not read protected config, do not export secrets, do not use keys/listKeys, do not generate connection strings or SAS, do not deploy apps, do not index, and do not publish live pages.
+```
+

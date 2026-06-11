@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "0.1.0",
+  "reference": "V2.3.4",
+  "referenceName": "Staging RBAC, Provider Profile Binding, and OLM Contract Finalization",
+  "resultType": "pumpkin-azure-staging-foundation-rbac-provider-profile-olm-contract",
+  "status": "complete_rbac_assigned_contract_validated_first_write_blocked",
+  "createdAt": "2026-06-11",
+  "visibleTracker": {
+    "system": "V2.#",
+    "legacyTracker": "Legacy 2H Tracker v1 frozen at 92 / 100",
+    "previousReference": "V2.3.3",
+    "currentReference": "V2.3.4",
+    "provisionalV2OverallCompletion": "66%",
+    "v2AzureFoundationCompletion": "82%"
+  },
+  "layers": [
+    "L01",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10",
+    "L11",
+    "L12"
+  ],
+  "identityModel": {
+    "selected": "operator-azure-cli-session+managed-identity",
+    "operatorPrincipalId": "redacted",
+    "managedIdentityName": "id-pumpkincms-olm-stg",
+    "managedIdentityClientId": "c3220beb-79b9-403a-bf09-b6ce006380a1",
+    "managedIdentityPrincipalId": "f9e8a811-cd4f-4afb-9f39-9f2fece7e5e2"
+  },
+  "rbac": {
+    "cosmosDataPlaneRole": "Cosmos DB Built-in Data Contributor",
+    "roleDefinitionGuid": "00000000-0000-0000-0000-000000000002",
+    "scope": "/subscriptions/<redacted>/resourceGroups/rg-pumpkincms-stg-eastus-olm/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-pumpkincms-stg-olm01/dbs/pumpkincms-olm-staging",
+    "assignmentsCreated": 2,
+    "assignments": [
+      {
+        "assignmentId": "ff286a2b-2b67-47eb-b761-4c559df07bac",
+        "principalLabel": "operator-azure-cli-session",
+        "principalId": "redacted"
+      },
+      {
+        "assignmentId": "f5d12b8b-9840-42f3-be92-1c64ec06a524",
+        "principalLabel": "managed-identity:id-pumpkincms-olm-stg",
+        "principalId": "f9e8a811-cd4f-4afb-9f39-9f2fece7e5e2"
+      }
+    ],
+    "storageAssignmentsCreated": 0,
+    "keyVaultAssignmentsCreated": 0
+  },
+  "providerProfile": {
+    "providerProfileId": "olm-staging-cosmos-nosql-v1",
+    "providerType": "azure-cosmos-nosql",
+    "providerMode": "live-write-approved",
+    "providerProfileValidation": "passed",
+    "candidateFile": "provider-profile-binding-candidate.json",
+    "activeForWrite": false,
+    "futureFirstWriteApprovalRequired": true
+  },
+  "olmStagingContract": {
+    "validation": "passed",
+    "fieldsPresent": 10,
+    "valuesPrinted": false,
+    "resolvedFields": [
+      "OLM_STAGING_PROVIDER_PROFILE_ID",
+      "OLM_STAGING_PROVIDER_TYPE",
+      "OLM_STAGING_PROVIDER_MODE",
+      "OLM_STAGING_RESOURCE_SCOPE",
+      "OLM_STAGING_ACCOUNT_OR_HOST",
+      "OLM_STAGING_DATABASE_OR_NAMESPACE",
+      "OLM_STAGING_RBAC_OR_AUTH_MODE",
+      "OLM_STAGING_IDENTITY_OR_SESSION_TYPE",
+      "OLM_STAGING_READBACK_METHOD",
+      "OLM_STAGING_ROLLBACK_METHOD"
+    ],
+    "stillUnresolvedForExecution": []
+  },
+  "olmStagingFacts": {
+    "approvalManifestId": "olapprove_508df3f03faa4f80",
+    "firstWriteBatchId": "olbatch_b08e184fdc6565aa",
+    "expectedRecords": 48,
+    "recordsWritten": 0,
+    "readbackRun": false,
+    "actualStagingWriteExecutionPercent": 0
+  },
+  "boundaries": {
+    "azureResourceCreation": false,
+    "rbacAssignment": true,
+    "keysListKeys": false,
+    "connectionStringGeneration": false,
+    "sasGeneration": false,
+    "keyVaultSecretValueRead": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "stagingProviderWrite": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrite": false,
+    "cmsWrite": false,
+    "externalCrawl": false,
+    "appDeployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "identity-model-resolution.md",
+    "cosmos-data-plane-rbac-result.md",
+    "storage-rbac-result.md",
+    "key-vault-rbac-boundary.md",
+    "rbac-assignment-inventory.md",
+    "provider-profile-binding-result.md",
+    "provider-profile-binding-candidate.json",
+    "resource-registry-binding-result.md",
+    "resource-registry-binding-candidate.json",
+    "olm-staging-values-finalization-result.md",
+    "olm-staging-env-contract-validation.md",
+    "operator-session-contract-template.md",
+    "backup-center-staging-access-result.md",
+    "runtime-qa-staging-access-result.md",
+    "first-write-readiness-gate-result.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+

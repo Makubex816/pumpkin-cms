@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "0.1.0",
+  "resourceRegistryCandidateId": "pumpkincms-olm-staging-resource-registry-v1",
+  "environment": "staging",
+  "production": false,
+  "resourceGroup": {
+    "name": "rg-pumpkincms-stg-eastus-olm",
+    "id": "/subscriptions/<redacted>/resourceGroups/rg-pumpkincms-stg-eastus-olm",
+    "location": "eastus"
+  },
+  "cosmos": {
+    "accountName": "cosmos-pumpkincms-stg-olm01",
+    "endpointHost": "cosmos-pumpkincms-stg-olm01.documents.azure.com",
+    "databaseName": "pumpkincms-olm-staging",
+    "partitionKey": "/tenantKey",
+    "authMode": "entra-rbac-cosmos-data-plane",
+    "credentialReferenceId": "credential-reference-olm-staging-cosmos-entra-rbac-no-value",
+    "credentialValueIncluded": false,
+    "containers": [
+      "outbound-links",
+      "outbound-link-instances",
+      "outbound-link-policies",
+      "outbound-link-scan-runs",
+      "outbound-link-audit-logs",
+      "outbound-link-render-decisions",
+      "outbound-link-review-decisions",
+      "outbound-link-bulk-actions",
+      "outbound-link-rollback-plans",
+      "outbound-link-trace-logs"
+    ]
+  },
+  "storage": {
+    "accountName": "pumpkincmsstgolm01",
+    "credentialReferenceId": "credential-reference-olm-staging-storage-rbac-no-value",
+    "credentialValueIncluded": false,
+    "containers": [
+      "backup-center-staging",
+      "resource-registry-staging",
+      "runtime-qa-staging"
+    ]
+  },
+  "identity": {
+    "managedIdentityName": "id-pumpkincms-olm-stg",
+    "managedIdentityClientId": "c3220beb-79b9-403a-bf09-b6ce006380a1",
+    "managedIdentityPrincipalId": "f9e8a811-cd4f-4afb-9f39-9f2fece7e5e2",
+    "operatorPrincipalId": "<redacted>",
+    "sessionType": "operator-azure-cli-session+managed-identity"
+  },
+  "rbac": {
+    "cosmosRole": "Cosmos DB Built-in Data Contributor",
+    "cosmosRoleDefinitionGuid": "00000000-0000-0000-0000-000000000002",
+    "scope": "/subscriptions/<redacted>/resourceGroups/rg-pumpkincms-stg-eastus-olm/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-pumpkincms-stg-olm01/dbs/pumpkincms-olm-staging",
+    "assignments": [
+      {
+        "assignmentId": "ff286a2b-2b67-47eb-b761-4c559df07bac",
+        "principalLabel": "operator-azure-cli-session",
+        "principalId": "<redacted>"
+      },
+      {
+        "assignmentId": "f5d12b8b-9840-42f3-be92-1c64ec06a524",
+        "principalLabel": "managed-identity:id-pumpkincms-olm-stg",
+        "principalId": "f9e8a811-cd4f-4afb-9f39-9f2fece7e5e2"
+      }
+    ]
+  },
+  "diagnostics": {
+    "logAnalyticsWorkspaceName": "log-pumpkincms-stg-olm01",
+    "applicationInsightsName": "appi-pumpkincms-stg-olm01"
+  },
+  "secretBoundary": {
+    "keysIncluded": false,
+    "connectionStringsIncluded": false,
+    "sasIncluded": false,
+    "tokensIncluded": false,
+    "cookiesIncluded": false,
+    "authHeadersIncluded": false,
+    "keyVaultSecretValuesIncluded": false
+  }
+}
+

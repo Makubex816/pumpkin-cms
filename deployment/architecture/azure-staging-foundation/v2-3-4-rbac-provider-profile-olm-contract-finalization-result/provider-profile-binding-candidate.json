@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "0.1.0",
+  "providerProfileId": "olm-staging-cosmos-nosql-v1",
+  "profileName": "PumpkinCMS OLM Azure Cosmos NoSQL Staging Provider Candidate",
+  "providerMode": "live-write-approved",
+  "environment": "staging",
+  "providerType": "azure-cosmos-nosql",
+  "targetProvider": {
+    "providerType": "azure-cosmos-nosql",
+    "environment": "staging",
+    "accountReference": "resource-registry:pumpkincms-olm-staging-cosmos",
+    "databaseName": "pumpkincms-olm-staging",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "credential-reference-olm-staging-cosmos-entra-rbac-no-value",
+    "credentialValueIncluded": false
+  },
+  "targetContainers": {
+    "outbound_links": "outbound-links",
+    "outbound_link_instances": "outbound-link-instances",
+    "outbound_link_policies": "outbound-link-policies",
+    "outbound_link_scan_runs": "outbound-link-scan-runs",
+    "outbound_link_audit_logs": "outbound-link-audit-logs",
+    "outbound_link_render_decisions": "outbound-link-render-decisions",
+    "outbound_link_review_decisions": "outbound-link-review-decisions",
+    "outbound_link_bulk_actions": "outbound-link-bulk-actions",
+    "outbound_link_rollback_plans": "outbound-link-rollback-plans",
+    "outbound_link_trace_logs": "outbound-link-trace-logs"
+  },
+  "capabilities": {
+    "canReadCandidates": true,
+    "canPlanWrites": true,
+    "canSimulateWrites": false,
+    "canExecuteStagingWrites": false,
+    "canPerformLiveWrites": false,
+    "canReadLive": true,
+    "requiresBackupBeforeWrite": true,
+    "requiresRollbackPlan": true,
+    "requiresTraceContinuity": true,
+    "readsProtectedConfig": false,
+    "externalCalls": false,
+    "cmsWrites": false,
+    "azureMutations": false,
+    "liveProviderWrites": false,
+    "productionDatabaseMigration": false
+  },
+  "approvals": {
+    "stagingWriteApproved": false,
+    "liveWriteApproved": false,
+    "approvalReference": "future-v2-2-first-scoped-olm-staging-write-approval-required"
+  },
+  "boundaries": {
+    "localOnly": false,
+    "simulatedOnly": false,
+    "dryRunOnly": true,
+    "liveProviderWrites": false,
+    "productionWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "secretValuesIncluded": false,
+    "externalCrawling": false,
+    "azureMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  }
+}
+

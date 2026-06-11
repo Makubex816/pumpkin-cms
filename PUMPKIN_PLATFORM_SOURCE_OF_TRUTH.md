@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.3.3, Azure Staging Target Finalization and Resource Creation Retry |
-| Current V2 status | Complete, staging resources created, RBAC skipped |
-| Provisional V2 overall completion | `64%` |
+| Current V2 reference | V2.3.4, Staging RBAC, Provider Profile Binding, and OLM Contract Finalization |
+| Current V2 status | Complete, Cosmos data-plane RBAC assigned, provider profile candidate created, OLM contract validated, first write not executed |
+| Provisional V2 overall completion | `66%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.2 Outbound Link Manager Stage-Ready with V2.3 Azure staging foundation support |
 | Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| Safety posture | Staging Azure foundation created; no RBAC assigned, no OLM write, no protected-config-read, no app deployment |
-| Next gate | V2.3.4 Azure staging RBAC, provider profile activation, and readback preflight |
+| Safety posture | Staging Azure foundation created; staging DB-scoped Cosmos RBAC assigned; no OLM write, no protected-config-read, no app deployment |
+| Next gate | V2.2.1 first scoped OLM staging provider write reattempt |
 
 ## V2 Reference System
 
@@ -45,6 +45,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Azure staging creation gate package | `deployment/architecture/azure-staging-foundation/v2-3-2-reviewed-resource-creation-binding-validation-result/` | V2.3.2 result package |
 | Azure staging resource creation | `PUMPKIN_AZURE_STAGING_FOUNDATION_V2_3_3_TARGET_FINALIZATION_RESOURCE_CREATION_RETRY_REPORT.md` | V2.3.3 staging resources created |
 | Azure staging resource creation package | `deployment/architecture/azure-staging-foundation/v2-3-3-target-finalization-resource-creation-retry-result/` | V2.3.3 result package |
+| Azure staging RBAC/profile/OLM contract | `PUMPKIN_AZURE_STAGING_FOUNDATION_V2_3_4_RBAC_PROVIDER_PROFILE_OLM_CONTRACT_REPORT.md` | V2.3.4 RBAC and OLM contract finalized |
+| Azure staging RBAC/profile/OLM contract package | `deployment/architecture/azure-staging-foundation/v2-3-4-rbac-provider-profile-olm-contract-finalization-result/` | V2.3.4 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -52,12 +54,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The current hard stop is the remaining OLM staging provider profile, mode, RBAC, and identity/session contract:
-
-- `OLM_STAGING_PROVIDER_PROFILE_ID`
-- `OLM_STAGING_PROVIDER_MODE`
-- `OLM_STAGING_RBAC_OR_AUTH_MODE`
-- `OLM_STAGING_IDENTITY_OR_SESSION_TYPE`
+The current hard stop is the separate first scoped OLM staging write approval and final execution evidence refresh. V2.3.4 resolved the OLM staging provider profile, mode, RBAC/auth mode, identity/session type, and presence contract.
 
 Immutable current facts:
 
@@ -66,7 +63,10 @@ Immutable current facts:
 - expected package records: `48`
 - records written: `0`
 - real write readback run: `false`
+- provider profile candidate: `olm-staging-cosmos-nosql-v1`
+- Cosmos data-plane RBAC assignments created at staging database scope: `2`
+- OLM staging contract validation: `passed`
 
 ## Next Recommended Phase
 
-Approve V2.3.4 Azure Staging RBAC, provider profile activation, and readback preflight only. This should bind the created staging resources into a repo-supported provider profile, approve the minimum staging-scoped RBAC principal/role/scope, validate readback without keys/listKeys, and keep the OLM first-write batch blocked until a separate approval.
+Approve V2.2.1 first scoped Outbound Link Manager staging provider write reattempt only. The phase must revalidate package linkage, Backup Center evidence, Runtime QA evidence, provider profile activation, Cosmos data-plane RBAC propagation, tenant/site partitioning, readback, and rollback before writing the approved scoped batch.

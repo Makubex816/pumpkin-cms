@@ -7,12 +7,12 @@
 | Azure staging foundation inventory and IaC package | Complete | V2.3.1 / L07 / L09 / L11 / L12 | No-deploy package created; no Azure mutation performed. |
 | Azure staging creation and binding validation | Complete, blocked before mutation | V2.3.2 / L07 / L09 / L11 / L12 | V2.3.1 values were candidate/example-level; no resources created. |
 | Azure staging final parameter worksheet and creation retry | Complete | V2.3.3 / L07 / L09 / L11 / L12 | Staging resource group and resource foundation created; RBAC skipped. |
-| Azure staging RBAC/profile/readback preflight | Next | V2.3.4 / L07 / L08 / L09 / L11 / L12 | Approve principal/role/scope, activate provider profile, and validate readback without keys. |
-| First scoped OLM staging write | Blocked | V2.2 / L08 / L12 | Canonical `OLM_STAGING_*` contract must pass. |
-| OLM real staging provider target | Blocked | V2.2 / V2.3 / V2.5 | Non-secret target/resource values must be supplied, validated, and approved. |
-| OLM readback/rollback | Blocked | V2.2 / V2.4 / V2.9 | Concrete methods must be approved and tied to `olbatch_b08e184fdc6565aa`. |
+| Azure staging RBAC/profile/OLM contract finalization | Complete | V2.3.4 / L07 / L08 / L09 / L11 / L12 | Staging DB-scoped Cosmos RBAC assigned; provider profile and Resource Registry candidates created; OLM contract passed. |
+| First scoped OLM staging write | Next approval required | V2.2 / L08 / L12 | Revalidate package linkage, Backup Center evidence, Runtime QA evidence, RBAC propagation, readback, and rollback before any write. |
+| OLM real staging provider target | Ready for scoped first-write reattempt | V2.2 / V2.3 / V2.5 | Use `olm-staging-cosmos-nosql-v1` only under the next explicit approval. |
+| OLM readback/rollback | Ready for scoped first-write reattempt | V2.2 / V2.4 / V2.9 | Methods are defined and must be revalidated against `olbatch_b08e184fdc6565aa`. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
-| RBAC assignment | Closed | V2.3 / L11 / L12 | Separate explicit approval required. |
+| RBAC assignment | Complete for V2.3.4 staging database scope | V2.3 / L11 / L12 | Future RBAC changes require separate explicit approval. |
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
@@ -20,19 +20,24 @@
 
 ## Remaining OLM Staging Execution Blockers
 
-- `OLM_STAGING_PROVIDER_PROFILE_ID`
-- `OLM_STAGING_PROVIDER_MODE`
-- `OLM_STAGING_RBAC_OR_AUTH_MODE`
-- `OLM_STAGING_IDENTITY_OR_SESSION_TYPE`
+- Separate first-write approval for `olbatch_b08e184fdc6565aa`.
+- Package linkage, expected record count, tenant/site scope, and approval manifest refresh.
+- Backup Center pre-write evidence refresh.
+- Runtime QA no-uncontrolled-write and provider-mode evidence refresh.
+- Cosmos data-plane RBAC propagation check before any write.
 
 ## Resolved Or Supplyable OLM Staging Resource Values
 
 - `OLM_STAGING_PROVIDER_TYPE`: `azure-cosmos-nosql`
+- `OLM_STAGING_PROVIDER_PROFILE_ID`: `olm-staging-cosmos-nosql-v1`
+- `OLM_STAGING_PROVIDER_MODE`: `live-write-approved`
 - `OLM_STAGING_RESOURCE_SCOPE`: `resourceGroup:rg-pumpkincms-stg-eastus-olm`
 - `OLM_STAGING_ACCOUNT_OR_HOST`: `cosmos-pumpkincms-stg-olm01.documents.azure.com`
 - `OLM_STAGING_DATABASE_OR_NAMESPACE`: `pumpkincms-olm-staging`
+- `OLM_STAGING_RBAC_OR_AUTH_MODE`: `cosmos-nosql-data-plane-rbac`
+- `OLM_STAGING_IDENTITY_OR_SESSION_TYPE`: `operator-azure-cli-session+managed-identity`
 - `OLM_STAGING_READBACK_METHOD`: `cosmos-nosql-tenant-site-batch-id-readback`
-- `OLM_STAGING_ROLLBACK_METHOD`: `cosmos-nosql-first-write-batch-delete-or-restore-plan`
+- `OLM_STAGING_ROLLBACK_METHOD`: `cosmos-nosql-first-write-batch-delete-by-batch-id`
 
 ## Immutable Safety Facts
 
@@ -57,3 +62,8 @@
 - V2.3.3 Azure staging foundation deployment: `Succeeded`
 - V2.3.3 RBAC assignments: `0`
 - V2.3.3 OLM staging writes: `0`
+- V2.3.4 Cosmos data-plane RBAC assignments: `2`
+- V2.3.4 Storage RBAC assignments: `0`
+- V2.3.4 Key Vault RBAC assignments: `0`
+- V2.3.4 OLM staging contract validation: `passed`
+- V2.3.4 OLM staging writes: `0`
