@@ -141,6 +141,46 @@ node src/outbound-link-cli.mjs inspect-migration-dry-run --migration .tmp/phase-
 
 The migration dry-run transforms the local store into production-shaped candidate records under `.tmp`, writes `production-records/*.json`, `migration-manifest.json`, `checksums.sha256`, `ROLLBACK_PACKAGE.md`, `RESOURCE_REGISTRY_UPDATE_CANDIDATE.json`, `BACKUP_BEFORE_MIGRATION_REQUIREMENTS.md`, and validation reports. It does not write any live provider.
 
+## Staging Provider And Apply-Plan Dry-Run
+
+```powershell
+node src/outbound-link-cli.mjs provider-check --profile fixtures/provider-profile-staging-simulated.fixture.json --out .tmp/phase-2h19-staging-provider/provider-check
+node src/outbound-link-cli.mjs apply-plan-dry-run --migration .tmp/phase-2h17-migration-dry-run --profile fixtures/provider-profile-staging-simulated.fixture.json --out .tmp/phase-2h19-staging-provider/apply-plan --overwrite
+node src/outbound-link-cli.mjs validate-apply-plan --apply-plan .tmp/phase-2h19-staging-provider/apply-plan
+node src/outbound-link-cli.mjs inspect-apply-plan --apply-plan .tmp/phase-2h19-staging-provider/apply-plan
+```
+
+The provider check validates redacted provider profile fixtures and reports capabilities. The apply-plan dry-run converts a local migration dry-run package into provider-shaped write-plan records with `writeExecution: not_executed`, `liveWriteAllowed: false`, and `productionWriteAllowed: false`.
+
+Blocked profile evidence can be generated with:
+
+```powershell
+node src/outbound-link-cli.mjs apply-plan-dry-run --migration .tmp/phase-2h17-migration-dry-run --profile fixtures/provider-profile-live-readonly.fixture.json --out .tmp/phase-2h19-staging-provider/live-readonly-blocked --overwrite
+```
+
+That command exits non-zero by design because live-readonly profiles cannot plan writes.
+
+## Staging-Simulated Execution And Readback
+
+```powershell
+node src/outbound-link-cli.mjs staging-execute --apply-plan .tmp/phase-2h20-staging-persistence-integration/apply-plan-refresh --profile fixtures/staging-execution-profile.fixture.json --out .tmp/phase-2h20-staging-persistence-integration/execution --overwrite
+node src/outbound-link-cli.mjs staging-readback --execution .tmp/phase-2h20-staging-persistence-integration/execution --out .tmp/phase-2h20-staging-persistence-integration/readback
+node src/outbound-link-cli.mjs validate-staging-execution --execution .tmp/phase-2h20-staging-persistence-integration/execution
+node src/outbound-link-cli.mjs inspect-staging-execution --execution .tmp/phase-2h20-staging-persistence-integration/execution
+node src/outbound-link-cli.mjs api-provider-state --execution .tmp/phase-2h20-staging-persistence-integration/execution --tenant fixture-tenant --site fixture-site --out .tmp/phase-2h20-staging-persistence-integration/api-provider-state
+```
+
+The staging execution command writes provider-shaped records only to the ignored `.tmp` staging-simulated provider store. It also writes readback, execution/readback comparison, dry-run replay validation, trace/audit/rollback persistence, provider state, Resource Registry refresh candidate, Backup Center pre-execution verification, readiness summary, checksums, and validation reports.
+
+Blocked execution evidence can be generated with:
+
+```powershell
+node src/outbound-link-cli.mjs staging-execute --apply-plan .tmp/phase-2h20-staging-persistence-integration/apply-plan-refresh --profile fixtures/staging-execution-live-readonly-blocked.fixture.json --out .tmp/phase-2h20-staging-persistence-integration/live-readonly-blocked --overwrite
+node src/outbound-link-cli.mjs staging-execute --apply-plan .tmp/phase-2h20-staging-persistence-integration/apply-plan-refresh --profile fixtures/staging-execution-live-write-blocked.fixture.json --out .tmp/phase-2h20-staging-persistence-integration/live-write-blocked --overwrite
+```
+
+Both commands exit non-zero by design because real live provider writes remain blocked.
+
 ## Scripts
 
 ```powershell

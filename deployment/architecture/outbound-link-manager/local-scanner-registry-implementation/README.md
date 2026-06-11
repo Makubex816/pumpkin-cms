@@ -1,8 +1,8 @@
 # Outbound Link Manager Local Scanner And Store
 
-Phase 2H-17 extends the local/offline Outbound Link Manager package with a local-to-production migration dry-run tool, deterministic production candidate records, schema validation, manifest/checksum generation, rollback package output, Resource Registry update candidates, and Backup Center pre-migration requirements.
+Phase 2H-20 extends the local/offline Outbound Link Manager package with a staging-simulated persistence integration loop: provider profile validation, no-live-write gates, apply-plan dry-run output, staging-simulated execution under `.tmp`, readback verification, dry-run replay validation, provider state reporting, Resource Registry refresh candidates, Backup Center pre-execution checks, and rollback/audit/trace validation.
 
-This package scans fake fixture JSON only. It extracts outbound web URLs, normalizes them, builds tenant/site-scoped `outbound_links` records, builds per-placement `outbound_link_instances`, writes scan output, merges scan output into a local store, applies local policy, records local audit logs, validates the store, produces local render decisions, exports local integration artifacts, exercises API-style read contracts, simulates future write actions against cloned sandbox stores under ignored `.tmp`, produces API-style local/fake write preflight responses, and generates production-shaped migration dry-run candidates without live writes.
+This package scans fake fixture JSON only. It extracts outbound web URLs, normalizes them, builds tenant/site-scoped `outbound_links` records, builds per-placement `outbound_link_instances`, writes scan output, merges scan output into a local store, applies local policy, records local audit logs, validates the store, produces local render decisions, exports local integration artifacts, exercises API-style read contracts, simulates future write actions against cloned sandbox stores under ignored `.tmp`, produces API-style local/fake write preflight responses, generates production-shaped migration dry-run candidates, converts those candidates into provider-shaped apply-plan dry-run records, and executes those records into a local staging-simulated provider store without live writes.
 
 It does not integrate with production renderers, crawl external links, call CMS/API/Azure services, write CMS data, run database migrations, implement Admin UI/API screens, deploy, index, or publish live pages.
 
@@ -59,6 +59,14 @@ node src/outbound-link-cli.mjs validate-api-write-preflight --result .tmp/api-wr
 node src/outbound-link-cli.mjs migration-dry-run --store .tmp/local-store-policy --profile fixtures/migration-production-provider-profile.fixture.json --out .tmp/phase-2h17-migration-dry-run --overwrite
 node src/outbound-link-cli.mjs validate-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
 node src/outbound-link-cli.mjs inspect-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
+node src/outbound-link-cli.mjs provider-check --profile fixtures/provider-profile-staging-simulated.fixture.json --out .tmp/phase-2h19-staging-provider/provider-check
+node src/outbound-link-cli.mjs apply-plan-dry-run --migration .tmp/phase-2h17-migration-dry-run --profile fixtures/provider-profile-staging-simulated.fixture.json --out .tmp/phase-2h19-staging-provider/apply-plan --overwrite
+node src/outbound-link-cli.mjs validate-apply-plan --apply-plan .tmp/phase-2h19-staging-provider/apply-plan
+node src/outbound-link-cli.mjs inspect-apply-plan --apply-plan .tmp/phase-2h19-staging-provider/apply-plan
+node src/outbound-link-cli.mjs staging-execute --apply-plan .tmp/phase-2h20-staging-persistence-integration/apply-plan-refresh --profile fixtures/staging-execution-profile.fixture.json --out .tmp/phase-2h20-staging-persistence-integration/execution --overwrite
+node src/outbound-link-cli.mjs staging-readback --execution .tmp/phase-2h20-staging-persistence-integration/execution --out .tmp/phase-2h20-staging-persistence-integration/readback
+node src/outbound-link-cli.mjs validate-staging-execution --execution .tmp/phase-2h20-staging-persistence-integration/execution
+node src/outbound-link-cli.mjs api-provider-state --execution .tmp/phase-2h20-staging-persistence-integration/execution --tenant fixture-tenant --site fixture-site --out .tmp/phase-2h20-staging-persistence-integration/api-provider-state
 ```
 
 Generated output stays under `.tmp/`, which is ignored by this package.

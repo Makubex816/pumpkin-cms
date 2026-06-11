@@ -40,8 +40,14 @@ import { runApiWritePreflight } from './api/write-guard/local-api-write-guard-ad
 import { validateApiWritePreflight } from './api/write-guard/write-action-preflight-validator.mjs';
 import { inspectMigrationDryRun, runMigrationDryRun } from './migration/migration-dry-runner.mjs';
 import { validateMigrationDryRun } from './migration/schema-contract-validator.mjs';
+import { checkProviderCapabilities } from './providers/provider-capability-checker.mjs';
+import { inspectApplyPlan, runApplyPlanDryRun } from './apply-plan/apply-plan-dry-runner.mjs';
+import { validateApplyPlan } from './apply-plan/apply-plan-validator.mjs';
+import { inspectStagingExecution, runStagingExecution, runStagingReadback } from './staging-execution/staging-apply-executor.mjs';
+import { validateStagingExecution } from './staging-execution/staging-execution-validator.mjs';
+import { getOutboundLinkProviderState } from './api/services/outbound-link-provider-state-service.mjs';
 
-const version = '0.8.0';
+const version = '0.10.0';
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
@@ -163,6 +169,33 @@ async function main() {
         break;
       case 'inspect-migration-dry-run':
         await inspectMigrationDryRunCommand(args);
+        break;
+      case 'provider-check':
+        await providerCheckCommand(args);
+        break;
+      case 'apply-plan-dry-run':
+        await applyPlanDryRunCommand(args);
+        break;
+      case 'validate-apply-plan':
+        await validateApplyPlanCommand(args);
+        break;
+      case 'inspect-apply-plan':
+        await inspectApplyPlanCommand(args);
+        break;
+      case 'staging-execute':
+        await stagingExecuteCommand(args);
+        break;
+      case 'staging-readback':
+        await stagingReadbackCommand(args);
+        break;
+      case 'validate-staging-execution':
+        await validateStagingExecutionCommand(args);
+        break;
+      case 'inspect-staging-execution':
+        await inspectStagingExecutionCommand(args);
+        break;
+      case 'api-provider-state':
+        await apiProviderStateCommand(args);
         break;
       default:
         throw new Error(`unknown command: ${command}`);
@@ -777,6 +810,143 @@ async function inspectMigrationDryRunCommand(args) {
   console.log(`failures: ${summary.failureCount}`);
 }
 
+async function providerCheckCommand(args) {
+  const options = parseArgs(args);
+  const result = await checkProviderCapabilities({
+    profilePath: required(options.profile, '--profile is required'),
+    outputPath: options.out ?? null,
+    operation: options.operation ?? 'provider-check'
+  });
+  console.log(`provider: ${result.status}`);
+  console.log(`providerProfileId: ${result.providerProfileId}`);
+  console.log(`providerMode: ${result.providerMode}`);
+  console.log(`liveWriteAllowed: ${result.summary.liveWriteAllowed}`);
+  console.log(`canPlanWrites: ${result.summary.canPlanWrites}`);
+  if (result.outputPath) {
+    console.log(`output: ${result.outputPath}`);
+  }
+  if (result.validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function applyPlanDryRunCommand(args) {
+  const options = parseArgs(args);
+  const result = await runApplyPlanDryRun({
+    migrationPath: required(options.migration, '--migration is required'),
+    profilePath: required(options.profile, '--profile is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  console.log(`applyPlan: ${result.validation.status}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`applyPlanId: ${result.summary.applyPlanId}`);
+  console.log(`providerProfileId: ${result.summary.providerProfileId}`);
+  console.log(`providerMode: ${result.summary.providerMode}`);
+  console.log(`records: ${result.summary.recordCount}`);
+  if (result.validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateApplyPlanCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateApplyPlan({ applyPlanPath: required(options['apply-plan'], '--apply-plan is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`applyPlanId: ${validation.applyPlanId}`);
+  console.log(`providerMode: ${validation.providerMode}`);
+  console.log(`failures: ${validation.summary.failureCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function inspectApplyPlanCommand(args) {
+  const options = parseArgs(args);
+  const summary = await inspectApplyPlan({ applyPlanPath: required(options['apply-plan'], '--apply-plan is required') });
+  console.log(`applyPlan: ${summary.applyPlanId}`);
+  console.log(`migration: ${summary.migrationRunId}`);
+  console.log(`providerProfileId: ${summary.providerProfileId}`);
+  console.log(`providerMode: ${summary.providerMode}`);
+  console.log(`status: ${summary.status}`);
+  console.log(`records: ${summary.recordCount}`);
+  console.log(`failures: ${summary.failureCount}`);
+}
+
+async function stagingExecuteCommand(args) {
+  const options = parseArgs(args);
+  const result = await runStagingExecution({
+    applyPlanPath: required(options['apply-plan'], '--apply-plan is required'),
+    profilePath: required(options.profile, '--profile is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  console.log(`stagingExecution: ${result.validation.status}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`providerProfileId: ${result.summary.providerProfileId}`);
+  console.log(`providerMode: ${result.summary.providerMode}`);
+  console.log(`records: ${result.summary.recordCount}`);
+  if (result.summary.stagingExecutionRunId) {
+    console.log(`stagingExecutionRunId: ${result.summary.stagingExecutionRunId}`);
+  }
+  if (result.summary.readbackRunId) {
+    console.log(`readbackRunId: ${result.summary.readbackRunId}`);
+  }
+  if (result.validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function stagingReadbackCommand(args) {
+  const options = parseArgs(args);
+  const result = await runStagingReadback({
+    executionPath: required(options.execution, '--execution is required'),
+    outputPath: required(options.out, '--out is required')
+  });
+  console.log(`readback: ${result.result.status}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`records: ${result.summary.readbackRecordCount}`);
+  if (result.result.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateStagingExecutionCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateStagingExecution({ executionPath: required(options.execution, '--execution is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`stagingExecutionRunId: ${validation.stagingExecutionRunId}`);
+  console.log(`providerMode: ${validation.providerMode}`);
+  console.log(`failures: ${validation.summary.failureCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function inspectStagingExecutionCommand(args) {
+  const options = parseArgs(args);
+  const summary = await inspectStagingExecution({ executionPath: required(options.execution, '--execution is required') });
+  console.log(`stagingExecution: ${summary.stagingExecutionRunId}`);
+  console.log(`readback: ${summary.readbackRunId}`);
+  console.log(`applyPlan: ${summary.applyPlanId}`);
+  console.log(`providerProfileId: ${summary.providerProfileId}`);
+  console.log(`providerMode: ${summary.providerMode}`);
+  console.log(`status: ${summary.status}`);
+  console.log(`records: ${summary.recordCount}`);
+  console.log(`failures: ${summary.failureCount}`);
+}
+
+async function apiProviderStateCommand(args) {
+  const options = parseArgs(args);
+  const response = await getOutboundLinkProviderState({
+    executionPath: required(options.execution, '--execution is required'),
+    query: collectApiQuery(options),
+    actor: collectApiActor(options)
+  });
+  await writeApiResponse({ response, outputPath: required(options.out, '--out is required') });
+  printApiResponseSummary('api-provider-state', response);
+}
+
 async function writeApiResponse({ response, outputPath }) {
   const outputRoot = resolveTmpOutputPath(outputPath);
   await writeJson(path.join(outputRoot, 'API_RESPONSE.json'), response);
@@ -883,6 +1053,15 @@ Commands:
   migration-dry-run --store .tmp/local-store-policy --profile fixtures/migration-production-provider-profile.fixture.json --out .tmp/phase-2h17-migration-dry-run [--rendered .tmp/render-active] [--overwrite]
   validate-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
   inspect-migration-dry-run --migration .tmp/phase-2h17-migration-dry-run
+  provider-check --profile fixtures/provider-profile-staging-simulated.fixture.json --out .tmp/phase-2h19-staging-provider/provider-check
+  apply-plan-dry-run --migration .tmp/phase-2h17-migration-dry-run --profile fixtures/provider-profile-staging-simulated.fixture.json --out .tmp/phase-2h19-staging-provider/apply-plan [--overwrite]
+  validate-apply-plan --apply-plan .tmp/phase-2h19-staging-provider/apply-plan
+  inspect-apply-plan --apply-plan .tmp/phase-2h19-staging-provider/apply-plan
+  staging-execute --apply-plan .tmp/phase-2h20-staging-persistence-integration/apply-plan-refresh --profile fixtures/staging-execution-profile.fixture.json --out .tmp/phase-2h20-staging-persistence-integration/execution [--overwrite]
+  staging-readback --execution .tmp/phase-2h20-staging-persistence-integration/execution --out .tmp/phase-2h20-staging-persistence-integration/readback
+  validate-staging-execution --execution .tmp/phase-2h20-staging-persistence-integration/execution
+  inspect-staging-execution --execution .tmp/phase-2h20-staging-persistence-integration/execution
+  api-provider-state --execution .tmp/phase-2h20-staging-persistence-integration/execution --tenant fixture-tenant --site fixture-site --out .tmp/phase-2h20-staging-persistence-integration/api-provider-state
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

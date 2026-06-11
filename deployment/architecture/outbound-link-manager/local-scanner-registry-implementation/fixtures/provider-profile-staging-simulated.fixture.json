@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "0.1.0",
+  "providerProfileId": "provider-profile-staging-simulated",
+  "profileName": "Staging Simulated Provider",
+  "providerMode": "staging-simulated",
+  "environment": "staging-simulated",
+  "providerType": "cosmos-nosql-candidate",
+  "targetProvider": {
+    "providerType": "cosmos-nosql-candidate",
+    "environment": "staging-simulated",
+    "accountReference": "resource-registry:staging-cosmos-outbound-links",
+    "databaseName": "pumpkin-staging-cms",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "credential-reference-staging-outbound-link-no-value",
+    "credentialValueIncluded": false
+  },
+  "targetContainers": {
+    "outbound_links": "outbound-links",
+    "outbound_link_instances": "outbound-link-instances",
+    "outbound_link_policies": "outbound-link-policies",
+    "outbound_link_scan_runs": "outbound-link-scan-runs",
+    "outbound_link_audit_logs": "outbound-link-audit-logs",
+    "outbound_link_render_decisions": "outbound-link-render-decisions",
+    "outbound_link_review_decisions": "outbound-link-review-decisions",
+    "outbound_link_bulk_actions": "outbound-link-bulk-actions",
+    "outbound_link_rollback_plans": "outbound-link-rollback-plans",
+    "outbound_link_trace_logs": "outbound-link-trace-logs"
+  },
+  "capabilities": {
+    "canReadCandidates": true,
+    "canPlanWrites": true,
+    "canSimulateWrites": true,
+    "canPerformLiveWrites": false,
+    "canReadLive": false,
+    "requiresBackupBeforeWrite": true,
+    "requiresRollbackPlan": true,
+    "requiresTraceContinuity": true
+  },
+  "boundaries": {
+    "localOnly": true,
+    "simulatedOnly": true,
+    "dryRunOnly": true,
+    "liveProviderWrites": false,
+    "productionWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "secretValuesIncluded": false,
+    "externalCrawling": false,
+    "azureMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  },
+  "approvals": {
+    "stagingWriteApproved": false,
+    "liveWriteApproved": false,
+    "approvalReference": null
+  }
+}

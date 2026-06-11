@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "0.1.0",
+  "providerProfileId": "staging-execution-invalid-profile",
+  "profileName": "Invalid staging execution profile fixture",
+  "providerMode": "unknown-staging-provider",
+  "targetProvider": {
+    "providerType": "invalid-provider",
+    "environment": "local",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "credential-reference-not-required-local",
+    "credentialValueIncluded": false
+  },
+  "capabilities": {
+    "canExecuteStagingWrites": false,
+    "canPerformLiveWrites": false,
+    "liveProviderWrites": false
+  },
+  "boundaries": {
+    "localOnly": true,
+    "simulatedOnly": true,
+    "dryRunOnly": true,
+    "liveProviderWrites": false,
+    "productionWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "secretValuesIncluded": false,
+    "externalCrawling": false,
+    "azureMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  }
+}
+

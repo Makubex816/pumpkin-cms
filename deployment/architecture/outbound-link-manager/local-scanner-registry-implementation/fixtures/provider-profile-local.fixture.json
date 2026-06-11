@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "0.1.0",
+  "providerProfileId": "provider-profile-local-dev",
+  "profileName": "Local Dev File-Backed Provider",
+  "providerMode": "local-dev",
+  "environment": "local",
+  "providerType": "local-file-backed",
+  "targetProvider": {
+    "providerType": "local-file-backed",
+    "environment": "local",
+    "accountReference": "local-fixture-only",
+    "databaseName": "local-outbound-link-store",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "credential-reference-not-required-local",
+    "credentialValueIncluded": false
+  },
+  "capabilities": {
+    "canReadCandidates": true,
+    "canPlanWrites": true,
+    "canSimulateWrites": true,
+    "canPerformLiveWrites": false,
+    "canReadLive": false,
+    "requiresBackupBeforeWrite": true,
+    "requiresRollbackPlan": true,
+    "requiresTraceContinuity": true
+  },
+  "boundaries": {
+    "localOnly": true,
+    "simulatedOnly": true,
+    "dryRunOnly": true,
+    "liveProviderWrites": false,
+    "productionWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "secretValuesIncluded": false,
+    "externalCrawling": false,
+    "azureMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  },
+  "approvals": {
+    "stagingWriteApproved": false,
+    "liveWriteApproved": false,
+    "approvalReference": null
+  }
+}

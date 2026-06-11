@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "0.1.0",
+  "providerProfileId": "staging-execution-live-write-blocked",
+  "profileName": "Blocked live-write-approved staging execution fixture",
+  "providerMode": "live-write-approved",
+  "environment": "production",
+  "providerType": "provider-neutral-document-store",
+  "targetProvider": {
+    "providerType": "provider-neutral-document-store",
+    "environment": "production",
+    "accountReference": "resource-registry-reference-only",
+    "databaseName": "outbound-link-manager-production-reference",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "credential-reference-live-write-no-value",
+    "credentialValueIncluded": false
+  },
+  "capabilities": {
+    "canReadCandidates": true,
+    "canPlanWrites": false,
+    "canSimulateWrites": false,
+    "canExecuteStagingWrites": false,
+    "canPerformLiveWrites": false,
+    "canReadLive": false,
+    "liveProviderWrites": false
+  },
+  "approvals": {
+    "stagingWriteApproved": false,
+    "liveWriteApproved": false,
+    "approvalReference": null
+  },
+  "boundaries": {
+    "localOnly": true,
+    "simulatedOnly": true,
+    "dryRunOnly": true,
+    "liveProviderWrites": false,
+    "productionWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "secretValuesIncluded": false,
+    "externalCrawling": false,
+    "azureMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  }
+}
+

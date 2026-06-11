@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureType": "pumpkin-outbound-link-apply-plan-source-migration",
+  "source": {
+    "description": "Build this source by running the local migration dry-run from fixture store data.",
+    "migrationPath": ".tmp/phase-2h19-staging-provider/source-migration",
+    "expectedMigrationRunId": "olmr_phase_2h17_fixture",
+    "expectedTotalCandidateRecords": 48
+  },
+  "expectedApplyPlan": {
+    "providerProfileId": "provider-profile-staging-simulated",
+    "providerMode": "staging-simulated",
+    "expectedStatus": "passed",
+    "expectedRecordCount": 48,
+    "liveWriteAllowed": false,
+    "productionWriteAllowed": false
+  }
+}

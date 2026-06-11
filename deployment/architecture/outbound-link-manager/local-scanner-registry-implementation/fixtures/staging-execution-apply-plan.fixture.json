@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "0.1.0",
+  "fixtureType": "pumpkin-outbound-link-staging-execution-apply-plan-reference",
+  "description": "Reference fixture for Phase 2H-20 tests. Tests generate a fresh apply-plan under ignored .tmp before staging execution.",
+  "source": {
+    "migrationFixture": "fixtures/tenant-bundle.fixture.json",
+    "migrationProfile": "fixtures/migration-production-provider-profile.fixture.json",
+    "applyPlanProfile": "fixtures/provider-profile-staging-simulated.fixture.json",
+    "expectedApplyPlanRecordCount": 48
+  },
+  "boundaries": {
+    "generatedOutputUnderTmp": true,
+    "liveProviderWrites": false,
+    "productionDatabaseMigration": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "externalCrawling": false
+  }
+}
+

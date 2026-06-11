@@ -12,9 +12,11 @@ import {
   getOutboundLinkDetail,
   getOutboundLinkDomains,
   getOutboundLinkExportStatuses,
+  getOutboundLinkProviderReadiness,
   listOutboundLinks,
   listReviewQueue,
   normalizeKey,
+  OUTBOUND_LINK_PROVIDER_MODE_MESSAGE,
 } from '@/lib/outbound-links/mock-provider'
 import type {
   OutboundLinkAuditLogRecord,
@@ -22,6 +24,7 @@ import type {
   OutboundLinkExportStatus,
   OutboundLinkInstanceRecord,
   OutboundLinkPolicyRecord,
+  OutboundLinkProviderReadiness,
   OutboundLinkQuickFilter,
   OutboundLinkQueryState,
   OutboundLinkRecord,
@@ -1136,6 +1139,7 @@ function ExportsView({ statuses, compact = false }: { statuses: OutboundLinkExpo
 }
 
 function ReadOnlyBanner({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
+  const readiness = getOutboundLinkProviderReadiness(snapshot)
   return (
     <div className="mt-5 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
       <div className="flex items-start gap-3">
@@ -1143,10 +1147,31 @@ function ReadOnlyBanner({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
         <div>
           <div className="font-semibold">Read-only Admin foundation</div>
           <div className="mt-1">
-            Local fixture mode for tenant {snapshot.tenantKey}. No write actions, crawler execution, production renderer integration, or protected configuration reads are wired.
+            Local fixture mode for tenant {snapshot.tenantKey}. Provider readiness is {OUTBOUND_LINK_PROVIDER_MODE_MESSAGE.stagingProviderMode}; live-readonly/write profiles remain blocked. No write actions, crawler execution, production renderer integration, or protected configuration reads are wired.
           </div>
+          <ProviderReadinessStrip readiness={readiness} />
         </div>
       </div>
+    </div>
+  )
+}
+
+function ProviderReadinessStrip({ readiness }: { readiness: OutboundLinkProviderReadiness }) {
+  return (
+    <div className="mt-3 grid grid-cols-1 gap-2 text-xs md:grid-cols-4">
+      <ReadinessPill label="Provider" value={readiness.providerMode} />
+      <ReadinessPill label="Execution" value={readiness.stagingExecutionStatus} />
+      <ReadinessPill label="Readback" value={readiness.readbackStatus} />
+      <ReadinessPill label="Live Writes" value="blocked" />
+    </div>
+  )
+}
+
+function ReadinessPill({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-md border border-blue-200 bg-white px-3 py-2">
+      <div className="font-semibold text-blue-950">{label}</div>
+      <div className="mt-0.5 text-blue-800">{value}</div>
     </div>
   )
 }

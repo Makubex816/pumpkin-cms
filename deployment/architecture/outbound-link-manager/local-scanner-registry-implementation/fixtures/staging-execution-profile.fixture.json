@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "0.1.0",
+  "providerProfileId": "staging-execution-profile",
+  "profileName": "Phase 2H-20 staging-simulated execution profile",
+  "providerMode": "staging-simulated",
+  "environment": "staging-simulated",
+  "providerType": "staging-simulated-file-backed-provider",
+  "targetProvider": {
+    "providerType": "staging-simulated-file-backed-provider",
+    "environment": "staging-simulated",
+    "accountReference": "local-tmp-staging-provider-store",
+    "databaseName": "outbound-link-manager-staging-simulated",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "credential-reference-not-required-local",
+    "credentialValueIncluded": false
+  },
+  "capabilities": {
+    "canReadCandidates": true,
+    "canPlanWrites": true,
+    "canSimulateWrites": true,
+    "canExecuteStagingWrites": true,
+    "canPerformLiveWrites": false,
+    "canReadLive": false,
+    "requiresBackupBeforeWrite": true,
+    "requiresRollbackPlan": true,
+    "requiresTraceContinuity": true,
+    "readsProtectedConfig": false,
+    "externalCalls": false,
+    "cmsWrites": false,
+    "azureMutations": false,
+    "liveProviderWrites": false,
+    "productionDatabaseMigration": false
+  },
+  "approvals": {
+    "stagingWriteApproved": true,
+    "liveWriteApproved": false,
+    "approvalReference": "phase-2h20-local-staging-simulated-execution-only"
+  },
+  "boundaries": {
+    "localOnly": true,
+    "simulatedOnly": true,
+    "dryRunOnly": true,
+    "liveProviderWrites": false,
+    "productionWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "secretValuesIncluded": false,
+    "externalCrawling": false,
+    "azureMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  }
+}
+

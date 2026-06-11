@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "0.1.0",
+  "providerProfileId": "provider-profile-live-write-blocked",
+  "profileName": "Future Live Write Blocked Provider",
+  "providerMode": "live-write-approved",
+  "environment": "production",
+  "providerType": "cosmos-nosql-candidate",
+  "targetProvider": {
+    "providerType": "cosmos-nosql-candidate",
+    "environment": "production",
+    "accountReference": "resource-registry:cosmos-pumpkin-prod-eastus",
+    "databaseName": "pumpkin-prod-cms",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "credential-reference-live-write-outbound-link-no-value",
+    "credentialValueIncluded": false
+  },
+  "capabilities": {
+    "canReadCandidates": true,
+    "canPlanWrites": false,
+    "canSimulateWrites": false,
+    "canPerformLiveWrites": false,
+    "canReadLive": true,
+    "requiresBackupBeforeWrite": true,
+    "requiresRollbackPlan": true,
+    "requiresTraceContinuity": true
+  },
+  "boundaries": {
+    "localOnly": true,
+    "simulatedOnly": true,
+    "dryRunOnly": true,
+    "liveProviderWrites": false,
+    "productionWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "secretValuesIncluded": false,
+    "externalCrawling": false,
+    "azureMutations": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  },
+  "approvals": {
+    "stagingWriteApproved": false,
+    "liveWriteApproved": false,
+    "approvalReference": null
+  }
+}
