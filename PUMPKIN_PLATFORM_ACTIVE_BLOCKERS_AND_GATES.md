@@ -8,9 +8,9 @@
 | Azure staging creation and binding validation | Complete, blocked before mutation | V2.3.2 / L07 / L09 / L11 / L12 | V2.3.1 values were candidate/example-level; no resources created. |
 | Azure staging final parameter worksheet and creation retry | Complete | V2.3.3 / L07 / L09 / L11 / L12 | Staging resource group and resource foundation created; RBAC skipped. |
 | Azure staging RBAC/profile/OLM contract finalization | Complete | V2.3.4 / L07 / L08 / L09 / L11 / L12 | Staging DB-scoped Cosmos RBAC assigned; provider profile and Resource Registry candidates created; OLM contract passed. |
-| First scoped OLM staging write gate | Blocked before write | V2.2.1 / L08 / L12 | Repo-supported live Cosmos data-plane writer/readback adapter is unavailable. |
-| OLM real staging provider target | Ready, executor missing | V2.2 / V2.3 / V2.5 | Use `olm-staging-cosmos-nosql-v1` only under the next explicit adapter/write approval. |
-| OLM readback/rollback | Blocked by missing live readback adapter | V2.2 / V2.4 / V2.9 | Methods are defined, but a repo-supported Cosmos readback adapter must exist before execution. |
+| First scoped OLM staging write gate | Complete | V2.2.2 / L08 / L12 | Approved batch `olbatch_b08e184fdc6565aa` wrote 48 records and passed readback. |
+| OLM real staging provider target | Seeded for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
+| OLM readback/rollback | Readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
 | RBAC assignment | Complete for V2.3.4 staging database scope | V2.3 / L11 / L12 | Future RBAC changes require separate explicit approval. |
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
@@ -18,13 +18,13 @@
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
 | Deployment/indexing/publication | Closed | V2.8 / V2.9 / L15 | Separate deploy/index/publish approval required. |
 
-## Remaining OLM Staging Execution Blockers
+## Remaining OLM Staging Execution Gates
 
-- Implement a repo-supported Azure Cosmos NoSQL data-plane writer/readback adapter using Azure Identity/RBAC only.
-- Preserve local/offline and staging-simulated profiles while adding the live staging adapter.
-- Keep `production-runtime` blocked and keep live-write-approved scoped to `olm-staging-cosmos-nosql-v1`.
-- Revalidate Backup Center and Runtime QA evidence before any retry.
-- Verify Cosmos data-plane RBAC propagation through the repo readback adapter before writing.
+- Refresh Backup Center evidence after the scoped staging write.
+- Re-run Runtime QA and provider-state checks against the post-write staging posture.
+- Preserve local/offline, fake, and staging-simulated profiles as the default development and QA paths.
+- Keep `production-runtime` blocked and keep any additional `live-write-approved` operation scoped to a future explicit approval.
+- Validate non-destructive rollback readiness without executing rollback deletion unless separately approved.
 
 ## Resolved Or Supplyable OLM Staging Resource Values
 
@@ -45,8 +45,11 @@
 - OLM approval manifest: `olapprove_508df3f03faa4f80`
 - OLM first-write batch: `olbatch_b08e184fdc6565aa`
 - Expected OLM staging package records: `48`
-- OLM records written: `0`
-- Real OLM write readback run: `false`
+- OLM records written: `48`
+- Real OLM write readback run: `true`
+- OLM readback result: `passed`
+- OLM trace/audit/rollback validation: `passed`
+- OLM rollback deletion executed: `false`
 - V2.0 Azure resources created: `0`
 - V2.0 Azure resources mutated: `0`
 - V2.0 RBAC assignments: `0`
@@ -71,3 +74,10 @@
 - V2.2.1 live-write-approved executor gate: `blocked`
 - V2.2.1 OLM staging writes: `0`
 - V2.2.1 readback run: `false`
+- V2.2.2 Azure Identity/RBAC adapter implementation: `complete`
+- V2.2.2 scoped OLM staging writes: `48`
+- V2.2.2 readback run: `true`
+- V2.2.2 readback result: `passed`
+- V2.2.2 Azure infrastructure mutations: `0`
+- V2.2.2 RBAC assignments: `0`
+- V2.2.2 production writes: `0`

@@ -1,0 +1,5 @@
+# Next Phase Prompt
+
+```text
+Approve V2.2.3 Outbound Link Manager post-write hardening, backup evidence refresh, and staging operational readiness only: use the completed V2.2.2 Azure Identity/RBAC Cosmos staging write/readback evidence to run post-write hardening without additional provider writes. Perform live-readonly verification of the seeded 48 OLM staging records through the repo adapter, refresh Backup Center prewrite/postwrite evidence and Resource Registry readiness docs, validate rollback selection criteria non-destructively for olbatch_b08e184fdc6565aa, update Runtime QA/provider-state summaries, document operator readback/runbook steps, create staging hardening result package/root report, and define the next Admin/API provider integration gate. No new Cosmos writes, no destructive rollback deletion, no Azure infrastructure mutation, no RBAC assignment, no protected config reads, no keys/listKeys, no connection strings, no SAS, no production database migration, no production writes, no CMS writes, no deployment, no indexing, and no live-page publication.
+```

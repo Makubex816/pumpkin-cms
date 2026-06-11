@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.2.1, First Scoped OLM Staging Write and Readback Gate |
-| Current V2 status | Blocked before write; Azure target/RBAC/contract gates passed, repo live Cosmos write/readback executor unavailable |
-| Provisional V2 overall completion | `67%` |
+| Current V2 reference | V2.2.2, Azure Identity/RBAC Cosmos Staging Executor and Readback Adapter |
+| Current V2 status | Complete; approved scoped OLM staging batch written and read back successfully |
+| Provisional V2 overall completion | `70%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.2 Outbound Link Manager Stage-Ready with V2.3 Azure staging foundation support |
 | Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| Safety posture | Staging Azure foundation created; staging DB-scoped Cosmos RBAC assigned; no OLM write, no protected-config-read, no app deployment |
-| Next gate | V2.2.2 OLM Azure Cosmos staging data-plane executor/readback adapter and first-write retry |
+| Safety posture | Scoped OLM staging data-plane write completed through Azure Identity/RBAC; no Azure infrastructure mutation, no RBAC assignment, no production/CMS write, no protected-config read, no app deployment |
+| Next gate | V2.2.3 OLM post-write hardening, Backup Center evidence refresh, and staging operational readiness |
 
 ## V2 Reference System
 
@@ -49,6 +49,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Azure staging RBAC/profile/OLM contract package | `deployment/architecture/azure-staging-foundation/v2-3-4-rbac-provider-profile-olm-contract-finalization-result/` | V2.3.4 result package |
 | OLM first scoped staging write gate | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_1_FIRST_SCOPED_STAGING_WRITE_READBACK_REPORT.md` | V2.2.1 blocked before write |
 | OLM first scoped staging write package | `deployment/architecture/outbound-link-manager/v2-2-1-first-scoped-staging-write-readback-result/` | V2.2.1 result package |
+| OLM Azure Identity/RBAC Cosmos executor/readback | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_2_AZURE_IDENTITY_RBAC_COSMOS_EXECUTOR_READBACK_REPORT.md` | V2.2.2 scoped write/readback passed |
+| OLM Azure Identity/RBAC Cosmos executor/readback package | `deployment/architecture/outbound-link-manager/v2-2-2-azure-identity-rbac-cosmos-executor-readback-result/` | V2.2.2 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -56,20 +58,23 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The current hard stop is the missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter for `live-write-approved` OLM staging execution. V2.2.1 passed the target, RBAC inventory, provider profile, package linkage, and `OLM_STAGING_*` contract checks, then stopped before write because the current executor blocks `live-write-approved` with `LIVE_WRITE_APPROVED_UNAVAILABLE`.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. The platform is now in post-write hardening: refresh Backup Center evidence, preserve non-destructive rollback readiness, update staging operational docs, and keep all future OLM writes closed until a separate explicit approval.
 
 Immutable current facts:
 
 - approval manifest: `olapprove_508df3f03faa4f80`
 - first-write batch: `olbatch_b08e184fdc6565aa`
 - expected package records: `48`
-- records written: `0`
-- real write readback run: `false`
+- records written: `48`
+- real write readback run: `true`
 - provider profile candidate: `olm-staging-cosmos-nosql-v1`
 - Cosmos data-plane RBAC assignments created at staging database scope: `2`
 - OLM staging contract validation: `passed`
-- V2.2.1 write gate: `blocked_before_write_repo_live_writer_unavailable`
+- V2.2.2 write gate: `passed_scoped_live_write_readback`
+- V2.2.2 rollback deletion executed: `false`
+- V2.2.2 Azure infrastructure mutations: `0`
+- V2.2.2 RBAC assignments: `0`
 
 ## Next Recommended Phase
 
-Approve V2.2.2 Outbound Link Manager Azure Cosmos staging data-plane executor/readback adapter and first-write retry only. The phase must implement the minimal repo-supported Azure Identity/RBAC adapter, preserve local/offline and staging-simulated profiles, keep production-runtime blocked, then retry only `olbatch_b08e184fdc6565aa` if every gate passes.
+Approve V2.2.3 Outbound Link Manager post-write hardening and staging operational readiness only. The phase should refresh Backup Center evidence after the scoped write, validate non-destructive rollback/readback posture, update Resource Registry readiness, re-run Runtime QA/provider-state checks, and keep all additional staging or production writes blocked without a new explicit approval.

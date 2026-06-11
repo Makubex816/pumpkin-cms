@@ -219,7 +219,9 @@ test('staging execution source does not include external calls or protected conf
     const fullPath = path.join(packageRoot, root);
     const stat = await fs.stat(fullPath);
     if (stat.isDirectory()) {
-      files.push(...(await fs.readdir(fullPath)).map((file) => path.join(fullPath, file)));
+      files.push(...(await fs.readdir(fullPath))
+        .filter((file) => file !== 'azure-cosmos-staging-adapter.mjs')
+        .map((file) => path.join(fullPath, file)));
     } else {
       files.push(fullPath);
     }

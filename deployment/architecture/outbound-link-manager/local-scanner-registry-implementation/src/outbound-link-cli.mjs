@@ -45,6 +45,7 @@ import { inspectApplyPlan, runApplyPlanDryRun } from './apply-plan/apply-plan-dr
 import { validateApplyPlan } from './apply-plan/apply-plan-validator.mjs';
 import { inspectStagingExecution, runStagingExecution, runStagingReadback } from './staging-execution/staging-apply-executor.mjs';
 import { validateStagingExecution } from './staging-execution/staging-execution-validator.mjs';
+import { inspectAzureCosmosStagingExecution, runAzureCosmosStagingExecution } from './staging-execution/azure-cosmos-staging-adapter.mjs';
 import { getOutboundLinkProviderState } from './api/services/outbound-link-provider-state-service.mjs';
 import { buildStagingExecutionPackage } from './execution-package/staging-execution-package-builder.mjs';
 import { inspectStagingExecutionPackage, validateStagingExecutionPackage } from './execution-package/execution-package-validator.mjs';
@@ -197,6 +198,12 @@ async function main() {
       case 'inspect-staging-execution':
         await inspectStagingExecutionCommand(args);
         break;
+      case 'azure-cosmos-staging-execute':
+        await azureCosmosStagingExecuteCommand(args);
+        break;
+      case 'inspect-azure-cosmos-staging-execution':
+        await inspectAzureCosmosStagingExecutionCommand(args);
+        break;
       case 'api-provider-state':
         await apiProviderStateCommand(args);
         break;
@@ -230,7 +237,7 @@ function parseArgs(args) {
       continue;
     }
     const key = arg.slice(2);
-    if (key === 'overwrite' || key === 'json') {
+    if (key === 'overwrite' || key === 'json' || key === 'execute-live-write-approved') {
       parsed[key] = true;
       continue;
     }
@@ -948,6 +955,42 @@ async function inspectStagingExecutionCommand(args) {
   console.log(`providerMode: ${summary.providerMode}`);
   console.log(`status: ${summary.status}`);
   console.log(`records: ${summary.recordCount}`);
+  console.log(`failures: ${summary.failureCount}`);
+}
+
+async function azureCosmosStagingExecuteCommand(args) {
+  const options = parseArgs(args);
+  const result = await runAzureCosmosStagingExecution({
+    packagePath: required(options.package, '--package is required'),
+    profilePath: required(options.profile, '--profile is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true,
+    executeLiveWriteApproved: options['execute-live-write-approved'] === true
+  });
+  console.log(`azureCosmosStagingExecution: ${result.summary.status}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`providerProfileId: ${result.summary.providerProfileId}`);
+  console.log(`providerMode: ${result.summary.providerMode}`);
+  console.log(`writeExecuted: ${result.summary.writeExecuted}`);
+  console.log(`recordsWritten: ${result.summary.recordsWritten}`);
+  console.log(`readbackStatus: ${result.summary.readbackStatus}`);
+  if (result.summary.blockReason) {
+    console.log(`blockReason: ${result.summary.blockReason}`);
+  }
+  if (!['passed', 'blocked'].includes(result.summary.status)) {
+    process.exitCode = 1;
+  }
+}
+
+async function inspectAzureCosmosStagingExecutionCommand(args) {
+  const options = parseArgs(args);
+  const summary = await inspectAzureCosmosStagingExecution({ executionPath: required(options.execution, '--execution is required') });
+  console.log(`azureCosmosStagingExecution: ${summary.status}`);
+  console.log(`writeExecuted: ${summary.writeExecuted}`);
+  console.log(`recordsWritten: ${summary.recordsWritten}`);
+  console.log(`readbackStatus: ${summary.readbackStatus}`);
+  console.log(`providerProfileId: ${summary.providerProfileId}`);
+  console.log(`providerMode: ${summary.providerMode}`);
   console.log(`failures: ${summary.failureCount}`);
 }
 

@@ -22,5 +22,9 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.9.3",
+    "@azure/identity": "^4.13.1"
   }
 }
