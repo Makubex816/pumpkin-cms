@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.2.5 |
-| currentReferenceName | Outbound Link Manager Final Stage-ready Signoff and Evidence Freeze |
-| currentReferenceStatus | Complete; V2.2 stage-ready evidence frozen |
-| provisionalV2OverallCompletion | `76%` |
+| currentReference | V2.5.1 |
+| currentReferenceName | Resource Registry and Provider Profile Operationalization Hardening |
+| currentReferenceStatus | Complete; local/read-only registry/profile control layer operationalized |
+| provisionalV2OverallCompletion | `78%` |
 | currentLayerRefs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| nextReference | V2.5.1 |
-| nextReferenceName | Resource Registry and Provider Profile Operationalization Hardening |
-| nextGate | Local/read-only consolidation of registry/profile bindings after V2.2 closure |
-| safetyPosture | V2.2 final signoff complete; final readback sanity passed with 48 records and zero writes; no additional OLM staging write, no destructive rollback, no Azure mutation/RBAC change, no production/CMS write, no protected-config read |
-| blockedState | No V2.2 stage-ready blockers remain; future writes, production actions, Azure mutations, and deployment remain separately gated |
+| nextReference | V2.6.1 |
+| nextReferenceName | Runtime QA Harness Platform Operationalization and Evidence Binding |
+| nextGate | Local/read-only runtime QA evidence binding against registry/profile states |
+| safetyPosture | Registry/profile validator passed; staging resource/container checks were read-only; production-runtime blocked; live-write-approved scoped-only; no provider write, Azure mutation/RBAC change, production/CMS write, protected-config read |
+| blockedState | No V2.5.1 hardening blockers remain; future uploads/writes, production actions, Azure mutations, and deployment remain separately gated |
 
 ## Legacy Tracker Freeze
 
@@ -37,7 +37,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.2 | `100%` | OLM final stage-ready signoff complete; evidence package frozen |
 | V2.3 | `84%` | Staging Azure foundation, DB-scoped Cosmos RBAC, provider profile candidate, OLM contract, and container-scoped Backup Center Storage RBAC proof finalized |
 | V2.4 | `87%` | Backup Center proof and QA signoff strong; OLM staging storage proof uploaded |
-| V2.5 | `72%` | Resource Registry and provider profile foundations include the OLM staging binding candidate |
+| V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `75%` | Runtime QA harness exists; broader module coverage pending |
 | V2.7 | `55%` | Admin/API operator surfaces exist; complete operator console pending |
 | V2.8 | `50%` | Tenant/static history exists; current publish readiness not active |

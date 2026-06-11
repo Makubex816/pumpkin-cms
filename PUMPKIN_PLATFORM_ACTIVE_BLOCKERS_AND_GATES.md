@@ -12,6 +12,7 @@
 | OLM staging hardening/readback gate | Complete, carried forward into V2.2.4 | V2.2.3 / L06 / L08 / L09 / L10 / L12 | Repeat readback/reconciliation passed; remaining blockers were resolved in V2.2.4. |
 | OLM Admin/API staging read-only and Backup Center storage proof | Complete, carried into V2.2.5 final signoff | V2.2.4 / L06 / L08 / L09 / L10 / L11 / L12 | Bridge, API QA refresh, repeat readback sanity, and Backup Center storage proof passed. |
 | OLM final stage-ready signoff and evidence freeze | Complete | V2.2.5 / L01 / L06 / L08 / L09 / L10 / L11 / L12 | Final readback sanity, Admin/API QA, Backup Center proof list, and evidence freeze passed. |
+| Resource Registry / Provider Profile operationalization | Complete | V2.5.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Operational binding fixture, validator, schemas, matrices, and read-only staging checks passed. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -106,3 +107,12 @@ Still separately gated:
 - V2.2.5 Backup Center proof blobs listed: `4`
 - V2.2.5 OLM package tests: `132` passed
 - V2.2.5 final stage-ready gate: `complete_stage_ready`
+- V2.5.1 operational binding validator: `passed`
+- V2.5.1 operational binding failures: `0`
+- V2.5.1 operational binding warnings: `0`
+- V2.5.1 environment modes represented: `9`
+- V2.5.1 provider profiles represented: `9`
+- V2.5.1 resource bindings represented: `6`
+- V2.5.1 Resource Registry implementation tests: `15` passed
+- V2.5.1 production-runtime state: `blocked`
+- V2.5.1 live-write-approved state: `scoped-only`

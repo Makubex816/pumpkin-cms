@@ -1,0 +1,669 @@
+{
+  "schemaVersion": "0.1.0",
+  "controlLayerId": "pumpkin-resource-registry-provider-profiles-v2-5-1",
+  "generatedAt": "2026-06-11T00:00:00.000Z",
+  "environmentName": "platform-control-layer",
+  "evidenceRefs": [
+    {
+      "label": "V2.2.5 final stage-ready signoff",
+      "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "V2.3.4 provider profile and OLM contract",
+      "path": "deployment/architecture/azure-staging-foundation/v2-3-4-rbac-provider-profile-olm-contract-finalization-result/result-manifest.json"
+    },
+    {
+      "label": "V2.4 Backup Center support proof",
+      "path": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json"
+    }
+  ],
+  "environmentModeMatrix": [
+    {
+      "mode": "local-dev",
+      "environmentName": "local",
+      "state": "allowed",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "local docs, schemas, fixtures, and validator checks"
+    },
+    {
+      "mode": "fake-provider",
+      "environmentName": "local",
+      "state": "allowed",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "local fake provider responses and guard checks"
+    },
+    {
+      "mode": "offline-bundle",
+      "environmentName": "local",
+      "state": "allowed",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "Backup Center, tenant bundle, and handoff package review"
+    },
+    {
+      "mode": "local-file-backed",
+      "environmentName": "local",
+      "state": "allowed",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "file-backed OLM local store and validation"
+    },
+    {
+      "mode": "local-api-fake-provider",
+      "environmentName": "local",
+      "state": "allowed",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "Admin/API local read-only and write guard QA"
+    },
+    {
+      "mode": "staging-simulated",
+      "environmentName": "staging-simulated",
+      "state": "allowed",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "ignored .tmp staging simulation and replay validation"
+    },
+    {
+      "mode": "live-readonly",
+      "environmentName": "staging-or-production",
+      "state": "allowed-readonly-with-explicit-profile",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "safe metadata/readback checks only"
+    },
+    {
+      "mode": "live-write-approved",
+      "environmentName": "staging",
+      "state": "scoped-only",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "previous approved first scoped OLM staging batch only; no new writes in V2.5.1"
+    },
+    {
+      "mode": "production-runtime",
+      "environmentName": "production",
+      "state": "blocked",
+      "providerWritesAllowed": false,
+      "protectedConfigReads": false,
+      "azureMutations": false,
+      "operatorUse": "future production migration and runtime switch approval required"
+    }
+  ],
+  "providerProfiles": [
+    {
+      "providerProfileId": "provider-profile-local-dev",
+      "providerType": "local-file-backed",
+      "providerMode": "local-dev",
+      "environmentName": "local",
+      "tenantScope": "fixture-tenant",
+      "siteScope": "fixture-site",
+      "resourceScope": "package:resource-registry-implementation",
+      "accountOrHost": "local-fixture-only",
+      "databaseOrNamespace": "local-redacted-registry",
+      "authSessionMode": "not-required-local",
+      "readbackMethod": "local-json-validate",
+      "rollbackMethod": "discard-ignored-tmp-output",
+      "state": "allowed",
+      "globalActivation": false,
+      "capabilities": {
+        "canRead": true,
+        "canPlanWrites": false,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-not-required-local",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "Resource Registry implementation",
+          "path": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation/README.md"
+        }
+      ]
+    },
+    {
+      "providerProfileId": "provider-profile-fake-provider",
+      "providerType": "fake-provider",
+      "providerMode": "fake-provider",
+      "environmentName": "local",
+      "tenantScope": "fixture-tenant",
+      "siteScope": "fixture-site",
+      "resourceScope": "package:resource-registry-implementation",
+      "accountOrHost": "fake-provider-only",
+      "databaseOrNamespace": "fake-provider-fixtures",
+      "authSessionMode": "not-required-local",
+      "readbackMethod": "fixture-json-validate",
+      "rollbackMethod": "discard-ignored-tmp-output",
+      "state": "allowed",
+      "globalActivation": false,
+      "capabilities": {
+        "canRead": true,
+        "canPlanWrites": false,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-not-required-local",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "Resource Registry tests",
+          "path": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation/test/resource-registry.test.mjs"
+        }
+      ]
+    },
+    {
+      "providerProfileId": "provider-profile-offline-bundle",
+      "providerType": "offline-bundle",
+      "providerMode": "offline-bundle",
+      "environmentName": "local",
+      "tenantScope": "fixture-tenant",
+      "siteScope": "fixture-site",
+      "resourceScope": "package:backup-center-artifacts",
+      "accountOrHost": "offline-bundle-only",
+      "databaseOrNamespace": "backup-center-package",
+      "authSessionMode": "not-required-local",
+      "readbackMethod": "manifest-and-checksum-validate",
+      "rollbackMethod": "discard-ignored-tmp-output",
+      "state": "allowed",
+      "globalActivation": false,
+      "capabilities": {
+        "canRead": true,
+        "canPlanWrites": false,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-not-required-local",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "Backup Generator QA proof",
+          "path": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json"
+        }
+      ]
+    },
+    {
+      "providerProfileId": "provider-profile-local-file-backed",
+      "providerType": "local-file-backed",
+      "providerMode": "local-file-backed",
+      "environmentName": "local",
+      "tenantScope": "fixture-tenant",
+      "siteScope": "fixture-site",
+      "resourceScope": "package:outbound-link-manager-local-store",
+      "accountOrHost": "local-store-only",
+      "databaseOrNamespace": "outbound-link-local-store",
+      "authSessionMode": "not-required-local",
+      "readbackMethod": "local-store-validator",
+      "rollbackMethod": "discard-ignored-tmp-output",
+      "state": "allowed",
+      "globalActivation": false,
+      "capabilities": {
+        "canRead": true,
+        "canPlanWrites": false,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-not-required-local",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "OLM local store docs",
+          "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/LOCAL_STORE.md"
+        }
+      ]
+    },
+    {
+      "providerProfileId": "provider-profile-local-api-fake-provider",
+      "providerType": "local-api-fake-provider",
+      "providerMode": "local-api-fake-provider",
+      "environmentName": "local",
+      "tenantScope": "fixture-tenant",
+      "siteScope": "fixture-site",
+      "resourceScope": "apps:admin-and-pumpkin-api-local",
+      "accountOrHost": "local-api-fake-provider",
+      "databaseOrNamespace": "local-outbound-link-service",
+      "authSessionMode": "local-tenant-role-guard",
+      "readbackMethod": "api-readonly-contract-tests",
+      "rollbackMethod": "write-action-guard-denial",
+      "state": "allowed-readonly",
+      "globalActivation": false,
+      "capabilities": {
+        "canRead": true,
+        "canPlanWrites": false,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-not-required-local",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "V2.2.5 Admin/API QA carryforward",
+          "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/admin-api-readonly-proof-summary.md"
+        }
+      ]
+    },
+    {
+      "providerProfileId": "provider-profile-staging-simulated",
+      "providerType": "staging-simulated-store",
+      "providerMode": "staging-simulated",
+      "environmentName": "staging-simulated",
+      "tenantScope": "fixture-tenant",
+      "siteScope": "fixture-site",
+      "resourceScope": "package:outbound-link-manager-staging-simulated",
+      "accountOrHost": "staging-simulated-store",
+      "databaseOrNamespace": "ignored-tmp-staging-simulated-store",
+      "authSessionMode": "not-required-local",
+      "readbackMethod": "staging-simulated-readback-validator",
+      "rollbackMethod": "discard-ignored-tmp-output",
+      "state": "allowed",
+      "globalActivation": false,
+      "capabilities": {
+        "canRead": true,
+        "canPlanWrites": true,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-not-required-local",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "OLM staging simulated integration",
+          "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/STAGING_PERSISTENCE_INTEGRATION.md"
+        }
+      ]
+    },
+    {
+      "providerProfileId": "provider-profile-live-readonly",
+      "providerType": "azure-cosmos-nosql",
+      "providerMode": "live-readonly",
+      "environmentName": "staging",
+      "tenantScope": "fixture-tenant",
+      "siteScope": "fixture-site",
+      "resourceScope": "resourceGroup:rg-pumpkincms-stg-eastus-olm",
+      "accountOrHost": "cosmos-pumpkincms-stg-olm01.documents.azure.com",
+      "databaseOrNamespace": "pumpkincms-olm-staging",
+      "authSessionMode": "cosmos-nosql-data-plane-rbac",
+      "readbackMethod": "cosmos-nosql-tenant-site-batch-id-readback",
+      "rollbackMethod": "not-applicable-readonly",
+      "state": "allowed-readonly",
+      "globalActivation": false,
+      "capabilities": {
+        "canRead": true,
+        "canPlanWrites": false,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-olm-staging-cosmos-entra-rbac-no-value",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "V2.2.5 readback proof",
+          "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/readback-reconciliation-proof-summary.md"
+        }
+      ]
+    },
+    {
+      "providerProfileId": "olm-staging-cosmos-nosql-v1",
+      "providerType": "azure-cosmos-nosql",
+      "providerMode": "live-write-approved",
+      "environmentName": "staging",
+      "tenantScope": "fixture-tenant",
+      "siteScope": "fixture-site",
+      "resourceScope": "resourceGroup:rg-pumpkincms-stg-eastus-olm",
+      "accountOrHost": "cosmos-pumpkincms-stg-olm01.documents.azure.com",
+      "databaseOrNamespace": "pumpkincms-olm-staging",
+      "authSessionMode": "cosmos-nosql-data-plane-rbac",
+      "readbackMethod": "cosmos-nosql-tenant-site-batch-id-readback",
+      "rollbackMethod": "cosmos-nosql-first-write-batch-delete-by-batch-id",
+      "state": "scoped-only",
+      "globalActivation": false,
+      "scopedApproval": {
+        "approvalManifestId": "olapprove_508df3f03faa4f80",
+        "firstWriteBatchId": "olbatch_b08e184fdc6565aa",
+        "expectedRecordCount": 48,
+        "recordsWrittenInApprovedBatch": 48,
+        "additionalWritesRequireApproval": true
+      },
+      "capabilities": {
+        "canRead": true,
+        "canPlanWrites": true,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-olm-staging-cosmos-entra-rbac-no-value",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "V2.2.5 final signoff",
+          "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json"
+        },
+        {
+          "label": "V2.3.4 provider profile candidate",
+          "path": "deployment/architecture/azure-staging-foundation/v2-3-4-rbac-provider-profile-olm-contract-finalization-result/provider-profile-binding-candidate.json"
+        }
+      ]
+    },
+    {
+      "providerProfileId": "provider-profile-production-runtime-blocked",
+      "providerType": "future-production-provider",
+      "providerMode": "production-runtime",
+      "environmentName": "production",
+      "tenantScope": "future-approved-production-tenant",
+      "siteScope": "future-approved-production-site",
+      "resourceScope": "future-production-scope-requires-approval",
+      "accountOrHost": "future-production-provider-not-active",
+      "databaseOrNamespace": "future-production-namespace-not-active",
+      "authSessionMode": "future-managed-identity-or-rbac-approval-required",
+      "readbackMethod": "future-production-readonly-verification-required",
+      "rollbackMethod": "future-production-rollback-approval-required",
+      "state": "blocked",
+      "globalActivation": false,
+      "capabilities": {
+        "canRead": false,
+        "canPlanWrites": false,
+        "liveProviderWritesAllowed": false,
+        "productionWritesAllowed": false,
+        "protectedConfigReads": false,
+        "secretValuesIncluded": false,
+        "azureMutations": false
+      },
+      "credentialReference": {
+        "credentialReferenceId": "credential-reference-future-production-not-collected",
+        "valueIncluded": false
+      },
+      "evidenceRefs": [
+        {
+          "label": "V2.2.5 production gates closed",
+          "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/production-gates-still-closed.md"
+        }
+      ]
+    }
+  ],
+  "resourceBindings": [
+    {
+      "bindingId": "binding-olm-staging-cosmos",
+      "target": "Outbound Link Manager",
+      "environmentName": "staging",
+      "resourceType": "azure-cosmos-nosql",
+      "status": "current",
+      "tenantKeys": [
+        "fixture-tenant"
+      ],
+      "siteKeys": [
+        "fixture-site"
+      ],
+      "providerProfileIds": [
+        "olm-staging-cosmos-nosql-v1",
+        "provider-profile-live-readonly"
+      ],
+      "nonSecretIdentifiers": {
+        "resourceGroup": "rg-pumpkincms-stg-eastus-olm",
+        "cosmosAccount": "cosmos-pumpkincms-stg-olm01",
+        "endpointHost": "cosmos-pumpkincms-stg-olm01.documents.azure.com",
+        "cosmosDatabase": "pumpkincms-olm-staging",
+        "partitionKey": "/tenantKey",
+        "approvedFirstWriteBatch": "olbatch_b08e184fdc6565aa",
+        "approvalManifest": "olapprove_508df3f03faa4f80",
+        "expectedRecords": "48"
+      },
+      "credentialReferences": [
+        {
+          "credentialReferenceId": "credential-reference-olm-staging-cosmos-entra-rbac-no-value",
+          "authMode": "cosmos-nosql-data-plane-rbac",
+          "valueIncluded": false
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "label": "V2.2.5 final signoff",
+          "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json"
+        },
+        {
+          "label": "V2.3.4 Resource Registry candidate",
+          "path": "deployment/architecture/azure-staging-foundation/v2-3-4-rbac-provider-profile-olm-contract-finalization-result/resource-registry-binding-candidate.json"
+        }
+      ]
+    },
+    {
+      "bindingId": "binding-backup-center-staging-storage",
+      "target": "Backup Center",
+      "environmentName": "staging",
+      "resourceType": "azure-storage-container",
+      "status": "current",
+      "tenantKeys": [
+        "fixture-tenant"
+      ],
+      "siteKeys": [
+        "fixture-site"
+      ],
+      "providerProfileIds": [
+        "provider-profile-offline-bundle",
+        "provider-profile-live-readonly"
+      ],
+      "nonSecretIdentifiers": {
+        "storageAccount": "pumpkincmsstgolm01",
+        "container": "backup-center-staging",
+        "proofPrefix": "v2-2-4/olm-staging-readonly-bridge-backup-storage/",
+        "proofBlobCount": "4"
+      },
+      "credentialReferences": [
+        {
+          "credentialReferenceId": "credential-reference-olm-staging-storage-rbac-no-value",
+          "authMode": "storage-rbac",
+          "valueIncluded": false
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "label": "V2.2.5 Backup Center proof summary",
+          "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/backup-center-staging-proof-summary.md"
+        }
+      ]
+    },
+    {
+      "bindingId": "binding-resource-registry-staging-storage",
+      "target": "Resource Registry",
+      "environmentName": "staging",
+      "resourceType": "azure-storage-container",
+      "status": "resource-exists-upload-not-proven",
+      "tenantKeys": [
+        "fixture-tenant"
+      ],
+      "siteKeys": [
+        "fixture-site"
+      ],
+      "providerProfileIds": [
+        "provider-profile-live-readonly"
+      ],
+      "nonSecretIdentifiers": {
+        "storageAccount": "pumpkincmsstgolm01",
+        "container": "resource-registry-staging",
+        "operationalUploadState": "not-executed-in-v2-5-1"
+      },
+      "credentialReferences": [
+        {
+          "credentialReferenceId": "credential-reference-olm-staging-storage-rbac-no-value",
+          "authMode": "storage-rbac",
+          "valueIncluded": false
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "label": "V2.3.4 Resource Registry binding result",
+          "path": "deployment/architecture/azure-staging-foundation/v2-3-4-rbac-provider-profile-olm-contract-finalization-result/resource-registry-binding-result.md"
+        }
+      ]
+    },
+    {
+      "bindingId": "binding-runtime-qa-staging-storage",
+      "target": "Runtime QA",
+      "environmentName": "staging",
+      "resourceType": "azure-storage-container",
+      "status": "resource-exists-upload-not-proven",
+      "tenantKeys": [
+        "fixture-tenant"
+      ],
+      "siteKeys": [
+        "fixture-site"
+      ],
+      "providerProfileIds": [
+        "provider-profile-local-api-fake-provider",
+        "provider-profile-live-readonly"
+      ],
+      "nonSecretIdentifiers": {
+        "storageAccount": "pumpkincmsstgolm01",
+        "container": "runtime-qa-staging",
+        "operationalUploadState": "not-executed-in-v2-5-1"
+      },
+      "credentialReferences": [
+        {
+          "credentialReferenceId": "credential-reference-olm-staging-storage-rbac-no-value",
+          "authMode": "storage-rbac",
+          "valueIncluded": false
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "label": "Runtime QA support proof",
+          "path": "deployment/architecture/outbound-link-manager/phase-2h21-runtime-qa-provider-readiness-staging-gate-result/manifest.json"
+        }
+      ]
+    },
+    {
+      "bindingId": "binding-admin-api-readonly",
+      "target": "Admin/API",
+      "environmentName": "local-and-staging-readonly",
+      "resourceType": "admin-api-readonly-surface",
+      "status": "current",
+      "tenantKeys": [
+        "fixture-tenant"
+      ],
+      "siteKeys": [
+        "fixture-site"
+      ],
+      "providerProfileIds": [
+        "provider-profile-local-api-fake-provider",
+        "provider-profile-live-readonly"
+      ],
+      "nonSecretIdentifiers": {
+        "adminRoute": "/dashboard/outbound-links",
+        "apiMode": "get-only-readonly-plus-write-guard-tests",
+        "providerStateMode": "staging-backed-readonly"
+      },
+      "credentialReferences": [
+        {
+          "credentialReferenceId": "credential-reference-not-required-local",
+          "authMode": "local-tenant-role-guard",
+          "valueIncluded": false
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "label": "V2.2.5 Admin/API proof summary",
+          "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/admin-api-readonly-proof-summary.md"
+        }
+      ]
+    },
+    {
+      "bindingId": "binding-azure-staging-foundation",
+      "target": "Azure Staging Foundation",
+      "environmentName": "staging",
+      "resourceType": "azure-resource-set",
+      "status": "current",
+      "tenantKeys": [
+        "fixture-tenant"
+      ],
+      "siteKeys": [
+        "fixture-site"
+      ],
+      "providerProfileIds": [
+        "olm-staging-cosmos-nosql-v1",
+        "provider-profile-live-readonly"
+      ],
+      "nonSecretIdentifiers": {
+        "resourceGroup": "rg-pumpkincms-stg-eastus-olm",
+        "cosmosAccount": "cosmos-pumpkincms-stg-olm01",
+        "cosmosDatabase": "pumpkincms-olm-staging",
+        "storageAccount": "pumpkincmsstgolm01",
+        "backupContainer": "backup-center-staging",
+        "resourceRegistryContainer": "resource-registry-staging",
+        "runtimeQaContainer": "runtime-qa-staging",
+        "keyVaultName": "kv-pumpkincms-stg-olm01",
+        "managedIdentityName": "id-pumpkincms-olm-stg",
+        "logAnalyticsWorkspace": "log-pumpkincms-stg-olm01",
+        "applicationInsights": "appi-pumpkincms-stg-olm01"
+      },
+      "credentialReferences": [
+        {
+          "credentialReferenceId": "credential-reference-azure-operator-session-no-value",
+          "authMode": "azure-cli-session",
+          "valueIncluded": false
+        },
+        {
+          "credentialReferenceId": "credential-reference-managed-identity-no-value",
+          "authMode": "managed-identity",
+          "valueIncluded": false
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "label": "V2.3.3 Azure staging resource creation",
+          "path": "deployment/architecture/azure-staging-foundation/v2-3-3-target-finalization-resource-creation-retry-result/result-manifest.json"
+        },
+        {
+          "label": "V2.3.4 Azure staging RBAC and profile result",
+          "path": "deployment/architecture/azure-staging-foundation/v2-3-4-rbac-provider-profile-olm-contract-finalization-result/result-manifest.json"
+        }
+      ]
+    }
+  ]
+}

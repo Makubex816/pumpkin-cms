@@ -10,16 +10,19 @@ import { writeRedactedRegistry, validateRegistryOutput } from '../src/registry/r
 import { validateRedactedRegistry } from '../src/registry/resource-entry-normalizer.mjs';
 import { createFakeVault, createSessionVault } from '../src/vault/vault-create-runner.mjs';
 import { validateVaultOutput } from '../src/vault/vault-validator.mjs';
+import { runOperationalBindingValidation, validateOperationalBindings } from '../src/operational/operational-binding-validator.mjs';
 import { listFilesRecursive } from '../src/utils/file-hash.mjs';
 import { readJson, writeJson } from '../src/utils/json-writer.mjs';
 import { packageRoot } from '../src/utils/safe-paths.mjs';
 
 const fixedDate = new Date('2026-06-09T12:00:00.000Z');
 const registryFixture = 'fixtures/resource-registry.fixture.json';
+const operationalBindingsFixture = 'fixtures/operational-bindings.v2-5-1.fixture.json';
 const credentialFixture = 'fixtures/credential-references.fixture.json';
 const fakeVaultRequest = 'fixtures/fake-vault-request.fixture.json';
 const cleanNames = [
   'test-redacted-registry',
+  'test-operational-bindings',
   'test-fake-vault',
   'test-session-vault-missing-passphrase',
   'test-session-vault-present',
@@ -170,6 +173,44 @@ test('validator rejects registry with plaintext secret-like field', async () => 
   assert(validation.failures.some((failure) => failure.code === 'FORBIDDEN_FIELD'));
 });
 
+test('operational binding validator accepts V2.5.1 binding fixture', async () => {
+  const result = await runOperationalBindingValidation({
+    fixturePath: operationalBindingsFixture,
+    outputPath: '.tmp/test-operational-bindings',
+    overwrite: true
+  });
+  assert.equal(result.validation.status, 'passed');
+  assert.equal(result.validation.summary.environmentModeCount, 9);
+  assert.equal(result.validation.summary.providerProfileCount, 9);
+  assert.equal(result.validation.summary.resourceBindingCount, 6);
+  assert.equal(result.validation.summary.failureCount, 0);
+  await fs.access(path.join(result.outputRoot, 'OPERATIONAL_BINDING_VALIDATION_RESULT.json'));
+  await fs.access(path.join(result.outputRoot, 'OPERATIONAL_BINDING_VALIDATION_RESULT.md'));
+});
+
+test('operational binding validator rejects placeholders, production activation, global live write, and secret-like values', async () => {
+  const fixture = await readJson(path.join(packageRoot, operationalBindingsFixture));
+  fixture.providerProfiles[0].accountOrHost = 'TBD-provider-host';
+  fixture.providerProfiles[7].globalActivation = true;
+  fixture.providerProfiles[7].capabilities.liveProviderWritesAllowed = true;
+  fixture.providerProfiles[8].state = 'active';
+  fixture.providerProfiles[8].capabilities.productionWritesAllowed = true;
+  fixture.resourceBindings[0].nonSecretIdentifiers.connectionString = [
+    'Default',
+    'Endpoints',
+    'Protocol=https;Account',
+    'Name=bad;Account',
+    'Key=not-real'
+  ].join('');
+  const validation = await validateOperationalBindings(fixture);
+  assert.equal(validation.status, 'failed');
+  assert(validation.failures.some((failure) => failure.code === 'PLACEHOLDER_VALUE_DETECTED'));
+  assert(validation.failures.some((failure) => failure.code === 'GLOBAL_PROVIDER_ACTIVATION_FORBIDDEN'));
+  assert(validation.failures.some((failure) => failure.code === 'LIVE_WRITE_PROVIDER_WRITES_ALLOWED'));
+  assert(validation.failures.some((failure) => failure.code === 'PRODUCTION_RUNTIME_PROFILE_NOT_BLOCKED'));
+  assert(validation.failures.some((failure) => failure.code === 'FORBIDDEN_SECRET_FIELD'));
+});
+
 test('validator rejects credential reference with plaintext value field', () => {
   const document = buildCredentialReferenceDocument({ env: envWithVault, now: fixedDate });
   document.credentialReferences[0].value = 'SHOULD_NOT_BE_HERE';
@@ -201,7 +242,11 @@ test('source avoids external calls and protected config reads', async () => {
       'Invoke-' + 'WebRequest',
       'appsettings' + '\\.Development',
       'local' + '\\.settings',
-      '\\.env' + '\\.local'
+      '\\.env' + '\\.local',
+      'az\\s+storage\\s+account\\s+keys\\s+list',
+      'az\\s+cosmosdb\\s+keys\\s+list',
+      'show-' + 'connection-string',
+      'generate-' + 'sas'
     ].join('|'),
     'i'
   );

@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.2.5, Outbound Link Manager Final Stage-ready Signoff and Evidence Freeze |
-| Current V2 status | Complete; V2.2 final signoff passed and evidence package frozen |
-| Provisional V2 overall completion | `76%` |
+| Current V2 reference | V2.5.1, Resource Registry and Provider Profile Operationalization Hardening |
+| Current V2 status | Complete; Resource Registry / Provider Profile control layer operationalized for local/read-only use |
+| Provisional V2 overall completion | `78%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
-| Active product lane | V2.5 Resource Registry / Provider Profiles operationalization after V2.2 closure |
+| Active product lane | V2.6 Runtime QA Harness operationalization after V2.5.1 registry/profile closure |
 | Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| Safety posture | V2.2 final signoff complete; final readback sanity passed with 48 records and zero writes; Backup Center storage proof read-only verified; no additional OLM staging write, no destructive rollback, no Azure mutation/RBAC change, no production/CMS write, no protected-config read, no app deployment |
-| Next gate | V2.5.1 Resource Registry and Provider Profile Operationalization Hardening |
+| Safety posture | V2.5.1 completed local/read-only registry/profile validation; staging resources and containers read-only verified; production-runtime blocked; live-write-approved scoped-only; no provider write, Azure mutation/RBAC change, production/CMS write, protected-config read, deployment, indexing, or publication |
+| Next gate | V2.6.1 Runtime QA Harness Platform Operationalization and Evidence Binding |
 
 ## V2 Reference System
 
@@ -57,6 +57,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | OLM Admin/API staging read-only and Backup Center storage proof package | `deployment/architecture/outbound-link-manager/v2-2-4-admin-api-staging-readonly-backup-storage-result/` | V2.2.4 result package |
 | OLM final stage-ready signoff | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_5_FINAL_STAGE_READY_SIGNOFF_REPORT.md` | V2.2.5 final signoff complete |
 | OLM final stage-ready signoff package | `deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/` | V2.2.5 final evidence-freeze package |
+| Resource Registry / Provider Profile operationalization | `PUMPKIN_RESOURCE_REGISTRY_PROVIDER_PROFILE_V2_5_1_OPERATIONALIZATION_REPORT.md` | V2.5.1 local/read-only operational hardening complete |
+| Resource Registry / Provider Profile operationalization package | `deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/` | V2.5.1 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -64,7 +66,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2.3 repeat readback/reconciliation passed, V2.2.4 resolved the Admin/API bridge, Backup Center storage proof, and API QA blockers, and V2.2.5 completed final signoff. V2.2 has no remaining stage-ready blockers.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use, added validator tooling, and confirmed production-runtime remains blocked while live-write-approved remains scoped-only.
 
 Immutable current facts:
 
@@ -95,7 +97,14 @@ Immutable current facts:
 - V2.2.5 Backup Center storage proof list: `4` expected blobs
 - V2.2.5 OLM package tests: `132` passed
 - V2.2.5 final stage-ready gate: `complete_stage_ready`
+- V2.5.1 operational binding validator: `passed`
+- V2.5.1 operational binding warnings: `0`
+- V2.5.1 provider profiles represented: `9`
+- V2.5.1 resource bindings represented: `6`
+- V2.5.1 Resource Registry implementation tests: `15` passed
+- V2.5.1 production-runtime state: `blocked`
+- V2.5.1 live-write-approved state: `scoped-only`
 
 ## Next Recommended Phase
 
-Approve V2.5.1 Resource Registry and Provider Profile Operationalization Hardening only. The phase should use the frozen V2.2 final signoff and existing Resource Registry/provider profile candidates to consolidate canonical registry/profile bindings for the OLM staging target, Backup Center staging proof, Azure staging resources, runtime modes, tenant/site scopes, proof packages, and operator-readiness surfaces. Keep the phase local/read-only: no Azure mutation, no RBAC changes, no provider writes, no protected config reads, no keys/listKeys, no connection strings, no SAS, no CMS writes, no deployment, no indexing, and no live publication.
+Approve V2.6.1 Runtime QA Harness Platform Operationalization and Evidence Binding only. The phase should use the completed V2.5.1 Resource Registry / Provider Profile control layer and existing reusable runtime QA harness to bind runtime QA evidence, provider-mode UI checks, and no-uncontrolled-write detection across Admin/API/operator modules. Keep the phase local/read-only: no provider writes, no Azure mutation, no RBAC changes, no protected config reads, no keys/listKeys, no connection strings, no SAS, no CMS writes, no deployment, no indexing, and no live publication.

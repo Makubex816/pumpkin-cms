@@ -12,6 +12,12 @@ Validators cover:
 - vault decryptability when the passphrase is available
 - handoff package required files
 - SHA-256 checksums
+- V2.5.1 operational binding profile modes and required fields
+- stale or missing evidence references
+- blocked production-runtime state
+- scoped-only live-write-approved state
+- placeholder/TBD/example values
+- no secret-like values in registry/profile bindings
 
 Generated validation reports are written under the same `.tmp/` output folder.
 

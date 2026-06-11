@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/provider-profile-operational-v2-5-1.schema.json",
+  "title": "Pumpkin Provider Profile Operational Contract",
+  "type": "object",
+  "required": [
+    "providerProfileId",
+    "providerType",
+    "providerMode",
+    "environmentName",
+    "tenantScope",
+    "siteScope",
+    "resourceScope",
+    "accountOrHost",
+    "databaseOrNamespace",
+    "authSessionMode",
+    "readbackMethod",
+    "rollbackMethod",
+    "state",
+    "globalActivation",
+    "capabilities",
+    "credentialReference",
+    "evidenceRefs"
+  ],
+  "properties": {
+    "providerMode": {
+      "enum": [
+        "local-dev",
+        "fake-provider",
+        "offline-bundle",
+        "local-file-backed",
+        "local-api-fake-provider",
+        "staging-simulated",
+        "live-readonly",
+        "live-write-approved",
+        "production-runtime"
+      ]
+    },
+    "globalActivation": {
+      "const": false
+    },
+    "credentialReference": {
+      "type": "object",
+      "properties": {
+        "valueIncluded": {
+          "const": false
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
+

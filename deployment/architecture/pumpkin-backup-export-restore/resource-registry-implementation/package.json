@@ -6,14 +6,15 @@
   "description": "Local redacted resource registry and encrypted handoff vault tooling for Pumpkin.",
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "check": "node --check src/resource-registry-cli.mjs && node --check src/registry/redacted-registry-writer.mjs && node --check src/registry/resource-entry-normalizer.mjs && node --check src/registry/resource-to-tenant-mapper.mjs && node --check src/credentials/credential-reference-writer.mjs && node --check src/vault/vault-create-runner.mjs && node --check src/vault/vault-envelope-encryptor.mjs && node --check src/vault/vault-manifest-writer.mjs && node --check src/vault/vault-validator.mjs && node --check src/handoff/handoff-package-writer.mjs && node --check src/handoff/checksum-writer.mjs && node --check src/handoff/handoff-validator.mjs && node --check src/env/session-env-collector.mjs && node --check src/utils/safe-paths.mjs && node --check src/utils/json-writer.mjs && node --check src/utils/file-hash.mjs && node --check src/utils/secret-scan.mjs && node --check test/resource-registry.test.mjs && npm test",
+    "check": "node --check src/resource-registry-cli.mjs && node --check src/registry/redacted-registry-writer.mjs && node --check src/registry/resource-entry-normalizer.mjs && node --check src/registry/resource-to-tenant-mapper.mjs && node --check src/credentials/credential-reference-writer.mjs && node --check src/vault/vault-create-runner.mjs && node --check src/vault/vault-envelope-encryptor.mjs && node --check src/vault/vault-manifest-writer.mjs && node --check src/vault/vault-validator.mjs && node --check src/handoff/handoff-package-writer.mjs && node --check src/handoff/checksum-writer.mjs && node --check src/handoff/handoff-validator.mjs && node --check src/env/session-env-collector.mjs && node --check src/operational/operational-binding-validator.mjs && node --check src/utils/safe-paths.mjs && node --check src/utils/json-writer.mjs && node --check src/utils/file-hash.mjs && node --check src/utils/secret-scan.mjs && node --check test/resource-registry.test.mjs && npm test",
     "create:redacted-registry": "node src/resource-registry-cli.mjs create-redacted-registry --fixtures fixtures/resource-registry.fixture.json --out .tmp/redacted-registry --overwrite",
     "validate:registry": "node src/resource-registry-cli.mjs validate-registry --registry .tmp/redacted-registry",
     "create:fake-vault": "node src/resource-registry-cli.mjs create-fake-vault --request fixtures/fake-vault-request.fixture.json --out .tmp/fake-vault --overwrite",
     "create:session-vault": "node src/resource-registry-cli.mjs create-session-vault --out .tmp/session-handoff-vault --overwrite",
     "validate:session-vault": "node src/resource-registry-cli.mjs validate-vault --vault .tmp/session-handoff-vault",
     "create:handoff": "node src/resource-registry-cli.mjs create-handoff --registry fixtures/resource-registry.fixture.json --credential-references fixtures/credential-references.fixture.json --out .tmp/fake-handoff --overwrite",
-    "inspect:handoff": "node src/resource-registry-cli.mjs inspect-handoff --handoff .tmp/fake-handoff"
+    "inspect:handoff": "node src/resource-registry-cli.mjs inspect-handoff --handoff .tmp/fake-handoff",
+    "validate:operational-bindings": "node src/resource-registry-cli.mjs validate-operational-bindings --fixture fixtures/operational-bindings.v2-5-1.fixture.json --out .tmp/v2-5-1-operational-bindings --overwrite"
   },
   "engines": {
     "node": ">=20"

@@ -24,6 +24,7 @@ npm run create:session-vault
 npm run validate:session-vault
 npm run create:handoff
 npm run inspect:handoff
+npm run validate:operational-bindings
 ```
 
 `create:session-vault` requires `PUMPKIN_HANDOFF_VAULT_PASSPHRASE` in process environment. If it is missing, the command writes a blocker note under `.tmp` and does not create an encrypted session vault.
@@ -33,6 +34,10 @@ npm run inspect:handoff
 The committed package contains only source, tests, fixtures, and docs. Generated registry, vault, and handoff packages are written under ignored `.tmp/` output.
 
 The session vault encrypts only approved durable env material. `PUMPKIN_ADMIN_JWT` is recorded as present/excluded and is not durable escrow.
+
+## V2.5.1 Operational Bindings
+
+`validate:operational-bindings` validates the V2.5.1 non-secret Resource Registry / Provider Profile control-layer fixture. It checks provider modes, required profile fields, resource binding targets, scoped `live-write-approved` state, blocked `production-runtime`, stale evidence references, placeholder values, and secret-like values. The command writes evidence under ignored `.tmp/` only.
 
 ## Docs
 

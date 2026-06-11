@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/resource-registry-operational-v2-5-1.schema.json",
+  "title": "Pumpkin Resource Registry Operational Binding",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "controlLayerId",
+    "environmentModeMatrix",
+    "providerProfiles",
+    "resourceBindings",
+    "evidenceRefs"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1.0"
+    },
+    "controlLayerId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "environmentModeMatrix": {
+      "type": "array"
+    },
+    "providerProfiles": {
+      "type": "array"
+    },
+    "resourceBindings": {
+      "type": "array"
+    },
+    "evidenceRefs": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}
+

@@ -32,4 +32,10 @@ node src/resource-registry-cli.mjs create-handoff --registry fixtures/resource-r
 node src/resource-registry-cli.mjs inspect-handoff --handoff .tmp/session-handoff
 ```
 
+Validate the V2.5.1 operational Resource Registry / Provider Profile binding fixture:
+
+```powershell
+node src/resource-registry-cli.mjs validate-operational-bindings --fixture fixtures/operational-bindings.v2-5-1.fixture.json --out .tmp/v2-5-1-operational-bindings --overwrite
+```
+
 CLI output prints statuses, counts, and paths only. It does not print secrets or decrypted payloads.
