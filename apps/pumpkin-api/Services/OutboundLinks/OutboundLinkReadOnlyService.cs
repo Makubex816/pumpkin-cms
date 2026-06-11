@@ -47,8 +47,8 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             new OutboundLinkListResponse(paged.Items),
             normalized.TenantKey,
             normalized.SiteKey,
-            Meta(normalized, paged.PageInfo),
-            "Outbound links listed from local/fake provider.");
+            Meta(normalized, paged.PageInfo, snapshot.Provider),
+            $"Outbound links listed from {snapshot.Provider.Mode}.");
     }
 
     public async Task<OutboundLinkApiEnvelope<OutboundLinkDetailResponse>> GetLinkAsync(string id, OutboundLinkApiQuery query, CancellationToken cancellationToken = default)
@@ -85,8 +85,8 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             new OutboundLinkDetailResponse(ToLinkDto(link, snapshot.Instances), instances, policy is null ? null : ToPolicyDto(policy)),
             normalized.TenantKey,
             normalized.SiteKey,
-            Meta(normalized, SinglePage()),
-            "Outbound link detail read from local/fake provider.");
+            Meta(normalized, SinglePage(), snapshot.Provider),
+            $"Outbound link detail read from {snapshot.Provider.Mode}.");
     }
 
     public async Task<OutboundLinkApiEnvelope<OutboundLinkInstanceListResponse>> ListInstancesAsync(string? linkId, OutboundLinkApiQuery query, CancellationToken cancellationToken = default)
@@ -121,8 +121,8 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             new OutboundLinkInstanceListResponse(paged.Items),
             normalized.TenantKey,
             normalized.SiteKey,
-            Meta(normalized, paged.PageInfo),
-            "Outbound link instances listed from local/fake provider.");
+            Meta(normalized, paged.PageInfo, snapshot.Provider),
+            $"Outbound link instances listed from {snapshot.Provider.Mode}.");
     }
 
     public async Task<OutboundLinkApiEnvelope<OutboundLinkPolicyListResponse>> ListPoliciesAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default)
@@ -143,8 +143,8 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             new OutboundLinkPolicyListResponse(snapshot.ActivePolicyId, snapshot.Policies.Select(ToPolicyDto).ToList()),
             normalized.TenantKey,
             normalized.SiteKey,
-            Meta(normalized, SinglePage(snapshot.Policies.Count)),
-            "Outbound link policies listed from local/fake provider.");
+            Meta(normalized, SinglePage(snapshot.Policies.Count), snapshot.Provider),
+            $"Outbound link policies listed from {snapshot.Provider.Mode}.");
     }
 
     public async Task<OutboundLinkApiEnvelope<OutboundLinkScanRunListResponse>> ListScanRunsAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default)
@@ -167,8 +167,8 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             new OutboundLinkScanRunListResponse(paged.Items),
             normalized.TenantKey,
             normalized.SiteKey,
-            Meta(normalized, paged.PageInfo),
-            "Outbound link scan runs listed from local/fake provider.");
+            Meta(normalized, paged.PageInfo, snapshot.Provider),
+            $"Outbound link scan runs listed from {snapshot.Provider.Mode}.");
     }
 
     public async Task<OutboundLinkApiEnvelope<OutboundLinkAuditLogListResponse>> ListAuditLogsAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default)
@@ -191,8 +191,8 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             new OutboundLinkAuditLogListResponse(paged.Items),
             normalized.TenantKey,
             normalized.SiteKey,
-            Meta(normalized, paged.PageInfo),
-            "Outbound link audit logs listed from local/fake provider.");
+            Meta(normalized, paged.PageInfo, snapshot.Provider),
+            $"Outbound link audit logs listed from {snapshot.Provider.Mode}.");
     }
 
     public async Task<OutboundLinkApiEnvelope<OutboundLinkDashboardSummaryResponse>> GetDashboardSummaryAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default)
@@ -228,8 +228,8 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             response,
             normalized.TenantKey,
             normalized.SiteKey,
-            Meta(normalized, SinglePage()),
-            "Outbound link dashboard summary read from local/fake provider.");
+            Meta(normalized, SinglePage(), snapshot.Provider),
+            $"Outbound link dashboard summary read from {snapshot.Provider.Mode}.");
     }
 
     private static NormalizedQueryResult NormalizeQuery(OutboundLinkApiQuery query)
@@ -484,7 +484,11 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
                 page > 1));
     }
 
-    private static OutboundLinkApiMeta Meta(NormalizedQueryResult query, OutboundLinkPaginationMeta pagination) => OutboundLinkApiMeta.LocalReadOnly(
+    private static OutboundLinkApiMeta Meta(
+        NormalizedQueryResult query,
+        OutboundLinkPaginationMeta pagination,
+        OutboundLinkProviderMetadata provider) => OutboundLinkApiMeta.FromProvider(
+        provider,
         pagination,
         new Dictionary<string, string?>
         {

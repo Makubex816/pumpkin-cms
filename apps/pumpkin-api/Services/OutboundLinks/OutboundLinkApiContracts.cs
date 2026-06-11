@@ -81,22 +81,51 @@ public sealed record OutboundLinkApiMeta(
     [property: JsonPropertyName("protectedConfigReads")] bool ProtectedConfigReads,
     [property: JsonPropertyName("pagination")] OutboundLinkPaginationMeta? Pagination = null,
     [property: JsonPropertyName("filters")] IReadOnlyDictionary<string, string?>? Filters = null,
-    [property: JsonPropertyName("sort")] OutboundLinkSort? Sort = null)
+    [property: JsonPropertyName("sort")] OutboundLinkSort? Sort = null,
+    [property: JsonPropertyName("stagingBacked")] bool StagingBacked = false,
+    [property: JsonPropertyName("readOnly")] bool ReadOnly = true,
+    [property: JsonPropertyName("writeActionsAllowed")] bool WriteActionsAllowed = false,
+    [property: JsonPropertyName("providerProfileId")] string? ProviderProfileId = null,
+    [property: JsonPropertyName("providerMode")] string? ProviderMode = null,
+    [property: JsonPropertyName("providerState")] string? ProviderState = null,
+    [property: JsonPropertyName("sourceEvidence")] string? SourceEvidence = null,
+    [property: JsonPropertyName("approvalManifestId")] string? ApprovalManifestId = null,
+    [property: JsonPropertyName("firstWriteBatchId")] string? FirstWriteBatchId = null,
+    [property: JsonPropertyName("expectedRecordCount")] int? ExpectedRecordCount = null,
+    [property: JsonPropertyName("readbackRecordCount")] int? ReadbackRecordCount = null)
 {
     public static OutboundLinkApiMeta LocalReadOnly(
         OutboundLinkPaginationMeta? pagination = null,
         IReadOnlyDictionary<string, string?>? filters = null,
         OutboundLinkSort? sort = null)
+        => FromProvider(OutboundLinkProviderMetadata.LocalFake(), pagination, filters, sort);
+
+    public static OutboundLinkApiMeta FromProvider(
+        OutboundLinkProviderMetadata provider,
+        OutboundLinkPaginationMeta? pagination = null,
+        IReadOnlyDictionary<string, string?>? filters = null,
+        OutboundLinkSort? sort = null)
         => new(
-            "local-fake-readonly",
-            true,
-            false,
-            false,
-            false,
-            false,
+            provider.Mode,
+            provider.LocalOnly,
+            provider.ExternalHttpCrawling,
+            provider.CmsApiCalls,
+            provider.CmsWrites,
+            provider.ProtectedConfigReads,
             pagination,
             filters,
-            sort);
+            sort,
+            provider.StagingBacked,
+            provider.ReadOnly,
+            provider.WriteActionsAllowed,
+            provider.ProviderProfileId,
+            provider.ProviderMode,
+            provider.ProviderState,
+            provider.SourceEvidence,
+            provider.ApprovalManifestId,
+            provider.FirstWriteBatchId,
+            provider.ExpectedRecordCount,
+            provider.ReadbackRecordCount);
 }
 
 public sealed class OutboundLinkApiQuery
@@ -273,4 +302,3 @@ public sealed record OutboundLinkLocalActor(
             user.Identity?.IsAuthenticated == true);
     }
 }
-

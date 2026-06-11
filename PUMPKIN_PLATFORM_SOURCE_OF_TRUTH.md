@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.2.3, OLM Staging Hardening and Stage-Ready Evidence Superpass |
-| Current V2 status | Complete with partial stage-ready gate; repeat readback/reconciliation passed, Admin/API staging-backed bridge still pending |
-| Provisional V2 overall completion | `72%` |
+| Current V2 reference | V2.2.4, Admin/API Staging Read-only Bridge, Backup Center Storage Proof, and API QA Refresh |
+| Current V2 status | Complete; V2.2 blockers resolved and ready for final stage-ready signoff |
+| Provisional V2 overall completion | `74%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.2 Outbound Link Manager Stage-Ready with V2.3 Azure staging foundation support |
 | Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| Safety posture | Read-only staging hardening completed; no additional OLM staging write, no destructive rollback, no Azure mutation, no RBAC assignment, no production/CMS write, no protected-config read, no app deployment |
-| Next gate | V2.2.4 OLM staging-backed Admin/API read-only bridge and final stage-ready signoff preflight |
+| Safety posture | Staging-backed read-only bridge complete; repeat readback passed; Backup Center storage proof uploaded with one container-scoped Storage Blob RBAC assignment; no additional OLM staging write, no destructive rollback, no production/CMS write, no protected-config read, no app deployment |
+| Next gate | V2.2.5 OLM final stage-ready signoff and transition gate |
 
 ## V2 Reference System
 
@@ -53,6 +53,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | OLM Azure Identity/RBAC Cosmos executor/readback package | `deployment/architecture/outbound-link-manager/v2-2-2-azure-identity-rbac-cosmos-executor-readback-result/` | V2.2.2 result package |
 | OLM staging hardening/stage-ready evidence | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_3_STAGING_HARDENING_STAGE_READY_REPORT.md` | V2.2.3 repeat readback passed, partial stage-ready |
 | OLM staging hardening/stage-ready package | `deployment/architecture/outbound-link-manager/v2-2-3-staging-hardening-stage-ready-result/` | V2.2.3 result package |
+| OLM Admin/API staging read-only and Backup Center storage proof | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_4_ADMIN_API_STAGING_READONLY_BACKUP_STORAGE_REPORT.md` | V2.2.4 blockers resolved, ready for final signoff |
+| OLM Admin/API staging read-only and Backup Center storage proof package | `deployment/architecture/outbound-link-manager/v2-2-4-admin-api-staging-readonly-backup-storage-result/` | V2.2.4 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -60,7 +62,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only, and V2.2.3 repeat readback/reconciliation passed. The platform is now blocked from final V2.2 stage-ready signoff by staging-backed Admin/API read-only integration, Backup Center staging upload/storage proof, and a local API QA build-lock cleanup.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2.3 repeat readback/reconciliation passed, and V2.2.4 resolved the remaining Admin/API bridge, Backup Center storage proof, and API QA build-lock blockers. The platform can proceed to final V2.2 stage-ready signoff.
 
 Immutable current facts:
 
@@ -80,7 +82,13 @@ Immutable current facts:
 - V2.2.3 repeat readback records: `48`
 - V2.2.3 reconciliation: `passed`
 - V2.2.3 stage-ready gate: `partial`
+- V2.2.4 Admin/API staging-backed read-only bridge: `passed`
+- V2.2.4 API QA refresh: `passed`
+- V2.2.4 Backup Center storage proof: `uploaded`
+- V2.2.4 Storage RBAC assignments: `1` container-scoped assignment
+- V2.2.4 additional OLM staging writes: `0`
+- V2.2.4 stage-ready gate: `ready_for_final_signoff`
 
 ## Next Recommended Phase
 
-Approve V2.2.4 Outbound Link Manager staging-backed Admin/API read-only bridge and final stage-ready signoff preflight only. The phase should surface the scoped staging Cosmos readback state through safe read-only Admin/API provider boundaries, refresh runtime QA and API tests, review Backup Center staging upload blockers, and keep all additional staging or production writes blocked without a new explicit approval.
+Approve V2.2.5 Outbound Link Manager final stage-ready signoff and transition gate only. The phase should perform a no-write final review over V2.2.2, V2.2.3, and V2.2.4 evidence, confirm stage-ready status, produce owner signoff materials, and keep all additional staging writes, production writes, CMS writes, deployment, indexing, and live publication blocked without a new explicit approval.

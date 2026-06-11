@@ -176,7 +176,7 @@ function OutboundLinkFrame({ children }: { children: (state: FrameRenderState) =
             <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Tenant Link Governance</p>
             <h1 className="mt-1 text-3xl font-bold text-neutral-900">Outbound Link Manager</h1>
             <p className="mt-2 max-w-3xl text-sm text-neutral-600">
-              Read-only registry visibility for {tenantLabel}. Data is supplied by the local Admin fixture provider and follows the Phase 2H-9 GET contract shape.
+              Read-only registry visibility for {tenantLabel}. The Admin view uses local fixture data with staging-backed read-only provider readiness from the verified V2.2 staging readback contract.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -1147,7 +1147,7 @@ function ReadOnlyBanner({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
         <div>
           <div className="font-semibold">Read-only Admin foundation</div>
           <div className="mt-1">
-            Local fixture mode for tenant {snapshot.tenantKey}. Provider readiness is {OUTBOUND_LINK_PROVIDER_MODE_MESSAGE.stagingProviderMode}; live-readonly/write profiles remain blocked. No write actions, crawler execution, production renderer integration, or protected configuration reads are wired.
+            Local fixture mode for tenant {snapshot.tenantKey} with {OUTBOUND_LINK_PROVIDER_MODE_MESSAGE.stagingProviderMode} readiness metadata. live-readonly/write profiles remain blocked; no write actions, crawler execution, production renderer integration, or protected configuration reads are wired.
           </div>
           <ProviderReadinessStrip readiness={readiness} />
         </div>

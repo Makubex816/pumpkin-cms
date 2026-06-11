@@ -32,10 +32,11 @@ public static class OutboundLinkApiReadOnlyTestRunner
         await AssertLinkDetailReturnsInstances(service, query);
         await AssertInstancesPoliciesScanRunsAuditAndDashboard(service, query);
         await AssertDomainFilterAndPagination(service, query);
+        await AssertStagingBackedProviderMeta();
         AssertTenantScopeGuardDeniesWrongTenant(authorization);
         AssertViewerReadOnlyWorks(authorization);
         await AssertEndpointHandlerReturnsEnvelope(service, authorization, query);
-        await AssertNoWriteOutboundLinkRoutes();
+        await AssertScopedWriteFoundationRouteIsRegistered();
 
         Console.WriteLine("Phase 2H-9 tests passed");
     }
@@ -47,6 +48,10 @@ public static class OutboundLinkApiReadOnlyTestRunner
         Assert(response.Code == OutboundLinkApiErrorCodes.Ok, "list links code should be OK");
         Assert(response.Data?.Items.Count == 5, "list links should return five fixture links");
         Assert(response.Meta.Pagination?.TotalItems == 5, "list links pagination should report total items");
+        Assert(response.Meta.LocalOnly, "local fixture response should remain local-only");
+        Assert(!response.Meta.StagingBacked, "local fixture response should not claim staging-backed state");
+        Assert(response.Meta.ReadOnly, "read-only response meta should be read-only");
+        Assert(!response.Meta.WriteActionsAllowed, "read-only response meta must not allow write actions");
     }
 
     private static async Task AssertLinkDetailReturnsInstances(IOutboundLinkReadOnlyService service, OutboundLinkApiQuery query)
@@ -114,6 +119,47 @@ public static class OutboundLinkApiReadOnlyTestRunner
         Assert(paged.Meta.Pagination?.TotalPages == 3, "paged response should report three total pages");
     }
 
+    private static async Task AssertStagingBackedProviderMeta()
+    {
+        var stagingSnapshot = FakeOutboundLinkReadOnlyProvider.CreateFixtureSnapshot(
+            OutboundLinkProviderMetadata.StagingBackedReadOnly(
+                "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/.tmp/v2-2-3-azure-cosmos-staging-readback-hardening",
+                48,
+                48));
+        var service = new OutboundLinkReadOnlyService(new StagingBackedOutboundLinkReadOnlyProvider(stagingSnapshot));
+        var response = await service.GetDashboardSummaryAsync(new OutboundLinkApiQuery
+        {
+            TenantKey = "fixture-tenant",
+            SiteKey = "fixture-site",
+            Page = 1,
+            PageSize = 10
+        });
+
+        Assert(response.Ok, "staging-backed dashboard response should be ok");
+        Assert(response.Meta.StagingBacked, "staging-backed response must mark stagingBacked true");
+        Assert(!response.Meta.LocalOnly, "staging-backed response should not claim local-only state");
+        Assert(response.Meta.ReadOnly, "staging-backed response must remain read-only");
+        Assert(!response.Meta.WriteActionsAllowed, "staging-backed read-only response must not allow write actions");
+        Assert(response.Meta.ProviderProfileId == "olm-staging-cosmos-nosql-v1", "staging-backed response should expose provider profile id");
+        Assert(response.Meta.ProviderMode == "live-readonly", "staging-backed API bridge should expose live-readonly provider mode");
+        Assert(response.Meta.ProviderState == "readback_verified", "staging-backed API bridge should expose readback-verified state");
+        Assert(response.Meta.ApprovalManifestId == "olapprove_508df3f03faa4f80", "staging-backed response should expose approval manifest id");
+        Assert(response.Meta.FirstWriteBatchId == "olbatch_b08e184fdc6565aa", "staging-backed response should expose first-write batch id");
+        Assert(response.Meta.ExpectedRecordCount == 48, "staging-backed response should expose expected record count");
+        Assert(response.Meta.ReadbackRecordCount == 48, "staging-backed response should expose readback record count");
+        Assert(response.Message.Contains("staging-backed-readonly", StringComparison.Ordinal), "staging-backed response message should identify provider mode");
+
+        var wrongScope = await service.ListLinksAsync(new OutboundLinkApiQuery
+        {
+            TenantKey = "other-tenant",
+            SiteKey = "fixture-site",
+            Page = 1,
+            PageSize = 10
+        });
+        Assert(!wrongScope.Ok, "staging-backed provider should reject unconfigured tenant/site scope");
+        Assert(wrongScope.Code == OutboundLinkApiErrorCodes.ProviderNotConfigured, "wrong staging scope should return provider-not-configured");
+    }
+
     private static void AssertTenantScopeGuardDeniesWrongTenant(IOutboundLinkAuthorizationService authorization)
     {
         var actor = new OutboundLinkLocalActor("other-tenant", "TenantAdmin", true);
@@ -142,20 +188,10 @@ public static class OutboundLinkApiReadOnlyTestRunner
         Assert(envelope.Data?.Items.Count == 5, "endpoint envelope should include fixture links");
     }
 
-    private static async Task AssertNoWriteOutboundLinkRoutes()
+    private static async Task AssertScopedWriteFoundationRouteIsRegistered()
     {
         var programSource = await File.ReadAllTextAsync(Path.Combine(FindRepoRoot(), "apps", "pumpkin-api", "Program.cs"));
-        var writePatterns = new[]
-        {
-            "MapPost(\"/api/admin/outbound-link",
-            "MapPut(\"/api/admin/outbound-link",
-            "MapPatch(\"/api/admin/outbound-link",
-            "MapDelete(\"/api/admin/outbound-link"
-        };
-        foreach (var pattern in writePatterns)
-        {
-            Assert(!programSource.Contains(pattern, StringComparison.Ordinal), $"write route must not exist: {pattern}");
-        }
+        Assert(programSource.Contains("MapOutboundLinkWriteEndpoints", StringComparison.Ordinal), "scoped write foundation route mapper should be registered after Phase 2H-14");
     }
 
     private static DefaultHttpContext CreateHttpContext(string tenantKey, string role)

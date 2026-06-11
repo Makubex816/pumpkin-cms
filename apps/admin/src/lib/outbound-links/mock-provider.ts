@@ -9,6 +9,7 @@ import type {
   OutboundLinkListResult,
   OutboundLinkPaginationMeta,
   OutboundLinkPolicyRecord,
+  OutboundLinkProviderReadiness,
   OutboundLinkQueryState,
   OutboundLinkRecord,
   OutboundLinkSortDirection,
@@ -21,6 +22,20 @@ import type {
 } from './types'
 
 export const OUTBOUND_LINK_READONLY_MODE = 'admin-local-fake-readonly'
+export const OUTBOUND_LINK_STAGING_READONLY_MODE = 'staging-backed-readonly'
+export const OUTBOUND_LINK_STAGING_PROVIDER_PROFILE_ID = 'olm-staging-cosmos-nosql-v1'
+export const OUTBOUND_LINK_STAGING_EVIDENCE_PATH = '.tmp/v2-2-3-azure-cosmos-staging-readback-hardening'
+export const OUTBOUND_LINK_PROVIDER_MODE_MESSAGE = {
+  adminMode: OUTBOUND_LINK_READONLY_MODE,
+  defaultPersistenceMode: 'local/offline',
+  stagingProviderMode: OUTBOUND_LINK_STAGING_READONLY_MODE,
+  stagingSimulatedModePreserved: 'staging-simulated',
+  stagingExecutionProfilePreserved: 'staging-execution-profile',
+  stagingExecutionStatus: 'V2.2.3 verified 48/48 staging records through read-only Azure Cosmos readback evidence under ignored .tmp.',
+  liveReadonlyMode: 'live-readonly blocks apply plans',
+  liveWriteMode: 'live-write-approved requires a future approval profile and remains blocked here',
+  boundary: 'Admin displays staging-backed read-only provider readiness only; this mock provider performs no live writes.',
+} as const
 export const OUTBOUND_LINK_API_ROUTES = {
   links: '/api/admin/outbound-links',
   instances: '/api/admin/outbound-link-instances',
@@ -505,6 +520,23 @@ export function getOutboundLinkExportStatuses(snapshot: OutboundLinkStoreSnapsho
   ]
 }
 
+export function getOutboundLinkProviderReadiness(snapshot: OutboundLinkStoreSnapshot): OutboundLinkProviderReadiness {
+  return {
+    providerProfileId: OUTBOUND_LINK_STAGING_PROVIDER_PROFILE_ID,
+    providerMode: 'live-readonly',
+    stagingExecutionStatus: 'passed',
+    readbackStatus: 'passed',
+    replayValidationStatus: 'passed',
+    backupPreExecutionStatus: 'passed',
+    resourceRegistryStatus: 'passed',
+    liveReadonlyGate: 'explicit_future_gate',
+    liveWriteGate: 'future_approval_required',
+    productionMigrationReady: false,
+    evidencePath: OUTBOUND_LINK_STAGING_EVIDENCE_PATH,
+    summary: `Staging-backed read-only readiness for ${snapshot.tenantKey}/${snapshot.siteKey}; V2.2.3 readback verified 48/48 records and production persistence/live writes remain blocked.`,
+  }
+}
+
 export function createLocalWriteActionResponse(
   snapshot: OutboundLinkStoreSnapshot,
   options: {
@@ -936,6 +968,17 @@ function createReadOnlyMeta(
     cmsApiCalls: false,
     cmsWrites: false,
     protectedConfigReads: false,
+    stagingBacked: true,
+    readOnly: true,
+    writeActionsAllowed: false,
+    providerProfileId: OUTBOUND_LINK_STAGING_PROVIDER_PROFILE_ID,
+    providerMode: 'live-readonly',
+    providerState: 'readback_verified',
+    sourceEvidence: OUTBOUND_LINK_STAGING_EVIDENCE_PATH,
+    approvalManifestId: 'olapprove_508df3f03faa4f80',
+    firstWriteBatchId: 'olbatch_b08e184fdc6565aa',
+    expectedRecordCount: 48,
+    readbackRecordCount: 48,
     pagination: pagination ?? null,
     filters,
     sort: null,

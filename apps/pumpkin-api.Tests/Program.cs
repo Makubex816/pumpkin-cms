@@ -6,6 +6,18 @@ using pumpkin_api.Tests;
 using pumpkin_net_models.Models;
 using System.Text.Json;
 
+if (args.Contains("--phase-2h9", StringComparer.OrdinalIgnoreCase))
+{
+    await OutboundLinkApiReadOnlyTestRunner.RunAsync();
+    return;
+}
+
+if (args.Contains("--phase-2h14", StringComparer.OrdinalIgnoreCase))
+{
+    await OutboundLinkApiWriteActionTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================

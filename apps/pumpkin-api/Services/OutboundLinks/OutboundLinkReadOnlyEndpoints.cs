@@ -19,42 +19,42 @@ public static class OutboundLinkReadOnlyEndpoints
         group.MapGet("/outbound-links", ListLinksAsync)
             .WithName("ListOutboundLinks")
             .WithSummary("List outbound links")
-            .WithDescription("Read-only local/fake Outbound Link Manager endpoint. No CMS writes, external crawling, or protected config reads.");
+            .WithDescription("Read-only Outbound Link Manager endpoint. Supports local/fake and staging-backed read-only provider metadata. No CMS writes, external crawling, or protected config reads.");
 
         group.MapGet("/outbound-links/{id}", GetLinkAsync)
             .WithName("GetOutboundLink")
             .WithSummary("Get outbound link detail")
-            .WithDescription("Read-only local/fake Outbound Link Manager detail endpoint.");
+            .WithDescription("Read-only Outbound Link Manager detail endpoint.");
 
         group.MapGet("/outbound-links/{id}/instances", ListLinkInstancesAsync)
             .WithName("ListOutboundLinkInstancesForLink")
             .WithSummary("List outbound link instances for one link")
-            .WithDescription("Read-only local/fake Outbound Link Manager instance endpoint.");
+            .WithDescription("Read-only Outbound Link Manager instance endpoint.");
 
         group.MapGet("/outbound-link-instances", ListInstancesAsync)
             .WithName("ListOutboundLinkInstances")
             .WithSummary("List outbound link instances")
-            .WithDescription("Read-only local/fake Outbound Link Manager instance search endpoint.");
+            .WithDescription("Read-only Outbound Link Manager instance search endpoint.");
 
         group.MapGet("/outbound-link-policies", ListPoliciesAsync)
             .WithName("ListOutboundLinkPolicies")
             .WithSummary("List outbound link policies")
-            .WithDescription("Read-only local/fake Outbound Link Manager policy endpoint.");
+            .WithDescription("Read-only Outbound Link Manager policy endpoint.");
 
         group.MapGet("/outbound-link-scan-runs", ListScanRunsAsync)
             .WithName("ListOutboundLinkScanRuns")
             .WithSummary("List outbound link scan runs")
-            .WithDescription("Read-only local/fake Outbound Link Manager scan-run endpoint.");
+            .WithDescription("Read-only Outbound Link Manager scan-run endpoint.");
 
         group.MapGet("/outbound-link-audit", ListAuditLogsAsync)
             .WithName("ListOutboundLinkAudit")
             .WithSummary("List outbound link audit logs")
-            .WithDescription("Read-only local/fake Outbound Link Manager audit endpoint.");
+            .WithDescription("Read-only Outbound Link Manager audit endpoint.");
 
         group.MapGet("/outbound-link-dashboard-summary", GetDashboardSummaryAsync)
             .WithName("GetOutboundLinkDashboardSummary")
             .WithSummary("Get outbound link dashboard summary")
-            .WithDescription("Read-only local/fake Outbound Link Manager dashboard summary endpoint.");
+            .WithDescription("Read-only Outbound Link Manager dashboard summary endpoint.");
 
         return app;
     }
@@ -218,4 +218,3 @@ public static class OutboundLinkReadOnlyEndpoints
 
     private static string NormalizeKey(string? value) => (value ?? string.Empty).Trim().ToLowerInvariant();
 }
-

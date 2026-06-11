@@ -5,6 +5,62 @@ public interface IOutboundLinkReadOnlyProvider
     Task<OutboundLinkStoreSnapshot?> GetSnapshotAsync(string tenantKey, string siteKey, CancellationToken cancellationToken = default);
 }
 
+public sealed record OutboundLinkProviderMetadata(
+    string Mode,
+    bool LocalOnly,
+    bool StagingBacked,
+    bool ReadOnly,
+    bool WriteActionsAllowed,
+    bool ExternalHttpCrawling,
+    bool CmsApiCalls,
+    bool CmsWrites,
+    bool ProtectedConfigReads,
+    string? ProviderProfileId = null,
+    string? ProviderMode = null,
+    string? ProviderState = null,
+    string? SourceEvidence = null,
+    string? ApprovalManifestId = null,
+    string? FirstWriteBatchId = null,
+    int? ExpectedRecordCount = null,
+    int? ReadbackRecordCount = null)
+{
+    public static OutboundLinkProviderMetadata LocalFake() => new(
+        "local-fake-readonly",
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        ProviderProfileId: "local-fake-provider",
+        ProviderMode: "local-api-fake-provider",
+        ProviderState: "local_fixture");
+
+    public static OutboundLinkProviderMetadata StagingBackedReadOnly(
+        string sourceEvidence,
+        int expectedRecordCount,
+        int readbackRecordCount) => new(
+            "staging-backed-readonly",
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            ProviderProfileId: "olm-staging-cosmos-nosql-v1",
+            ProviderMode: "live-readonly",
+            ProviderState: "readback_verified",
+            SourceEvidence: sourceEvidence,
+            ApprovalManifestId: "olapprove_508df3f03faa4f80",
+            FirstWriteBatchId: "olbatch_b08e184fdc6565aa",
+            ExpectedRecordCount: expectedRecordCount,
+            ReadbackRecordCount: readbackRecordCount);
+}
+
 public sealed record OutboundLinkStoreSnapshot(
     string TenantKey,
     string SiteKey,
@@ -13,7 +69,8 @@ public sealed record OutboundLinkStoreSnapshot(
     IReadOnlyList<OutboundLinkPolicyRecord> Policies,
     string? ActivePolicyId,
     IReadOnlyList<OutboundLinkScanRunRecord> ScanRuns,
-    IReadOnlyList<OutboundLinkAuditLogRecord> AuditLogs);
+    IReadOnlyList<OutboundLinkAuditLogRecord> AuditLogs,
+    OutboundLinkProviderMetadata Provider);
 
 public sealed record OutboundLinkRecord(
     string Id,
@@ -89,7 +146,7 @@ public sealed record OutboundLinkAuditLogRecord(
 
 public sealed class FakeOutboundLinkReadOnlyProvider : IOutboundLinkReadOnlyProvider
 {
-    private static readonly OutboundLinkStoreSnapshot FixtureSnapshot = BuildFixtureSnapshot();
+    private static readonly OutboundLinkStoreSnapshot FixtureSnapshot = CreateFixtureSnapshot();
 
     public Task<OutboundLinkStoreSnapshot?> GetSnapshotAsync(string tenantKey, string siteKey, CancellationToken cancellationToken = default)
     {
@@ -103,7 +160,7 @@ public sealed class FakeOutboundLinkReadOnlyProvider : IOutboundLinkReadOnlyProv
         return Task.FromResult<OutboundLinkStoreSnapshot?>(null);
     }
 
-    private static OutboundLinkStoreSnapshot BuildFixtureSnapshot()
+    public static OutboundLinkStoreSnapshot CreateFixtureSnapshot(OutboundLinkProviderMetadata? provider = null)
     {
         var tenantKey = "fixture-tenant";
         var siteKey = "fixture-site";
@@ -168,7 +225,8 @@ public sealed class FakeOutboundLinkReadOnlyProvider : IOutboundLinkReadOnlyProv
             [policy],
             policy.Id,
             [scanRun],
-            [audit]);
+            [audit],
+            provider ?? OutboundLinkProviderMetadata.LocalFake());
 
         OutboundLinkRecord Link(string id, string url, string domain, DateTimeOffset timestamp) => new(
             id,
@@ -216,3 +274,19 @@ public sealed class FakeOutboundLinkReadOnlyProvider : IOutboundLinkReadOnlyProv
     private static string NormalizeKey(string value) => value.Trim().ToLowerInvariant();
 }
 
+public sealed class StagingBackedOutboundLinkReadOnlyProvider(OutboundLinkStoreSnapshot snapshot) : IOutboundLinkReadOnlyProvider
+{
+    public Task<OutboundLinkStoreSnapshot?> GetSnapshotAsync(string tenantKey, string siteKey, CancellationToken cancellationToken = default)
+    {
+        var normalizedTenant = NormalizeKey(tenantKey);
+        var normalizedSite = NormalizeKey(siteKey);
+        if (normalizedTenant == snapshot.TenantKey && normalizedSite == snapshot.SiteKey)
+        {
+            return Task.FromResult<OutboundLinkStoreSnapshot?>(snapshot);
+        }
+
+        return Task.FromResult<OutboundLinkStoreSnapshot?>(null);
+    }
+
+    private static string NormalizeKey(string value) => value.Trim().ToLowerInvariant();
+}
