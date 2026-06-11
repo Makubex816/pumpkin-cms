@@ -1,6 +1,6 @@
 # Pumpkin Platform Source Of Truth
 
-This document is the canonical navigation layer for current PumpkinCMS platform state as of Phase SOT-01.
+This document is the canonical navigation layer for current PumpkinCMS platform state as of Phase 2H-24.
 
 Use this first before choosing a next prompt, reading historical result packages, or attempting any provider action.
 
@@ -8,20 +8,20 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current tracker | `91 / 100` recommended after SOT-01 commit |
+| Current tracker | `92 / 100` recommended after Phase 2H-24 commit |
 | Current lane | Phase 2H, Outbound Link Manager / Tenant Link Governance |
-| Current phase | Phase SOT-01, Pumpkin Platform Source-of-Truth Control Layer |
-| Latest completed implementation phase | Phase 2H-23B, OLM hardening completion and staging target/profile closure |
+| Current phase | Phase 2H-24, OLM staging target/resource foundation proposal and Source-of-Truth binding |
+| Latest completed implementation/control phase | Phase 2H-24, OLM staging target/resource foundation proposal and Source-of-Truth binding |
 | Next milestone | `95 / 100` |
 | Safety posture | No-write, no-Azure-mutation, no protected-config-read, no deployment |
-| Next gate | OLM staging target/resource foundation proposal and source-of-truth binding |
+| Next gate | OLM staging target/operator value capture and presence-only contract validation |
 
 ## Latest Canonical Proofs
 
 | Area | Latest canonical reference | State |
 | --- | --- | --- |
-| Outbound Link Manager | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H23B_HARDENING_COMPLETION_STAGING_TARGET_PROFILE_CLOSURE_REPORT.md` | Hardening complete; real staging write blocked |
-| OLM result package | `deployment/architecture/outbound-link-manager/phase-2h23b-olm-hardening-completion-staging-target-profile-closure-result/` | Latest OLM package |
+| Outbound Link Manager | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | SOT binding and staging foundation proposal complete; real staging write blocked |
+| OLM result package | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | Latest OLM package |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | Generator QA/signoff complete |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | Real redacted inventory complete |
 | Runtime QA | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H21_RUNTIME_QA_PROVIDER_READINESS_STAGING_GATE_REPORT.md` | Reusable harness proven for OLM |
@@ -77,5 +77,4 @@ Readback run for a real staging write: `false`.
 
 ## Next Recommended Phase
 
-Approve Phase 2H-24 OLM staging target/resource foundation proposal and Source-of-Truth binding only. This should bind the SOT layer to a concrete non-secret staging target worksheet and resource proposal without writing, creating Azure resources, reading protected config, or executing the first scoped staging write.
-
+Approve Phase 2H-25 OLM staging target/operator value capture and presence-only contract validation only. This should use the 2H-24 binding package to capture or document approved non-secret `OLM_STAGING_*` values and run the presence-only contract validator without printing values, creating Azure resources, reading protected config, or executing the first scoped staging write.

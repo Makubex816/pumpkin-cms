@@ -17,7 +17,8 @@ This is the canonical index for current platform navigation. Historical docs rem
 | Area | Latest package | Status |
 | --- | --- | --- |
 | Platform source of truth | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | Current |
-| OLM hardening closure | `deployment/architecture/outbound-link-manager/phase-2h23b-olm-hardening-completion-staging-target-profile-closure-result/` | Current |
+| OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | Current OLM package |
+| OLM hardening closure | `deployment/architecture/outbound-link-manager/phase-2h23b-olm-hardening-completion-staging-target-profile-closure-result/` | Current support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | Current Backup Center signoff |
 | Resource Registry live inventory | `deployment/architecture/pumpkin-backup-export-restore/phase-2f12n-real-resource-registry-live-inventory-result/` | Current redacted registry inventory |
 | Runtime QA staging gate | `deployment/architecture/outbound-link-manager/phase-2h21-runtime-qa-provider-readiness-staging-gate-result/` | Current runtime QA pattern evidence |
@@ -28,6 +29,7 @@ This is the canonical index for current platform navigation. Historical docs rem
 | Area | Report |
 | --- | --- |
 | Platform SOT | `PUMPKIN_PLATFORM_SOURCE_OF_TRUTH_CONTROL_LAYER_REPORT.md` |
+| OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` |
 | OLM hardening closure | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H23B_HARDENING_COMPLETION_STAGING_TARGET_PROFILE_CLOSURE_REPORT.md` |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` |
@@ -51,4 +53,3 @@ This is the canonical index for current platform navigation. Historical docs rem
 | Older OLM packages before 2H-23B | Historical only unless a current SOT doc points to them. |
 | Older Backup Center packages before 2F-14 | Historical proof chain; latest operator state is 2F-14. |
 | Static/Azure staging docs before current gates | Historical unless refreshed by an approved staging phase. |
-
