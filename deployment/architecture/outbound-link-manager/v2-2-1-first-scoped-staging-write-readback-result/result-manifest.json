@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "0.1.0",
+  "reference": "V2.2.1",
+  "referenceName": "First Scoped OLM Staging Write and Readback Gate",
+  "resultType": "pumpkin-outbound-link-first-scoped-staging-write-readback-gate",
+  "status": "blocked_before_write_repo_live_writer_unavailable",
+  "createdAt": "2026-06-11",
+  "visibleTracker": {
+    "system": "V2.#",
+    "previousReference": "V2.3.4",
+    "currentReference": "V2.2.1",
+    "provisionalV2OverallCompletion": "67%",
+    "v2OlmStageReadyCompletion": "80%",
+    "v2AzureFoundationCompletion": "82%"
+  },
+  "layers": [
+    "L01",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10",
+    "L11",
+    "L12"
+  ],
+  "approval": {
+    "approvalManifestId": "olapprove_508df3f03faa4f80",
+    "firstWriteBatchId": "olbatch_b08e184fdc6565aa",
+    "expectedRecords": 48,
+    "approvalManifestFinalizedForLiveExecution": false
+  },
+  "provider": {
+    "providerProfileId": "olm-staging-cosmos-nosql-v1",
+    "providerType": "azure-cosmos-nosql",
+    "providerMode": "live-write-approved",
+    "providerProfileValidation": "passed",
+    "stagingExecuteGate": "blocked",
+    "stagingExecuteGateCode": "LIVE_WRITE_APPROVED_UNAVAILABLE",
+    "liveWriteAllowedByRepoExecutor": false
+  },
+  "target": {
+    "resourceGroup": "rg-pumpkincms-stg-eastus-olm",
+    "cosmosAccount": "cosmos-pumpkincms-stg-olm01",
+    "cosmosDatabase": "pumpkincms-olm-staging",
+    "partitionKey": "/tenantKey",
+    "containerCount": 10
+  },
+  "rbac": {
+    "managementReadback": "passed",
+    "cosmosDataPlaneAssignmentsListed": 2,
+    "dataPlanePropagationVerifiedByRepoReadbackAdapter": false,
+    "reason": "repo live Cosmos readback adapter is unavailable"
+  },
+  "contract": {
+    "olmStagingEnvContract": "passed",
+    "fieldsPresent": 10,
+    "packageLinkage": "passed",
+    "approvalManifestIdMatched": true,
+    "firstWriteBatchIdMatched": true,
+    "expectedRecordCountMatched": true
+  },
+  "packageRefresh": {
+    "existingPackageValidation": "passed",
+    "existingPackageProviderMode": "staging-simulated",
+    "expectedRecordCount": 48,
+    "refreshedAgainstV2_3_4Contract": "partial_documented_not_executable",
+    "liveExecutionPackageCreated": false
+  },
+  "execution": {
+    "preWriteGatesPassed": false,
+    "writeExecuted": false,
+    "recordsWritten": 0,
+    "readbackRun": false,
+    "readbackPassed": "blocked_before_write",
+    "traceAuditRollbackValidation": "blocked_before_write",
+    "varianceOrIncident": "none_no_partial_write"
+  },
+  "validation": {
+    "focusedTests": "passed_18",
+    "providerProfileValidation": "passed",
+    "stagingEnvContract": "passed",
+    "stagingExecutionPackageValidation": "passed",
+    "stagingExecutionPackageInspect": "passed"
+  },
+  "boundaries": {
+    "olmStagingProviderWrite": false,
+    "azureInfrastructureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "keysListKeys": false,
+    "connectionStringGeneration": false,
+    "sasGeneration": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrite": false,
+    "cmsWriteOutsideScopedOlmProviderOperation": false,
+    "externalCrawl": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false,
+    "generatedTmpArtifactsStaged": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "pre-write-gate-result.md",
+    "approval-manifest-finalization-result.md",
+    "first-write-batch-refresh-result.md",
+    "provider-profile-gate-result.md",
+    "olm-staging-contract-validation-result.md",
+    "rbac-propagation-readiness-result.md",
+    "backup-center-prewrite-result.md",
+    "resource-registry-binding-result.md",
+    "no-go-condition-result.md",
+    "write-execution-result.md",
+    "readback-verification-result.md",
+    "trace-audit-rollback-validation-result.md",
+    "provider-state-result.md",
+    "variance-or-incident-result.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}

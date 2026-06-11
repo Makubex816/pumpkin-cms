@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.3.4 |
-| currentReferenceName | Staging RBAC, Provider Profile Binding, and OLM Contract Finalization |
-| currentReferenceStatus | Complete, Cosmos data-plane RBAC assigned, provider profile candidate created, OLM contract validated, first write not executed |
-| provisionalV2OverallCompletion | `66%` |
+| currentReference | V2.2.1 |
+| currentReferenceName | First Scoped OLM Staging Write and Readback Gate |
+| currentReferenceStatus | Blocked before write; repo live Cosmos write/readback executor unavailable |
+| provisionalV2OverallCompletion | `67%` |
 | currentLayerRefs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| nextReference | V2.2.1 |
-| nextReferenceName | First Scoped OLM Staging Provider Write Reattempt |
-| nextGate | Revalidate package linkage, Backup Center evidence, Runtime QA evidence, RBAC propagation, readback, and rollback before any write |
+| nextReference | V2.2.2 |
+| nextReferenceName | OLM Azure Cosmos Staging Data-Plane Executor and First-Write Retry |
+| nextGate | Implement repo-supported Azure Identity/RBAC writer/readback adapter, then retry only the approved scoped batch if gates pass |
 | safetyPosture | Staging Azure foundation created; staging DB-scoped Cosmos RBAC assigned; no OLM write, no protected-config-read |
-| blockedState | OLM write still blocked by separate first-write approval and execution evidence refresh |
+| blockedState | OLM write blocked by missing live-write-approved Cosmos data-plane executor/readback adapter |
 
 ## Legacy Tracker Freeze
 
@@ -34,7 +34,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | --- | --- | --- |
 | V2.0 | `100%` | Master reference rebaseline complete |
 | V2.1 | `70%` | Source-of-truth governance foundation exists; hardening next |
-| V2.2 | `78%` | OLM stage-readiness advanced; first scoped staging write still not executed |
+| V2.2 | `80%` | OLM stage-readiness advanced; first scoped staging write blocked by missing live Cosmos executor |
 | V2.3 | `82%` | Staging Azure foundation, DB-scoped Cosmos RBAC, provider profile candidate, and OLM contract finalized |
 | V2.4 | `85%` | Backup Center proof and QA signoff strong; target-specific OLM pre-write evidence pending |
 | V2.5 | `72%` | Resource Registry and provider profile foundations include the OLM staging binding candidate |
