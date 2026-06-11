@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "0.1.0",
+  "reference": "V2.0",
+  "resultType": "pumpkin-platform-v2-master-reference-rebaseline-layer-alignment",
+  "status": "complete",
+  "legacyTrackerFrozen": {
+    "name": "Legacy 2H Tracker v1",
+    "frozenValue": "92 / 100",
+    "lastLegacyPhase": "Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding",
+    "actualStagingWriteExecutionPercent": 0,
+    "recordsWritten": 0,
+    "readbackRun": false
+  },
+  "v2Tracker": {
+    "currentReference": "V2.0",
+    "currentReferenceName": "Master Reference Rebaseline and Layer Alignment",
+    "status": "complete",
+    "provisionalOverallCompletionPercent": 58,
+    "nextReference": "V2.1",
+    "nextReferenceName": "Source-of-Truth / Governance Control",
+    "nextGate": "V2.1 governance control hardening before V2.2 OLM stage-ready value capture"
+  },
+  "currentLayerRefs": [
+    "L01",
+    "L05",
+    "L08",
+    "L09",
+    "L10",
+    "L12"
+  ],
+  "boundaries": {
+    "stagingProviderWrite": false,
+    "firstScopedStagingWriteReattempt": false,
+    "azureResourceCreation": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "cmsWrite": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrite": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "v2-reference-system.md",
+    "legacy-to-v2-alias-map.md",
+    "platform-layer-reference-matrix.md",
+    "top-down-v2-milestone-checklist.md",
+    "v2-tracker-status.md",
+    "current-lane-summary.md",
+    "active-blockers-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+

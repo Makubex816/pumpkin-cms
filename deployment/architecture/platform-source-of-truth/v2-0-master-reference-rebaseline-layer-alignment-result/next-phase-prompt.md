@@ -1,0 +1,4 @@
+# Next Phase Prompt
+
+Approve V2.1 Source-of-Truth / Governance Control hardening only: use the V2.0 Master Reference Rebaseline and Layer Alignment package as the visible reference system, retire the old `92 / 100` tracker to Legacy 2H Tracker v1 aliases, and harden the source-of-truth governance controls for V2 references, layer references, blocker ownership, canonical package registration, operator response format, and no-write gate enforcement before continuing V2.2 Outbound Link Manager Stage-Ready work. This is documentation/control-layer only. Do not execute staging writes, do not create Azure resources, do not mutate Azure, do not assign RBAC, do not read protected config, do not export secrets, do not perform CMS writes, do not perform production database migration or production writes, do not deploy, do not index, and do not publish live pages.
+

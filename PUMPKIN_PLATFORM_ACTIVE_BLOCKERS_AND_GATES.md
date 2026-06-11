@@ -1,17 +1,19 @@
 # Pumpkin Platform Active Blockers And Gates
 
-## Current Hard Stops
+## Current V2 Gate Summary
 
-| Gate | Status | Required unblock |
-| --- | --- | --- |
-| First scoped OLM staging write | Blocked | Canonical `OLM_STAGING_*` contract must pass and be bound to SOT. |
-| OLM real staging provider target | Blocked | Non-secret target/resource values must be supplied through the 2H-24 worksheet and approved. |
-| OLM readback/rollback | Blocked | Proposed methods from 2H-24 must be approved and bound to `olbatch_b08e184fdc6565aa`. |
-| Production database migration | Closed | Future explicit production migration approval only. |
-| Production provider writes | Closed | Future explicit production write approval only. |
-| Azure resource creation/mutation | Closed in SOT-01 | Separate explicit Azure foundation approval required. |
-| CMS writes | Closed | Separate scoped approval required. |
-| Deployment/indexing/publication | Closed | Separate deployment, Search Console, and live publication approvals required. |
+| Gate | Status | V2 refs | Required unblock |
+| --- | --- | --- | --- |
+| Source-of-truth governance hardening | Next | V2.1 / L01 | Register V2 response format, blocker ownership, and package registration rules. |
+| First scoped OLM staging write | Blocked | V2.2 / L08 / L12 | Canonical `OLM_STAGING_*` contract must pass. |
+| OLM real staging provider target | Blocked | V2.2 / V2.3 / V2.5 | Non-secret target/resource values must be supplied and approved. |
+| OLM readback/rollback | Blocked | V2.2 / V2.4 / V2.9 | Concrete methods must be approved and tied to `olbatch_b08e184fdc6565aa`. |
+| Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
+| RBAC assignment | Closed | V2.3 / L11 / L12 | Separate explicit approval required. |
+| Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
+| Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
+| CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
+| Deployment/indexing/publication | Closed | V2.8 / V2.9 / L15 | Separate deploy/index/publish approval required. |
 
 ## Missing OLM Staging Contract
 
@@ -28,11 +30,12 @@
 
 ## Immutable Safety Facts
 
+- Legacy 2H Tracker v1 frozen value: `92 / 100`
 - OLM approval manifest: `olapprove_508df3f03faa4f80`
 - OLM first-write batch: `olbatch_b08e184fdc6565aa`
 - Expected OLM staging package records: `48`
 - OLM records written: `0`
 - Real OLM write readback run: `false`
-- 2H-24 Azure resources created: `0`
-- 2H-24 Azure resources mutated: `0`
-- 2H-24 RBAC assignments: `0`
+- V2.0 Azure resources created: `0`
+- V2.0 Azure resources mutated: `0`
+- V2.0 RBAC assignments: `0`

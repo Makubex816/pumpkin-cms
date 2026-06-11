@@ -1,6 +1,6 @@
 # Pumpkin Platform Source Of Truth
 
-This document is the canonical navigation layer for current PumpkinCMS platform state as of Phase 2H-24.
+This document is the canonical navigation layer for PumpkinCMS platform state using the V2.# reference system.
 
 Use this first before choosing a next prompt, reading historical result packages, or attempting any provider action.
 
@@ -8,24 +8,41 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current tracker | `92 / 100` recommended after Phase 2H-24 commit |
-| Current lane | Phase 2H, Outbound Link Manager / Tenant Link Governance |
-| Current phase | Phase 2H-24, OLM staging target/resource foundation proposal and Source-of-Truth binding |
-| Latest completed implementation/control phase | Phase 2H-24, OLM staging target/resource foundation proposal and Source-of-Truth binding |
-| Next milestone | `95 / 100` |
+| Current V2 reference | V2.0, Master Reference Rebaseline and Layer Alignment |
+| Current V2 status | Complete |
+| Provisional V2 overall completion | `58%` |
+| Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
+| Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
+| Active product lane | V2.1 Source-of-Truth / Governance Control, then V2.2 Outbound Link Manager Stage-Ready |
+| Active layer refs | L01, L05, L08, L09, L10, L12 |
 | Safety posture | No-write, no-Azure-mutation, no protected-config-read, no deployment |
-| Next gate | OLM staging target/operator value capture and presence-only contract validation |
+| Next gate | V2.1 governance control hardening |
+
+## V2 Reference System
+
+| Reference | Name | Primary layers |
+| --- | --- | --- |
+| V2.0 | Master Reference Rebaseline and Layer Alignment | L01, L05, L08, L09, L10, L12 |
+| V2.1 | Source-of-Truth / Governance Control | L01, L07, L12, L13 |
+| V2.2 | Outbound Link Manager Stage-Ready | L03, L04, L05, L08, L09, L10, L12 |
+| V2.3 | Azure Staging Resource Foundation | L07, L09, L11, L12 |
+| V2.4 | Backup Center / Restore Gate | L06, L07, L12 |
+| V2.5 | Resource Registry / Provider Profiles | L07, L09, L11 |
+| V2.6 | Runtime QA Harness | L03, L04, L10, L12 |
+| V2.7 | Admin/API Operator Console | L03, L04, L08, L13 |
+| V2.8 | Tenant Website / Publish Readiness | L02, L15 |
+| V2.9 | Audit, Jobs, Production Promotion Gates | L12, L13, L14, L15 |
 
 ## Latest Canonical Proofs
 
 | Area | Latest canonical reference | State |
 | --- | --- | --- |
-| Outbound Link Manager | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | SOT binding and staging foundation proposal complete; real staging write blocked |
-| OLM result package | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | Latest OLM package |
-| Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | Generator QA/signoff complete |
-| Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | Real redacted inventory complete |
-| Runtime QA | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H21_RUNTIME_QA_PROVIDER_READINESS_STAGING_GATE_REPORT.md` | Reusable harness proven for OLM |
-| Platform SOT | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | Created by SOT-01 |
+| V2.0 rebaseline | `PUMPKIN_PLATFORM_V2_REFERENCE_REBASELINE_REPORT.md` | Current visible tracker model |
+| V2.0 result package | `deployment/architecture/platform-source-of-truth/v2-0-master-reference-rebaseline-layer-alignment-result/` | Current reference package |
+| OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
+| Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
+| Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
+| Runtime QA | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H21_RUNTIME_QA_PROVIDER_READINESS_STAGING_GATE_REPORT.md` | V2.6 support proof |
 
 ## Active Blockers
 
@@ -42,39 +59,14 @@ The current hard stop is the missing OLM staging target/profile/session/readback
 - `OLM_STAGING_READBACK_METHOD`
 - `OLM_STAGING_ROLLBACK_METHOD`
 
-Approved OLM IDs remain:
+Immutable current facts:
 
 - approval manifest: `olapprove_508df3f03faa4f80`
 - first-write batch: `olbatch_b08e184fdc6565aa`
 - expected package records: `48`
-
-Records written by the OLM staging write lane: `0`.
-
-Readback run for a real staging write: `false`.
-
-## Canonical Tenant State
-
-| Tenant or scope | Current canonical state | Notes |
-| --- | --- | --- |
-| Pumpkin platform | Pre-production multi-tenant operations platform | Admin/API/Backup/Resource Registry/Runtime QA foundation exists |
-| Ice | Backup proof and Resource Registry inventory exist | Live-readonly backup generator proof passed; no SOT-01 live checks |
-| Roller | Paused/static/onboarding history exists | Treat older Roller docs as historical unless refreshed |
-| OLM fixture tenant | Local/staging-simulated test scope | `fixture-tenant` / `fixture-site`, 48 candidate records |
-
-## Environment Modes
-
-| Mode | State |
-| --- | --- |
-| local/offline | Default safe mode |
-| fake-provider | Supported for tests and fixtures |
-| offline-bundle | Supported for generated proof review |
-| local-file-backed | Supported for OLM local store |
-| local-api-fake-provider | Supported for read-only Admin/API checks |
-| staging-simulated | Supported for `.tmp` evidence only |
-| live-readonly | Explicit only; no writes |
-| live-write-approved | Future explicit gate; still blocked without SOT and contract |
-| production-runtime | Not allowed for scoped OLM staging write |
+- records written: `0`
+- real write readback run: `false`
 
 ## Next Recommended Phase
 
-Approve Phase 2H-25 OLM staging target/operator value capture and presence-only contract validation only. This should use the 2H-24 binding package to capture or document approved non-secret `OLM_STAGING_*` values and run the presence-only contract validator without printing values, creating Azure resources, reading protected config, or executing the first scoped staging write.
+Approve V2.1 Source-of-Truth / Governance Control hardening only. This should harden V2 references, layer references, blocker ownership, canonical package registration, operator response format, and no-write gate enforcement before continuing V2.2 Outbound Link Manager Stage-Ready work.

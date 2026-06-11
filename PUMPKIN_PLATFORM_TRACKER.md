@@ -1,32 +1,46 @@
 # Pumpkin Platform Tracker
 
-## Current Tracker
+## Current Visible Tracker
 
-| Required field | Value |
+| Field | Value |
 | --- | --- |
-| currentLane | Phase 2H, Outbound Link Manager / Tenant Link Governance |
-| currentPhase | Phase 2H-24, OLM staging target/resource foundation proposal and Source-of-Truth binding |
-| completedPhase | Phase SOT-01, Pumpkin Platform Source-of-Truth Control Layer |
-| currentGoalCompletionPercent | `100%` for 2H-24 after this pass |
-| milestoneAdvancement | `92 / 100`; 3 objectives remain to reach the `95 / 100` milestone |
-| overallPlatformCompletionPercent | `92%` tracker recommendation after 2H-24 commit |
-| productionReadinessPercent | `75%` control-layer estimate; production writes remain blocked |
-| outboundLinkManagerStageReadinessPercent | `86%`; SOT binding and foundation proposal complete, target values still missing |
-| actualStagingWriteExecutionPercent | `0%`; no real scoped OLM staging write has executed |
-| sourceOfTruthControlLayerPercent | `100%` for the SOT-01 documentation/control layer |
-| nextMilestoneNotification | Next platform checkpoint is `95 / 100` |
+| currentReference | V2.0 |
+| currentReferenceName | Master Reference Rebaseline and Layer Alignment |
+| currentReferenceStatus | Complete |
+| provisionalV2OverallCompletion | `58%` |
+| currentLayerRefs | L01, L05, L08, L09, L10, L12 |
+| nextReference | V2.1 |
+| nextReferenceName | Source-of-Truth / Governance Control |
+| nextGate | V2.1 governance control hardening before V2.2 OLM Stage-Ready value capture |
 | safetyPosture | No-write, no-Azure-mutation, no protected-config-read |
-| nextGate | OLM staging target/operator value capture and presence-only contract validation |
-| blockedState | Missing canonical `OLM_STAGING_*` contract values |
+| blockedState | Missing canonical `OLM_STAGING_*` target/profile/session/readback/rollback contract |
 
-## Percentage Model
+## Legacy Tracker Freeze
 
-These percentages are operator checkpoint indicators, not deployment approvals.
-
-| Percentage | Meaning |
+| Legacy field | Frozen value |
 | --- | --- |
-| `92%` overall | The control layer now includes the OLM staging target/resource foundation proposal and SOT binding. |
-| `75%` production readiness | Backup/registry/runtime foundations are strong, but OLM live/staging write and production write gates remain closed. |
-| `86%` OLM stage readiness | Local/fake/API/Admin/runtime/migration/staging-simulated work and SOT binding are complete through 2H-24. |
-| `0%` actual staging write execution | The approved first-write batch has not written records. |
-| `100%` SOT-01 | Required source-of-truth docs and result package are present. |
+| legacyTrackerName | Legacy 2H Tracker v1 |
+| frozenValue | `92 / 100` |
+| finalLegacyPhase | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
+| actualStagingWriteExecutionPercent | `0%` |
+| recordsWritten | `0` |
+| readbackRun | `false` |
+
+Do not continue incrementing the old `92 / 100` tracker as the visible platform tracker.
+
+## V2 Completion Model
+
+| Reference | Completion | State |
+| --- | --- | --- |
+| V2.0 | `100%` | Master reference rebaseline complete |
+| V2.1 | `70%` | Source-of-truth governance foundation exists; hardening next |
+| V2.2 | `72%` | OLM stage-readiness advanced; value capture and real write still blocked |
+| V2.3 | `20%` | Azure staging resource foundation proposal pending |
+| V2.4 | `85%` | Backup Center proof and QA signoff strong; target-specific OLM pre-write evidence pending |
+| V2.5 | `65%` | Resource Registry and provider profile foundations exist; OLM target mapping pending |
+| V2.6 | `75%` | Runtime QA harness exists; broader module coverage pending |
+| V2.7 | `55%` | Admin/API operator surfaces exist; complete operator console pending |
+| V2.8 | `50%` | Tenant/static history exists; current publish readiness not active |
+| V2.9 | `20%` | Audit/jobs/production gates future |
+
+These percentages are provisional control-layer indicators, not deployment approval.
