@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.3.1, Azure Staging Foundation Inventory and IaC Package |
-| Current V2 status | Complete |
-| Provisional V2 overall completion | `60%` |
+| Current V2 reference | V2.3.2, Reviewed Azure Staging Resource Creation and Binding Validation |
+| Current V2 status | Complete, blocked before mutation |
+| Provisional V2 overall completion | `61%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.2 Outbound Link Manager Stage-Ready with V2.3 Azure staging foundation support |
 | Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| Safety posture | No-write, no-Azure-mutation, no protected-config-read, no deployment |
-| Next gate | V2.3.2 Azure staging target finalization and deployment dry-run validation |
+| Safety posture | No Azure resources created, no RBAC assigned, no protected-config-read, no deployment |
+| Next gate | V2.3.3 final parameter worksheet and scoped creation retry |
 
 ## V2 Reference System
 
@@ -41,6 +41,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | V2.0 result package | `deployment/architecture/platform-source-of-truth/v2-0-master-reference-rebaseline-layer-alignment-result/` | Current reference package |
 | Azure staging foundation | `PUMPKIN_AZURE_STAGING_FOUNDATION_V2_3_1_INVENTORY_IAC_PACKAGE_REPORT.md` | V2.3.1 no-deploy inventory and IaC package |
 | Azure staging foundation package | `deployment/architecture/azure-staging-foundation/v2-3-1-azure-staging-foundation-inventory-iac-package-result/` | V2.3.1 result package |
+| Azure staging creation gate | `PUMPKIN_AZURE_STAGING_FOUNDATION_V2_3_2_RESOURCE_CREATION_BINDING_VALIDATION_REPORT.md` | V2.3.2 blocked-before-mutation result |
+| Azure staging creation gate package | `deployment/architecture/azure-staging-foundation/v2-3-2-reviewed-resource-creation-binding-validation-result/` | V2.3.2 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -71,4 +73,4 @@ Immutable current facts:
 
 ## Next Recommended Phase
 
-Approve V2.3.2 Azure Staging Foundation target finalization and deployment dry-run validation only. This should finalize non-secret staging target values, provider profile candidates, Resource Registry mapping, Backup Center evidence requirements, Runtime QA evidence requirements, RBAC/identity plan, and Bicep parameters before any Azure creation or OLM staging write is considered.
+Approve V2.3.3 Azure Staging Foundation final parameter worksheet and scoped creation retry only. This should finalize the exact non-secret staging creation worksheet, remove placeholder/example values, confirm the stable reviewed subscription/tenant target, reconcile names, define RBAC or explicitly defer it, and only then retry scoped staging resource creation gates.

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "0.1.0",
+  "reference": "V2.3.2",
+  "referenceName": "Reviewed Azure Staging Resource Creation and Binding Validation",
+  "resultType": "pumpkin-azure-staging-foundation-reviewed-creation-binding-validation",
+  "status": "complete_blocked_before_mutation",
+  "createdAt": "2026-06-11",
+  "visibleTracker": {
+    "system": "V2.#",
+    "legacyTracker": "Legacy 2H Tracker v1 frozen at 92 / 100",
+    "previousReference": "V2.3.1",
+    "currentReference": "V2.3.2",
+    "provisionalV2OverallCompletion": "61%"
+  },
+  "layers": [
+    "L01",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10",
+    "L11",
+    "L12"
+  ],
+  "sourceInputsReviewed": [
+    "PUMPKIN_PLATFORM_SOURCE_OF_TRUTH.md",
+    "PUMPKIN_PLATFORM_TRACKER.md",
+    "PUMPKIN_PLATFORM_ACTIVE_BLOCKERS_AND_GATES.md",
+    "PUMPKIN_PLATFORM_CANONICAL_DOC_INDEX.md",
+    "PUMPKIN_AZURE_STAGING_FOUNDATION_V2_3_1_INVENTORY_IAC_PACKAGE_REPORT.md",
+    "deployment/architecture/azure-staging-foundation/v2-3-1-azure-staging-foundation-inventory-iac-package-result/",
+    "deployment/architecture/azure-staging-foundation/iac/",
+    "PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md",
+    "deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/"
+  ],
+  "azureChecks": {
+    "azureCliAvailable": true,
+    "alreadyLoggedIn": true,
+    "activeSubscriptionName": "Azure subscription 1",
+    "activeSubscriptionState": "Enabled",
+    "subscriptionId": "redacted",
+    "tenantId": "redacted",
+    "candidateResourceGroup": "rg-pumpkincms-stg-eastus-olm",
+    "candidateResourceGroupExists": false
+  },
+  "iacValidation": {
+    "bicepBuild": "passed",
+    "whatIf": "skipped_stop_before_mutation_target_not_finalized",
+    "deployment": "not_run"
+  },
+  "mutationResult": {
+    "azureResourcesCreated": 0,
+    "azureResourcesUpdated": 0,
+    "rbacAssignmentsCreated": 0,
+    "stagingProviderWrites": 0
+  },
+  "olmStagingFacts": {
+    "approvalManifestId": "olapprove_508df3f03faa4f80",
+    "firstWriteBatchId": "olbatch_b08e184fdc6565aa",
+    "expectedRecords": 48,
+    "recordsWritten": 0,
+    "readbackRun": false,
+    "actualStagingWriteExecutionPercent": 0
+  },
+  "resolvedOlmStagingFields": [],
+  "candidateOlmStagingFields": [
+    "OLM_STAGING_PROVIDER_PROFILE_ID",
+    "OLM_STAGING_PROVIDER_TYPE",
+    "OLM_STAGING_RESOURCE_SCOPE",
+    "OLM_STAGING_ACCOUNT_OR_HOST",
+    "OLM_STAGING_DATABASE_OR_NAMESPACE",
+    "OLM_STAGING_READBACK_METHOD",
+    "OLM_STAGING_ROLLBACK_METHOD"
+  ],
+  "unresolvedOlmStagingFields": [
+    "OLM_STAGING_PROVIDER_PROFILE_ID",
+    "OLM_STAGING_PROVIDER_TYPE",
+    "OLM_STAGING_PROVIDER_MODE",
+    "OLM_STAGING_RESOURCE_SCOPE",
+    "OLM_STAGING_ACCOUNT_OR_HOST",
+    "OLM_STAGING_DATABASE_OR_NAMESPACE",
+    "OLM_STAGING_RBAC_OR_AUTH_MODE",
+    "OLM_STAGING_IDENTITY_OR_SESSION_TYPE",
+    "OLM_STAGING_READBACK_METHOD",
+    "OLM_STAGING_ROLLBACK_METHOD"
+  ],
+  "blockers": [
+    "V2.3.1 deployable parameters are still example/candidate-level.",
+    "Parameter tag createdByPhase remains future-approved-azure-creation-phase.",
+    "Candidate resource group does not exist and was not finalized as a reviewed creation target.",
+    "Stable subscription and tenant IDs are not recorded as reviewed target identifiers.",
+    "RBAC principal, role, and scope are not explicitly reviewed.",
+    "No final Resource Registry/provider profile binding exists in a repo-supported format."
+  ],
+  "boundaries": {
+    "azureResourceCreation": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "keysListKeys": false,
+    "connectionStringGeneration": false,
+    "sasGeneration": false,
+    "keyVaultSecretValueRead": false,
+    "protectedConfigRead": false,
+    "secretExport": false,
+    "stagingProviderWrite": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrite": false,
+    "cmsWrite": false,
+    "externalCrawl": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "pre-mutation-gate-result.md",
+    "azure-account-subscription-check.md",
+    "iac-build-validation.md",
+    "what-if-preview-result.md",
+    "resource-creation-result.md",
+    "rbac-assignment-result.md",
+    "created-resource-inventory.md",
+    "non-secret-output-capture.md",
+    "olm-staging-values-resolution-result.md",
+    "resource-registry-binding-candidate.md",
+    "provider-profile-binding-candidate.md",
+    "backup-center-staging-binding-result.md",
+    "runtime-qa-staging-binding-result.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+

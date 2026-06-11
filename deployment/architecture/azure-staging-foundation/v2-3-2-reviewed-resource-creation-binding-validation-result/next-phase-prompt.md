@@ -1,0 +1,6 @@
+# Next Phase Prompt
+
+```text
+Approve V2.3.3 Azure Staging Foundation final parameter worksheet and scoped creation retry only: use the V2.3.2 blocked-before-mutation result to finalize the exact non-secret Azure staging creation worksheet, including reviewed subscription/tenant target confirmation, staging resource group name, region, resource names, owner/cost/cleanup tags, reconciled Bicep parameter values, cost guardrail decision, Resource Registry candidate, provider profile candidate, RBAC principal/role/scope decision, and what-if review plan. If every value is explicit, non-placeholder, non-production, and staging-scoped, create only the approved staging resource group and run group-level what-if for the approved Bicep package; proceed to resource deployment only if the what-if output is reviewed in-terminal and shows only expected staging resources. Do not execute the OLM staging write, do not perform production database migration or production writes, do not perform CMS writes, do not read protected config, do not export secrets, do not query keys/listKeys, do not generate connection strings or SAS, do not read Key Vault secret values, do not deploy apps, do not index, and do not publish live pages. Stop before mutation and output exact missing values if any target, parameter, subscription, RBAC, cost, or naming value remains ambiguous.
+```
+

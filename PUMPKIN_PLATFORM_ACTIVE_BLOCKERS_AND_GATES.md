@@ -5,7 +5,8 @@
 | Gate | Status | V2 refs | Required unblock |
 | --- | --- | --- | --- |
 | Azure staging foundation inventory and IaC package | Complete | V2.3.1 / L07 / L09 / L11 / L12 | No-deploy package created; no Azure mutation performed. |
-| Azure staging target finalization and deployment dry-run | Next | V2.3.2 / L07 / L09 / L11 / L12 | Finalize non-secret staging target/profile values and validate IaC without creation. |
+| Azure staging creation and binding validation | Complete, blocked before mutation | V2.3.2 / L07 / L09 / L11 / L12 | V2.3.1 values were candidate/example-level; no resources created. |
+| Azure staging final parameter worksheet and creation retry | Next | V2.3.3 / L07 / L09 / L11 / L12 | Provide final non-placeholder parameters, reviewed subscription/tenant target, staging resource group, naming reconciliation, and RBAC decision. |
 | First scoped OLM staging write | Blocked | V2.2 / L08 / L12 | Canonical `OLM_STAGING_*` contract must pass. |
 | OLM real staging provider target | Blocked | V2.2 / V2.3 / V2.5 | Non-secret target/resource values must be supplied, validated, and approved. |
 | OLM readback/rollback | Blocked | V2.2 / V2.4 / V2.9 | Concrete methods must be approved and tied to `olbatch_b08e184fdc6565aa`. |
@@ -44,3 +45,7 @@
 - V2.3.1 Azure resources mutated: `0`
 - V2.3.1 RBAC assignments: `0`
 - V2.3.1 staging writes: `0`
+- V2.3.2 Azure resources created: `0`
+- V2.3.2 Azure resources mutated: `0`
+- V2.3.2 RBAC assignments: `0`
+- V2.3.2 staging writes: `0`
