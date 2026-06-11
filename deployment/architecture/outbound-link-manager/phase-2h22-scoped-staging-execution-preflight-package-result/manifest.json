@@ -1,0 +1,67 @@
+{
+  "phase": "2H-22",
+  "status": "complete",
+  "resultType": "pumpkin-outbound-link-scoped-staging-execution-preflight-package-builder",
+  "packageId": "phase-2h22-scoped-staging-execution-preflight-package",
+  "executionPackage": {
+    "status": "passed",
+    "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/.tmp/phase-2h22-staging-execution-package",
+    "approvalManifestId": "olapprove_508df3f03faa4f80",
+    "batchId": "olbatch_b08e184fdc6565aa",
+    "migrationRunId": "olmr_phase_2h17_fixture",
+    "applyPlanId": "olaplan_7679abe5a5b9c1fc",
+    "stagingExecutionRunId": "olstage_57302539a2da86d8",
+    "readbackRunId": "olread_c3f56dcfd16d2190",
+    "runtimeQaRunId": "olrtqa_phase_2h21_admin_runtime_source_harness",
+    "providerProfileId": "staging-execution-profile",
+    "providerMode": "staging-simulated",
+    "expectedRecordCount": 48,
+    "futureExplicitStagingWriteApprovalRequired": true,
+    "futureApprovalGranted": false,
+    "realStagingProviderWritePerformed": false,
+    "productionDatabaseMigrationPerformed": false
+  },
+  "readinessClassification": {
+    "phase2h21RuntimeQaStagingGateComplete": true,
+    "phase2h22ExecutionPackageBuilderComplete": true,
+    "readyForPhase2h23FirstScopedStagingProviderWriteExecution": true,
+    "readyForProductionDatabaseMigration": false,
+    "readyForLiveProductionWrites": false,
+    "databaseMigrationPerformed": false,
+    "realStagingProviderWritePerformed": false,
+    "externalLinkCrawlingPerformed": false,
+    "livePagesAffected": false
+  },
+  "boundaries": {
+    "localOnly": true,
+    "generatedTmpEvidenceOnly": true,
+    "productionDatabaseMigration": false,
+    "realLiveOrStagingProviderWrites": false,
+    "cmsWrites": false,
+    "protectedConfigReads": false,
+    "azureCmsApiMutation": false,
+    "externalCrawling": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false,
+    "generatedTmpArtifactsStaged": false
+  },
+  "files": [
+    "README.md",
+    "IMPLEMENTATION_SCOPE.md",
+    "EXECUTION_PACKAGE_BUILDER_RESULT.md",
+    "EVIDENCE_VALIDATION_RESULT.md",
+    "STAGING_TARGET_WORKSHEET_RESULT.md",
+    "APPROVAL_MANIFEST_RESULT.md",
+    "FIRST_WRITE_BATCH_PLAN_RESULT.md",
+    "READBACK_PLAN_RESULT.md",
+    "ABORT_ROLLBACK_RESULT.md",
+    "NO_GO_CONDITION_RESULT.md",
+    "TEST_RESULT.md",
+    "SECURITY_BOUNDARY_RESULT.md",
+    "KNOWN_LIMITATIONS.md",
+    "NEXT_PHASE_2H23_FIRST_SCOPED_STAGING_PROVIDER_WRITE_EXECUTION_PROMPT.md",
+    "manifest.json"
+  ]
+}
+

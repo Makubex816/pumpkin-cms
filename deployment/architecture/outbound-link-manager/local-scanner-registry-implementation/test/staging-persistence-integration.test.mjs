@@ -52,6 +52,14 @@ test('staging-simulated execution writes provider store, readback, replay, and r
   assert.equal(execution.replayValidation.status, 'passed');
   assert.equal(execution.traceAuditRollback.status, 'passed');
   assert.equal(execution.providerState.status, 'passed');
+  assert.equal(execution.providerState.summary.gateCriteriaStatus, 'passed');
+  assert.equal(execution.providerState.readinessClassification.stagingSimulatedReady, true);
+  assert.equal(execution.providerState.readinessClassification.liveReadonlyReady, false);
+  assert.equal(execution.providerState.readinessClassification.liveWriteReady, false);
+  assert.equal(execution.providerState.readinessClassification.productionDatabaseMigrationReady, false);
+  assert.equal(execution.providerState.gateCriteria.some((criterion) => criterion.id === 'live-readonly-execution-gate' && criterion.status === 'blocked'), true);
+  assert.equal(execution.providerState.gateCriteria.some((criterion) => criterion.id === 'live-write-approved-execution-gate' && criterion.status === 'blocked'), true);
+  assert.equal(execution.providerState.requiredFutureEvidence.includes('approved browser/runtime QA evidence'), true);
   assert.equal(execution.resourceRegistry.status, 'passed');
   assert.equal(execution.backupPreExecution.status, 'passed');
   assert.equal(execution.readiness.status, 'passed');
@@ -288,4 +296,3 @@ async function buildApplyPlan(name) {
   });
   return applyPlanPath;
 }
-

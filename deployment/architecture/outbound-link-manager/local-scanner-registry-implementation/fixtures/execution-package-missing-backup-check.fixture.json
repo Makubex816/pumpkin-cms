@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "0.1.0",
+  "packageId": "phase-2h22-missing-backup-check-negative-fixture",
+  "tenantKey": "fixture-tenant",
+  "siteKey": "fixture-site",
+  "generatedAt": "2026-06-10T15:00:00.000Z",
+  "fixtures": {
+    "tenantBundle": "fixtures/tenant-bundle.fixture.json",
+    "policy": "fixtures/policy-blocked-domain.fixture.json",
+    "render": "fixtures/render-active-links.fixture.json"
+  },
+  "profiles": {
+    "migration": "fixtures/migration-production-provider-profile.fixture.json",
+    "applyPlan": "fixtures/provider-profile-staging-simulated.fixture.json",
+    "stagingExecution": "fixtures/staging-execution-profile.fixture.json"
+  },
+  "runtimeQaEvidence": {
+    "status": "passed",
+    "runtimeQaRunId": "olrtqa_phase_2h21_admin_runtime_source_harness",
+    "evidenceId": "olrtqa_phase_2h21_admin_runtime_source_harness",
+    "harnessPattern": "pumpkin-platform-runtime-qa-harness",
+    "harnessMode": "node-runtime-safe-source-route-harness",
+    "target": "/dashboard/outbound-links"
+  },
+  "omitBackupPreExecution": true,
+  "stagingTarget": {
+    "providerType": "future-real-staging-provider",
+    "environment": "staging",
+    "partitionKey": "/tenantKey",
+    "credentialReferenceId": "TBD-credential-reference-id-no-values"
+  },
+  "firstWriteBatch": {
+    "strategy": "single-tenant-site-scoped-first-write",
+    "maxRecords": 48
+  }
+}

@@ -46,6 +46,8 @@ import { validateApplyPlan } from './apply-plan/apply-plan-validator.mjs';
 import { inspectStagingExecution, runStagingExecution, runStagingReadback } from './staging-execution/staging-apply-executor.mjs';
 import { validateStagingExecution } from './staging-execution/staging-execution-validator.mjs';
 import { getOutboundLinkProviderState } from './api/services/outbound-link-provider-state-service.mjs';
+import { buildStagingExecutionPackage } from './execution-package/staging-execution-package-builder.mjs';
+import { inspectStagingExecutionPackage, validateStagingExecutionPackage } from './execution-package/execution-package-validator.mjs';
 
 const version = '0.10.0';
 
@@ -196,6 +198,15 @@ async function main() {
         break;
       case 'api-provider-state':
         await apiProviderStateCommand(args);
+        break;
+      case 'build-staging-execution-package':
+        await buildStagingExecutionPackageCommand(args);
+        break;
+      case 'validate-staging-execution-package':
+        await validateStagingExecutionPackageCommand(args);
+        break;
+      case 'inspect-staging-execution-package':
+        await inspectStagingExecutionPackageCommand(args);
         break;
       default:
         throw new Error(`unknown command: ${command}`);
@@ -947,6 +958,54 @@ async function apiProviderStateCommand(args) {
   printApiResponseSummary('api-provider-state', response);
 }
 
+async function buildStagingExecutionPackageCommand(args) {
+  const options = parseArgs(args);
+  const result = await buildStagingExecutionPackage({
+    sourcePath: required(options.source, '--source is required'),
+    outputPath: required(options.out, '--out is required'),
+    overwrite: options.overwrite === true
+  });
+  console.log(`stagingExecutionPackage: ${result.validation.status}`);
+  console.log(`output: ${toPackageRelative(result.outputRoot)}`);
+  console.log(`packageId: ${result.summary.packageId}`);
+  console.log(`providerProfileId: ${result.summary.providerProfileId}`);
+  console.log(`providerMode: ${result.summary.providerMode}`);
+  console.log(`records: ${result.summary.expectedRecordCount}`);
+  console.log(`futureApprovalRequired: ${result.summary.futureExplicitStagingWriteApprovalRequired}`);
+  console.log(`realStagingProviderWritePerformed: ${result.summary.realStagingProviderWritePerformed}`);
+  if (result.validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function validateStagingExecutionPackageCommand(args) {
+  const options = parseArgs(args);
+  const validation = await validateStagingExecutionPackage({ packagePath: required(options.package, '--package is required') });
+  console.log(`validation: ${validation.status}`);
+  console.log(`packageId: ${validation.packageId}`);
+  console.log(`providerMode: ${validation.ids.providerMode}`);
+  console.log(`records: ${validation.summary.totalRecords}`);
+  console.log(`failures: ${validation.summary.failureCount}`);
+  if (validation.status !== 'passed') {
+    process.exitCode = 1;
+  }
+}
+
+async function inspectStagingExecutionPackageCommand(args) {
+  const options = parseArgs(args);
+  const summary = await inspectStagingExecutionPackage({ packagePath: required(options.package, '--package is required') });
+  console.log(`stagingExecutionPackage: ${summary.packageId}`);
+  console.log(`status: ${summary.status}`);
+  console.log(`providerProfileId: ${summary.providerProfileId}`);
+  console.log(`providerMode: ${summary.providerMode}`);
+  console.log(`tenantKey: ${summary.tenantKey}`);
+  console.log(`siteKey: ${summary.siteKey}`);
+  console.log(`records: ${summary.expectedRecordCount}`);
+  console.log(`futureApprovalRequired: ${summary.futureExplicitStagingWriteApprovalRequired}`);
+  console.log(`realStagingProviderWritePerformed: ${summary.realStagingProviderWritePerformed}`);
+  console.log(`failures: ${summary.failureCount}`);
+}
+
 async function writeApiResponse({ response, outputPath }) {
   const outputRoot = resolveTmpOutputPath(outputPath);
   await writeJson(path.join(outputRoot, 'API_RESPONSE.json'), response);
@@ -1062,6 +1121,9 @@ Commands:
   validate-staging-execution --execution .tmp/phase-2h20-staging-persistence-integration/execution
   inspect-staging-execution --execution .tmp/phase-2h20-staging-persistence-integration/execution
   api-provider-state --execution .tmp/phase-2h20-staging-persistence-integration/execution --tenant fixture-tenant --site fixture-site --out .tmp/phase-2h20-staging-persistence-integration/api-provider-state
+  build-staging-execution-package --source fixtures/execution-package-source.fixture.json --out .tmp/phase-2h22-staging-execution-package [--overwrite]
+  validate-staging-execution-package --package .tmp/phase-2h22-staging-execution-package
+  inspect-staging-execution-package --package .tmp/phase-2h22-staging-execution-package
 
 Boundary:
   Local fixture JSON only. No external HTTP crawling, CMS/API calls, CMS writes, protected config reads, deployment, indexing, or live-page publication.

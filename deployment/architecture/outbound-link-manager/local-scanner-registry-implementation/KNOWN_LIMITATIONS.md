@@ -38,3 +38,10 @@ Current Phase 2H-20 limitations:
 - conservative URL extraction from declared fields and rich text strings only
 
 The next step should be a scoped staging persistence execution preflight that keeps local/fake/offline profiles intact and proves exact credential-reference, conflict/readback, rollback, and browser QA gates before any real staging provider writes can be considered.
+# Phase 2H-22 Staging Execution Package Builder Limitations
+
+- Phase 2H-22 builds an approval package only; it does not perform the first real staging-provider write.
+- Runtime QA evidence is local/source-harness evidence unless a future phase explicitly provides safe browser tooling.
+- Staging target values remain non-secret placeholders until a future approval provides the approved staging profile.
+- Live-readonly and live-write-approved profiles remain future-gated.
+- Production database migration remains blocked.
