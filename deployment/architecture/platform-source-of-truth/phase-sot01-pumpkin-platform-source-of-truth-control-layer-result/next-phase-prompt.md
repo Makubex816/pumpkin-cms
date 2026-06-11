@@ -1,0 +1,4 @@
+# Next Phase Prompt
+
+Approve Phase 2H-24 OLM staging target/resource foundation proposal and Source-of-Truth binding only: use the SOT-01 platform control layer to produce the canonical no-write OLM staging target/resource foundation proposal, provider profile binding, environment contract worksheet, Resource Registry mapping, Backup Center pre-write evidence map, runtime QA evidence map, readback/rollback method proposal, and first-write reattempt gate criteria for approval manifest `olapprove_508df3f03faa4f80` and first-write batch `olbatch_b08e184fdc6565aa`. Do not execute a staging write, do not create Azure resources, do not mutate Azure, do not assign RBAC, do not read protected config, do not export secrets, do not use keys/listKeys, do not generate connection strings or SAS, do not perform CMS writes, do not perform production database migration or production writes, do not deploy, do not index, and do not publish live pages.
+
