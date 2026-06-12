@@ -14,6 +14,7 @@
 | OLM final stage-ready signoff and evidence freeze | Complete | V2.2.5 / L01 / L06 / L08 / L09 / L10 / L11 / L12 | Final readback sanity, Admin/API QA, Backup Center proof list, and evidence freeze passed. |
 | Resource Registry / Provider Profile operationalization | Complete | V2.5.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Operational binding fixture, validator, schemas, matrices, and read-only staging checks passed. |
 | Runtime QA harness operationalization and evidence binding | Complete, upload blocked before upload | V2.6.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Reusable local/offline harness, registry, evidence manifest, Admin/API checks, and no-uncontrolled-write scan passed; upload requires future Storage data-plane RBAC. |
+| Admin/API Operator Console Runtime-QA-bound readiness | Complete, upload blocker carried forward | V2.7.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Admin/API readiness metadata, GET-only operator readiness endpoint, Runtime QA fixture, no-uncontrolled-write scan, and control docs passed; upload requires future Storage data-plane RBAC. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -133,3 +134,15 @@ Still separately gated:
 - V2.6.1 additional OLM staging writes: `0`
 - V2.6.1 Azure infrastructure mutations: `0`
 - V2.6.1 RBAC assignments: `0`
+- V2.7.1 Admin operator console readiness: `passed`
+- V2.7.1 API operator readiness endpoint: `passed`
+- V2.7.1 Runtime QA harness checks: `15` passed
+- V2.7.1 Runtime QA evidence validation: `passed`
+- V2.7.1 Resource Registry operational binding validator: `passed`
+- V2.7.1 provider profile validation: `passed`
+- V2.7.1 OLM_STAGING env contract validation: `passed`
+- V2.7.1 no-uncontrolled-write scan: `passed`
+- V2.7.1 runtime QA evidence upload: `blocked_before_upload_missing_storage_data_plane_rbac`
+- V2.7.1 additional OLM staging writes: `0`
+- V2.7.1 Azure infrastructure mutations: `0`
+- V2.7.1 RBAC assignments: `0`

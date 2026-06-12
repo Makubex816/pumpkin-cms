@@ -22,6 +22,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_5_FINAL_STAGE_READY_SIGNOFF_REPORT.md` | V2.2.5 OLM final stage-ready signoff root report |
 | `PUMPKIN_RESOURCE_REGISTRY_PROVIDER_PROFILE_V2_5_1_OPERATIONALIZATION_REPORT.md` | V2.5.1 Resource Registry / Provider Profile operationalization root report |
 | `PUMPKIN_RUNTIME_QA_V2_6_1_OPERATIONALIZATION_EVIDENCE_BINDING_REPORT.md` | V2.6.1 Runtime QA harness operationalization root report |
+| `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_1_RUNTIME_QA_BOUND_READINESS_REPORT.md` | V2.7.1 Admin/API Operator Console runtime-QA-bound readiness root report |
 
 ## Latest Canonical Result Packages
 
@@ -40,6 +41,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Resource Registry / Provider Profile operationalization | `deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/` | V2.5.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Current registry/profile operational package |
 | Runtime QA harness operationalization | `deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/` | V2.6.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Current runtime QA operational package |
 | Runtime QA reusable harness | `deployment/architecture/runtime-qa/platform-runtime-qa-harness/` | V2.6.1 / L10 / L12 | Current reusable local/offline harness package |
+| Admin/API Operator Console runtime-QA-bound readiness | `deployment/architecture/admin-api-operator-console/v2-7-1-runtime-qa-bound-readiness-result/` | V2.7.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Current Admin/API operator-console readiness package |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -62,6 +64,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | OLM final stage-ready signoff and evidence freeze | `PUMPKIN_OUTBOUND_LINK_MANAGER_V2_2_5_FINAL_STAGE_READY_SIGNOFF_REPORT.md` | V2.2.5 |
 | Resource Registry / Provider Profile operationalization | `PUMPKIN_RESOURCE_REGISTRY_PROVIDER_PROFILE_V2_5_1_OPERATIONALIZATION_REPORT.md` | V2.5.1 |
 | Runtime QA harness operationalization | `PUMPKIN_RUNTIME_QA_V2_6_1_OPERATIONALIZATION_EVIDENCE_BINDING_REPORT.md` | V2.6.1 |
+| Admin/API Operator Console runtime-QA-bound readiness | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_1_RUNTIME_QA_BOUND_READINESS_REPORT.md` | V2.7.1 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |

@@ -285,6 +285,44 @@ public sealed record OutboundLinkDashboardSummaryResponse(
     [property: JsonPropertyName("domainBlockedLinkCount")] int DomainBlockedLinkCount,
     [property: JsonPropertyName("staleInstanceCount")] int StaleInstanceCount);
 
+public sealed record OutboundLinkOperatorReadinessItemDto(
+    [property: JsonPropertyName("id")] string Id,
+    [property: JsonPropertyName("label")] string Label,
+    [property: JsonPropertyName("status")] string Status,
+    [property: JsonPropertyName("detail")] string Detail,
+    [property: JsonPropertyName("evidenceRef")] string EvidenceRef,
+    [property: JsonPropertyName("mode")] string Mode);
+
+public sealed record OutboundLinkOperatorReadinessResponse(
+    [property: JsonPropertyName("phase")] string Phase,
+    [property: JsonPropertyName("summary")] string Summary,
+    [property: JsonPropertyName("providerProfileId")] string ProviderProfileId,
+    [property: JsonPropertyName("providerMode")] string ProviderMode,
+    [property: JsonPropertyName("providerState")] string ProviderState,
+    [property: JsonPropertyName("runtimeQaStatus")] string RuntimeQaStatus,
+    [property: JsonPropertyName("providerProfileStatus")] string ProviderProfileStatus,
+    [property: JsonPropertyName("resourceRegistryStatus")] string ResourceRegistryStatus,
+    [property: JsonPropertyName("backupCenterStatus")] string BackupCenterStatus,
+    [property: JsonPropertyName("olmStageReadyStatus")] string OlmStageReadyStatus,
+    [property: JsonPropertyName("writeActionGuardStatus")] string WriteActionGuardStatus,
+    [property: JsonPropertyName("noUncontrolledWriteStatus")] string NoUncontrolledWriteStatus,
+    [property: JsonPropertyName("routeSmokeStatus")] string RouteSmokeStatus,
+    [property: JsonPropertyName("apiSmokeStatus")] string ApiSmokeStatus,
+    [property: JsonPropertyName("uploadBindingStatus")] string UploadBindingStatus,
+    [property: JsonPropertyName("productionGateStatus")] string ProductionGateStatus,
+    [property: JsonPropertyName("localOfflineStatus")] string LocalOfflineStatus,
+    [property: JsonPropertyName("adminRoutes")] IReadOnlyList<string> AdminRoutes,
+    [property: JsonPropertyName("apiRoutes")] IReadOnlyList<string> ApiRoutes,
+    [property: JsonPropertyName("blockedGates")] IReadOnlyList<string> BlockedGates,
+    [property: JsonPropertyName("items")] IReadOnlyList<OutboundLinkOperatorReadinessItemDto> Items,
+    [property: JsonPropertyName("providerWrites")] bool ProviderWrites,
+    [property: JsonPropertyName("azureMutations")] bool AzureMutations,
+    [property: JsonPropertyName("cmsWrites")] bool CmsWrites,
+    [property: JsonPropertyName("protectedConfigReads")] bool ProtectedConfigReads,
+    [property: JsonPropertyName("externalCrawling")] bool ExternalCrawling,
+    [property: JsonPropertyName("deployment")] bool Deployment,
+    [property: JsonPropertyName("livePublication")] bool LivePublication);
+
 public sealed record OutboundLinkLocalActor(
     string TenantKey,
     string Role,

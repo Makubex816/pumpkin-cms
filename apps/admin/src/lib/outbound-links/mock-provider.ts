@@ -7,6 +7,7 @@ import type {
   OutboundLinkExportStatus,
   OutboundLinkInstanceRecord,
   OutboundLinkListResult,
+  OutboundLinkOperatorConsoleReadiness,
   OutboundLinkPaginationMeta,
   OutboundLinkPolicyRecord,
   OutboundLinkProviderReadiness,
@@ -25,6 +26,12 @@ export const OUTBOUND_LINK_READONLY_MODE = 'admin-local-fake-readonly'
 export const OUTBOUND_LINK_STAGING_READONLY_MODE = 'staging-backed-readonly'
 export const OUTBOUND_LINK_STAGING_PROVIDER_PROFILE_ID = 'olm-staging-cosmos-nosql-v1'
 export const OUTBOUND_LINK_STAGING_EVIDENCE_PATH = '.tmp/v2-2-3-azure-cosmos-staging-readback-hardening'
+export const OUTBOUND_LINK_V2_7_1_PHASE = 'V2.7.1'
+export const OUTBOUND_LINK_RUNTIME_QA_RESULT_PATH = 'deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/result-manifest.json'
+export const OUTBOUND_LINK_RUNTIME_QA_EVIDENCE_PATH = 'deployment/architecture/runtime-qa/platform-runtime-qa-harness/.tmp/v2-6-1-runtime-qa-evidence/RUNTIME_QA_EVIDENCE_MANIFEST.json'
+export const OUTBOUND_LINK_RESOURCE_REGISTRY_RESULT_PATH = 'deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json'
+export const OUTBOUND_LINK_BACKUP_CENTER_RESULT_PATH = 'deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json'
+export const OUTBOUND_LINK_STAGE_READY_RESULT_PATH = 'deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json'
 export const OUTBOUND_LINK_PROVIDER_MODE_MESSAGE = {
   adminMode: OUTBOUND_LINK_READONLY_MODE,
   defaultPersistenceMode: 'local/offline',
@@ -43,6 +50,7 @@ export const OUTBOUND_LINK_API_ROUTES = {
   scanRuns: '/api/admin/outbound-link-scan-runs',
   audit: '/api/admin/outbound-link-audit',
   dashboardSummary: '/api/admin/outbound-link-dashboard-summary',
+  operatorReadiness: '/api/admin/outbound-link-operator-readiness',
 } as const
 
 export const defaultOutboundLinkQuery: OutboundLinkQueryState = {
@@ -534,6 +542,125 @@ export function getOutboundLinkProviderReadiness(snapshot: OutboundLinkStoreSnap
     productionMigrationReady: false,
     evidencePath: OUTBOUND_LINK_STAGING_EVIDENCE_PATH,
     summary: `Staging-backed read-only readiness for ${snapshot.tenantKey}/${snapshot.siteKey}; V2.2.3 readback verified 48/48 records and production persistence/live writes remain blocked.`,
+  }
+}
+
+export function getOutboundLinkOperatorConsoleReadiness(snapshot: OutboundLinkStoreSnapshot): OutboundLinkOperatorConsoleReadiness {
+  const providerReadiness = getOutboundLinkProviderReadiness(snapshot)
+  const adminRoutes = [
+    '/dashboard/outbound-links',
+    '/dashboard/outbound-links/instances',
+    '/dashboard/outbound-links/policies',
+    '/dashboard/outbound-links/scan-runs',
+    '/dashboard/outbound-links/audit',
+    '/dashboard/outbound-links/review',
+    '/dashboard/outbound-links/exports',
+  ]
+  const apiRoutes = Object.values(OUTBOUND_LINK_API_ROUTES).map((route) => `GET ${route}`)
+  const items = [
+    {
+      id: 'runtime-qa-admin-binding',
+      label: 'Runtime QA',
+      status: 'passed' as const,
+      detail: 'V2.6.1 reusable Runtime QA harness validates Admin route markers, provider-mode messaging, local/offline modes, and no uncontrolled write calls.',
+      evidenceRef: OUTBOUND_LINK_RUNTIME_QA_RESULT_PATH,
+      mode: 'local-offline',
+    },
+    {
+      id: 'runtime-qa-staging-upload',
+      label: 'runtime-qa-staging upload blocked',
+      status: 'blocked' as const,
+      detail: 'Evidence upload remains blocked by missing Storage Blob data-plane RBAC; V2.7.1 does not retry upload or request RBAC.',
+      evidenceRef: OUTBOUND_LINK_RUNTIME_QA_EVIDENCE_PATH,
+      mode: 'upload-not-attempted',
+    },
+    {
+      id: 'resource-registry-profile',
+      label: 'Resource Registry',
+      status: 'passed' as const,
+      detail: 'V2.5.1 Resource Registry and provider profile bindings remain the source for environment mode and provider state display.',
+      evidenceRef: OUTBOUND_LINK_RESOURCE_REGISTRY_RESULT_PATH,
+      mode: OUTBOUND_LINK_STAGING_PROVIDER_PROFILE_ID,
+    },
+    {
+      id: 'backup-center-proof',
+      label: 'Backup Center',
+      status: 'passed' as const,
+      detail: 'Backup Center proof references are carried forward for pre-write recovery requirements; this Admin surface performs no backup export.',
+      evidenceRef: OUTBOUND_LINK_BACKUP_CENTER_RESULT_PATH,
+      mode: 'read-only-reference',
+    },
+    {
+      id: 'olm-stage-ready',
+      label: 'OLM stage-ready',
+      status: 'passed' as const,
+      detail: 'V2.2.5 OLM stage-ready evidence remains linked to approval manifest olapprove_508df3f03faa4f80 and first batch olbatch_b08e184fdc6565aa.',
+      evidenceRef: OUTBOUND_LINK_STAGE_READY_RESULT_PATH,
+      mode: providerReadiness.providerMode,
+    },
+    {
+      id: 'write-action-guards',
+      label: 'Write-action guards',
+      status: 'future_gated' as const,
+      detail: 'Admin write affordances stay disabled or local-sandbox only; production-runtime blocked and live-write-approved requires a future scoped approval.',
+      evidenceRef: 'apps/admin/src/components/outbound-links/OutboundLinkAdmin.tsx',
+      mode: 'write actions future-gated',
+    },
+    {
+      id: 'admin-api-smoke',
+      label: 'Route/API smoke checks',
+      status: 'passed' as const,
+      detail: 'Admin route markers and GET-only API readiness metadata are bound to Runtime QA source checks.',
+      evidenceRef: 'deployment/architecture/runtime-qa/platform-runtime-qa-harness/fixtures/runtime-qa-registry.v2-7-1.fixture.json',
+      mode: 'local-readonly',
+    },
+    {
+      id: 'production-runtime-gate',
+      label: 'production-runtime blocked',
+      status: 'blocked' as const,
+      detail: 'Production database migration, production provider writes, deployments, indexing, and live publication remain outside this phase.',
+      evidenceRef: OUTBOUND_LINK_RESOURCE_REGISTRY_RESULT_PATH,
+      mode: 'production-runtime blocked',
+    },
+  ]
+
+  return {
+    phase: OUTBOUND_LINK_V2_7_1_PHASE,
+    generatedAt: '2026-06-11T20:00:00.000Z',
+    summary: `Operator Console Readiness is runtime-QA-bound for ${snapshot.tenantKey}/${snapshot.siteKey}; Admin and API surfaces remain read-only with provider writes blocked.`,
+    providerProfileId: providerReadiness.providerProfileId,
+    providerMode: providerReadiness.providerMode,
+    runtimeQaStatus: 'passed',
+    providerProfileStatus: providerReadiness.resourceRegistryStatus,
+    resourceRegistryStatus: providerReadiness.resourceRegistryStatus,
+    backupCenterStatus: providerReadiness.backupPreExecutionStatus,
+    olmStageReadyStatus: providerReadiness.readbackStatus,
+    writeActionGuardStatus: 'future_gated',
+    noUncontrolledWriteStatus: 'passed',
+    routeSmokeStatus: 'passed',
+    apiSmokeStatus: 'passed',
+    uploadBindingStatus: 'blocked',
+    productionGateStatus: 'blocked',
+    localOfflineStatus: 'passed',
+    adminRoutes,
+    apiRoutes,
+    blockedGates: [
+      'runtime-qa-staging upload blocked by missing Storage Blob data-plane RBAC',
+      'production-runtime blocked',
+      'live-write-approved globally inactive',
+      'CMS writes blocked',
+      'external crawling blocked',
+    ],
+    items,
+    securityBoundary: {
+      providerWrites: false,
+      azureMutations: false,
+      cmsWrites: false,
+      protectedConfigReads: false,
+      externalCrawling: false,
+      deployment: false,
+      livePublication: false,
+    },
   }
 }
 

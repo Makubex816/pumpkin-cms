@@ -68,7 +68,7 @@ export async function runRuntimeQa({ registryPath, outputPath, overwrite = false
   const completedAt = new Date().toISOString();
   const manifest = {
     schemaVersion: '0.1.0',
-    resultType: 'pumpkin-platform-runtime-qa-v2-6-1-evidence-manifest',
+    resultType: `pumpkin-platform-runtime-qa-${normalizePhaseForId(registry.phase)}-evidence-manifest`,
     phase: registry.phase,
     registryId: registry.registryId,
     runId: buildRunId(registry.registryId, startedAt),
@@ -376,6 +376,10 @@ function getPath(value, pathName) {
 
 function buildRunId(registryId, startedAt) {
   return `runtimeqa_${crypto.createHash('sha256').update(`${registryId}:${startedAt}`).digest('hex').slice(0, 16)}`;
+}
+
+function normalizePhaseForId(value) {
+  return String(value).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
 function buildSecurityBoundarySummary(registry) {

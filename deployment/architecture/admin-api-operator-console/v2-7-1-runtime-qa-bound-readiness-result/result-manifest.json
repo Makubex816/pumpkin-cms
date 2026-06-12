@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "0.1.0",
+  "resultId": "v2-7-1-admin-api-operator-console-runtime-qa-bound-readiness",
+  "phase": "V2.7.1",
+  "status": "complete",
+  "completedAt": "2026-06-11T20:00:00-04:00",
+  "currentReference": "V2.7.1",
+  "currentReferenceName": "Admin/API Operator Console Runtime-QA-Bound Readiness",
+  "overallCompletionAfterPhase": "82%",
+  "v2_7CompletionAfterPhase": "68%",
+  "sourceInputs": [
+    {
+      "label": "V2.6.1 Runtime QA operationalization",
+      "path": "deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/result-manifest.json"
+    },
+    {
+      "label": "V2.5.1 Resource Registry / Provider Profile operationalization",
+      "path": "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json"
+    },
+    {
+      "label": "V2.2.5 OLM final stage-ready signoff",
+      "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "Backup Center support proof",
+      "path": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json"
+    }
+  ],
+  "codeChanges": [
+    "apps/admin/src/lib/outbound-links/types.ts",
+    "apps/admin/src/lib/outbound-links/mock-provider.ts",
+    "apps/admin/src/components/outbound-links/OutboundLinkAdmin.tsx",
+    "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkApiContracts.cs",
+    "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkReadOnlyService.cs",
+    "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkReadOnlyEndpoints.cs",
+    "apps/pumpkin-api.Tests/OutboundLinkApiReadOnlyTestRunner.cs",
+    "deployment/architecture/runtime-qa/platform-runtime-qa-harness/package.json",
+    "deployment/architecture/runtime-qa/platform-runtime-qa-harness/src/runtime-qa-cli.mjs",
+    "deployment/architecture/runtime-qa/platform-runtime-qa-harness/src/runtime-qa-runner.mjs",
+    "deployment/architecture/runtime-qa/platform-runtime-qa-harness/test/runtime-qa.test.mjs",
+    "deployment/architecture/runtime-qa/platform-runtime-qa-harness/fixtures/runtime-qa-registry.v2-7-1.fixture.json"
+  ],
+  "generatedEvidence": [
+    {
+      "label": "V2.7.1 Runtime QA local evidence",
+      "path": "deployment/architecture/runtime-qa/platform-runtime-qa-harness/.tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence/RUNTIME_QA_EVIDENCE_MANIFEST.json",
+      "ignoredTmp": true,
+      "status": "passed"
+    },
+    {
+      "label": "V2.7.1 Resource Registry operational binding validation",
+      "path": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation/.tmp/v2-7-1-operational-bindings/",
+      "ignoredTmp": true,
+      "status": "passed"
+    },
+    {
+      "label": "V2.7.1 provider profile check",
+      "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/.tmp/v2-7-1-provider-profile-check/",
+      "ignoredTmp": true,
+      "status": "passed"
+    }
+  ],
+  "readiness": {
+    "adminOperatorConsole": "passed",
+    "apiOperatorReadinessEndpoint": "passed",
+    "runtimeQaBinding": "passed",
+    "resourceRegistryBinding": "passed",
+    "providerProfileBinding": "passed",
+    "backupCenterProofReference": "passed",
+    "writeActionGuardVisibility": "future_gated",
+    "productionRuntimeGate": "blocked",
+    "runtimeQaUpload": "blocked_before_upload_missing_storage_data_plane_rbac",
+    "localOfflinePreservation": "passed",
+    "noUncontrolledWriteScan": "passed"
+  },
+  "validation": [
+    { "command": "npm run check", "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness", "status": "passed" },
+    { "command": "npm run run:v2-7-1", "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness", "status": "passed" },
+    { "command": "npm run validate:v2-7-1", "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness", "status": "passed" },
+    { "command": "npm run inspect:v2-7-1", "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness", "status": "passed" },
+    { "command": "npm run type-check", "cwd": "apps/admin", "status": "passed" },
+    { "command": "npm run test:phase-2h21", "cwd": "apps/admin", "status": "passed" },
+    { "command": "npm run test:v2-2-4", "cwd": "apps/admin", "status": "passed" },
+    { "command": "dotnet run --project apps/pumpkin-api.Tests/pumpkin-api.Tests.csproj -- --phase-2h9", "cwd": ".", "status": "passed" },
+    { "command": "dotnet run --project apps/pumpkin-api.Tests/pumpkin-api.Tests.csproj -- --phase-2h14", "cwd": ".", "status": "passed" },
+    { "command": "node src/resource-registry-cli.mjs validate-operational-bindings --fixture fixtures/operational-bindings.v2-5-1.fixture.json --out .tmp/v2-7-1-operational-bindings --overwrite", "cwd": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation", "status": "passed" },
+    { "command": "node src/outbound-link-cli.mjs provider-check --profile fixtures/provider-profile-olm-staging-cosmos-nosql.fixture.json --out .tmp/v2-7-1-provider-profile-check", "cwd": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation", "status": "passed" },
+    { "command": "node src/outbound-link-cli.mjs validate-staging-env-contract --package .tmp/phase-2h22-staging-execution-package", "cwd": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation", "status": "passed" }
+  ],
+  "securityBoundary": {
+    "providerWrites": false,
+    "additionalOlmStagingWrites": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigReads": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sasGeneration": false,
+    "productionDatabaseMigration": false,
+    "cmsWrites": false,
+    "externalCrawling": false,
+    "deployment": false,
+    "indexing": false,
+    "livePublication": false,
+    "generatedArtifactsStaged": false
+  },
+  "nextRecommendedReference": "V2.7.2",
+  "nextRecommendedName": "Operator Console Multi-Module Readiness Expansion"
+}

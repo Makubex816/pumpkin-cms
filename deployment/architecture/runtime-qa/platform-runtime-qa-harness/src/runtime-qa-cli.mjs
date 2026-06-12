@@ -265,8 +265,11 @@ function printHelp() {
 
 Commands:
   run --registry fixtures/runtime-qa-registry.v2-6-1.fixture.json --out .tmp/v2-6-1-runtime-qa-evidence [--overwrite]
+  run --registry fixtures/runtime-qa-registry.v2-7-1.fixture.json --out .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence [--overwrite]
   validate-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence
+  validate-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence
   inspect-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence
+  inspect-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence
   upload-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence --account pumpkincmsstgolm01 --container runtime-qa-staging --prefix v2-6-1/runtime-qa-evidence-binding [--execute-upload]
   upload-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence --account pumpkincmsstgolm01 --container runtime-qa-staging --prefix v2-6-1/runtime-qa-evidence-binding --block-reason "Azure Identity/RBAC blob list denied"
 `);

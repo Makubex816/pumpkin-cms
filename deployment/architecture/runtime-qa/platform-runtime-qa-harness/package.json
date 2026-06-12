@@ -9,10 +9,12 @@
     "check": "node --check src/runtime-qa-cli.mjs && node --check src/runtime-qa-runner.mjs && node --check src/runtime-qa-validator.mjs && node --check src/safe-paths.mjs && node --check src/json-writer.mjs && node --check src/secret-scan.mjs && node --check test/runtime-qa.test.mjs && npm test",
     "run:v2-6-1": "node src/runtime-qa-cli.mjs run --registry fixtures/runtime-qa-registry.v2-6-1.fixture.json --out .tmp/v2-6-1-runtime-qa-evidence --overwrite",
     "validate:v2-6-1": "node src/runtime-qa-cli.mjs validate-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence",
-    "inspect:v2-6-1": "node src/runtime-qa-cli.mjs inspect-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence"
+    "inspect:v2-6-1": "node src/runtime-qa-cli.mjs inspect-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence",
+    "run:v2-7-1": "node src/runtime-qa-cli.mjs run --registry fixtures/runtime-qa-registry.v2-7-1.fixture.json --out .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence --overwrite",
+    "validate:v2-7-1": "node src/runtime-qa-cli.mjs validate-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence",
+    "inspect:v2-7-1": "node src/runtime-qa-cli.mjs inspect-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence"
   },
   "engines": {
     "node": ">=20"
   }
 }
-

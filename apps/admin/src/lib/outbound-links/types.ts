@@ -16,6 +16,7 @@ export type OutboundLinkWriteProviderMode =
   | 'live-readonly'
   | 'live-write-approved'
   | 'production-runtime'
+export type OutboundLinkReadinessStatus = 'passed' | 'blocked' | 'not_started' | 'future_gated'
 export type OutboundLinkWriteAction =
   | 'approveReviewDecision'
   | 'blockReviewDecision'
@@ -285,6 +286,48 @@ export interface OutboundLinkProviderReadiness {
   productionMigrationReady: false
   evidencePath: string
   summary: string
+}
+
+export interface OutboundLinkOperatorConsoleReadinessItem {
+  id: string
+  label: string
+  status: OutboundLinkReadinessStatus
+  detail: string
+  evidenceRef: string
+  mode: string
+}
+
+export interface OutboundLinkOperatorConsoleReadiness {
+  phase: string
+  generatedAt: string
+  summary: string
+  providerProfileId: string
+  providerMode: OutboundLinkWriteProviderMode
+  runtimeQaStatus: OutboundLinkReadinessStatus
+  providerProfileStatus: OutboundLinkReadinessStatus
+  resourceRegistryStatus: OutboundLinkReadinessStatus
+  backupCenterStatus: OutboundLinkReadinessStatus
+  olmStageReadyStatus: OutboundLinkReadinessStatus
+  writeActionGuardStatus: OutboundLinkReadinessStatus
+  noUncontrolledWriteStatus: OutboundLinkReadinessStatus
+  routeSmokeStatus: OutboundLinkReadinessStatus
+  apiSmokeStatus: OutboundLinkReadinessStatus
+  uploadBindingStatus: OutboundLinkReadinessStatus
+  productionGateStatus: OutboundLinkReadinessStatus
+  localOfflineStatus: OutboundLinkReadinessStatus
+  adminRoutes: string[]
+  apiRoutes: string[]
+  blockedGates: string[]
+  items: OutboundLinkOperatorConsoleReadinessItem[]
+  securityBoundary: {
+    providerWrites: false
+    azureMutations: false
+    cmsWrites: false
+    protectedConfigReads: false
+    externalCrawling: false
+    deployment: false
+    livePublication: false
+  }
 }
 
 export interface OutboundLinkWritePublishingImpact {

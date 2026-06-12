@@ -9,6 +9,7 @@ public interface IOutboundLinkReadOnlyService
     Task<OutboundLinkApiEnvelope<OutboundLinkScanRunListResponse>> ListScanRunsAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default);
     Task<OutboundLinkApiEnvelope<OutboundLinkAuditLogListResponse>> ListAuditLogsAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default);
     Task<OutboundLinkApiEnvelope<OutboundLinkDashboardSummaryResponse>> GetDashboardSummaryAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default);
+    Task<OutboundLinkApiEnvelope<OutboundLinkOperatorReadinessResponse>> GetOperatorReadinessAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default);
 }
 
 public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider provider) : IOutboundLinkReadOnlyService
@@ -230,6 +231,29 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             normalized.SiteKey,
             Meta(normalized, SinglePage(), snapshot.Provider),
             $"Outbound link dashboard summary read from {snapshot.Provider.Mode}.");
+    }
+
+    public async Task<OutboundLinkApiEnvelope<OutboundLinkOperatorReadinessResponse>> GetOperatorReadinessAsync(OutboundLinkApiQuery query, CancellationToken cancellationToken = default)
+    {
+        var normalized = NormalizeQuery(query);
+        if (normalized.Error is not null)
+        {
+            return Error<OutboundLinkOperatorReadinessResponse>(normalized.Error, normalized.TenantKey, normalized.SiteKey);
+        }
+
+        var snapshot = await provider.GetSnapshotAsync(normalized.TenantKey, normalized.SiteKey, cancellationToken);
+        if (snapshot is null)
+        {
+            return ProviderNotConfigured<OutboundLinkOperatorReadinessResponse>(normalized.TenantKey, normalized.SiteKey);
+        }
+
+        var response = BuildOperatorReadiness(snapshot);
+        return OutboundLinkApiEnvelope<OutboundLinkOperatorReadinessResponse>.Success(
+            response,
+            normalized.TenantKey,
+            normalized.SiteKey,
+            Meta(normalized, SinglePage(response.Items.Count), snapshot.Provider),
+            $"Outbound link operator readiness read from {snapshot.Provider.Mode} without write actions.");
     }
 
     private static NormalizedQueryResult NormalizeQuery(OutboundLinkApiQuery query)
@@ -467,6 +491,132 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
         auditLog.Reason,
         auditLog.CreatedAt,
         auditLog.Mode);
+
+    private static OutboundLinkOperatorReadinessResponse BuildOperatorReadiness(OutboundLinkStoreSnapshot snapshot)
+    {
+        const string runtimeQaResult = "deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/result-manifest.json";
+        const string runtimeQaEvidence = "deployment/architecture/runtime-qa/platform-runtime-qa-harness/.tmp/v2-6-1-runtime-qa-evidence/RUNTIME_QA_EVIDENCE_MANIFEST.json";
+        const string resourceRegistryResult = "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json";
+        const string backupCenterResult = "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json";
+        const string olmStageReadyResult = "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json";
+
+        var providerProfileId = snapshot.Provider.ProviderProfileId ?? "local-fake-provider";
+        var providerMode = snapshot.Provider.ProviderMode ?? snapshot.Provider.Mode;
+        var providerState = snapshot.Provider.ProviderState ?? "local_fixture";
+        var items = new List<OutboundLinkOperatorReadinessItemDto>
+        {
+            new(
+                "runtime-qa-api-binding",
+                "Runtime QA",
+                "passed",
+                "V2.7.1 binds API operator-readiness metadata to the reusable V2.6.1 Runtime QA harness and no-write source scan.",
+                runtimeQaResult,
+                "local-offline"),
+            new(
+                "runtime-qa-staging-upload",
+                "runtime-qa-staging upload blocked",
+                "blocked",
+                "Evidence upload remains blocked by missing Storage Blob data-plane RBAC; this endpoint does not retry upload or request RBAC.",
+                runtimeQaEvidence,
+                "upload-not-attempted"),
+            new(
+                "provider-profile",
+                "Provider Profile",
+                "passed",
+                $"Provider profile {providerProfileId} reports {providerMode} with state {providerState}.",
+                resourceRegistryResult,
+                providerMode),
+            new(
+                "resource-registry",
+                "Resource Registry",
+                "passed",
+                "V2.5.1 Resource Registry bindings remain the source for profile and environment-mode visibility.",
+                resourceRegistryResult,
+                providerProfileId),
+            new(
+                "backup-center",
+                "Backup Center",
+                "passed",
+                "Backup Center proof references are visible for pre-write recovery planning; this endpoint performs no export.",
+                backupCenterResult,
+                "read-only-reference"),
+            new(
+                "olm-stage-ready",
+                "OLM stage-ready",
+                "passed",
+                "V2.2.5 OLM stage-ready evidence remains linked to approval manifest and first scoped batch identifiers.",
+                olmStageReadyResult,
+                providerMode),
+            new(
+                "write-action-guards",
+                "Write-action guards",
+                "future_gated",
+                "API write actions remain guarded by provider mode, reason, approval, tenant, and role checks.",
+                "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkWriteGuardService.cs",
+                "write actions future-gated"),
+            new(
+                "production-runtime-gate",
+                "production-runtime blocked",
+                "blocked",
+                "Production migration, production provider writes, deployment, indexing, and live publication are outside this phase.",
+                resourceRegistryResult,
+                "production-runtime blocked")
+        };
+
+        return new OutboundLinkOperatorReadinessResponse(
+            "V2.7.1",
+            $"Operator Console Readiness is API-bound for {snapshot.TenantKey}/{snapshot.SiteKey}; GET-only metadata reports runtime QA, provider, backup, and guard state.",
+            providerProfileId,
+            providerMode,
+            providerState,
+            "passed",
+            "passed",
+            "passed",
+            "passed",
+            "passed",
+            "future_gated",
+            "passed",
+            "passed",
+            "passed",
+            "blocked",
+            "blocked",
+            "passed",
+            [
+                "/dashboard/outbound-links",
+                "/dashboard/outbound-links/instances",
+                "/dashboard/outbound-links/policies",
+                "/dashboard/outbound-links/scan-runs",
+                "/dashboard/outbound-links/audit",
+                "/dashboard/outbound-links/review",
+                "/dashboard/outbound-links/exports"
+            ],
+            [
+                "GET /api/admin/outbound-links",
+                "GET /api/admin/outbound-links/{id}",
+                "GET /api/admin/outbound-links/{id}/instances",
+                "GET /api/admin/outbound-link-instances",
+                "GET /api/admin/outbound-link-policies",
+                "GET /api/admin/outbound-link-scan-runs",
+                "GET /api/admin/outbound-link-audit",
+                "GET /api/admin/outbound-link-dashboard-summary",
+                "GET /api/admin/outbound-link-operator-readiness"
+            ],
+            [
+                "runtime-qa-staging upload blocked by missing Storage Blob data-plane RBAC",
+                "production-runtime blocked",
+                "live-write-approved globally inactive",
+                "CMS writes blocked",
+                "external crawling blocked"
+            ],
+            items,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false);
+    }
 
     private static Paged<T> Page<T>(IReadOnlyList<T> items, int page, int pageSize)
     {

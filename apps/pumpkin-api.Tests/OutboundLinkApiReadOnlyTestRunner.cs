@@ -31,6 +31,7 @@ public static class OutboundLinkApiReadOnlyTestRunner
         await AssertListLinksReturnsEnvelope(service, query);
         await AssertLinkDetailReturnsInstances(service, query);
         await AssertInstancesPoliciesScanRunsAuditAndDashboard(service, query);
+        await AssertOperatorReadinessMetadata(service, authorization, query);
         await AssertDomainFilterAndPagination(service, query);
         await AssertStagingBackedProviderMeta();
         AssertTenantScopeGuardDeniesWrongTenant(authorization);
@@ -92,6 +93,43 @@ public static class OutboundLinkApiReadOnlyTestRunner
         Assert(dashboard.Ok, "dashboard response should be ok");
         Assert(dashboard.Data?.LinkCount == 5, "dashboard should report five links");
         Assert(dashboard.Data?.DomainCount == 3, "dashboard should report three domains");
+    }
+
+    private static async Task AssertOperatorReadinessMetadata(
+        IOutboundLinkReadOnlyService service,
+        IOutboundLinkAuthorizationService authorization,
+        OutboundLinkApiQuery query)
+    {
+        var readiness = await service.GetOperatorReadinessAsync(query);
+        Assert(readiness.Ok, "operator readiness response should be ok");
+        Assert(readiness.Data?.Phase == "V2.7.1", "operator readiness should expose V2.7.1 phase");
+        Assert(readiness.Data?.RuntimeQaStatus == "passed", "operator readiness should report Runtime QA passed");
+        Assert(readiness.Data?.ResourceRegistryStatus == "passed", "operator readiness should report Resource Registry passed");
+        Assert(readiness.Data?.BackupCenterStatus == "passed", "operator readiness should report Backup Center passed");
+        Assert(readiness.Data?.WriteActionGuardStatus == "future_gated", "operator readiness should report future-gated write actions");
+        Assert(readiness.Data?.UploadBindingStatus == "blocked", "operator readiness should carry forward runtime QA upload blocker");
+        Assert(readiness.Data?.ProductionGateStatus == "blocked", "operator readiness should keep production-runtime blocked");
+        Assert(readiness.Data?.NoUncontrolledWriteStatus == "passed", "operator readiness should report no uncontrolled write scan");
+        Assert(readiness.Data is
+        {
+            ProviderWrites: false,
+            AzureMutations: false,
+            CmsWrites: false,
+            ProtectedConfigReads: false,
+            ExternalCrawling: false,
+            Deployment: false,
+            LivePublication: false
+        }, "operator readiness security boundary should remain closed");
+        Assert(readiness.Data!.ApiRoutes.Any(route => route == "GET /api/admin/outbound-link-operator-readiness"), "operator readiness should list its GET route");
+        Assert(readiness.Data.Items.Any(item => item.Label == "Runtime QA" && item.Status == "passed"), "operator readiness should include Runtime QA evidence item");
+        Assert(readiness.Data.BlockedGates.Any(gate => gate.Contains("runtime-qa-staging upload blocked", StringComparison.Ordinal)), "operator readiness should include upload blocker gate");
+        Assert(readiness.Meta.ReadOnly, "operator readiness meta should be read-only");
+        Assert(!readiness.Meta.WriteActionsAllowed, "operator readiness meta must not allow write actions");
+
+        var httpContext = CreateHttpContext("fixture-tenant", "Viewer");
+        var result = await OutboundLinkReadOnlyEndpoints.GetOperatorReadinessAsync(service, authorization, httpContext, query);
+        var envelope = await ExecuteJsonResult<OutboundLinkApiEnvelope<OutboundLinkOperatorReadinessResponse>>(result, httpContext);
+        Assert(envelope?.Data?.RuntimeQaStatus == "passed", "operator readiness endpoint should serialize Runtime QA status");
     }
 
     private static async Task AssertDomainFilterAndPagination(IOutboundLinkReadOnlyService service, OutboundLinkApiQuery query)

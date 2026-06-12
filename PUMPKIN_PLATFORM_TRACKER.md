@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.6.1 |
-| currentReferenceName | Runtime QA Harness Operationalization and Evidence Binding |
-| currentReferenceStatus | Complete; local/read-only reusable runtime QA harness and evidence binding operationalized |
-| provisionalV2OverallCompletion | `80%` |
+| currentReference | V2.7.1 |
+| currentReferenceName | Admin/API Operator Console Runtime-QA-Bound Readiness |
+| currentReferenceStatus | Complete; local/read-only Admin/API operator-console readiness bound to Runtime QA evidence |
+| provisionalV2OverallCompletion | `82%` |
 | currentLayerRefs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| nextReference | V2.7.1 |
-| nextReferenceName | Admin/API Operator Console Runtime-QA-Bound Readiness |
-| nextGate | Local/read-only operator console readiness bound to Runtime QA evidence |
-| safetyPosture | Runtime QA harness validator passed; local evidence is ignored; runtime-qa-staging upload blocked before upload by missing Storage data-plane RBAC; production-runtime blocked; live-write-approved scoped-only; no provider write, Azure mutation/RBAC change, production/CMS write, protected-config read |
-| blockedState | No V2.6.1 local operationalization blockers remain; runtime QA evidence upload requires future Storage data-plane RBAC; future writes, production actions, Azure mutations, and deployment remain separately gated |
+| nextReference | V2.7.2 |
+| nextReferenceName | Operator Console Multi-Module Readiness Expansion |
+| nextGate | Extend the runtime-QA-bound operator console pattern to Backup Center, Resource Registry, tenant onboarding/import review, provider readiness, and future Electron planning surfaces |
+| safetyPosture | Admin/API readiness validator passed; local evidence is ignored; runtime-qa-staging upload blocked before upload by missing Storage data-plane RBAC; production-runtime blocked; live-write-approved scoped-only; no provider write, Azure mutation/RBAC change, production/CMS write, protected-config read |
+| blockedState | No V2.7.1 local readiness blockers remain; runtime QA evidence upload requires future Storage data-plane RBAC; future writes, production actions, Azure mutations, and deployment remain separately gated |
 
 ## Legacy Tracker Freeze
 
@@ -39,7 +39,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.4 | `87%` | Backup Center proof and QA signoff strong; OLM staging storage proof uploaded |
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
-| V2.7 | `55%` | Admin/API operator surfaces exist; complete operator console pending |
+| V2.7 | `68%` | Admin/API OLM operator-console readiness is Runtime-QA-bound; multi-module console expansion next |
 | V2.8 | `50%` | Tenant/static history exists; current publish readiness not active |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 

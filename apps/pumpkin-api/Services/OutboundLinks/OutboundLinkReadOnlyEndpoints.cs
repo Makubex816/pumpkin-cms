@@ -56,6 +56,11 @@ public static class OutboundLinkReadOnlyEndpoints
             .WithSummary("Get outbound link dashboard summary")
             .WithDescription("Read-only Outbound Link Manager dashboard summary endpoint.");
 
+        group.MapGet("/outbound-link-operator-readiness", GetOperatorReadinessAsync)
+            .WithName("GetOutboundLinkOperatorReadiness")
+            .WithSummary("Get outbound link operator console readiness")
+            .WithDescription("GET-only Outbound Link Manager operator-console readiness metadata. Reports Runtime QA, Resource Registry, Backup Center, provider profile, and write-action guard state without provider writes, CMS writes, external crawling, or protected config reads.");
+
         return app;
     }
 
@@ -179,6 +184,21 @@ public static class OutboundLinkReadOnlyEndpoints
         }
 
         return ToResult(await service.GetDashboardSummaryAsync(query, context.RequestAborted));
+    }
+
+    public static async Task<IResult> GetOperatorReadinessAsync(
+        IOutboundLinkReadOnlyService service,
+        IOutboundLinkAuthorizationService authorization,
+        HttpContext context,
+        [AsParameters] OutboundLinkApiQuery query)
+    {
+        var authError = Authorize<object>(authorization, context, query);
+        if (authError is not null)
+        {
+            return ToResult(authError);
+        }
+
+        return ToResult(await service.GetOperatorReadinessAsync(query, context.RequestAborted));
     }
 
     private static OutboundLinkApiEnvelope<T>? Authorize<T>(

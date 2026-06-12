@@ -12,6 +12,7 @@ import {
   getOutboundLinkDetail,
   getOutboundLinkDomains,
   getOutboundLinkExportStatuses,
+  getOutboundLinkOperatorConsoleReadiness,
   getOutboundLinkProviderReadiness,
   listOutboundLinks,
   listReviewQueue,
@@ -23,6 +24,7 @@ import type {
   OutboundLinkDetailResult,
   OutboundLinkExportStatus,
   OutboundLinkInstanceRecord,
+  OutboundLinkOperatorConsoleReadiness,
   OutboundLinkPolicyRecord,
   OutboundLinkProviderReadiness,
   OutboundLinkQuickFilter,
@@ -1140,16 +1142,18 @@ function ExportsView({ statuses, compact = false }: { statuses: OutboundLinkExpo
 
 function ReadOnlyBanner({ snapshot }: { snapshot: OutboundLinkStoreSnapshot }) {
   const readiness = getOutboundLinkProviderReadiness(snapshot)
+  const operatorReadiness = getOutboundLinkOperatorConsoleReadiness(snapshot)
   return (
     <div className="mt-5 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
       <div className="flex items-start gap-3">
         <Lock className="mt-0.5 h-4 w-4 flex-shrink-0" />
-        <div>
+        <div className="min-w-0 flex-1">
           <div className="font-semibold">Read-only Admin foundation</div>
           <div className="mt-1">
             Local fixture mode for tenant {snapshot.tenantKey} with {OUTBOUND_LINK_PROVIDER_MODE_MESSAGE.stagingProviderMode} readiness metadata. Live-write profiles remain blocked; No write actions, crawler execution, production renderer integration, or protected configuration reads are wired.
           </div>
           <ProviderReadinessStrip readiness={readiness} />
+          <OperatorConsoleReadinessPanel readiness={operatorReadiness} />
         </div>
       </div>
     </div>
@@ -1167,6 +1171,51 @@ function ProviderReadinessStrip({ readiness }: { readiness: OutboundLinkProvider
   )
 }
 
+function OperatorConsoleReadinessPanel({ readiness }: { readiness: OutboundLinkOperatorConsoleReadiness }) {
+  return (
+    <div
+      className="mt-4 rounded-lg border border-blue-200 bg-white/80 px-4 py-3"
+      data-runtime-qa-status="runtime-qa-staging upload blocked; production-runtime blocked; write actions future-gated"
+    >
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <div className="flex items-center gap-2 font-semibold text-blue-950">
+            <ListChecks className="h-4 w-4" />
+            Operator Console Readiness
+          </div>
+          <p className="mt-1 text-xs leading-5 text-blue-800">{readiness.summary}</p>
+        </div>
+        <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
+          <ReadinessPill label="Runtime QA" value={readiness.runtimeQaStatus} />
+          <ReadinessPill label="Resource Registry" value={readiness.resourceRegistryStatus} />
+          <ReadinessPill label="Backup Center" value={readiness.backupCenterStatus} />
+          <ReadinessPill label="API Smoke" value={readiness.apiSmokeStatus} />
+        </div>
+      </div>
+      <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
+        {readiness.items.map((item) => (
+          <div key={item.id} className="rounded-md border border-blue-100 bg-blue-50/60 px-3 py-2">
+            <div className="flex items-start justify-between gap-2">
+              <div className="font-semibold text-blue-950">{item.label}</div>
+              <ReadinessStatusBadge status={item.status} />
+            </div>
+            <div className="mt-1 text-xs leading-5 text-blue-800">{item.detail}</div>
+            <div className="mt-2 break-words font-mono text-[11px] text-blue-700">{item.evidenceRef}</div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2 text-xs">
+        {readiness.blockedGates.map((gate) => (
+          <span key={gate} className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-white px-2 py-1 text-blue-800">
+            <Lock className="h-3 w-3" />
+            {gate}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function ReadinessPill({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-md border border-blue-200 bg-white px-3 py-2">
@@ -1174,6 +1223,18 @@ function ReadinessPill({ label, value }: { label: string; value: string }) {
       <div className="mt-0.5 text-blue-800">{value}</div>
     </div>
   )
+}
+
+function ReadinessStatusBadge({ status }: { status: OutboundLinkOperatorConsoleReadiness['items'][number]['status'] }) {
+  const className = status === 'passed'
+    ? 'bg-green-100 text-green-800'
+    : status === 'blocked'
+      ? 'bg-red-100 text-red-800'
+      : status === 'future_gated'
+        ? 'bg-amber-100 text-amber-900'
+        : 'bg-neutral-100 text-neutral-700'
+
+  return <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${className}`}>{status.replace(/_/g, ' ')}</span>
 }
 
 function MetricCard({
