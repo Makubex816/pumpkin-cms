@@ -12,7 +12,10 @@
     "inspect:v2-6-1": "node src/runtime-qa-cli.mjs inspect-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence",
     "run:v2-7-1": "node src/runtime-qa-cli.mjs run --registry fixtures/runtime-qa-registry.v2-7-1.fixture.json --out .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence --overwrite",
     "validate:v2-7-1": "node src/runtime-qa-cli.mjs validate-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence",
-    "inspect:v2-7-1": "node src/runtime-qa-cli.mjs inspect-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence"
+    "inspect:v2-7-1": "node src/runtime-qa-cli.mjs inspect-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence",
+    "run:v2-7-2": "node src/runtime-qa-cli.mjs run --registry fixtures/runtime-qa-registry.v2-7-2.fixture.json --out .tmp/v2-7-2-runtime-qa-upload-operator-console-signoff-evidence --overwrite",
+    "validate:v2-7-2": "node src/runtime-qa-cli.mjs validate-evidence --evidence .tmp/v2-7-2-runtime-qa-upload-operator-console-signoff-evidence",
+    "inspect:v2-7-2": "node src/runtime-qa-cli.mjs inspect-evidence --evidence .tmp/v2-7-2-runtime-qa-upload-operator-console-signoff-evidence"
   },
   "engines": {
     "node": ">=20"

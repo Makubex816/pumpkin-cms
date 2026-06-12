@@ -1,0 +1,227 @@
+{
+  "schemaVersion": "0.1.0",
+  "registryId": "pumpkin-platform-runtime-qa-v2-7-2",
+  "phase": "V2.7.2",
+  "environmentMode": "local-offline",
+  "providerProfileId": "olm-staging-cosmos-nosql-v1",
+  "layerRefs": ["L01", "L06", "L07", "L08", "L09", "L10", "L11", "L12"],
+  "checkedRoutes": [
+    "/dashboard/outbound-links",
+    "/dashboard/outbound-links/instances",
+    "/dashboard/outbound-links/policies",
+    "/dashboard/outbound-links/scan-runs",
+    "/dashboard/outbound-links/audit",
+    "/dashboard/outbound-links/review",
+    "/dashboard/outbound-links/exports"
+  ],
+  "checkedApis": [
+    "GET /api/admin/outbound-links",
+    "GET /api/admin/outbound-links/{id}",
+    "GET /api/admin/outbound-links/{id}/instances",
+    "GET /api/admin/outbound-link-instances",
+    "GET /api/admin/outbound-link-policies",
+    "GET /api/admin/outbound-link-scan-runs",
+    "GET /api/admin/outbound-link-audit",
+    "GET /api/admin/outbound-link-dashboard-summary",
+    "GET /api/admin/outbound-link-operator-readiness",
+    "PATCH/POST guarded local/fake write-action foundation remains blocked for live-readonly and live-write-approved"
+  ],
+  "requiredCheckIds": [
+    "admin-outbound-links-route",
+    "admin-provider-readiness-messaging",
+    "admin-future-gated-actions",
+    "admin-operator-console-readiness",
+    "api-olm-readonly",
+    "api-operator-console-readiness",
+    "api-olm-write-action-guard",
+    "provider-profile-validation",
+    "resource-registry-operational-bindings",
+    "olm-staging-contract",
+    "staging-cosmos-readonly-sanity",
+    "backup-center-staging-proof",
+    "runtime-qa-evidence-manifest",
+    "no-uncontrolled-write-scan",
+    "local-offline-preservation"
+  ],
+  "providerModes": [
+    { "mode": "local-dev", "state": "allowed", "providerWritesAllowed": false, "globalActivation": false },
+    { "mode": "fake-provider", "state": "allowed", "providerWritesAllowed": false, "globalActivation": false },
+    { "mode": "offline-bundle", "state": "allowed", "providerWritesAllowed": false, "globalActivation": false },
+    { "mode": "local-file-backed", "state": "allowed", "providerWritesAllowed": false, "globalActivation": false },
+    { "mode": "local-api-fake-provider", "state": "allowed", "providerWritesAllowed": false, "globalActivation": false },
+    { "mode": "staging-simulated", "state": "allowed", "providerWritesAllowed": false, "globalActivation": false },
+    { "mode": "live-readonly", "state": "allowed-readonly-with-explicit-profile", "providerWritesAllowed": false, "globalActivation": false },
+    { "mode": "live-write-approved", "state": "scoped-only", "providerWritesAllowed": false, "globalActivation": false, "providerProfileId": "olm-staging-cosmos-nosql-v1", "approvalManifestId": "olapprove_508df3f03faa4f80", "firstWriteBatchId": "olbatch_b08e184fdc6565aa" },
+    { "mode": "production-runtime", "state": "blocked", "providerWritesAllowed": false, "globalActivation": false }
+  ],
+  "sourceEvidenceRefs": [
+    { "label": "V2.7.1 Admin/API operator console readiness", "path": "deployment/architecture/admin-api-operator-console/v2-7-1-runtime-qa-bound-readiness-result/result-manifest.json" },
+    { "label": "V2.6.1 Runtime QA operationalization evidence binding", "path": "deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/result-manifest.json" },
+    { "label": "V2.5.1 Resource Registry Provider Profile operationalization", "path": "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json" },
+    { "label": "V2.2.5 final OLM stage-ready signoff", "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json" },
+    { "label": "V2.4 Backup Center support proof", "path": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json" },
+    { "label": "Platform runtime QA harness goal", "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/PLATFORM_RUNTIME_QA_HARNESS_GOAL.md" },
+    { "label": "Reusable runtime QA pattern", "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/REUSABLE_RUNTIME_QA_PATTERN.md" }
+  ],
+  "checks": [
+    {
+      "id": "admin-outbound-links-route",
+      "name": "Admin /dashboard/outbound-links route readiness",
+      "category": "admin-route",
+      "fileMarkers": [
+        { "path": "apps/admin/src/app/dashboard/outbound-links/page.tsx", "markers": ["OutboundLinkDashboardView", "return <OutboundLinkDashboardView />"] },
+        { "path": "apps/admin/src/components/outbound-links/OutboundLinkAdmin.tsx", "markers": ["Outbound Link Manager", "ActionCenter", "QuickFilterBar", "LinkDetailDrawer"] }
+      ]
+    },
+    {
+      "id": "admin-provider-readiness-messaging",
+      "name": "Admin provider readiness messaging",
+      "category": "admin-provider-mode",
+      "fileMarkers": [
+        { "path": "apps/admin/src/components/outbound-links/OutboundLinkAdmin.tsx", "markers": ["ProviderReadinessStrip", "ReadinessPill", "staging-backed read-only provider readiness", "Live-write profiles remain blocked"] },
+        { "path": "apps/admin/src/lib/outbound-links/mock-provider.ts", "markers": ["OUTBOUND_LINK_PROVIDER_MODE_MESSAGE", "getOutboundLinkProviderReadiness", "staging-backed-readonly", "future_approval_required", "productionMigrationReady: false"] }
+      ]
+    },
+    {
+      "id": "admin-future-gated-actions",
+      "name": "Admin future-gated write controls remain disabled",
+      "category": "admin-write-guard",
+      "fileMarkers": [
+        { "path": "apps/admin/src/components/outbound-links/OutboundLinkAdmin.tsx", "markers": ["LocalSandboxActionButton", "ReadOnlyActionButton", "disabled", "Future production write approval required", "write actions future-gated"] },
+        { "path": "apps/admin/src/components/outbound-links/docs/ADMIN_WRITE_ACTIONS_DISABLED.md", "markers": ["does not call network APIs", "Future production write actions require a separate approval"] }
+      ]
+    },
+    {
+      "id": "admin-operator-console-readiness",
+      "name": "Admin operator console upload signoff panel",
+      "category": "admin-operator-console",
+      "fileMarkers": [
+        { "path": "apps/admin/src/components/outbound-links/OutboundLinkAdmin.tsx", "markers": ["Operator Console Readiness", "Runtime QA", "Resource Registry", "Backup Center", "runtime-qa-staging upload verified", "production-runtime blocked"] },
+        { "path": "apps/admin/src/lib/outbound-links/types.ts", "markers": ["OutboundLinkOperatorConsoleReadiness", "runtimeQaStatus", "resourceRegistryStatus", "writeActionGuardStatus", "noUncontrolledWriteStatus"] },
+        { "path": "apps/admin/src/lib/outbound-links/mock-provider.ts", "markers": ["getOutboundLinkOperatorConsoleReadiness", "OUTBOUND_LINK_RUNTIME_QA_UPLOAD_PREFIX", "runtime-qa-staging upload verified", "uploadBindingStatus: 'passed'"] }
+      ]
+    },
+    {
+      "id": "api-olm-readonly",
+      "name": "Pumpkin API OLM read-only endpoints",
+      "category": "api-readonly",
+      "fileMarkers": [
+        { "path": "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkReadOnlyEndpoints.cs", "markers": ["MapGet(\"/outbound-links\"", "MapGet(\"/outbound-link-dashboard-summary\"", "Read-only Outbound Link Manager", "No CMS writes, external crawling, or protected config reads"] },
+        { "path": "apps/pumpkin-api.Tests/OutboundLinkApiReadOnlyTestRunner.cs", "markers": ["Phase 2H-9 Outbound Link Manager API read-only tests", "WriteActionsAllowed", "staging-backed read-only response must not allow write actions"] }
+      ]
+    },
+    {
+      "id": "api-operator-console-readiness",
+      "name": "Pumpkin API operator console upload signoff metadata",
+      "category": "api-operator-console",
+      "fileMarkers": [
+        { "path": "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkApiContracts.cs", "markers": ["OutboundLinkOperatorReadinessResponse", "runtimeQaStatus", "providerProfileStatus", "uploadBindingStatus", "providerWrites"] },
+        { "path": "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkReadOnlyService.cs", "markers": ["GetOperatorReadinessAsync", "BuildOperatorReadiness", "Runtime QA", "runtime-qa-staging upload verified", "production-runtime blocked"] },
+        { "path": "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkReadOnlyEndpoints.cs", "markers": ["MapGet(\"/outbound-link-operator-readiness\"", "GetOutboundLinkOperatorReadiness", "GET-only Outbound Link Manager operator-console readiness metadata"] },
+        { "path": "apps/pumpkin-api.Tests/OutboundLinkApiReadOnlyTestRunner.cs", "markers": ["AssertOperatorReadinessMetadata", "operator readiness should report Runtime QA passed", "operator readiness should report Runtime QA upload closure", "operator readiness security boundary should remain closed"] }
+      ]
+    },
+    {
+      "id": "api-olm-write-action-guard",
+      "name": "Pumpkin API OLM write-action guard",
+      "category": "api-write-guard",
+      "fileMarkers": [
+        { "path": "apps/pumpkin-api/Services/OutboundLinks/OutboundLinkWriteGuardService.cs", "markers": ["live-readonly provider mode rejects write actions", "live-write-approved provider mode is reserved for a future explicit approval", "provider mode is not configured for scoped write actions"] },
+        { "path": "apps/pumpkin-api.Tests/OutboundLinkApiWriteActionTestRunner.cs", "markers": ["AssertLiveProviderModesBlocked", "live-readonly write should be blocked", "live-write-approved remains blocked"] }
+      ]
+    },
+    {
+      "id": "provider-profile-validation",
+      "name": "Provider profile validation",
+      "category": "provider-profile",
+      "sourceEvidenceRefs": [
+        { "label": "V2.5.1 provider profile state matrix", "path": "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/provider-profile-state-matrix.md" },
+        { "label": "OLM staging provider profile fixture", "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/fixtures/provider-profile-olm-staging-cosmos-nosql.fixture.json" }
+      ],
+      "fileMarkers": [
+        { "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/fixtures/provider-profile-olm-staging-cosmos-nosql.fixture.json", "markers": ["olm-staging-cosmos-nosql-v1", "live-write-approved", "credentialReferenceId", "credentialValueIncluded\": false", "canPerformLiveWrites\": false"] }
+      ]
+    },
+    {
+      "id": "resource-registry-operational-bindings",
+      "name": "Resource Registry operational binding validation",
+      "category": "resource-registry",
+      "sourceEvidenceRefs": [
+        { "label": "V2.5.1 validation command result", "path": "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/validation-command-result.md" }
+      ],
+      "modeAssertions": {
+        "operationalBindingsPath": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation/fixtures/operational-bindings.v2-5-1.fixture.json",
+        "scopedLiveWriteProfileId": "olm-staging-cosmos-nosql-v1",
+        "requiredModes": ["local-dev", "fake-provider", "offline-bundle", "local-file-backed", "local-api-fake-provider", "staging-simulated", "live-readonly", "live-write-approved", "production-runtime"]
+      }
+    },
+    {
+      "id": "olm-staging-contract",
+      "name": "OLM_STAGING contract validation",
+      "category": "olm-staging-contract",
+      "sourceEvidenceRefs": [
+        { "label": "V2.3.4 OLM staging env contract validation", "path": "deployment/architecture/azure-staging-foundation/v2-3-4-rbac-provider-profile-olm-contract-finalization-result/olm-staging-env-contract-validation.md" },
+        { "label": "V2.2.5 OLM final signoff result", "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/v2-2-final-signoff-result.md" }
+      ]
+    },
+    {
+      "id": "staging-cosmos-readonly-sanity",
+      "name": "Read-only staging Cosmos sanity check",
+      "category": "staging-readonly",
+      "sourceEvidenceRefs": [
+        { "label": "V2.2.5 readback reconciliation proof", "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/readback-reconciliation-proof-summary.md" },
+        { "label": "V2.2.5 final readback manifest", "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json" }
+      ],
+      "jsonAssertions": [
+        { "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json", "equals": [{ "path": "carryforward.expectedRecords", "value": 48 }, { "path": "storageProofBlobCount", "value": 4 }] }
+      ]
+    },
+    {
+      "id": "backup-center-staging-proof",
+      "name": "Backup Center staging proof reference check",
+      "category": "backup-center",
+      "sourceEvidenceRefs": [
+        { "label": "V2.2.4 Backup Center staging upload proof", "path": "deployment/architecture/outbound-link-manager/v2-2-4-admin-api-staging-readonly-backup-storage-result/backup-center-staging-upload-proof-result.md" },
+        { "label": "V2.4 Backup Center QA support proof", "path": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json" }
+      ]
+    },
+    {
+      "id": "runtime-qa-evidence-manifest",
+      "name": "Runtime QA evidence manifest validation",
+      "category": "runtime-qa-evidence",
+      "selfGeneratedEvidenceManifest": true
+    },
+    {
+      "id": "no-uncontrolled-write-scan",
+      "name": "No uncontrolled write scan",
+      "category": "source-scan",
+      "sourceScans": [
+        {
+          "name": "runtime-qa-admin-api-operator-console-source",
+          "roots": [
+            "apps/admin/src/app/dashboard/outbound-links",
+            "apps/admin/src/components/outbound-links",
+            "apps/admin/src/lib/outbound-links",
+            "apps/pumpkin-api/Services/OutboundLinks",
+            "deployment/architecture/runtime-qa/platform-runtime-qa-harness/src"
+          ],
+          "exclude": ["node_modules", ".next", "bin", "obj"]
+        }
+      ]
+    },
+    {
+      "id": "local-offline-preservation",
+      "name": "Local/offline/fake/staging-simulated preservation",
+      "category": "runtime-qa-mode-preservation",
+      "localOfflinePreservation": true,
+      "sourceEvidenceRefs": [
+        { "label": "Platform runtime QA harness goal", "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/PLATFORM_RUNTIME_QA_HARNESS_GOAL.md" },
+        { "label": "Reusable runtime QA pattern", "path": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation/REUSABLE_RUNTIME_QA_PATTERN.md" }
+      ]
+    }
+  ],
+  "securityBoundarySummary": "V2.7.2 Admin/API Operator Console runtime-QA upload closure and signoff exposes read-only metadata only, keeps production-runtime blocked, and documents that the only Azure mutation was narrow runtime-qa-staging Storage Blob data-plane RBAC.",
+  "warnings": [
+    "Runtime QA upload verification is an external Azure Identity/RBAC check recorded in the V2.7.2 result package; the local harness itself performs source and evidence validation only."
+  ]
+}

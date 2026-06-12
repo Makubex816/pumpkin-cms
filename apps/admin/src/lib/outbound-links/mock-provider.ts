@@ -26,9 +26,10 @@ export const OUTBOUND_LINK_READONLY_MODE = 'admin-local-fake-readonly'
 export const OUTBOUND_LINK_STAGING_READONLY_MODE = 'staging-backed-readonly'
 export const OUTBOUND_LINK_STAGING_PROVIDER_PROFILE_ID = 'olm-staging-cosmos-nosql-v1'
 export const OUTBOUND_LINK_STAGING_EVIDENCE_PATH = '.tmp/v2-2-3-azure-cosmos-staging-readback-hardening'
-export const OUTBOUND_LINK_V2_7_1_PHASE = 'V2.7.1'
+export const OUTBOUND_LINK_V2_7_2_PHASE = 'V2.7.2'
 export const OUTBOUND_LINK_RUNTIME_QA_RESULT_PATH = 'deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/result-manifest.json'
-export const OUTBOUND_LINK_RUNTIME_QA_EVIDENCE_PATH = 'deployment/architecture/runtime-qa/platform-runtime-qa-harness/.tmp/v2-6-1-runtime-qa-evidence/RUNTIME_QA_EVIDENCE_MANIFEST.json'
+export const OUTBOUND_LINK_RUNTIME_QA_EVIDENCE_PATH = 'deployment/architecture/runtime-qa/platform-runtime-qa-harness/.tmp/v2-7-2-runtime-qa-upload-operator-console-signoff-evidence/RUNTIME_QA_EVIDENCE_MANIFEST.json'
+export const OUTBOUND_LINK_RUNTIME_QA_UPLOAD_PREFIX = 'runtime-qa-staging/v2-7-2/runtime-qa-upload-operator-console-signoff'
 export const OUTBOUND_LINK_RESOURCE_REGISTRY_RESULT_PATH = 'deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json'
 export const OUTBOUND_LINK_BACKUP_CENTER_RESULT_PATH = 'deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json'
 export const OUTBOUND_LINK_STAGE_READY_RESULT_PATH = 'deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json'
@@ -562,17 +563,17 @@ export function getOutboundLinkOperatorConsoleReadiness(snapshot: OutboundLinkSt
       id: 'runtime-qa-admin-binding',
       label: 'Runtime QA',
       status: 'passed' as const,
-      detail: 'V2.6.1 reusable Runtime QA harness validates Admin route markers, provider-mode messaging, local/offline modes, and no uncontrolled write calls.',
+      detail: 'V2.7.2 reusable Runtime QA harness validates Admin route markers, provider-mode messaging, local/offline modes, no uncontrolled write calls, and upload closure metadata.',
       evidenceRef: OUTBOUND_LINK_RUNTIME_QA_RESULT_PATH,
       mode: 'local-offline',
     },
     {
       id: 'runtime-qa-staging-upload',
-      label: 'runtime-qa-staging upload blocked',
-      status: 'blocked' as const,
-      detail: 'Evidence upload remains blocked by missing Storage Blob data-plane RBAC; V2.7.1 does not retry upload or request RBAC.',
-      evidenceRef: OUTBOUND_LINK_RUNTIME_QA_EVIDENCE_PATH,
-      mode: 'upload-not-attempted',
+      label: 'runtime-qa-staging upload verified',
+      status: 'passed' as const,
+      detail: 'V2.7.2 uploaded four non-secret Runtime QA evidence files to runtime-qa-staging through Azure Identity/RBAC after narrow container-scoped Storage Blob RBAC.',
+      evidenceRef: OUTBOUND_LINK_RUNTIME_QA_UPLOAD_PREFIX,
+      mode: 'upload-verified',
     },
     {
       id: 'resource-registry-profile',
@@ -625,8 +626,8 @@ export function getOutboundLinkOperatorConsoleReadiness(snapshot: OutboundLinkSt
   ]
 
   return {
-    phase: OUTBOUND_LINK_V2_7_1_PHASE,
-    generatedAt: '2026-06-11T20:00:00.000Z',
+    phase: OUTBOUND_LINK_V2_7_2_PHASE,
+    generatedAt: '2026-06-11T20:45:00.000Z',
     summary: `Operator Console Readiness is runtime-QA-bound for ${snapshot.tenantKey}/${snapshot.siteKey}; Admin and API surfaces remain read-only with provider writes blocked.`,
     providerProfileId: providerReadiness.providerProfileId,
     providerMode: providerReadiness.providerMode,
@@ -639,13 +640,12 @@ export function getOutboundLinkOperatorConsoleReadiness(snapshot: OutboundLinkSt
     noUncontrolledWriteStatus: 'passed',
     routeSmokeStatus: 'passed',
     apiSmokeStatus: 'passed',
-    uploadBindingStatus: 'blocked',
+    uploadBindingStatus: 'passed',
     productionGateStatus: 'blocked',
     localOfflineStatus: 'passed',
     adminRoutes,
     apiRoutes,
     blockedGates: [
-      'runtime-qa-staging upload blocked by missing Storage Blob data-plane RBAC',
       'production-runtime blocked',
       'live-write-approved globally inactive',
       'CMS writes blocked',

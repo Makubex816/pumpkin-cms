@@ -102,12 +102,12 @@ public static class OutboundLinkApiReadOnlyTestRunner
     {
         var readiness = await service.GetOperatorReadinessAsync(query);
         Assert(readiness.Ok, "operator readiness response should be ok");
-        Assert(readiness.Data?.Phase == "V2.7.1", "operator readiness should expose V2.7.1 phase");
+        Assert(readiness.Data?.Phase == "V2.7.2", "operator readiness should expose V2.7.2 phase");
         Assert(readiness.Data?.RuntimeQaStatus == "passed", "operator readiness should report Runtime QA passed");
         Assert(readiness.Data?.ResourceRegistryStatus == "passed", "operator readiness should report Resource Registry passed");
         Assert(readiness.Data?.BackupCenterStatus == "passed", "operator readiness should report Backup Center passed");
         Assert(readiness.Data?.WriteActionGuardStatus == "future_gated", "operator readiness should report future-gated write actions");
-        Assert(readiness.Data?.UploadBindingStatus == "blocked", "operator readiness should carry forward runtime QA upload blocker");
+        Assert(readiness.Data?.UploadBindingStatus == "passed", "operator readiness should report Runtime QA upload closure");
         Assert(readiness.Data?.ProductionGateStatus == "blocked", "operator readiness should keep production-runtime blocked");
         Assert(readiness.Data?.NoUncontrolledWriteStatus == "passed", "operator readiness should report no uncontrolled write scan");
         Assert(readiness.Data is
@@ -122,7 +122,8 @@ public static class OutboundLinkApiReadOnlyTestRunner
         }, "operator readiness security boundary should remain closed");
         Assert(readiness.Data!.ApiRoutes.Any(route => route == "GET /api/admin/outbound-link-operator-readiness"), "operator readiness should list its GET route");
         Assert(readiness.Data.Items.Any(item => item.Label == "Runtime QA" && item.Status == "passed"), "operator readiness should include Runtime QA evidence item");
-        Assert(readiness.Data.BlockedGates.Any(gate => gate.Contains("runtime-qa-staging upload blocked", StringComparison.Ordinal)), "operator readiness should include upload blocker gate");
+        Assert(!readiness.Data.BlockedGates.Any(gate => gate.Contains("runtime-qa-staging upload blocked", StringComparison.Ordinal)), "operator readiness should not include the resolved upload blocker");
+        Assert(readiness.Data.Items.Any(item => item.Label == "runtime-qa-staging upload verified" && item.Status == "passed"), "operator readiness should include upload verification item");
         Assert(readiness.Meta.ReadOnly, "operator readiness meta should be read-only");
         Assert(!readiness.Meta.WriteActionsAllowed, "operator readiness meta must not allow write actions");
 

@@ -1175,7 +1175,7 @@ function OperatorConsoleReadinessPanel({ readiness }: { readiness: OutboundLinkO
   return (
     <div
       className="mt-4 rounded-lg border border-blue-200 bg-white/80 px-4 py-3"
-      data-runtime-qa-status="runtime-qa-staging upload blocked; production-runtime blocked; write actions future-gated"
+      data-runtime-qa-status="runtime-qa-staging upload verified; production-runtime blocked; write actions future-gated"
     >
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div>

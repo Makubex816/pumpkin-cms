@@ -495,7 +495,7 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
     private static OutboundLinkOperatorReadinessResponse BuildOperatorReadiness(OutboundLinkStoreSnapshot snapshot)
     {
         const string runtimeQaResult = "deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/result-manifest.json";
-        const string runtimeQaEvidence = "deployment/architecture/runtime-qa/platform-runtime-qa-harness/.tmp/v2-6-1-runtime-qa-evidence/RUNTIME_QA_EVIDENCE_MANIFEST.json";
+        const string runtimeQaUploadPrefix = "runtime-qa-staging/v2-7-2/runtime-qa-upload-operator-console-signoff";
         const string resourceRegistryResult = "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json";
         const string backupCenterResult = "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json";
         const string olmStageReadyResult = "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json";
@@ -509,16 +509,16 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
                 "runtime-qa-api-binding",
                 "Runtime QA",
                 "passed",
-                "V2.7.1 binds API operator-readiness metadata to the reusable V2.6.1 Runtime QA harness and no-write source scan.",
+                "V2.7.2 binds API operator-readiness metadata to the reusable Runtime QA harness, no-write source scan, and verified Runtime QA evidence upload.",
                 runtimeQaResult,
                 "local-offline"),
             new(
                 "runtime-qa-staging-upload",
-                "runtime-qa-staging upload blocked",
-                "blocked",
-                "Evidence upload remains blocked by missing Storage Blob data-plane RBAC; this endpoint does not retry upload or request RBAC.",
-                runtimeQaEvidence,
-                "upload-not-attempted"),
+                "runtime-qa-staging upload verified",
+                "passed",
+                "V2.7.2 uploaded four non-secret Runtime QA evidence files through Azure Identity/RBAC after narrow container-scoped Storage Blob RBAC.",
+                runtimeQaUploadPrefix,
+                "upload-verified"),
             new(
                 "provider-profile",
                 "Provider Profile",
@@ -564,7 +564,7 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
         };
 
         return new OutboundLinkOperatorReadinessResponse(
-            "V2.7.1",
+            "V2.7.2",
             $"Operator Console Readiness is API-bound for {snapshot.TenantKey}/{snapshot.SiteKey}; GET-only metadata reports runtime QA, provider, backup, and guard state.",
             providerProfileId,
             providerMode,
@@ -578,7 +578,7 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
             "passed",
             "passed",
             "passed",
-            "blocked",
+            "passed",
             "blocked",
             "passed",
             [
@@ -602,7 +602,6 @@ public sealed class OutboundLinkReadOnlyService(IOutboundLinkReadOnlyProvider pr
                 "GET /api/admin/outbound-link-operator-readiness"
             ],
             [
-                "runtime-qa-staging upload blocked by missing Storage Blob data-plane RBAC",
                 "production-runtime blocked",
                 "live-write-approved globally inactive",
                 "CMS writes blocked",

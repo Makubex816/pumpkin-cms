@@ -24,6 +24,15 @@ test('V2.7.1 registry fixture validates Admin/API operator console checks', asyn
   assert.ok(registry.requiredCheckIds.includes('api-operator-console-readiness'));
 });
 
+test('V2.7.2 registry fixture validates Runtime QA upload closure checks', async () => {
+  const registry = await readJson(path.join(packageRoot, 'fixtures/runtime-qa-registry.v2-7-2.fixture.json'));
+  const validation = validateRuntimeQaRegistry(registry);
+  assert.equal(validation.status, 'passed');
+  assert.equal(validation.summary.failureCount, 0);
+  assert.ok(registry.phase === 'V2.7.2');
+  assert.ok(registry.checkedApis.includes('GET /api/admin/outbound-link-operator-readiness'));
+});
+
 test('runtime QA runner writes valid ignored evidence', async () => {
   const out = '.tmp/test-runtime-qa-evidence';
   const result = await runRuntimeQa({

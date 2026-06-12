@@ -15,6 +15,7 @@
 | Resource Registry / Provider Profile operationalization | Complete | V2.5.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Operational binding fixture, validator, schemas, matrices, and read-only staging checks passed. |
 | Runtime QA harness operationalization and evidence binding | Complete, upload blocked before upload | V2.6.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Reusable local/offline harness, registry, evidence manifest, Admin/API checks, and no-uncontrolled-write scan passed; upload requires future Storage data-plane RBAC. |
 | Admin/API Operator Console Runtime-QA-bound readiness | Complete, upload blocker carried forward | V2.7.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Admin/API readiness metadata, GET-only operator readiness endpoint, Runtime QA fixture, no-uncontrolled-write scan, and control docs passed; upload requires future Storage data-plane RBAC. |
+| Runtime QA upload closure and Admin/API Operator Console signoff | Complete | V2.7.2 / L01 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Runtime QA upload blocker resolved with one staging container-scoped Storage Blob data-plane RBAC assignment; evidence uploaded/listed; V2.7 signed off. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -31,7 +32,6 @@ No V2.2 stage-ready blockers remain.
 Still separately gated:
 
 - Keep `production-runtime` blocked and keep any additional `live-write-approved` operation scoped to a future explicit approval.
-- Runtime QA evidence upload to `runtime-qa-staging` requires a future Storage data-plane RBAC approval/session. V2.6.1 did not assign RBAC or upload.
 - Validate destructive rollback deletion only under a future separate approval.
 - Do not perform production migration, production writes, CMS writes, deployment, indexing, or live publication without explicit approval.
 
@@ -146,3 +146,18 @@ Still separately gated:
 - V2.7.1 additional OLM staging writes: `0`
 - V2.7.1 Azure infrastructure mutations: `0`
 - V2.7.1 RBAC assignments: `0`
+- V2.7.2 Runtime QA upload blocker: `resolved`
+- V2.7.2 Storage Blob RBAC assignments: `1` container-scoped assignment for `runtime-qa-staging`
+- V2.7.2 broad/subscription RBAC assignments: `0`
+- V2.7.2 Runtime QA evidence uploaded files: `4`
+- V2.7.2 Runtime QA uploaded files listed: `4`
+- V2.7.2 Runtime QA harness checks: `15` passed
+- V2.7.2 Runtime QA evidence validation: `passed`
+- V2.7.2 Admin operator console signoff: `passed`
+- V2.7.2 API readiness signoff: `passed`
+- V2.7.2 API write guard QA: `passed`
+- V2.7.2 no-uncontrolled-write scan: `passed`
+- V2.7.2 additional OLM staging writes: `0`
+- V2.7.2 provider data writes: `0`
+- V2.7.2 Azure infrastructure creations: `0`
+- V2.7.2 production/CMS/deployment/indexing/publication actions: `0`

@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.7.1, Admin/API Operator Console Runtime-QA-Bound Readiness |
-| Current V2 status | Complete; Admin/API operator-console readiness bound to Runtime QA, Resource Registry, Provider Profile, Backup Center, and guard metadata |
-| Provisional V2 overall completion | `82%` |
+| Current V2 reference | V2.7.2, Runtime QA Upload Closure and Admin/API Operator Console Signoff |
+| Current V2 status | Complete; Runtime QA upload blocker resolved and V2.7 Admin/API Operator Console lane signed off |
+| Provisional V2 overall completion | `84%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.7 Admin/API Operator Console readiness |
 | Active layer refs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| Safety posture | V2.7.1 completed local/read-only Admin/API readiness binding; Runtime QA evidence passed with 15 checks; evidence upload still blocked before upload by missing Storage data-plane RBAC; production-runtime blocked; live-write-approved scoped-only; no provider write, Azure mutation/RBAC change, production/CMS write, protected-config read, deployment, indexing, or publication |
-| Next gate | V2.7.2 Operator Console Multi-Module Readiness Expansion |
+| Safety posture | V2.7.2 completed Runtime QA upload through Azure Identity/RBAC after one approved staging container-scoped Storage Blob data-plane RBAC assignment; production-runtime blocked; live-write-approved scoped-only; no provider write, broad RBAC, production/CMS write, protected-config read, deployment, indexing, or publication |
+| Next gate | V2.8.1 Tenant Website and Publish Readiness Local Preflight |
 
 ## V2 Reference System
 
@@ -63,15 +63,18 @@ Use this first before choosing a next prompt, reading historical result packages
 | Runtime QA operationalization package | `deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/` | V2.6.1 result package |
 | Admin/API Operator Console Runtime-QA-bound readiness | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_1_RUNTIME_QA_BOUND_READINESS_REPORT.md` | V2.7.1 local/read-only Admin/API readiness complete; upload blocker carried forward |
 | Admin/API Operator Console Runtime-QA-bound readiness package | `deployment/architecture/admin-api-operator-console/v2-7-1-runtime-qa-bound-readiness-result/` | V2.7.1 result package |
+| Admin/API Operator Console upload closure and signoff | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_2_RUNTIME_QA_UPLOAD_SIGNOFF_REPORT.md` | V2.7.2 Runtime QA upload closure complete; V2.7 signed off |
+| Admin/API Operator Console upload closure and signoff package | `deployment/architecture/admin-api-operator-console/v2-7-2-runtime-qa-upload-operator-console-signoff-result/` | V2.7.2 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
 | Runtime QA | `PUMPKIN_RUNTIME_QA_V2_6_1_OPERATIONALIZATION_EVIDENCE_BINDING_REPORT.md` | V2.6 operational proof |
 | Admin/API Operator Console | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_1_RUNTIME_QA_BOUND_READINESS_REPORT.md` | V2.7 current operational proof |
+| Admin/API Operator Console Signoff | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_2_RUNTIME_QA_UPLOAD_SIGNOFF_REPORT.md` | V2.7 final signoff proof |
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. Runtime QA staging upload is blocked by missing Storage data-plane RBAC, but local evidence is complete.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. V2.7.2 resolved Runtime QA staging upload through a narrow container-scoped Storage Blob data-plane RBAC assignment and verified uploaded evidence. V2.7 is complete.
 
 Immutable current facts:
 
@@ -130,7 +133,22 @@ Immutable current facts:
 - V2.7.1 additional OLM staging writes: `0`
 - V2.7.1 Azure infrastructure mutations: `0`
 - V2.7.1 RBAC assignments: `0`
+- V2.7.2 Runtime QA upload blocker: `resolved`
+- V2.7.2 Storage Blob RBAC assignment: `1` container-scoped assignment for `runtime-qa-staging`
+- V2.7.2 broad/subscription RBAC assignments: `0`
+- V2.7.2 Runtime QA evidence uploaded files: `4`
+- V2.7.2 Runtime QA uploaded files listed: `4`
+- V2.7.2 Runtime QA harness checks: `15` passed
+- V2.7.2 Runtime QA evidence validation: `passed`
+- V2.7.2 Admin operator console signoff: `passed`
+- V2.7.2 API readiness signoff: `passed`
+- V2.7.2 API write guard QA: `passed`
+- V2.7.2 no-uncontrolled-write scan: `passed`
+- V2.7.2 additional OLM staging writes: `0`
+- V2.7.2 provider data writes: `0`
+- V2.7.2 Azure infrastructure creations: `0`
+- V2.7.2 production/CMS/deployment/indexing/publication actions: `0`
 
 ## Next Recommended Phase
 
-Approve V2.7.2 Operator Console Multi-Module Readiness Expansion only. Extend the runtime-QA-bound operator-console pattern from V2.7.1 beyond Outbound Link Manager into Backup Center, Resource Registry / Provider Profiles, tenant onboarding/import review, provider readiness, and future Electron operator cockpit planning surfaces. Keep the phase local/read-only: no provider writes, no Azure mutation, no RBAC changes, no protected config reads, no keys/listKeys, no connection strings, no SAS, no CMS writes, no deployment, no indexing, and no live publication.
+Approve V2.8.1 Tenant Website and Publish Readiness local preflight only. Use the completed V2.7 Admin/API Operator Console signoff, V2.6 Runtime QA harness, V2.5 Resource Registry / Provider Profiles, V2.4 Backup Center proof, and V2.2 OLM stage-ready state to build a local/read-only tenant website and publish-readiness preflight package. No deployment, DNS changes, Search Console/indexing, live-page publication, CMS writes, provider data writes, Azure infrastructure mutation, new RBAC assignment, protected config reads, keys/listKeys, connection strings, SAS, external crawling/live URL checks, or generated `.tmp` artifacts staged into Git.

@@ -209,10 +209,25 @@ async function uploadEvidenceCommand(args) {
 }
 
 function runAz(args) {
+  if (process.platform === 'win32') {
+    return spawnSync(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', ['az', ...args].map(quoteWindowsArg).join(' ')], {
+      encoding: 'utf8',
+      windowsHide: true
+    });
+  }
+
   return spawnSync('az', args, {
     encoding: 'utf8',
     windowsHide: true
   });
+}
+
+function quoteWindowsArg(value) {
+  const text = String(value);
+  if (/^[A-Za-z0-9_./:=@+\\-]+$/.test(text)) {
+    return text;
+  }
+  return `"${text.replace(/([%^&|<>()"])/g, '^$1')}"`;
 }
 
 function uploadSafetySummary() {
@@ -266,12 +281,16 @@ function printHelp() {
 Commands:
   run --registry fixtures/runtime-qa-registry.v2-6-1.fixture.json --out .tmp/v2-6-1-runtime-qa-evidence [--overwrite]
   run --registry fixtures/runtime-qa-registry.v2-7-1.fixture.json --out .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence [--overwrite]
+  run --registry fixtures/runtime-qa-registry.v2-7-2.fixture.json --out .tmp/v2-7-2-runtime-qa-upload-operator-console-signoff-evidence [--overwrite]
   validate-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence
   validate-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence
+  validate-evidence --evidence .tmp/v2-7-2-runtime-qa-upload-operator-console-signoff-evidence
   inspect-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence
   inspect-evidence --evidence .tmp/v2-7-1-admin-api-operator-console-runtime-qa-evidence
+  inspect-evidence --evidence .tmp/v2-7-2-runtime-qa-upload-operator-console-signoff-evidence
   upload-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence --account pumpkincmsstgolm01 --container runtime-qa-staging --prefix v2-6-1/runtime-qa-evidence-binding [--execute-upload]
   upload-evidence --evidence .tmp/v2-6-1-runtime-qa-evidence --account pumpkincmsstgolm01 --container runtime-qa-staging --prefix v2-6-1/runtime-qa-evidence-binding --block-reason "Azure Identity/RBAC blob list denied"
+  upload-evidence --evidence .tmp/v2-7-2-runtime-qa-upload-operator-console-signoff-evidence --account pumpkincmsstgolm01 --container runtime-qa-staging --prefix v2-7-2/runtime-qa-upload-operator-console-signoff --execute-upload
 `);
 }
 
