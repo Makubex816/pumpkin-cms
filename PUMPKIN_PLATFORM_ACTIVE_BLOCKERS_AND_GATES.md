@@ -26,6 +26,7 @@
 | Owner Approval Values and Static Form Endpoint Verification Closure | Complete classifier hardening, execution blocked | V2.8.8 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Static form validators now distinguish endpoint configured, endpoint owner-approved, backend-verified, blocked, and no-live-check states; fresh sanitized build passed, but no approved endpoint/owner/backend/media/target values were present. |
 | Full-Scope External Approval Values Closure and Staging Readiness Validation | Complete local validation, execution blocked | V2.8.9 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Safe candidate endpoint configured for local validation and local static integrity passed; staging execution remains blocked by missing owner/backend/media/content/exact-target approvals. |
 | Owner Backend Media and Exact Staging Target Approval Intake | Complete local/control-layer gate closure, execution blocked | V2.8.10 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Endpoint owner, contact-form owner, and media/content approvals closed for staging-readiness only; backend verification and exact executable SWA target still block staging execution. |
+| Backend Verification and Exact Staging Target Resolution Boundary | Complete safe metadata resolution, execution blocked | V2.8.11 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Function App and actual SWA target are resolved from safe read-only metadata; backend POST/form behavior verification, staging deploy operator, rollback/abort owner, and deployment secret boundary still block staging execution. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -345,3 +346,22 @@ Still separately gated:
 - V2.8.10 Azure infrastructure mutations: `0`
 - V2.8.10 RBAC assignments: `0`
 - V2.8.10 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.11 Function App metadata: `func-ice-static-contact-20260605` / `rg-ice-static-form-endpoint` / `Running` / HTTPS-only
+- V2.8.11 Azure Static Web Apps target: `swa-ice-static-staging` / `rg-ice-static-staging` / `happy-mud-0b375e20f.7.azurestaticapps.net`
+- V2.8.11 placeholder SWA target lookup: `rg-pumpkin-static-staging` / `swa-ice-rink-rentals-staging` / `not_found`
+- V2.8.11 endpoint bounded checks: `OPTIONS_204`, `HEAD_404`, `GET_404`, `POST_0`, `payload_0`
+- V2.8.11 sanitized build run: `sanitized_20260612200048`
+- V2.8.11 local static integrity: `passed`
+- V2.8.11 static form gate status: `blocked_backend_verification_missing`
+- V2.8.11 backend verification: `reachability_preflight_resolved_backend_behavior_blocked_pending_post_form_verification_approval`
+- V2.8.11 exact staging target: `resource_target_resolved_operator_rollback_and_deployment_execution_approval_missing`
+- V2.8.11 Runtime QA evidence run: `runtimeqa_22fc50f962b9fef0`
+- V2.8.11 Resource Registry operational binding validator: `passed`
+- V2.8.11 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.11 staging execution classification: `partial_target_resource_resolved_backend_post_check_and_operator_rollback_blocked`
+- V2.8.11 provider data writes: `0`
+- V2.8.11 CMS writes: `0`
+- V2.8.11 Azure infrastructure mutations: `0`
+- V2.8.11 RBAC assignments: `0`
+- V2.8.11 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.11 protected config reads and secret exports: `0`

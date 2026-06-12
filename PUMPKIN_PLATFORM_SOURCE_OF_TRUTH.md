@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.8.10, Owner Backend Media and Exact Staging Target Approval Intake |
-| Current V2 status | Complete local/control-layer gate closure through validation; endpoint owner, contact-form owner, and media/content approvals are closed for staging-readiness only, while backend verification and exact executable SWA target remain blocking |
+| Current V2 reference | V2.8.11, Backend Verification and Exact Staging Target Resolution Boundary |
+| Current V2 status | Complete safe metadata resolution; Function App and actual Azure Static Web Apps target are resolved from read-only metadata, while backend POST/form behavior verification plus operator/rollback ownership still block staging execution |
 | Provisional V2 overall completion | `91%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.10 performed local/control-layer validation, docs, and process-env-only non-secret validation flags only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, live HTTP check, live contact form submission, or external crawl |
-| Next gate | V2.8.11 Backend Verification and Exact Staging Target Resolution Boundary |
+| Safety posture | V2.8.11 performed read-only Azure metadata checks, bounded non-mutating endpoint checks, local validation, and docs only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, contact-form POST, private payload, or external crawl |
+| Next gate | V2.8.12 Backend Live Verification Scope and Staging Operator/Rollback Closure |
 
 ## V2 Reference System
 
@@ -85,6 +85,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website final external approval values and staging readiness validation package | `deployment/architecture/tenant-website-publish-readiness/v2-8-9-final-external-approval-values-staging-readiness-result/` | V2.8.9 result package |
 | Tenant Website owner/backend/media/exact staging target gate closure | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_10_OWNER_BACKEND_MEDIA_EXACT_STAGING_TARGET_GATE_CLOSURE_REPORT.md` | V2.8.10 local/control-layer approvals closed where safe; backend and exact executable SWA target still block execution |
 | Tenant Website owner/backend/media/exact staging target gate closure package | `deployment/architecture/tenant-website-publish-readiness/v2-8-10-owner-backend-media-exact-staging-target-gate-closure-result/` | V2.8.10 result package |
+| Tenant Website backend verification and exact staging target resolution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_11_BACKEND_VERIFICATION_EXACT_STAGING_TARGET_RESOLUTION_REPORT.md` | V2.8.11 safe metadata resolved; backend POST/form behavior and operator/rollback closure still block execution |
+| Tenant Website backend verification and exact staging target resolution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-11-backend-verification-exact-staging-target-resolution-result/` | V2.8.11 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -94,7 +96,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. V2.7.2 resolved Runtime QA staging upload through a narrow container-scoped Storage Blob data-plane RBAC assignment and verified uploaded evidence. V2.7 is complete. V2.8.1 completed a local/read-only tenant website publish-readiness preflight and found the current safe Ice seed-site publish path blocked before deployment. V2.8.2 repaired the local Ice route source and validated the ignored static artifact package without deploying. V2.8.3 signed off Ice local publish-readiness and kept deployment/DNS/indexing/live publication closed. V2.8.4 created the staging publish worksheet and no-go criteria without executing staging. V2.8.5 added the sanitized no-dotenv static build path and approval packets. V2.8.6 classified validator gates so local static integrity is distinct from external backend/owner approval gates. V2.8.7 converted the remaining no-go items into explicit records. V2.8.8 hardened static form validator classification and revalidated a fresh sanitized build. V2.8.9 applied the safe candidate endpoint to local validation only. V2.8.10 recorded local/staging-readiness owner and media approvals from the current prompt, moved the validator to a single backend-verification gate, and kept staging execution blocked by live/backend verification and exact executable SWA target details.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. V2.7.2 resolved Runtime QA staging upload through a narrow container-scoped Storage Blob data-plane RBAC assignment and verified uploaded evidence. V2.7 is complete. V2.8.1 completed a local/read-only tenant website publish-readiness preflight and found the current safe Ice seed-site publish path blocked before deployment. V2.8.2 repaired the local Ice route source and validated the ignored static artifact package without deploying. V2.8.3 signed off Ice local publish-readiness and kept deployment/DNS/indexing/live publication closed. V2.8.4 created the staging publish worksheet and no-go criteria without executing staging. V2.8.5 added the sanitized no-dotenv static build path and approval packets. V2.8.6 classified validator gates so local static integrity is distinct from external backend/owner approval gates. V2.8.7 converted the remaining no-go items into explicit records. V2.8.8 hardened static form validator classification and revalidated a fresh sanitized build. V2.8.9 applied the safe candidate endpoint to local validation only. V2.8.10 recorded local/staging-readiness owner and media approvals from the current prompt, moved the validator to a single backend-verification gate, and kept staging execution blocked by live/backend verification and exact executable SWA target details. V2.8.11 resolved safe Function App and Azure Static Web Apps metadata, proved only bounded read-only endpoint reachability/preflight, and kept backend POST/form behavior plus operator/rollback ownership as the remaining publish blockers.
 
 Immutable current facts:
 
@@ -327,7 +329,26 @@ Immutable current facts:
 - V2.8.10 Azure infrastructure mutations: `0`
 - V2.8.10 RBAC assignments: `0`
 - V2.8.10 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.11 Function App metadata: `func-ice-static-contact-20260605` / `rg-ice-static-form-endpoint` / `Running` / HTTPS-only
+- V2.8.11 Azure Static Web Apps target: `swa-ice-static-staging` / `rg-ice-static-staging` / `happy-mud-0b375e20f.7.azurestaticapps.net`
+- V2.8.11 placeholder SWA target lookup: `rg-pumpkin-static-staging` / `swa-ice-rink-rentals-staging` / `not_found`
+- V2.8.11 endpoint bounded checks: `OPTIONS_204`, `HEAD_404`, `GET_404`, `POST_0`, `payload_0`
+- V2.8.11 sanitized build run: `sanitized_20260612200048`
+- V2.8.11 local static integrity: `passed`
+- V2.8.11 static form gate status: `blocked_backend_verification_missing`
+- V2.8.11 backend verification: `reachability_preflight_resolved_backend_behavior_blocked_pending_post_form_verification_approval`
+- V2.8.11 exact staging target: `resource_target_resolved_operator_rollback_and_deployment_execution_approval_missing`
+- V2.8.11 Runtime QA evidence run: `runtimeqa_22fc50f962b9fef0`
+- V2.8.11 Resource Registry operational binding validator: `passed`
+- V2.8.11 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.11 staging execution classification: `partial_target_resource_resolved_backend_post_check_and_operator_rollback_blocked`
+- V2.8.11 provider data writes: `0`
+- V2.8.11 CMS writes: `0`
+- V2.8.11 Azure infrastructure mutations: `0`
+- V2.8.11 RBAC assignments: `0`
+- V2.8.11 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.11 protected config reads and secret exports: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.11 Ice Backend Verification and Exact Staging Target Resolution Boundary only: resolve the remaining V2.8.10 no-go gates without live publication. Confirm the exact Azure Static Web Apps staging target for Ice, including approved subscription or redacted subscription reference, resource group, Static Web App resource name, Azure default hostname, deployment method/profile, named operator, rollback/abort owner, and no-secret handling. Also approve the minimum backend verification scope for the Ice static contact form, either no-email dry-run staging verification or one explicitly bounded live backend/form test, with approved payload, endpoint mode, expected owner workflow, abort conditions, and evidence requirements. Run only the approved verification and local validators. Do not deploy live pages, do not change DNS, do not index, do not publish production/live pages, do not perform CMS writes, provider writes, production database migration, Azure infrastructure mutation unless separately and explicitly included for the staging target boundary, RBAC assignment, protected config reads, keys/listKeys, connection strings, SAS generation, external crawling beyond the approved backend/staging-host checks, or generated `.tmp` artifact staging.
+Approve V2.8.12 Ice Backend Live Verification Scope and Staging Operator/Rollback Closure only: use the V2.8.11 resolved safe metadata and validator output to close the remaining staging publish preconditions without deploying or publishing. Approve exactly one bounded backend behavior verification path for the Ice static contact form, including endpoint, endpoint mode, approved payload, sender/recipient handling, owner workflow, expected evidence, abort conditions, and whether a single POST/form submission is approved. Name the staging deploy operator, rollback/abort owner, deployment method, deployment secret storage boundary outside the repo, and rollback evidence requirements. Re-run sanitized static build, validators, Runtime QA, Resource Registry, and final gate classification. No deployment, DNS change, indexing, live publication, CMS write, provider write, production database migration, Azure mutation, RBAC assignment, protected config read, keys/listKeys, connection strings, SAS generation, external crawl, live page crawl, or generated `.tmp` artifact staging.

@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.10 |
-| currentReferenceName | Owner Backend Media And Exact Staging Target Approval Intake |
-| currentReferenceStatus | Complete local/control-layer gate closure; endpoint owner, contact-form owner, and media/content approvals are closed for staging-readiness only, while backend verification and exact executable SWA target still block staging execution |
+| currentReference | V2.8.11 |
+| currentReferenceName | Backend Verification And Exact Staging Target Resolution Boundary |
+| currentReferenceStatus | Complete safe metadata resolution; Function App and actual Azure Static Web Apps target are resolved from read-only metadata, while backend POST/form behavior verification plus operator/rollback ownership still block staging execution |
 | provisionalV2OverallCompletion | `91%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.11 |
-| nextReferenceName | Backend Verification And Exact Staging Target Resolution Boundary |
-| nextGate | Resolve backend verification approval/evidence and exact executable SWA target fields before staging publish execution approval |
-| safetyPosture | Local/control-layer validation and docs only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, live HTTP check, live contact form submission, or external crawl |
-| blockedState | Staging execution is blocked until backend verification and exact executable Azure Static Web Apps target details are resolved |
+| nextReference | V2.8.12 |
+| nextReferenceName | Backend Live Verification Scope And Staging Operator Rollback Closure |
+| nextGate | Approve bounded POST/form verification scope and name staging operator plus rollback/abort owner before staging publish execution |
+| safetyPosture | Read-only Azure metadata, bounded non-mutating endpoint checks, local validation, and docs only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, contact-form POST, private payload, or external crawl |
+| blockedState | Staging execution is blocked until backend POST/form behavior verification, deploy operator, rollback/abort owner, and deployment secret handling are resolved |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `97%` | Owner/media staging-readiness approvals closed and local validators reduced to one backend gate; backend verification and exact executable SWA target remain unresolved |
+| V2.8 | `98%` | Safe backend/SWA metadata resolved and local validators reduced to one backend gate; backend POST/form verification and operator/rollback closure remain unresolved |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.
