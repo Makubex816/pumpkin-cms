@@ -1,0 +1,54 @@
+{
+  "reference": "V2.8.5",
+  "name": "Sanitized No-Dotenv Static Build And Approval Packet Closure",
+  "status": "complete_local_build_path_execution_blocked",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-5-sanitized-no-dotenv-static-build-approval-packet-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_5_SANITIZED_NO_DOTENV_STATIC_BUILD_APPROVAL_PACKET_REPORT.md",
+  "sanitizedBuild": {
+    "script": "apps/ice-rink-web/scripts/sanitized-static-build.mjs",
+    "npmScript": "build:static:ice:sanitized",
+    "latestRunId": "sanitized_20260612144750",
+    "latestResultJson": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612144750/SANITIZED_STATIC_BUILD_RESULT.json",
+    "latestOutputDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612144750/repo/apps/ice-rink-web/out",
+    "passed": true,
+    "protectedConfigCopied": false,
+    "protectedConfigContentsRead": false,
+    "childEnvironmentAllowlistOnly": true,
+    "protectedConfigReferenceInOutput": false
+  },
+  "validation": {
+    "typeCheck": "passed",
+    "staticSourceValidation": "passed_with_34_warnings",
+    "sanitizedStaticOutputValidation": "blocked_missing_static_form_endpoint_verification",
+    "sanitizedStagingPackageValidation": "blocked_missing_static_form_endpoint_verification"
+  },
+  "remainingNoGoItems": [
+    "contact_form_owner_verification",
+    "final_media_content_approval",
+    "exact_staging_deployment_target_approval",
+    "exact_dns_target_approval",
+    "search_console_indexing_closed",
+    "live_publication_closed"
+  ],
+  "safety": {
+    "deployment": false,
+    "dnsChange": false,
+    "indexing": false,
+    "livePublication": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "secretsPrinted": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "externalCrawling": false,
+    "tmpArtifactsStaged": false
+  },
+  "nextReference": "V2.8.6",
+  "nextReferenceName": "Contact Form Owner Verification and Exact Staging Target Closure"
+}

@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.8.4, Staging Publish Worksheet and No-Go Criteria |
-| Current V2 status | Complete staging publish worksheet/no-go package; staging execution remains blocked by no-dotenv, owner verification, target, DNS, indexing, and publication gates |
-| Provisional V2 overall completion | `89%` |
+| Current V2 reference | V2.8.5, Sanitized No-Dotenv Static Build and Approval Packet Closure |
+| Current V2 status | Complete local sanitized no-dotenv build path and approval packet closure; staging execution remains blocked by contact-form owner verification, media/content approval, exact target, DNS, indexing, and publication gates |
+| Provisional V2 overall completion | `90%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.4 performed planning/local-read-only validation only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, or external crawl |
-| Next gate | V2.8.5 Sanitized No-Dotenv Static Build Harness and Staging Execution Preflight |
+| Safety posture | V2.8.5 performed local sanitized build tooling, validation, and docs only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, or external crawl |
+| Next gate | V2.8.6 Contact Form Owner Verification and Exact Staging Target Closure |
 
 ## V2 Reference System
 
@@ -73,6 +73,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website Ice local publish-readiness signoff package | `deployment/architecture/tenant-website-publish-readiness/v2-8-3-ice-local-publish-readiness-signoff-result/` | V2.8.3 result package |
 | Tenant Website staging publish worksheet/no-go criteria | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_4_STAGING_PUBLISH_WORKSHEET_NO_GO_REPORT.md` | V2.8.4 worksheet complete; staging execution blocked by no-go criteria |
 | Tenant Website staging publish worksheet/no-go criteria package | `deployment/architecture/tenant-website-publish-readiness/v2-8-4-staging-publish-worksheet-no-go-result/` | V2.8.4 result package |
+| Tenant Website sanitized no-dotenv static build and approval packet | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_5_SANITIZED_NO_DOTENV_STATIC_BUILD_APPROVAL_PACKET_REPORT.md` | V2.8.5 sanitized build path complete; staging execution blocked by owner/form/target gates |
+| Tenant Website sanitized no-dotenv static build and approval packet package | `deployment/architecture/tenant-website-publish-readiness/v2-8-5-sanitized-no-dotenv-static-build-approval-packet-result/` | V2.8.5 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -82,7 +84,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. V2.7.2 resolved Runtime QA staging upload through a narrow container-scoped Storage Blob data-plane RBAC assignment and verified uploaded evidence. V2.7 is complete. V2.8.1 completed a local/read-only tenant website publish-readiness preflight and found the current safe Ice seed-site publish path blocked before deployment. V2.8.2 repaired the local Ice route source and validated the ignored static artifact package without deploying. V2.8.3 signed off Ice local publish-readiness and kept deployment/DNS/indexing/live publication closed. V2.8.4 created the staging publish worksheet and no-go criteria without executing staging.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. V2.7.2 resolved Runtime QA staging upload through a narrow container-scoped Storage Blob data-plane RBAC assignment and verified uploaded evidence. V2.7 is complete. V2.8.1 completed a local/read-only tenant website publish-readiness preflight and found the current safe Ice seed-site publish path blocked before deployment. V2.8.2 repaired the local Ice route source and validated the ignored static artifact package without deploying. V2.8.3 signed off Ice local publish-readiness and kept deployment/DNS/indexing/live publication closed. V2.8.4 created the staging publish worksheet and no-go criteria without executing staging. V2.8.5 added the sanitized no-dotenv static build path and approval packets; staging execution remains blocked by contact-form owner verification, media/content approval, exact target, DNS, indexing, and live-publication gates.
 
 Immutable current facts:
 
@@ -214,7 +216,21 @@ Immutable current facts:
 - V2.8.4 Azure infrastructure mutations: `0`
 - V2.8.4 RBAC assignments: `0`
 - V2.8.4 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.5 sanitized no-dotenv static build path: `passed`
+- V2.8.5 sanitized build run: `sanitized_20260612144750`
+- V2.8.5 protected config copied: `false`
+- V2.8.5 protected config contents read: `false`
+- V2.8.5 sanitized static output validator: `blocked_missing_static_form_endpoint_verification`
+- V2.8.5 sanitized staging package validator: `blocked_missing_static_form_endpoint_verification`
+- V2.8.5 contact-form owner verification: `blocked_owner_verification_required`
+- V2.8.5 media/content final approval: `blocked_owner_approval_required`
+- V2.8.5 exact staging target approval: `blocked_target_approval_required`
+- V2.8.5 provider data writes: `0`
+- V2.8.5 CMS writes: `0`
+- V2.8.5 Azure infrastructure mutations: `0`
+- V2.8.5 RBAC assignments: `0`
+- V2.8.5 deployment/DNS/indexing/live publication actions: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.5 Sanitized No-Dotenv Static Build Harness and Staging Execution Preflight only. Use the completed V2.8.4 staging publish worksheet/no-go package to implement or document a repo-supported sanitized no-dotenv static build harness for Ice, prove that the Ice static build can run without loading `.env.local` or protected config, generate ignored local `.tmp` evidence, rerun static output and staging package validators against sanitized output, refresh Runtime QA/Resource Registry/OLM provider checks, update the staging publish worksheet with pass/fail evidence, and produce the next scoped staging execution approval prompt. No deployment, DNS changes, Search Console/indexing, live-page publication, CMS writes, provider data writes, Azure infrastructure mutation, RBAC assignment, protected config reads, keys/listKeys, connection strings, SAS, external crawling/live URL checks, or generated artifacts staged into Git.
+Approve V2.8.6 Contact Form Owner Verification and Exact Staging Target Closure only. Use the completed V2.8.5 sanitized no-dotenv static build path and approval packets to close the remaining non-deployment staging no-go items for Ice. Complete or verify the contact-form owner verification packet, final media/content approval packet, and exact staging deployment target packet. If approved static form endpoint process-environment values are present in the same terminal session, rerun `npm run build:static:ice:sanitized` and the static output/staging package validators against the sanitized `.tmp` output without printing values. Produce the revalidated approval manifest, updated no-go matrix, target worksheet, rollback/abort worksheet, result package, root report, and next scoped staging execution prompt. No deployment, DNS change, Search Console/indexing, live-page publication, CMS write, provider write, Azure mutation, RBAC assignment, protected config read, key/listKeys call, connection string, SAS generation, external crawling/live URL checks, or generated `.tmp` artifacts staged into Git.

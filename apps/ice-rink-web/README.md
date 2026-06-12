@@ -22,6 +22,16 @@ npm run dev
 
 Open `http://localhost:3002`.
 
+## Sanitized Static Build
+
+For Ice publish-readiness checks that must avoid dotenv auto-loading, run:
+
+```bash
+npm run build:static:ice:sanitized
+```
+
+The wrapper builds from an allowlisted temporary workspace under ignored `.tmp`, excludes dotenv/protected config files by path/name, and writes local evidence without printing environment values.
+
 ## Environment Variables
 
 `PUMPKIN_API_URL` points to the Pumpkin API. Tenant IDs, API keys, and canonical URLs are configured per site:

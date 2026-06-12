@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.4 |
-| currentReferenceName | Staging Publish Worksheet And No-Go Criteria |
-| currentReferenceStatus | Complete staging publish worksheet/no-go package; staging execution remains blocked by no-dotenv, owner verification, target, DNS, indexing, and publication gates |
-| provisionalV2OverallCompletion | `89%` |
+| currentReference | V2.8.5 |
+| currentReferenceName | Sanitized No-Dotenv Static Build And Approval Packet Closure |
+| currentReferenceStatus | Complete local sanitized no-dotenv build path and approval packet closure; staging execution remains blocked by contact-form owner verification, media/content approval, exact target, DNS, indexing, and publication gates |
+| provisionalV2OverallCompletion | `90%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.5 |
-| nextReferenceName | Sanitized No-Dotenv Static Build Harness And Staging Execution Preflight |
-| nextGate | Prove Ice static build can run without `.env.local` or protected config before any staging execution |
-| safetyPosture | Planning/local-read-only validation only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, or external crawl |
-| blockedState | Staging execution is blocked until sanitized no-dotenv build proof, owner contact-form verification, media/content approval, exact target approval, and separate deployment/DNS/indexing/publication approvals are complete |
+| nextReference | V2.8.6 |
+| nextReferenceName | Contact Form Owner Verification And Exact Staging Target Closure |
+| nextGate | Close contact-form owner verification, final media/content approval, and exact staging target approval before any staging execution |
+| safetyPosture | Local sanitized build tooling, validation, and docs only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, or external crawl |
+| blockedState | Staging execution is blocked until owner contact-form verification, media/content approval, exact target approval, and separate deployment/DNS/indexing/publication approvals are complete |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `88%` | Staging publish worksheet and no-go criteria complete; sanitized no-dotenv build proof and owner/target approvals remain closed |
+| V2.8 | `91%` | Sanitized no-dotenv static build path complete; contact-form owner verification and owner/target approvals remain closed |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

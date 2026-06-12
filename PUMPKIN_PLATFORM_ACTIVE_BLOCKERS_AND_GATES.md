@@ -20,6 +20,7 @@
 | Ice Static Source Route Repair and Local Publish Gate Revalidation | Complete, deployment still closed | V2.8.2 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Local Ice seed route source repaired to `/`, `/contact`, `/service-areas`; static output and staging package validators passed; deployment/DNS/index/live publication remain closed. |
 | Ice Local Publish-Readiness Final Signoff and Gate Freeze | Complete local signoff, deployment still closed | V2.8.3 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Ice local source/fallback/output route model signed off as `/`, `/service-areas`, `/contact`; Runtime QA, Resource Registry, OLM, Backup Center, and Admin/API gate inputs current; deployment/DNS/index/live publication remain closed. |
 | Staging Publish Worksheet and No-Go Criteria | Complete worksheet, execution blocked | V2.8.4 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Staging worksheet and no-go matrix complete; staging execution blocked by sanitized no-dotenv build proof, owner contact-form verification, media/content approval, target/DNS approval, indexing, and live-publication gates. |
+| Sanitized No-Dotenv Static Build and Approval Packet Closure | Complete local build path, execution blocked | V2.8.5 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Repo-supported sanitized no-dotenv Ice static build path passed under ignored `.tmp`; staging execution remains blocked by contact-form owner verification, media/content approval, exact target/DNS approval, indexing, and live-publication gates. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -236,3 +237,21 @@ Still separately gated:
 - V2.8.4 Azure infrastructure mutations: `0`
 - V2.8.4 RBAC assignments: `0`
 - V2.8.4 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.5 sanitized no-dotenv static build path: `passed`
+- V2.8.5 sanitized build run: `sanitized_20260612144750`
+- V2.8.5 protected config copied: `false`
+- V2.8.5 protected config contents read: `false`
+- V2.8.5 child environment allowlist only: `true`
+- V2.8.5 static validate in sanitized workspace: `passed`
+- V2.8.5 Next static build in sanitized workspace: `passed`
+- V2.8.5 static generate in sanitized workspace: `passed`
+- V2.8.5 sanitized static output validator: `blocked_missing_static_form_endpoint_verification`
+- V2.8.5 sanitized staging package validator: `blocked_missing_static_form_endpoint_verification`
+- V2.8.5 contact-form owner verification: `blocked_owner_verification_required`
+- V2.8.5 media/content final approval: `blocked_owner_approval_required`
+- V2.8.5 exact staging target approval: `blocked_target_approval_required`
+- V2.8.5 provider data writes: `0`
+- V2.8.5 CMS writes: `0`
+- V2.8.5 Azure infrastructure mutations: `0`
+- V2.8.5 RBAC assignments: `0`
+- V2.8.5 deployment/DNS/indexing/live publication actions: `0`
