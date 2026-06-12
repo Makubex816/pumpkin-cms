@@ -6,7 +6,11 @@ const sites = {
   'ice-rink-rentals': {
     domain: 'iceskatingrinkrentals.com',
     oppositeDomains: ['rollerrinkrentals.com'],
-    expectedPageFolders: ['ice-rink-rentals', 'events-holiday-activations', 'contact'],
+    expectedPageFolders: ['contact', 'service-areas'],
+    obsoletePageFolders: ['ice-rink-rentals', 'events-holiday-activations'],
+    expectedPageSlugs: ['home', 'contact', 'service-areas'],
+    mediaOrigin: 'https://media.iceskatingrinkrentals.com',
+    requiresStaticFormEndpoint: true,
   },
   'roller-rink-rentals': {
     domain: 'rollerrinkrentals.com',
@@ -94,6 +98,16 @@ function isTextFile(filePath) {
   return textExtensions.has(path.extname(filePath).toLowerCase());
 }
 
+function getConfiguredStaticFormEndpoint() {
+  return (
+    process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT ||
+    process.env.STATIC_FORM_ENDPOINT ||
+    process.env.NEXT_PUBLIC_STATIC_FORM_ACTION ||
+    process.env.STATIC_FORM_ACTION ||
+    ''
+  );
+}
+
 function validateRequiredArtifacts(outDir, site, errors, warnings) {
   const requiredFiles = ['index.html', 'sitemap.xml', 'robots.txt'];
 
@@ -115,6 +129,14 @@ function validateRequiredArtifacts(outDir, site, errors, warnings) {
     }
   }
 
+  for (const pageFolder of site.obsoletePageFolders || []) {
+    const pagePath = path.join(outDir, pageFolder, 'index.html');
+
+    if (existsSync(pagePath)) {
+      errors.push(`Obsolete Ice route output must not be deployable: ${pageFolder}/index.html`);
+    }
+  }
+
   const nextDir = path.join(outDir, '_next');
   const nextStaticDir = path.join(nextDir, 'static');
 
@@ -122,6 +144,127 @@ function validateRequiredArtifacts(outDir, site, errors, warnings) {
     warnings.push('No _next directory was found. This is unusual for the current Next.js export.');
   } else if (!existsSync(nextStaticDir)) {
     errors.push('Found _next directory but missing _next/static assets.');
+  }
+}
+
+function validateStaticPublishManifest(outDir, site, errors, warnings) {
+  const manifestPath = path.join(outDir, 'static-publish-manifest.json');
+  if (!existsSync(manifestPath)) {
+    warnings.push('static-publish-manifest.json was not found; stale route/source checks are limited.');
+    return;
+  }
+
+  try {
+    const manifest = JSON.parse(readText(manifestPath));
+    const pages = Array.isArray(manifest.pages) ? manifest.pages : [];
+    const slugs = new Set(
+      pages
+        .map((page) => String(page?.pageSlug || '').trim())
+        .filter(Boolean)
+    );
+
+    for (const slug of site.expectedPageSlugs || []) {
+      if (!slugs.has(slug)) {
+        errors.push(`static-publish-manifest.json is missing expected pageSlug: ${slug}`);
+      }
+    }
+
+    for (const folder of site.obsoletePageFolders || []) {
+      if (slugs.has(folder)) {
+        errors.push(`static-publish-manifest.json contains obsolete Ice pageSlug: ${folder}`);
+      }
+    }
+  } catch (error) {
+    errors.push(`static-publish-manifest.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+  }
+}
+
+function validateProductionMediaUrls(outDir, files, site, errors) {
+  if (!site.mediaOrigin) return;
+
+  for (const filePath of files) {
+    if (!isTextFile(filePath)) continue;
+
+    const relativePath = getRelativePath(outDir, filePath);
+    const content = readText(filePath);
+
+    if (/["'(]\s*\/media\/ice-rink-rentals\//i.test(content) || /src=["']\/media\/ice-rink-rentals\//i.test(content)) {
+      errors.push(`Local-dev media URL found in static output: ${relativePath}`);
+    }
+
+    if (/data:image\//i.test(content)) {
+      errors.push(`Base64 image payload found in static output: ${relativePath}`);
+    }
+
+    if (/https?:\/\/(?:[^/\s"']+\.)?(?:placehold\.co|placeholder\.com|example\.(?:com|test))\b/i.test(content)) {
+      errors.push(`Placeholder or fake media URL found in static output: ${relativePath}`);
+    }
+
+    const imageUrls = [...content.matchAll(/https?:\/\/[^"'\s)]+?\.(?:png|jpe?g|webp|gif|svg)(?:[?#][^"'\s)]*)?/gi)]
+      .map((match) => match[0]);
+    for (const url of imageUrls) {
+      if (!url.startsWith(`${site.mediaOrigin}/`)) {
+        errors.push(`Unapproved image URL found in static output: ${relativePath} -> ${url}`);
+      }
+    }
+  }
+}
+
+function addExternalApprovalGate(externalApprovalGates, id, message, requiredEvidence) {
+  externalApprovalGates.push({
+    id,
+    category: 'external_backend_approval_gate',
+    severity: 'no-go',
+    message,
+    requiredEvidence,
+  });
+}
+
+function validateStaticFormProductionGate(site, externalApprovalGates) {
+  if (!site.requiresStaticFormEndpoint) return;
+
+  const endpoint = getConfiguredStaticFormEndpoint();
+  const endpointVerified = process.env.STATIC_FORM_ENDPOINT_VERIFIED === 'true';
+
+  if (!endpoint) {
+    addExternalApprovalGate(
+      externalApprovalGates,
+      'static-form-endpoint-configured',
+      'Static form endpoint is not configured for production/static deploy readiness.',
+      'Approved HTTPS static form endpoint supplied through process environment without reading protected config.',
+    );
+  } else if (!/^https:\/\//i.test(endpoint) || /localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint)) {
+    addExternalApprovalGate(
+      externalApprovalGates,
+      'static-form-endpoint-approved-https',
+      'Static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.',
+      'Owner-approved non-placeholder HTTPS endpoint for the Ice static contact form.',
+    );
+  }
+
+  if (!endpointVerified) {
+    addExternalApprovalGate(
+      externalApprovalGates,
+      'static-form-backend-verification',
+      'Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness.',
+      'Backend proof that the approved endpoint accepts the static form payload and routes leads to the approved owner workflow.',
+    );
+  }
+}
+
+function validateNoindexProductionGate(outDir, files, errors) {
+  for (const filePath of files) {
+    if (path.extname(filePath).toLowerCase() !== '.html') continue;
+    if (getRelativePath(outDir, filePath).startsWith('_next/')) continue;
+
+    const relativePath = getRelativePath(outDir, filePath);
+    if (relativePath === '404.html' || relativePath === '404/index.html') continue;
+
+    const content = readText(filePath);
+
+    if (/<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*\bnoindex\b/i.test(content)) {
+      errors.push(`Noindex robots meta found in production static page: ${relativePath}`);
+    }
   }
 }
 
@@ -296,6 +439,7 @@ function main() {
   const site = sites[siteKey];
   const errors = [];
   const warnings = [];
+  const externalApprovalGates = [];
 
   if (!site) {
     console.error('Usage: node deployment/static-azure/validate-static-output.mjs --site <site-key> --out <out-dir>');
@@ -318,23 +462,50 @@ function main() {
     validateNoForbiddenFiles(outDir, files, errors);
     validateSensitiveContent(outDir, files, errors);
     validateDomainReferences(outDir, files, site, errors);
+    validateStaticPublishManifest(outDir, site, errors, warnings);
+    validateProductionMediaUrls(outDir, files, site, errors);
+    validateStaticFormProductionGate(site, externalApprovalGates);
+    validateNoindexProductionGate(outDir, files, errors);
     validateRedirectManifest(outDir, warnings);
     validateCmsAuthoredHtmlSafety(outDir, files, errors, warnings);
   }
 
+  const localStaticIntegrityOk = errors.length === 0;
+  const externalApprovalGatesOk = externalApprovalGates.length === 0;
+  const combinedErrors = [
+    ...errors,
+    ...externalApprovalGates.map((gate) => gate.message),
+  ];
+
   const summary = {
-    ok: errors.length === 0,
+    ok: localStaticIntegrityOk && externalApprovalGatesOk,
     siteKey,
     expectedDomain: site.domain,
     outDir,
     fileCount: files.length,
-    errors,
+    localStaticIntegrityOk,
+    externalApprovalGatesOk,
+    gateClassification: {
+      status: localStaticIntegrityOk
+        ? (externalApprovalGatesOk ? 'passed' : 'blocked_external_approval_gate')
+        : 'failed_local_static_integrity',
+      localStaticIntegrityErrorCount: errors.length,
+      externalApprovalGateCount: externalApprovalGates.length,
+      warningCount: warnings.length,
+      notes: [
+        'Local static integrity covers required files, route shape, media URL safety, domain references, noindex, forbidden files, sensitive content, redirects, and CMS-authored HTML safety.',
+        'External approval gates cover backend/owner evidence that cannot be proven by local static artifact inspection.',
+      ],
+    },
+    structuralErrors: errors,
+    externalApprovalGates,
+    errors: combinedErrors,
     warnings,
   };
 
   console.log(JSON.stringify(summary, null, 2));
 
-  if (errors.length > 0) {
+  if (!summary.ok) {
     process.exit(1);
   }
 }

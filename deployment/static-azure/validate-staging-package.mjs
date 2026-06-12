@@ -5,9 +5,17 @@ import process from 'process';
 const siteConfigs = {
   'ice-rink-rentals': {
     requiredFiles: ['index.html', 'sitemap.xml', 'robots.txt'],
+    expectedPageFolders: ['contact', 'service-areas'],
+    obsoletePageFolders: ['ice-rink-rentals', 'events-holiday-activations'],
+    mediaOrigin: 'https://media.iceskatingrinkrentals.com',
+    requiresStaticFormEndpoint: true,
   },
   'roller-rink-rentals': {
     requiredFiles: ['index.html', 'sitemap.xml', 'robots.txt'],
+    expectedPageFolders: ['roller-rink-rentals', 'contact'],
+    obsoletePageFolders: [],
+    mediaOrigin: '',
+    requiresStaticFormEndpoint: false,
   },
 };
 
@@ -64,10 +72,63 @@ function relative(rootDir, filePath) {
   return path.relative(rootDir, filePath).split(path.sep).join('/');
 }
 
+function getConfiguredStaticFormEndpoint() {
+  return (
+    process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT ||
+    process.env.STATIC_FORM_ENDPOINT ||
+    process.env.NEXT_PUBLIC_STATIC_FORM_ACTION ||
+    process.env.STATIC_FORM_ACTION ||
+    ''
+  );
+}
+
+function addExternalApprovalGate(externalApprovalGates, id, message, requiredEvidence) {
+  externalApprovalGates.push({
+    id,
+    category: 'external_backend_approval_gate',
+    severity: 'no-go',
+    message,
+    requiredEvidence,
+  });
+}
+
+function validateStaticFormProductionGate(site, externalApprovalGates) {
+  if (!site.requiresStaticFormEndpoint) return;
+
+  const endpoint = getConfiguredStaticFormEndpoint();
+  const endpointVerified = process.env.STATIC_FORM_ENDPOINT_VERIFIED === 'true';
+
+  if (!endpoint) {
+    addExternalApprovalGate(
+      externalApprovalGates,
+      'static-form-endpoint-configured',
+      'Static form endpoint is not configured for production/static deploy readiness.',
+      'Approved HTTPS static form endpoint supplied through process environment without reading protected config.',
+    );
+  } else if (!/^https:\/\//i.test(endpoint) || /localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint)) {
+    addExternalApprovalGate(
+      externalApprovalGates,
+      'static-form-endpoint-approved-https',
+      'Static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.',
+      'Owner-approved non-placeholder HTTPS endpoint for the Ice static contact form.',
+    );
+  }
+
+  if (!endpointVerified) {
+    addExternalApprovalGate(
+      externalApprovalGates,
+      'static-form-backend-verification',
+      'Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness.',
+      'Backend proof that the approved endpoint accepts the static form payload and routes leads to the approved owner workflow.',
+    );
+  }
+}
+
 function validatePackage({ siteKey, folder }) {
   const site = siteConfigs[siteKey];
   const errors = [];
   const warnings = [];
+  const externalApprovalGates = [];
   const resolvedFolder = folder ? path.resolve(folder) : '';
 
   if (!site) {
@@ -83,7 +144,24 @@ function validatePackage({ siteKey, folder }) {
   }
 
   if (errors.length > 0) {
-    return { ok: false, siteKey, folder: resolvedFolder, fileCount: 0, errors, warnings };
+    return {
+      ok: false,
+      siteKey,
+      folder: resolvedFolder,
+      fileCount: 0,
+      localStaticIntegrityOk: false,
+      externalApprovalGatesOk: true,
+      gateClassification: {
+        status: 'failed_local_static_integrity',
+        localStaticIntegrityErrorCount: errors.length,
+        externalApprovalGateCount: 0,
+        warningCount: warnings.length,
+      },
+      structuralErrors: errors,
+      externalApprovalGates,
+      errors,
+      warnings,
+    };
   }
 
   const files = walkFiles(resolvedFolder);
@@ -95,6 +173,20 @@ function validatePackage({ siteKey, folder }) {
     const requiredPath = path.join(resolvedFolder, requiredFile);
     if (!existsSync(requiredPath) || !statSync(requiredPath).isFile()) {
       errors.push(`Missing required file: ${requiredFile}`);
+    }
+  }
+
+  for (const pageFolder of site.expectedPageFolders || []) {
+    const pagePath = path.join(resolvedFolder, pageFolder, 'index.html');
+    if (!existsSync(pagePath) || !statSync(pagePath).isFile()) {
+      errors.push(`Missing expected page output: ${pageFolder}/index.html`);
+    }
+  }
+
+  for (const pageFolder of site.obsoletePageFolders || []) {
+    const pagePath = path.join(resolvedFolder, pageFolder, 'index.html');
+    if (existsSync(pagePath)) {
+      errors.push(`Obsolete Ice route output must not be deployable: ${pageFolder}/index.html`);
     }
   }
 
@@ -136,6 +228,28 @@ function validatePackage({ siteKey, folder }) {
       errors.push(`Localhost reference found: ${rel}`);
     }
 
+    if (site.mediaOrigin) {
+      if (/["'(]\s*\/media\/ice-rink-rentals\//i.test(content) || /src=["']\/media\/ice-rink-rentals\//i.test(content)) {
+        errors.push(`Local-dev media URL found in staging package: ${rel}`);
+      }
+
+      if (/data:image\//i.test(content)) {
+        errors.push(`Base64 image payload found in staging package: ${rel}`);
+      }
+
+      if (/https?:\/\/(?:[^/\s"']+\.)?(?:placehold\.co|placeholder\.com|example\.(?:com|test))\b/i.test(content)) {
+        errors.push(`Placeholder or fake media URL found in staging package: ${rel}`);
+      }
+
+      const imageUrls = [...content.matchAll(/https?:\/\/[^"'\s)]+?\.(?:png|jpe?g|webp|gif|svg)(?:[?#][^"'\s)]*)?/gi)]
+        .map((match) => match[0]);
+      for (const url of imageUrls) {
+        if (!url.startsWith(`${site.mediaOrigin}/`)) {
+          errors.push(`Unapproved image URL found in staging package: ${rel} -> ${url}`);
+        }
+      }
+    }
+
     if (content.includes('CMS LIVE')) {
       errors.push(`CMS LIVE marker found: ${rel}`);
     }
@@ -147,6 +261,14 @@ function validatePackage({ siteKey, folder }) {
     }
 
     if (path.extname(filePath).toLowerCase() === '.html' && !rel.startsWith('_next/')) {
+      if (
+        rel !== '404.html' &&
+        rel !== '404/index.html' &&
+        /<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*\bnoindex\b/i.test(content)
+      ) {
+        errors.push(`Noindex robots meta found in production static page: ${rel}`);
+      }
+
       const unsafeCmsPatterns = [
         { label: 'javascript URL', pattern: /javascript:/i },
         { label: 'inline onclick handler', pattern: /\sonclick\s*=/i },
@@ -174,12 +296,37 @@ function validatePackage({ siteKey, folder }) {
     }
   }
 
+  validateStaticFormProductionGate(site, externalApprovalGates);
+
+  const localStaticIntegrityOk = errors.length === 0;
+  const externalApprovalGatesOk = externalApprovalGates.length === 0;
+  const combinedErrors = [
+    ...errors,
+    ...externalApprovalGates.map((gate) => gate.message),
+  ];
+
   return {
-    ok: errors.length === 0,
+    ok: localStaticIntegrityOk && externalApprovalGatesOk,
     siteKey,
     folder: resolvedFolder,
     fileCount: files.length,
-    errors,
+    localStaticIntegrityOk,
+    externalApprovalGatesOk,
+    gateClassification: {
+      status: localStaticIntegrityOk
+        ? (externalApprovalGatesOk ? 'passed' : 'blocked_external_approval_gate')
+        : 'failed_local_static_integrity',
+      localStaticIntegrityErrorCount: errors.length,
+      externalApprovalGateCount: externalApprovalGates.length,
+      warningCount: warnings.length,
+      notes: [
+        'Local package integrity covers required files, route shape, media URL safety, noindex, forbidden files, sensitive content, redirects, and CMS-authored HTML safety.',
+        'External approval gates cover backend/owner evidence that cannot be proven by local package inspection.',
+      ],
+    },
+    structuralErrors: errors,
+    externalApprovalGates,
+    errors: combinedErrors,
     warnings,
   };
 }

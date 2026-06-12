@@ -1,0 +1,104 @@
+{
+  "reference": "V2.8.6",
+  "name": "Contact Form Media Staging Target Approval Intake And Validator Gate Classification",
+  "status": "complete_local_classification_execution_blocked",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "canonicalRoutes": ["/", "/service-areas", "/contact"],
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-6-contact-form-media-staging-target-approval-intake-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_6_CONTACT_FORM_MEDIA_STAGING_TARGET_APPROVAL_INTAKE_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "91%",
+    "v2_8CompletionAfterPhase": "93%",
+    "nextReference": "V2.8.7",
+    "nextReferenceName": "Static Form Endpoint Approval and Staging Target Finalization"
+  },
+  "sanitizedBuild": {
+    "command": "npm run build:static:ice:sanitized",
+    "runId": "sanitized_20260612151525",
+    "passed": true,
+    "protectedConfigCopied": false,
+    "protectedConfigContentsRead": false,
+    "childEnvironmentAllowlistOnly": true,
+    "protectedConfigReferenceInOutput": false
+  },
+  "validatorClassification": {
+    "staticOutput": {
+      "ok": false,
+      "localStaticIntegrityOk": true,
+      "externalApprovalGatesOk": false,
+      "status": "blocked_external_approval_gate",
+      "localStaticIntegrityErrorCount": 0,
+      "externalApprovalGateCount": 2
+    },
+    "stagingPackage": {
+      "ok": false,
+      "localStaticIntegrityOk": true,
+      "externalApprovalGatesOk": false,
+      "status": "blocked_external_approval_gate",
+      "localStaticIntegrityErrorCount": 0,
+      "externalApprovalGateCount": 2
+    }
+  },
+  "validation": {
+    "seedValidation": "passed",
+    "typeCheck": "passed",
+    "staticSourceValidation": "passed_with_34_warnings",
+    "runtimeQaCheck": "passed_6_tests",
+    "runtimeQaEvidenceRun": "runtimeqa_67425f67f7a4c3d7",
+    "runtimeQaEvidenceValidation": "passed_with_1_warning",
+    "resourceRegistryOperationalBindings": "passed_zero_failures_zero_warnings",
+    "olmProviderProfileCheck": "passed_live_write_allowed_false",
+    "noUncontrolledWriteScan": "passed_no_matches"
+  },
+  "remainingNoGoItems": [
+    "static_form_endpoint_configured",
+    "static_form_backend_verification",
+    "contact_form_owner_verification",
+    "media_content_final_approval",
+    "exact_staging_deployment_target_approval",
+    "dns_closed",
+    "indexing_closed",
+    "live_publication_closed"
+  ],
+  "safety": {
+    "deployment": false,
+    "dnsChange": false,
+    "indexing": false,
+    "livePublication": false,
+    "externalCrawling": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "providerWrites": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "secretsPrinted": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "tmpArtifactsStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-5-carryforward.md",
+    "validator-gate-classification-result.md",
+    "sanitized-no-dotenv-revalidation-result.md",
+    "contact-form-backend-verification-packet.md",
+    "contact-form-owner-verification-packet.md",
+    "media-content-final-approval-packet.md",
+    "staging-deployment-target-approval-packet.md",
+    "dns-indexing-live-publication-closed-gates.md",
+    "staging-execution-go-no-go-matrix.md",
+    "future-staging-publish-approval-boundary.md",
+    "publish-gate-revalidation-result.md",
+    "local-validation-result.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
