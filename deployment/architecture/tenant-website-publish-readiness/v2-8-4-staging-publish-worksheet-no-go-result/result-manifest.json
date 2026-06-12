@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "0.1.0",
+  "resultId": "v2-8-4-staging-publish-worksheet-no-go-criteria",
+  "phase": "V2.8.4",
+  "status": "complete_staging_publish_worksheet_no_go_prepared_execution_blocked",
+  "createdAtLocal": "2026-06-12T00:00:00-04:00",
+  "currentReference": "V2.8.4",
+  "currentReferenceName": "Staging Publish Worksheet and No-Go Criteria",
+  "currentLane": "V2.8 Tenant Website / Publish Readiness",
+  "overallCompletionAfterPhase": "89%",
+  "v2_8CompletionAfterPhase": "88%",
+  "layerRefs": ["L01", "L02", "L03", "L04", "L06", "L07", "L08", "L09", "L10", "L11", "L12", "L15"],
+  "sourceInputs": [
+    {
+      "label": "V2.8.3 Ice local signoff",
+      "path": "deployment/architecture/tenant-website-publish-readiness/v2-8-3-ice-local-publish-readiness-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "V2.8.2 Ice route repair",
+      "path": "deployment/architecture/tenant-website-publish-readiness/v2-8-2-ice-static-source-route-repair-result/result-manifest.json"
+    },
+    {
+      "label": "V2.2.5 OLM final stage-ready signoff",
+      "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "V2.7.2 Admin/API Operator Console signoff",
+      "path": "deployment/architecture/admin-api-operator-console/v2-7-2-runtime-qa-upload-operator-console-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "V2.5.1 Resource Registry / Provider Profile operationalization",
+      "path": "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json"
+    },
+    {
+      "label": "Backup Generator QA signoff",
+      "path": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json"
+    }
+  ],
+  "worksheet": {
+    "tenant": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "canonicalRoutes": ["/", "/service-areas", "/contact"],
+    "candidateStagingDomain": "ice-dev.iceskatingrinkrentals.com",
+    "candidateAzureStaticWebApp": "swa-ice-rink-rentals-staging",
+    "candidateResourceGroup": "rg-pumpkin-static-staging",
+    "executionReady": false
+  },
+  "noGoStatus": {
+    "localRouteModel": "passed",
+    "staticOutputEvidence": "passed_v2_8_3_42_files_zero_errors_zero_warnings",
+    "runtimeQa": "passed_v2_8_4_runtimeqa_e42c0a2c9da73a4a",
+    "olmPublishGate": "passed_live_write_allowed_false",
+    "backupCenter": "passed_carryforward",
+    "resourceRegistryProviderProfiles": "passed",
+    "adminApiOperatorConsole": "passed_carryforward",
+    "sanitizedNoDotenvBuildPattern": "blocked_no_repo_supported_no_dotenv_next_build_path",
+    "contactFormOwnerVerification": "blocked_owner_verification_required",
+    "mediaContentFinalApproval": "blocked_owner_approval_required",
+    "deploymentTarget": "blocked_exact_target_not_approved",
+    "dnsTarget": "blocked_dns_change_not_approved",
+    "indexingTarget": "blocked_indexing_not_approved",
+    "livePublication": "blocked_live_publication_not_approved"
+  },
+  "validation": [
+    {
+      "command": "npm run validate",
+      "cwd": "tools/ice-rink-local-seed",
+      "status": "passed_3_page_documents"
+    },
+    {
+      "command": "npm run validate:static:ice",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_with_34_warnings"
+    },
+    {
+      "command": "npm run check",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed_6_tests"
+    },
+    {
+      "command": "node src/runtime-qa-cli.mjs run --registry fixtures/runtime-qa-registry.v2-7-2.fixture.json --out .tmp/v2-8-4-runtime-qa-worksheet-evidence --overwrite",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed",
+      "runId": "runtimeqa_e42c0a2c9da73a4a"
+    },
+    {
+      "command": "node src/runtime-qa-cli.mjs validate-evidence --evidence .tmp/v2-8-4-runtime-qa-worksheet-evidence",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed_with_1_warning"
+    },
+    {
+      "command": "node src/resource-registry-cli.mjs validate-operational-bindings --fixture fixtures/operational-bindings.v2-5-1.fixture.json --out .tmp/v2-8-4-operational-bindings --overwrite",
+      "cwd": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation",
+      "status": "passed_zero_failures_zero_warnings"
+    },
+    {
+      "command": "node src/outbound-link-cli.mjs provider-check --profile fixtures/provider-profile-olm-staging-cosmos-nosql.fixture.json --out .tmp/v2-8-4-provider-profile-check --overwrite",
+      "cwd": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation",
+      "status": "passed_live_write_allowed_false"
+    }
+  ],
+  "securityBoundary": {
+    "providerDataWrites": false,
+    "additionalOlmStagingWrites": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "rbacAssignment": false,
+    "manualProtectedConfigRead": false,
+    "keyVaultSecretQueries": false,
+    "keysListKeys": false,
+    "connectionStringGeneration": false,
+    "sasGeneration": false,
+    "secretExport": false,
+    "externalCrawling": false,
+    "liveOutboundUrlChecks": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrites": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "deployment": false,
+    "dnsChange": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false,
+    "generatedArtifactsStaged": false
+  },
+  "nextRecommendedReference": {
+    "reference": "V2.8.5",
+    "name": "Sanitized No-Dotenv Static Build Harness and Staging Execution Preflight",
+    "layers": ["L02", "L10", "L12", "L15"]
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-3-local-signoff-carryforward.md",
+    "staging-publish-worksheet.md",
+    "no-go-criteria-matrix.md",
+    "canonical-artifact-input-list.md",
+    "sanitized-no-dotenv-build-pattern.md",
+    "contact-form-owner-verification-checklist.md",
+    "media-content-final-approval-checklist.md",
+    "deployment-target-worksheet.md",
+    "dns-readiness-worksheet.md",
+    "indexing-readiness-worksheet.md",
+    "live-publication-readiness-worksheet.md",
+    "rollback-abort-worksheet.md",
+    "preflight-command-checklist.md",
+    "publish-gate-evidence-summary.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}

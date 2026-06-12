@@ -19,6 +19,7 @@
 | Tenant Website and Publish Readiness local preflight | Complete, publish blocked | V2.8.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Local/read-only preflight complete; current safe Ice seed-site source is missing `/service-areas`, contains obsolete Ice routes, and static output/form/media/deploy gates remain closed. |
 | Ice Static Source Route Repair and Local Publish Gate Revalidation | Complete, deployment still closed | V2.8.2 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Local Ice seed route source repaired to `/`, `/contact`, `/service-areas`; static output and staging package validators passed; deployment/DNS/index/live publication remain closed. |
 | Ice Local Publish-Readiness Final Signoff and Gate Freeze | Complete local signoff, deployment still closed | V2.8.3 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Ice local source/fallback/output route model signed off as `/`, `/service-areas`, `/contact`; Runtime QA, Resource Registry, OLM, Backup Center, and Admin/API gate inputs current; deployment/DNS/index/live publication remain closed. |
+| Staging Publish Worksheet and No-Go Criteria | Complete worksheet, execution blocked | V2.8.4 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Staging worksheet and no-go matrix complete; staging execution blocked by sanitized no-dotenv build proof, owner contact-form verification, media/content approval, target/DNS approval, indexing, and live-publication gates. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -222,3 +223,16 @@ Still separately gated:
 - V2.8.3 Azure infrastructure mutations: `0`
 - V2.8.3 RBAC assignments: `0`
 - V2.8.3 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.4 staging publish worksheet: `complete_execution_blocked`
+- V2.8.4 sanitized no-dotenv build path: `blocked_no_repo_supported_no_dotenv_next_build_path`
+- V2.8.4 contact-form owner verification: `blocked_owner_verification_required`
+- V2.8.4 media/content final approval: `blocked_owner_approval_required`
+- V2.8.4 Runtime QA evidence run: `runtimeqa_e42c0a2c9da73a4a`
+- V2.8.4 Runtime QA evidence validation: `passed_with_1_warning`
+- V2.8.4 Resource Registry operational binding validator: `passed`
+- V2.8.4 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.4 provider data writes: `0`
+- V2.8.4 CMS writes: `0`
+- V2.8.4 Azure infrastructure mutations: `0`
+- V2.8.4 RBAC assignments: `0`
+- V2.8.4 deployment/DNS/indexing/live publication actions: `0`

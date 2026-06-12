@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.3 |
-| currentReferenceName | Ice Local Publish-Readiness Final Signoff and Gate Freeze |
-| currentReferenceStatus | Complete local Ice publish-readiness signoff; canonical routes and static output validated; deployment remains closed |
-| provisionalV2OverallCompletion | `88%` |
+| currentReference | V2.8.4 |
+| currentReferenceName | Staging Publish Worksheet And No-Go Criteria |
+| currentReferenceStatus | Complete staging publish worksheet/no-go package; staging execution remains blocked by no-dotenv, owner verification, target, DNS, indexing, and publication gates |
+| provisionalV2OverallCompletion | `89%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.4 |
-| nextReferenceName | Ice Staging Publish Approval Worksheet And No-Go Criteria |
-| nextGate | Prepare no-deploy staging publish approval worksheet and no-go criteria; deployment, DNS, indexing, and publication remain closed |
-| safetyPosture | Local/read-only signoff only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, or publication; Next static build auto-detected `.env.local` and is recorded as a protected-config caveat |
-| blockedState | Ice is locally publish-ready; deployment, DNS, indexing, live publication, CMS/provider writes, protected config, and production actions remain separately gated |
+| nextReference | V2.8.5 |
+| nextReferenceName | Sanitized No-Dotenv Static Build Harness And Staging Execution Preflight |
+| nextGate | Prove Ice static build can run without `.env.local` or protected config before any staging execution |
+| safetyPosture | Planning/local-read-only validation only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, or external crawl |
+| blockedState | Staging execution is blocked until sanitized no-dotenv build proof, owner contact-form verification, media/content approval, exact target approval, and separate deployment/DNS/indexing/publication approvals are complete |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `82%` | Ice local publish-readiness signed off; staging/publish worksheet, deployment, DNS, indexing, and live publication remain closed |
+| V2.8 | `88%` | Staging publish worksheet and no-go criteria complete; sanitized no-dotenv build proof and owner/target approvals remain closed |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.
