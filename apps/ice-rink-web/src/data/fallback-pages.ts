@@ -6,254 +6,109 @@ import { getFallbackHome } from './fallback-home';
 const PAGE_DATE = '2026-05-12T00:00:00Z';
 
 const fallbackPageTemplates: Record<string, Page> = {
-  'ice-rink-rentals': createPageTemplate({
-    slug: 'ice-rink-rentals',
-    title: 'Portable Ice Rink Rentals',
-    metaTitle: 'Portable Ice Rink Rentals | {{brand}}',
+  'service-areas': createPageTemplate({
+    slug: 'service-areas',
+    title: 'Portable Ice Rink Rental Service Areas',
+    metaTitle: 'Portable Ice Rink Rental Service Areas | {{brand}}',
     metaDescription:
-      'Plan portable ice rink rentals for winter events, school events, corporate parties, town festivals, and private celebrations.',
-    keyword: 'Portable Ice Rink Rentals',
+      'Review portable ice rink rental service-area planning and request availability review for your event city, date, venue, and support needs.',
+    keyword: 'Portable Ice Rink Rental Service Areas',
     summary:
-      '{{brand}} helps planners compare portable ice rink rental options, venue requirements, add-ons, setup support, and quote steps.',
+      '{{brand}} reviews event location, venue details, timing, and setup requirements before confirming portable rink rental availability.',
     blocks: [
       heroBlock({
-        eyebrow: '{{service}}',
-        headline: 'Portable Ice Rink Rentals',
+        eyebrow: 'Service-area review',
+        headline: 'Portable Ice Rink Rental Service Areas',
         subheadline:
-          'Bring a polished winter attraction to school events, corporate parties, town festivals, private celebrations, and seasonal programs with portable rink planning, setup guidance, and quote support.',
-        buttonText: 'Get a Quote',
+          'Share your event city, venue details, timing, setup surface, and support needs so portable rink rental availability can be reviewed.',
+        buttonText: 'Request Availability',
         buttonLink: '/contact',
-        secondaryButtonText: 'Plan My Rental',
-        secondaryButtonLink: '/contact',
-        trustLine: 'Portable rink rentals planned around your event date, venue fit, guest flow, and setup needs.',
+        secondaryButtonText: 'Return Home',
+        secondaryButtonLink: '/',
+        trustLine: 'Availability is reviewed from event location, venue fit, setup timing, and route feasibility.',
       }),
       trustBarBlock([
-        ['MapPin', 'Venue Planning', 'Space, surface, access, and layout review'],
-        ['Wrench', 'Setup Guidance', 'Practical setup details before quote planning'],
-        ['Ruler', 'Event-ready Layout', 'Rink sizing and guest-flow considerations'],
-        ['ClipboardCheck', 'Quote Support', 'A clearer path from idea to rental request'],
+        ['MapPin', 'Route Review', 'Event city, venue access, and timing are reviewed first'],
+        ['CalendarCheck', 'Date Fit', 'Peak winter dates need early setup-window review'],
+        ['Ruler', 'Venue Details', 'Surface, space, loading, and guest flow shape feasibility'],
+        ['ClipboardCheck', 'Quote Path', 'Share the basics so the team can identify next steps'],
       ]),
       cardGridBlock({
-        title: 'Portable rink rental planning in one place',
+        title: 'What service-area review considers',
         subtitle:
-          'Use these sections to understand what affects rink size, setup, staffing, add-ons, and timing before requesting a quote.',
+          'Availability is reviewed from the event location and practical setup requirements, not just the city name.',
         cards: [
-          {
-            icon: 'Snowflake',
-            title: 'Event types',
-            description:
-              'Portable rink rentals can support winter festivals, school celebrations, corporate events, holiday parties, and private gatherings.',
-            link: '/events-holiday-activations',
-          },
-          {
-            icon: 'Ruler',
-            title: 'Rink planning',
-            description:
-              'Confirm available space, surface type, indoor or outdoor placement, guest count, and how visitors will enter and exit the rink.',
-            link: '/contact',
-          },
-          {
-            icon: 'PackageCheck',
-            title: 'Rental add-ons',
-            description:
-              'Ask about skate support, attendants, lighting, decor, barriers, music, seating, and branding options.',
-            link: '/contact',
-          },
-          {
-            icon: 'Wrench',
-            title: 'Setup support',
-            description:
-              'Plan access windows, loading areas, setup timing, teardown timing, power needs, and weather or venue restrictions.',
-            link: '/contact',
-          },
-        ],
-      }),
-      howItWorksBlock({
-        title: 'How portable rink rentals are planned',
-        steps: [
-          [
-            'Share event details',
-            'Send the event date, location, venue type, guest count, surface details, and goals for the rental.',
-          ],
-          [
-            'Review venue fit',
-            'Confirm space, access, indoor or outdoor placement, power, timing, staffing, and local requirements.',
-          ],
-          [
-            'Plan quote options',
-            'Compare rink size, schedule, support level, add-ons, and any seasonal timing considerations.',
-          ],
-          [
-            'Coordinate setup',
-            'Use the confirmed scope to plan arrival windows, installation logistics, guest flow, and teardown.',
-          ],
-        ],
-      }),
-      faqBlock({
-        title: 'Portable rink rental questions',
-        subtitle: 'A few details help shape the right rental recommendation.',
-        items: [
-          [
-            'How much space do portable ice rink rentals need?',
-            'Space depends on the rink size, surrounding guest flow, skate changing area, barriers, access paths, and any add-ons. Share dimensions or venue plans when requesting a quote.',
-          ],
-          [
-            'Can a portable rink be used indoors or outdoors?',
-            'Portable rink rentals may be planned for indoor or outdoor venues, but the right setup depends on surface type, access, weather exposure, power, and venue rules.',
-          ],
-          [
-            'How far ahead should we start planning?',
-            'Start as early as possible for holiday dates and winter weekends. Lead time helps confirm availability, setup windows, add-ons, and venue requirements.',
-          ],
-          [
-            'What add-ons should we ask about?',
-            'Common add-ons include skate support, attendants, lighting, decor, music, barriers, branding, seating, and warming or hospitality areas.',
-          ],
-          [
-            'What is needed for a quote request?',
-            'Helpful details include event date, location, indoor or outdoor placement, available space, surface type, guest count, rental duration, and desired add-ons.',
-          ],
-        ],
-      }),
-      primaryCtaBlock({
-        title: 'Ready to plan {{service}}?',
-        description:
-          'Send your event date, location, and venue details so the next step can be shaped around your rental goals.',
-        buttonText: 'Get a Quote',
-        buttonLink: '/contact',
-        secondaryText: 'Planning a seasonal event?',
-        secondaryLinkText: 'View event options',
-        secondaryLink: '/events-holiday-activations',
-      }),
-    ],
-  }),
-
-  'events-holiday-activations': createPageTemplate({
-    slug: 'events-holiday-activations',
-    title: 'Ice Rink Rentals for Events and Holiday Activations',
-    metaTitle: 'Ice Rink Rentals for Events and Holiday Activations | {{brand}}',
-    metaDescription:
-      'Plan ice rink rentals for holiday activations, corporate winter events, town centers, schools, malls, private parties, and seasonal experiences.',
-    keyword: 'ice rink rentals for events',
-    summary:
-      '{{brand}} supports event and holiday activation planning with portable rink rental guidance for venues, towns, schools, malls, and private celebrations.',
-    blocks: [
-      heroBlock({
-        eyebrow: 'Events and holiday activations',
-        headline: 'Ice Rink Rentals for Events and Holiday Activations',
-        subheadline:
-          'Create a seasonal attraction for holiday activations, corporate winter events, town centers, schools, malls, private parties, and branded experiences with portable rink planning support.',
-        buttonText: 'Get Event Quote',
-        buttonLink: '/contact',
-        secondaryButtonText: 'View Rental Options',
-        secondaryButtonLink: '/ice-rink-rentals',
-        trustLine: 'Event-focused planning for timing, layout, guest flow, staffing, add-ons, and logistics.',
-      }),
-      cardGridBlock({
-        title: 'Event formats that fit portable rink rentals',
-        subtitle:
-          'Portable rink rentals can turn seasonal programs and one-time events into memorable guest experiences.',
-        cards: [
-          {
-            icon: 'Briefcase',
-            title: 'Corporate events',
-            description:
-              'Add a winter centerpiece to employee celebrations, client events, campus activations, and branded experiences.',
-            link: '/contact',
-          },
           {
             icon: 'MapPinned',
-            title: 'Town festivals',
+            title: 'Event location',
             description:
-              'Support downtown holiday programming, tree lightings, winter markets, and community celebrations.',
+              'Share the city, state, venue name, access notes, and whether the site is public, private, indoor, or outdoor.',
             link: '/contact',
           },
           {
-            icon: 'School',
-            title: 'Schools',
+            icon: 'Warehouse',
+            title: 'Setup surface',
             description:
-              'Plan a student-friendly rink experience for winter carnivals, fundraisers, family nights, and campus events.',
+              'Surface type, slope, size, nearby access, and power availability all affect whether a portable rink can fit.',
             link: '/contact',
           },
           {
-            icon: 'ShoppingBag',
-            title: 'Malls and retail',
+            icon: 'Clock',
+            title: 'Seasonal timing',
             description:
-              'Create seasonal draw for shopping centers, mixed-use districts, hotels, and retail promotions.',
-            link: '/contact',
-          },
-          {
-            icon: 'Gift',
-            title: 'Holiday parties',
-            description:
-              'Give guests a memorable winter activity for private, nonprofit, hospitality, and workplace events.',
-            link: '/contact',
-          },
-          {
-            icon: 'PartyPopper',
-            title: 'Private celebrations',
-            description:
-              'Shape a standout skating experience for birthdays, weddings, neighborhood gatherings, and milestone events.',
+              'Holiday activations, town events, school programs, and winter weekends should be reviewed as early as possible.',
             link: '/contact',
           },
         ],
       }),
       howItWorksBlock({
-        title: 'Event planning considerations',
+        title: 'How coverage is reviewed',
         steps: [
           [
-            'Timing',
-            'Confirm event date, seasonality, setup window, operating hours, teardown timing, and peak booking pressure.',
+            'Send location details',
+            'Include the city, state, venue address, indoor or outdoor placement, and event date range.',
           ],
           [
-            'Venue layout',
-            'Map the rink footprint, skate area, check-in flow, guest circulation, emergency access, and nearby amenities.',
+            'Review site fit',
+            'The team reviews available space, surface conditions, access, setup windows, power, and guest flow.',
           ],
           [
-            'Staffing and add-ons',
-            'Discuss attendants, skate support, lighting, barriers, decor, branding, music, and seating needs.',
-          ],
-          [
-            'Weather and logistics',
-            'Review indoor or outdoor conditions, surface type, power, access, permits, insurance, and contingency planning.',
+            'Confirm next steps',
+            'If the route and venue details are workable, the quote conversation can move into size, schedule, and support options.',
           ],
         ],
       }),
       faqBlock({
-        title: 'Event and holiday activation questions',
-        subtitle: 'Early planning helps match the rink experience to the event format.',
+        title: 'Service-area questions',
+        subtitle: 'These answers help frame availability before a formal quote.',
         items: [
           [
-            'Can portable rink rentals work for one-day events?',
-            'The right fit depends on setup timing, venue access, rental scope, staffing, and teardown windows. Share the schedule when requesting options.',
+            'Do you list every city you can serve?',
+            'No. Local proof content uses a request-review model. Share your city, venue, event date, and setup details so availability can be reviewed.',
           ],
           [
-            'What event details should we provide first?',
-            'Start with the date, venue address, indoor or outdoor placement, guest count, available space, event hours, and any activation goals.',
+            'What details make service-area review faster?',
+            'Helpful details include venue address, indoor or outdoor placement, available footprint, surface type, access path, rental dates, and expected attendance.',
           ],
           [
-            'Can the rink be branded for sponsors or companies?',
-            'Branding may be possible depending on the rental package and add-ons. Ask about signage, decor, lighting, and sponsor visibility during quote planning.',
+            'Can new city pages be created from this route?',
+            'Future city or state pages require separate content, approval, and publish gates. This local source only repairs the canonical service-areas route.',
           ],
           [
-            'How should guest flow be planned?',
-            'Plan space for entry, exit, skate support, viewing, seating, lines, staff access, and safe circulation around the rink.',
-          ],
-          [
-            'What affects holiday availability?',
-            'Peak dates, local travel, setup duration, rental length, add-ons, and venue requirements can all affect availability and timing.',
+            'Does this page confirm service everywhere?',
+            'No. It explains the review process and avoids unsupported geographic claims until a request is reviewed.',
           ],
         ],
       }),
       primaryCtaBlock({
-        title: 'Planning a winter event or holiday activation?',
+        title: 'Need service-area review for your event?',
         description:
-          'Share your event format, date, location, and guest goals so the rental conversation starts with the right details.',
-        buttonText: 'Get Event Quote',
+          'Send your location, date, venue type, and setup details so the rental conversation can begin with the right context.',
+        buttonText: 'Request Availability',
         buttonLink: '/contact',
-        secondaryText: 'Need rental basics first?',
-        secondaryLinkText: 'View rental options',
-        secondaryLink: '/ice-rink-rentals',
+        secondaryText: 'Need the basics first?',
+        secondaryLinkText: 'Return home',
+        secondaryLink: '/',
       }),
     ],
   }),
@@ -352,8 +207,8 @@ const fallbackPageTemplates: Record<string, Page> = {
         buttonText: 'Start Quote Request',
         buttonLink: '#contact',
         secondaryText: 'Still comparing options?',
-        secondaryLinkText: 'Review rental planning',
-        secondaryLink: '/ice-rink-rentals',
+        secondaryLinkText: 'Review service-area planning',
+        secondaryLink: '/service-areas',
       }),
     ],
   }),
@@ -464,11 +319,11 @@ function createPageTemplate({
     publishedAt: PAGE_DATE,
     includeInSitemap: true,
     contentRelationships: {
-      isHub: slug === 'ice-rink-rentals',
-      hubPageSlug: slug === 'ice-rink-rentals' ? '' : 'ice-rink-rentals',
+      isHub: false,
+      hubPageSlug: 'home',
       topicCluster: 'ice-rink-rentals',
       relatedHubs: [],
-      spokePriority: slug === 'ice-rink-rentals' ? 0 : 1,
+      spokePriority: slug === 'service-areas' ? 1 : 2,
     },
     ContentData: {
       ContentBlocks: blocks,

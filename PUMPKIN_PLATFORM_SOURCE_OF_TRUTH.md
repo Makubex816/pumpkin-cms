@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.8.2, Ice Static Source Route Repair and Local Publish Gate Revalidation |
-| Current V2 status | Complete local route repair; Ice static source/output/staging package validators pass; deployment remains closed |
+| Current V2 reference | V2.8.3, Ice Local Publish-Readiness Final Signoff and Gate Freeze |
+| Current V2 status | Complete local Ice publish-readiness signoff; canonical routes and static output validated; deployment remains closed |
 | Provisional V2 overall completion | `88%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.2 repaired local static source only and validated ignored static artifacts; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, or publication; Next build auto-detected `.env.local` and is recorded as a protected-config caveat |
-| Next gate | V2.8.3 Tenant Website sanitized build/runtime QA evidence package and staging publish approval worksheet |
+| Safety posture | V2.8.3 performed local/read-only signoff only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, or publication; Next build auto-detected `.env.local` and is recorded as a protected-config caveat |
+| Next gate | V2.8.4 Ice Staging Publish Approval Worksheet and No-Go Criteria |
 
 ## V2 Reference System
 
@@ -69,6 +69,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website publish-readiness local preflight package | `deployment/architecture/tenant-website-publish-readiness/v2-8-1-local-preflight-result/` | V2.8.1 result package |
 | Tenant Website Ice static source route repair | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_2_ICE_STATIC_SOURCE_ROUTE_REPAIR_REPORT.md` | V2.8.2 local route repair complete; static output/staging package validators pass |
 | Tenant Website Ice static source route repair package | `deployment/architecture/tenant-website-publish-readiness/v2-8-2-ice-static-source-route-repair-result/` | V2.8.2 result package |
+| Tenant Website Ice local publish-readiness signoff | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_3_ICE_LOCAL_SIGNOFF_REPORT.md` | V2.8.3 local signoff complete; deploy/DNS/index/live publication gates closed |
+| Tenant Website Ice local publish-readiness signoff package | `deployment/architecture/tenant-website-publish-readiness/v2-8-3-ice-local-publish-readiness-signoff-result/` | V2.8.3 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -78,7 +80,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. V2.7.2 resolved Runtime QA staging upload through a narrow container-scoped Storage Blob data-plane RBAC assignment and verified uploaded evidence. V2.7 is complete. V2.8.1 completed a local/read-only tenant website publish-readiness preflight and found the current safe Ice seed-site publish path blocked before deployment. V2.8.2 repaired the local Ice route source and validated the ignored static artifact package without deploying.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. V2.7.2 resolved Runtime QA staging upload through a narrow container-scoped Storage Blob data-plane RBAC assignment and verified uploaded evidence. V2.7 is complete. V2.8.1 completed a local/read-only tenant website publish-readiness preflight and found the current safe Ice seed-site publish path blocked before deployment. V2.8.2 repaired the local Ice route source and validated the ignored static artifact package without deploying. V2.8.3 signed off Ice local publish-readiness and kept deployment/DNS/indexing/live publication closed.
 
 Immutable current facts:
 
@@ -180,7 +182,25 @@ Immutable current facts:
 - V2.8.2 Azure infrastructure mutations: `0`
 - V2.8.2 RBAC assignments: `0`
 - V2.8.2 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.3 Ice local publish-readiness signoff: `complete_local_publish_ready_deploy_closed`
+- V2.8.3 Ice canonical routes: `/`, `/service-areas`, `/contact`
+- V2.8.3 Ice fallback/source route reconciliation: `passed`
+- V2.8.3 Ice local seed validation: `passed_3_page_documents`
+- V2.8.3 Ice static source validation: `passed_with_34_warnings`
+- V2.8.3 Roller static source validation: `passed_with_31_warnings_paused_tenant_safety_check`
+- V2.8.3 tenant website type-check: `passed`
+- V2.8.3 Ice static build: `passed_with_warnings_protected_config_caveat`
+- V2.8.3 Ice static output validation: `passed_zero_errors_zero_warnings`
+- V2.8.3 Ice staging package validation: `passed_zero_errors_zero_warnings`
+- V2.8.3 Runtime QA evidence run: `runtimeqa_f1d3f440a58144b4`
+- V2.8.3 Resource Registry operational binding validator: `passed`
+- V2.8.3 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.3 provider data writes: `0`
+- V2.8.3 CMS writes: `0`
+- V2.8.3 Azure infrastructure mutations: `0`
+- V2.8.3 RBAC assignments: `0`
+- V2.8.3 deployment/DNS/indexing/live publication actions: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.3 Tenant Website sanitized build/runtime QA evidence package and staging publish approval worksheet only. Use the V2.8.2 repaired Ice static source and passing local artifact validation to prepare a no-deploy staging publish approval worksheet, including a sanitized no-dotenv build pattern, refreshed validators, Runtime QA, Resource Registry/provider profile, OLM publish gate, Backup Center proof review, static form endpoint contract review, content-maturity warning triage, artifact ignore checks, target/rollback/no-go criteria, and exact next approval. No deployment, DNS changes, Search Console/indexing, live-page publication, CMS writes, provider data writes, Azure infrastructure mutation, RBAC assignment, protected config reads, keys/listKeys, connection strings, SAS, external crawling/live URL checks, or generated artifacts staged into Git.
+Approve V2.8.4 Ice Staging Publish Approval Worksheet and No-Go Criteria only. Use the completed V2.8.3 Ice local publish-readiness signoff package to prepare a no-deploy staging publish approval worksheet, including exact staging target inventory, sanitized no-dotenv build pattern, static artifact handoff checklist, contact form owner verification plan, media visual/content approval checklist, Backup Center restore/no-go confirmation, Resource Registry/provider-profile references, Runtime QA evidence references, OLM publish-gate references, rollback and abort criteria, operator checklist, and exact next approval. No deployment, DNS changes, Search Console/indexing, live-page publication, CMS writes, provider data writes, Azure infrastructure mutation, RBAC assignment, protected config reads, keys/listKeys, connection strings, SAS, external crawling/live URL checks, or generated artifacts staged into Git.

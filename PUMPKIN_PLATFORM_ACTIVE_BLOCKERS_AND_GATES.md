@@ -18,6 +18,7 @@
 | Runtime QA upload closure and Admin/API Operator Console signoff | Complete | V2.7.2 / L01 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Runtime QA upload blocker resolved with one staging container-scoped Storage Blob data-plane RBAC assignment; evidence uploaded/listed; V2.7 signed off. |
 | Tenant Website and Publish Readiness local preflight | Complete, publish blocked | V2.8.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Local/read-only preflight complete; current safe Ice seed-site source is missing `/service-areas`, contains obsolete Ice routes, and static output/form/media/deploy gates remain closed. |
 | Ice Static Source Route Repair and Local Publish Gate Revalidation | Complete, deployment still closed | V2.8.2 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Local Ice seed route source repaired to `/`, `/contact`, `/service-areas`; static output and staging package validators passed; deployment/DNS/index/live publication remain closed. |
+| Ice Local Publish-Readiness Final Signoff and Gate Freeze | Complete local signoff, deployment still closed | V2.8.3 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Ice local source/fallback/output route model signed off as `/`, `/service-areas`, `/contact`; Runtime QA, Resource Registry, OLM, Backup Center, and Admin/API gate inputs current; deployment/DNS/index/live publication remain closed. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -202,3 +203,22 @@ Still separately gated:
 - V2.8.2 Azure infrastructure mutations: `0`
 - V2.8.2 RBAC assignments: `0`
 - V2.8.2 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.3 Ice local publish-readiness signoff: `complete_local_publish_ready_deploy_closed`
+- V2.8.3 Ice canonical routes: `/`, `/service-areas`, `/contact`
+- V2.8.3 Ice fallback/source route reconciliation: `passed`
+- V2.8.3 Ice local seed validation: `passed_3_page_documents`
+- V2.8.3 Ice static source validation: `passed_with_34_warnings`
+- V2.8.3 Roller static source validation: `passed_with_31_warnings_paused_tenant_safety_check`
+- V2.8.3 tenant website type-check: `passed`
+- V2.8.3 Ice static build: `passed_with_warnings_protected_config_caveat`
+- V2.8.3 Ice static output validation: `passed_zero_errors_zero_warnings`
+- V2.8.3 Ice staging package validation: `passed_zero_errors_zero_warnings`
+- V2.8.3 Runtime QA evidence run: `runtimeqa_f1d3f440a58144b4`
+- V2.8.3 Runtime QA evidence validation: `passed_with_1_warning`
+- V2.8.3 Resource Registry operational binding validator: `passed`
+- V2.8.3 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.3 provider data writes: `0`
+- V2.8.3 CMS writes: `0`
+- V2.8.3 Azure infrastructure mutations: `0`
+- V2.8.3 RBAC assignments: `0`
+- V2.8.3 deployment/DNS/indexing/live publication actions: `0`

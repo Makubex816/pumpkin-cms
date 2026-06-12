@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.2 |
-| currentReferenceName | Ice Static Source Route Repair and Local Publish Gate Revalidation |
-| currentReferenceStatus | Complete local route repair; Ice static source/output/staging package validators pass; deployment remains closed |
+| currentReference | V2.8.3 |
+| currentReferenceName | Ice Local Publish-Readiness Final Signoff and Gate Freeze |
+| currentReferenceStatus | Complete local Ice publish-readiness signoff; canonical routes and static output validated; deployment remains closed |
 | provisionalV2OverallCompletion | `88%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.3 |
-| nextReferenceName | Tenant Website Sanitized Build Runtime QA Evidence Package And Staging Publish Approval Worksheet |
-| nextGate | Prepare sanitized no-dotenv build evidence and staging publish approval worksheet without deployment, DNS, indexing, or publication |
-| safetyPosture | Local route/static source repair and ignored static artifact validation only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, or publication; Next static build auto-detected `.env.local` and is recorded as a protected-config caveat |
-| blockedState | Ice route/static artifact gate is locally repaired; deployment, DNS, indexing, live publication, CMS/provider writes, protected config, and production actions remain separately gated |
+| nextReference | V2.8.4 |
+| nextReferenceName | Ice Staging Publish Approval Worksheet And No-Go Criteria |
+| nextGate | Prepare no-deploy staging publish approval worksheet and no-go criteria; deployment, DNS, indexing, and publication remain closed |
+| safetyPosture | Local/read-only signoff only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, or publication; Next static build auto-detected `.env.local` and is recorded as a protected-config caveat |
+| blockedState | Ice is locally publish-ready; deployment, DNS, indexing, live publication, CMS/provider writes, protected config, and production actions remain separately gated |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `74%` | Ice local static route/source/output gate repaired and validated; deployment remains closed |
+| V2.8 | `82%` | Ice local publish-readiness signed off; staging/publish worksheet, deployment, DNS, indexing, and live publication remain closed |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

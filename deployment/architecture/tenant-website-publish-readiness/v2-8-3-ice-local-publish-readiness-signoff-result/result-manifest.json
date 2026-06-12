@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "0.1.0",
+  "resultId": "v2-8-3-ice-local-publish-readiness-final-signoff-gate-freeze",
+  "phase": "V2.8.3",
+  "status": "complete_local_publish_readiness_signed_off_deploy_closed",
+  "createdAtLocal": "2026-06-11T22:24:52-04:00",
+  "currentReference": "V2.8.3",
+  "currentReferenceName": "Ice Local Publish-Readiness Final Signoff and Gate Freeze",
+  "currentLane": "V2.8 Tenant Website / Publish Readiness",
+  "overallCompletionAfterPhase": "88%",
+  "v2_8CompletionAfterPhase": "82%",
+  "layerRefs": ["L01", "L02", "L03", "L04", "L06", "L07", "L08", "L09", "L10", "L11", "L12", "L15"],
+  "sourceInputs": [
+    {
+      "label": "V2.8.1 local preflight",
+      "path": "deployment/architecture/tenant-website-publish-readiness/v2-8-1-local-preflight-result/result-manifest.json"
+    },
+    {
+      "label": "V2.8.2 Ice route repair",
+      "path": "deployment/architecture/tenant-website-publish-readiness/v2-8-2-ice-static-source-route-repair-result/result-manifest.json"
+    },
+    {
+      "label": "V2.2.5 OLM final stage-ready signoff",
+      "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "V2.5.1 Resource Registry / Provider Profile operationalization",
+      "path": "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json"
+    },
+    {
+      "label": "V2.7.2 Admin/API Operator Console signoff",
+      "path": "deployment/architecture/admin-api-operator-console/v2-7-2-runtime-qa-upload-operator-console-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "Backup Generator QA signoff",
+      "path": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json"
+    }
+  ],
+  "tenantState": {
+    "activeProofTenant": "ice-rink-rentals",
+    "activeProofDomain": "iceskatingrinkrentals.com",
+    "pausedTenant": "roller-rink-rentals",
+    "pausedTenantResumed": false
+  },
+  "routeModel": {
+    "canonicalRoutes": ["/", "/service-areas", "/contact"],
+    "sourcePageSlugs": ["home", "service-areas", "contact"],
+    "staticOutputRoutes": ["/", "/service-areas", "/contact"],
+    "obsoleteRoutesRemovedFromSourceModel": ["/ice-rink-rentals", "/events-holiday-activations"],
+    "obsoleteOutputDirectoriesPresent": false,
+    "fallbackSourceReconciled": true
+  },
+  "validation": [
+    {
+      "command": "npm run validate",
+      "cwd": "tools/ice-rink-local-seed",
+      "status": "passed_3_page_documents"
+    },
+    {
+      "command": "npm run validate:static:ice",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_with_34_warnings"
+    },
+    {
+      "command": "npm run validate:static:roller",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_with_31_warnings_paused_tenant_safety_check"
+    },
+    {
+      "command": "npm run type-check",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed"
+    },
+    {
+      "command": "npm run build:static:ice",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_with_warnings_protected_config_caveat",
+      "summary": "Build emitted /, /contact, and /service-areas. Next auto-detected .env.local; no protected config was manually opened or printed."
+    },
+    {
+      "command": "node scripts/static-publish.mjs generate",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_after_explicit_static_profile_rerun",
+      "summary": "A first direct invocation without SITE_KEY failed locally before generation; rerun with PUMPKIN_RENDER_MODE=static, SITE_KEY=ice-rink-rentals, and STATIC_CONTENT_SOURCE=seed-sites passed."
+    },
+    {
+      "command": "node ../../deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out .static-artifacts/ice-rink-rentals/out",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_zero_errors_zero_warnings",
+      "fileCount": 42
+    },
+    {
+      "command": "node ../../deployment/static-azure/validate-staging-package.mjs --site ice-rink-rentals --folder .static-artifacts/ice-rink-rentals/out",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_zero_errors_zero_warnings",
+      "fileCount": 42
+    },
+    {
+      "command": "npm run check",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed_6_tests"
+    },
+    {
+      "command": "node src/runtime-qa-cli.mjs run --registry fixtures/runtime-qa-registry.v2-7-2.fixture.json --out .tmp/v2-8-3-runtime-qa-publish-readiness-evidence --overwrite",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed",
+      "runId": "runtimeqa_f1d3f440a58144b4"
+    },
+    {
+      "command": "node src/runtime-qa-cli.mjs validate-evidence --evidence .tmp/v2-8-3-runtime-qa-publish-readiness-evidence",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed_with_1_warning"
+    },
+    {
+      "command": "node src/resource-registry-cli.mjs validate-operational-bindings --fixture fixtures/operational-bindings.v2-5-1.fixture.json --out .tmp/v2-8-3-operational-bindings --overwrite",
+      "cwd": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation",
+      "status": "passed_zero_failures_zero_warnings"
+    },
+    {
+      "command": "node src/outbound-link-cli.mjs provider-check --profile fixtures/provider-profile-olm-staging-cosmos-nosql.fixture.json --out .tmp/v2-8-3-provider-profile-check --overwrite",
+      "cwd": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation",
+      "status": "passed_live_write_allowed_false"
+    },
+    {
+      "command": "scoped obsolete-route and no-uncontrolled-write scans",
+      "cwd": ".",
+      "status": "passed"
+    }
+  ],
+  "readiness": {
+    "v2_8LocalPublishReadiness": "complete_local_publish_ready_deploy_closed",
+    "routePageReadiness": "complete",
+    "staticSourceValidation": "passed",
+    "staticOutputValidation": "passed",
+    "mediaAssetReadiness": "current_backup_media_proof_carryforward_current_seed_uses_no_media_urls",
+    "contactFormReadiness": "local_endpoint_contract_validated_no_live_http_check_production_owner_gate_remains",
+    "outboundLinkPublishGate": "v2_2_5_stage_ready_carryforward_live_write_allowed_false",
+    "backupCenterPublishReadiness": "phase_2f14_complete_standard_backup_and_restore_plan_proof_carryforward",
+    "resourceRegistryProviderProfileReadiness": "passed_local_operational_binding_validation",
+    "runtimeQaPublishReadiness": "passed_local_runtime_qa_validation",
+    "adminApiOperatorReadiness": "v2_7_2_operator_console_signoff_carryforward",
+    "deploymentDnsIndexPublicationGates": "closed"
+  },
+  "artifactHandling": {
+    "staticArtifactsGenerated": true,
+    "staticArtifactsIgnored": true,
+    "staticArtifactsStaged": false,
+    "nextOutputIgnored": true,
+    "tmpEvidenceIgnored": true
+  },
+  "securityBoundary": {
+    "providerDataWrites": false,
+    "additionalOlmStagingWrites": false,
+    "destructiveRollbackDeletion": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "rbacAssignment": false,
+    "manualProtectedConfigRead": false,
+    "nextBuildAutoDetectedEnvLocalCaveat": true,
+    "keyVaultSecretQueries": false,
+    "keysListKeys": false,
+    "connectionStringGeneration": false,
+    "sasGeneration": false,
+    "secretExport": false,
+    "externalCrawling": false,
+    "liveOutboundUrlChecks": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrites": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "deployment": false,
+    "dnsChange": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false,
+    "generatedArtifactsStaged": false
+  },
+  "nextRecommendedReference": {
+    "reference": "V2.8.4",
+    "name": "Ice Staging Publish Approval Worksheet and No-Go Criteria",
+    "layers": ["L02", "L10", "L12", "L15"]
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-2-route-repair-carryforward.md",
+    "ice-final-canonical-route-model.md",
+    "ice-local-publish-readiness-checklist.md",
+    "ice-local-publish-readiness-evidence-index.md",
+    "route-page-final-readiness-result.md",
+    "static-source-final-validation-result.md",
+    "static-output-final-validation-result.md",
+    "media-asset-readiness-result.md",
+    "contact-form-readiness-result.md",
+    "olm-publish-gate-result.md",
+    "backup-center-publish-readiness-result.md",
+    "resource-registry-provider-profile-readiness-result.md",
+    "runtime-qa-publish-readiness-result.md",
+    "admin-api-operator-readiness-result.md",
+    "tenant-state-matrix-final.md",
+    "no-deploy-no-index-no-publish-gate-summary.md",
+    "production-gates-still-closed.md",
+    "v2-8-final-local-signoff-result.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
