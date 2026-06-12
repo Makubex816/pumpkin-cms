@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.7.2 |
-| currentReferenceName | Runtime QA Upload Closure and Admin/API Operator Console Signoff |
-| currentReferenceStatus | Complete; Runtime QA upload verified and V2.7 Admin/API Operator Console signed off |
-| provisionalV2OverallCompletion | `84%` |
-| currentLayerRefs | L01, L06, L07, L08, L09, L10, L11, L12 |
-| nextReference | V2.8.1 |
-| nextReferenceName | Tenant Website and Publish Readiness Local Preflight |
-| nextGate | Build local/read-only tenant website and publish-readiness preflight without deployment, indexing, or publication |
-| safetyPosture | Runtime QA upload verified through Azure Identity/RBAC after one approved staging container-scoped Storage Blob data-plane RBAC assignment; production-runtime blocked; live-write-approved scoped-only; no provider write, broad RBAC, production/CMS write, protected-config read |
-| blockedState | No V2.7 blockers remain; future writes, production actions, Azure mutations, deployment, indexing, and publication remain separately gated |
+| currentReference | V2.8.2 |
+| currentReferenceName | Ice Static Source Route Repair and Local Publish Gate Revalidation |
+| currentReferenceStatus | Complete local route repair; Ice static source/output/staging package validators pass; deployment remains closed |
+| provisionalV2OverallCompletion | `88%` |
+| currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
+| nextReference | V2.8.3 |
+| nextReferenceName | Tenant Website Sanitized Build Runtime QA Evidence Package And Staging Publish Approval Worksheet |
+| nextGate | Prepare sanitized no-dotenv build evidence and staging publish approval worksheet without deployment, DNS, indexing, or publication |
+| safetyPosture | Local route/static source repair and ignored static artifact validation only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, or publication; Next static build auto-detected `.env.local` and is recorded as a protected-config caveat |
+| blockedState | Ice route/static artifact gate is locally repaired; deployment, DNS, indexing, live publication, CMS/provider writes, protected config, and production actions remain separately gated |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `50%` | Tenant/static history exists; current publish readiness not active |
+| V2.8 | `74%` | Ice local static route/source/output gate repaired and validated; deployment remains closed |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

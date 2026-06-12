@@ -85,8 +85,8 @@
     }
   },
   "menu": [
-    { "label": "Rentals", "url": "/ice-rink-rentals", "target": "_self", "icon": "", "order": 1, "isVisible": true, "children": [] },
-    { "label": "Events", "url": "/events-holiday-activations", "target": "_self", "icon": "", "order": 2, "isVisible": true, "children": [] },
+    { "label": "Home", "url": "/", "target": "_self", "icon": "", "order": 1, "isVisible": true, "children": [] },
+    { "label": "Service Areas", "url": "/service-areas", "target": "_self", "icon": "", "order": 2, "isVisible": true, "children": [] },
     { "label": "Contact", "url": "/contact", "target": "_self", "icon": "", "order": 3, "isVisible": true, "children": [] }
   ],
   "createdAt": "2026-05-13T00:00:00Z",

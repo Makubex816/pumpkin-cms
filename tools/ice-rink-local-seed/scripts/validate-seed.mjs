@@ -15,7 +15,7 @@ const siteConfigs = {
   'ice-rink-rentals': {
     tenantId: 'ice-rink-rentals',
     hashPlaceholder: '__ICE_RINK_RENTALS_API_HASH__',
-    expectedSlugs: ['home', 'ice-rink-rentals', 'events-holiday-activations', 'contact'],
+    expectedSlugs: ['home', 'contact', 'service-areas'],
     themeFile: 'theme.json',
     placeholderOnly: false,
   },

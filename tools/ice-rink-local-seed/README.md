@@ -19,9 +19,8 @@ seed-sites/
     theme.json
     pages/
       home.json
-      ice-rink-rentals.json
-      events-holiday-activations.json
       contact.json
+      service-areas.json
   roller-rink-rentals/
     README.md
     tenant.template.json
@@ -80,9 +79,9 @@ Set these only in your local PowerShell session. Do not commit them.
 
 ```powershell
 $env:SITE_KEY = "ice-rink-rentals"
-$env:COSMOS_CONNECTION_STRING = "<local-cosmos-emulator-connection-string>"
+$env:COSMOS_CONNECTION_STRING = Read-Host "Paste the local Cosmos emulator connection string for this shell"
 $env:COSMOS_DATABASE_NAME = "PumpkinCMS"
-$env:ICE_RINK_RENTALS_API_HASH = "<bcrypt-api-key-hash-for-local-tenant>"
+$env:ICE_RINK_RENTALS_API_HASH = Read-Host "Paste the local Ice API hash for this shell"
 ```
 
 Then run:
@@ -107,9 +106,9 @@ Copy the generated API hash into the current PowerShell session only:
 
 ```powershell
 $env:SITE_KEY = "roller-rink-rentals"
-$env:COSMOS_CONNECTION_STRING = "<local-cosmos-emulator-connection-string>"
+$env:COSMOS_CONNECTION_STRING = Read-Host "Paste the local Cosmos emulator connection string for this shell"
 $env:COSMOS_DATABASE_NAME = "PumpkinCMS"
-$env:ROLLER_RINK_RENTALS_API_HASH = "<generated-bcrypt-api-key-hash>"
+$env:ROLLER_RINK_RENTALS_API_HASH = Read-Host "Paste the generated local Roller API hash for this shell"
 ```
 
 Manually add the matching plain API key and tenant values to `apps/ice-rink-web/.env.local`. Do not commit that file.
@@ -149,16 +148,16 @@ Set local request variables. Use the plain local API key that matches the seeded
 ```powershell
 $api = "http://localhost:5064"
 $tenantId = "ice-rink-rentals"
-$apiKey = "<plain-local-api-key>"
-$headers = @{ Authorization = "Bearer $apiKey"; Accept = "application/json" }
+$plainLocalApiKey = Read-Host "Paste the local-only Ice API key for this shell"
+$headers = @{ Authorization = "Bearer $plainLocalApiKey"; Accept = "application/json" }
 ```
 
 For the Roller Rink proof, use:
 
 ```powershell
 $tenantId = "roller-rink-rentals"
-$apiKey = "<generated-roller-rink-plain-api-key>"
-$headers = @{ Authorization = "Bearer $apiKey"; Accept = "application/json" }
+$plainLocalApiKey = Read-Host "Paste the local-only Roller API key for this shell"
+$headers = @{ Authorization = "Bearer $plainLocalApiKey"; Accept = "application/json" }
 ```
 
 Test shared pages:
@@ -176,12 +175,7 @@ Invoke-RestMethod -Uri "$api/api/pages/$tenantId/contact" -Headers $headers |
 For Ice Rink, also test:
 
 ```powershell
-Invoke-RestMethod -Uri "$api/api/pages/$tenantId/ice-rink-rentals" -Headers $headers |
-  ConvertTo-Json -Depth 80
-```
-
-```powershell
-Invoke-RestMethod -Uri "$api/api/pages/$tenantId/events-holiday-activations" -Headers $headers |
+Invoke-RestMethod -Uri "$api/api/pages/$tenantId/service-areas" -Headers $headers |
   ConvertTo-Json -Depth 80
 ```
 
@@ -219,9 +213,8 @@ Ice Rink URLs:
 
 ```text
 http://localhost:3002/
-http://localhost:3002/ice-rink-rentals
-http://localhost:3002/events-holiday-activations
 http://localhost:3002/contact
+http://localhost:3002/service-areas
 http://localhost:3002/sitemap.xml
 ```
 

@@ -68,7 +68,7 @@
               "image": "",
               "image-alt": "",
               "icon": "Sparkles",
-              "link": "/events-holiday-activations",
+              "link": "/service-areas",
               "alt": "Holiday activations"
             },
             {
@@ -77,7 +77,7 @@
               "image": "",
               "image-alt": "",
               "icon": "PartyPopper",
-              "link": "/ice-rink-rentals",
+              "link": "/service-areas",
               "alt": "Private celebrations"
             },
             {
@@ -124,8 +124,8 @@
           "buttonText": "Request a Quote",
           "buttonLink": "/contact",
           "secondaryText": "Need package details first?",
-          "secondaryLinkText": "View rental options",
-          "secondaryLink": "/ice-rink-rentals",
+          "secondaryLinkText": "View service-area planning",
+          "secondaryLink": "/service-areas",
           "backgroundImage": "",
           "mainImage": "",
           "alt": "Portable Ice Rink Rentals quote request"

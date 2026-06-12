@@ -24,6 +24,8 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_RUNTIME_QA_V2_6_1_OPERATIONALIZATION_EVIDENCE_BINDING_REPORT.md` | V2.6.1 Runtime QA harness operationalization root report |
 | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_1_RUNTIME_QA_BOUND_READINESS_REPORT.md` | V2.7.1 Admin/API Operator Console runtime-QA-bound readiness root report |
 | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_2_RUNTIME_QA_UPLOAD_SIGNOFF_REPORT.md` | V2.7.2 Runtime QA upload closure and Admin/API Operator Console signoff root report |
+| `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_1_LOCAL_PREFLIGHT_REPORT.md` | V2.8.1 Tenant Website publish-readiness local preflight root report |
+| `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_2_ICE_STATIC_SOURCE_ROUTE_REPAIR_REPORT.md` | V2.8.2 Ice static source route repair root report |
 
 ## Latest Canonical Result Packages
 
@@ -44,6 +46,8 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Runtime QA reusable harness | `deployment/architecture/runtime-qa/platform-runtime-qa-harness/` | V2.6.1 / L10 / L12 | Current reusable local/offline harness package |
 | Admin/API Operator Console runtime-QA-bound readiness | `deployment/architecture/admin-api-operator-console/v2-7-1-runtime-qa-bound-readiness-result/` | V2.7.1 / L01 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Current Admin/API operator-console readiness package |
 | Admin/API Operator Console upload closure and signoff | `deployment/architecture/admin-api-operator-console/v2-7-2-runtime-qa-upload-operator-console-signoff-result/` | V2.7.2 / L01 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 | Current V2.7 final signoff package |
+| Tenant Website publish-readiness local preflight | `deployment/architecture/tenant-website-publish-readiness/v2-8-1-local-preflight-result/` | V2.8.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current tenant website local preflight package |
+| Tenant Website Ice static source route repair | `deployment/architecture/tenant-website-publish-readiness/v2-8-2-ice-static-source-route-repair-result/` | V2.8.2 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current Ice route/source/output validation package |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -68,6 +72,8 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Runtime QA harness operationalization | `PUMPKIN_RUNTIME_QA_V2_6_1_OPERATIONALIZATION_EVIDENCE_BINDING_REPORT.md` | V2.6.1 |
 | Admin/API Operator Console runtime-QA-bound readiness | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_1_RUNTIME_QA_BOUND_READINESS_REPORT.md` | V2.7.1 |
 | Admin/API Operator Console upload closure and signoff | `PUMPKIN_ADMIN_API_OPERATOR_CONSOLE_V2_7_2_RUNTIME_QA_UPLOAD_SIGNOFF_REPORT.md` | V2.7.2 |
+| Tenant Website publish-readiness local preflight | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_1_LOCAL_PREFLIGHT_REPORT.md` | V2.8.1 |
+| Tenant Website Ice static source route repair | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_2_ICE_STATIC_SOURCE_ROUTE_REPAIR_REPORT.md` | V2.8.2 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |

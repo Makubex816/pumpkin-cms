@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "0.1.0",
+  "resultId": "v2-8-1-tenant-website-publish-readiness-local-preflight",
+  "phase": "V2.8.1",
+  "status": "complete_local_readonly_preflight_publish_blocked",
+  "createdAtLocal": "2026-06-11T21:23:11-04:00",
+  "currentReference": "V2.8.1",
+  "currentReferenceName": "Tenant Website and Publish Readiness Local Preflight",
+  "currentLane": "V2.8 Tenant Website / Publish Readiness",
+  "overallCompletionAfterPhase": "86%",
+  "v2_8CompletionAfterPhase": "62%",
+  "layerRefs": ["L01", "L02", "L03", "L04", "L06", "L07", "L08", "L09", "L10", "L11", "L12", "L15"],
+  "sourceInputs": [
+    {
+      "label": "V2.7.2 Admin/API Operator Console signoff",
+      "path": "deployment/architecture/admin-api-operator-console/v2-7-2-runtime-qa-upload-operator-console-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "V2.6.1 Runtime QA operationalization",
+      "path": "deployment/architecture/runtime-qa/v2-6-1-operationalization-evidence-binding-result/result-manifest.json"
+    },
+    {
+      "label": "V2.5.1 Resource Registry / Provider Profile operationalization",
+      "path": "deployment/architecture/resource-registry-provider-profiles/v2-5-1-operationalization-hardening-result/result-manifest.json"
+    },
+    {
+      "label": "V2.2.5 OLM final stage-ready signoff",
+      "path": "deployment/architecture/outbound-link-manager/v2-2-5-final-stage-ready-signoff-result/result-manifest.json"
+    },
+    {
+      "label": "Backup Generator QA signoff",
+      "path": "deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/manifest.json"
+    },
+    {
+      "label": "Historical Ice static form production enablement",
+      "path": "deployment/azure/ice-static-form-production-enablement-result/manifest.json"
+    }
+  ],
+  "tenants": {
+    "activeProofTenant": "ice-rink-rentals",
+    "activeProofDomain": "iceskatingrinkrentals.com",
+    "pausedTenant": "roller-rink-rentals",
+    "pausedDomain": "rollerrinkrentals.com"
+  },
+  "readiness": {
+    "tenantWebsiteInventory": "complete",
+    "iceProofTenantReadiness": "blocked_current_safe_seed_site_not_publish_ready",
+    "routePageReadiness": "blocked_missing_service_areas_and_obsolete_routes_present",
+    "mediaAssetReadiness": "blocked_for_current_publish_until_current_artifact_uses_approved_media_urls",
+    "contactFormEndpointReadiness": "historical_endpoint_proof_exists_current_safe_seed_validation_unverified",
+    "outboundLinkPublishGate": "stage_ready_carryforward",
+    "backupCenterPublishReadiness": "ready_for_operator_review_carryforward",
+    "resourceRegistryProviderProfilePublishReadiness": "passed_local_operational_binding_validation",
+    "runtimeQaPublishReadiness": "passed_local_runtime_qa_validation",
+    "adminApiOperatorConsolePublishReadiness": "passed_carryforward_from_v2_7_2",
+    "localBuildPreviewValidation": "build_passed_with_caveat_static_publish_validation_failed",
+    "deploymentDnsIndexPublicationGates": "closed"
+  },
+  "validation": [
+    {
+      "command": "npm run validate:static:ice",
+      "cwd": "apps/ice-rink-web",
+      "status": "failed_expected_publish_blocker",
+      "summary": "Missing service-areas; obsolete Ice routes present."
+    },
+    {
+      "command": "npm run validate:static:roller",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_with_31_warnings",
+      "summary": "Roller local seed validates but remains paused."
+    },
+    {
+      "command": "npm run type-check",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed"
+    },
+    {
+      "command": "npm run build:static:ice",
+      "cwd": "apps/ice-rink-web",
+      "status": "passed_with_warnings_protected_config_caveat",
+      "summary": "Next build completed and generated current static routes; Next auto-detected .env.local, so this is recorded as a caveated build proof."
+    },
+    {
+      "command": "node ../../deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out out",
+      "cwd": "apps/ice-rink-web",
+      "status": "failed_expected_publish_blocker",
+      "summary": "Missing service-areas output, obsolete route output, static form endpoint verification missing, raw draft-preview output present."
+    },
+    {
+      "command": "npm run check",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed_6_tests"
+    },
+    {
+      "command": "node src/runtime-qa-cli.mjs run --registry fixtures/runtime-qa-registry.v2-7-2.fixture.json --out .tmp/v2-8-1-runtime-qa-publish-readiness-evidence --overwrite",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed",
+      "runId": "runtimeqa_85a8b84955410b83"
+    },
+    {
+      "command": "node src/runtime-qa-cli.mjs validate-evidence --evidence .tmp/v2-8-1-runtime-qa-publish-readiness-evidence",
+      "cwd": "deployment/architecture/runtime-qa/platform-runtime-qa-harness",
+      "status": "passed_with_1_warning"
+    },
+    {
+      "command": "node src/resource-registry-cli.mjs validate-operational-bindings --fixture fixtures/operational-bindings.v2-5-1.fixture.json --out .tmp/v2-8-1-operational-bindings --overwrite",
+      "cwd": "deployment/architecture/pumpkin-backup-export-restore/resource-registry-implementation",
+      "status": "passed_zero_failures_zero_warnings"
+    },
+    {
+      "command": "node src/outbound-link-cli.mjs provider-check --profile fixtures/provider-profile-olm-staging-cosmos-nosql.fixture.json --out .tmp/v2-8-1-provider-profile-check --overwrite",
+      "cwd": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation",
+      "status": "passed_live_write_allowed_false"
+    },
+    {
+      "command": "node src/outbound-link-cli.mjs validate-staging-env-contract --package .tmp/phase-2h22-staging-execution-package",
+      "cwd": "deployment/architecture/outbound-link-manager/local-scanner-registry-implementation",
+      "status": "blocked_current_session_olm_staging_env_missing",
+      "summary": "Package linkage passed; all 10 current-session OLM_STAGING fields were absent."
+    }
+  ],
+  "securityBoundary": {
+    "providerDataWrites": false,
+    "additionalOlmStagingWrites": false,
+    "destructiveRollbackDeletion": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "rbacAssignment": false,
+    "manualProtectedConfigRead": false,
+    "nextBuildAutoDetectedEnvLocalCaveat": true,
+    "keyVaultSecretQueries": false,
+    "keysListKeys": false,
+    "connectionStringGeneration": false,
+    "sasGeneration": false,
+    "secretExport": false,
+    "externalCrawling": false,
+    "liveOutboundUrlChecks": false,
+    "productionDatabaseMigration": false,
+    "productionProviderWrites": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "deployment": false,
+    "dnsChange": false,
+    "searchConsoleIndexing": false,
+    "livePagePublication": false,
+    "generatedArtifactsStaged": false
+  },
+  "nextRecommendedReference": {
+    "reference": "V2.8.2",
+    "name": "Tenant Website Static Source Refresh and Sanitized Publish Package Dry-run",
+    "layers": ["L02", "L10", "L12", "L15"]
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "tenant-website-inventory.md",
+    "tenant-site-state-matrix.md",
+    "ice-proof-tenant-readiness.md",
+    "route-page-readiness-matrix.md",
+    "media-asset-readiness.md",
+    "contact-form-endpoint-readiness.md",
+    "outbound-link-publish-gate-result.md",
+    "backup-center-publish-readiness.md",
+    "resource-registry-provider-profile-publish-readiness.md",
+    "runtime-qa-publish-readiness.md",
+    "admin-api-operator-console-publish-readiness.md",
+    "local-build-preview-validation-result.md",
+    "no-deploy-no-index-no-publish-gate-summary.md",
+    "production-gates-still-closed.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}

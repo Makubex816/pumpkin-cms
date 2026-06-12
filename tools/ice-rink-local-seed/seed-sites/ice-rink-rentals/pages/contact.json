@@ -155,8 +155,8 @@
           "buttonText": "Start Quote Request",
           "buttonLink": "#contact",
           "secondaryText": "Still comparing options?",
-          "secondaryLinkText": "Review rental planning",
-          "secondaryLink": "/ice-rink-rentals",
+          "secondaryLinkText": "Review service-area planning",
+          "secondaryLink": "/service-areas",
           "backgroundImage": "",
           "mainImage": "",
           "alt": "Request an ice rink rental quote"
