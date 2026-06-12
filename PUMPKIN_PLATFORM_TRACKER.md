@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.12 |
-| currentReferenceName | Backend Live Verification Scope And Staging Operator Rollback Closure |
-| currentReferenceStatus | Complete backend live verification boundary packet and deployment-method closure; staging execution remains blocked by missing named deploy operator, rollback/abort owner, external secret-storage confirmation, and unexecuted backend POST |
-| provisionalV2OverallCompletion | `91%` |
+| currentReference | V2.8.14 |
+| currentReferenceName | Scoped Ice Staging Publish Execution Approval |
+| currentReferenceStatus | Complete blocked-before-deployment result; local artifact and validators pass, but deployment stopped because the target has production custom domains attached and deployment auth/tooling is not ready |
+| provisionalV2OverallCompletion | `92%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.13 |
-| nextReferenceName | Backend Live POST Approval And Operator Rollback Naming |
-| nextGate | Name deploy operator and rollback/abort owner, confirm external deployment-secret storage, and approve exactly one dry-run backend POST or choose stronger real-email/provider verification |
-| safetyPosture | Local validation, docs, safe source review, bounded read-only OPTIONS checks, and ignored local evidence only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, contact-form POST, payload submission, private payload, or external crawl |
-| blockedState | Staging execution is blocked until named deploy/rollback ownership and backend live POST evidence are resolved |
+| nextReference | V2.8.14A |
+| nextReferenceName | Staging Target Isolation And Deployment Auth Closure |
+| nextGate | Resolve the production-custom-domain target risk, supply a safe deployment-token environment variable, and confirm the repo-supported SWA deployment tool before any staging deployment retry |
+| safetyPosture | V2.8.14 performed read-only Azure metadata checks, local validation, and artifact security scans only; no deployment, DNS change, indexing, live publication, production-domain cutover, CMS write, provider write, Azure infrastructure creation/configuration mutation, RBAC assignment, protected config read, deployment-token print/export, keys/listKeys, connection string, SAS, contact form submission, contact endpoint POST, or external crawl |
+| blockedState | Staging execution remains unperformed because `swa-ice-static-staging` has production custom domains attached, deployment-token env vars are absent, and `swa` CLI is unavailable |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `98%` | Backend live verification packet and deployment method are prepared; named deploy/rollback ownership and backend POST evidence remain unresolved |
+| V2.8 | `99%` | Backend verification and local artifact validation are complete; first staging deployment remains blocked by target isolation and deployment auth/tooling gates |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

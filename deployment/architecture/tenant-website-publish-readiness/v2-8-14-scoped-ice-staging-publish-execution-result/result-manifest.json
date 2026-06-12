@@ -1,0 +1,159 @@
+{
+  "reference": "V2.8.14",
+  "name": "Scoped Ice Staging Publish Execution Approval",
+  "status": "blocked_before_deployment",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "canonicalRoutes": ["/", "/service-areas", "/contact"],
+  "approvalReference": "v2-8-14-user-approved-scoped-ice-staging-publish-execution",
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-14-scoped-ice-staging-publish-execution-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14_SCOPED_ICE_STAGING_PUBLISH_EXECUTION_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "92%",
+    "v2_8CompletionAfterPhase": "99%",
+    "nextReference": "V2.8.14A",
+    "nextReferenceName": "Staging Target Isolation And Deployment Auth Closure"
+  },
+  "carryforward": {
+    "previousReference": "V2.8.13",
+    "backendVerificationStatus": "backend_verified_for_staging_readiness",
+    "stagingOperator": "PumpkinCMS operator",
+    "rollbackOwner": "PumpkinCMS operator",
+    "staticFormGateStatus": "configured_owner_approved_backend_verified"
+  },
+  "stagingTarget": {
+    "approvedName": "swa-ice-static-staging",
+    "approvedResourceGroup": "rg-ice-static-staging",
+    "confirmedName": "swa-ice-static-staging",
+    "confirmedResourceGroup": "rg-ice-static-staging",
+    "confirmedDefaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "location": "East US 2",
+    "sku": "Free",
+    "repositoryUrl": null,
+    "branch": null,
+    "customDomains": ["iceskatingrinkrentals.com", "www.iceskatingrinkrentals.com"],
+    "placeholderTargetUsed": false,
+    "productionCustomDomainRisk": true
+  },
+  "deploymentAuth": {
+    "swaCliAvailable": false,
+    "checkedEnvironmentVariables": [
+      "AZURE_STATIC_WEB_APPS_API_TOKEN_ICE_STAGING",
+      "AZURE_STATIC_WEB_APPS_API_TOKEN",
+      "SWA_CLI_DEPLOYMENT_TOKEN",
+      "ICE_STAGING_SWA_DEPLOYMENT_TOKEN",
+      "AZURE_STATIC_WEB_APPS_API_TOKEN_ICE"
+    ],
+    "deploymentTokenPresentInCurrentSession": false,
+    "deploymentTokenPrintedOrExported": false,
+    "protectedConfigReadForCredential": false
+  },
+  "artifact": {
+    "sanitizedBuildRunId": "sanitized_20260612222605",
+    "artifactRoot": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612222605/repo/apps/ice-rink-web/out",
+    "fileCount": 41,
+    "aggregateSha256": "ad2917480ac7df3b19289153894b35f54fd58b382d69d03afc918e5a037d3201",
+    "requiredRoutesPresent": true,
+    "requiredFilesPresent": true,
+    "forbiddenArtifactContentPathMatches": 0,
+    "highConfidenceSecretLikeMatches": 0,
+    "localhostMatches": 1,
+    "localhostMatchClassification": "standard_next_polyfill_bundle_warning_not_config_leak"
+  },
+  "validations": {
+    "azureAccountShow": "passed_read_only_no_identity_recorded",
+    "azureStaticWebAppShow": "passed_read_only_target_confirmed_with_blocking_custom_domains",
+    "iceStaticSourceValidate": "passed_with_34_warnings",
+    "iceTypeCheck": "passed",
+    "staticGenerate": "passed_with_34_warnings",
+    "staticOutputValidator": "passed",
+    "stagingPackageValidator": "passed",
+    "runtimeQaHarnessCheck": "passed_6_tests",
+    "runtimeQaEvidenceRun": "runtimeqa_b459ecae015b5e4a",
+    "runtimeQaEvidenceValidation": "passed_with_1_warning",
+    "resourceRegistryOperationalBindings": "passed_zero_failures_zero_warnings",
+    "olmProviderProfileCheck": "passed_planning_only_live_write_allowed_false",
+    "staticFormEndpointCheck": "passed",
+    "staticFormEndpointTests": "passed_28_checks",
+    "artifactSecurityScan": "passed_with_standard_polyfill_localhost_warning",
+    "noUncontrolledWriteScan": "passed_no_source_or_script_changes_deployment_not_attempted",
+    "secretLikeScan": "passed_no_high_confidence_secret_like_matches",
+    "gitDiffCheck": "passed_no_files_staged_generated_outputs_ignored"
+  },
+  "deployment": {
+    "attempted": false,
+    "executed": false,
+    "classification": "blocked_before_deployment",
+    "blockers": [
+      "production_custom_domains_attached_to_target",
+      "deployment_token_not_present_in_current_session",
+      "swa_cli_not_available"
+    ],
+    "broadRetry": false
+  },
+  "postDeployRouteChecks": {
+    "attempted": false,
+    "reason": "deployment_not_executed",
+    "allowedRoutes": [
+      "https://happy-mud-0b375e20f.7.azurestaticapps.net/",
+      "https://happy-mud-0b375e20f.7.azurestaticapps.net/service-areas",
+      "https://happy-mud-0b375e20f.7.azurestaticapps.net/contact"
+    ]
+  },
+  "goNoGo": {
+    "classification": "blocked_before_deployment",
+    "readyForStagingDeploymentExecution": false,
+    "dnsIndexingLivePublicationClosed": true,
+    "productionReleaseApproved": false
+  },
+  "safety": {
+    "deployment": false,
+    "dnsChange": false,
+    "indexing": false,
+    "livePublication": false,
+    "productionDomainCutover": false,
+    "externalCrawling": false,
+    "livePageCrawlingBeyondAllowedChecks": false,
+    "liveOutboundUrlChecks": false,
+    "contactFormSubmission": false,
+    "postToContactEndpoint": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "providerWrites": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureConfigMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "deploymentTokenPrintedOrExported": false,
+    "secretsPrinted": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "generatedArtifactsStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-13-carryforward.md",
+    "pre-deployment-gate-result.md",
+    "staging-target-confirmation-result.md",
+    "deployment-auth-readiness-result.md",
+    "sanitized-static-build-result.md",
+    "static-output-validator-result.md",
+    "staging-package-validator-result.md",
+    "artifact-root-selection-result.md",
+    "artifact-security-scan-result.md",
+    "scoped-staging-deployment-result.md",
+    "post-deploy-staging-route-check-result.md",
+    "backend-contact-form-gate-carryforward.md",
+    "dns-indexing-live-publication-closed-gates.md",
+    "staging-publish-execution-readiness-decision.md",
+    "rollback-abort-result.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}

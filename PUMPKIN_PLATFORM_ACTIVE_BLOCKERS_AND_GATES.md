@@ -28,6 +28,8 @@
 | Owner Backend Media and Exact Staging Target Approval Intake | Complete local/control-layer gate closure, execution blocked | V2.8.10 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Endpoint owner, contact-form owner, and media/content approvals closed for staging-readiness only; backend verification and exact executable SWA target still block staging execution. |
 | Backend Verification and Exact Staging Target Resolution Boundary | Complete safe metadata resolution, execution blocked | V2.8.11 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Function App and actual SWA target are resolved from safe read-only metadata; backend POST/form behavior verification, staging deploy operator, rollback/abort owner, and deployment secret boundary still block staging execution. |
 | Backend Live Verification Scope and Staging Operator Rollback Closure | Complete boundary packet, execution blocked | V2.8.12 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Backend live verification packet and deployment method are prepared; named deploy operator, named rollback/abort owner, external secret-storage confirmation, and backend POST evidence still block staging execution. |
+| Backend Live POST and Operator Rollback Naming | Complete backend verified, staging publish approval ready | V2.8.13 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | One approved synthetic backend POST returned `200 OK`; operator and rollback labels are closed as `PumpkinCMS operator`; future scoped staging deployment still requires separate V2.8.14 approval and DNS/indexing/live-publication gates remain closed. |
+| Scoped Ice Staging Publish Execution | Complete, blocked before deployment | V2.8.14 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Fresh sanitized artifact and validators passed, but deployment stopped because the target has production custom domains attached, deployment-token env vars are absent, and `swa` CLI is unavailable. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -387,3 +389,54 @@ Still separately gated:
 - V2.8.12 POST/contact form submissions/payload submissions: `0`
 - V2.8.12 deployment/DNS/indexing/live publication actions: `0`
 - V2.8.12 protected config reads and secret exports: `0`
+- V2.8.13 staging operator: `PumpkinCMS operator`
+- V2.8.13 rollback owner: `PumpkinCMS operator`
+- V2.8.13 approved backend endpoint: `https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact`
+- V2.8.13 approved Origin: `https://happy-mud-0b375e20f.7.azurestaticapps.net`
+- V2.8.13 payload classification: `synthetic_non_pii_example_invalid`
+- V2.8.13 POST/contact form submissions/payload submissions: `1`
+- V2.8.13 broad retries: `0`
+- V2.8.13 second POST: `0`
+- V2.8.13 backend POST status: `200 OK`
+- V2.8.13 backend response classification: `backend_verified_for_staging_readiness`
+- V2.8.13 response entryId present: `true`
+- V2.8.13 sanitized build run: `sanitized_20260612214857`
+- V2.8.13 local static integrity: `passed`
+- V2.8.13 static form gate status: `configured_owner_approved_backend_verified`
+- V2.8.13 static output validator: `passed_zero_external_gates`
+- V2.8.13 staging package validator: `passed_zero_external_gates`
+- V2.8.13 Runtime QA evidence run: `runtimeqa_7938bfd68b6d2374`
+- V2.8.13 Resource Registry operational binding validator: `passed`
+- V2.8.13 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.13 staging execution classification: `ready_for_staging_publish_execution_approval`
+- V2.8.13 provider writes outside approved POST: `0`
+- V2.8.13 CMS writes: `0`
+- V2.8.13 Azure infrastructure mutations: `0`
+- V2.8.13 RBAC assignments: `0`
+- V2.8.13 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.13 protected config reads and secret exports: `0`
+- V2.8.13 keys/listKeys, connection strings, SAS: `0`
+- V2.8.14 Azure Static Web App target confirmed: `swa-ice-static-staging` / `rg-ice-static-staging` / `happy-mud-0b375e20f.7.azurestaticapps.net`
+- V2.8.14 target custom domains: `iceskatingrinkrentals.com`, `www.iceskatingrinkrentals.com`
+- V2.8.14 deployment classification: `blocked_before_deployment`
+- V2.8.14 blocker: `production_custom_domains_attached_to_target`
+- V2.8.14 blocker: `deployment_token_not_present_in_current_session`
+- V2.8.14 blocker: `swa_cli_not_available`
+- V2.8.14 sanitized build run: `sanitized_20260612222605`
+- V2.8.14 artifact root: `apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612222605/repo/apps/ice-rink-web/out`
+- V2.8.14 artifact file count: `41`
+- V2.8.14 artifact aggregate SHA-256: `ad2917480ac7df3b19289153894b35f54fd58b382d69d03afc918e5a037d3201`
+- V2.8.14 static output validator: `passed_zero_external_gates`
+- V2.8.14 staging package validator: `passed_zero_external_gates`
+- V2.8.14 Runtime QA evidence run: `runtimeqa_b459ecae015b5e4a`
+- V2.8.14 Resource Registry operational binding validator: `passed`
+- V2.8.14 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.14 deployment executed: `0`
+- V2.8.14 post-deploy route checks: `0`
+- V2.8.14 contact form submissions/contact endpoint POST: `0`
+- V2.8.14 provider writes: `0`
+- V2.8.14 CMS writes: `0`
+- V2.8.14 Azure infrastructure creation/configuration mutations: `0`
+- V2.8.14 RBAC assignments: `0`
+- V2.8.14 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.14 protected config reads, deployment token prints/exports, keys/listKeys, connection strings, SAS: `0`
