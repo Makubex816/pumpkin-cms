@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.6 |
-| currentReferenceName | Contact Form Media Staging Target Approval Intake And Validator Gate Classification |
-| currentReferenceStatus | Complete local approval intake and validator classification; staging execution remains blocked by static form endpoint/backend verification, contact-form owner verification, media/content approval, exact target, DNS, indexing, and publication gates |
+| currentReference | V2.8.7 |
+| currentReferenceName | External Approval Intake Closure And Staging Target Finalization Packet |
+| currentReferenceStatus | Complete local approval records and finalization packet; staging execution remains no-go because endpoint/backend, owner/media/content, and exact target approvals are unresolved while DNS/indexing/publication stay closed |
 | provisionalV2OverallCompletion | `91%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.7 |
-| nextReferenceName | Static Form Endpoint Approval And Staging Target Finalization |
-| nextGate | Close approved static form endpoint/backend evidence, contact-form owner verification, media/content approval, and exact staging target finalization before any staging execution |
-| safetyPosture | Local validator classification, sanitized build revalidation, approval intake, and docs only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, or external crawl |
-| blockedState | Staging execution is blocked until static form endpoint/backend verification, owner contact-form verification, media/content approval, exact target approval, and separate deployment/DNS/indexing/publication approvals are complete |
+| nextReference | V2.8.8 |
+| nextReferenceName | Owner Approval Values And Static Form Endpoint Verification Closure |
+| nextGate | Supply explicit non-secret endpoint/backend, owner contact-form, media/content, and exact staging target approval values before any staging execution |
+| safetyPosture | Local/read-only approval record closure, validator rechecks, and docs only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, or external crawl |
+| blockedState | Staging execution is blocked until V2.8.7 missing operator inputs are supplied and the classified static output/staging validators pass without external approval gates |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `93%` | Validator gate classification and approval intake complete; static form backend/owner/media/target approvals remain closed |
+| V2.8 | `94%` | External approval records and staging target finalization packet complete; static form backend/owner/media/target approvals remain unresolved |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

@@ -30,6 +30,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_4_STAGING_PUBLISH_WORKSHEET_NO_GO_REPORT.md` | V2.8.4 staging publish worksheet/no-go root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_5_SANITIZED_NO_DOTENV_STATIC_BUILD_APPROVAL_PACKET_REPORT.md` | V2.8.5 sanitized no-dotenv static build and approval packet root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_6_CONTACT_FORM_MEDIA_STAGING_TARGET_APPROVAL_INTAKE_REPORT.md` | V2.8.6 contact form/media/staging target approval intake and validator classification root report |
+| `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_7_EXTERNAL_APPROVAL_INTAKE_STAGING_TARGET_FINALIZATION_REPORT.md` | V2.8.7 external approval intake closure and staging target finalization root report |
 
 ## Latest Canonical Result Packages
 
@@ -56,6 +57,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website staging publish worksheet/no-go criteria | `deployment/architecture/tenant-website-publish-readiness/v2-8-4-staging-publish-worksheet-no-go-result/` | V2.8.4 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current staging worksheet/no-go package |
 | Tenant Website sanitized no-dotenv static build and approval packet | `deployment/architecture/tenant-website-publish-readiness/v2-8-5-sanitized-no-dotenv-static-build-approval-packet-result/` | V2.8.5 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current sanitized static build and approval packet package |
 | Tenant Website contact form/media/staging target approval intake | `deployment/architecture/tenant-website-publish-readiness/v2-8-6-contact-form-media-staging-target-approval-intake-result/` | V2.8.6 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current validator classification and approval intake package |
+| Tenant Website external approval intake closure and staging target finalization | `deployment/architecture/tenant-website-publish-readiness/v2-8-7-external-approval-intake-staging-target-finalization-result/` | V2.8.7 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current approval-record closure/no-go package |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -86,6 +88,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website staging publish worksheet/no-go criteria | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_4_STAGING_PUBLISH_WORKSHEET_NO_GO_REPORT.md` | V2.8.4 |
 | Tenant Website sanitized no-dotenv static build and approval packet | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_5_SANITIZED_NO_DOTENV_STATIC_BUILD_APPROVAL_PACKET_REPORT.md` | V2.8.5 |
 | Tenant Website contact form/media/staging target approval intake | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_6_CONTACT_FORM_MEDIA_STAGING_TARGET_APPROVAL_INTAKE_REPORT.md` | V2.8.6 |
+| Tenant Website external approval intake closure and staging target finalization | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_7_EXTERNAL_APPROVAL_INTAKE_STAGING_TARGET_FINALIZATION_REPORT.md` | V2.8.7 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |

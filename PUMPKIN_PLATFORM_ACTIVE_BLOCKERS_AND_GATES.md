@@ -22,6 +22,7 @@
 | Staging Publish Worksheet and No-Go Criteria | Complete worksheet, execution blocked | V2.8.4 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Staging worksheet and no-go matrix complete; staging execution blocked by sanitized no-dotenv build proof, owner contact-form verification, media/content approval, target/DNS approval, indexing, and live-publication gates. |
 | Sanitized No-Dotenv Static Build and Approval Packet Closure | Complete local build path, execution blocked | V2.8.5 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Repo-supported sanitized no-dotenv Ice static build path passed under ignored `.tmp`; staging execution remains blocked by contact-form owner verification, media/content approval, exact target/DNS approval, indexing, and live-publication gates. |
 | Contact Form Media Staging Target Approval Intake and Validator Gate Classification | Complete local classification, execution blocked | V2.8.6 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Static validators now distinguish local static integrity from external backend/owner gates; local static integrity passed, while form endpoint/backend, owner/media/content, exact target, DNS, indexing, and publication gates remain blocked/closed. |
+| External Approval Intake Closure and Staging Target Finalization Packet | Complete local records, execution blocked | V2.8.7 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | No-email endpoint candidate recorded from safe repo evidence; backend verification remains blocked, owner/media/content and exact staging target approvals remain unresolved, and DNS/indexing/live-publication gates remain closed. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -274,3 +275,18 @@ Still separately gated:
 - V2.8.6 Azure infrastructure mutations: `0`
 - V2.8.6 RBAC assignments: `0`
 - V2.8.6 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.7 approval record closure: `complete_local_records_execution_blocked`
+- V2.8.7 contact-form endpoint configuration: `unresolved_candidate_recorded`
+- V2.8.7 contact-form backend verification: `blocked`
+- V2.8.7 contact-form owner approval: `unresolved`
+- V2.8.7 media/content final approval: `unresolved`
+- V2.8.7 staging deployment target decision: `unresolved`
+- V2.8.7 DNS gate: `closed`
+- V2.8.7 indexing gate: `closed`
+- V2.8.7 live-publication gate: `closed`
+- V2.8.7 staging execution classification: `local_static_ready_external_approvals_blocked`
+- V2.8.7 provider data writes: `0`
+- V2.8.7 CMS writes: `0`
+- V2.8.7 Azure infrastructure mutations: `0`
+- V2.8.7 RBAC assignments: `0`
+- V2.8.7 deployment/DNS/indexing/live publication actions: `0`
