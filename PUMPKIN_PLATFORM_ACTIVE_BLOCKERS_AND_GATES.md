@@ -23,6 +23,9 @@
 | Sanitized No-Dotenv Static Build and Approval Packet Closure | Complete local build path, execution blocked | V2.8.5 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Repo-supported sanitized no-dotenv Ice static build path passed under ignored `.tmp`; staging execution remains blocked by contact-form owner verification, media/content approval, exact target/DNS approval, indexing, and live-publication gates. |
 | Contact Form Media Staging Target Approval Intake and Validator Gate Classification | Complete local classification, execution blocked | V2.8.6 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Static validators now distinguish local static integrity from external backend/owner gates; local static integrity passed, while form endpoint/backend, owner/media/content, exact target, DNS, indexing, and publication gates remain blocked/closed. |
 | External Approval Intake Closure and Staging Target Finalization Packet | Complete local records, execution blocked | V2.8.7 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | No-email endpoint candidate recorded from safe repo evidence; backend verification remains blocked, owner/media/content and exact staging target approvals remain unresolved, and DNS/indexing/live-publication gates remain closed. |
+| Owner Approval Values and Static Form Endpoint Verification Closure | Complete classifier hardening, execution blocked | V2.8.8 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Static form validators now distinguish endpoint configured, endpoint owner-approved, backend-verified, blocked, and no-live-check states; fresh sanitized build passed, but no approved endpoint/owner/backend/media/target values were present. |
+| Full-Scope External Approval Values Closure and Staging Readiness Validation | Complete local validation, execution blocked | V2.8.9 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Safe candidate endpoint configured for local validation and local static integrity passed; staging execution remains blocked by missing owner/backend/media/content/exact-target approvals. |
+| Owner Backend Media and Exact Staging Target Approval Intake | Complete local/control-layer gate closure, execution blocked | V2.8.10 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Endpoint owner, contact-form owner, and media/content approvals closed for staging-readiness only; backend verification and exact executable SWA target still block staging execution. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -290,3 +293,55 @@ Still separately gated:
 - V2.8.7 Azure infrastructure mutations: `0`
 - V2.8.7 RBAC assignments: `0`
 - V2.8.7 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.8 validator hardening: `complete`
+- V2.8.8 sanitized build run: `sanitized_20260612171036`
+- V2.8.8 local static integrity: `passed`
+- V2.8.8 static form gate status: `blocked_endpoint_missing`
+- V2.8.8 current-session endpoint/approval flags: `absent`
+- V2.8.8 candidate endpoint probe: `blocked_owner_approval_missing`
+- V2.8.8 contact-form endpoint configuration: `unresolved_candidate_recorded_no_current_session_value`
+- V2.8.8 contact-form backend verification: `blocked_no_live_or_backend_verification_approval`
+- V2.8.8 contact-form owner approval: `unresolved`
+- V2.8.8 media/content final approval: `unresolved`
+- V2.8.8 staging deployment target decision: `unresolved`
+- V2.8.8 DNS gate: `closed`
+- V2.8.8 indexing gate: `closed`
+- V2.8.8 live-publication gate: `closed`
+- V2.8.8 staging execution classification: `local_static_ready_static_form_and_owner_approvals_blocked`
+- V2.8.8 provider data writes: `0`
+- V2.8.8 CMS writes: `0`
+- V2.8.8 Azure infrastructure mutations: `0`
+- V2.8.8 RBAC assignments: `0`
+- V2.8.8 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.9 sanitized build run: `sanitized_20260612173425`
+- V2.8.9 local static integrity: `passed`
+- V2.8.9 static form gate status: `blocked_owner_approval_missing`
+- V2.8.9 endpoint configuration: `configured_approved_https_shape`
+- V2.8.9 external approval gate count: `2`
+- V2.8.9 Runtime QA evidence validation: `passed_with_1_warning`
+- V2.8.9 Resource Registry operational binding validator: `passed`
+- V2.8.9 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.9 staging execution classification: `local_static_ready_candidate_endpoint_configured_owner_backend_media_target_approvals_blocked`
+- V2.8.9 provider data writes: `0`
+- V2.8.9 CMS writes: `0`
+- V2.8.9 Azure infrastructure mutations: `0`
+- V2.8.9 RBAC assignments: `0`
+- V2.8.9 deployment/DNS/indexing/live publication actions: `0`
+- V2.8.10 approval reference: `v2-8-10-user-approved-through-validation`
+- V2.8.10 sanitized build run: `sanitized_20260612180602`
+- V2.8.10 local static integrity: `passed`
+- V2.8.10 static form gate status: `blocked_backend_verification_missing`
+- V2.8.10 endpoint owner approval: `approved_for_local_staging_readiness_validation_only`
+- V2.8.10 contact-form owner approval: `approved_for_local_staging_readiness_validation_only`
+- V2.8.10 media/content final approval: `approved_for_local_staging_readiness_validation_only`
+- V2.8.10 backend verification: `blocked_requires_future_live_backend_verification_approval`
+- V2.8.10 exact staging target: `unresolved_executable_target_candidate_recorded`
+- V2.8.10 Runtime QA evidence run: `runtimeqa_4e5c6b577de55e99`
+- V2.8.10 Resource Registry operational binding validator: `passed`
+- V2.8.10 OLM provider profile check: `passed_live_write_allowed_false`
+- V2.8.10 staging execution classification: `partial_local_staging_readiness_owner_media_closed_backend_and_exact_target_blocked`
+- V2.8.10 provider data writes: `0`
+- V2.8.10 CMS writes: `0`
+- V2.8.10 Azure infrastructure mutations: `0`
+- V2.8.10 RBAC assignments: `0`
+- V2.8.10 deployment/DNS/indexing/live publication actions: `0`

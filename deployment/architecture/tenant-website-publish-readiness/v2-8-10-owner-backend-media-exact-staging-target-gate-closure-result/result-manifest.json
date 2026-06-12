@@ -1,0 +1,145 @@
+{
+  "reference": "V2.8.10",
+  "name": "Owner Backend Media And Exact Staging Target Approval Intake",
+  "status": "complete_local_control_gate_closure_execution_no_go",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "canonicalRoutes": ["/", "/service-areas", "/contact"],
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-10-owner-backend-media-exact-staging-target-gate-closure-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_10_OWNER_BACKEND_MEDIA_EXACT_STAGING_TARGET_GATE_CLOSURE_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "91%",
+    "v2_8CompletionAfterPhase": "97%",
+    "nextReference": "V2.8.11",
+    "nextReferenceName": "Backend Verification And Exact Staging Target Resolution Boundary"
+  },
+  "approvalReference": "v2-8-10-user-approved-through-validation",
+  "records": {
+    "contactFormEndpointOwnerApproval": "approved_for_local_staging_readiness_validation_only",
+    "contactFormOwnerApproval": "approved_for_local_staging_readiness_validation_only",
+    "contactFormBackendVerification": "blocked_requires_future_live_backend_verification_approval",
+    "mediaContentFinalApproval": "approved_for_local_staging_readiness_validation_only",
+    "exactStagingDeploymentTarget": "unresolved_executable_target_candidate_recorded",
+    "dnsGate": "closed",
+    "indexingGate": "closed",
+    "livePublicationGate": "closed"
+  },
+  "safeValuesUsed": {
+    "staticFormEndpoint": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "staticFormEndpointSource": "deployment/azure/ice-static-form-real-email-delivery-preflight/manifest.json",
+    "endpointMode": "dry-run",
+    "ownerApprovalFlagSource": "current V2.8.10 prompt approval for local/staging-readiness validation only",
+    "staticFormEndpointOwnerApproved": true,
+    "staticFormOwnerApproved": true,
+    "staticFormBackendVerified": false,
+    "staticFormLiveCheckApproved": false
+  },
+  "stagingTargetCandidate": {
+    "platform": "Azure Static Web Apps",
+    "candidateStagingHost": "ice-dev.iceskatingrinkrentals.com",
+    "alternateStagingHost": "staging.iceskatingrinkrentals.com",
+    "candidateStaticWebApp": "swa-ice-rink-rentals-staging",
+    "candidateResourceGroup": "rg-pumpkin-static-staging",
+    "subscriptionReference": "Azure subscription 1 or approved redacted subscription reference still requires explicit target confirmation for this SWA",
+    "uploadRoot": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612180602/repo/apps/ice-rink-web/out",
+    "targetSourceDocs": [
+      "deployment/static-azure/ice-staging-swa-runbook.md",
+      "deployment/static-azure/swa-staging-execution-prep.md",
+      "deployment/architecture/tenant-website-publish-readiness/v2-8-9-final-external-approval-values-staging-readiness-result/final-staging-deployment-target-result.md"
+    ],
+    "unresolvedFields": [
+      "non-placeholder approved subscription/resource target for Ice SWA",
+      "confirmed existing Static Web App resource or approved future resource-creation boundary",
+      "Azure default hostname",
+      "deployment method/profile that does not require committed secrets",
+      "named future deploy operator and rollback/abort owner"
+    ]
+  },
+  "validatorClassification": {
+    "hardened": true,
+    "finalStaticFormGateStatus": "blocked_backend_verification_missing",
+    "endpointConfiguration": "configured_approved_https_shape",
+    "ownerApproval": "approved",
+    "backendVerification": "missing",
+    "liveCheck": "not_approved_not_performed",
+    "valueSource": "process_environment_public_static_form_endpoint_for_local_validation_only",
+    "localStaticIntegrityOk": true,
+    "externalApprovalGateCount": 1
+  },
+  "sanitizedBuild": {
+    "runId": "sanitized_20260612180602",
+    "ok": true,
+    "protectedConfigCopied": false,
+    "protectedConfigContentsRead": false,
+    "childEnvironmentAllowlistOnly": true,
+    "staticOutDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612180602/repo/apps/ice-rink-web/out",
+    "commandResults": {
+      "staticValidate": "passed",
+      "nextBuild": "passed",
+      "staticGenerate": "passed"
+    }
+  },
+  "validations": {
+    "iceStaticSourceValidate": "passed_with_34_warnings",
+    "iceTypeCheck": "passed",
+    "staticOutputValidator": "expected_no_go_local_static_integrity_passed_external_gates_1",
+    "stagingPackageValidator": "expected_no_go_local_static_integrity_passed_external_gates_1",
+    "runtimeQaHarnessCheck": "passed",
+    "runtimeQaEvidenceRun": "runtimeqa_4e5c6b577de55e99",
+    "runtimeQaEvidenceValidation": "passed",
+    "resourceRegistryOperationalBindings": "passed_zero_failures_zero_warnings",
+    "olmProviderProfileCheck": "passed_planning_only_live_write_allowed_false",
+    "olmPublishGate": "not_separate_cli_available_provider_profile_no_live_write_gate_used",
+    "noUncontrolledWriteScan": "passed_no_scoped_script_matches",
+    "secretLikeScan": "passed_27_scoped_files",
+    "gitDiffCheck": "passed_with_line_ending_warnings_only"
+  },
+  "goNoGo": {
+    "stagingExecutionReady": false,
+    "classification": "partial_local_staging_readiness_owner_media_closed_backend_and_exact_target_blocked",
+    "readyForStagingPublishExecutionApproval": false,
+    "readyForStagingPublishExecutionWithLiveBackendVerificationGate": false
+  },
+  "safety": {
+    "deployment": false,
+    "dnsChange": false,
+    "indexing": false,
+    "livePublication": false,
+    "externalCrawling": false,
+    "liveHttpChecks": false,
+    "liveContactFormSubmission": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "providerWrites": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "secretsPrinted": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "generatedArtifactsStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-9-carryforward.md",
+    "contact-form-endpoint-owner-approval-result.md",
+    "contact-form-backend-verification-result.md",
+    "media-content-final-approval-result.md",
+    "exact-staging-deployment-target-result.md",
+    "dns-indexing-live-publication-closed-gates.md",
+    "static-form-validator-final-classification.md",
+    "sanitized-static-build-revalidation.md",
+    "staging-publish-boundary-readiness-decision.md",
+    "missing-operator-inputs.md",
+    "future-live-boundary-approval-wording.md",
+    "publish-gate-final-revalidation.md",
+    "local-validation-result.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}

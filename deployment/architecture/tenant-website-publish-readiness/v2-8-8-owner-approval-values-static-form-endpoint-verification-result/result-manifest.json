@@ -1,0 +1,113 @@
+{
+  "reference": "V2.8.8",
+  "name": "Owner Approval Values And Static Form Endpoint Verification Closure",
+  "status": "complete_local_classifier_hardening_execution_blocked",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "canonicalRoutes": ["/", "/service-areas", "/contact"],
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-8-owner-approval-values-static-form-endpoint-verification-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_8_OWNER_APPROVAL_VALUES_STATIC_FORM_ENDPOINT_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "91%",
+    "v2_8CompletionAfterPhase": "95%",
+    "nextReference": "V2.8.9",
+    "nextReferenceName": "Owner-Supplied Approval Values and Staging Target Closure"
+  },
+  "records": {
+    "contactFormEndpointConfiguration": "unresolved_candidate_recorded_no_current_session_value",
+    "contactFormBackendVerification": "blocked_no_live_or_backend_verification_approval",
+    "contactFormOwnerApproval": "unresolved",
+    "mediaContentFinalApproval": "unresolved",
+    "stagingDeploymentTargetDecision": "unresolved",
+    "dnsGate": "closed",
+    "indexingGate": "closed",
+    "livePublicationGate": "closed"
+  },
+  "safeCandidateEvidence": {
+    "noEmailEndpointUrl": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "noEmailEndpointMode": "dry-run",
+    "noEmailEndpointSource": "deployment/azure/ice-static-form-real-email-delivery-preflight/manifest.json",
+    "candidateStagingDomain": "ice-dev.iceskatingrinkrentals.com",
+    "alternateStagingDomain": "staging.iceskatingrinkrentals.com",
+    "candidateStaticWebApp": "swa-ice-rink-rentals-staging",
+    "candidateResourceGroup": "rg-pumpkin-static-staging"
+  },
+  "currentSessionInputState": {
+    "publicStaticFormEndpoint": "absent",
+    "staticFormEndpointVerified": "absent",
+    "staticFormBackendVerified": "absent",
+    "staticFormEndpointOwnerApproved": "absent",
+    "staticFormOwnerApproved": "absent",
+    "staticFormLiveCheckApproved": "absent"
+  },
+  "validatorClassification": {
+    "hardened": true,
+    "actualStaticFormGateStatus": "blocked_endpoint_missing",
+    "actualEndpointConfiguration": "missing",
+    "actualOwnerApproval": "not_evaluated_until_endpoint_configured",
+    "actualBackendVerification": "not_evaluated_until_endpoint_configured",
+    "actualLiveCheck": "not_approved_not_performed",
+    "candidateEndpointProbeStatus": "blocked_owner_approval_missing",
+    "simulatedFullApprovalProbeStatus": "passed"
+  },
+  "sanitizedBuild": {
+    "runId": "sanitized_20260612171036",
+    "ok": true,
+    "protectedConfigCopied": false,
+    "protectedConfigContentsRead": false,
+    "childEnvironmentAllowlistOnly": true,
+    "staticOutDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612171036/repo/apps/ice-rink-web/out"
+  },
+  "goNoGo": {
+    "stagingExecutionReady": false,
+    "classification": "local_static_ready_static_form_and_owner_approvals_blocked",
+    "nextPhaseCanBeStagingPublishExecution": false
+  },
+  "safety": {
+    "deployment": false,
+    "dnsChange": false,
+    "indexing": false,
+    "livePublication": false,
+    "externalCrawling": false,
+    "liveHttpChecks": false,
+    "liveContactFormSubmission": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "providerWrites": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "secretsPrinted": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "generatedArtifactsStaged": false
+  },
+  "changedScripts": [
+    "apps/ice-rink-web/scripts/sanitized-static-build.mjs",
+    "deployment/static-azure/validate-static-output.mjs",
+    "deployment/static-azure/validate-staging-package.mjs"
+  ],
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-7-carryforward.md",
+    "contact-form-endpoint-configuration-closure.md",
+    "contact-form-backend-verification-closure.md",
+    "contact-form-owner-approval-closure.md",
+    "media-content-final-approval-closure.md",
+    "staging-deployment-target-approval-closure.md",
+    "dns-indexing-live-publication-closed-gates.md",
+    "static-form-validator-classification-result.md",
+    "sanitized-static-build-revalidation-result.md",
+    "staging-execution-go-no-go-decision.md",
+    "missing-operator-inputs.md",
+    "publish-gate-revalidation-result.md",
+    "local-validation-result.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}

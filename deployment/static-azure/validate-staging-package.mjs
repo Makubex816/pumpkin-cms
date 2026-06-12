@@ -92,36 +92,111 @@ function addExternalApprovalGate(externalApprovalGates, id, message, requiredEvi
   });
 }
 
-function validateStaticFormProductionGate(site, externalApprovalGates) {
-  if (!site.requiresStaticFormEndpoint) return;
+function addClassifiedExternalApprovalGate(externalApprovalGates, id, category, message, requiredEvidence, state) {
+  externalApprovalGates.push({
+    id,
+    category,
+    severity: 'no-go',
+    message,
+    requiredEvidence,
+    state,
+  });
+}
+
+function isTrueEnv(...keys) {
+  return keys.some((key) => process.env[key] === 'true');
+}
+
+function getStaticFormGateState(site) {
+  if (!site.requiresStaticFormEndpoint) {
+    return {
+      required: false,
+      status: 'not_applicable',
+      endpointConfiguration: 'not_required',
+      ownerApproval: 'not_required',
+      backendVerification: 'not_required',
+      liveCheck: 'not_required',
+    };
+  }
 
   const endpoint = getConfiguredStaticFormEndpoint();
-  const endpointVerified = process.env.STATIC_FORM_ENDPOINT_VERIFIED === 'true';
+  const endpointConfigured = Boolean(endpoint);
+  const endpointApprovedHttps = endpointConfigured &&
+    /^https:\/\//i.test(endpoint) &&
+    !/localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint);
+  const ownerApproved = isTrueEnv('STATIC_FORM_ENDPOINT_OWNER_APPROVED', 'STATIC_FORM_OWNER_APPROVED');
+  const backendVerified = isTrueEnv('STATIC_FORM_ENDPOINT_VERIFIED', 'STATIC_FORM_BACKEND_VERIFIED');
+  const liveCheckApproved = isTrueEnv('STATIC_FORM_LIVE_CHECK_APPROVED');
 
-  if (!endpoint) {
+  let status = 'configured_owner_approved_backend_verified';
+  if (!endpointConfigured) {
+    status = 'blocked_endpoint_missing';
+  } else if (!endpointApprovedHttps) {
+    status = 'blocked_endpoint_unapproved_shape';
+  } else if (!ownerApproved) {
+    status = 'blocked_owner_approval_missing';
+  } else if (!backendVerified) {
+    status = 'blocked_backend_verification_missing';
+  }
+
+  return {
+    required: true,
+    status,
+    endpointConfiguration: endpointConfigured
+      ? (endpointApprovedHttps ? 'configured_approved_https_shape' : 'configured_unapproved_or_placeholder_shape')
+      : 'missing',
+    ownerApproval: endpointConfigured && endpointApprovedHttps
+      ? (ownerApproved ? 'approved' : 'missing')
+      : 'not_evaluated_until_endpoint_configured',
+    backendVerification: endpointConfigured && endpointApprovedHttps
+      ? (backendVerified ? 'verified' : 'missing')
+      : 'not_evaluated_until_endpoint_configured',
+    liveCheck: liveCheckApproved ? 'explicitly_approved' : 'not_approved_not_performed',
+    valueSource: endpointConfigured ? 'process_environment_public_static_form_endpoint' : 'none',
+  };
+}
+
+function validateStaticFormProductionGate(site, externalApprovalGates) {
+  const staticFormGate = getStaticFormGateState(site);
+  if (!site.requiresStaticFormEndpoint) return staticFormGate;
+
+  if (staticFormGate.endpointConfiguration === 'missing') {
     addExternalApprovalGate(
       externalApprovalGates,
       'static-form-endpoint-configured',
       'Static form endpoint is not configured for production/static deploy readiness.',
       'Approved HTTPS static form endpoint supplied through process environment without reading protected config.',
     );
-  } else if (!/^https:\/\//i.test(endpoint) || /localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint)) {
+  } else if (staticFormGate.endpointConfiguration === 'configured_unapproved_or_placeholder_shape') {
     addExternalApprovalGate(
       externalApprovalGates,
       'static-form-endpoint-approved-https',
       'Static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.',
       'Owner-approved non-placeholder HTTPS endpoint for the Ice static contact form.',
     );
-  }
-
-  if (!endpointVerified) {
-    addExternalApprovalGate(
+  } else if (staticFormGate.ownerApproval !== 'approved') {
+    addClassifiedExternalApprovalGate(
       externalApprovalGates,
-      'static-form-backend-verification',
-      'Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness.',
-      'Backend proof that the approved endpoint accepts the static form payload and routes leads to the approved owner workflow.',
+      'static-form-endpoint-owner-approved',
+      'external_owner_approval_gate',
+      'Static form endpoint is configured but owner approval is missing.',
+      'Owner approval that the configured endpoint may be used for the Ice static contact form.',
+      staticFormGate.ownerApproval,
     );
   }
+
+  if (staticFormGate.backendVerification !== 'verified') {
+    addClassifiedExternalApprovalGate(
+      externalApprovalGates,
+      'static-form-backend-verification',
+      'external_backend_approval_gate',
+      'Static form endpoint/backend verification is missing; mailbox readiness is not app form readiness.',
+      'Backend proof that the approved endpoint accepts the static form payload and routes leads to the approved owner workflow.',
+      `${staticFormGate.backendVerification}; liveCheck=${staticFormGate.liveCheck}`,
+    );
+  }
+
+  return staticFormGate;
 }
 
 function validatePackage({ siteKey, folder }) {
@@ -130,6 +205,9 @@ function validatePackage({ siteKey, folder }) {
   const warnings = [];
   const externalApprovalGates = [];
   const resolvedFolder = folder ? path.resolve(folder) : '';
+  let staticFormGate = site?.requiresStaticFormEndpoint
+    ? getStaticFormGateState(site)
+    : { required: false, status: 'not_applicable' };
 
   if (!site) {
     errors.push(`Unknown site: ${siteKey || '(missing)'}`);
@@ -296,7 +374,7 @@ function validatePackage({ siteKey, folder }) {
     }
   }
 
-  validateStaticFormProductionGate(site, externalApprovalGates);
+  staticFormGate = validateStaticFormProductionGate(site, externalApprovalGates);
 
   const localStaticIntegrityOk = errors.length === 0;
   const externalApprovalGatesOk = externalApprovalGates.length === 0;
@@ -319,6 +397,7 @@ function validatePackage({ siteKey, folder }) {
       localStaticIntegrityErrorCount: errors.length,
       externalApprovalGateCount: externalApprovalGates.length,
       warningCount: warnings.length,
+      staticFormGate,
       notes: [
         'Local package integrity covers required files, route shape, media URL safety, noindex, forbidden files, sensitive content, redirects, and CMS-authored HTML safety.',
         'External approval gates cover backend/owner evidence that cannot be proven by local package inspection.',
