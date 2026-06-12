@@ -31,6 +31,7 @@
 | Backend Live POST and Operator Rollback Naming | Complete backend verified, staging publish approval ready | V2.8.13 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | One approved synthetic backend POST returned `200 OK`; operator and rollback labels are closed as `PumpkinCMS operator`; future scoped staging deployment still requires separate V2.8.14 approval and DNS/indexing/live-publication gates remain closed. |
 | Scoped Ice Staging Publish Execution | Complete, blocked before deployment | V2.8.14 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Fresh sanitized artifact and validators passed, but deployment stopped because the target has production custom domains attached, deployment-token env vars are absent, and `swa` CLI is unavailable. |
 | Staging Target Isolation and Deployment Auth Closure | Complete, blocked by deployment auth only | V2.8.14A / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | One isolated non-production SWA target `swa-ice-static-isolated-staging` was created and verified with no custom domains; pinned npx SWA CLI tooling and readiness wrapper exist; deployment waits on `SWA_CLI_DEPLOYMENT_TOKEN`. |
+| Scoped Ice Isolated Staging Deployment Execution | Complete, blocked before deployment by auth | V2.8.14B / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Isolated target, tooling, and fresh artifact gates passed, but deployment stopped before execution because `SWA_CLI_DEPLOYMENT_TOKEN` is absent. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -448,3 +449,12 @@ Still separately gated:
 - V2.8.14A deployment executed: `0`
 - V2.8.14A DNS/custom-domain/app-settings/RBAC mutations: `0`
 - V2.8.14A protected config reads, deployment token prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.8.14B isolated SWA target confirmed: `swa-ice-static-isolated-staging`
+- V2.8.14B deployment auth present: `false`
+- V2.8.14B sanitized build run: `sanitized_20260612231928`
+- V2.8.14B artifact aggregate SHA-256: `7e83c6c66d24f9087e74c77ee2eb958fdcb18a54893172ef9e8fb9410f399a82`
+- V2.8.14B deployment executed: `0`
+- V2.8.14B post-deploy route checks: `0`
+- V2.8.14B Azure infrastructure creation/configuration mutations: `0`
+- V2.8.14B DNS/custom-domain/app-settings/RBAC mutations: `0`
+- V2.8.14B protected config reads, deployment token prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
