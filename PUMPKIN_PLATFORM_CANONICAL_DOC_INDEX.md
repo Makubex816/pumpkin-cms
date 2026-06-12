@@ -38,6 +38,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_12_BACKEND_LIVE_VERIFICATION_SCOPE_STAGING_OPERATOR_ROLLBACK_REPORT.md` | V2.8.12 backend live verification scope and staging operator rollback root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_13_BACKEND_LIVE_POST_OPERATOR_ROLLBACK_NAMING_REPORT.md` | V2.8.13 backend live POST and operator rollback naming root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14_SCOPED_ICE_STAGING_PUBLISH_EXECUTION_REPORT.md` | V2.8.14 scoped Ice staging publish execution root report |
+| `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14A_STAGING_TARGET_ISOLATION_DEPLOYMENT_AUTH_CLOSURE_REPORT.md` | V2.8.14A staging target isolation and deployment auth closure root report |
 
 ## Latest Canonical Result Packages
 
@@ -72,6 +73,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website backend live verification scope and staging operator rollback | `deployment/architecture/tenant-website-publish-readiness/v2-8-12-backend-live-verification-scope-staging-operator-rollback-result/` | V2.8.12 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Historical boundary-packet/no-go package |
 | Tenant Website backend live POST and operator rollback naming | `deployment/architecture/tenant-website-publish-readiness/v2-8-13-backend-live-post-operator-rollback-naming-result/` | V2.8.13 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Historical backend-verified staging-readiness package |
 | Tenant Website scoped Ice staging publish execution | `deployment/architecture/tenant-website-publish-readiness/v2-8-14-scoped-ice-staging-publish-execution-result/` | V2.8.14 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current blocked-before-deployment package |
+| Tenant Website staging target isolation and deployment auth closure | `deployment/architecture/tenant-website-publish-readiness/v2-8-14a-staging-target-isolation-deployment-auth-closure-result/` | V2.8.14A / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current isolated-target/auth-blocked package |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -110,6 +112,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website backend live verification scope and staging operator rollback | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_12_BACKEND_LIVE_VERIFICATION_SCOPE_STAGING_OPERATOR_ROLLBACK_REPORT.md` | V2.8.12 |
 | Tenant Website backend live POST and operator rollback naming | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_13_BACKEND_LIVE_POST_OPERATOR_ROLLBACK_NAMING_REPORT.md` | V2.8.13 |
 | Tenant Website scoped Ice staging publish execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14_SCOPED_ICE_STAGING_PUBLISH_EXECUTION_REPORT.md` | V2.8.14 |
+| Tenant Website staging target isolation and deployment auth closure | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14A_STAGING_TARGET_ISOLATION_DEPLOYMENT_AUTH_CLOSURE_REPORT.md` | V2.8.14A |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |

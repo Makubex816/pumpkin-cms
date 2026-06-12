@@ -1,0 +1,164 @@
+{
+  "reference": "V2.8.14A",
+  "name": "Staging Target Isolation And Deployment Auth Closure",
+  "status": "complete_blocked_auth_missing",
+  "classification": "blocked_auth_missing",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "canonicalRoutes": ["/", "/service-areas", "/contact"],
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-14a-staging-target-isolation-deployment-auth-closure-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14A_STAGING_TARGET_ISOLATION_DEPLOYMENT_AUTH_CLOSURE_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "92%",
+    "v2_8CompletionAfterPhase": "99%",
+    "nextReference": "V2.8.14B",
+    "nextReferenceName": "Scoped Ice Isolated Staging Deployment Execution"
+  },
+  "blockedTarget": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "customDomains": ["iceskatingrinkrentals.com", "www.iceskatingrinkrentals.com"],
+    "usableForThisScopedStagingDeployment": false
+  },
+  "isolatedTarget": {
+    "name": "swa-ice-static-isolated-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+    "location": "East US 2",
+    "sku": "Free",
+    "repositoryUrl": null,
+    "branch": null,
+    "customDomains": [],
+    "createdInThisPhase": true,
+    "usableForFutureScopedStagingDeployment": true
+  },
+  "azureInventory": {
+    "resourceGroup": "rg-ice-static-staging",
+    "staticWebApps": [
+      {
+        "name": "swa-ice-static-staging",
+        "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+        "customDomains": ["iceskatingrinkrentals.com", "www.iceskatingrinkrentals.com"],
+        "classification": "blocked_production_custom_domains_attached"
+      },
+      {
+        "name": "swa-ice-static-isolated-staging",
+        "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+        "customDomains": [],
+        "classification": "approved_future_isolated_staging_target"
+      }
+    ]
+  },
+  "deploymentAuth": {
+    "canonicalRequiredEnvVar": "SWA_CLI_DEPLOYMENT_TOKEN",
+    "checkedEnvironmentVariables": [
+      "SWA_CLI_DEPLOYMENT_TOKEN",
+      "AZURE_STATIC_WEB_APPS_API_TOKEN_ICE_ISOLATED_STAGING",
+      "AZURE_STATIC_WEB_APPS_API_TOKEN_ICE_STAGING",
+      "AZURE_STATIC_WEB_APPS_API_TOKEN",
+      "ICE_STAGING_SWA_DEPLOYMENT_TOKEN",
+      "AZURE_STATIC_WEB_APPS_API_TOKEN_ICE"
+    ],
+    "deploymentTokenPresentInCurrentSession": false,
+    "deploymentTokenPrintedOrExported": false,
+    "deploymentTokenListed": false,
+    "protectedConfigReadForCredential": false
+  },
+  "deploymentTooling": {
+    "globalSwaCliOnPath": false,
+    "repoSupportedInvocation": "npx --yes @azure/static-web-apps-cli@2.0.9",
+    "swaCliVersionChecked": "2.0.9",
+    "readinessWrapper": "deployment/static-azure/scripts/ice-isolated-swa-deploy-readiness.mjs",
+    "readinessWrapperResult": "blocked_auth_missing",
+    "deploymentAttempted": false
+  },
+  "artifact": {
+    "sanitizedBuildRunId": "sanitized_20260612225811",
+    "artifactRoot": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612225811/repo/apps/ice-rink-web/out",
+    "fileCount": 41,
+    "aggregateSha256": "e0eb1a62a9bce21f8435d272e176ec4f8df5fe65f921367fe2ac53c951624679",
+    "requiredRoutesPresent": true,
+    "requiredFilesPresent": true,
+    "forbiddenArtifactContentPathMatches": 0,
+    "highConfidenceSecretLikeMatches": 0,
+    "localhostMatches": 1,
+    "localhostMatchClassification": "standard_next_polyfill_bundle_warning_not_config_leak"
+  },
+  "validations": {
+    "azureReadOnlyIsolatedTargetShow": "passed",
+    "azureReadOnlyIsolatedHostnameList": "passed_empty_custom_domains",
+    "azureReadOnlySwaInventory": "passed_two_targets",
+    "deploymentAuthPresenceCheck": "blocked_missing_swa_cli_deployment_token",
+    "swaCliNpxVersion": "passed_2_0_9",
+    "iceSanitizedStaticBuild": "passed",
+    "iceStaticSourceValidate": "passed_with_34_warnings",
+    "iceTypeCheck": "passed",
+    "staticGenerate": "passed_with_34_warnings",
+    "staticOutputValidator": "passed",
+    "stagingPackageValidator": "passed",
+    "artifactSecurityScan": "passed_with_standard_polyfill_localhost_warning",
+    "runtimeQaHarnessCheck": "passed_6_tests",
+    "runtimeQaEvidenceRun": "runtimeqa_c17a9232c6245e9d",
+    "runtimeQaEvidenceValidation": "passed_with_1_warning",
+    "resourceRegistryOperationalBindings": "passed_zero_failures_zero_warnings",
+    "olmProviderProfileCheck": "passed_planning_only_live_write_allowed_false",
+    "staticFormEndpointCheck": "passed",
+    "staticFormEndpointTests": "passed_28_checks",
+    "deploymentReadinessWrapper": "passed_target_and_artifact_blocked_auth_missing"
+  },
+  "safety": {
+    "staticArtifactDeployment": false,
+    "productionDeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "indexing": false,
+    "livePublication": false,
+    "externalCrawling": false,
+    "outboundUrlChecks": false,
+    "contactFormSubmission": false,
+    "postToContactEndpoint": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "providerWrites": false,
+    "azureInfrastructureCreation": "one_isolated_non_production_static_web_app_only",
+    "azureAppSettingsMutation": false,
+    "azureCustomDomainMutation": false,
+    "azureDnsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "deploymentTokenPrintedOrExported": false,
+    "deploymentTokenListed": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "generatedArtifactsStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-14-carryforward.md",
+    "blocked-target-custom-domain-result.md",
+    "azure-static-web-apps-inventory-result.md",
+    "isolated-staging-target-resolution-result.md",
+    "isolated-staging-target-creation-result.md",
+    "future-deployment-target-record.md",
+    "deployment-auth-contract-result.md",
+    "deployment-tooling-result.md",
+    "sanitized-static-build-revalidation.md",
+    "static-output-validator-result.md",
+    "staging-package-validator-result.md",
+    "artifact-root-selection-result.md",
+    "artifact-security-scan-result.md",
+    "dns-indexing-live-publication-closed-gates.md",
+    "next-deployment-boundary-readiness-decision.md",
+    "missing-operator-inputs.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+
