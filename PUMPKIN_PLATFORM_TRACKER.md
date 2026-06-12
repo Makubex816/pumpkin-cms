@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.11 |
-| currentReferenceName | Backend Verification And Exact Staging Target Resolution Boundary |
-| currentReferenceStatus | Complete safe metadata resolution; Function App and actual Azure Static Web Apps target are resolved from read-only metadata, while backend POST/form behavior verification plus operator/rollback ownership still block staging execution |
+| currentReference | V2.8.12 |
+| currentReferenceName | Backend Live Verification Scope And Staging Operator Rollback Closure |
+| currentReferenceStatus | Complete backend live verification boundary packet and deployment-method closure; staging execution remains blocked by missing named deploy operator, rollback/abort owner, external secret-storage confirmation, and unexecuted backend POST |
 | provisionalV2OverallCompletion | `91%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.12 |
-| nextReferenceName | Backend Live Verification Scope And Staging Operator Rollback Closure |
-| nextGate | Approve bounded POST/form verification scope and name staging operator plus rollback/abort owner before staging publish execution |
-| safetyPosture | Read-only Azure metadata, bounded non-mutating endpoint checks, local validation, and docs only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, contact-form POST, private payload, or external crawl |
-| blockedState | Staging execution is blocked until backend POST/form behavior verification, deploy operator, rollback/abort owner, and deployment secret handling are resolved |
+| nextReference | V2.8.13 |
+| nextReferenceName | Backend Live POST Approval And Operator Rollback Naming |
+| nextGate | Name deploy operator and rollback/abort owner, confirm external deployment-secret storage, and approve exactly one dry-run backend POST or choose stronger real-email/provider verification |
+| safetyPosture | Local validation, docs, safe source review, bounded read-only OPTIONS checks, and ignored local evidence only; no provider write, Azure mutation, RBAC assignment, CMS write, deployment, DNS change, indexing, publication, protected config read, contact-form POST, payload submission, private payload, or external crawl |
+| blockedState | Staging execution is blocked until named deploy/rollback ownership and backend live POST evidence are resolved |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `98%` | Safe backend/SWA metadata resolved and local validators reduced to one backend gate; backend POST/form verification and operator/rollback closure remain unresolved |
+| V2.8 | `98%` | Backend live verification packet and deployment method are prepared; named deploy/rollback ownership and backend POST evidence remain unresolved |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

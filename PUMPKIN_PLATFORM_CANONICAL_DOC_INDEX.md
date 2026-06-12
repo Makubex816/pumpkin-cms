@@ -35,6 +35,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_9_FINAL_EXTERNAL_APPROVAL_VALUES_STAGING_READINESS_REPORT.md` | V2.8.9 final external approval values and staging readiness root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_10_OWNER_BACKEND_MEDIA_EXACT_STAGING_TARGET_GATE_CLOSURE_REPORT.md` | V2.8.10 owner/backend/media/exact staging target gate closure root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_11_BACKEND_VERIFICATION_EXACT_STAGING_TARGET_RESOLUTION_REPORT.md` | V2.8.11 backend verification and exact staging target resolution root report |
+| `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_12_BACKEND_LIVE_VERIFICATION_SCOPE_STAGING_OPERATOR_ROLLBACK_REPORT.md` | V2.8.12 backend live verification scope and staging operator rollback root report |
 
 ## Latest Canonical Result Packages
 
@@ -65,7 +66,8 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website owner approval values and static form endpoint verification | `deployment/architecture/tenant-website-publish-readiness/v2-8-8-owner-approval-values-static-form-endpoint-verification-result/` | V2.8.8 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current validator-hardening/no-go package |
 | Tenant Website final external approval values and staging readiness validation | `deployment/architecture/tenant-website-publish-readiness/v2-8-9-final-external-approval-values-staging-readiness-result/` | V2.8.9 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current full-scope local validation/no-go package |
 | Tenant Website owner/backend/media/exact staging target gate closure | `deployment/architecture/tenant-website-publish-readiness/v2-8-10-owner-backend-media-exact-staging-target-gate-closure-result/` | V2.8.10 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Historical gate-closure/no-go package |
-| Tenant Website backend verification and exact staging target resolution | `deployment/architecture/tenant-website-publish-readiness/v2-8-11-backend-verification-exact-staging-target-resolution-result/` | V2.8.11 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current safe metadata-resolution/no-go package |
+| Tenant Website backend verification and exact staging target resolution | `deployment/architecture/tenant-website-publish-readiness/v2-8-11-backend-verification-exact-staging-target-resolution-result/` | V2.8.11 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Historical safe metadata-resolution/no-go package |
+| Tenant Website backend live verification scope and staging operator rollback | `deployment/architecture/tenant-website-publish-readiness/v2-8-12-backend-live-verification-scope-staging-operator-rollback-result/` | V2.8.12 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current boundary-packet/no-go package |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -101,6 +103,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website final external approval values and staging readiness validation | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_9_FINAL_EXTERNAL_APPROVAL_VALUES_STAGING_READINESS_REPORT.md` | V2.8.9 |
 | Tenant Website owner/backend/media/exact staging target gate closure | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_10_OWNER_BACKEND_MEDIA_EXACT_STAGING_TARGET_GATE_CLOSURE_REPORT.md` | V2.8.10 |
 | Tenant Website backend verification and exact staging target resolution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_11_BACKEND_VERIFICATION_EXACT_STAGING_TARGET_RESOLUTION_REPORT.md` | V2.8.11 |
+| Tenant Website backend live verification scope and staging operator rollback | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_12_BACKEND_LIVE_VERIFICATION_SCOPE_STAGING_OPERATOR_ROLLBACK_REPORT.md` | V2.8.12 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |
