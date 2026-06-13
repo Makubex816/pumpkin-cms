@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.14C |
-| currentReferenceName | Deployment Auth Retry And Scoped Isolated Staging Deployment |
-| currentReferenceStatus | Complete; isolated target, tooling, fresh artifact gates, single scoped isolated staging deployment, and three bounded route checks passed |
-| provisionalV2OverallCompletion | `92%` |
+| currentReference | V2.8.15 |
+| currentReferenceName | Post-Staging Verification And Owner Signoff |
+| currentReferenceStatus | Complete; isolated staging target, route checks, validation stack, and owner/operator staging signoff passed |
+| provisionalV2OverallCompletion | `93%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.15 |
-| nextReferenceName | Post-Staging Verification And Owner Signoff |
-| nextGate | Review only the isolated staging default hostname and three canonical Ice routes for owner/operator signoff; keep production release closed |
-| safetyPosture | V2.8.14C performed exactly one scoped static artifact deployment to the isolated target only; no old-target deployment, production-domain deployment, DNS change, custom domain mutation, indexing, live publication, CMS write, provider write, Azure infrastructure creation/configuration mutation beyond the scoped artifact deployment, app settings mutation, RBAC assignment, protected config read, deployment-token print/export/listing/logging/writing, keys/listKeys, connection string, SAS, contact form submission, contact endpoint POST, external crawl, or outbound URL check |
-| blockedState | No blocker remains for the scoped isolated staging deployment; production release and post-staging signoff remain separate gates |
+| nextReference | V2.8.16 |
+| nextReferenceName | Production Release Boundary Planning And Approval Packet |
+| nextGate | Prepare a no-execution production release approval packet; production release remains closed |
+| safetyPosture | V2.8.15 performed verification and signoff only; no redeployment, old-target deployment, production deployment, DNS change, custom domain mutation, indexing, live publication, CMS write, provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment credential use/print/export/listing, keys/listKeys, connection string, SAS, contact form submission, contact endpoint POST, external crawl, or outbound URL check |
+| blockedState | No blocker remains for isolated staging readiness; production release remains a separate approval boundary |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `99%` | Backend verification, isolated target creation, repo-supported SWA tooling, local artifact validation, scoped isolated staging deployment, and bounded staging route checks are complete; post-staging signoff is next |
+| V2.8 | `100% isolated staging readiness` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, and owner/operator staging signoff are complete; production release remains separate |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

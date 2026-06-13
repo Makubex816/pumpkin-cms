@@ -41,6 +41,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14A_STAGING_TARGET_ISOLATION_DEPLOYMENT_AUTH_CLOSURE_REPORT.md` | V2.8.14A staging target isolation and deployment auth closure root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14B_SCOPED_ICE_ISOLATED_STAGING_DEPLOYMENT_EXECUTION_REPORT.md` | V2.8.14B scoped Ice isolated staging deployment execution root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14C_DEPLOYMENT_AUTH_RETRY_SCOPED_ISOLATED_STAGING_DEPLOYMENT_REPORT.md` | V2.8.14C deployment auth retry and scoped isolated staging deployment root report |
+| `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_15_POST_STAGING_VERIFICATION_OWNER_SIGNOFF_REPORT.md` | V2.8.15 post-staging verification and owner signoff root report |
 
 ## Latest Canonical Result Packages
 
@@ -78,6 +79,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website staging target isolation and deployment auth closure | `deployment/architecture/tenant-website-publish-readiness/v2-8-14a-staging-target-isolation-deployment-auth-closure-result/` | V2.8.14A / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current isolated-target/auth-blocked package |
 | Tenant Website scoped Ice isolated staging deployment execution | `deployment/architecture/tenant-website-publish-readiness/v2-8-14b-scoped-ice-isolated-staging-deployment-execution-result/` | V2.8.14B / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current auth-blocked deployment boundary package |
 | Tenant Website deployment auth retry and scoped isolated staging deployment | `deployment/architecture/tenant-website-publish-readiness/v2-8-14c-deployment-auth-retry-scoped-isolated-staging-deployment-result/` | V2.8.14C / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current isolated staging deployment executed and verified package |
+| Tenant Website post-staging verification and owner signoff | `deployment/architecture/tenant-website-publish-readiness/v2-8-15-post-staging-verification-owner-signoff-result/` | V2.8.15 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current isolated staging readiness signoff package |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -119,6 +121,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website staging target isolation and deployment auth closure | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14A_STAGING_TARGET_ISOLATION_DEPLOYMENT_AUTH_CLOSURE_REPORT.md` | V2.8.14A |
 | Tenant Website scoped Ice isolated staging deployment execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14B_SCOPED_ICE_ISOLATED_STAGING_DEPLOYMENT_EXECUTION_REPORT.md` | V2.8.14B |
 | Tenant Website deployment auth retry and scoped isolated staging deployment | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14C_DEPLOYMENT_AUTH_RETRY_SCOPED_ISOLATED_STAGING_DEPLOYMENT_REPORT.md` | V2.8.14C |
+| Tenant Website post-staging verification and owner signoff | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_15_POST_STAGING_VERIFICATION_OWNER_SIGNOFF_REPORT.md` | V2.8.15 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |

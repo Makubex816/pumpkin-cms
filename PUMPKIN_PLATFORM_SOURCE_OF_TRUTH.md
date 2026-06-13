@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.8.14C, Deployment Auth Retry And Scoped Isolated Staging Deployment |
-| Current V2 status | Complete; isolated target, tooling, and fresh artifact gates passed, one scoped isolated staging deployment executed, and the three bounded staging route checks returned `200 OK` |
-| Provisional V2 overall completion | `92%` |
+| Current V2 reference | V2.8.15, Post-Staging Verification And Owner Signoff |
+| Current V2 status | Complete; isolated staging target, artifact evidence, route checks, validation stack, and owner/operator staging signoff passed |
+| Provisional V2 overall completion | `93%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.14C performed exactly one scoped static artifact deployment to the isolated target only; no deployment to the old target or production domain, DNS change, custom domain mutation, indexing, live publication, CMS write, provider write, Azure infrastructure creation/configuration mutation beyond the scoped artifact deployment, app settings mutation, RBAC assignment, protected config read, deployment-token print/export/listing/logging/writing, keys/listKeys, connection string, SAS, contact form submission, contact endpoint POST, external crawl, or outbound URL check |
-| Next gate | V2.8.15 Post-Staging Verification And Owner Signoff |
+| Safety posture | V2.8.15 performed verification and signoff only; no redeployment, deployment to the old target or production, DNS change, custom domain mutation, indexing, live publication, CMS write, provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment credential use/print/export/listing, keys/listKeys, connection string, SAS, contact form submission, contact endpoint POST, external crawl, or outbound URL check |
+| Next gate | V2.8.16 Production Release Boundary Planning And Approval Packet |
 
 ## V2 Reference System
 
@@ -99,6 +99,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website scoped Ice isolated staging deployment execution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-14b-scoped-ice-isolated-staging-deployment-execution-result/` | V2.8.14B result package |
 | Tenant Website deployment auth retry and scoped isolated staging deployment | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14C_DEPLOYMENT_AUTH_RETRY_SCOPED_ISOLATED_STAGING_DEPLOYMENT_REPORT.md` | V2.8.14C isolated staging deployment executed and verified |
 | Tenant Website deployment auth retry and scoped isolated staging deployment package | `deployment/architecture/tenant-website-publish-readiness/v2-8-14c-deployment-auth-retry-scoped-isolated-staging-deployment-result/` | V2.8.14C result package |
+| Tenant Website post-staging verification and owner signoff | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_15_POST_STAGING_VERIFICATION_OWNER_SIGNOFF_REPORT.md` | V2.8.15 isolated staging readiness signed off |
+| Tenant Website post-staging verification and owner signoff package | `deployment/architecture/tenant-website-publish-readiness/v2-8-15-post-staging-verification-owner-signoff-result/` | V2.8.15 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -108,7 +110,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, deployment auth/tooling closure, and scoped isolated staging deployment. V2.8.14C confirmed `SWA_CLI_DEPLOYMENT_TOKEN` by presence-only checks, rebuilt and validated a fresh sanitized artifact, executed exactly one deployment to `swa-ice-static-isolated-staging`, and verified `/`, `/service-areas`, and `/contact` on `kind-island-0a85a740f.7.azurestaticapps.net` with `200 OK`. DNS, custom domains, indexing, live publication, production release, contact form submission, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, and Azure configuration mutation remain closed.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, and post-staging verification. V2.8.15 revalidated the isolated target, confirmed no custom domains, verified `/`, `/service-areas`, and `/contact` on `kind-island-0a85a740f.7.azurestaticapps.net` with `200 OK`, refreshed validation evidence, and recorded owner/operator signoff for isolated staging readiness only. DNS, custom domains, indexing, live publication, production release, contact form submission, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, and Azure configuration mutation remain closed.
 
 Immutable current facts:
 
@@ -470,7 +472,14 @@ Immutable current facts:
 - V2.8.14C Azure infrastructure creation/configuration mutations beyond scoped static artifact deployment: `0`
 - V2.8.14C DNS/custom-domain/app-settings/RBAC mutations: `0`
 - V2.8.14C protected config reads, deployment token prints/exports/listing/logging, keys/listKeys, connection strings, SAS: `0`
+- V2.8.15 isolated staging final route checks: `3_passed_200_ok`
+- V2.8.15 Runtime QA evidence run: `runtimeqa_9eec1c74e9e0890b`
+- V2.8.15 owner/operator staging signoff: `signed_off_for_isolated_staging_only`
+- V2.8.15 V2.8 final staging readiness decision: `v2_8_isolated_staging_ready`
+- V2.8.15 redeployment/deployment actions: `0`
+- V2.8.15 DNS/custom-domain/app-settings/RBAC/Azure config mutations: `0`
+- V2.8.15 protected config reads, deployment credential use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.15 Post-Staging Verification And Owner Signoff only: use the completed V2.8.14C result package and root report as source of truth. Review only the isolated staging default hostname `https://kind-island-0a85a740f.7.azurestaticapps.net` and only the Ice routes `/`, `/service-areas`, and `/contact` for post-staging operator/owner signoff. Confirm route rendering, static content readiness, contact-page no-submit behavior, rollback owner, and exact remaining production-release blockers. Do not deploy, do not redeploy, do not change DNS, do not add or remove custom domains, do not alter app settings, do not mutate Azure infrastructure, do not assign RBAC, do not read protected config, do not print/export/list deployment tokens or secrets, do not use keys/listKeys, do not generate connection strings or SAS, do not submit forms, do not POST to the contact endpoint, do not crawl, do not follow outbound links, do not perform CMS writes, do not perform provider writes, do not trigger indexing, do not publish live pages, and do not touch production domains.
+Approve V2.8.16 Production Release Boundary Planning And Approval Packet only: use the completed V2.8.15 isolated staging readiness signoff as source of truth to prepare a no-execution production release approval packet for IceSkatingRinkRentals.com. Define exact prerequisites, owner approvals, DNS/custom-domain cutover plan, indexing/Search Console plan, production-domain verification plan, rollback/abort criteria, operator checklist, and no-go gates. Do not deploy, do not redeploy, do not change DNS, do not add or remove custom domains, do not alter app settings, do not mutate Azure infrastructure, do not assign RBAC, do not read protected config, do not print/export/list credentials or secrets, do not use keys/listKeys, do not generate connection strings or SAS, do not submit forms, do not POST to the contact endpoint, do not crawl, do not follow outbound links, do not perform CMS writes, do not perform provider writes, do not trigger indexing, do not publish live pages, and do not touch production domains.
