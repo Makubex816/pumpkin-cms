@@ -1,0 +1,211 @@
+{
+  "reference": "V2.8.17A",
+  "name": "Production Deployment Failure Forensics Corrective Retry Boundary",
+  "status": "complete_blocked_before_corrective_retry",
+  "classification": "blocked_token_target_ambiguous",
+  "completedAt": "2026-06-12T22:09:57.9597914-04:00",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "canonicalRoutes": ["/", "/service-areas", "/contact"],
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-17a-production-deployment-failure-forensics-corrective-retry-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17A_PRODUCTION_DEPLOYMENT_FAILURE_FORENSICS_CORRECTIVE_RETRY_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "94%",
+    "v2_8CompletionAfterPhase": "production deployment failure forensics complete; corrective retry blocked before deployment by deployment-token validity",
+    "nextReference": "V2.8.17B",
+    "nextReferenceName": "Production Deployment Auth Replacement And Corrective Retry Approval"
+  },
+  "productionTarget": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "location": "East US 2",
+    "sku": "Free",
+    "customDomains": [
+      {
+        "domainName": "iceskatingrinkrentals.com",
+        "status": "Ready"
+      },
+      {
+        "domainName": "www.iceskatingrinkrentals.com",
+        "status": "Ready"
+      }
+    ],
+    "confirmedByAzureReadOnly": true
+  },
+  "blockedTarget": {
+    "name": "swa-ice-static-isolated-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "usedInThisPhase": false
+  },
+  "failureForensics": {
+    "v2_8_17Result": "production_deployment_failed_exit_code_1_no_retry_sent",
+    "v2_8_17ArtifactRunId": "sanitized_20260613014405",
+    "v2_8_17ArtifactHash": "b525b9fc70f32206c17b860a4f29579a26c350394272171bb021a2904fd2b042",
+    "v2_8_17CommandShape": "npx --yes @azure/static-web-apps-cli@2.0.9 deploy \"<validated-artifact-root>\" --env production",
+    "correctedDryRunCommandShape": "npx --yes @azure/static-web-apps-cli@2.0.9 deploy . --env production --dry-run --swa-config-location .",
+    "correctedDryRunDeployed": false,
+    "correctedDryRunDeploymentId": "fd39c49d-cdf2-42ee-a75a-ddb5be20108b",
+    "correctedDryRunLegacyRoutesWarningReproduced": false,
+    "correctedDryRunFailureText": "deployment_token provided was invalid",
+    "failureCategory": "deployment_auth_invalid_or_wrong_target_token",
+    "classification": "blocked_token_target_ambiguous",
+    "legacyRoutesWarningClassification": "unrelated_generated_tmp_routes_json_warning_not_fatal"
+  },
+  "deploymentAuth": {
+    "canonicalRequiredEnvVar": "SWA_CLI_DEPLOYMENT_TOKEN",
+    "presentInCurrentSessionPowerShell": true,
+    "presentInNodeProcess": true,
+    "valuePrinted": false,
+    "valueExported": false,
+    "valueLogged": false,
+    "valueListed": false,
+    "valueWrittenToDocs": false,
+    "protectedConfigReadForCredential": false,
+    "dryRunValidity": "invalid",
+    "operatorAssertionReconciledWithProcessEvidence": false,
+    "tokenTargetProcessConfirmed": false
+  },
+  "deploymentTooling": {
+    "repoSupportedInvocation": "npx --yes @azure/static-web-apps-cli@2.0.9",
+    "swaCliVersionChecked": "2.0.9",
+    "correctedCommandScope": "run_from_validated_artifact_root_with_swa_config_location_current_directory",
+    "correctiveCommandSafeAfterValidToken": true
+  },
+  "artifact": {
+    "source": "fresh_sanitized_static_build",
+    "sanitizedBuildRunId": "sanitized_20260613020714",
+    "artifactRoot": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260613020714/repo/apps/ice-rink-web/out",
+    "fileCount": 41,
+    "aggregateSha256": "bc48cad4d1b23721781e97b8690b85bef12861450b5ca6c9df8f159dffe71044",
+    "aggregateSha256Method": "sha256(sorted relative path + NUL + per-file sha256 + newline)",
+    "requiredRoutesPresent": true,
+    "requiredFilesPresent": true,
+    "forbiddenArtifactContentPathMatches": 0,
+    "highConfidenceSecretLikeMatches": 0,
+    "localhostMatches": 1,
+    "localhostMatchClassification": "standard_next_polyfill_bundle_warning_not_config_leak"
+  },
+  "correctiveDeployment": {
+    "attempted": false,
+    "attemptSent": false,
+    "attemptCount": 0,
+    "target": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "blockedReason": "corrected_dry_run_rejected_deployment_token_as_invalid",
+    "broadRetry": false,
+    "secondCorrectiveRetry": false
+  },
+  "postDeployProductionRouteChecks": {
+    "attempted": false,
+    "reason": "corrective_deployment_not_attempted_auth_gate_failed",
+    "method": "GET",
+    "crawl": false,
+    "followOutboundLinks": false,
+    "submitForms": false,
+    "postToContactEndpoint": false,
+    "routes": [
+      {
+        "url": "https://iceskatingrinkrentals.com/",
+        "status": "not_run_no_successful_corrective_deployment"
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/service-areas",
+        "status": "not_run_no_successful_corrective_deployment"
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/contact",
+        "status": "not_run_no_successful_corrective_deployment"
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/",
+        "status": "not_run_no_successful_corrective_deployment"
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/service-areas",
+        "status": "not_run_no_successful_corrective_deployment"
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/contact",
+        "status": "not_run_no_successful_corrective_deployment"
+      }
+    ]
+  },
+  "validations": {
+    "v2_8_17EvidenceReview": "passed",
+    "azureReadOnlyProductionTargetShow": "passed",
+    "azureReadOnlyProductionHostnameList": "passed_ready_domains",
+    "deploymentAuthPresenceCheckPowerShell": "passed_present_boolean_only",
+    "deploymentAuthPresenceCheckNode": "passed_present_boolean_only",
+    "swaCliNpxVersion": "passed_2_0_9",
+    "swaCliCorrectedDryRun": "blocked_invalid_deployment_token_no_deploy",
+    "iceSanitizedStaticBuild": "passed_sanitized_20260613020714",
+    "iceStaticSourceValidate": "passed_with_34_existing_warnings",
+    "iceTypeCheck": "passed",
+    "staticGenerateWithIceEnv": "passed_with_34_existing_warnings",
+    "staticOutputValidator": "passed_zero_errors_zero_warnings_after_static_form_env_supplied",
+    "stagingPackageValidator": "passed_zero_errors_zero_warnings_after_static_form_env_supplied",
+    "artifactSecurityScan": "passed_with_standard_polyfill_localhost_warning",
+    "runtimeQaResourceRegistryOlm": "carried_forward_from_v2_8_17_not_rerun_after_auth_gate_failed",
+    "correctiveDeployment": "not_attempted_auth_gate_failed",
+    "postDeployRouteChecks": "not_run_no_successful_corrective_deployment"
+  },
+  "safety": {
+    "deploymentToApprovedProductionTarget": false,
+    "deploymentToIsolatedStagingTarget": false,
+    "correctiveDeploymentAttemptCount": 0,
+    "dryRunOnly": true,
+    "broadRetry": false,
+    "secondCorrectiveRetry": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "indexing": false,
+    "searchConsoleAction": false,
+    "contactFormSubmission": false,
+    "postToContactEndpoint": false,
+    "externalCrawling": false,
+    "outboundUrlChecks": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "providerWrites": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureConfigurationMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "deploymentTokenPrintedOrExported": false,
+    "deploymentTokenListed": false,
+    "deploymentTokenWrittenToDocs": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "generatedArtifactsStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-17-carryforward.md",
+    "failure-forensics-result.md",
+    "corrective-action-classification.md",
+    "production-target-reconfirmation-result.md",
+    "deployment-auth-readiness-result.md",
+    "deployment-tooling-readiness-result.md",
+    "sanitized-static-build-result.md",
+    "static-output-validator-result.md",
+    "staging-package-validator-result.md",
+    "artifact-root-selection-result.md",
+    "artifact-security-scan-result.md",
+    "corrective-production-deployment-result.md",
+    "post-deploy-production-route-check-result.md",
+    "dns-custom-domain-indexing-closed-gates.md",
+    "production-release-readiness-decision.md",
+    "rollback-abort-result.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}

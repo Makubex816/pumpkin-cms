@@ -36,6 +36,7 @@
 | Post-Staging Verification and Owner Signoff | Complete, isolated staging ready | V2.8.15 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Final isolated staging target confirmation, route checks, validation stack, and owner/operator staging signoff passed. Production release remains not approved. |
 | Production Release Boundary Planning and Approval Packet | Complete, production planned but not approved | V2.8.16 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Strategy comparison, target worksheet, DNS/custom-domain worksheet, indexing worksheet, live-publication worksheet, approval checklist, rollback plan, and no-go matrix complete. Production execution remains closed. |
 | Production Release Execution Approval | Complete, production deployment failed | V2.8.17 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | All pre-production gates passed and exactly one deployment attempt was sent to `swa-ice-static-staging`; SWA CLI deployment failed with exit code `1`, no retry was attempted, and production route checks were not run. |
+| Production Deployment Failure Forensics Corrective Retry Boundary | Complete, blocked before corrective retry | V2.8.17A / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Failure forensics and artifact revalidation passed, but corrected dry-run rejected the current deployment token as invalid; no corrective deployment retry was sent and route checks were not run. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -43,7 +44,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production deployment attempt failed; indexing/publication gates closed | V2.8 / V2.9 / L15 | Production reattempt, DNS, custom domains, indexing, and live publication require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production deployment attempt failed; corrective retry blocked before deployment; indexing/publication gates closed | V2.8 / V2.9 / L15 | Production auth replacement, corrective retry, DNS, custom domains, indexing, and live publication require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -502,3 +503,15 @@ Still separately gated:
 - V2.8.17 DNS/custom-domain/indexing gates: `closed`
 - V2.8.17 contact form submissions/contact endpoint POST: `0`
 - V2.8.17 protected config reads, deployment token prints/exports/listing/logging, keys/listKeys, connection strings, SAS: `0`
+- V2.8.17A production release classification: `blocked_token_target_ambiguous`
+- V2.8.17A production target reconfirmed: `swa-ice-static-staging` / `rg-ice-static-staging`
+- V2.8.17A production target custom domains: `iceskatingrinkrentals.com`, `www.iceskatingrinkrentals.com`
+- V2.8.17A corrected dry-run result: `deployment_token_provided_was_invalid`
+- V2.8.17A sanitized build run: `sanitized_20260613020714`
+- V2.8.17A artifact aggregate SHA-256: `bc48cad4d1b23721781e97b8690b85bef12861450b5ca6c9df8f159dffe71044`
+- V2.8.17A deployment auth present: `true`
+- V2.8.17A corrective deployment executed attempts: `0`
+- V2.8.17A production route checks: `not_run_no_successful_corrective_deployment`
+- V2.8.17A DNS/custom-domain/indexing gates: `closed`
+- V2.8.17A contact form submissions/contact endpoint POST: `0`
+- V2.8.17A protected config reads, deployment token prints/exports/listing/logging, keys/listKeys, connection strings, SAS: `0`
