@@ -49,6 +49,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17C_PRODUCTION_DEPLOY_COMMAND_SHAPE_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17C production deploy command-shape corrective execution root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17D_PRODUCTION_DEPLOY_WORKING_DIRECTORY_SEPARATION_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17D production deploy working-directory separation corrective execution root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_18_OWNER_POST_DEPLOYMENT_VERIFICATION_INDEXING_APPROVAL_PACKET_REPORT.md` | V2.8.18 owner post-deployment verification and indexing approval packet root report |
+| `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19_CONTACT_FORM_LIVE_SUBMISSION_INDEXING_HARD_STOP_DEFERRAL_REPORT.md` | V2.8.19 contact-form live submission and indexing hard-stop deferral root report |
 
 ## Latest Canonical Result Packages
 
@@ -94,6 +95,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website production deploy command-shape corrective execution | `deployment/architecture/tenant-website-publish-readiness/v2-8-17c-production-deploy-command-shape-corrective-execution-result/` | V2.8.17C / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current failed command-shape package; route checks not run |
 | Tenant Website production deploy working-directory separation corrective execution | `deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/` | V2.8.17D / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current production deployment executed and verified package |
 | Tenant Website owner post-deployment verification and indexing approval packet | `deployment/architecture/tenant-website-publish-readiness/v2-8-18-owner-post-deployment-verification-indexing-approval-packet-result/` | V2.8.18 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current production static release verified package |
+| Tenant Website contact-form live submission and indexing hard-stop deferral | `deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/` | V2.8.19 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current V2.8 complete with indexing deferred package |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -143,6 +145,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website production deploy command-shape corrective execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17C_PRODUCTION_DEPLOY_COMMAND_SHAPE_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17C |
 | Tenant Website production deploy working-directory separation corrective execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17D_PRODUCTION_DEPLOY_WORKING_DIRECTORY_SEPARATION_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17D |
 | Tenant Website owner post-deployment verification and indexing approval packet | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_18_OWNER_POST_DEPLOYMENT_VERIFICATION_INDEXING_APPROVAL_PACKET_REPORT.md` | V2.8.18 |
+| Tenant Website contact-form live submission and indexing hard-stop deferral | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19_CONTACT_FORM_LIVE_SUBMISSION_INDEXING_HARD_STOP_DEFERRAL_REPORT.md` | V2.8.19 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |

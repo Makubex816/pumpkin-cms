@@ -1,0 +1,247 @@
+{
+  "reference": "V2.8.19",
+  "name": "Contact-Form Live Submission And Indexing Hard-Stop Deferral",
+  "status": "complete_contact_form_verified_indexing_deferred",
+  "classification": "contact_form_verified_indexing_deferred_v2_8_complete",
+  "completedAt": "2026-06-13T15:57:20-04:00",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "wwwDomain": "www.iceskatingrinkrentals.com",
+  "canonicalRoutes": [
+    "/",
+    "/service-areas",
+    "/contact"
+  ],
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19_CONTACT_FORM_LIVE_SUBMISSION_INDEXING_HARD_STOP_DEFERRAL_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "97%",
+    "v2_8CompletionAfterPhase": "complete with Google/Search Console/indexing deferred by hard stop",
+    "nextReference": "V2.9.1",
+    "nextReferenceName": "Audit Jobs Production Promotion Gate Planning"
+  },
+  "carryForward": {
+    "sourceReference": "V2.8.18",
+    "sourceClassification": "v2_8_production_static_release_verified",
+    "productionTarget": "swa-ice-static-staging",
+    "productionResourceGroup": "rg-ice-static-staging",
+    "deploymentId": "96fd744f-5589-4ac3-bebb-cfa99048dc0e",
+    "artifactRun": "sanitized_20260613174033",
+    "artifactAggregateSha256": "506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899",
+    "productionTargetMetadataCarriedForwardFromV2_8_18": true,
+    "azureReadOnlyMetadataRequeriedInV2_8_19": false
+  },
+  "ownerBusinessContentAcknowledgement": {
+    "status": "complete",
+    "basis": "explicit V2.8.19 approval for the current production static release",
+    "separateNamedBusinessOwnerFieldRequiredByRepoConvention": false
+  },
+  "productionRouteReverification": {
+    "attempted": true,
+    "checkedAt": "2026-06-13T19:53:18.895Z",
+    "method": "GET",
+    "crawl": false,
+    "followRedirects": false,
+    "followOutboundLinks": false,
+    "submitForms": false,
+    "postToContactEndpointDuringRouteChecks": false,
+    "ok": true,
+    "routes": [
+      {
+        "url": "https://iceskatingrinkrentals.com/",
+        "statusCode": 200,
+        "statusText": "OK",
+        "contentLength": 43863,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/service-areas",
+        "statusCode": 200,
+        "statusText": "OK",
+        "contentLength": 46730,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/contact",
+        "statusCode": 200,
+        "statusText": "OK",
+        "contentLength": 50129,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/",
+        "statusCode": 200,
+        "statusText": "OK",
+        "contentLength": 43863,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/service-areas",
+        "statusCode": 200,
+        "statusText": "OK",
+        "contentLength": 46730,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/contact",
+        "statusCode": 200,
+        "statusText": "OK",
+        "contentLength": 50129,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      }
+    ]
+  },
+  "indexingHardStop": {
+    "status": "deferred",
+    "googleSearchConsoleAction": false,
+    "googleSitemapSubmission": false,
+    "urlInspectionApi": false,
+    "googleIndexingApi": false,
+    "indexingRequest": false,
+    "searchConsoleAuthReadinessCheck": false
+  },
+  "contactFormLivePayload": {
+    "status": "passed_synthetic_non_pii_shape_check",
+    "rawValuesPrinted": false,
+    "rawValuesStoredInResultPackage": false,
+    "envPresence": {
+      "PUMPKIN_LIVE_CONTACT_TEST_NAME": true,
+      "PUMPKIN_LIVE_CONTACT_TEST_EMAIL": true,
+      "PUMPKIN_LIVE_CONTACT_TEST_MESSAGE": true
+    },
+    "valueLengths": {
+      "name": 34,
+      "email": 50,
+      "message": 93
+    },
+    "emailShapeValid": true,
+    "emailDomainClass": "reserved-synthetic-domain",
+    "syntheticMarkers": {
+      "name": true,
+      "email": true,
+      "message": true
+    },
+    "payloadContractValidation": {
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "formId": "default-quote-request",
+      "formKey": "default-quote-request",
+      "formType": "quote-request",
+      "pageSlug": "contact",
+      "domainRoutingKey": "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+      "recipientGroup": "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+      "routingMode": "manual_review_then_provider_match"
+    }
+  },
+  "contactFormLiveSubmission": {
+    "attempted": true,
+    "endpoint": "https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact",
+    "startedAt": "2026-06-13T19:56:25.979Z",
+    "completedAt": "2026-06-13T19:56:28.019Z",
+    "requestCount": 1,
+    "retryCount": 0,
+    "requestBodyBytes": 932,
+    "origin": "https://iceskatingrinkrentals.com",
+    "authHeadersSent": false,
+    "cookiesSent": false,
+    "statusCode": 200,
+    "statusText": "OK",
+    "redirected": false,
+    "responseTextLength": 139
+  },
+  "contactFormResponseVerification": {
+    "expectedSuccessShape": true,
+    "okTrue": true,
+    "publicSuccessMessage": "Your request was submitted.",
+    "entryIdPresent": true,
+    "entryIdPrefixCaptured": "ice-rink-rentals-default-quote-request-",
+    "fullEntryIdStored": false,
+    "validationErrorsPresent": false,
+    "warningsPresent": false
+  },
+  "validations": {
+    "startStateGitStatus": "busy_worktree_expected",
+    "gitDiffCachedNameOnly": "passed_no_staged_files",
+    "v2_8_18CarryforwardReview": "passed",
+    "productionRouteReverification": "passed_6_of_6_200_ok",
+    "iceStaticSourceValidate": "passed_with_34_existing_warnings",
+    "iceTypeCheck": "passed",
+    "runtimeQaHarnessCheck": "passed_6_tests",
+    "resourceRegistryOperationalBindings": "passed_0_failures_0_warnings",
+    "providerProfileValidation": "covered_by_resource_registry_operational_bindings_9_profiles",
+    "olmPublishGate": "passed_132_tests",
+    "staticFormEndpointCheck": "passed",
+    "staticFormEndpointTests": "passed_29_tests",
+    "contactPayloadContractValidation": "passed",
+    "contactLiveSubmissionResponse": "passed_expected_success_shape"
+  },
+  "safety": {
+    "deployment": false,
+    "redeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "googleSearchConsoleAction": false,
+    "googleSitemapSubmission": false,
+    "googleUrlInspectionApi": false,
+    "googleIndexingApi": false,
+    "indexingRequest": false,
+    "externalCrawling": false,
+    "outboundUrlChecks": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "approvedSyntheticContactEndpointPostCount": 1,
+    "providerWritesOutsideApprovedContactPost": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "deploymentTokenUsed": false,
+    "deploymentTokenPrintedOrExported": false,
+    "deploymentTokenListed": false,
+    "oauthTokenPrintedExportedListedOrUsed": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "gitAddAll": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-18-carryforward.md",
+    "owner-business-content-acknowledgement-result.md",
+    "production-route-reverification-result.md",
+    "google-search-console-indexing-hard-stop-result.md",
+    "contact-form-live-payload-result.md",
+    "contact-form-live-submission-result.md",
+    "contact-form-response-verification-result.md",
+    "runtime-qa-revalidation-result.md",
+    "resource-registry-provider-profile-result.md",
+    "olm-publish-gate-result.md",
+    "static-form-local-gate-result.md",
+    "dns-custom-domain-redeployment-closed-gates.md",
+    "v2-8-final-contact-form-indexing-deferred-decision.md",
+    "next-non-indexing-milestone-recommendation.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+

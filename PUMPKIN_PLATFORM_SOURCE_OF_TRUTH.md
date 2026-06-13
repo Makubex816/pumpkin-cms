@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.8.18, Owner Post-Deployment Verification And Indexing Approval Packet |
-| Current V2 status | Complete; production static release is verified, evidence is frozen, and indexing/contact-form live submission approval packets are prepared while execution remains closed |
-| Provisional V2 overall completion | `96%` |
+| Current V2 reference | V2.8.19, Contact-Form Live Submission And Indexing Hard-Stop Deferral |
+| Current V2 status | Complete; owner acknowledgement and live contact-form verification passed, and V2.8 is complete with Google/Search Console/indexing deferred |
+| Provisional V2 overall completion | `97%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.18 performed read-only production target/domain reconfirmation, exactly six bounded GET-only production route checks, artifact/deployment evidence freeze, and local/read-only validation; no deployment/redeployment, DNS change, custom-domain mutation, Search Console/indexing, indexing request, contact form submission, contact endpoint POST, crawl beyond the six approved routes, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment token use/print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
-| Next gate | V2.8.19 Indexing And Contact-Form Live Submission Execution Approval Boundary |
+| Safety posture | V2.8.19 rechecked exactly six bounded GET-only production routes, recorded owner business/content acknowledgement, ran local/read-only validation, and sent exactly one approved synthetic non-PII contact-form POST; no deployment/redeployment, DNS change, custom-domain mutation, Google/Search Console/indexing action, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing request, crawl, outbound URL check, CMS write, provider write outside the approved contact POST, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment token use/print/export/listing/logging/writing/reveal, OAuth token use/print/export/listing, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
+| Next gate | V2.9.1 Audit Jobs Production Promotion Gate Planning |
 
 ## V2 Reference System
 
@@ -115,6 +115,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website production deploy working-directory separation corrective execution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/` | V2.8.17D result package |
 | Tenant Website owner post-deployment verification and indexing approval packet | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_18_OWNER_POST_DEPLOYMENT_VERIFICATION_INDEXING_APPROVAL_PACKET_REPORT.md` | V2.8.18 production static release verified; indexing and contact-form live submission approval packets created |
 | Tenant Website owner post-deployment verification and indexing approval packet package | `deployment/architecture/tenant-website-publish-readiness/v2-8-18-owner-post-deployment-verification-indexing-approval-packet-result/` | V2.8.18 result package |
+| Tenant Website contact-form live submission and indexing hard-stop deferral | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19_CONTACT_FORM_LIVE_SUBMISSION_INDEXING_HARD_STOP_DEFERRAL_REPORT.md` | V2.8.19 contact-form verified; V2.8 complete with indexing deferred |
+| Tenant Website contact-form live submission and indexing hard-stop deferral package | `deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/` | V2.8.19 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -124,7 +126,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, post-staging verification, production release planning, the V2.8.17 production release execution boundary, V2.8.17A production deployment failure forensics, V2.8.17B deployment auth replacement/corrective retry execution, V2.8.17C command-shape corrective execution, V2.8.17D working-directory separation corrective execution, and V2.8.18 post-deployment verification/evidence freeze. V2.8.18 reconfirmed the production target and attached domains, verified `/`, `/service-areas`, and `/contact` on both apex and `www` with six `200 OK` GET responses, rechecked the deployed artifact hash, reran local/read-only validation gates, and created indexing/Search Console and contact-form live-submission approval packets. DNS, custom domains, indexing execution, Search Console action, contact form submission, contact endpoint POST, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, deployment/redeployment, and further Azure configuration mutation remain closed.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, post-staging verification, production release planning, the V2.8.17 production release execution boundary, V2.8.17A production deployment failure forensics, V2.8.17B deployment auth replacement/corrective retry execution, V2.8.17C command-shape corrective execution, V2.8.17D working-directory separation corrective execution, V2.8.18 post-deployment verification/evidence freeze, and V2.8.19 contact-form live verification/indexing hard-stop deferral. V2.8.19 recorded owner business/content acknowledgement, verified six production routes with `200 OK`, reran local/read-only validation gates, sent exactly one synthetic non-PII contact-form POST with `200 OK` and expected success shape, and classified V2.8 complete with Google/Search Console/indexing deferred. DNS, custom domains, Search Console/indexing execution, sitemap submission through Google, URL Inspection API, Google Indexing API, broad crawl, outbound URL checks, CMS/provider writes outside the approved contact POST, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, deployment/redeployment, and further Azure configuration mutation remain closed.
 
 Immutable current facts:
 
@@ -605,7 +607,21 @@ Immutable current facts:
 - V2.8.18 DNS/custom-domain/indexing/Search Console gates: `closed`
 - V2.8.18 contact form submissions/contact endpoint POST: `0`
 - V2.8.18 protected config reads, deployment token use/prints/exports/listing/logging/writing/reveal, keys/listKeys, connection strings, SAS: `0`
+- V2.8.19 production release classification: `contact_form_verified_indexing_deferred_v2_8_complete`
+- V2.8.19 owner business/content acknowledgement: `complete`
+- V2.8.19 production route checks: `6_passed_200_ok`
+- V2.8.19 contact payload gate: `passed_synthetic_non_pii_shape_check`
+- V2.8.19 live contact-form POST count: `1`
+- V2.8.19 live contact-form retry count: `0`
+- V2.8.19 contact-form response: `200_ok_expected_success_shape_entry_id_present`
+- V2.8.19 Runtime QA: `passed_6_tests`
+- V2.8.19 Resource Registry / Provider Profile: `passed_0_failures_0_warnings_9_profiles`
+- V2.8.19 OLM publish gate: `passed_132_tests`
+- V2.8.19 static form local gate: `passed_29_local_tests`
+- V2.8.19 Google/Search Console/indexing: `hard_stopped_deferred`
+- V2.8.19 V2.8 final decision: `complete_with_indexing_deferred`
+- V2.8.19 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, sitemap submission through Google, URL Inspection API, Google Indexing API, crawl, outbound URL checks, CMS writes, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.19 Indexing And Contact-Form Live Submission Execution Approval Boundary only: use the completed V2.8.18 result package to decide whether to execute Search Console/indexing actions and whether to perform exactly one live production contact-form submission with an explicitly approved non-PII synthetic payload. Do not deploy or redeploy, do not change DNS or custom domains, do not mutate Azure infrastructure/configuration/app settings/RBAC, do not perform CMS/provider writes, do not read protected config or `.env.local`, do not print/export/list/use deployment tokens or secrets, do not use keys/listKeys, connection strings, or SAS, do not crawl or follow outbound links, and do not perform indexing or contact-form POST unless the V2.8.19 approval explicitly authorizes the exact action, target domain/origin, URL set or payload, and one-action stop rule.
+Approve V2.9.1 Audit Jobs Production Promotion Gate Planning only: use the completed V2.8.19 contact-form-verified/indexing-deferred result package to plan the next non-indexing milestone for audit, jobs, evidence retention, and production promotion controls. Google Search Console, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing requests, broad SEO crawling, outbound URL checks, deployment, redeployment, DNS mutation, custom-domain mutation, CMS writes, provider writes, Azure infrastructure/configuration/app settings mutation, RBAC assignment, protected config reads, deployment token use/print/export/listing, OAuth token use/print/export/listing, keys/listKeys, connection strings, and SAS remain hard-stopped unless a future approval explicitly authorizes one exact action.
