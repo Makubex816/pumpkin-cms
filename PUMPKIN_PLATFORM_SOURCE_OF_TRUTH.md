@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.8.17C, Production Deploy Command Shape Corrective Execution |
-| Current V2 status | Complete; pre-deployment gates passed and exactly one corrected production deployment attempt was sent, but production release remains unverified because StaticSitesClient rejected the artifact-root working-directory command shape |
-| Provisional V2 overall completion | `94%` |
+| Current V2 reference | V2.8.17D, Production Deploy Working-Directory Separation Corrective Execution |
+| Current V2 status | Complete; production static deployment to `swa-ice-static-staging` succeeded from a neutral parent workspace and six bounded production-domain GET checks passed |
+| Provisional V2 overall completion | `95%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.17C performed boolean-only token presence checks, read-only target/domain reconfirmation, local artifact revalidation, and exactly one corrected SWA CLI production deployment attempt; no dry-run, retry, production route checks, DNS change, custom-domain mutation, indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the failed static artifact deployment attempt, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, or generated `.tmp` artifact staging occurred |
-| Next gate | V2.8.17D Production Deploy Working-Directory Separation Corrective Execution |
+| Safety posture | V2.8.17D performed boolean-only token presence checks, operator token-target confirmation, read-only target/domain reconfirmation, fresh sanitized artifact validation, neutral parent `app` deploy workspace separation, exactly one successful SWA CLI production static artifact deployment, and six bounded GET-only production route checks; no DNS change, custom-domain mutation, Search Console/indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the static artifact deployment, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
+| Next gate | V2.8.18 Production Post-Deployment Owner Verification And Indexing Approval Packet |
 
 ## V2 Reference System
 
@@ -111,6 +111,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website production deployment auth replacement corrective retry package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17b-production-deployment-auth-replacement-corrective-retry-result/` | V2.8.17B result package |
 | Tenant Website production deploy command-shape corrective execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17C_PRODUCTION_DEPLOY_COMMAND_SHAPE_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17C fixed dry-run/close-action path but failed artifact-root working-directory command shape |
 | Tenant Website production deploy command-shape corrective execution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17c-production-deploy-command-shape-corrective-execution-result/` | V2.8.17C result package |
+| Tenant Website production deploy working-directory separation corrective execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17D_PRODUCTION_DEPLOY_WORKING_DIRECTORY_SEPARATION_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17D production static deployment succeeded and six production route checks passed |
+| Tenant Website production deploy working-directory separation corrective execution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/` | V2.8.17D result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -120,7 +122,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, post-staging verification, production release planning, the V2.8.17 production release execution boundary, V2.8.17A production deployment failure forensics, V2.8.17B deployment auth replacement/corrective retry execution, and V2.8.17C command-shape corrective execution. V2.8.17C confirmed token presence, reconfirmed the production target and attached domains, rebuilt and validated a fresh sanitized artifact, and sent exactly one corrected production deployment attempt. The attempt fixed the dry-run/close-action problem (`SWA_CLI_DEPLOY_DRY_RUN=false`, `DEPLOYMENT_ACTION=upload`) but failed because StaticSitesClient rejected the artifact-root working-directory shape. Production route verification was not run and no retry remains authorized. DNS, custom domains, indexing, live-publication actions outside a future approved deployment boundary, contact form submission, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, and further Azure configuration mutation remain closed.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, post-staging verification, production release planning, the V2.8.17 production release execution boundary, V2.8.17A production deployment failure forensics, V2.8.17B deployment auth replacement/corrective retry execution, V2.8.17C command-shape corrective execution, and V2.8.17D working-directory separation corrective execution. V2.8.17D confirmed token presence by boolean-only checks, accepted operator confirmation for the production target token, reconfirmed the production target and attached domains, rebuilt and validated a fresh sanitized artifact, copied it into a neutral parent workspace child folder named `app`, sent exactly one corrected production deployment, and verified `/`, `/service-areas`, and `/contact` on both apex and `www` with six `200 OK` GET responses. DNS, custom domains, indexing, Search Console, contact form submission, contact endpoint POST, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, and further Azure configuration mutation remain closed.
 
 Immutable current facts:
 
@@ -559,7 +561,28 @@ Immutable current facts:
 - V2.8.17C DNS/custom-domain/indexing gates: `closed`
 - V2.8.17C contact form submissions/contact endpoint POST: `0`
 - V2.8.17C protected config reads, deployment token prints/exports/listing/logging/writing/reveal, keys/listKeys, connection strings, SAS: `0`
+- V2.8.17D production release classification: `production_release_executed_and_verified`
+- V2.8.17D production target reconfirmed: `swa-ice-static-staging` / `rg-ice-static-staging`
+- V2.8.17D production target custom domains: `iceskatingrinkrentals.com`, `www.iceskatingrinkrentals.com`
+- V2.8.17D deployment auth presence: `passed_boolean_only`
+- V2.8.17D operator token target confirmation: `passed`
+- V2.8.17D sanitized build run: `sanitized_20260613174033`
+- V2.8.17D artifact aggregate SHA-256: `506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899`
+- V2.8.17D deploy workspace child folder: `app`
+- V2.8.17D deploy workspace artifact hash parity: `passed`
+- V2.8.17D static output validator: `passed_zero_errors_zero_warnings`
+- V2.8.17D staging package validator: `passed_zero_errors_zero_warnings`
+- V2.8.17D `SWA_CLI_DEPLOY_DRY_RUN`: `false`
+- V2.8.17D `DEPLOYMENT_ACTION`: `upload`
+- V2.8.17D deployment id emitted: `96fd744f-5589-4ac3-bebb-cfa99048dc0e`
+- V2.8.17D corrected deployment executed attempts: `1`
+- V2.8.17D corrected deployment result: `succeeded_exit_code_0`
+- V2.8.17D broad retry: `0`
+- V2.8.17D production route checks: `6_passed_200_ok`
+- V2.8.17D DNS/custom-domain/indexing gates: `closed`
+- V2.8.17D contact form submissions/contact endpoint POST: `0`
+- V2.8.17D protected config reads, deployment token prints/exports/listing/logging/writing/reveal, keys/listKeys, connection strings, SAS: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.17D Production Deploy Working-Directory Separation Corrective Execution only: use the completed V2.8.17C command-shape result to rebuild and validate a fresh sanitized artifact, then execute exactly one production deployment attempt from a working directory outside the artifact folder, using the selected artifact folder as the deploy target. Do not repeat token reset, token-target comparison, VS Code restart, or `swa deploy --dry-run`; do not deploy from the artifact root; do not print/export/list/write/reveal the deployment token; do not read `.env.local` or protected config; do not mutate Azure/DNS/custom domains/app settings/RBAC beyond the single static artifact deployment; do not run Search Console/indexing/crawls/outbound checks; do not submit forms or POST to the contact endpoint; and do not perform CMS/provider writes.
+Approve V2.8.18 Production Post-Deployment Owner Verification And Indexing Approval Packet only: use the completed V2.8.17D result package to review the successful production deployment to `swa-ice-static-staging` and the six passed production-domain GET checks for `/`, `/service-areas`, and `/contact` on apex and `www`. Prepare the owner post-launch verification and Search Console/indexing approval packet. Do not run deployment or retry, do not change DNS, do not alter custom domains, do not mutate app settings/RBAC/Azure infrastructure, do not perform CMS/provider writes, do not read protected config or `.env.local`, do not print/export/list/write/reveal deployment tokens or secrets, do not use keys/listKeys, connection strings, or SAS, do not submit contact forms or POST to the contact endpoint, do not crawl or follow outbound links, and do not trigger Search Console/indexing unless that action is separately and explicitly approved in the next request.

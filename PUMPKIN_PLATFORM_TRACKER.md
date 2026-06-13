@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.17C |
-| currentReferenceName | Production Deploy Command Shape Corrective Execution |
-| currentReferenceStatus | Complete; pre-deployment gates passed and exactly one corrected production deployment attempt was sent, but production release remains unverified because StaticSitesClient rejected the artifact-root working-directory command shape |
-| provisionalV2OverallCompletion | `94%` |
+| currentReference | V2.8.17D |
+| currentReferenceName | Production Deploy Working-Directory Separation Corrective Execution |
+| currentReferenceStatus | Complete; corrected production deployment to `swa-ice-static-staging` succeeded from a neutral parent workspace and six bounded production route checks passed |
+| provisionalV2OverallCompletion | `95%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.17D |
-| nextReferenceName | Production Deploy Working-Directory Separation Corrective Execution |
-| nextGate | Use a working directory outside the artifact folder for any future approved deployment attempt |
-| safetyPosture | V2.8.17C performed boolean-only token presence checks, read-only target/domain reconfirmation, local artifact revalidation, and exactly one corrected SWA CLI production deployment attempt; no dry-run, retry, production route checks, DNS change, custom-domain mutation, indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the failed static artifact deployment attempt, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, or generated `.tmp` artifact staging occurred |
-| blockedState | Production release is not verified; the V2.8.17C corrected deployment attempt failed because the current directory was identical to the artifact folder, route checks were not run, and no retry remains authorized |
+| nextReference | V2.8.18 |
+| nextReferenceName | Production Post-Deployment Owner Verification And Indexing Approval Packet |
+| nextGate | Owner post-launch verification and indexing approval packet; Search Console/indexing remain closed until separately approved |
+| safetyPosture | V2.8.17D performed boolean-only token checks, read-only target/domain reconfirmation, fresh sanitized artifact validation, neutral parent `app` workspace deployment, exactly one successful SWA CLI production static artifact deployment, and six bounded GET-only production route checks; no DNS change, custom-domain mutation, indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the static artifact deployment, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
+| blockedState | Production static deployment is technically verified; owner post-launch signoff, Search Console/indexing, contact form submission, CMS/provider writes, DNS/custom-domain changes, and further Azure mutations remain separately gated |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `production command-shape corrective attempt failed` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, owner/operator staging signoff, production release planning, V2.8.17 production execution, V2.8.17A forensics, V2.8.17B auth replacement/corrective retry, and V2.8.17C command-shape corrective execution are complete; production release remains unverified because the V2.8.17C attempt failed before route verification |
+| V2.8 | `production static deployment executed and verified` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, owner/operator staging signoff, production release planning, V2.8.17 production execution, V2.8.17A forensics, V2.8.17B auth replacement/corrective retry, V2.8.17C command-shape corrective execution, and V2.8.17D working-directory separation corrective deployment are complete; production static deployment succeeded and six production route checks passed, while owner post-launch signoff and indexing remain separately gated |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.
