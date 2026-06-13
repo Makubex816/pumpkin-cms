@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.19 |
-| currentReferenceName | Contact-Form Live Submission And Indexing Hard-Stop Deferral |
-| currentReferenceStatus | Complete; contact-form live verification passed and V2.8 is complete with Google/Search Console/indexing deferred |
-| provisionalV2OverallCompletion | `97%` |
+| currentReference | V2.9.1 |
+| currentReferenceName | Audit Jobs Production Promotion Gate Planning |
+| currentReferenceStatus | Complete; V2.9 audit/job/promotion planning layer created with V2.8 evidence, trace IDs, taxonomies, gate model, state machine, and local ledger schemas |
+| provisionalV2OverallCompletion | `98%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.9.1 |
-| nextReferenceName | Audit Jobs Production Promotion Gate Planning |
-| nextGate | Move to the next non-indexing milestone; Google/Search Console/indexing remains deferred by hard stop |
-| safetyPosture | V2.8.19 rechecked exactly six bounded GET-only production routes, recorded owner business/content acknowledgement, ran local/read-only validation, and sent exactly one approved synthetic non-PII contact-form POST; no deployment/redeployment, DNS change, custom-domain mutation, Google/Search Console/indexing action, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing request, crawl, outbound URL check, CMS write, provider write outside the approved contact POST, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment token use/print/export/listing/logging/writing/reveal, OAuth token use/print/export/listing, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
-| blockedState | V2.8 non-indexing readiness is complete; Google/Search Console/indexing is deferred, and DNS/custom-domain changes, CMS/provider writes, deployment/redeployment, and further Azure mutations remain separately gated |
+| nextReference | V2.9.2 |
+| nextReferenceName | Audit Job Ledger No-Write Validator Foundation |
+| nextGate | Implement a local no-write validator and safe fixtures for the V2.9.1 audit/job/promotion schemas; Google/Search Console/indexing remains deferred by hard stop |
+| safetyPosture | V2.9.1 created safe local docs and schemas only; no deployment/redeployment, DNS change, custom-domain mutation, Google/Search Console/indexing action, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing request, crawl, outbound URL check, contact-form submission, contact endpoint POST, CMS/provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment/OAuth token use/print/export/listing, keys/listKeys, connection string, SAS, or `git add -A` occurred |
+| blockedState | V2.8 non-indexing readiness is complete and V2.9.1 planning is complete; Google/Search Console/indexing, DNS/custom-domain changes, CMS/provider writes, deployment/redeployment, contact-form submissions, and Azure mutations remain separately gated |
 
 ## Legacy Tracker Freeze
 
@@ -41,6 +41,6 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
 | V2.8 | `100% with indexing deferred` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, owner/operator staging signoff, production release planning, V2.8.17 production execution, V2.8.17A forensics, V2.8.17B auth replacement/corrective retry, V2.8.17C command-shape corrective execution, V2.8.17D working-directory separation corrective deployment, V2.8.18 post-deployment verification/evidence freeze, and V2.8.19 owner acknowledgement plus live contact-form verification are complete; Google/Search Console/indexing is deferred by hard stop |
-| V2.9 | `20%` | Audit/jobs/production gates future |
+| V2.9 | `35%` | Audit/jobs/production promotion planning layer complete; local no-write validator foundation next |
 
 These percentages are provisional control-layer indicators, not deployment approval.
