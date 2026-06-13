@@ -40,6 +40,7 @@
 | Production Deployment Auth Replacement Corrective Retry | Complete, deployment failed | V2.8.17B / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Replacement-token precondition and artifact gates passed; exactly one corrective deployment attempt was sent to `swa-ice-static-staging`; SWA CLI failed with exit code `1`, no retry was attempted, and route checks were not run. |
 | Production Deploy Command Shape Corrective Execution | Complete, command-shape failed | V2.8.17C / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Corrected command avoided dry-run and used upload action, but deployment failed because StaticSitesClient rejected running from the artifact root where the current directory was identical to the artifact folder. |
 | Production Deploy Working-Directory Separation Corrective Execution | Complete, deployed and verified | V2.8.17D / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Corrected command used a neutral parent workspace with child `app`; exactly one deployment to `swa-ice-static-staging` succeeded and six production GET checks returned `200 OK`. |
+| Owner Post-Deployment Verification And Indexing Approval Packet | Complete, production static release verified | V2.8.18 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Production target/domains reconfirmed, six bounded production GET checks passed, evidence frozen, validation stack passed, and indexing/contact-form approval packets created without execution. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -47,7 +48,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production static deployment verified; indexing gates closed | V2.8 / V2.9 / L15 | Owner post-launch verification, Search Console/indexing, DNS, custom domains, contact form submission, CMS/provider writes, and any further deployment or Azure mutation require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; indexing/contact-form execution gates closed | V2.8 / V2.9 / L15 | Search Console/indexing execution, contact-form live submission, owner business/content acknowledgement, DNS, custom domains, CMS/provider writes, any further deployment, and any Azure mutation require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -518,3 +519,16 @@ Still separately gated:
 - V2.8.17A DNS/custom-domain/indexing gates: `closed`
 - V2.8.17A contact form submissions/contact endpoint POST: `0`
 - V2.8.17A protected config reads, deployment token prints/exports/listing/logging, keys/listKeys, connection strings, SAS: `0`
+- V2.8.18 production release classification: `v2_8_production_static_release_verified`
+- V2.8.18 production target final confirmation: `swa-ice-static-staging` / `rg-ice-static-staging`
+- V2.8.18 production target custom domains: `iceskatingrinkrentals.com`, `www.iceskatingrinkrentals.com`
+- V2.8.18 production route checks: `6_passed_200_ok`
+- V2.8.18 artifact aggregate SHA-256 recheck: `506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899`
+- V2.8.18 deployment id carried forward: `96fd744f-5589-4ac3-bebb-cfa99048dc0e`
+- V2.8.18 Runtime QA: `passed_6_tests`
+- V2.8.18 Resource Registry / Provider Profile: `passed_0_failures_0_warnings_9_profiles`
+- V2.8.18 OLM publish gate: `passed_132_tests`
+- V2.8.18 static form local gate: `passed_29_local_tests`
+- V2.8.18 indexing/Search Console approval packet: `created_execution_not_approved`
+- V2.8.18 contact-form live submission approval packet: `created_execution_not_approved`
+- V2.8.18 deployment/redeployment, DNS/custom-domain/indexing/Search Console actions, contact form submission, contact endpoint POST, CMS/provider writes, Azure mutation, RBAC assignment, protected config reads, deployment token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`

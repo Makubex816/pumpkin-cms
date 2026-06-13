@@ -1,0 +1,220 @@
+{
+  "reference": "V2.8.18",
+  "name": "Owner Post-Deployment Verification And Indexing Approval Packet",
+  "status": "complete_v2_8_production_static_release_verified",
+  "classification": "v2_8_production_static_release_verified",
+  "completedAt": "2026-06-13T15:11:21-04:00",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "wwwDomain": "www.iceskatingrinkrentals.com",
+  "canonicalRoutes": ["/", "/service-areas", "/contact"],
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-18-owner-post-deployment-verification-indexing-approval-packet-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_18_OWNER_POST_DEPLOYMENT_VERIFICATION_INDEXING_APPROVAL_PACKET_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "96%",
+    "v2_8CompletionAfterPhase": "production static release verified and evidence frozen; owner business acknowledgement, Search Console/indexing, and contact-form live submission remain separately gated",
+    "nextReference": "V2.8.19",
+    "nextReferenceName": "Indexing And Contact-Form Live Submission Execution Approval Boundary"
+  },
+  "productionTarget": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "location": "East US 2",
+    "sku": "Free",
+    "customDomains": [
+      {
+        "domainName": "iceskatingrinkrentals.com",
+        "status": "Ready"
+      },
+      {
+        "domainName": "www.iceskatingrinkrentals.com",
+        "status": "Ready"
+      }
+    ],
+    "confirmedByAzureReadOnly": true
+  },
+  "deploymentEvidenceFreeze": {
+    "sourceReference": "V2.8.17D",
+    "deploymentId": "96fd744f-5589-4ac3-bebb-cfa99048dc0e",
+    "deploymentTarget": "swa-ice-static-staging",
+    "deploymentResourceGroup": "rg-ice-static-staging",
+    "deploymentResult": "succeeded_exit_code_0",
+    "deploymentActionObserved": "upload",
+    "deploymentDryRunObserved": false,
+    "deploymentAttemptCount": 1,
+    "artifactRun": "sanitized_20260613174033",
+    "artifactFileCount": 41,
+    "artifactAggregateSha256": "506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899",
+    "artifactHashRechecked": true,
+    "artifactHashMatchesV2_8_17D": true,
+    "deployWorkspaceChildFolder": "app",
+    "deployWorkspaceHashParityCarriedForward": true
+  },
+  "postDeploymentRouteChecks": {
+    "attempted": true,
+    "checkedAt": "2026-06-13T15:09:12.3746383-04:00",
+    "method": "GET",
+    "crawl": false,
+    "followRedirects": false,
+    "followOutboundLinks": false,
+    "submitForms": false,
+    "postToContactEndpoint": false,
+    "ok": true,
+    "routes": [
+      {
+        "url": "https://iceskatingrinkrentals.com/",
+        "method": "GET",
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentLength": 43863,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/service-areas",
+        "method": "GET",
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentLength": 46730,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/contact",
+        "method": "GET",
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentLength": 50129,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/",
+        "method": "GET",
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentLength": 43863,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/service-areas",
+        "method": "GET",
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentLength": 46730,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/contact",
+        "method": "GET",
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentLength": 50129,
+        "hasHtml": true,
+        "hasIceBrand": true,
+        "redirected": false
+      }
+    ]
+  },
+  "validations": {
+    "startStateGitStatus": "busy_worktree_expected",
+    "gitLogReview": "passed_latest_commit_v2_8_17d",
+    "gitDiffCachedNameOnly": "passed_no_staged_files",
+    "v2_8_17DReview": "passed",
+    "azureAccountShowReadOnly": "passed",
+    "azureStaticWebAppShowReadOnly": "passed",
+    "azureHostnameListReadOnly": "passed_ready_domains",
+    "postDeploymentRouteChecks": "passed_6_of_6_200_ok",
+    "artifactHashRecheck": "passed",
+    "iceStaticSourceValidate": "passed_with_34_existing_warnings",
+    "iceTypeCheck": "passed",
+    "staticOutputValidator": "passed_zero_errors_zero_warnings",
+    "stagingPackageValidator": "passed_zero_errors_zero_warnings",
+    "runtimeQaHarnessCheck": "passed_6_tests",
+    "resourceRegistryOperationalBindings": "passed_0_failures_0_warnings",
+    "providerProfileValidation": "covered_by_resource_registry_operational_bindings_9_profiles",
+    "olmPublishGate": "passed_132_tests",
+    "staticFormLocalGate": "passed_check_and_29_local_tests"
+  },
+  "approvalPackets": {
+    "ownerOperatorPostLaunchSignoff": {
+      "operatorTechnicalSignoff": "complete",
+      "ownerBusinessContentAcknowledgement": "pending_future_owner_action",
+      "basis": "production target ready, artifact hash frozen, six routes 200 OK, validation stack passed"
+    },
+    "indexingSearchConsole": {
+      "packetCreated": true,
+      "executionApprovedInThisPhase": false,
+      "status": "approval_required_before_any_indexing_action"
+    },
+    "contactFormLiveSubmission": {
+      "packetCreated": true,
+      "executionApprovedInThisPhase": false,
+      "status": "approval_required_before_any_live_form_submission_or_contact_endpoint_post"
+    }
+  },
+  "safety": {
+    "deployment": false,
+    "redeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "indexing": false,
+    "indexingRequest": false,
+    "searchConsoleAction": false,
+    "contactFormSubmission": false,
+    "postToContactEndpoint": false,
+    "externalCrawling": false,
+    "outboundUrlChecks": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "providerWrites": false,
+    "additionalOlmStagingWrites": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "deploymentTokenUsed": false,
+    "deploymentTokenPrintedOrExported": false,
+    "deploymentTokenListed": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "gitAddAll": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-17d-carryforward.md",
+    "production-target-final-confirmation.md",
+    "post-deployment-production-route-verification-result.md",
+    "artifact-and-deployment-evidence-freeze.md",
+    "backend-contact-form-gate-carryforward.md",
+    "runtime-qa-post-production-result.md",
+    "resource-registry-provider-profile-result.md",
+    "olm-publish-gate-result.md",
+    "static-form-local-gate-result.md",
+    "owner-operator-post-launch-signoff-result.md",
+    "indexing-search-console-approval-packet.md",
+    "contact-form-live-submission-approval-packet.md",
+    "production-rollback-abort-carryforward.md",
+    "dns-custom-domain-closed-gates.md",
+    "v2-8-production-static-release-decision.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md",
+    "commit-instructions.md"
+  ]
+}

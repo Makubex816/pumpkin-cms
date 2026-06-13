@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.8.17D, Production Deploy Working-Directory Separation Corrective Execution |
-| Current V2 status | Complete; production static deployment to `swa-ice-static-staging` succeeded from a neutral parent workspace and six bounded production-domain GET checks passed |
-| Provisional V2 overall completion | `95%` |
+| Current V2 reference | V2.8.18, Owner Post-Deployment Verification And Indexing Approval Packet |
+| Current V2 status | Complete; production static release is verified, evidence is frozen, and indexing/contact-form live submission approval packets are prepared while execution remains closed |
+| Provisional V2 overall completion | `96%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.17D performed boolean-only token presence checks, operator token-target confirmation, read-only target/domain reconfirmation, fresh sanitized artifact validation, neutral parent `app` deploy workspace separation, exactly one successful SWA CLI production static artifact deployment, and six bounded GET-only production route checks; no DNS change, custom-domain mutation, Search Console/indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the static artifact deployment, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
-| Next gate | V2.8.18 Production Post-Deployment Owner Verification And Indexing Approval Packet |
+| Safety posture | V2.8.18 performed read-only production target/domain reconfirmation, exactly six bounded GET-only production route checks, artifact/deployment evidence freeze, and local/read-only validation; no deployment/redeployment, DNS change, custom-domain mutation, Search Console/indexing, indexing request, contact form submission, contact endpoint POST, crawl beyond the six approved routes, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment token use/print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
+| Next gate | V2.8.19 Indexing And Contact-Form Live Submission Execution Approval Boundary |
 
 ## V2 Reference System
 
@@ -113,6 +113,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website production deploy command-shape corrective execution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17c-production-deploy-command-shape-corrective-execution-result/` | V2.8.17C result package |
 | Tenant Website production deploy working-directory separation corrective execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17D_PRODUCTION_DEPLOY_WORKING_DIRECTORY_SEPARATION_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17D production static deployment succeeded and six production route checks passed |
 | Tenant Website production deploy working-directory separation corrective execution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/` | V2.8.17D result package |
+| Tenant Website owner post-deployment verification and indexing approval packet | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_18_OWNER_POST_DEPLOYMENT_VERIFICATION_INDEXING_APPROVAL_PACKET_REPORT.md` | V2.8.18 production static release verified; indexing and contact-form live submission approval packets created |
+| Tenant Website owner post-deployment verification and indexing approval packet package | `deployment/architecture/tenant-website-publish-readiness/v2-8-18-owner-post-deployment-verification-indexing-approval-packet-result/` | V2.8.18 result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -122,7 +124,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, post-staging verification, production release planning, the V2.8.17 production release execution boundary, V2.8.17A production deployment failure forensics, V2.8.17B deployment auth replacement/corrective retry execution, V2.8.17C command-shape corrective execution, and V2.8.17D working-directory separation corrective execution. V2.8.17D confirmed token presence by boolean-only checks, accepted operator confirmation for the production target token, reconfirmed the production target and attached domains, rebuilt and validated a fresh sanitized artifact, copied it into a neutral parent workspace child folder named `app`, sent exactly one corrected production deployment, and verified `/`, `/service-areas`, and `/contact` on both apex and `www` with six `200 OK` GET responses. DNS, custom domains, indexing, Search Console, contact form submission, contact endpoint POST, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, and further Azure configuration mutation remain closed.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, post-staging verification, production release planning, the V2.8.17 production release execution boundary, V2.8.17A production deployment failure forensics, V2.8.17B deployment auth replacement/corrective retry execution, V2.8.17C command-shape corrective execution, V2.8.17D working-directory separation corrective execution, and V2.8.18 post-deployment verification/evidence freeze. V2.8.18 reconfirmed the production target and attached domains, verified `/`, `/service-areas`, and `/contact` on both apex and `www` with six `200 OK` GET responses, rechecked the deployed artifact hash, reran local/read-only validation gates, and created indexing/Search Console and contact-form live-submission approval packets. DNS, custom domains, indexing execution, Search Console action, contact form submission, contact endpoint POST, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, deployment/redeployment, and further Azure configuration mutation remain closed.
 
 Immutable current facts:
 
@@ -582,7 +584,28 @@ Immutable current facts:
 - V2.8.17D DNS/custom-domain/indexing gates: `closed`
 - V2.8.17D contact form submissions/contact endpoint POST: `0`
 - V2.8.17D protected config reads, deployment token prints/exports/listing/logging/writing/reveal, keys/listKeys, connection strings, SAS: `0`
+- V2.8.18 production release classification: `v2_8_production_static_release_verified`
+- V2.8.18 production target final confirmation: `swa-ice-static-staging` / `rg-ice-static-staging`
+- V2.8.18 production target custom domains: `iceskatingrinkrentals.com`, `www.iceskatingrinkrentals.com`
+- V2.8.18 production route checks: `6_passed_200_ok`
+- V2.8.18 artifact run: `sanitized_20260613174033`
+- V2.8.18 artifact aggregate SHA-256 recheck: `506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899`
+- V2.8.18 deployment id carried forward: `96fd744f-5589-4ac3-bebb-cfa99048dc0e`
+- V2.8.18 static output validator: `passed_zero_errors_zero_warnings`
+- V2.8.18 staging package validator: `passed_zero_errors_zero_warnings`
+- V2.8.18 Runtime QA: `passed_6_tests`
+- V2.8.18 Resource Registry / Provider Profile: `passed_0_failures_0_warnings_9_profiles`
+- V2.8.18 OLM publish gate: `passed_132_tests`
+- V2.8.18 static form local gate: `passed_29_local_tests`
+- V2.8.18 operator technical post-launch signoff: `complete`
+- V2.8.18 owner business/content acknowledgement: `pending_future_owner_action`
+- V2.8.18 indexing/Search Console approval packet: `created_execution_not_approved`
+- V2.8.18 contact-form live submission approval packet: `created_execution_not_approved`
+- V2.8.18 deployment/redeployment actions: `0`
+- V2.8.18 DNS/custom-domain/indexing/Search Console gates: `closed`
+- V2.8.18 contact form submissions/contact endpoint POST: `0`
+- V2.8.18 protected config reads, deployment token use/prints/exports/listing/logging/writing/reveal, keys/listKeys, connection strings, SAS: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.18 Production Post-Deployment Owner Verification And Indexing Approval Packet only: use the completed V2.8.17D result package to review the successful production deployment to `swa-ice-static-staging` and the six passed production-domain GET checks for `/`, `/service-areas`, and `/contact` on apex and `www`. Prepare the owner post-launch verification and Search Console/indexing approval packet. Do not run deployment or retry, do not change DNS, do not alter custom domains, do not mutate app settings/RBAC/Azure infrastructure, do not perform CMS/provider writes, do not read protected config or `.env.local`, do not print/export/list/write/reveal deployment tokens or secrets, do not use keys/listKeys, connection strings, or SAS, do not submit contact forms or POST to the contact endpoint, do not crawl or follow outbound links, and do not trigger Search Console/indexing unless that action is separately and explicitly approved in the next request.
+Approve V2.8.19 Indexing And Contact-Form Live Submission Execution Approval Boundary only: use the completed V2.8.18 result package to decide whether to execute Search Console/indexing actions and whether to perform exactly one live production contact-form submission with an explicitly approved non-PII synthetic payload. Do not deploy or redeploy, do not change DNS or custom domains, do not mutate Azure infrastructure/configuration/app settings/RBAC, do not perform CMS/provider writes, do not read protected config or `.env.local`, do not print/export/list/use deployment tokens or secrets, do not use keys/listKeys, connection strings, or SAS, do not crawl or follow outbound links, and do not perform indexing or contact-form POST unless the V2.8.19 approval explicitly authorizes the exact action, target domain/origin, URL set or payload, and one-action stop rule.

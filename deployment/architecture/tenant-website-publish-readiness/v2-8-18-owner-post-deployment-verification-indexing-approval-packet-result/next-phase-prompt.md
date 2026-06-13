@@ -1,0 +1,4 @@
+# Next Phase Prompt
+
+Approve V2.8.19 Indexing And Contact-Form Live Submission Execution Approval Boundary only: use the completed V2.8.18 result package to decide whether to execute Search Console/indexing actions and whether to perform exactly one live production contact-form submission with an explicitly approved non-PII synthetic payload. Do not deploy or redeploy, do not change DNS or custom domains, do not mutate Azure infrastructure/configuration/app settings/RBAC, do not perform CMS/provider writes, do not read protected config or `.env.local`, do not print/export/list/use deployment tokens or secrets, do not use keys/listKeys, connection strings, or SAS, do not crawl or follow outbound links, and do not perform indexing or contact-form POST unless the V2.8.19 approval explicitly authorizes the exact action, target domain/origin, URL set or payload, and one-action stop rule.
+
