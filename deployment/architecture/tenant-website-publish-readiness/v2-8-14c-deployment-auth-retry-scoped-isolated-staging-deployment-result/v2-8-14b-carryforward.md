@@ -1,16 +1,15 @@
 # V2.8.14B Carryforward
 
-V2.8.14B reached the deployment boundary and stopped before deployment because `SWA_CLI_DEPLOYMENT_TOKEN` was absent.
+V2.8.14B was classified `blocked_before_deployment_auth_missing`.
 
-Carried forward facts:
+Carryforward facts used by V2.8.14C:
 
-- Isolated target: `swa-ice-static-isolated-staging`.
-- Resource group: `rg-ice-static-staging`.
-- Default host: `kind-island-0a85a740f.7.azurestaticapps.net`.
-- Custom domains: none.
-- Required deployment auth env var: `SWA_CLI_DEPLOYMENT_TOKEN`.
-- Old blocked target: `swa-ice-static-staging`.
-- V2.8.14B did not deploy static content.
+- The old target `swa-ice-static-staging` remains blocked because production custom domains are attached.
+- The approved isolated target is `swa-ice-static-isolated-staging` in `rg-ice-static-staging`.
+- The approved isolated default hostname is `kind-island-0a85a740f.7.azurestaticapps.net`.
+- The isolated target has no custom domains.
+- Pinned tooling is `npx --yes @azure/static-web-apps-cli@2.0.9`.
+- The required deployment auth variable is `SWA_CLI_DEPLOYMENT_TOKEN`.
+- Deployment, DNS, indexing, live publication, CMS writes, provider writes, protected config reads, and secret-listing remained closed until V2.8.14C gates passed.
 
-V2.8.14C revalidated these values and stopped before deployment for the same exact auth reason.
-
+V2.8.14C resolved the V2.8.14B blocker by confirming `SWA_CLI_DEPLOYMENT_TOKEN` presence by boolean-only checks and then executing exactly one scoped deployment to the isolated target.

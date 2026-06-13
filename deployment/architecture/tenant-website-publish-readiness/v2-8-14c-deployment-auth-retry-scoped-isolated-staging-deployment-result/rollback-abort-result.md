@@ -1,14 +1,13 @@
 # Rollback Abort Result
 
-Deployment did not execute, so no rollback action was required.
+No rollback or abort was executed.
 
-Abort rule applied:
+Deployment succeeded and the three bounded isolated staging route checks passed.
 
-- Stop before deployment when `SWA_CLI_DEPLOYMENT_TOKEN` is absent.
+Rollback owner remains:
 
-Future rollback posture:
+```text
+PumpkinCMS operator
+```
 
-- If a future deployment executes and route checks fail, do not broadly retry.
-- Preserve the previous deployed SWA state until a separately approved rollback or redeploy action.
-- Do not delete Azure resources as part of a rollback in this lane without explicit approval.
-
+Any future rollback, redeploy of a prior artifact, deletion, DNS change, production cutover, app setting change, or custom-domain action requires separate explicit approval.

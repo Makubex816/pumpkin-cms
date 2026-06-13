@@ -9,14 +9,14 @@ Use this first before choosing a next prompt, reading historical result packages
 | Field | Canonical state |
 | --- | --- |
 | Current V2 reference | V2.8.14C, Deployment Auth Retry And Scoped Isolated Staging Deployment |
-| Current V2 status | Complete; isolated target, tooling, and fresh artifact gates pass, but deployment stopped before execution because `SWA_CLI_DEPLOYMENT_TOKEN` remains absent |
+| Current V2 status | Complete; isolated target, tooling, and fresh artifact gates passed, one scoped isolated staging deployment executed, and the three bounded staging route checks returned `200 OK` |
 | Provisional V2 overall completion | `92%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.14C performed read-only target confirmation and local validation only; no deployment, DNS change, custom domain mutation, indexing, live publication, CMS write, provider write, Azure infrastructure creation/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment-token print/export/listing/logging, keys/listKeys, connection string, SAS, contact form submission, contact endpoint POST, external crawl, or outbound URL check |
-| Next gate | V2.8.14D Deployment Auth Session Injection And Isolated Staging Deploy |
+| Safety posture | V2.8.14C performed exactly one scoped static artifact deployment to the isolated target only; no deployment to the old target or production domain, DNS change, custom domain mutation, indexing, live publication, CMS write, provider write, Azure infrastructure creation/configuration mutation beyond the scoped artifact deployment, app settings mutation, RBAC assignment, protected config read, deployment-token print/export/listing/logging/writing, keys/listKeys, connection string, SAS, contact form submission, contact endpoint POST, external crawl, or outbound URL check |
+| Next gate | V2.8.15 Post-Staging Verification And Owner Signoff |
 
 ## V2 Reference System
 
@@ -97,7 +97,7 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website staging target isolation and deployment auth closure package | `deployment/architecture/tenant-website-publish-readiness/v2-8-14a-staging-target-isolation-deployment-auth-closure-result/` | V2.8.14A result package |
 | Tenant Website scoped Ice isolated staging deployment execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14B_SCOPED_ICE_ISOLATED_STAGING_DEPLOYMENT_EXECUTION_REPORT.md` | V2.8.14B blocked before deployment by missing auth |
 | Tenant Website scoped Ice isolated staging deployment execution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-14b-scoped-ice-isolated-staging-deployment-execution-result/` | V2.8.14B result package |
-| Tenant Website deployment auth retry and scoped isolated staging deployment | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14C_DEPLOYMENT_AUTH_RETRY_SCOPED_ISOLATED_STAGING_DEPLOYMENT_REPORT.md` | V2.8.14C blocked before deployment by missing auth |
+| Tenant Website deployment auth retry and scoped isolated staging deployment | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_14C_DEPLOYMENT_AUTH_RETRY_SCOPED_ISOLATED_STAGING_DEPLOYMENT_REPORT.md` | V2.8.14C isolated staging deployment executed and verified |
 | Tenant Website deployment auth retry and scoped isolated staging deployment package | `deployment/architecture/tenant-website-publish-readiness/v2-8-14c-deployment-auth-retry-scoped-isolated-staging-deployment-result/` | V2.8.14C result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
@@ -108,7 +108,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1 operationalized the Resource Registry / Provider Profile control layer for local/read-only use. V2.6.1 operationalized the reusable Runtime QA harness and evidence manifest path. V2.7.1 bound Admin/API operator-console readiness to that evidence chain. V2.7.2 resolved Runtime QA staging upload through a narrow container-scoped Storage Blob data-plane RBAC assignment and verified uploaded evidence. V2.7 is complete. V2.8.1 completed a local/read-only tenant website publish-readiness preflight and found the current safe Ice seed-site publish path blocked before deployment. V2.8.2 repaired the local Ice route source and validated the ignored static artifact package without deploying. V2.8.3 signed off Ice local publish-readiness and kept deployment/DNS/indexing/live publication closed. V2.8.4 created the staging publish worksheet and no-go criteria without executing staging. V2.8.5 added the sanitized no-dotenv static build path and approval packets. V2.8.6 classified validator gates so local static integrity is distinct from external backend/owner approval gates. V2.8.7 converted the remaining no-go items into explicit records. V2.8.8 hardened static form validator classification and revalidated a fresh sanitized build. V2.8.9 applied the safe candidate endpoint to local validation only. V2.8.10 recorded local/staging-readiness owner and media approvals from the current prompt, moved the validator to a single backend-verification gate, and kept staging execution blocked by live/backend verification and exact executable SWA target details. V2.8.11 resolved safe Function App and Azure Static Web Apps metadata, proved only bounded read-only endpoint reachability/preflight, and kept backend POST/form behavior plus operator/rollback ownership as the remaining publish blockers. V2.8.12 prepared the exact future backend live verification packet and deployment-method closure. V2.8.13 closed the role-based operator/rollback labels as `PumpkinCMS operator`, executed exactly one approved synthetic backend POST, and verified the backend for staging-readiness. V2.8.14 validated a fresh sanitized Ice artifact but blocked before deployment because the target has production custom domains attached, deployment-token env vars are absent, and `swa` CLI is unavailable. V2.8.14A created and verified the isolated non-production target `swa-ice-static-isolated-staging`, added repo-local readiness tooling, revalidated the artifact, and kept deployment blocked only by missing `SWA_CLI_DEPLOYMENT_TOKEN`. V2.8.14B confirmed the isolated target, rebuilt and validated a fresh artifact, and stopped before deployment because `SWA_CLI_DEPLOYMENT_TOKEN` remained absent. V2.8.14C retried the auth boundary, rebuilt and validated another fresh artifact, and again stopped before deployment because `SWA_CLI_DEPLOYMENT_TOKEN` is absent in the current session.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, deployment auth/tooling closure, and scoped isolated staging deployment. V2.8.14C confirmed `SWA_CLI_DEPLOYMENT_TOKEN` by presence-only checks, rebuilt and validated a fresh sanitized artifact, executed exactly one deployment to `swa-ice-static-isolated-staging`, and verified `/`, `/service-areas`, and `/contact` on `kind-island-0a85a740f.7.azurestaticapps.net` with `200 OK`. DNS, custom domains, indexing, live publication, production release, contact form submission, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, and Azure configuration mutation remain closed.
 
 Immutable current facts:
 
@@ -461,16 +461,16 @@ Immutable current facts:
 - V2.8.14C isolated target confirmed: `swa-ice-static-isolated-staging`
 - V2.8.14C isolated target default hostname: `kind-island-0a85a740f.7.azurestaticapps.net`
 - V2.8.14C isolated target custom domains: `0`
-- V2.8.14C deployment auth current-session presence: `false`
-- V2.8.14C sanitized build run: `sanitized_20260612233427`
-- V2.8.14C artifact aggregate SHA-256: `3e34dd29a7d91a623fd698f788d4ce86066c4dabf643bb1ec25fe04ea8cf32e8`
-- V2.8.14C Runtime QA evidence run: `runtimeqa_db6cbc9066631680`
-- V2.8.14C deployment executed: `0`
-- V2.8.14C post-deploy route checks: `0`
-- V2.8.14C Azure infrastructure creation/configuration mutations: `0`
+- V2.8.14C deployment auth current-session presence: `true`
+- V2.8.14C sanitized build run: `sanitized_20260612235412`
+- V2.8.14C artifact aggregate SHA-256: `91b4158db0bfaa97922aaf22b367a2834ca11f7012ffaf6b3152adddb16c2c21`
+- V2.8.14C Runtime QA evidence run: `runtimeqa_678e9af915877817`
+- V2.8.14C deployment executed: `1`
+- V2.8.14C post-deploy route checks: `3_passed_200_ok`
+- V2.8.14C Azure infrastructure creation/configuration mutations beyond scoped static artifact deployment: `0`
 - V2.8.14C DNS/custom-domain/app-settings/RBAC mutations: `0`
 - V2.8.14C protected config reads, deployment token prints/exports/listing/logging, keys/listKeys, connection strings, SAS: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.14D deployment auth session injection and scoped Ice isolated staging deployment only: retry the isolated staging deployment boundary only after `SWA_CLI_DEPLOYMENT_TOKEN` has been placed into the same terminal session and is present by presence-only check. Use `swa-ice-static-isolated-staging` in `rg-ice-static-staging`, default hostname `kind-island-0a85a740f.7.azurestaticapps.net`, and deploy only a freshly regenerated sanitized Ice static artifact that passes static output, staging package, and artifact security validation. Use pinned SWA CLI tooling without printing, exporting, listing, logging, committing, or passing the deployment token value on the command line. Execute at most one deployment attempt. After successful deployment only, run bounded GET checks for `/`, `/service-areas`, and `/contact` on the isolated default host. No deployment to `swa-ice-static-staging`, no production deployment, no DNS/custom-domain/app-settings/Azure resource configuration mutation, no RBAC assignment, no protected config reads, no keys/listKeys, no connection strings, no SAS, no contact form submission, no POST to contact endpoint, no crawl, no outbound URL checks, no indexing, no live publication, and no generated artifacts staged.
+Approve V2.8.15 Post-Staging Verification And Owner Signoff only: use the completed V2.8.14C result package and root report as source of truth. Review only the isolated staging default hostname `https://kind-island-0a85a740f.7.azurestaticapps.net` and only the Ice routes `/`, `/service-areas`, and `/contact` for post-staging operator/owner signoff. Confirm route rendering, static content readiness, contact-page no-submit behavior, rollback owner, and exact remaining production-release blockers. Do not deploy, do not redeploy, do not change DNS, do not add or remove custom domains, do not alter app settings, do not mutate Azure infrastructure, do not assign RBAC, do not read protected config, do not print/export/list deployment tokens or secrets, do not use keys/listKeys, do not generate connection strings or SAS, do not submit forms, do not POST to the contact endpoint, do not crawl, do not follow outbound links, do not perform CMS writes, do not perform provider writes, do not trigger indexing, do not publish live pages, and do not touch production domains.

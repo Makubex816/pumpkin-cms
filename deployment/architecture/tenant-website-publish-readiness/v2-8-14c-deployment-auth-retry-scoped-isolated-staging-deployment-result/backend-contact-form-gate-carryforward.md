@@ -1,13 +1,13 @@
 # Backend Contact Form Gate Carryforward
 
-Backend status carried forward from V2.8.13:
+Backend verification remains carried forward from V2.8.13.
 
-- Endpoint: `https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact`.
-- Approved proof: exactly one synthetic non-PII POST.
-- Response: `200 OK`.
-- Result: `backend_verified_for_staging_readiness`.
-- Broad retry: false.
-- Second POST: false.
+V2.8.13 executed exactly one approved synthetic non-PII POST to:
 
-V2.8.14C did not submit any contact forms and did not POST to the contact endpoint.
+```text
+https://func-ice-static-contact-20260605.azurewebsites.net/api/static-contact
+```
 
+The response was `200 OK`, `ok=true`, and included an entry ID. No second POST or broad retry occurred.
+
+V2.8.14C did not submit a contact form and did not POST to the contact endpoint. The only live checks after deployment were bounded GET requests to the three approved staging routes.

@@ -1,25 +1,32 @@
 # Scoped Isolated Staging Deployment Result
 
-Deployment status: not attempted.
+Status: passed.
 
-Reason:
+Exactly one deployment attempt was executed.
 
-```text
-SWA_CLI_DEPLOYMENT_TOKEN is absent from the current terminal session.
-```
-
-Approved target:
+Command shape:
 
 ```text
-swa-ice-static-isolated-staging
-rg-ice-static-staging
-kind-island-0a85a740f.7.azurestaticapps.net
+npx --yes @azure/static-web-apps-cli@2.0.9 deploy "<validated-artifact-root>" --env production
 ```
 
-Deployment safety:
+Validated artifact root:
 
-- Deployment to old target: not performed.
-- Deployment to production: not performed.
-- Deployment to custom domain: not performed.
-- Broad retry: not performed.
+```text
+apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612235412/repo/apps/ice-rink-web/out
+```
 
+Result:
+
+| Field | Value |
+| --- | --- |
+| Attempt count | `1` |
+| Deployment result | success |
+| Target default host reported by CLI | `https://kind-island-0a85a740f.7.azurestaticapps.net` |
+| Broad retry | `false` |
+| Deployment token source | `SWA_CLI_DEPLOYMENT_TOKEN` process environment |
+| Token value printed or passed on command line | `false` |
+
+The SWA CLI emitted a warning that it found a legacy `routes.json` file under unrelated generated `.tmp` evidence and ignored it. The deployment still completed successfully to the isolated default hostname.
+
+No deployment to `swa-ice-static-staging`, no deployment to a production custom-domain target, and no Azure infrastructure configuration mutation occurred beyond the approved static artifact deployment to the existing isolated target.

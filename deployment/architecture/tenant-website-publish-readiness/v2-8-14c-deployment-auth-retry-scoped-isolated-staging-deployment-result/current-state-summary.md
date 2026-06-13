@@ -1,19 +1,31 @@
 # Current State Summary
 
-V2.8.14C is complete and classified `blocked_before_deployment_auth_missing`.
+V2.8.14C completed the scoped isolated staging deployment boundary.
 
-Complete:
+Current classification:
 
-- Isolated staging target confirmed by read-only Azure metadata.
-- Isolated target has no custom domains.
-- Old production-domain target was not used.
-- Pinned SWA CLI tooling is available through `npx`.
-- Fresh sanitized Ice artifact was generated and validated.
-- Runtime QA, Resource Registry, OLM provider profile, and static form endpoint gates passed.
+```text
+staging_publish_executed_and_verified
+```
 
-Not ready:
+The isolated non-production Azure Static Web App target is live at:
 
-- `SWA_CLI_DEPLOYMENT_TOKEN` is absent from the current terminal session.
-- No deployment was attempted.
-- No post-deploy route checks were attempted.
+```text
+https://kind-island-0a85a740f.7.azurestaticapps.net
+```
 
+The validated artifact deployed in this phase was:
+
+```text
+apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612235412/repo/apps/ice-rink-web/out
+```
+
+The artifact has 41 files and aggregate SHA-256:
+
+```text
+91b4158db0bfaa97922aaf22b367a2834ca11f7012ffaf6b3152adddb16c2c21
+```
+
+Three bounded isolated staging GET checks passed with `200 OK` for `/`, `/service-areas`, and `/contact`.
+
+V2.8 is now ready for post-staging verification/signoff. Production release and public cutover are not approved.

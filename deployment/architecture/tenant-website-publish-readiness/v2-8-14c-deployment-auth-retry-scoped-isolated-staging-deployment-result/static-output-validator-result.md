@@ -1,19 +1,26 @@
 # Static Output Validator Result
 
-Command:
+Status: passed.
 
-```powershell
-node deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612233427/repo/apps/ice-rink-web/out
+Command shape:
+
+```text
+node deployment/static-azure/validate-static-output.mjs --site ice-rink-rentals --out apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612235412/repo/apps/ice-rink-web/out
 ```
 
-Result: passed.
+The validator used the approved public static form endpoint and boolean owner/backend verification flags from process environment. No protected config was read.
 
-Key fields:
+Result:
 
-- File count: `41`.
-- Local static integrity: `true`.
-- External approval gates: `true`.
-- Static form gate: `configured_owner_approved_backend_verified`.
-- Structural errors: `0`.
-- Warnings: `0`.
+| Field | Value |
+| --- | --- |
+| `ok` | `true` |
+| File count | `41` |
+| Local static integrity | `true` |
+| External approval gates | `true` |
+| Structural errors | `0` |
+| External approval gates count | `0` |
+| Warnings | `0` |
+| Static form gate | `configured_owner_approved_backend_verified` |
 
+The static output validator passed against the fresh sanitized artifact root.

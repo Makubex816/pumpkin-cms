@@ -1,6 +1,6 @@
 # Pumpkin Tenant Website Publish Readiness V2.8.14C Deployment Auth Retry Scoped Isolated Staging Deployment Report
 
-Status: complete; classified `blocked_before_deployment_auth_missing`.
+Status: complete; classified `staging_publish_executed_and_verified`.
 
 Result package:
 
@@ -15,22 +15,22 @@ Tracker recommendation:
 - Provisional V2 overall completion: `92%`
 - V2.8 completion: `99%`
 - Layer refs: `L01`, `L02`, `L03`, `L04`, `L06`, `L07`, `L08`, `L09`, `L10`, `L11`, `L12`, `L15`
-- Next recommended reference: `V2.8.14D Deployment Auth Session Injection And Isolated Staging Deploy`
+- Next recommended reference: `V2.8.15 Post-Staging Verification And Owner Signoff`
 
 ## What Is Complete
 
-- Reviewed the V2.8.14B auth-blocked deployment boundary.
+- Confirmed `SWA_CLI_DEPLOYMENT_TOKEN` is present by boolean-only checks in PowerShell and Node.
+- Confirmed pinned SWA CLI tooling: `npx --yes @azure/static-web-apps-cli@2.0.9`.
 - Confirmed the isolated target exactly as `swa-ice-static-isolated-staging` in `rg-ice-static-staging`.
 - Confirmed the default hostname exactly as `kind-island-0a85a740f.7.azurestaticapps.net`.
 - Confirmed the isolated target has no custom domains.
-- Confirmed `SWA_CLI_DEPLOYMENT_TOKEN` is absent by presence-only check.
-- Confirmed pinned SWA CLI tooling is available through `npx --yes @azure/static-web-apps-cli@2.0.9`.
 - Rebuilt and validated a fresh sanitized Ice static artifact.
-- Stopped before deployment.
+- Executed exactly one scoped static artifact deployment to the isolated target.
+- Ran exactly three bounded GET checks on the isolated staging default hostname; all returned `200 OK`.
 
 ## What Remains Not Ready
 
-`SWA_CLI_DEPLOYMENT_TOKEN` is absent from the current terminal session. The scoped staging deployment cannot execute until that env var is present.
+Production release remains not approved. DNS, custom domains, indexing, live publication, contact form submission, contact endpoint POST, external crawling, outbound URL checks, CMS writes, provider writes, Azure infrastructure/configuration changes, app settings changes, RBAC assignment, protected config reads, keys/listKeys, connection strings, and SAS remain closed.
 
 ## Pre-Deployment Gate Result
 
@@ -39,68 +39,68 @@ Tracker recommendation:
 | Isolated target exact name | passed |
 | Isolated target default hostname | passed |
 | Isolated target custom domains | passed, empty |
-| Deployment auth | blocked, `SWA_CLI_DEPLOYMENT_TOKEN` absent |
-| Pinned deployment tooling | passed |
+| Deployment auth | passed, present by boolean-only checks |
+| Pinned deployment tooling | passed, `2.0.9` |
 | Sanitized artifact | passed |
 | Static output validator | passed |
 | Staging package validator | passed |
 | Artifact security scan | passed |
 
-## Deployment Result
-
-Deployment was not attempted.
-
-Reason:
-
-```text
-SWA_CLI_DEPLOYMENT_TOKEN is absent from the current terminal session.
-```
-
-No deployment to the old target or production occurred.
-
-## Post-Deploy Route Checks
-
-Post-deploy route checks were not attempted because deployment did not execute.
-
-Allowed future route checks remain:
-
-```text
-https://kind-island-0a85a740f.7.azurestaticapps.net/
-https://kind-island-0a85a740f.7.azurestaticapps.net/service-areas
-https://kind-island-0a85a740f.7.azurestaticapps.net/contact
-```
-
 ## Artifact Candidate
 
 ```text
-apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612233427/repo/apps/ice-rink-web/out
+apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612235412/repo/apps/ice-rink-web/out
 ```
 
 - File count: `41`
-- Aggregate SHA-256: `3e34dd29a7d91a623fd698f788d4ce86066c4dabf643bb1ec25fe04ea8cf32e8`
+- Aggregate SHA-256: `91b4158db0bfaa97922aaf22b367a2834ca11f7012ffaf6b3152adddb16c2c21`
 - Required routes present: `/`, `/service-areas`, `/contact`
 - Required files present: `sitemap.xml`, `robots.txt`
 - High-confidence secret-like matches: `0`
 - Forbidden artifact path matches: `0`
+- Localhost matches: `1`, standard Next polyfill bundle only
+
+## Deployment Result
+
+Deployment executed exactly once and succeeded.
+
+Reported deployed URL:
+
+```text
+https://kind-island-0a85a740f.7.azurestaticapps.net
+```
+
+No deployment to the old target or a production custom-domain target occurred. The token value was never printed, exported, listed, logged, written to docs, committed, or displayed.
+
+## Post-Deploy Route Checks
+
+| Route | Result |
+| --- | --- |
+| `https://kind-island-0a85a740f.7.azurestaticapps.net/` | `200 OK` |
+| `https://kind-island-0a85a740f.7.azurestaticapps.net/service-areas` | `200 OK` |
+| `https://kind-island-0a85a740f.7.azurestaticapps.net/contact` | `200 OK` |
+
+No crawl, outbound link follow, form submission, production-domain check, indexing trigger, or POST occurred.
 
 ## Validation
 
-- `npm run build:static:ice:sanitized`: passed, `sanitized_20260612233427`.
+- `npm run build:static:ice:sanitized`: passed, `sanitized_20260612235412`.
 - `npm run validate:static:ice`: passed with 34 existing warnings.
 - `npm run type-check`: passed.
-- `node scripts/static-publish.mjs generate`: passed with 34 existing warnings.
+- Ice env `node scripts/static-publish.mjs generate`: passed with 34 existing warnings.
 - Static output validator: passed.
 - Staging package validator: passed.
-- Runtime QA check: passed.
-- Runtime QA evidence run/validation: passed, `runtimeqa_db6cbc9066631680`, 1 warning.
+- Artifact security scan: passed.
+- Runtime QA check/evidence validation: passed, `runtimeqa_678e9af915877817`, 1 warning.
 - Resource Registry operational bindings: passed.
-- OLM provider profile check: passed; live writes disabled.
-- Static form endpoint package check/tests: passed.
-- Deployment readiness wrapper: blocked only by missing `SWA_CLI_DEPLOYMENT_TOKEN`.
+- OLM local/provider profile check: passed, 132 tests.
+- Static form endpoint check/tests: passed, 28 checks.
+- Scoped isolated staging deployment: passed, 1 attempt.
+- Bounded route checks: passed, 3 routes.
 
 ## Security Boundary
 
-Confirmed no deployment to `swa-ice-static-staging`, production deployment, static artifact deployment, DNS change, custom domain mutation, indexing, live publication, external crawling, outbound URL check, contact form submission, contact endpoint POST, CMS write, provider write, Azure infrastructure creation, Azure infrastructure configuration mutation, app settings mutation, RBAC assignment, protected config read, `.env.local` read/print/copy/move/rename/parse/source/modify, deployment-token print/export/listing/logging, Key Vault secret query, keys/listKeys, connection string generation, or SAS generation occurred.
+Confirmed no deployment to `swa-ice-static-staging`, no production-domain deployment, no DNS change, no custom-domain mutation, no indexing, no live publication, no external crawling, no outbound URL check, no contact form submission, no contact endpoint POST, no CMS write, no provider write, no Azure infrastructure creation, no Azure infrastructure configuration mutation beyond the scoped static artifact deployment, no app settings mutation, no RBAC assignment, no protected config read, no `.env.local` read/print/copy/move/rename/parse/source/modify, no deployment-token print/export/listing/logging/writing, no Key Vault secret query, no keys/listKeys, no connection string generation, and no SAS generation occurred.
 
 Exact next approval wording is in:
 

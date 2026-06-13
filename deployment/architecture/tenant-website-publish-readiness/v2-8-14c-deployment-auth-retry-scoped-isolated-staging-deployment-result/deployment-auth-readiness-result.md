@@ -1,20 +1,25 @@
 # Deployment Auth Readiness Result
 
-Required env var:
+Status: passed.
+
+The required env var was checked by presence only:
 
 ```text
 SWA_CLI_DEPLOYMENT_TOKEN
 ```
 
-Presence-only result:
+Results:
 
-| Environment variable | Present |
+| Check | Result |
 | --- | --- |
-| `SWA_CLI_DEPLOYMENT_TOKEN` | false |
+| PowerShell boolean presence | `True` |
+| Node boolean presence | `true` |
+| Readiness wrapper presence | `presentInCurrentProcess: true` |
+| Token value printed | No |
+| Token value exported | No |
+| Token value listed | No |
+| Token value logged | No |
+| Token value written to docs | No |
+| Protected config read to obtain token | No |
 
-No token value was printed, exported, listed, logged, read from protected config, or committed.
-
-Operator action:
-
-- Set `SWA_CLI_DEPLOYMENT_TOKEN` in the same terminal session before retrying the scoped isolated staging deployment.
-
+The deployment command used the token only from the process environment and did not pass the token value on the command line.

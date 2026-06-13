@@ -1,10 +1,10 @@
 # Deployment Tooling Readiness Result
 
-Global `swa` CLI on PATH: not available.
+Status: passed.
 
-Repo-supported tooling:
+Pinned tooling:
 
-```powershell
+```text
 npx --yes @azure/static-web-apps-cli@2.0.9
 ```
 
@@ -14,16 +14,12 @@ Version check:
 2.0.9
 ```
 
-Readiness wrapper:
+The deploy help confirmed env-var token support and showed `--deployment-token` and `--print-token` as available options. Those options were not used.
+
+The deployed command shape was:
 
 ```text
-deployment/static-azure/scripts/ice-isolated-swa-deploy-readiness.mjs
+npx --yes @azure/static-web-apps-cli@2.0.9 deploy "<validated-artifact-root>" --env production
 ```
 
-Wrapper result:
-
-- Target check: passed.
-- Artifact check: passed.
-- Auth check: blocked, `SWA_CLI_DEPLOYMENT_TOKEN` absent.
-- Deployment attempted: false.
-
+The token source was only `SWA_CLI_DEPLOYMENT_TOKEN` in the current process environment.

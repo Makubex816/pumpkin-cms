@@ -1,8 +1,9 @@
 {
   "reference": "V2.8.14C",
   "name": "Deployment Auth Retry And Scoped Isolated Staging Deployment",
-  "status": "complete_blocked_before_deployment_auth_missing",
-  "classification": "blocked_before_deployment_auth_missing",
+  "status": "complete_staging_publish_executed_and_verified",
+  "classification": "staging_publish_executed_and_verified",
+  "completedAt": "2026-06-12T19:59:23.4600002-04:00",
   "tenant": "ice-rink-rentals",
   "domain": "iceskatingrinkrentals.com",
   "canonicalRoutes": ["/", "/service-areas", "/contact"],
@@ -11,8 +12,8 @@
   "tracker": {
     "overallCompletionAfterPhase": "92%",
     "v2_8CompletionAfterPhase": "99%",
-    "nextReference": "V2.8.14D",
-    "nextReferenceName": "Deployment Auth Session Injection And Isolated Staging Deploy"
+    "nextReference": "V2.8.15",
+    "nextReferenceName": "Post-Staging Verification And Owner Signoff"
   },
   "isolatedTarget": {
     "name": "swa-ice-static-isolated-staging",
@@ -28,29 +29,31 @@
   "blockedOldTarget": {
     "name": "swa-ice-static-staging",
     "resourceGroup": "rg-ice-static-staging",
-    "reasonNotUsed": "production_custom_domains_attached"
+    "reasonNotUsed": "production_custom_domains_attached",
+    "customDomains": ["iceskatingrinkrentals.com", "www.iceskatingrinkrentals.com"]
   },
   "deploymentAuth": {
     "canonicalRequiredEnvVar": "SWA_CLI_DEPLOYMENT_TOKEN",
-    "presentInCurrentSession": false,
+    "presentInCurrentSession": true,
+    "presentInNodeProcess": true,
     "valuePrinted": false,
     "valueExported": false,
     "valueLogged": false,
     "valueListed": false,
+    "valueWrittenToDocs": false,
     "protectedConfigReadForCredential": false
   },
   "deploymentTooling": {
-    "globalSwaCliOnPath": false,
     "repoSupportedInvocation": "npx --yes @azure/static-web-apps-cli@2.0.9",
     "swaCliVersionChecked": "2.0.9",
     "readinessWrapper": "deployment/static-azure/scripts/ice-isolated-swa-deploy-readiness.mjs",
-    "readinessWrapperResult": "blocked_auth_missing"
+    "readinessWrapperResult": "passed_target_artifact_and_auth"
   },
   "artifact": {
-    "sanitizedBuildRunId": "sanitized_20260612233427",
-    "artifactRoot": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612233427/repo/apps/ice-rink-web/out",
+    "sanitizedBuildRunId": "sanitized_20260612235412",
+    "artifactRoot": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260612235412/repo/apps/ice-rink-web/out",
     "fileCount": 41,
-    "aggregateSha256": "3e34dd29a7d91a623fd698f788d4ce86066c4dabf643bb1ec25fe04ea8cf32e8",
+    "aggregateSha256": "91b4158db0bfaa97922aaf22b367a2834ca11f7012ffaf6b3152adddb16c2c21",
     "requiredRoutesPresent": true,
     "requiredFilesPresent": true,
     "forbiddenArtifactContentPathMatches": 0,
@@ -59,46 +62,88 @@
     "localhostMatchClassification": "standard_next_polyfill_bundle_warning_not_config_leak"
   },
   "deployment": {
-    "attempted": false,
-    "executed": false,
+    "attempted": true,
+    "executed": true,
+    "attemptCount": 1,
     "target": "swa-ice-static-isolated-staging",
-    "blockedReason": "SWA_CLI_DEPLOYMENT_TOKEN_absent",
-    "broadRetry": false
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+    "tooling": "npx --yes @azure/static-web-apps-cli@2.0.9",
+    "commandShape": "npx --yes @azure/static-web-apps-cli@2.0.9 deploy \"<validated-artifact-root>\" --env production",
+    "tokenSource": "SWA_CLI_DEPLOYMENT_TOKEN process environment variable",
+    "tokenValuePrintedOrPassedOnCommandLine": false,
+    "result": "success",
+    "reportedUrl": "https://kind-island-0a85a740f.7.azurestaticapps.net",
+    "broadRetry": false,
+    "notes": [
+      "SWA CLI emitted a legacy routes.json warning for an unrelated ignored .tmp evidence path; the file was ignored by the CLI.",
+      "No deployment to the old target or production domain occurred."
+    ]
   },
   "postDeployRouteChecks": {
-    "attempted": false,
-    "reason": "deployment_not_executed_auth_missing",
-    "allowedRoutes": [
-      "https://kind-island-0a85a740f.7.azurestaticapps.net/",
-      "https://kind-island-0a85a740f.7.azurestaticapps.net/service-areas",
-      "https://kind-island-0a85a740f.7.azurestaticapps.net/contact"
+    "attempted": true,
+    "method": "GET",
+    "crawl": false,
+    "followOutboundLinks": false,
+    "submitForms": false,
+    "routes": [
+      {
+        "url": "https://kind-island-0a85a740f.7.azurestaticapps.net/",
+        "ok": true,
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentType": "text/html",
+        "contentLength": 43788
+      },
+      {
+        "url": "https://kind-island-0a85a740f.7.azurestaticapps.net/service-areas",
+        "ok": true,
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentType": "text/html",
+        "contentLength": 46655
+      },
+      {
+        "url": "https://kind-island-0a85a740f.7.azurestaticapps.net/contact",
+        "ok": true,
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentType": "text/html",
+        "contentLength": 50054
+      }
     ]
   },
   "validations": {
+    "startStateReview": "passed_busy_worktree_no_staged_files",
+    "azureReadOnlyAccountShow": "passed",
     "azureReadOnlyIsolatedTargetShow": "passed",
     "azureReadOnlyIsolatedHostnameList": "passed_empty_custom_domains",
-    "deploymentAuthPresenceCheck": "blocked_missing_swa_cli_deployment_token",
+    "deploymentAuthPresenceCheckPowerShell": "passed_present_boolean_only",
+    "deploymentAuthPresenceCheckNode": "passed_present_boolean_only",
     "swaCliNpxVersion": "passed_2_0_9",
     "iceSanitizedStaticBuild": "passed",
-    "iceStaticSourceValidate": "passed_with_34_warnings",
+    "iceStaticSourceValidate": "passed_with_34_existing_warnings",
     "iceTypeCheck": "passed",
-    "staticGenerate": "passed_with_34_warnings",
+    "staticGenerateDirectWithoutEnv": "failed_missing_site_key_non_mutating_then_corrected",
+    "staticGenerateWithIceEnv": "passed_with_34_existing_warnings",
     "staticOutputValidator": "passed",
     "stagingPackageValidator": "passed",
     "artifactSecurityScan": "passed_with_standard_polyfill_localhost_warning",
+    "deploymentReadinessWrapper": "passed_target_artifact_auth",
     "runtimeQaHarnessCheck": "passed_6_tests",
-    "runtimeQaEvidenceRun": "runtimeqa_db6cbc9066631680",
+    "runtimeQaEvidenceRun": "runtimeqa_678e9af915877817",
     "runtimeQaEvidenceValidation": "passed_with_1_warning",
     "resourceRegistryOperationalBindings": "passed_zero_failures_zero_warnings",
-    "olmProviderProfileCheck": "passed_planning_only_live_write_allowed_false",
+    "olmLocalAndProviderProfileCheck": "passed_132_tests",
     "staticFormEndpointCheck": "passed",
     "staticFormEndpointTests": "passed_28_checks",
-    "deploymentReadinessWrapper": "passed_target_and_artifact_blocked_auth_missing"
+    "postDeployRouteChecks": "passed_3_routes_200_ok"
   },
   "safety": {
     "deploymentToOldTarget": false,
-    "productionDeployment": false,
-    "staticArtifactDeployment": false,
+    "productionDomainDeployment": false,
+    "staticArtifactDeploymentToIsolatedTarget": true,
+    "deploymentAttemptCount": 1,
     "dnsChange": false,
     "customDomainMutation": false,
     "indexing": false,
@@ -111,13 +156,14 @@
     "mediaAssetWrites": false,
     "providerWrites": false,
     "azureInfrastructureCreation": false,
-    "azureInfrastructureConfigurationMutation": false,
+    "azureInfrastructureConfigurationMutationBeyondScopedStaticArtifactDeployment": false,
     "azureAppSettingsMutation": false,
     "rbacAssignment": false,
     "protectedConfigRead": false,
     "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
     "deploymentTokenPrintedOrExported": false,
     "deploymentTokenListed": false,
+    "deploymentTokenWrittenToDocs": false,
     "keyVaultSecretQuery": false,
     "keysListKeys": false,
     "connectionStrings": false,
@@ -150,4 +196,3 @@
     "validation-summary.md"
   ]
 }
-
