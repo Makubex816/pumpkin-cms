@@ -1,0 +1,217 @@
+{
+  "reference": "V2.8.17",
+  "name": "Production Release Execution Approval",
+  "status": "complete_production_deployment_failed",
+  "classification": "production_deployment_failed",
+  "completedAt": "2026-06-12T21:47:34.4320529-04:00",
+  "tenant": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "canonicalRoutes": ["/", "/service-areas", "/contact"],
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-17-production-release-execution-approval-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17_PRODUCTION_RELEASE_EXECUTION_APPROVAL_REPORT.md",
+  "tracker": {
+    "overallCompletionAfterPhase": "94%",
+    "v2_8CompletionAfterPhase": "production execution approval processed; production deployment failed before route verification",
+    "nextReference": "V2.8.18",
+    "nextReferenceName": "Production Deployment Failure Triage And Reattempt Approval"
+  },
+  "productionTarget": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "location": "East US 2",
+    "sku": "Free",
+    "customDomains": [
+      {
+        "domainName": "iceskatingrinkrentals.com",
+        "status": "Ready"
+      },
+      {
+        "domainName": "www.iceskatingrinkrentals.com",
+        "status": "Ready"
+      }
+    ],
+    "confirmedByAzureReadOnly": true
+  },
+  "blockedTarget": {
+    "name": "swa-ice-static-isolated-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "usedInThisPhase": false
+  },
+  "deploymentAuth": {
+    "canonicalRequiredEnvVar": "SWA_CLI_DEPLOYMENT_TOKEN",
+    "operatorConfirmedTokenTarget": "swa-ice-static-staging",
+    "presentInCurrentSession": true,
+    "presentInNodeProcess": true,
+    "valuePrinted": false,
+    "valueExported": false,
+    "valueLogged": false,
+    "valueListed": false,
+    "valueWrittenToDocs": false,
+    "protectedConfigReadForCredential": false
+  },
+  "deploymentTooling": {
+    "repoSupportedInvocation": "npx --yes @azure/static-web-apps-cli@2.0.9",
+    "swaCliVersionChecked": "2.0.9"
+  },
+  "artifact": {
+    "source": "fresh_sanitized_static_build",
+    "sanitizedBuildRunId": "sanitized_20260613014405",
+    "artifactRoot": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260613014405/repo/apps/ice-rink-web/out",
+    "fileCount": 41,
+    "aggregateSha256": "b525b9fc70f32206c17b860a4f29579a26c350394272171bb021a2904fd2b042",
+    "aggregateSha256Method": "sha256(sorted relative path + NUL + per-file sha256 + newline)",
+    "requiredRoutesPresent": true,
+    "requiredFilesPresent": true,
+    "forbiddenArtifactContentPathMatches": 0,
+    "highConfidenceSecretLikeMatches": 0,
+    "localhostMatches": 1,
+    "localhostMatchClassification": "standard_next_polyfill_bundle_warning_not_config_leak"
+  },
+  "deployment": {
+    "attempted": true,
+    "attemptSent": true,
+    "attemptCount": 1,
+    "target": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "tooling": "npx --yes @azure/static-web-apps-cli@2.0.9",
+    "commandShape": "npx --yes @azure/static-web-apps-cli@2.0.9 deploy \"<validated-artifact-root>\" --env production",
+    "tokenSource": "SWA_CLI_DEPLOYMENT_TOKEN process environment variable",
+    "tokenValuePrintedOrPassedOnCommandLine": false,
+    "result": "failed",
+    "exitCode": 1,
+    "reportedUrl": null,
+    "broadRetry": false,
+    "failureSummary": [
+      "SWA CLI reported: Deployment failed with exit code 1.",
+      "The deployment binary exited with code 1.",
+      "No retry was attempted."
+    ],
+    "notes": [
+      "SWA CLI emitted a legacy routes.json warning for unrelated generated .tmp evidence and ignored the file.",
+      "Because deployment failed, production-domain route verification was not run."
+    ]
+  },
+  "postDeployProductionRouteChecks": {
+    "attempted": false,
+    "reason": "deployment_failed_before_success",
+    "method": "GET",
+    "crawl": false,
+    "followOutboundLinks": false,
+    "submitForms": false,
+    "postToContactEndpoint": false,
+    "routes": [
+      {
+        "url": "https://iceskatingrinkrentals.com/",
+        "status": "not_run_deployment_failed"
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/service-areas",
+        "status": "not_run_deployment_failed"
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/contact",
+        "status": "not_run_deployment_failed"
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/",
+        "status": "not_run_deployment_failed"
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/service-areas",
+        "status": "not_run_deployment_failed"
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/contact",
+        "status": "not_run_deployment_failed"
+      }
+    ]
+  },
+  "validations": {
+    "startStateReview": "passed_busy_worktree_no_staged_files",
+    "v2_8_16PlanningReview": "passed",
+    "v2_8_15EvidenceReview": "passed",
+    "v2_8_14cEvidenceCarryforward": "passed",
+    "v2_8_13BackendVerificationCarryforward": "passed",
+    "azureReadOnlyAccountShow": "passed",
+    "azureReadOnlyProductionTargetShow": "passed",
+    "azureReadOnlyProductionHostnameList": "passed_ready_domains",
+    "deploymentAuthPresenceCheckPowerShell": "passed_present_boolean_only",
+    "deploymentAuthPresenceCheckNode": "passed_present_boolean_only",
+    "swaCliNpxVersion": "passed_2_0_9",
+    "iceSanitizedStaticBuild": "passed",
+    "iceStaticSourceValidate": "passed_with_34_existing_warnings",
+    "iceTypeCheck": "passed",
+    "staticGenerateWithIceEnv": "passed_with_34_existing_warnings",
+    "staticOutputValidator": "passed_zero_errors_zero_warnings",
+    "stagingPackageValidator": "passed_zero_errors_zero_warnings",
+    "artifactSecurityScan": "passed_with_standard_polyfill_localhost_warning",
+    "runtimeQaHarnessCheck": "passed_6_tests",
+    "runtimeQaEvidenceRun": "runtimeqa_b876ce99824cee8e",
+    "runtimeQaEvidenceValidation": "passed_with_1_warning",
+    "resourceRegistryOperationalBindings": "passed_zero_failures_zero_warnings",
+    "olmLocalAndProviderProfileCheck": "passed_132_tests",
+    "staticFormEndpointCheck": "passed",
+    "staticFormEndpointTests": "passed_28_checks",
+    "productionDeployment": "failed_exit_code_1_one_attempt_no_retry",
+    "postDeployRouteChecks": "not_run_deployment_failed"
+  },
+  "safety": {
+    "deploymentToApprovedProductionTarget": true,
+    "deploymentToIsolatedStagingTarget": false,
+    "deploymentAttemptCount": 1,
+    "broadRetry": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "indexing": false,
+    "searchConsoleAction": false,
+    "contactFormSubmission": false,
+    "postToContactEndpoint": false,
+    "externalCrawling": false,
+    "outboundUrlChecks": false,
+    "cmsWrites": false,
+    "mediaAssetWrites": false,
+    "providerWrites": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureConfigurationMutationBeyondScopedStaticArtifactDeploymentAttempt": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "envLocalReadPrintCopyMoveRenameParseSourceModify": false,
+    "deploymentTokenPrintedOrExported": false,
+    "deploymentTokenListed": false,
+    "deploymentTokenWrittenToDocs": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStrings": false,
+    "sas": false,
+    "generatedArtifactsStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-16-carryforward.md",
+    "production-target-confirmation-result.md",
+    "production-domain-attachment-confirmation-result.md",
+    "deployment-auth-readiness-result.md",
+    "deployment-tooling-readiness-result.md",
+    "sanitized-static-build-result.md",
+    "static-output-validator-result.md",
+    "staging-package-validator-result.md",
+    "artifact-root-selection-result.md",
+    "artifact-security-scan-result.md",
+    "production-static-deployment-result.md",
+    "post-deploy-production-route-check-result.md",
+    "backend-contact-form-gate-carryforward.md",
+    "dns-custom-domain-indexing-closed-gates.md",
+    "production-release-readiness-decision.md",
+    "rollback-abort-result.md",
+    "blockers-and-open-decisions.md",
+    "security-boundary-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+

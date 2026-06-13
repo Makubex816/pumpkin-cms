@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.15 |
-| currentReferenceName | Post-Staging Verification And Owner Signoff |
-| currentReferenceStatus | Complete; isolated staging target, route checks, validation stack, and owner/operator staging signoff passed |
-| provisionalV2OverallCompletion | `93%` |
+| currentReference | V2.8.17 |
+| currentReferenceName | Production Release Execution Approval |
+| currentReferenceStatus | Complete; pre-production gates passed, exactly one production static deployment attempt was sent, and deployment failed before route verification |
+| provisionalV2OverallCompletion | `94%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.16 |
-| nextReferenceName | Production Release Boundary Planning And Approval Packet |
-| nextGate | Prepare a no-execution production release approval packet; production release remains closed |
-| safetyPosture | V2.8.15 performed verification and signoff only; no redeployment, old-target deployment, production deployment, DNS change, custom domain mutation, indexing, live publication, CMS write, provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment credential use/print/export/listing, keys/listKeys, connection string, SAS, contact form submission, contact endpoint POST, external crawl, or outbound URL check |
-| blockedState | No blocker remains for isolated staging readiness; production release remains a separate approval boundary |
+| nextReference | V2.8.18 |
+| nextReferenceName | Production Deployment Failure Triage And Reattempt Approval |
+| nextGate | Triage the SWA CLI deployment binary failure and request separate explicit approval before any reattempt |
+| safetyPosture | V2.8.17 sent exactly one production static artifact deployment attempt; it failed with exit code `1`; no retry, production route checks, DNS change, custom domain mutation, indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS write, provider write, Azure infrastructure/configuration mutation beyond the attempted static deployment boundary, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing, keys/listKeys, connection string, or SAS occurred |
+| blockedState | Production release is not verified; route checks were not run because deployment failed; any future deployment reattempt requires separate explicit approval |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `100% isolated staging readiness` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, and owner/operator staging signoff are complete; production release remains separate |
+| V2.8 | `production execution attempted once; deployment failed before verification` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, owner/operator staging signoff, and production release planning are complete; V2.8.17 sent one approved production deployment attempt and it failed before route verification |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

@@ -34,6 +34,8 @@
 | Scoped Ice Isolated Staging Deployment Execution | Complete, blocked before deployment by auth | V2.8.14B / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Isolated target, tooling, and fresh artifact gates passed, but deployment stopped before execution because `SWA_CLI_DEPLOYMENT_TOKEN` is absent. |
 | Deployment Auth Retry and Scoped Ice Isolated Staging Deployment | Complete, deployed and verified | V2.8.14C / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Isolated target, tooling, and fresh artifact gates passed; exactly one deployment to `swa-ice-static-isolated-staging` succeeded; `/`, `/service-areas`, and `/contact` returned `200 OK`. |
 | Post-Staging Verification and Owner Signoff | Complete, isolated staging ready | V2.8.15 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Final isolated staging target confirmation, route checks, validation stack, and owner/operator staging signoff passed. Production release remains not approved. |
+| Production Release Boundary Planning and Approval Packet | Complete, production planned but not approved | V2.8.16 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Strategy comparison, target worksheet, DNS/custom-domain worksheet, indexing worksheet, live-publication worksheet, approval checklist, rollback plan, and no-go matrix complete. Production execution remains closed. |
+| Production Release Execution Approval | Complete, production deployment failed | V2.8.17 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | All pre-production gates passed and exactly one deployment attempt was sent to `swa-ice-static-staging`; SWA CLI deployment failed with exit code `1`, no retry was attempted, and production route checks were not run. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -41,7 +43,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; indexing/publication closed | V2.8 / V2.9 / L15 | Production deployment, DNS, custom domains, indexing, and live publication require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production deployment attempt failed; indexing/publication gates closed | V2.8 / V2.9 / L15 | Production reattempt, DNS, custom domains, indexing, and live publication require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -476,3 +478,27 @@ Still separately gated:
 - V2.8.15 redeployment/deployment actions: `0`
 - V2.8.15 DNS/custom-domain/app-settings/RBAC/Azure config mutations: `0`
 - V2.8.15 protected config reads, deployment credential use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.8.16 production release planning classification: `v2_8_isolated_staging_complete_production_release_planned`
+- V2.8.16 recommended first production strategy: `future_explicit_deployment_to_existing_production_domain_swa_target`
+- V2.8.16 existing production-domain target: `swa-ice-static-staging`
+- V2.8.16 existing production-domain target custom domains: `iceskatingrinkrentals.com`, `www.iceskatingrinkrentals.com`
+- V2.8.16 isolated staging target custom domains: `0`
+- V2.8.16 Runtime QA evidence run: `runtimeqa_96c9902e1d951beb`
+- V2.8.16 production deployment approved: `false`
+- V2.8.16 DNS/custom-domain/indexing/live-publication gates: `closed`
+- V2.8.16 deployment/redeployment actions: `0`
+- V2.8.16 protected config reads, deployment credential use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.8.17 production release classification: `production_deployment_failed`
+- V2.8.17 production target: `swa-ice-static-staging` / `rg-ice-static-staging`
+- V2.8.17 production target custom domains: `iceskatingrinkrentals.com`, `www.iceskatingrinkrentals.com`
+- V2.8.17 sanitized build run: `sanitized_20260613014405`
+- V2.8.17 artifact aggregate SHA-256: `b525b9fc70f32206c17b860a4f29579a26c350394272171bb021a2904fd2b042`
+- V2.8.17 Runtime QA evidence run: `runtimeqa_b876ce99824cee8e`
+- V2.8.17 deployment auth present: `true`
+- V2.8.17 deployment executed attempts: `1`
+- V2.8.17 deployment result: `failed_exit_code_1`
+- V2.8.17 broad retries: `0`
+- V2.8.17 production route checks: `not_run_deployment_failed`
+- V2.8.17 DNS/custom-domain/indexing gates: `closed`
+- V2.8.17 contact form submissions/contact endpoint POST: `0`
+- V2.8.17 protected config reads, deployment token prints/exports/listing/logging, keys/listKeys, connection strings, SAS: `0`
