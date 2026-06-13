@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.8.17B |
-| currentReferenceName | Production Deployment Auth Replacement Corrective Retry |
-| currentReferenceStatus | Complete; replacement-token precondition and artifact gates passed, exactly one corrective production deployment attempt was sent, and production release remains unverified because SWA CLI failed with exit code `1` |
+| currentReference | V2.8.17C |
+| currentReferenceName | Production Deploy Command Shape Corrective Execution |
+| currentReferenceStatus | Complete; pre-deployment gates passed and exactly one corrected production deployment attempt was sent, but production release remains unverified because StaticSitesClient rejected the artifact-root working-directory command shape |
 | provisionalV2OverallCompletion | `94%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| nextReference | V2.8.17C |
-| nextReferenceName | Production Deployment Failure Forensics And Tooling/Auth Remediation Plan |
-| nextGate | Investigate SWA CLI exit code `1` without another deployment attempt or token-validating dry-run |
-| safetyPosture | V2.8.17B performed boolean-only token presence checks, operator target confirmation, read-only target/domain reconfirmation, local artifact revalidation, and exactly one SWA CLI production deployment attempt; no retry, production route checks, DNS change, custom-domain mutation, indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the failed static artifact deployment attempt, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing, keys/listKeys, connection string, SAS, or generated `.tmp` artifact staging occurred |
-| blockedState | Production release is not verified; the single approved corrective deployment attempt failed with SWA CLI exit code `1`, route checks were not run, and no retry remains authorized |
+| nextReference | V2.8.17D |
+| nextReferenceName | Production Deploy Working-Directory Separation Corrective Execution |
+| nextGate | Use a working directory outside the artifact folder for any future approved deployment attempt |
+| safetyPosture | V2.8.17C performed boolean-only token presence checks, read-only target/domain reconfirmation, local artifact revalidation, and exactly one corrected SWA CLI production deployment attempt; no dry-run, retry, production route checks, DNS change, custom-domain mutation, indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the failed static artifact deployment attempt, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, or generated `.tmp` artifact staging occurred |
+| blockedState | Production release is not verified; the V2.8.17C corrected deployment attempt failed because the current directory was identical to the artifact folder, route checks were not run, and no retry remains authorized |
 
 ## Legacy Tracker Freeze
 
@@ -40,7 +40,7 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.5 | `82%` | Resource Registry and provider profiles operationalized for local/read-only control-layer validation |
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
-| V2.8 | `production corrective retry attempted once; failed exit code 1` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, owner/operator staging signoff, production release planning, V2.8.17 production execution, V2.8.17A forensics, and V2.8.17B auth replacement/corrective retry are complete; production release remains unverified because the single V2.8.17B corrective deployment attempt failed before route verification |
+| V2.8 | `production command-shape corrective attempt failed` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, owner/operator staging signoff, production release planning, V2.8.17 production execution, V2.8.17A forensics, V2.8.17B auth replacement/corrective retry, and V2.8.17C command-shape corrective execution are complete; production release remains unverified because the V2.8.17C attempt failed before route verification |
 | V2.9 | `20%` | Audit/jobs/production gates future |
 
 These percentages are provisional control-layer indicators, not deployment approval.

@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.8.17B, Production Deployment Auth Replacement Corrective Retry |
-| Current V2 status | Complete; replacement-token precondition and artifact gates passed, exactly one corrective production deployment attempt was sent, and production release remains unverified because SWA CLI failed with exit code `1` |
+| Current V2 reference | V2.8.17C, Production Deploy Command Shape Corrective Execution |
+| Current V2 status | Complete; pre-deployment gates passed and exactly one corrected production deployment attempt was sent, but production release remains unverified because StaticSitesClient rejected the artifact-root working-directory command shape |
 | Provisional V2 overall completion | `94%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.8 Tenant Website / Publish Readiness |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L15 |
-| Safety posture | V2.8.17B performed boolean-only token presence checks, operator target confirmation, read-only target/domain reconfirmation, local artifact revalidation, and exactly one SWA CLI production deployment attempt; no retry, production route checks, DNS change, custom-domain mutation, indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the failed static artifact deployment attempt, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing, keys/listKeys, connection string, SAS, or generated `.tmp` artifact staging occurred |
-| Next gate | V2.8.17C Production Deployment Failure Forensics And Tooling/Auth Remediation Plan |
+| Safety posture | V2.8.17C performed boolean-only token presence checks, read-only target/domain reconfirmation, local artifact revalidation, and exactly one corrected SWA CLI production deployment attempt; no dry-run, retry, production route checks, DNS change, custom-domain mutation, indexing, contact form submission, contact endpoint POST, crawl, outbound URL check, CMS/provider write, Azure infrastructure/configuration mutation beyond the failed static artifact deployment attempt, app settings mutation, RBAC assignment, protected config read, deployment token print/export/listing/logging/writing/reveal, keys/listKeys, connection string, SAS, or generated `.tmp` artifact staging occurred |
+| Next gate | V2.8.17D Production Deploy Working-Directory Separation Corrective Execution |
 
 ## V2 Reference System
 
@@ -109,6 +109,8 @@ Use this first before choosing a next prompt, reading historical result packages
 | Tenant Website production deployment failure forensics corrective retry package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17a-production-deployment-failure-forensics-corrective-retry-result/` | V2.8.17A result package |
 | Tenant Website production deployment auth replacement corrective retry | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17B_PRODUCTION_DEPLOYMENT_AUTH_REPLACEMENT_CORRECTIVE_RETRY_REPORT.md` | V2.8.17B replacement-token gate passed; one corrective deployment attempt failed with exit code `1` |
 | Tenant Website production deployment auth replacement corrective retry package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17b-production-deployment-auth-replacement-corrective-retry-result/` | V2.8.17B result package |
+| Tenant Website production deploy command-shape corrective execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17C_PRODUCTION_DEPLOY_COMMAND_SHAPE_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17C fixed dry-run/close-action path but failed artifact-root working-directory command shape |
+| Tenant Website production deploy command-shape corrective execution package | `deployment/architecture/tenant-website-publish-readiness/v2-8-17c-production-deploy-command-shape-corrective-execution-result/` | V2.8.17C result package |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -118,7 +120,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, post-staging verification, production release planning, the V2.8.17 production release execution boundary, V2.8.17A production deployment failure forensics, and V2.8.17B deployment auth replacement/corrective retry execution. V2.8.17B confirmed the replacement-token precondition, reconfirmed the production target and attached domains, rebuilt and validated a fresh sanitized artifact, and sent exactly one corrective production deployment attempt. SWA CLI failed with exit code `1`, so production route verification was not run and no retry remains authorized. DNS, custom domains, indexing, live-publication actions outside a future approved deployment boundary, contact form submission, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, and further Azure configuration mutation remain closed.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 progressed from local Ice publish-readiness through backend verification, isolated target creation, scoped isolated staging deployment, post-staging verification, production release planning, the V2.8.17 production release execution boundary, V2.8.17A production deployment failure forensics, V2.8.17B deployment auth replacement/corrective retry execution, and V2.8.17C command-shape corrective execution. V2.8.17C confirmed token presence, reconfirmed the production target and attached domains, rebuilt and validated a fresh sanitized artifact, and sent exactly one corrected production deployment attempt. The attempt fixed the dry-run/close-action problem (`SWA_CLI_DEPLOY_DRY_RUN=false`, `DEPLOYMENT_ACTION=upload`) but failed because StaticSitesClient rejected the artifact-root working-directory shape. Production route verification was not run and no retry remains authorized. DNS, custom domains, indexing, live-publication actions outside a future approved deployment boundary, contact form submission, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, and further Azure configuration mutation remain closed.
 
 Immutable current facts:
 
@@ -538,7 +540,26 @@ Immutable current facts:
 - V2.8.17B DNS/custom-domain/indexing gates: `closed`
 - V2.8.17B contact form submissions/contact endpoint POST: `0`
 - V2.8.17B protected config reads, deployment token prints/exports/listing/logging/writing, keys/listKeys, connection strings, SAS: `0`
+- V2.8.17C production release classification: `production_deployment_failed_command_shape`
+- V2.8.17C production target reconfirmed: `swa-ice-static-staging` / `rg-ice-static-staging`
+- V2.8.17C production target custom domains: `iceskatingrinkrentals.com`, `www.iceskatingrinkrentals.com`
+- V2.8.17C deployment auth presence: `passed_boolean_only`
+- V2.8.17C token-target match: `carried_forward_as_proven_true_by_approval_context`
+- V2.8.17C sanitized build run: `sanitized_20260613172317`
+- V2.8.17C artifact aggregate SHA-256: `c34c1cbcc3f8d1a6591595e1854ff799633b04d36d00e0aa6a05f6cf67c4e216`
+- V2.8.17C static output validator: `passed_zero_errors_zero_warnings`
+- V2.8.17C staging package validator: `passed_zero_errors_zero_warnings`
+- V2.8.17C `SWA_CLI_DEPLOY_DRY_RUN`: `false`
+- V2.8.17C `DEPLOYMENT_ACTION`: `upload`
+- V2.8.17C deployment id emitted: `b20c5b8a-b569-404d-a5b2-e3e3f0a5a946`
+- V2.8.17C corrected deployment executed attempts: `1`
+- V2.8.17C corrected deployment result: `failed_exit_code_1_current_directory_identical_to_artifact_folder`
+- V2.8.17C broad retry: `0`
+- V2.8.17C production route checks: `not_run_no_successful_corrective_deployment`
+- V2.8.17C DNS/custom-domain/indexing gates: `closed`
+- V2.8.17C contact form submissions/contact endpoint POST: `0`
+- V2.8.17C protected config reads, deployment token prints/exports/listing/logging/writing/reveal, keys/listKeys, connection strings, SAS: `0`
 
 ## Next Recommended Phase
 
-Approve V2.8.17C Production Deployment Failure Forensics And Tooling/Auth Remediation Plan only: use the completed V2.8.17B result package to investigate why the single approved SWA CLI production deployment attempt from the validated artifact root failed with exit code `1`. Do not run another deployment attempt or token-validating dry-run, do not print/export/list/write/reveal the deployment token, do not read `.env.local` or protected config, do not mutate Azure/DNS/custom domains/app settings/RBAC, do not run Search Console/indexing/crawls/outbound checks, do not submit forms or POST to the contact endpoint, and do not perform CMS/provider writes.
+Approve V2.8.17D Production Deploy Working-Directory Separation Corrective Execution only: use the completed V2.8.17C command-shape result to rebuild and validate a fresh sanitized artifact, then execute exactly one production deployment attempt from a working directory outside the artifact folder, using the selected artifact folder as the deploy target. Do not repeat token reset, token-target comparison, VS Code restart, or `swa deploy --dry-run`; do not deploy from the artifact root; do not print/export/list/write/reveal the deployment token; do not read `.env.local` or protected config; do not mutate Azure/DNS/custom domains/app settings/RBAC beyond the single static artifact deployment; do not run Search Console/indexing/crawls/outbound checks; do not submit forms or POST to the contact endpoint; and do not perform CMS/provider writes.

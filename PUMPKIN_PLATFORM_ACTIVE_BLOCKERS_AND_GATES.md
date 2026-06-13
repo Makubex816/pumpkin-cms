@@ -38,6 +38,7 @@
 | Production Release Execution Approval | Complete, production deployment failed | V2.8.17 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | All pre-production gates passed and exactly one deployment attempt was sent to `swa-ice-static-staging`; SWA CLI deployment failed with exit code `1`, no retry was attempted, and production route checks were not run. |
 | Production Deployment Failure Forensics Corrective Retry Boundary | Complete, blocked before corrective retry | V2.8.17A / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Failure forensics and artifact revalidation passed, but corrected dry-run rejected the current deployment token as invalid; no corrective deployment retry was sent and route checks were not run. |
 | Production Deployment Auth Replacement Corrective Retry | Complete, deployment failed | V2.8.17B / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Replacement-token precondition and artifact gates passed; exactly one corrective deployment attempt was sent to `swa-ice-static-staging`; SWA CLI failed with exit code `1`, no retry was attempted, and route checks were not run. |
+| Production Deploy Command Shape Corrective Execution | Complete, command-shape failed | V2.8.17C / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Corrected command avoided dry-run and used upload action, but deployment failed because StaticSitesClient rejected running from the artifact root where the current directory was identical to the artifact folder. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -45,7 +46,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production deployment attempt failed; corrective retry attempted once and failed; indexing/publication gates closed | V2.8 / V2.9 / L15 | Deployment failure forensics/tooling remediation, any further production retry, DNS, custom domains, indexing, and live publication require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production deployment attempt failed; command-shape corrective attempt failed; indexing/publication gates closed | V2.8 / V2.9 / L15 | Working-directory command-shape correction, any further production retry, DNS, custom domains, indexing, and live publication require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 

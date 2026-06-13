@@ -46,6 +46,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17_PRODUCTION_RELEASE_EXECUTION_APPROVAL_REPORT.md` | V2.8.17 production release execution approval root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17A_PRODUCTION_DEPLOYMENT_FAILURE_FORENSICS_CORRECTIVE_RETRY_REPORT.md` | V2.8.17A production deployment failure forensics corrective retry root report |
 | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17B_PRODUCTION_DEPLOYMENT_AUTH_REPLACEMENT_CORRECTIVE_RETRY_REPORT.md` | V2.8.17B production deployment auth replacement corrective retry root report |
+| `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17C_PRODUCTION_DEPLOY_COMMAND_SHAPE_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17C production deploy command-shape corrective execution root report |
 
 ## Latest Canonical Result Packages
 
@@ -87,7 +88,8 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website production release boundary planning | `deployment/architecture/tenant-website-publish-readiness/v2-8-16-production-release-boundary-planning-approval-packet-result/` | V2.8.16 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current production release planning package; execution not approved |
 | Tenant Website production release execution approval | `deployment/architecture/tenant-website-publish-readiness/v2-8-17-production-release-execution-approval-result/` | V2.8.17 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current production deployment failed package; no route verification |
 | Tenant Website production deployment failure forensics corrective retry | `deployment/architecture/tenant-website-publish-readiness/v2-8-17a-production-deployment-failure-forensics-corrective-retry-result/` | V2.8.17A / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Historical blocked-before-corrective-retry package; token rejected as invalid |
-| Tenant Website production deployment auth replacement corrective retry | `deployment/architecture/tenant-website-publish-readiness/v2-8-17b-production-deployment-auth-replacement-corrective-retry-result/` | V2.8.17B / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current failed corrective deployment package; no retry remaining |
+| Tenant Website production deployment auth replacement corrective retry | `deployment/architecture/tenant-website-publish-readiness/v2-8-17b-production-deployment-auth-replacement-corrective-retry-result/` | V2.8.17B / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Historical failed corrective deployment package; no retry remaining |
+| Tenant Website production deploy command-shape corrective execution | `deployment/architecture/tenant-website-publish-readiness/v2-8-17c-production-deploy-command-shape-corrective-execution-result/` | V2.8.17C / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current failed command-shape package; route checks not run |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -134,6 +136,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Tenant Website production release execution approval | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17_PRODUCTION_RELEASE_EXECUTION_APPROVAL_REPORT.md` | V2.8.17 |
 | Tenant Website production deployment failure forensics corrective retry | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17A_PRODUCTION_DEPLOYMENT_FAILURE_FORENSICS_CORRECTIVE_RETRY_REPORT.md` | V2.8.17A |
 | Tenant Website production deployment auth replacement corrective retry | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17B_PRODUCTION_DEPLOYMENT_AUTH_REPLACEMENT_CORRECTIVE_RETRY_REPORT.md` | V2.8.17B |
+| Tenant Website production deploy command-shape corrective execution | `PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17C_PRODUCTION_DEPLOY_COMMAND_SHAPE_CORRECTIVE_EXECUTION_REPORT.md` | V2.8.17C |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |
