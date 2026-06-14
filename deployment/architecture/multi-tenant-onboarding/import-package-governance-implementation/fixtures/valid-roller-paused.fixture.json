@@ -1,0 +1,38 @@
+{
+  "fixtureType": "pumpkin.importPackageBuilderSource.v1",
+  "packagePurpose": "paused-preview",
+  "sourceSystem": "paused-candidate-record",
+  "tenant": {
+    "tenantKey": "roller-rink-rentals",
+    "siteKey": "roller-rink-rentals",
+    "domain": "rollerrinkrentals.com",
+    "lifecycleState": "paused"
+  },
+  "ownerApproval": {
+    "approved": true,
+    "approvalRef": "paused-record-only-no-resume",
+    "approvedBy": "PumpkinCMS operator"
+  },
+  "pauseResume": {
+    "resumeApproved": false,
+    "resumeApprovalRef": null
+  },
+  "routes": [
+    {
+      "path": "/",
+      "contentRefs": ["content:roller-paused-placeholder"]
+    }
+  ],
+  "contentRefs": ["paused-no-import-placeholder"],
+  "mediaRefs": ["paused-no-import-placeholder"],
+  "formConfigRefs": ["paused-no-form-import"],
+  "resourceRegistryRefs": ["resource-registry:paused-candidate-placeholder"],
+  "providerProfileRefs": ["provider-profile:paused-provider-placeholder"],
+  "backupEvidenceRefs": ["backup:paused-candidate-no-import-placeholder"],
+  "runtimeQaRefs": ["runtime-qa:paused-no-runtime-qa-required-until-resume"],
+  "outboundLinkRefs": ["olm:paused-no-olm-execution"],
+  "auditJobRefs": ["audit-jobs:v2-11-2-paused-no-import-record"],
+  "rollbackPlanId": "rollback:paused-no-import-abort-plan",
+  "validationRefs": ["validation:v2-11-2-paused-governance-fixture"],
+  "traceRefs": ["trace:v2-11-1-paused-governance-carryforward"]
+}

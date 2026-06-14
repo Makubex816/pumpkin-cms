@@ -4,8 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/validate-import-package.mjs && node --check test/validator.test.mjs",
-    "test": "node test/validator.test.mjs",
-    "validate": "node src/validate-import-package.mjs validate"
+    "check": "node --check src/validate-import-package.mjs && node --check src/import-package-builder.mjs && node --check src/import-package-governance-cli.mjs && node --check test/validator.test.mjs && node --check test/builder-preview.test.mjs",
+    "test": "node test/validator.test.mjs && node test/builder-preview.test.mjs",
+    "validate": "node src/import-package-governance-cli.mjs validate",
+    "build-package": "node src/import-package-governance-cli.mjs build-package",
+    "preview-package": "node src/import-package-governance-cli.mjs preview-package"
   }
 }

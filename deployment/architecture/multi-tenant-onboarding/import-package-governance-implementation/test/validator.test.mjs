@@ -33,7 +33,7 @@ for (const name of expectedInvalid) {
   assert.ok(result.failureCount > 0, `${name} should report at least one failure`)
 }
 
-const fixtureNames = fs.readdirSync(fixtures).filter((name) => name.endsWith('.json'))
+const fixtureNames = fs.readdirSync(fixtures).filter((name) => name.endsWith('.import-package.json'))
 assert.equal(fixtureNames.length, expectedValid.length + expectedInvalid.length)
 
 console.log(JSON.stringify({

@@ -1,0 +1,43 @@
+{
+  "fixtureType": "pumpkin.importPackageBuilderSource.v1",
+  "packagePurpose": "carryforward",
+  "sourceSystem": "v2-8-production-static-release",
+  "tenant": {
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "lifecycleState": "production_published"
+  },
+  "ownerApproval": {
+    "approved": true,
+    "approvalRef": "v2-8-19-owner-operator-acknowledgement",
+    "approvedBy": "PumpkinCMS operator"
+  },
+  "routes": [
+    {
+      "path": "/",
+      "contentRefs": ["content:ice-home"]
+    },
+    {
+      "path": "/service-areas",
+      "contentRefs": ["content:ice-service-areas"]
+    },
+    {
+      "path": "/contact",
+      "contentRefs": ["content:ice-contact"],
+      "formConfigRefs": ["form:ice-contact-reference"]
+    }
+  ],
+  "contentRefs": ["v2-8-17d-sanitized-static-artifact"],
+  "mediaRefs": ["media:cloudflare-worker-media-delivery-reference"],
+  "formConfigRefs": ["form:ice-contact-reference"],
+  "resourceRegistryRefs": ["resource-registry:ice-v2-8-19"],
+  "providerProfileRefs": ["provider-profile:static-azure-cloudflare-worker-graph"],
+  "backupEvidenceRefs": ["backup:v2-8-17d-artifact-sha256-506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899"],
+  "runtimeQaRefs": ["runtime-qa:v2-8-19-passed"],
+  "outboundLinkRefs": ["olm:v2-8-19-publish-gate-passed"],
+  "auditJobRefs": ["audit-jobs:v2-9-12-closeout"],
+  "rollbackPlanId": "rollback:v2-8-17d-production-rollback-plan",
+  "validationRefs": ["validation:v2-8-19-contact-form-verified", "validation:v2-9-12-admin-api-readonly-runtime-signoff"],
+  "traceRefs": ["trace:v2-11-1-carryforward"]
+}

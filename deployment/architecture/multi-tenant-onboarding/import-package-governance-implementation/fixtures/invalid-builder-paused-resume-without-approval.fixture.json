@@ -1,0 +1,24 @@
+{
+  "fixtureType": "pumpkin.importPackageBuilderSource.v1",
+  "tenant": {
+    "tenantKey": "roller-rink-rentals",
+    "siteKey": "roller-rink-rentals",
+    "domain": "rollerrinkrentals.com",
+    "lifecycleState": "paused"
+  },
+  "ownerApproval": { "approved": true },
+  "pauseResume": {
+    "resumeApproved": false,
+    "resumeApprovalRef": null
+  },
+  "routes": ["/"],
+  "contentRefs": ["content"],
+  "mediaRefs": ["media"],
+  "resourceRegistryRefs": ["registry"],
+  "providerProfileRefs": ["provider"],
+  "backupEvidenceRefs": ["backup"],
+  "runtimeQaRefs": ["runtime"],
+  "outboundLinkRefs": ["olm"],
+  "auditJobRefs": ["audit"],
+  "importMode": "resume_requested"
+}
