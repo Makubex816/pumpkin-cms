@@ -2,10 +2,11 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { validateLedger } from "./audit-job-ledger-validator.mjs";
+import { createLedgerViewerModel } from "./audit-job-ledger-view-model.mjs";
 
 const [, , command, fixturePath] = process.argv;
 
-if (!["validate", "inspect"].includes(command) || !fixturePath) {
+if (!["validate", "inspect", "viewer-summary"].includes(command) || !fixturePath) {
   printUsage();
   process.exitCode = 2;
 } else {
@@ -48,7 +49,14 @@ async function run(activeCommand, inputPath) {
   }
 
   const validation = validateLedger(ledger);
-  if (activeCommand === "inspect") {
+  if (activeCommand === "viewer-summary") {
+    const viewerModel = createLedgerViewerModel(ledger);
+    console.log(JSON.stringify({
+      ok: viewerModel.ok,
+      fixturePath: inputPath,
+      viewerModel
+    }, null, 2));
+  } else if (activeCommand === "inspect") {
     console.log(JSON.stringify({
       ok: validation.ok,
       fixturePath: inputPath,
@@ -79,5 +87,5 @@ async function run(activeCommand, inputPath) {
 }
 
 function printUsage() {
-  console.error("Usage: node src/audit-job-ledger-cli.mjs <validate|inspect> <fixture.json>");
+  console.error("Usage: node src/audit-job-ledger-cli.mjs <validate|inspect|viewer-summary> <fixture.json>");
 }

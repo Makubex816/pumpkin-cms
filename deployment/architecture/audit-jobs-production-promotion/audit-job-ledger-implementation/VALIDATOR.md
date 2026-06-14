@@ -1,6 +1,6 @@
 # Validator Behavior
 
-Result: implemented for V2.9.2.
+Result: implemented for V2.9.2, extended for V2.9.3 read-only viewer model output.
 
 The validator is dependency-free Node ESM. It exposes `validateLedger(ledger)` from `src/audit-job-ledger-validator.mjs` and a CLI in `src/audit-job-ledger-cli.mjs`.
 
@@ -54,3 +54,17 @@ The primary negative fixture coverage asserts:
 - `PROMOTION_GATE_COMPLETE_WHILE_OPEN`
 
 Additional failures include missing required fields, unsupported status/outcome values, unknown refs, protected evidence paths, forbidden safety flags, and high-confidence secret-like values.
+
+## Viewer Model Coverage
+
+The V2.9.3 viewer model is exposed by `createLedgerViewerModel(ledger)` from `src/audit-job-ledger-view-model.mjs`.
+
+It keeps the same local/no-write boundary and derives:
+
+- Required operator panels.
+- Required summary fields.
+- Audit event, job run, promotion gate, and evidence binding rows.
+- Trace explorer entries and a pure local trace search helper.
+- Warning, blocker, next-gate, and security boundary summaries.
+
+The CLI command `viewer-summary` prints that derived model for a local fixture and preserves nonzero exit behavior for invalid ledgers.

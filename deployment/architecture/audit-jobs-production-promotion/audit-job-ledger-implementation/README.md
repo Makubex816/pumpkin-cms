@@ -1,8 +1,8 @@
 # Audit Job Ledger No-Write Validator
 
-Status: V2.9.2 local implementation foundation.
+Status: V2.9.3 local read-only viewer model foundation.
 
-This package turns the V2.9.1 audit jobs / production promotion planning model into an executable local validator for safe JSON ledger fixtures.
+This package turns the V2.9.1 audit jobs / production promotion planning model into an executable local validator for safe JSON ledger fixtures. It also derives a read-only operator viewer model from validated local ledger data.
 
 It validates:
 
@@ -12,6 +12,7 @@ It validates:
 - Evidence bindings with repo-relative safe paths.
 - Cross-layer trace ID requirements for V2.8 production release, contact-form verification, indexing deferral, Runtime QA, Resource Registry, Provider Profile, OLM, rollback, and future-boundary records.
 - No-write safety boundaries.
+- Read-only operator viewer panels, warnings, blockers, next gates, security boundary summaries, and trace search data.
 
 It does not deploy, redeploy, change DNS, alter custom domains, call Google/Search Console/indexing APIs, crawl, follow outbound links, submit contact forms, POST to contact endpoints, mutate CMS/provider/Azure state, read protected config, print/use tokens, call keys/listKeys, generate connection strings, or generate SAS.
 
@@ -22,6 +23,7 @@ npm run check
 npm test
 node src/audit-job-ledger-cli.mjs validate fixtures/valid-v2-8-combined-promotion-ledger.fixture.json
 node src/audit-job-ledger-cli.mjs inspect fixtures/valid-v2-8-combined-promotion-ledger.fixture.json
+node src/audit-job-ledger-cli.mjs viewer-summary fixtures/valid-v2-8-combined-promotion-ledger.fixture.json
 ```
 
 ## Fixtures
