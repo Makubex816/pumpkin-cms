@@ -53,6 +53,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_1_GATE_PLANNING_REPORT.md` | V2.9.1 audit jobs production promotion gate planning root report |
 | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_2_LEDGER_VALIDATOR_FOUNDATION_REPORT.md` | V2.9.2 audit job ledger no-write validator foundation root report |
 | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_3_READONLY_OPERATOR_VIEWER_PLANNING_REPORT.md` | V2.9.3 audit job ledger read-only operator viewer planning root report |
+| `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_4_READONLY_ADMIN_VIEWER_PROTOTYPE_REPORT.md` | V2.9.4 audit job ledger read-only Admin viewer prototype root report |
 
 ## Latest Canonical Result Packages
 
@@ -102,7 +103,9 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Audit Jobs production promotion gate planning | `deployment/architecture/audit-jobs-production-promotion/v2-9-1-audit-jobs-production-promotion-gate-planning-result/` | V2.9.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current V2.9 planning package |
 | Audit Job Ledger no-write validator foundation | `deployment/architecture/audit-jobs-production-promotion/v2-9-2-audit-job-ledger-no-write-validator-foundation-result/` | V2.9.2 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Current V2.9 validator foundation result package |
 | Audit Job Ledger read-only operator viewer planning | `deployment/architecture/audit-jobs-production-promotion/v2-9-3-audit-job-ledger-readonly-operator-viewer-planning-result/` | V2.9.3 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.9 read-only viewer planning result package |
-| Audit Job Ledger implementation package | `deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/` | V2.9.3 / L12 / L13 / L14 / L15 | Current local no-write validator and read-only viewer model implementation package |
+| Audit Job Ledger read-only Admin viewer prototype | `deployment/architecture/audit-jobs-production-promotion/v2-9-4-audit-job-ledger-readonly-admin-viewer-prototype-result/` | V2.9.4 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.9 Admin read-only viewer prototype result package |
+| Audit Job Ledger implementation package | `deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/` | V2.9.4 / L12 / L13 / L14 / L15 | Current local no-write validator and read-only viewer model implementation package |
+| Audit Job Ledger Admin viewer route | `apps/admin/src/app/dashboard/audit-jobs/page.tsx` | V2.9.4 / L03 / L04 / L13 / L14 | Current local/read-only Admin route |
 | OLM staging target/resource SOT binding | `deployment/architecture/outbound-link-manager/phase-2h24-olm-staging-target-resource-foundation-sot-binding-result/` | V2.2 / V2.5 | Current support proof |
 | Platform source of truth legacy package | `deployment/architecture/platform-source-of-truth/phase-sot01-pumpkin-platform-source-of-truth-control-layer-result/` | V2.1 alias | Historical support proof |
 | Backup Generator QA | `deployment/architecture/pumpkin-backup-export-restore/phase-2f14-backup-generator-qa-signoff-result/` | V2.4 | Current Backup Center support proof |
@@ -156,6 +159,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Audit Jobs production promotion gate planning | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_1_GATE_PLANNING_REPORT.md` | V2.9.1 |
 | Audit Job Ledger no-write validator foundation | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_2_LEDGER_VALIDATOR_FOUNDATION_REPORT.md` | V2.9.2 |
 | Audit Job Ledger read-only operator viewer planning | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_3_READONLY_OPERATOR_VIEWER_PLANNING_REPORT.md` | V2.9.3 |
+| Audit Job Ledger read-only Admin viewer prototype | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_4_READONLY_ADMIN_VIEWER_PROTOTYPE_REPORT.md` | V2.9.4 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |

@@ -45,6 +45,7 @@
 | Audit Jobs Production Promotion Gate Planning | Complete, planning layer created | V2.9.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Audit event taxonomy, job/run taxonomy, production promotion gate model, state machine, trace ID registry, evidence bindings, dashboard requirements, and local ledger schemas created with no live/write/deploy/indexing action. |
 | Audit Job Ledger No-Write Validator Foundation | Complete, local validator foundation created | V2.9.2 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L15 | Dependency-free local validator, CLI, schema docs, four valid fixtures, four invalid fixtures, and 10 passing tests created with no live/write/deploy/indexing action. |
 | Audit Job Ledger Read-Only Operator Viewer Planning | Complete, local viewer model foundation created | V2.9.3 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Local read-only viewer model, CLI viewer-summary, required panel model, IA/contracts, result package, and 15 passing tests created with no live/write/deploy/indexing action. |
+| Audit Job Ledger Read-Only Admin Viewer Prototype | Complete, local Admin prototype created | V2.9.4 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Fixture-backed Admin route `/dashboard/audit-jobs`, typed provider, 12 panels, search/filter/sort, read-only detail panel, disabled future actions, and scoped QA created with no live/write/deploy/indexing action. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -52,7 +53,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9.3 local viewer foundation complete | V2.8 / V2.9 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, any further deployment, runtime job integration, Admin runtime implementation, Pumpkin API endpoints, Electron runtime, and any Azure mutation require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9.4 Admin read-only prototype complete | V2.8 / V2.9 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, any further deployment, runtime job integration, live API endpoints, Pumpkin API endpoints, Electron runtime, and any Azure mutation require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -577,3 +578,12 @@ Still separately gated:
 - V2.9.3 validator and viewer tests: `15_passed`
 - V2.9.3 Admin/API/Electron runtime implementation: `not_added_future_boundary_required`
 - V2.9.3 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, CMS/provider writes, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.9.4 classification: `audit_job_ledger_readonly_admin_viewer_prototype_complete`
+- V2.9.4 Admin route: `/dashboard/audit-jobs`
+- V2.9.4 Admin fixture provider mode: `admin-local-fixture-readonly`
+- V2.9.4 required Admin viewer panels: `12_rendered`
+- V2.9.4 Admin type-check: `passed`
+- V2.9.4 Admin QA: `passed`
+- V2.9.4 audit ledger package tests: `15_passed`
+- V2.9.4 live API, Pumpkin API, Electron implementation: `not_added_future_boundary_required`
+- V2.9.4 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, CMS/provider writes, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`

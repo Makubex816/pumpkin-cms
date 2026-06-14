@@ -8,15 +8,15 @@ Use this first before choosing a next prompt, reading historical result packages
 
 | Field | Canonical state |
 | --- | --- |
-| Current V2 reference | V2.9.3, Audit Job Ledger Read-Only Operator Viewer Planning |
-| Current V2 status | Complete; local read-only audit/job/promotion ledger viewer model, CLI viewer-summary, IA/contracts, tests, and result package created |
+| Current V2 reference | V2.9.4, Audit Job Ledger Read-Only Admin Viewer Prototype |
+| Current V2 status | Complete; fixture-backed Admin read-only audit/job ledger viewer route, typed view model, local provider, QA script, tests, docs, and result package created |
 | Provisional V2 overall completion | `99%` |
 | Legacy tracker | Legacy 2H Tracker v1 frozen at `92 / 100` |
 | Legacy alias | Phase 2H-24, OLM staging target/resource foundation and Source-of-Truth binding |
 | Active product lane | V2.9 Audit Jobs / Production Promotion Governance |
 | Active layer refs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L13, L14, L15 |
-| Safety posture | V2.9.3 added local read-only viewer-model code, CLI viewer-summary output, docs, contracts, tests, and result evidence only; no Admin runtime UI, Pumpkin API endpoint, Electron runtime, deployment/redeployment, DNS change, custom-domain mutation, Google/Search Console/indexing action, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing request, crawl, outbound URL check, contact-form submission, contact endpoint POST, CMS/provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment/OAuth token use/print/export/listing, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
-| Next gate | V2.9.4 Audit Job Ledger Read-Only Admin Viewer Prototype |
+| Safety posture | V2.9.4 added scoped Admin read-only route/component/provider/types/QA docs only; no live API endpoint, Pumpkin API endpoint, Electron runtime, deployment/redeployment, DNS change, custom-domain mutation, Google/Search Console/indexing action, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing request, crawl, outbound URL check, contact-form submission, contact endpoint POST, CMS/provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment/OAuth token use/print/export/listing, keys/listKeys, connection string, SAS, broad retry, or `git add -A` occurred |
+| Next gate | V2.9.5 Audit Job Ledger Read-Only Admin Viewer Navigation And QA Hardening |
 
 ## V2 Reference System
 
@@ -123,7 +123,10 @@ Use this first before choosing a next prompt, reading historical result packages
 | Audit Job Ledger no-write validator foundation package | `deployment/architecture/audit-jobs-production-promotion/v2-9-2-audit-job-ledger-no-write-validator-foundation-result/` | V2.9.2 result package |
 | Audit Job Ledger read-only operator viewer planning | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_3_READONLY_OPERATOR_VIEWER_PLANNING_REPORT.md` | V2.9.3 local read-only viewer model, CLI viewer-summary, IA/contracts, and tests complete |
 | Audit Job Ledger read-only operator viewer planning package | `deployment/architecture/audit-jobs-production-promotion/v2-9-3-audit-job-ledger-readonly-operator-viewer-planning-result/` | V2.9.3 result package |
-| Audit Job Ledger implementation package | `deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/` | V2.9.3 local no-write validator and read-only viewer model implementation |
+| Audit Job Ledger read-only Admin viewer prototype | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_4_READONLY_ADMIN_VIEWER_PROTOTYPE_REPORT.md` | V2.9.4 fixture-backed Admin route, typed provider, 12 panels, detail/search/filter/sort, and QA complete |
+| Audit Job Ledger read-only Admin viewer prototype package | `deployment/architecture/audit-jobs-production-promotion/v2-9-4-audit-job-ledger-readonly-admin-viewer-prototype-result/` | V2.9.4 result package |
+| Audit Job Ledger implementation package | `deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/` | V2.9.4 local no-write validator and read-only viewer model carryforward |
+| Audit Job Ledger Admin viewer route | `apps/admin/src/app/dashboard/audit-jobs/page.tsx` | V2.9.4 local/read-only Admin route |
 | OLM foundation alias | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | Legacy alias proof for V2.2/V2.5 |
 | Backup Center | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 support proof |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 support proof |
@@ -133,7 +136,7 @@ Use this first before choosing a next prompt, reading historical result packages
 
 ## Active Blockers
 
-The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 is complete for non-indexing readiness with Google/Search Console/indexing deferred. V2.9.1 created the audit/job/production-promotion planning layer that binds V2.8 release evidence, contact-form verification, Runtime QA, Resource Registry, Provider Profiles, OLM, Backup Center, rollback/abort plans, trace IDs, local ledger schemas, and promotion gates. V2.9.2 added the first executable local/no-write ledger validator foundation with CLI, fixtures, schemas, tests, and result evidence. V2.9.3 added the local read-only operator viewer model foundation, CLI viewer-summary, panel information architecture, contract plans, and test coverage. DNS, custom domains, Search Console/indexing execution, sitemap submission through Google, URL Inspection API, Google Indexing API, broad crawl, outbound URL checks, contact-form submission, contact endpoint POST, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, deployment/redeployment, runtime job integration, and Azure configuration mutation remain closed.
+The missing repo-supported Azure Cosmos NoSQL data-plane write/readback adapter hard stop is resolved for the approved V2.2.2 scoped staging path only. V2.2 has no remaining stage-ready blockers. V2.5.1, V2.6.1, and V2.7 are complete for their current operational gates. V2.8 is complete for non-indexing readiness with Google/Search Console/indexing deferred. V2.9.1 created the audit/job/production-promotion planning layer that binds V2.8 release evidence, contact-form verification, Runtime QA, Resource Registry, Provider Profiles, OLM, Backup Center, rollback/abort plans, trace IDs, local ledger schemas, and promotion gates. V2.9.2 added the first executable local/no-write ledger validator foundation with CLI, fixtures, schemas, tests, and result evidence. V2.9.3 added the local read-only operator viewer model foundation, CLI viewer-summary, panel information architecture, contract plans, and test coverage. V2.9.4 added the fixture-backed Admin read-only prototype at `/dashboard/audit-jobs` with typed provider, 12 panels, search/filter/sort, detail panel, disabled future actions, and scoped QA. DNS, custom domains, Search Console/indexing execution, sitemap submission through Google, URL Inspection API, Google Indexing API, broad crawl, outbound URL checks, contact-form submission, contact endpoint POST, CMS/provider writes, protected config reads, secret listing, keys/listKeys, connection strings, SAS, broad retries, deployment/redeployment, runtime job integration, and Azure configuration mutation remain closed.
 
 Immutable current facts:
 
@@ -655,7 +658,16 @@ Immutable current facts:
 - V2.9.3 validator and viewer tests: `15_passed`
 - V2.9.3 Admin/API/Electron runtime implementation: `not_added_future_boundary_required`
 - V2.9.3 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, CMS/provider writes, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.9.4 classification: `audit_job_ledger_readonly_admin_viewer_prototype_complete`
+- V2.9.4 Admin route: `/dashboard/audit-jobs`
+- V2.9.4 Admin fixture provider mode: `admin-local-fixture-readonly`
+- V2.9.4 required Admin viewer panels: `12_rendered`
+- V2.9.4 Admin type-check: `passed`
+- V2.9.4 Admin QA: `passed`
+- V2.9.4 audit ledger package tests: `15_passed`
+- V2.9.4 live API, Pumpkin API, Electron implementation: `not_added_future_boundary_required`
+- V2.9.4 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, CMS/provider writes, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
 
 ## Next Recommended Phase
 
-Approve V2.9.4 Audit Job Ledger Read-Only Admin Viewer Prototype only: use the completed V2.9.3 read-only viewer model and result package to build a local/read-only Admin viewer prototype for sanitized ledger data. Render the required panels, summary, detail rows, trace search, warnings, blockers, next gates, and no-write safety boundary. Add read-only rendering tests and absence-of-write-action tests. Do not create a Pumpkin API endpoint or Electron runtime unless explicitly approved in the V2.9.4 prompt. Deployment, redeployment, DNS mutation, custom-domain mutation, Google Search Console, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing requests, crawling, outbound URL checks, contact-form submission, contact endpoint POST, CMS writes, provider writes, Azure infrastructure/configuration/app settings mutation, RBAC assignment, protected config reads, deployment/OAuth token use/print/export/listing, Key Vault secret queries, keys/listKeys, connection strings, SAS, and secret export remain hard-stopped unless a future approval explicitly authorizes one exact action.
+Approve V2.9.5 Audit Job Ledger Read-Only Admin Viewer Navigation And QA Hardening only: keep the work local/read-only; review the V2.9.4 route and result package; reconcile the existing dashboard layout worktree state, then add a scoped top-navigation entry for `/dashboard/audit-jobs` only if safe; add stronger Admin viewer QA, including browser/screenshot checks only if repo tooling is installed and can run without live provider calls; consider a shared viewer-model package plan if it reduces transform duplication without adding live APIs. Do not create a live API endpoint, Pumpkin API endpoint, or Electron runtime unless separately approved. Deployment, redeployment, DNS mutation, custom-domain mutation, Google Search Console, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing requests, crawling, outbound URL checks, contact-form submission, contact endpoint POST, CMS writes, provider writes, Azure infrastructure/configuration/app settings mutation, RBAC assignment, protected config reads, deployment/OAuth token use/print/export/listing, Key Vault secret queries, keys/listKeys, connection strings, SAS, and secret export remain hard-stopped unless a future approval explicitly authorizes one exact action.
