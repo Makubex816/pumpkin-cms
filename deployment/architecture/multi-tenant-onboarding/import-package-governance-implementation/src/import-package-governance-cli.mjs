@@ -7,6 +7,10 @@ import {
   validateInputFile,
   writePreview,
 } from './import-package-builder.mjs'
+import {
+  writeApprovalManifest,
+  writeDryRunApplyPlan,
+} from './import-execution-preflight.mjs'
 
 function printJson(value) {
   console.log(JSON.stringify(value, null, 2))
@@ -33,6 +37,8 @@ function usage() {
     '  node src/import-package-governance-cli.mjs validate <fixture-or-manifest.json>',
     '  node src/import-package-governance-cli.mjs build-package <source.fixture.json> --out .tmp/<package-dir>',
     '  node src/import-package-governance-cli.mjs preview-package <package-dir-or-manifest.json> [--out .tmp/<preview.json>]',
+    '  node src/import-package-governance-cli.mjs build-approval-manifest <package-dir-or-manifest.json> --out .tmp/<approval-manifest.json>',
+    '  node src/import-package-governance-cli.mjs dry-run-import <package-dir-or-manifest.json> --manifest .tmp/<approval-manifest.json> --out .tmp/<dry-run.json>',
   ].join('\n')
 }
 
@@ -98,6 +104,56 @@ function main() {
 
     printJson(preview)
     process.exit(preview.validationOk ? 0 : 1)
+  }
+
+  if (command === 'build-approval-manifest') {
+    const outFile = takeOption(args, '--out')
+    const [target] = args
+    if (!target || !outFile) {
+      console.error(usage())
+      process.exit(2)
+    }
+
+    const result = writeApprovalManifest(
+      path.resolve(process.cwd(), target),
+      path.resolve(process.cwd(), outFile),
+    )
+    printJson({
+      ok: result.ok,
+      writtenTo: result.writtenTo,
+      approvalManifestId: result.manifest.approvalManifestId,
+      executionApprovalGranted: result.manifest.executionApprovalGranted,
+      dryRunApproved: result.manifest.dryRunApproved,
+      approvedPackageId: result.manifest.approvedPackageId,
+      packageHash: result.manifest.packageHash,
+      noGoConditions: result.manifest.prerequisiteSummary.noGoConditions,
+    })
+    process.exit(result.ok ? 0 : 1)
+  }
+
+  if (command === 'dry-run-import') {
+    const manifestPath = takeOption(args, '--manifest')
+    const outFile = takeOption(args, '--out')
+    const [target] = args
+    if (!target || !manifestPath || !outFile) {
+      console.error(usage())
+      process.exit(2)
+    }
+
+    const result = writeDryRunApplyPlan(
+      path.resolve(process.cwd(), target),
+      path.resolve(process.cwd(), manifestPath),
+      path.resolve(process.cwd(), outFile),
+    )
+    printJson({
+      ok: result.ok,
+      writtenTo: result.writtenTo,
+      dryRunAllowed: result.dryRunAllowed,
+      targetMode: result.targetMode,
+      noGoConditions: result.noGoConditions,
+      plan: result.plan,
+    })
+    process.exit(result.ok ? 0 : 1)
   }
 
   console.error(usage())

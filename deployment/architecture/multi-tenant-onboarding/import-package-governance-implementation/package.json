@@ -4,10 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/validate-import-package.mjs && node --check src/import-package-builder.mjs && node --check src/import-package-governance-cli.mjs && node --check test/validator.test.mjs && node --check test/builder-preview.test.mjs && node --check test/intake-preview-contract.test.mjs",
-    "test": "node test/validator.test.mjs && node test/builder-preview.test.mjs && node test/intake-preview-contract.test.mjs",
+    "check": "node --check src/validate-import-package.mjs && node --check src/import-package-builder.mjs && node --check src/import-execution-preflight.mjs && node --check src/import-package-governance-cli.mjs && node --check test/validator.test.mjs && node --check test/builder-preview.test.mjs && node --check test/intake-preview-contract.test.mjs && node --check test/import-execution-preflight.test.mjs",
+    "test": "node test/validator.test.mjs && node test/builder-preview.test.mjs && node test/intake-preview-contract.test.mjs && node test/import-execution-preflight.test.mjs",
     "validate": "node src/import-package-governance-cli.mjs validate",
     "build-package": "node src/import-package-governance-cli.mjs build-package",
-    "preview-package": "node src/import-package-governance-cli.mjs preview-package"
+    "preview-package": "node src/import-package-governance-cli.mjs preview-package",
+    "build-approval-manifest": "node src/import-package-governance-cli.mjs build-approval-manifest",
+    "dry-run-import": "node src/import-package-governance-cli.mjs dry-run-import"
   }
 }
