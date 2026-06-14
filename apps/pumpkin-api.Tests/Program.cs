@@ -18,6 +18,12 @@ if (args.Contains("--phase-2h14", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-9-9", StringComparer.OrdinalIgnoreCase))
+{
+    await AuditJobApiReadOnlyTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
