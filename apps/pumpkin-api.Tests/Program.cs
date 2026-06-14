@@ -24,6 +24,12 @@ if (args.Contains("--v2-9-9", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-11-4", StringComparer.OrdinalIgnoreCase))
+{
+    await ImportIntakeApiReadOnlyTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================

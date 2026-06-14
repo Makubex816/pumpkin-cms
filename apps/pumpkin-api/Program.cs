@@ -118,6 +118,7 @@ builder.Services.AddSingleton<IMediaStorageService, MediaStorageService>();
 builder.Services.AddOutboundLinkReadOnlyFoundation();
 builder.Services.AddOutboundLinkWriteFoundation();
 builder.Services.AddAuditJobReadOnlyFoundation();
+builder.Services.AddImportIntakeReadOnlyFoundation();
 
 var app = builder.Build();
 
@@ -527,6 +528,7 @@ app.MapGet("/api/admin/provider-metadata",
 app.MapOutboundLinkReadOnlyEndpoints();
 app.MapOutboundLinkWriteEndpoints();
 app.MapAuditJobReadOnlyEndpoints();
+app.MapImportIntakeReadOnlyEndpoints();
 
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",
