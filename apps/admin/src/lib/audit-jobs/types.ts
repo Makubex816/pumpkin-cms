@@ -169,6 +169,64 @@ export interface AuditJobLedgerViewerModel {
   validation: AuditJobLedgerValidationView
 }
 
+export interface AuditJobLedgerSharedViewerModel extends Omit<AuditJobLedgerViewerModel, 'viewerModelVersion'> {
+  schemaVersion: 'audit-job-ledger-shared-viewer-model.v1'
+  providerMode: string
+  readOnly: true
+  redactionPolicy: {
+    rawSecretsAllowed: false
+    protectedConfigAllowed: false
+    tokenLikeValuesAllowed: false
+    disallowedSecretClasses: string[]
+  }
+  generatedAt: string
+  legacyViewerModelVersion: 'audit-job-ledger-viewer.v1'
+}
+
+export interface AuditJobLedgerReadOnlyApiEnvelope {
+  schemaVersion: 'audit-job-ledger-readonly-api-envelope.v1'
+  ok: boolean
+  status: 'ok' | 'warning' | 'error'
+  code: string
+  message: string
+  requestId: string
+  correlationId: string
+  providerMode: string
+  readOnly: true
+  data: AuditJobLedgerSharedViewerModel
+  warnings: AuditJobLedgerHealthMessage[]
+  errors: AuditJobLedgerHealthMessage[]
+  securityBoundary: AuditJobLedgerSecurityBoundary
+  source: {
+    fixturePath: string
+    runtimeHttpWarning: string | null
+  }
+  tenantKey: string | null
+  siteKey: string | null
+  meta: {
+    generatedAt: string
+    runtimeHttpWarning: string | null
+    sharedViewerModelSchemaVersion: string
+  }
+}
+
+export interface AuditJobLedgerAdminContractMetadata {
+  envelopeSchemaVersion: 'audit-job-ledger-readonly-api-envelope.v1'
+  sharedViewerModelSchemaVersion: 'audit-job-ledger-shared-viewer-model.v1'
+  requestId: string
+  correlationId: string
+  envelopeProviderMode: string
+  adminProviderMode: string
+  sourceFixturePath: string
+  runtimeHttpWarning: string | null
+  generatedAt: string
+  readOnly: true
+  adapterValidation: {
+    ok: boolean
+    issues: string[]
+  }
+}
+
 export interface AuditJobLedgerAdminRecord {
   id: string
   sourceId: string
@@ -203,6 +261,8 @@ export interface AuditJobLedgerFutureAction {
 export interface AuditJobLedgerAdminSnapshot {
   activeGovernanceLane: string
   fixturePath: string
+  providerMode: string
+  contract: AuditJobLedgerAdminContractMetadata
   route: string
   viewerModel: AuditJobLedgerViewerModel
   records: AuditJobLedgerAdminRecord[]

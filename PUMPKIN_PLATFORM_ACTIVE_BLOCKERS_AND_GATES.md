@@ -48,6 +48,7 @@
 | Audit Job Ledger Read-Only Admin Viewer Prototype | Complete, local Admin prototype created | V2.9.4 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Fixture-backed Admin route `/dashboard/audit-jobs`, typed provider, 12 panels, search/filter/sort, read-only detail panel, disabled future actions, and scoped QA created with no live/write/deploy/indexing action. |
 | Audit Job Ledger Admin Viewer Navigation Runtime QA Signoff | Complete with local runtime server warning | V2.9.5 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Scoped Audit Jobs dashboard navigation, dirty layout review, stronger Admin source QA, type-check, ledger validation, and result package completed; local Next listeners timed out before serving route HTTP, so browser/runtime serving remains a local availability warning. |
 | Audit Job Ledger Shared Viewer Model Read-Only API Contract | Complete, local contract foundation created | V2.9.6 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Shared viewer model contract, read-only API envelope contract, schemas, generated API fixture, contract validator CLI, and 22 tests completed with no API runtime endpoint, Electron runtime, live/write/deploy/indexing action. |
+| Audit Job Ledger Admin Shared Contract Adapter And Local Runtime HTTP Remediation | Complete, local route HTTP warning resolved | V2.9.7 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Admin consumes the V2.9.6 read-only API envelope through a local fixture-backed adapter; Admin type-check and scoped QA passed; stale repo-local Next listeners on ports 3000/3001 were stopped, generated `.next` was cleared, and `/dashboard/audit-jobs` returned HTTP 200 from a fresh local dev server. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -55,7 +56,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9.6 shared read-only contract foundation complete | V2.8 / V2.9 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, any further deployment, runtime job integration, live API endpoints, Pumpkin API runtime endpoints, Electron runtime, and any Azure mutation require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9.7 Admin contract adapter and local route HTTP proof complete | V2.8 / V2.9 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, any further deployment, runtime job integration, live API endpoints, Pumpkin API runtime endpoints, Electron runtime, and any Azure mutation require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -608,3 +609,15 @@ Still separately gated:
 - V2.9.6 runtime HTTP warning carryforward: `local_next_dev_server_listened_but_timed_out`
 - V2.9.6 live API, Pumpkin API, Electron implementation: `not_added_future_boundary_required`
 - V2.9.6 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, CMS/provider writes, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.9.7 classification: `admin_shared_contract_adapter_runtime_http_remediation_complete`
+- V2.9.7 Admin contract adapter: `created`
+- V2.9.7 Admin provider mode: `admin-local-fixture-readonly`
+- V2.9.7 read-only API envelope provider mode: `local-fixture-readonly`
+- V2.9.7 Admin type-check: `passed`
+- V2.9.7 Admin V2.9.5 QA: `passed`
+- V2.9.7 Admin V2.9.7 QA: `passed`
+- V2.9.7 local runtime route GET: `http_200`
+- V2.9.7 runtime HTTP warning decision: `resolved_for_local_admin_route_serving`
+- V2.9.7 audit ledger package tests: `22_passed`
+- V2.9.7 live API, Pumpkin API, Electron implementation: `not_added_future_boundary_required`
+- V2.9.7 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, CMS/provider writes, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`

@@ -16,7 +16,6 @@ import {
   TableProperties,
 } from 'lucide-react'
 import {
-  AUDIT_JOB_LEDGER_PROVIDER_MODE,
   defaultAuditJobLedgerQuery,
   getAuditJobLedgerAdminSnapshot,
   getAuditJobLedgerRecordById,
@@ -60,14 +59,14 @@ export function AuditJobLedgerAdminView() {
   const stateCounts = useMemo(() => getAuditJobLedgerStateCounts(records), [records])
 
   return (
-    <div className="space-y-6" data-v2-phase="V2.9.4" data-provider-mode={AUDIT_JOB_LEDGER_PROVIDER_MODE}>
+    <div className="space-y-6" data-v2-phase="V2.9.7" data-provider-mode={snapshot.providerMode}>
       <header className="card">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
             <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Read-only governance view</p>
             <h1 className="mt-1 text-3xl font-bold text-neutral-900">Audit Jobs / Production Promotion</h1>
             <p className="mt-2 max-w-4xl text-sm text-neutral-600">
-              Fixture-backed Admin prototype for {snapshot.activeGovernanceLane}. Source data is the validated local combined V2.8 ledger, rendered without live APIs or provider calls.
+              Fixture-backed Admin prototype for {snapshot.activeGovernanceLane}. Source data is the validated V2.9.6 read-only API envelope contract, rendered without live APIs or provider calls.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -131,7 +130,7 @@ function ReadOnlySafetyBanner({ snapshot }: { snapshot: AuditJobLedgerAdminSnaps
           <div>
             <div className="font-semibold">No write actions. Fixture-backed local viewer only.</div>
             <div className="mt-1">
-              Google/Search Console/indexing deferred hard stop. Deployment closed. Contact-form POST closed after V2.8.19 verification.
+              Shared contract adapter active. Google/Search Console/indexing deferred hard stop. Deployment closed. Contact-form POST closed after V2.8.19 verification.
             </div>
           </div>
         </div>
@@ -139,7 +138,7 @@ function ReadOnlySafetyBanner({ snapshot }: { snapshot: AuditJobLedgerAdminSnaps
           <BoundaryPill label="Local" value={boundary.localOnly ? 'yes' : 'no'} />
           <BoundaryPill label="Writes" value={boundary.openFlags.length === 0 ? 'closed' : 'open'} />
           <BoundaryPill label="Open flags" value={String(boundary.openFlags.length)} />
-          <BoundaryPill label="Provider" value={AUDIT_JOB_LEDGER_PROVIDER_MODE} />
+          <BoundaryPill label="Provider" value={snapshot.providerMode} />
         </div>
       </div>
     </div>
@@ -155,6 +154,10 @@ function SummaryStrip({ snapshot }: { snapshot: AuditJobLedgerAdminSnapshot }) {
       <MetricCard label="Job Runs" value={summary.counts.jobRuns} detail={summary.releaseState} icon={<TableProperties className="h-5 w-5" />} />
       <MetricCard label="Promotion Gates" value={summary.counts.promotionGates} detail={`${summary.counts.blockers} blockers`} icon={<CheckCircle2 className="h-5 w-5" />} />
       <MetricCard label="Trace IDs" value={summary.counts.traceEntries} detail={`${snapshot.viewerModel.traceIds.correlationIds.length} correlation`} icon={<Database className="h-5 w-5" />} />
+      <MetricCard label="Shared Contract" value={snapshot.contract.adapterValidation.ok ? 1 : 0} detail={snapshot.contract.envelopeSchemaVersion} icon={<ShieldCheck className="h-5 w-5" />} />
+      <MetricCard label="Envelope Provider" value={snapshot.contract.readOnly ? 1 : 0} detail={snapshot.contract.envelopeProviderMode} icon={<Database className="h-5 w-5" />} />
+      <MetricCard label="Runtime Warning" value={snapshot.contract.runtimeHttpWarning ? 1 : 0} detail={snapshot.contract.runtimeHttpWarning ?? 'none'} icon={<AlertTriangle className="h-5 w-5" />} />
+      <MetricCard label="Admin Provider" value={1} detail={snapshot.contract.adminProviderMode} icon={<Lock className="h-5 w-5" />} />
     </section>
   )
 }
@@ -406,7 +409,7 @@ function DetailPanel({
           Read-only detail panel
         </div>
         <p className="mt-1">
-          This view reads {snapshot.fixturePath} through the local Admin fixture provider and exposes no mutation handler.
+          This view reads {snapshot.fixturePath} through the shared contract adapter and local Admin fixture provider, then exposes no mutation handler.
         </p>
       </div>
     </aside>
