@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "pumpkin.v2.phaseResult.v1",
+  "phaseId": "v2-11-7-scoped-ice-import-execution-approval-gate",
+  "createdAt": "2026-06-14T04:00:00-04:00",
+  "status": "blocked_before_execution",
+  "currentReference": "V2.11.7",
+  "currentReferenceName": "Scoped Ice Import Execution Approval Gate",
+  "currentLane": "V2.11 Multi-Tenant Onboarding / Import Package Governance",
+  "layerRefs": [
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10",
+    "L11",
+    "L12",
+    "L13",
+    "L14",
+    "L15"
+  ],
+  "v2OverallCompletion": "100% with indexing deferred",
+  "v2_11Completion": "95% with scoped Ice execution gate blocked before import",
+  "execution": {
+    "approvalManifestFinalized": false,
+    "executionPerformed": false,
+    "writeExecutionResult": "not_run",
+    "readbackVerificationResult": "not_run",
+    "blockedBeforeExecution": true
+  },
+  "icePackage": {
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "packageId": "ice-rink-rentals-carryforward-v2-11-2",
+    "expectedHash": "sha256:b0fdd67d5d31e798bf1a9ae3e5f576c17129030cd816e3a8b726b0767002d073",
+    "actualHash": "sha256:b0fdd67d5d31e798bf1a9ae3e5f576c17129030cd816e3a8b726b0767002d073",
+    "hashMatches": true,
+    "validationOk": true,
+    "dryRunAllowed": true,
+    "targetMode": "future_import_candidate",
+    "futureExecutionAllowed": false,
+    "futureExecutionBlockers": [
+      "execution_approval_not_granted",
+      "execution_approved_manifest_missing",
+      "exact_target_unresolved",
+      "repo_supported_write_command_missing",
+      "repo_supported_readback_command_missing"
+    ],
+    "noGoConditions": []
+  },
+  "rollerPackage": {
+    "tenantKey": "roller-rink-rentals",
+    "packageId": "roller-rink-rentals-paused-preview-v2-11-2",
+    "expectedHash": "sha256:e5567ddc0f9b3c4e655f958d9f25cd3bef8ec72ce2f553fa37d36bab38a05b29",
+    "actualHash": "sha256:e5567ddc0f9b3c4e655f958d9f25cd3bef8ec72ce2f553fa37d36bab38a05b29",
+    "hashMatches": true,
+    "dryRunAllowed": false,
+    "targetMode": "blocked_no_import_no_resume",
+    "noGoConditions": [
+      "tenant_paused_no_import"
+    ],
+    "resumeApproved": false,
+    "importApproved": false
+  },
+  "evidence": {
+    "generatedEvidencePath": "deployment/architecture/multi-tenant-onboarding/import-package-governance-implementation/.tmp/v2-11-7/",
+    "generatedEvidenceIgnoredByGit": true,
+    "iceApprovalManifestId": "approval-ice-rink-rentals-carryforward-v2-11-2-v2-11-6",
+    "iceDryRunId": "dry-run-ice-rink-rentals-carryforward-v2-11-2-v2-11-6",
+    "iceRollbackPlanId": "rollback:v2-8-17d-production-rollback-plan",
+    "iceReadbackPlanId": "readback-ice-rink-rentals-carryforward-v2-11-2-future-import",
+    "iceAuditTraceId": "audit-trace-ice-rink-rentals-carryforward-v2-11-2-v2-11-6"
+  },
+  "missingValues": [
+    "executionApprovalGranted_true_manifest",
+    "operatorApproval_approved_true",
+    "approvedAt",
+    "approvedBy",
+    "executionBoundary_allowedCommand_or_repo_supported_command",
+    "explicit_non_placeholder_targetMode",
+    "exact_import_target_identifier",
+    "exact_readback_command",
+    "secret_free_authorization_method"
+  ],
+  "nextRecommendedPhase": "V2.11.7A Scoped Ice Import Execution Manifest And Target Command Binding Closure",
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-11-6-carryforward.md",
+    "execution-scope.md",
+    "approval-manifest-finalization-result.md",
+    "ice-package-identity-check.md",
+    "roller-exclusion-check.md",
+    "target-resolution-result.md",
+    "prerequisite-gate-result.md",
+    "no-go-condition-result.md",
+    "write-execution-result.md",
+    "readback-verification-result.md",
+    "trace-audit-rollback-result.md",
+    "provider-or-target-state-result.md",
+    "blocked-before-execution-result.md",
+    "exact-missing-values.md",
+    "operator-next-actions.md",
+    "security-boundary-result.md",
+    "google-indexing-deferred-carryforward.md",
+    "future-post-import-hardening-summary.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+
