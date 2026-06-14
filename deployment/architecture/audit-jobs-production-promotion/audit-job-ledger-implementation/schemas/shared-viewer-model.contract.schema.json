@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/contracts/audit-job-ledger-shared-viewer-model.v1.schema.json",
+  "title": "Audit Job Ledger Shared Viewer Model Contract",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "providerMode",
+    "readOnly",
+    "summary",
+    "panels",
+    "auditEvents",
+    "jobRuns",
+    "promotionGates",
+    "evidenceBindings",
+    "traceIds",
+    "warnings",
+    "blockers",
+    "nextGates",
+    "securityBoundary",
+    "redactionPolicy",
+    "generatedAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "audit-job-ledger-shared-viewer-model.v1"
+    },
+    "providerMode": {
+      "enum": [
+        "local-fixture-readonly",
+        "admin-local-fixture-readonly",
+        "future-pumpkin-api-readonly",
+        "future-electron-cache-readonly"
+      ]
+    },
+    "readOnly": {
+      "const": true
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "status",
+        "releaseState",
+        "indexingState",
+        "boundaryState",
+        "counts"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "read_only",
+            "invalid_ledger"
+          ]
+        },
+        "indexingState": {
+          "const": "deferred"
+        },
+        "boundaryState": {
+          "const": "read_only"
+        },
+        "counts": {
+          "type": "object"
+        }
+      }
+    },
+    "panels": {
+      "type": "array",
+      "minItems": 12,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "state",
+          "readOnly",
+          "counts",
+          "safetyLabel"
+        ],
+        "properties": {
+          "readOnly": {
+            "const": true
+          },
+          "safetyLabel": {
+            "const": "read_only_no_write_actions"
+          }
+        }
+      }
+    },
+    "auditEvents": {
+      "type": "array"
+    },
+    "jobRuns": {
+      "type": "array"
+    },
+    "promotionGates": {
+      "type": "array"
+    },
+    "evidenceBindings": {
+      "type": "array"
+    },
+    "traceIds": {
+      "type": "object",
+      "required": [
+        "entries",
+        "byField",
+        "correlationIds",
+        "searchableFields"
+      ]
+    },
+    "warnings": {
+      "type": "array"
+    },
+    "blockers": {
+      "type": "array"
+    },
+    "nextGates": {
+      "type": "array"
+    },
+    "securityBoundary": {
+      "type": "object",
+      "required": [
+        "localOnly",
+        "noWriteBoundarySatisfied",
+        "openFlags",
+        "closedFlags"
+      ],
+      "properties": {
+        "localOnly": {
+          "const": true
+        },
+        "noWriteBoundarySatisfied": {
+          "const": true
+        },
+        "openFlags": {
+          "type": "array",
+          "maxItems": 0
+        }
+      }
+    },
+    "redactionPolicy": {
+      "type": "object",
+      "required": [
+        "policyVersion",
+        "rawSecretsAllowed",
+        "rawPiiAllowed",
+        "protectedConfigAllowed",
+        "tokenLikeValuesAllowed"
+      ],
+      "properties": {
+        "rawSecretsAllowed": {
+          "const": false
+        },
+        "rawPiiAllowed": {
+          "const": false
+        },
+        "protectedConfigAllowed": {
+          "const": false
+        },
+        "tokenLikeValuesAllowed": {
+          "const": false
+        }
+      }
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

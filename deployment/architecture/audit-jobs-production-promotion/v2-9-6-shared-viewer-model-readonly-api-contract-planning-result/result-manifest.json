@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "pumpkin.result-manifest.v1",
+  "v2Reference": "V2.9.6",
+  "phaseName": "Shared Viewer Model and Read-Only API Contract Planning",
+  "status": "complete_local_readonly_contract_foundation",
+  "createdAt": "2026-06-13T22:20:00-04:00",
+  "activeLane": "V2.9 - Audit Jobs / Production Promotion Governance",
+  "layerRefs": [
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10",
+    "L11",
+    "L12",
+    "L13",
+    "L14",
+    "L15"
+  ],
+  "sharedViewerModelSchemaVersion": "audit-job-ledger-shared-viewer-model.v1",
+  "readOnlyApiEnvelopeSchemaVersion": "audit-job-ledger-readonly-api-envelope.v1",
+  "providerModes": [
+    "local-fixture-readonly",
+    "admin-local-fixture-readonly",
+    "future-pumpkin-api-readonly",
+    "future-electron-cache-readonly"
+  ],
+  "contractValidator": {
+    "implemented": true,
+    "cliCommands": [
+      "api-fixture",
+      "validate-contract"
+    ],
+    "tests": "22_passed"
+  },
+  "fixtureBackedApiExamples": [
+    "deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/fixtures/valid-v2-8-combined-readonly-api-envelope.fixture.json"
+  ],
+  "runtimeHttpWarningCarryforward": "local_next_dev_server_listened_but_timed_out",
+  "boundaries": {
+    "localOnly": true,
+    "liveApiEndpointImplemented": false,
+    "pumpkinApiEndpointImplemented": false,
+    "electronRuntimeImplemented": false,
+    "deploymentOrRedeployment": false,
+    "dnsOrCustomDomainMutation": false,
+    "googleSearchConsoleOrIndexingAction": false,
+    "contactFormSubmissionOrPost": false,
+    "cmsOrProviderWrites": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "tokenKeyConnectionStringOrSasAction": false
+  }
+}

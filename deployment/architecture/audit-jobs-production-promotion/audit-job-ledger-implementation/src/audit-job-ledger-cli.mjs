@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import {
+  createReadOnlyApiEnvelope,
+  validateReadOnlyApiEnvelope,
+  validateSharedViewerModelContract
+} from "./audit-job-ledger-contract.mjs";
 import { validateLedger } from "./audit-job-ledger-validator.mjs";
 import { createLedgerViewerModel } from "./audit-job-ledger-view-model.mjs";
 
 const [, , command, fixturePath] = process.argv;
 
-if (!["validate", "inspect", "viewer-summary"].includes(command) || !fixturePath) {
+if (!["validate", "inspect", "viewer-summary", "api-fixture", "validate-contract"].includes(command) || !fixturePath) {
   printUsage();
   process.exitCode = 2;
 } else {
@@ -48,8 +53,30 @@ async function run(activeCommand, inputPath) {
     return;
   }
 
+  if (activeCommand === "validate-contract") {
+    const validation = ledger?.schemaVersion === "audit-job-ledger-shared-viewer-model.v1"
+      ? validateSharedViewerModelContract(ledger)
+      : validateReadOnlyApiEnvelope(ledger);
+    console.log(JSON.stringify({
+      ok: validation.ok,
+      fixturePath: inputPath,
+      summary: validation.summary,
+      failures: validation.failures
+    }, null, 2));
+    if (!validation.ok) {
+      process.exitCode = 1;
+    }
+    return;
+  }
+
   const validation = validateLedger(ledger);
-  if (activeCommand === "viewer-summary") {
+  if (activeCommand === "api-fixture") {
+    const envelope = createReadOnlyApiEnvelope(ledger, {
+      providerMode: "local-fixture-readonly",
+      fixturePath: inputPath
+    });
+    console.log(JSON.stringify(envelope, null, 2));
+  } else if (activeCommand === "viewer-summary") {
     const viewerModel = createLedgerViewerModel(ledger);
     console.log(JSON.stringify({
       ok: viewerModel.ok,
@@ -87,5 +114,5 @@ async function run(activeCommand, inputPath) {
 }
 
 function printUsage() {
-  console.error("Usage: node src/audit-job-ledger-cli.mjs <validate|inspect|viewer-summary> <fixture.json>");
+  console.error("Usage: node src/audit-job-ledger-cli.mjs <validate|inspect|viewer-summary|api-fixture|validate-contract> <fixture.json>");
 }

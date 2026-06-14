@@ -4,6 +4,12 @@ import { readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, it } from "node:test";
+import {
+  createReadOnlyApiEnvelope,
+  createSharedViewerModelContract,
+  validateReadOnlyApiEnvelope,
+  validateSharedViewerModelContract
+} from "../src/audit-job-ledger-contract.mjs";
 import { validateLedger } from "../src/audit-job-ledger-validator.mjs";
 import { createLedgerViewerModel, searchTraceIds } from "../src/audit-job-ledger-view-model.mjs";
 
@@ -164,6 +170,108 @@ describe("audit/job ledger validator", () => {
     assert.equal(parsed.viewerModel.summary.status, "read_only");
     assert.equal(parsed.viewerModel.summary.indexingState, "deferred");
   });
+
+  it("creates and validates a shared read-only viewer contract", async () => {
+    const ledger = await readFixture("valid-v2-8-combined-promotion-ledger.fixture.json");
+    const contract = createSharedViewerModelContract(ledger, { providerMode: "local-fixture-readonly" });
+    const validation = validateSharedViewerModelContract(contract);
+
+    assert.equal(validation.ok, true, JSON.stringify(validation.failures, null, 2));
+    assert.equal(contract.schemaVersion, "audit-job-ledger-shared-viewer-model.v1");
+    assert.equal(contract.readOnly, true);
+    assert.equal(contract.summary.status, "read_only");
+    assert.equal(contract.summary.indexingState, "deferred");
+    assert.equal(contract.securityBoundary.noWriteBoundarySatisfied, true);
+    assert.equal(contract.redactionPolicy.rawSecretsAllowed, false);
+  });
+
+  it("creates and validates a read-only API envelope contract", async () => {
+    const ledger = await readFixture("valid-v2-8-combined-promotion-ledger.fixture.json");
+    const envelope = createReadOnlyApiEnvelope(ledger, {
+      providerMode: "local-fixture-readonly",
+      fixturePath: "fixtures/valid-v2-8-combined-promotion-ledger.fixture.json"
+    });
+    const validation = validateReadOnlyApiEnvelope(envelope);
+
+    assert.equal(validation.ok, true, JSON.stringify(validation.failures, null, 2));
+    assert.equal(envelope.schemaVersion, "audit-job-ledger-readonly-api-envelope.v1");
+    assert.equal(envelope.ok, true);
+    assert.equal(envelope.readOnly, true);
+    assert.equal(envelope.data.schemaVersion, "audit-job-ledger-shared-viewer-model.v1");
+    assert.equal(envelope.source.runtimeHttpWarning, "local_next_dev_server_listened_but_timed_out");
+  });
+
+  it("rejects a read-only API envelope missing required fields", async () => {
+    const envelope = await createValidEnvelope();
+    delete envelope.requestId;
+    const validation = validateReadOnlyApiEnvelope(envelope);
+
+    assert.equal(validation.ok, false);
+    assert.ok(validation.failures.some((failure) => failure.code === "MISSING_REQUIRED_FIELD" && failure.path === "$.requestId"));
+  });
+
+  it("rejects an enabled mutation action in a contract", async () => {
+    const envelope = await createValidEnvelope();
+    envelope.actions = [
+      {
+        id: "redeploy-production",
+        label: "Redeploy production",
+        method: "POST",
+        enabled: true
+      }
+    ];
+    const validation = validateReadOnlyApiEnvelope(envelope);
+
+    assert.equal(validation.ok, false);
+    assert.ok(validation.failures.some((failure) => failure.code === "MUTATION_ACTION_NOT_DISABLED"));
+  });
+
+  it("rejects token-like fields without storing token material", async () => {
+    const envelope = await createValidEnvelope();
+    envelope.meta.deploymentToken = "redacted-placeholder";
+    const validation = validateReadOnlyApiEnvelope(envelope);
+
+    assert.equal(validation.ok, false);
+    assert.ok(validation.failures.some((failure) => failure.code === "SECRET_FIELD_NOT_ALLOWED"));
+  });
+
+  it("rejects mismatched Admin/viewer model shape", async () => {
+    const envelope = await createValidEnvelope();
+    envelope.data.summary.counts.auditEvents += 1;
+    const validation = validateReadOnlyApiEnvelope(envelope);
+
+    assert.equal(validation.ok, false);
+    assert.ok(validation.failures.some((failure) => failure.code === "VIEWER_COUNT_MISMATCH"));
+  });
+
+  it("CLI api-fixture and validate-contract cover the combined fixture", () => {
+    const apiFixture = spawnSync(
+      process.execPath,
+      ["src/audit-job-ledger-cli.mjs", "api-fixture", "fixtures/valid-v2-8-combined-promotion-ledger.fixture.json"],
+      {
+        cwd: packageRoot,
+        encoding: "utf8"
+      }
+    );
+
+    assert.equal(apiFixture.status, 0, apiFixture.stderr || apiFixture.stdout);
+    const parsed = JSON.parse(apiFixture.stdout);
+    assert.equal(parsed.ok, true);
+    assert.equal(validateReadOnlyApiEnvelope(parsed).ok, true);
+
+    const validateContract = spawnSync(
+      process.execPath,
+      ["src/audit-job-ledger-cli.mjs", "validate-contract", "fixtures/valid-v2-8-combined-readonly-api-envelope.fixture.json"],
+      {
+        cwd: packageRoot,
+        encoding: "utf8"
+      }
+    );
+
+    assert.equal(validateContract.status, 0, validateContract.stderr || validateContract.stdout);
+    const contractResult = JSON.parse(validateContract.stdout);
+    assert.equal(contractResult.ok, true);
+  });
 });
 
 async function readFixture(fixtureName) {
@@ -173,4 +281,12 @@ async function readFixture(fixtureName) {
 
 function panelById(viewerModel, id) {
   return viewerModel.panels.find((panel) => panel.id === id);
+}
+
+async function createValidEnvelope() {
+  const ledger = await readFixture("valid-v2-8-combined-promotion-ledger.fixture.json");
+  return structuredClone(createReadOnlyApiEnvelope(ledger, {
+    providerMode: "local-fixture-readonly",
+    fixturePath: "fixtures/valid-v2-8-combined-promotion-ledger.fixture.json"
+  }));
 }

@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/contracts/audit-job-ledger-readonly-api-envelope.v1.schema.json",
+  "title": "Audit Job Ledger Read-Only API Envelope Contract",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "ok",
+    "requestId",
+    "correlationId",
+    "providerMode",
+    "readOnly",
+    "data",
+    "warnings",
+    "errors",
+    "securityBoundary",
+    "source"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "audit-job-ledger-readonly-api-envelope.v1"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "integer"
+    },
+    "code": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "correlationId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "providerMode": {
+      "enum": [
+        "local-fixture-readonly",
+        "admin-local-fixture-readonly",
+        "future-pumpkin-api-readonly",
+        "future-electron-cache-readonly"
+      ]
+    },
+    "readOnly": {
+      "const": true
+    },
+    "data": {
+      "$ref": "shared-viewer-model.contract.schema.json"
+    },
+    "warnings": {
+      "type": "array"
+    },
+    "errors": {
+      "type": "array"
+    },
+    "securityBoundary": {
+      "type": "object",
+      "required": [
+        "localOnly",
+        "noWriteBoundarySatisfied",
+        "openFlags"
+      ],
+      "properties": {
+        "localOnly": {
+          "const": true
+        },
+        "noWriteBoundarySatisfied": {
+          "const": true
+        },
+        "openFlags": {
+          "type": "array",
+          "maxItems": 0
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "viewerModelVersion",
+        "generatedFrom",
+        "runtimeHttpWarning"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "local_fixture",
+            "validated_ledger",
+            "future_api",
+            "future_electron_cache"
+          ]
+        },
+        "runtimeHttpWarning": {
+          "const": "local_next_dev_server_listened_but_timed_out"
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "localOnly": {
+          "const": true
+        },
+        "readOnly": {
+          "const": true
+        },
+        "externalHttpCrawling": {
+          "const": false
+        },
+        "cmsWrites": {
+          "const": false
+        },
+        "providerWrites": {
+          "const": false
+        },
+        "protectedConfigReads": {
+          "const": false
+        },
+        "writeActionsAllowed": {
+          "const": false
+        }
+      }
+    }
+  }
+}

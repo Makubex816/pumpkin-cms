@@ -1,0 +1,2047 @@
+{
+  "schemaVersion": "audit-job-ledger-readonly-api-envelope.v1",
+  "ok": true,
+  "status": 200,
+  "code": "OK",
+  "message": "Read-only audit job ledger viewer contract response.",
+  "requestId": "ajlapi_local_fixture_v2_9_6",
+  "correlationId": "corr-combined-v2-8-production-promotion",
+  "providerMode": "local-fixture-readonly",
+  "readOnly": true,
+  "data": {
+    "schemaVersion": "audit-job-ledger-shared-viewer-model.v1",
+    "providerMode": "local-fixture-readonly",
+    "readOnly": true,
+    "summary": {
+      "status": "read_only",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "releaseState": "complete",
+      "indexingState": "deferred",
+      "boundaryState": "read_only",
+      "counts": {
+        "auditEvents": 11,
+        "jobRuns": 9,
+        "promotionGates": 11,
+        "evidenceBindings": 13,
+        "traceEntries": 107,
+        "warnings": 1,
+        "blockers": 0,
+        "nextGates": 2
+      }
+    },
+    "panels": [
+      {
+        "id": "release-summary",
+        "title": "Release Summary",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 1
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "promotion-gates",
+        "title": "Promotion Gates",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 11,
+          "blocked": 0
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "job-runs",
+        "title": "Job Runs",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 9
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "audit-events",
+        "title": "Audit Events",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 11
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "evidence-bindings",
+        "title": "Evidence Bindings",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 13
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "trace-explorer",
+        "title": "Trace Explorer",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 107,
+          "correlations": 1
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "runtime-qa",
+        "title": "Runtime QA",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 1
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "resource-registry-provider-profile",
+        "title": "Resource Registry / Provider Profile",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 1
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "outbound-link-manager",
+        "title": "Outbound Link Manager",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 1
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "backup-center",
+        "title": "Backup Center",
+        "state": "complete",
+        "readOnly": true,
+        "counts": {
+          "total": 1
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "indexing-deferred",
+        "title": "Indexing Deferred",
+        "state": "deferred",
+        "readOnly": true,
+        "counts": {
+          "total": 1
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      },
+      {
+        "id": "blockers-next-gates",
+        "title": "Blockers and Next Gates",
+        "state": "future_boundary_required",
+        "readOnly": true,
+        "counts": {
+          "warnings": 1,
+          "blockers": 0,
+          "nextGates": 2
+        },
+        "safetyLabel": "read_only_no_write_actions"
+      }
+    ],
+    "auditEvents": [
+      {
+        "id": "audit-combined-production-static-release-deployed",
+        "type": "production_static_release_deployed",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T17:40:33-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "historical_approved_execution",
+        "mutationClass": "historical_production_static_deployment_recorded",
+        "evidenceRefs": [
+          "ev-combined-artifact-hash",
+          "ev-combined-deployment-record",
+          "ev-combined-canonical-release-map"
+        ],
+        "evidenceSummaries": [
+          "Artifact run sanitized_20260613174033 aggregate SHA-256.",
+          "Production deployment id 96fd744f-5589-4ac3-bebb-cfa99048dc0e.",
+          "Canonical map from V2.9.1 binding the V2.8 release evidence chain."
+        ],
+        "traceIdCount": 12,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": null,
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-production-route-verification-passed",
+        "type": "production_route_verification_passed",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T18:00:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "historical_bounded_get_verification",
+        "mutationClass": "historical_read_only_route_check_recorded",
+        "evidenceRefs": [
+          "ev-combined-route-check-summary"
+        ],
+        "evidenceSummaries": [
+          "Six approved production route checks returned 200 OK in V2.8.19."
+        ],
+        "traceIdCount": 10,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": null,
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-contact-form-live-submission-verified",
+        "type": "contact_form_live_submission_verified",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T18:05:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "historical_approved_one_action",
+        "mutationClass": "historical_contact_form_post_recorded",
+        "evidenceRefs": [
+          "ev-combined-contact-verification"
+        ],
+        "evidenceSummaries": [
+          "One synthetic contact verification response was 200 OK with ok=true and entry ID present."
+        ],
+        "traceIdCount": 10,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": "gate-combined-contact-form-verification-recorded",
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-indexing-deferred-hard-stop",
+        "type": "indexing_deferred_hard_stop",
+        "outcome": "deferred",
+        "occurredAt": "2026-06-13T18:08:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "hard_stop_deferral",
+        "mutationClass": "no_google_indexing_action",
+        "evidenceRefs": [
+          "ev-combined-indexing-deferral"
+        ],
+        "evidenceSummaries": [
+          "Google/Search Console/indexing remains hard-stopped and deferred."
+        ],
+        "traceIdCount": 9,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": "gate-combined-indexing-state-explicit",
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-runtime-qa-passed",
+        "type": "runtime_qa_passed",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T18:09:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "local_read_only_validation",
+        "mutationClass": "none",
+        "evidenceRefs": [
+          "ev-combined-runtime-qa"
+        ],
+        "evidenceSummaries": [
+          "Runtime QA revalidation passed with six tests."
+        ],
+        "traceIdCount": 10,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": null,
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-resource-registry-validation-passed",
+        "type": "resource_registry_validation_passed",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T18:10:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "local_read_only_validation",
+        "mutationClass": "none",
+        "evidenceRefs": [
+          "ev-combined-resource-registry"
+        ],
+        "evidenceSummaries": [
+          "Resource Registry validation passed with zero failures and zero warnings."
+        ],
+        "traceIdCount": 10,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": null,
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-provider-profile-validation-passed",
+        "type": "provider_profile_validation_passed",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T18:11:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "local_read_only_validation",
+        "mutationClass": "none",
+        "evidenceRefs": [
+          "ev-combined-provider-profile"
+        ],
+        "evidenceSummaries": [
+          "Provider Profile validation covered nine profiles with zero failures and zero warnings."
+        ],
+        "traceIdCount": 10,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": null,
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-olm-publish-gate-passed",
+        "type": "olm_publish_gate_passed",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T18:12:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "local_offline_validation",
+        "mutationClass": "none",
+        "evidenceRefs": [
+          "ev-combined-olm-publish-gate"
+        ],
+        "evidenceSummaries": [
+          "OLM publish gate passed with 132 tests and no production writes."
+        ],
+        "traceIdCount": 10,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": null,
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-backup-evidence-available",
+        "type": "backup_evidence_available",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T18:13:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "evidence_binding",
+        "mutationClass": "none",
+        "evidenceRefs": [
+          "ev-combined-backup-evidence"
+        ],
+        "evidenceSummaries": [
+          "Backup Center evidence binding was carried forward by V2.9.1."
+        ],
+        "traceIdCount": 8,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": null,
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-rollback-abort-plan-recorded",
+        "type": "rollback_abort_plan_recorded",
+        "outcome": "passed",
+        "occurredAt": "2026-06-13T18:14:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "plan_record",
+        "mutationClass": "none",
+        "evidenceRefs": [
+          "ev-combined-rollback-plan"
+        ],
+        "evidenceSummaries": [
+          "Rollback and abort plan evidence carried forward for production promotion records."
+        ],
+        "traceIdCount": 9,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": null,
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "audit-combined-future-boundary-created",
+        "type": "future_boundary_created",
+        "outcome": "complete",
+        "occurredAt": "2026-06-13T18:15:00-04:00",
+        "actor": "PumpkinCMS operator",
+        "boundaryClass": "future_gate",
+        "mutationClass": "none",
+        "evidenceRefs": [
+          "ev-combined-next-phase-prompt"
+        ],
+        "evidenceSummaries": [
+          "Future boundary prompt preserved instead of executing a live action."
+        ],
+        "traceIdCount": 9,
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "boundaryGateId": "gate-combined-future-boundary-created",
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      }
+    ],
+    "jobRuns": [
+      {
+        "id": "job-combined-production-deployment-attempt",
+        "type": "production_deployment_attempt",
+        "status": "passed",
+        "outcome": "passed",
+        "startedAt": "2026-06-13T17:40:00-04:00",
+        "completedAt": "2026-06-13T17:45:00-04:00",
+        "auditEventIds": [
+          "audit-combined-production-static-release-deployed"
+        ],
+        "evidenceRefs": [
+          "ev-combined-artifact-hash",
+          "ev-combined-deployment-record",
+          "ev-combined-canonical-release-map"
+        ],
+        "evidenceCount": 3,
+        "evidenceSummaries": [
+          "Artifact run sanitized_20260613174033 aggregate SHA-256.",
+          "Production deployment id 96fd744f-5589-4ac3-bebb-cfa99048dc0e.",
+          "Canonical map from V2.9.1 binding the V2.8 release evidence chain."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "job-combined-production-route-check",
+        "type": "production_route_check",
+        "status": "passed",
+        "outcome": "passed",
+        "startedAt": "2026-06-13T18:00:00-04:00",
+        "completedAt": "2026-06-13T18:01:00-04:00",
+        "auditEventIds": [
+          "audit-combined-production-route-verification-passed"
+        ],
+        "evidenceRefs": [
+          "ev-combined-deployment-record",
+          "ev-combined-route-check-summary"
+        ],
+        "evidenceCount": 2,
+        "evidenceSummaries": [
+          "Production deployment id 96fd744f-5589-4ac3-bebb-cfa99048dc0e.",
+          "Six approved production route checks returned 200 OK in V2.8.19."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "job-combined-contact-form-live-verification",
+        "type": "contact_form_live_verification",
+        "status": "passed",
+        "outcome": "passed",
+        "startedAt": "2026-06-13T18:01:00-04:00",
+        "completedAt": "2026-06-13T18:05:00-04:00",
+        "auditEventIds": [
+          "audit-combined-contact-form-live-submission-verified"
+        ],
+        "evidenceRefs": [
+          "ev-combined-contact-verification"
+        ],
+        "evidenceCount": 1,
+        "evidenceSummaries": [
+          "One synthetic contact verification response was 200 OK with ok=true and entry ID present."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "job-combined-indexing-deferred-record",
+        "type": "indexing_deferred_record",
+        "status": "deferred",
+        "outcome": "deferred",
+        "startedAt": "2026-06-13T18:07:00-04:00",
+        "completedAt": "2026-06-13T18:08:00-04:00",
+        "auditEventIds": [
+          "audit-combined-indexing-deferred-hard-stop"
+        ],
+        "evidenceRefs": [
+          "ev-combined-indexing-deferral"
+        ],
+        "evidenceCount": 1,
+        "evidenceSummaries": [
+          "Google/Search Console/indexing remains hard-stopped and deferred."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "job-combined-runtime-qa",
+        "type": "runtime_qa",
+        "status": "passed",
+        "outcome": "passed",
+        "startedAt": "2026-06-13T18:08:00-04:00",
+        "completedAt": "2026-06-13T18:09:00-04:00",
+        "auditEventIds": [
+          "audit-combined-runtime-qa-passed"
+        ],
+        "evidenceRefs": [
+          "ev-combined-runtime-qa"
+        ],
+        "evidenceCount": 1,
+        "evidenceSummaries": [
+          "Runtime QA revalidation passed with six tests."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "job-combined-resource-registry-validation",
+        "type": "resource_registry_validation",
+        "status": "passed",
+        "outcome": "passed",
+        "startedAt": "2026-06-13T18:09:00-04:00",
+        "completedAt": "2026-06-13T18:10:00-04:00",
+        "auditEventIds": [
+          "audit-combined-resource-registry-validation-passed"
+        ],
+        "evidenceRefs": [
+          "ev-combined-resource-registry"
+        ],
+        "evidenceCount": 1,
+        "evidenceSummaries": [
+          "Resource Registry validation passed with zero failures and zero warnings."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "job-combined-provider-profile-validation",
+        "type": "provider_profile_validation",
+        "status": "passed",
+        "outcome": "passed",
+        "startedAt": "2026-06-13T18:10:00-04:00",
+        "completedAt": "2026-06-13T18:11:00-04:00",
+        "auditEventIds": [
+          "audit-combined-provider-profile-validation-passed"
+        ],
+        "evidenceRefs": [
+          "ev-combined-provider-profile"
+        ],
+        "evidenceCount": 1,
+        "evidenceSummaries": [
+          "Provider Profile validation covered nine profiles with zero failures and zero warnings."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "job-combined-olm-publish-gate-validation",
+        "type": "olm_publish_gate_validation",
+        "status": "passed",
+        "outcome": "passed",
+        "startedAt": "2026-06-13T18:11:00-04:00",
+        "completedAt": "2026-06-13T18:12:00-04:00",
+        "auditEventIds": [
+          "audit-combined-olm-publish-gate-passed"
+        ],
+        "evidenceRefs": [
+          "ev-combined-olm-publish-gate"
+        ],
+        "evidenceCount": 1,
+        "evidenceSummaries": [
+          "OLM publish gate passed with 132 tests and no production writes."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      },
+      {
+        "id": "job-combined-rollback-abort-plan-review",
+        "type": "rollback_abort_plan_review",
+        "status": "passed",
+        "outcome": "passed",
+        "startedAt": "2026-06-13T18:13:00-04:00",
+        "completedAt": "2026-06-13T18:15:00-04:00",
+        "auditEventIds": [
+          "audit-combined-backup-evidence-available",
+          "audit-combined-rollback-abort-plan-recorded",
+          "audit-combined-future-boundary-created"
+        ],
+        "evidenceRefs": [
+          "ev-combined-backup-evidence",
+          "ev-combined-rollback-plan",
+          "ev-combined-next-phase-prompt"
+        ],
+        "evidenceCount": 3,
+        "evidenceSummaries": [
+          "Backup Center evidence binding was carried forward by V2.9.1.",
+          "Rollback and abort plan evidence carried forward for production promotion records.",
+          "Future boundary prompt preserved instead of executing a live action."
+        ],
+        "readOnlySafety": {
+          "localOnly": true,
+          "writesPerformed": false,
+          "externalNetworkUsed": false,
+          "protectedConfigRead": false
+        }
+      }
+    ],
+    "promotionGates": [
+      {
+        "id": "gate-combined-artifact-hash-recorded",
+        "type": "artifact_hash_recorded",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-artifact-hash"
+        ],
+        "actualEvidence": [
+          "ev-combined-artifact-hash"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-17d-production-release-execution-approval",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "Artifact run sanitized_20260613174033 aggregate SHA-256."
+        ]
+      },
+      {
+        "id": "gate-combined-route-checks-passed",
+        "type": "route_checks_passed",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-route-check-summary"
+        ],
+        "actualEvidence": [
+          "ev-combined-route-check-summary"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-19-production-route-reverification-boundary",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "Six approved production route checks returned 200 OK in V2.8.19."
+        ]
+      },
+      {
+        "id": "gate-combined-contact-form-verification-recorded",
+        "type": "contact_form_verification_recorded",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-contact-verification"
+        ],
+        "actualEvidence": [
+          "ev-combined-contact-verification"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-19-one-synthetic-contact-post-approval",
+        "rollbackPlanId": "rollback-plan-v2-8-19-no-second-post",
+        "evidenceSummaries": [
+          "One synthetic contact verification response was 200 OK with ok=true and entry ID present."
+        ]
+      },
+      {
+        "id": "gate-combined-indexing-state-explicit",
+        "type": "indexing_state_explicit",
+        "state": "deferred",
+        "result": "deferred_non_blocking",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-indexing-deferral"
+        ],
+        "actualEvidence": [
+          "ev-combined-indexing-deferral"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-19-google-indexing-hard-stop",
+        "rollbackPlanId": "rollback-plan-v2-8-19-no-indexing-action",
+        "evidenceSummaries": [
+          "Google/Search Console/indexing remains hard-stopped and deferred."
+        ]
+      },
+      {
+        "id": "gate-combined-runtime-qa-passed",
+        "type": "runtime_qa_passed",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-runtime-qa"
+        ],
+        "actualEvidence": [
+          "ev-combined-runtime-qa"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-19-local-runtime-qa-revalidation",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "Runtime QA revalidation passed with six tests."
+        ]
+      },
+      {
+        "id": "gate-combined-resource-registry-passed",
+        "type": "resource_registry_passed",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-resource-registry"
+        ],
+        "actualEvidence": [
+          "ev-combined-resource-registry"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-19-local-resource-registry-validation",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "Resource Registry validation passed with zero failures and zero warnings."
+        ]
+      },
+      {
+        "id": "gate-combined-provider-profile-passed",
+        "type": "provider_profile_passed",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-provider-profile"
+        ],
+        "actualEvidence": [
+          "ev-combined-provider-profile"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-19-local-provider-profile-validation",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "Provider Profile validation covered nine profiles with zero failures and zero warnings."
+        ]
+      },
+      {
+        "id": "gate-combined-olm-publish-gate-passed",
+        "type": "olm_publish_gate_passed",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-olm-publish-gate"
+        ],
+        "actualEvidence": [
+          "ev-combined-olm-publish-gate"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-19-local-olm-publish-gate",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "OLM publish gate passed with 132 tests and no production writes."
+        ]
+      },
+      {
+        "id": "gate-combined-backup-evidence-available",
+        "type": "backup_evidence_available",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-backup-evidence"
+        ],
+        "actualEvidence": [
+          "ev-combined-backup-evidence"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-9-1-backup-center-evidence-binding",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "Backup Center evidence binding was carried forward by V2.9.1."
+        ]
+      },
+      {
+        "id": "gate-combined-rollback-abort-owner-recorded",
+        "type": "rollback_abort_owner_recorded",
+        "state": "passed",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-rollback-plan"
+        ],
+        "actualEvidence": [
+          "ev-combined-rollback-plan"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-8-production-rollback-abort-carryforward",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "Rollback and abort plan evidence carried forward for production promotion records."
+        ]
+      },
+      {
+        "id": "gate-combined-future-boundary-created",
+        "type": "future_boundary_created",
+        "state": "complete",
+        "result": "complete",
+        "blockers": [],
+        "requiredEvidence": [
+          "ev-combined-next-phase-prompt"
+        ],
+        "actualEvidence": [
+          "ev-combined-next-phase-prompt"
+        ],
+        "missingEvidenceRefs": [],
+        "approvalReference": "v2-9-1-next-phase-prompt",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "evidenceSummaries": [
+          "Future boundary prompt preserved instead of executing a live action."
+        ]
+      }
+    ],
+    "evidenceBindings": [
+      {
+        "id": "ev-combined-canonical-release-map",
+        "type": "result_package",
+        "sourceRef": "V2.9.1",
+        "safePath": "deployment/architecture/audit-jobs-production-promotion/v2-9-1-audit-jobs-production-promotion-gate-planning-result/canonical-release-evidence-map.md",
+        "summary": "Canonical map from V2.9.1 binding the V2.8 release evidence chain.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-artifact-hash",
+        "type": "production_artifact_hash",
+        "sourceRef": "V2.8.17D",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/artifact-root-selection-result.md",
+        "summary": "Artifact run sanitized_20260613174033 aggregate SHA-256.",
+        "hasArtifactHash": true
+      },
+      {
+        "id": "ev-combined-deployment-record",
+        "type": "deployment_record",
+        "sourceRef": "V2.8.17D",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/corrected-production-deployment-result.md",
+        "summary": "Production deployment id 96fd744f-5589-4ac3-bebb-cfa99048dc0e.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-route-check-summary",
+        "type": "route_check_summary",
+        "sourceRef": "V2.8.19",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/production-route-reverification-result.md",
+        "summary": "Six approved production route checks returned 200 OK in V2.8.19.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-contact-verification",
+        "type": "contact_form_verification_summary",
+        "sourceRef": "V2.8.19",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/contact-form-response-verification-result.md",
+        "summary": "One synthetic contact verification response was 200 OK with ok=true and entry ID present.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-indexing-deferral",
+        "type": "indexing_deferral_record",
+        "sourceRef": "V2.8.19",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/google-search-console-indexing-hard-stop-result.md",
+        "summary": "Google/Search Console/indexing remains hard-stopped and deferred.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-runtime-qa",
+        "type": "runtime_qa_summary",
+        "sourceRef": "V2.8.19",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/runtime-qa-revalidation-result.md",
+        "summary": "Runtime QA revalidation passed with six tests.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-resource-registry",
+        "type": "resource_registry_summary",
+        "sourceRef": "V2.8.19",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/resource-registry-provider-profile-result.md",
+        "summary": "Resource Registry validation passed with zero failures and zero warnings.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-provider-profile",
+        "type": "provider_profile_summary",
+        "sourceRef": "V2.8.19",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/resource-registry-provider-profile-result.md",
+        "summary": "Provider Profile validation covered nine profiles with zero failures and zero warnings.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-olm-publish-gate",
+        "type": "olm_publish_gate_summary",
+        "sourceRef": "V2.8.19",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/olm-publish-gate-result.md",
+        "summary": "OLM publish gate passed with 132 tests and no production writes.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-backup-evidence",
+        "type": "backup_evidence_summary",
+        "sourceRef": "V2.9.1",
+        "safePath": "deployment/architecture/audit-jobs-production-promotion/v2-9-1-audit-jobs-production-promotion-gate-planning-result/backup-center-evidence-binding.md",
+        "summary": "Backup Center evidence binding was carried forward by V2.9.1.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-rollback-plan",
+        "type": "rollback_abort_plan",
+        "sourceRef": "V2.8.18",
+        "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-18-owner-post-deployment-verification-indexing-approval-packet-result/production-rollback-abort-carryforward.md",
+        "summary": "Rollback and abort plan evidence carried forward for production promotion records.",
+        "hasArtifactHash": false
+      },
+      {
+        "id": "ev-combined-next-phase-prompt",
+        "type": "next_phase_prompt",
+        "sourceRef": "V2.9.1",
+        "safePath": "deployment/architecture/audit-jobs-production-promotion/v2-9-1-audit-jobs-production-promotion-gate-planning-result/next-phase-prompt.md",
+        "summary": "Future boundary prompt preserved instead of executing a live action.",
+        "hasArtifactHash": false
+      }
+    ],
+    "traceIds": {
+      "entries": [
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-production-static-release-deployed",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-production-static-release-deployed audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "jobRunId",
+          "value": "job-combined-production-deployment-attempt",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "jobrunid job-combined-production-deployment-attempt audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-17d-production-release-execution-approval",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-17d-production-release-execution-approval audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "artifactRunId",
+          "value": "sanitized_20260613174033",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "artifactrunid sanitized_20260613174033 audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "artifactHash",
+          "value": "506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "artifacthash 506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899 audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "deploymentId",
+          "value": "96fd744f-5589-4ac3-bebb-cfa99048dc0e",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "deploymentid 96fd744f-5589-4ac3-bebb-cfa99048dc0e audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-production-static-release-deployed",
+          "eventType": "production_static_release_deployed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-production-static-release-deployed production_static_release_deployed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-production-route-verification-passed",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-production-route-verification-passed audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "jobRunId",
+          "value": "job-combined-production-route-check",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "jobrunid job-combined-production-route-check audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-19-production-route-reverification-boundary",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-19-production-route-reverification-boundary audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "routeCheckId",
+          "value": "routecheck-v2-8-19-six-production-routes",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "routecheckid routecheck-v2-8-19-six-production-routes audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-production-route-verification-passed",
+          "eventType": "production_route_verification_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-production-route-verification-passed production_route_verification_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-contact-form-live-submission-verified",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-contact-form-live-submission-verified audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "jobRunId",
+          "value": "job-combined-contact-form-live-verification",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "jobrunid job-combined-contact-form-live-verification audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-19-one-synthetic-contact-post-approval",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-19-one-synthetic-contact-post-approval audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "boundaryGateId",
+          "value": "gate-combined-contact-form-verification-recorded",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "boundarygateid gate-combined-contact-form-verification-recorded audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-contact-form-live-submission-verified",
+          "eventType": "contact_form_live_submission_verified",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-contact-form-live-submission-verified contact_form_live_submission_verified corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-indexing-deferred-hard-stop",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-indexing-deferred-hard-stop audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-19-google-indexing-hard-stop",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-19-google-indexing-hard-stop audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "boundaryGateId",
+          "value": "gate-combined-indexing-state-explicit",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "boundarygateid gate-combined-indexing-state-explicit audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "deferred",
+          "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+          "eventType": "indexing_deferred_hard_stop",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome deferred audit-combined-indexing-deferred-hard-stop indexing_deferred_hard_stop corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-runtime-qa-passed",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-runtime-qa-passed audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "jobRunId",
+          "value": "job-combined-runtime-qa",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "jobrunid job-combined-runtime-qa audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-19-local-runtime-qa-revalidation",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-19-local-runtime-qa-revalidation audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "runtimeQaRunId",
+          "value": "runtimeqa-v2-8-19-local-revalidation",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "runtimeqarunid runtimeqa-v2-8-19-local-revalidation audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-runtime-qa-passed",
+          "eventType": "runtime_qa_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-runtime-qa-passed runtime_qa_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-resource-registry-validation-passed",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-resource-registry-validation-passed audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "jobRunId",
+          "value": "job-combined-resource-registry-validation",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "jobrunid job-combined-resource-registry-validation audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-19-local-resource-registry-validation",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-19-local-resource-registry-validation audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "resourceRegistryValidationId",
+          "value": "resource-registry-v2-8-19-local-validation",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "resourceregistryvalidationid resource-registry-v2-8-19-local-validation audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-resource-registry-validation-passed",
+          "eventType": "resource_registry_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-resource-registry-validation-passed resource_registry_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-provider-profile-validation-passed",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-provider-profile-validation-passed audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "jobRunId",
+          "value": "job-combined-provider-profile-validation",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "jobrunid job-combined-provider-profile-validation audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-19-local-provider-profile-validation",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-19-local-provider-profile-validation audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "providerProfileValidationId",
+          "value": "provider-profile-v2-8-19-local-validation",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "providerprofilevalidationid provider-profile-v2-8-19-local-validation audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-provider-profile-validation-passed",
+          "eventType": "provider_profile_validation_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-provider-profile-validation-passed provider_profile_validation_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-olm-publish-gate-passed",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-olm-publish-gate-passed audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "jobRunId",
+          "value": "job-combined-olm-publish-gate-validation",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "jobrunid job-combined-olm-publish-gate-validation audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-19-local-olm-publish-gate",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-19-local-olm-publish-gate audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "olmValidationId",
+          "value": "olm-v2-8-19-local-publish-gate",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "olmvalidationid olm-v2-8-19-local-publish-gate audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-olm-publish-gate-passed",
+          "eventType": "olm_publish_gate_passed",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-olm-publish-gate-passed olm_publish_gate_passed corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-backup-evidence-available",
+          "eventType": "backup_evidence_available",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-backup-evidence-available backup_evidence_available corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-backup-evidence-available",
+          "eventType": "backup_evidence_available",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-backup-evidence-available backup_evidence_available corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-backup-evidence-available",
+          "eventType": "backup_evidence_available",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-backup-evidence-available backup_evidence_available corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-backup-evidence-available",
+          "eventType": "backup_evidence_available",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-backup-evidence-available backup_evidence_available corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-backup-evidence-available",
+          "auditEventId": "audit-combined-backup-evidence-available",
+          "eventType": "backup_evidence_available",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-backup-evidence-available audit-combined-backup-evidence-available backup_evidence_available corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-backup-evidence-available",
+          "eventType": "backup_evidence_available",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-backup-evidence-available backup_evidence_available corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-9-1-backup-center-evidence-binding",
+          "auditEventId": "audit-combined-backup-evidence-available",
+          "eventType": "backup_evidence_available",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-9-1-backup-center-evidence-binding audit-combined-backup-evidence-available backup_evidence_available corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-backup-evidence-available",
+          "eventType": "backup_evidence_available",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-backup-evidence-available backup_evidence_available corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-rollback-abort-plan-recorded",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-rollback-abort-plan-recorded audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-8-production-rollback-abort-carryforward",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-8-production-rollback-abort-carryforward audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "rollbackPlanId",
+          "value": "rollback-plan-v2-8-production-static-release",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "rollbackplanid rollback-plan-v2-8-production-static-release audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "passed",
+          "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+          "eventType": "rollback_abort_plan_recorded",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome passed audit-combined-rollback-abort-plan-recorded rollback_abort_plan_recorded corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "v2Reference",
+          "value": "V2.8.19",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "v2reference v2.8.19 audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "laneId",
+          "value": "tenant-website-publish-readiness",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "laneid tenant-website-publish-readiness audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "tenantKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "tenantkey ice-rink-rentals audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "siteKey",
+          "value": "ice-rink-rentals",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "sitekey ice-rink-rentals audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "auditEventId",
+          "value": "audit-combined-future-boundary-created",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "auditeventid audit-combined-future-boundary-created audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "correlationId",
+          "value": "corr-combined-v2-8-production-promotion",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "correlationid corr-combined-v2-8-production-promotion audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "approvalReference",
+          "value": "v2-9-1-next-phase-prompt",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "approvalreference v2-9-1-next-phase-prompt audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "boundaryGateId",
+          "value": "gate-combined-future-boundary-created",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "boundarygateid gate-combined-future-boundary-created audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        },
+        {
+          "field": "outcome",
+          "value": "complete",
+          "auditEventId": "audit-combined-future-boundary-created",
+          "eventType": "future_boundary_created",
+          "correlationId": "corr-combined-v2-8-production-promotion",
+          "searchText": "outcome complete audit-combined-future-boundary-created future_boundary_created corr-combined-v2-8-production-promotion"
+        }
+      ],
+      "byField": {
+        "v2Reference": 11,
+        "laneId": 11,
+        "tenantKey": 11,
+        "siteKey": 11,
+        "auditEventId": 11,
+        "jobRunId": 7,
+        "correlationId": 11,
+        "approvalReference": 11,
+        "artifactRunId": 1,
+        "artifactHash": 1,
+        "deploymentId": 1,
+        "outcome": 11,
+        "routeCheckId": 1,
+        "boundaryGateId": 3,
+        "runtimeQaRunId": 1,
+        "resourceRegistryValidationId": 1,
+        "providerProfileValidationId": 1,
+        "olmValidationId": 1,
+        "rollbackPlanId": 1
+      },
+      "correlationIds": [
+        "corr-combined-v2-8-production-promotion"
+      ],
+      "searchableFields": [
+        "approvalReference",
+        "artifactHash",
+        "artifactRunId",
+        "auditEventId",
+        "boundaryGateId",
+        "correlationId",
+        "deploymentId",
+        "jobRunId",
+        "laneId",
+        "olmValidationId",
+        "outcome",
+        "providerProfileValidationId",
+        "resourceRegistryValidationId",
+        "rollbackPlanId",
+        "routeCheckId",
+        "runtimeQaRunId",
+        "siteKey",
+        "tenantKey",
+        "v2Reference"
+      ]
+    },
+    "warnings": [
+      {
+        "code": "INDEXING_DEFERRED",
+        "state": "deferred",
+        "severity": "info",
+        "message": "Google/Search Console/indexing remains deferred by hard stop."
+      }
+    ],
+    "blockers": [],
+    "nextGates": [
+      {
+        "id": "future-boundary-required",
+        "state": "future_boundary_required",
+        "label": "Future explicit approval required before any runtime/write boundary."
+      },
+      {
+        "id": "google-indexing-deferred",
+        "state": "deferred",
+        "label": "Google/Search Console/indexing remains deferred until a separate explicit approval."
+      }
+    ],
+    "securityBoundary": {
+      "localOnly": true,
+      "noWriteBoundarySatisfied": true,
+      "openFlags": [],
+      "closedFlags": [
+        "deployment",
+        "redeployment",
+        "dnsChange",
+        "customDomainMutation",
+        "searchConsoleAction",
+        "googleSitemapSubmission",
+        "googleUrlInspectionApi",
+        "googleIndexingApi",
+        "indexingRequest",
+        "crawlOrOutboundCheck",
+        "contactFormSubmission",
+        "contactEndpointPost",
+        "cmsWrite",
+        "mediaAssetWrite",
+        "providerWrite",
+        "azureMutation",
+        "azureInfrastructureCreation",
+        "azureInfrastructureMutation",
+        "azureAppSettingsMutation",
+        "rbacAssignment",
+        "protectedConfigRead",
+        "tokenUseOrPrint",
+        "deploymentTokenUsed",
+        "deploymentTokenPrintedOrExported",
+        "oauthTokenUsedOrPrinted",
+        "keyVaultSecretQuery",
+        "keysListKeys",
+        "connectionStringGenerated",
+        "sasGenerated",
+        "secretExport",
+        "externalNetworkUsed",
+        "writesPerformed"
+      ]
+    },
+    "redactionPolicy": {
+      "policyVersion": "audit-job-ledger-redaction.v1",
+      "rawSecretsAllowed": false,
+      "rawPiiAllowed": false,
+      "protectedConfigAllowed": false,
+      "tokenLikeValuesAllowed": false,
+      "disallowedSecretClasses": [
+        "oauth_tokens",
+        "deployment_tokens",
+        "storage_keys",
+        "connection_strings",
+        "sas_urls",
+        "cookies",
+        "auth_headers",
+        "private_keys"
+      ],
+      "allowedSensitiveSurrogates": [
+        "artifactHash",
+        "correlationId",
+        "safePath",
+        "evidenceId"
+      ]
+    },
+    "generatedAt": "2026-06-13T21:43:09-04:00",
+    "legacyViewerModelVersion": "audit-job-ledger-viewer.v1",
+    "validation": {
+      "ok": true,
+      "failureCount": 0,
+      "failures": []
+    }
+  },
+  "warnings": [
+    {
+      "code": "INDEXING_DEFERRED",
+      "state": "deferred",
+      "severity": "info",
+      "message": "Google/Search Console/indexing remains deferred by hard stop."
+    }
+  ],
+  "errors": [],
+  "securityBoundary": {
+    "localOnly": true,
+    "noWriteBoundarySatisfied": true,
+    "openFlags": [],
+    "closedFlags": [
+      "deployment",
+      "redeployment",
+      "dnsChange",
+      "customDomainMutation",
+      "searchConsoleAction",
+      "googleSitemapSubmission",
+      "googleUrlInspectionApi",
+      "googleIndexingApi",
+      "indexingRequest",
+      "crawlOrOutboundCheck",
+      "contactFormSubmission",
+      "contactEndpointPost",
+      "cmsWrite",
+      "mediaAssetWrite",
+      "providerWrite",
+      "azureMutation",
+      "azureInfrastructureCreation",
+      "azureInfrastructureMutation",
+      "azureAppSettingsMutation",
+      "rbacAssignment",
+      "protectedConfigRead",
+      "tokenUseOrPrint",
+      "deploymentTokenUsed",
+      "deploymentTokenPrintedOrExported",
+      "oauthTokenUsedOrPrinted",
+      "keyVaultSecretQuery",
+      "keysListKeys",
+      "connectionStringGenerated",
+      "sasGenerated",
+      "secretExport",
+      "externalNetworkUsed",
+      "writesPerformed"
+    ]
+  },
+  "source": {
+    "kind": "local_fixture",
+    "fixturePath": "fixtures/valid-v2-8-combined-promotion-ledger.fixture.json",
+    "ledgerSchemaVersion": "audit-job-ledger.v1",
+    "viewerModelVersion": "audit-job-ledger-viewer.v1",
+    "generatedFrom": "validated-ledger-viewer-model",
+    "runtimeHttpWarning": "local_next_dev_server_listened_but_timed_out"
+  },
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "meta": {
+    "mode": "local-readonly-contract",
+    "localOnly": true,
+    "readOnly": true,
+    "providerMode": "local-fixture-readonly",
+    "externalHttpCrawling": false,
+    "cmsApiCalls": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "protectedConfigReads": false,
+    "writeActionsAllowed": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "runtimeHttpWarning": "local_next_dev_server_listened_but_timed_out"
+  }
+}
