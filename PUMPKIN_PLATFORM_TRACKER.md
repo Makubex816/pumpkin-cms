@@ -4,16 +4,16 @@
 
 | Field | Value |
 | --- | --- |
-| currentReference | V2.9.4 |
-| currentReferenceName | Audit Job Ledger Read-Only Admin Viewer Prototype |
-| currentReferenceStatus | Complete; fixture-backed Admin read-only audit/job ledger viewer route, typed view model, local provider, QA script, tests, docs, and result package created |
+| currentReference | V2.9.5 |
+| currentReferenceName | Audit Job Ledger Admin Viewer Navigation Runtime QA Signoff |
+| currentReferenceStatus | Complete with local dev-server runtime availability warning; Admin navigation, route/source QA, read-only safety checks, type-check, ledger package validation, docs, and result package created |
 | provisionalV2OverallCompletion | `99%` |
 | currentLayerRefs | L01, L02, L03, L04, L06, L07, L08, L09, L10, L11, L12, L13, L14, L15 |
-| nextReference | V2.9.5 |
-| nextReferenceName | Audit Job Ledger Read-Only Admin Viewer Navigation And QA Hardening |
-| nextGate | Reconcile dashboard layout state, add safe navigation for `/dashboard/audit-jobs` if possible, and harden local/read-only Admin QA; Google/Search Console/indexing remains deferred by hard stop |
-| safetyPosture | V2.9.4 created scoped Admin read-only route/component/provider/types/QA docs only; no live API endpoint, Pumpkin API endpoint, Electron runtime, deployment/redeployment, DNS change, custom-domain mutation, Google/Search Console/indexing action, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing request, crawl, outbound URL check, contact-form submission, contact endpoint POST, CMS/provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment/OAuth token use/print/export/listing, keys/listKeys, connection string, SAS, or `git add -A` occurred |
-| blockedState | V2.8 non-indexing readiness is complete and V2.9.4 local read-only Admin viewer prototype is complete; Google/Search Console/indexing, DNS/custom-domain changes, CMS/provider writes, deployment/redeployment, contact-form submissions, runtime job integration, live API endpoints, Pumpkin API endpoints, Electron runtime, and Azure mutations remain separately gated |
+| nextReference | V2.9.6 |
+| nextReferenceName | Audit Job Ledger Shared Viewer Model And Read-Only API Contract Planning |
+| nextGate | Plan shared viewer-model/API contract boundaries without implementing live endpoints; Google/Search Console/indexing remains deferred by hard stop |
+| safetyPosture | V2.9.5 created scoped Admin navigation, QA script, result docs, and control docs only; no live API endpoint, Pumpkin API endpoint, Electron runtime, deployment/redeployment, DNS change, custom-domain mutation, Google/Search Console/indexing action, sitemap submission through Google, URL Inspection API, Google Indexing API, indexing request, crawl, outbound URL check, contact-form submission, contact endpoint POST, CMS/provider write, Azure infrastructure/configuration mutation, app settings mutation, RBAC assignment, protected config read, deployment/OAuth token use/print/export/listing, keys/listKeys, connection string, SAS, or `git add -A` occurred |
+| blockedState | V2.8 non-indexing readiness is complete and V2.9.5 local read-only Admin viewer navigation/source QA signoff is complete with local runtime server warning; Google/Search Console/indexing, DNS/custom-domain changes, CMS/provider writes, deployment/redeployment, contact-form submissions, runtime job integration, live API endpoints, Pumpkin API endpoints, Electron runtime, and Azure mutations remain separately gated |
 
 ## Legacy Tracker Freeze
 
@@ -41,6 +41,6 @@ Do not continue incrementing the old `92 / 100` tracker as the visible platform 
 | V2.6 | `86%` | Runtime QA harness operationalized with reusable registry, evidence manifest, local QA checks, and upload blocker recorded |
 | V2.7 | `100%` | Admin/API Operator Console signoff complete; Runtime QA upload blocker resolved |
 | V2.8 | `100% with indexing deferred` | Backend verification, isolated target creation, local artifact validation, scoped isolated staging deployment, bounded route checks, validation stack, owner/operator staging signoff, production release planning, V2.8.17 production execution, V2.8.17A forensics, V2.8.17B auth replacement/corrective retry, V2.8.17C command-shape corrective execution, V2.8.17D working-directory separation corrective deployment, V2.8.18 post-deployment verification/evidence freeze, and V2.8.19 owner acknowledgement plus live contact-form verification are complete; Google/Search Console/indexing is deferred by hard stop |
-| V2.9 | `82%` | Audit/jobs/production promotion planning layer, local no-write validator foundation, local read-only operator viewer model foundation, and fixture-backed Admin read-only viewer prototype complete; navigation/QA hardening next |
+| V2.9 | `90%` | Audit/jobs/production promotion planning layer, local no-write validator foundation, local read-only operator viewer model foundation, fixture-backed Admin read-only viewer prototype, dashboard navigation, and source QA signoff complete with local runtime server warning; shared model/API contract planning next |
 
 These percentages are provisional control-layer indicators, not deployment approval.

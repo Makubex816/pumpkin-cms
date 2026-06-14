@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { FileSearch, Link2 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import TenantSelector from '@/components/TenantSelector'
@@ -67,6 +68,16 @@ const navigation: NavItem[] = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 17l6-6 4 4 7-7m0 0v5m0-5h-5" />
       </svg>
     ),
+  },
+  {
+    name: 'Outbound Links',
+    href: '/dashboard/outbound-links',
+    icon: <Link2 className="w-5 h-5" />,
+  },
+  {
+    name: 'Audit Jobs',
+    href: '/dashboard/audit-jobs',
+    icon: <FileSearch className="w-5 h-5" />,
   },
   {
     name: 'Page Map',
@@ -151,7 +162,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   })}
                 </nav>
               </div>
-              
+
               {/* Tenant Selector + User Menu */}
               <div className="flex items-center space-x-4">
                 <TenantSelector />
