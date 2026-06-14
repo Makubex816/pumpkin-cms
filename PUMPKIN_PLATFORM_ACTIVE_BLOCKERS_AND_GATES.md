@@ -52,6 +52,8 @@
 | Audit Job Ledger GET-Only Pumpkin API Read-Only Endpoint Preflight Planning | Complete, implementation-ready plan created | V2.9.8 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Future `/api/admin/audit-jobs` GET-only route matrix, DTO/read-model plan, response envelope mapping, service/fixture provider boundary, auth/isolation matrix, no-write guard, error/trace/test plans, and V2.9.9 prompt created with no API runtime endpoint implementation. |
 | Audit Job Ledger GET-Only Pumpkin API Read-Only Endpoint Implementation | Complete, fixture-backed GET-only API foundation created | V2.9.9 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | `/api/admin/audit-jobs` route group now exposes 8 GET-only fixture-backed read-only endpoints with DTOs, envelope, provider/service, auth/isolation, no-write route tests, and V2.9.10 Admin bridge prompt; no mutation routes/live provider/writes/deploy/indexing/Electron. |
 | Audit Job Ledger Admin-To-Pumpkin-API Read-Only Bridge Planning | Complete, implementation-ready bridge plan created | V2.9.10 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Admin-to-API bridge scope, endpoint/detail mapping, provider transition, API client contract, fallback/loading/error/degraded behavior, tenant/site query behavior, no-write UI carryforward, parity/runtime QA plans, API runtime blocker, and V2.9.11 prompt created with no Admin runtime behavior change. |
+| Audit Job Ledger Admin-To-Pumpkin-API Read-Only Bridge Implementation | Complete, Admin API bridge implemented | V2.9.11 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Admin now has `admin-api-readonly` mode for the existing 8 GET-only Pumpkin API routes, fixture fallback remains default/safe, local API runtime GET checks passed, and no write/live/deploy/indexing/Electron boundary opened. |
+| Audit Job Ledger Admin/API Read-Only Runtime Signoff And V2.9 Closeout | Complete, V2.9 closed with indexing deferred | V2.9.12 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | All 8 API GET endpoints and Admin fixture/API routes passed local runtime signoff; API/Admin/audit-ledger validation, mutation/no-write scans, evidence chain index, closeout decision, and next non-indexing prompt completed. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -59,7 +61,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9.10 Admin-to-API bridge planning complete | V2.8 / V2.9 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, any further deployment, runtime job integration, live provider endpoints, additional Pumpkin API runtime endpoints beyond the V2.9.9 fixture-backed GET surface, Electron runtime, and any Azure mutation require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9 complete for local/read-only Admin/API governance | V2.8 / V2.9 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, any further deployment, runtime job integration, live provider endpoints, additional Pumpkin API runtime endpoints beyond the V2.9.9 fixture-backed GET surface, Electron runtime, and any Azure mutation require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -666,3 +668,26 @@ Still separately gated:
 - V2.9.10 Admin bridge implementation, Admin provider replacement, new API endpoint implementation, POST/PUT/PATCH/DELETE Audit Jobs endpoints: `0`
 - V2.9.10 live provider integration, CMS/provider writes, Electron implementation: `not_added_future_boundary_required`
 - V2.9.10 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.9.11 classification: `admin_to_pumpkin_api_readonly_bridge_implementation_complete`
+- V2.9.11 Admin API provider mode: `admin-api-readonly`
+- V2.9.11 API provider mode: `api-local-fixture-readonly`
+- V2.9.11 bridged GET routes: `8`
+- V2.9.11 fixture fallback: `preserved_default_safe_mode`
+- V2.9.11 local API runtime GET checks: `8_passed_200_ok`
+- V2.9.11 Admin API-mode route GET: `200_ok`
+- V2.9.11 new API endpoint implementation, POST/PUT/PATCH/DELETE Audit Jobs endpoints: `0`
+- V2.9.11 live provider integration, CMS/provider writes, Electron implementation: `not_added_future_boundary_required`
+- V2.9.11 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.9.12 classification: `admin_api_readonly_runtime_signoff_v2_9_closeout_complete`
+- V2.9.12 API runtime GET checks: `8_passed_200_ok`
+- V2.9.12 Admin fixture route GET: `200_ok`
+- V2.9.12 Admin API-mode route GET: `200_ok`
+- V2.9.12 API build and scoped test runner: `passed`
+- V2.9.12 Admin type-check and scoped QA: `passed`
+- V2.9.12 audit-ledger package tests: `22_passed`
+- V2.9.12 audit-ledger contract validation: `passed`
+- V2.9.12 mutation route scan: `8_mapget_0_mutation_routes`
+- V2.9.12 V2.9 final decision: `complete_with_indexing_deferred`
+- V2.9.12 new API endpoints, POST/PUT/PATCH/DELETE Audit Jobs endpoints: `0`
+- V2.9.12 live provider integration, CMS/provider writes, Electron implementation: `not_added_future_boundary_required`
+- V2.9.12 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
