@@ -1,0 +1,1031 @@
+{
+  "schemaVersion": "audit-job-ledger.v1",
+  "ledgerId": "ledger-v2-8-combined-production-promotion",
+  "v2Reference": "V2.8.19",
+  "laneId": "tenant-website-publish-readiness",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "createdAt": "2026-06-13T18:33:00-04:00",
+  "summary": "Safe local combined ledger fixture for V2.8 production static release, route verification, contact-form verification, indexing deferral, and promotion gate evidence.",
+  "sourceEvidenceRefs": [
+    "deployment/architecture/audit-jobs-production-promotion/v2-9-1-audit-jobs-production-promotion-gate-planning-result/canonical-release-evidence-map.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/"
+  ],
+  "securityBoundary": {
+    "localOnly": true,
+    "deployment": false,
+    "redeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "searchConsoleAction": false,
+    "googleSitemapSubmission": false,
+    "googleUrlInspectionApi": false,
+    "googleIndexingApi": false,
+    "indexingRequest": false,
+    "crawlOrOutboundCheck": false,
+    "contactFormSubmission": false,
+    "contactEndpointPost": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "providerWrite": false,
+    "azureMutation": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "tokenUseOrPrint": false,
+    "deploymentTokenUsed": false,
+    "deploymentTokenPrintedOrExported": false,
+    "oauthTokenUsedOrPrinted": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStringGenerated": false,
+    "sasGenerated": false,
+    "secretExport": false,
+    "rawSecretsStored": false,
+    "rawPiiStored": false,
+    "protectedConfigValuesStored": false,
+    "rawContactPayloadStored": false,
+    "externalNetworkUsed": false,
+    "writesPerformed": false,
+    "gitAddAll": false
+  },
+  "evidenceBindings": [
+    {
+      "evidenceId": "ev-combined-canonical-release-map",
+      "evidenceType": "result_package",
+      "sourceRef": "V2.9.1",
+      "safePath": "deployment/architecture/audit-jobs-production-promotion/v2-9-1-audit-jobs-production-promotion-gate-planning-result/canonical-release-evidence-map.md",
+      "summary": "Canonical map from V2.9.1 binding the V2.8 release evidence chain."
+    },
+    {
+      "evidenceId": "ev-combined-artifact-hash",
+      "evidenceType": "production_artifact_hash",
+      "sourceRef": "V2.8.17D",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/artifact-root-selection-result.md",
+      "artifactHash": "506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899",
+      "summary": "Artifact run sanitized_20260613174033 aggregate SHA-256."
+    },
+    {
+      "evidenceId": "ev-combined-deployment-record",
+      "evidenceType": "deployment_record",
+      "sourceRef": "V2.8.17D",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/corrected-production-deployment-result.md",
+      "summary": "Production deployment id 96fd744f-5589-4ac3-bebb-cfa99048dc0e."
+    },
+    {
+      "evidenceId": "ev-combined-route-check-summary",
+      "evidenceType": "route_check_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/production-route-reverification-result.md",
+      "summary": "Six approved production route checks returned 200 OK in V2.8.19."
+    },
+    {
+      "evidenceId": "ev-combined-contact-verification",
+      "evidenceType": "contact_form_verification_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/contact-form-response-verification-result.md",
+      "summary": "One synthetic contact verification response was 200 OK with ok=true and entry ID present."
+    },
+    {
+      "evidenceId": "ev-combined-indexing-deferral",
+      "evidenceType": "indexing_deferral_record",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/google-search-console-indexing-hard-stop-result.md",
+      "summary": "Google/Search Console/indexing remains hard-stopped and deferred."
+    },
+    {
+      "evidenceId": "ev-combined-runtime-qa",
+      "evidenceType": "runtime_qa_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/runtime-qa-revalidation-result.md",
+      "summary": "Runtime QA revalidation passed with six tests."
+    },
+    {
+      "evidenceId": "ev-combined-resource-registry",
+      "evidenceType": "resource_registry_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/resource-registry-provider-profile-result.md",
+      "summary": "Resource Registry validation passed with zero failures and zero warnings."
+    },
+    {
+      "evidenceId": "ev-combined-provider-profile",
+      "evidenceType": "provider_profile_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/resource-registry-provider-profile-result.md",
+      "summary": "Provider Profile validation covered nine profiles with zero failures and zero warnings."
+    },
+    {
+      "evidenceId": "ev-combined-olm-publish-gate",
+      "evidenceType": "olm_publish_gate_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/olm-publish-gate-result.md",
+      "summary": "OLM publish gate passed with 132 tests and no production writes."
+    },
+    {
+      "evidenceId": "ev-combined-backup-evidence",
+      "evidenceType": "backup_evidence_summary",
+      "sourceRef": "V2.9.1",
+      "safePath": "deployment/architecture/audit-jobs-production-promotion/v2-9-1-audit-jobs-production-promotion-gate-planning-result/backup-center-evidence-binding.md",
+      "summary": "Backup Center evidence binding was carried forward by V2.9.1."
+    },
+    {
+      "evidenceId": "ev-combined-rollback-plan",
+      "evidenceType": "rollback_abort_plan",
+      "sourceRef": "V2.8.18",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-18-owner-post-deployment-verification-indexing-approval-packet-result/production-rollback-abort-carryforward.md",
+      "summary": "Rollback and abort plan evidence carried forward for production promotion records."
+    },
+    {
+      "evidenceId": "ev-combined-next-phase-prompt",
+      "evidenceType": "next_phase_prompt",
+      "sourceRef": "V2.9.1",
+      "safePath": "deployment/architecture/audit-jobs-production-promotion/v2-9-1-audit-jobs-production-promotion-gate-planning-result/next-phase-prompt.md",
+      "summary": "Future boundary prompt preserved instead of executing a live action."
+    }
+  ],
+  "auditEvents": [
+    {
+      "auditEventId": "audit-combined-production-static-release-deployed",
+      "eventType": "production_static_release_deployed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T17:40:33-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-artifact-hash",
+        "ev-combined-deployment-record",
+        "ev-combined-canonical-release-map"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-production-static-release-deployed",
+        "jobRunId": "job-combined-production-deployment-attempt",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-17d-production-release-execution-approval",
+        "artifactRunId": "sanitized_20260613174033",
+        "artifactHash": "506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899",
+        "deploymentId": "96fd744f-5589-4ac3-bebb-cfa99048dc0e",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "historical_approved_execution",
+      "mutationClass": "historical_production_static_deployment_recorded",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-production-route-verification-passed",
+      "eventType": "production_route_verification_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:00:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-route-check-summary"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-production-route-verification-passed",
+        "jobRunId": "job-combined-production-route-check",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-19-production-route-reverification-boundary",
+        "routeCheckId": "routecheck-v2-8-19-six-production-routes",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "historical_bounded_get_verification",
+      "mutationClass": "historical_read_only_route_check_recorded",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-contact-form-live-submission-verified",
+      "eventType": "contact_form_live_submission_verified",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:05:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-contact-verification"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-contact-form-live-submission-verified",
+        "jobRunId": "job-combined-contact-form-live-verification",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-19-one-synthetic-contact-post-approval",
+        "boundaryGateId": "gate-combined-contact-form-verification-recorded",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "historical_approved_one_action",
+      "mutationClass": "historical_contact_form_post_recorded",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false,
+        "rawContactPayloadStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+      "eventType": "indexing_deferred_hard_stop",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:08:00-04:00",
+      "outcome": "deferred",
+      "evidenceRefs": [
+        "ev-combined-indexing-deferral"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-indexing-deferred-hard-stop",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-19-google-indexing-hard-stop",
+        "boundaryGateId": "gate-combined-indexing-state-explicit",
+        "outcome": "deferred"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "hard_stop_deferral",
+      "mutationClass": "no_google_indexing_action",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-runtime-qa-passed",
+      "eventType": "runtime_qa_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:09:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-runtime-qa"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-runtime-qa-passed",
+        "jobRunId": "job-combined-runtime-qa",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-19-local-runtime-qa-revalidation",
+        "runtimeQaRunId": "runtimeqa-v2-8-19-local-revalidation",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "local_read_only_validation",
+      "mutationClass": "none",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-resource-registry-validation-passed",
+      "eventType": "resource_registry_validation_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:10:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-resource-registry"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-resource-registry-validation-passed",
+        "jobRunId": "job-combined-resource-registry-validation",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-19-local-resource-registry-validation",
+        "resourceRegistryValidationId": "resource-registry-v2-8-19-local-validation",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "local_read_only_validation",
+      "mutationClass": "none",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-provider-profile-validation-passed",
+      "eventType": "provider_profile_validation_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:11:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-provider-profile"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-provider-profile-validation-passed",
+        "jobRunId": "job-combined-provider-profile-validation",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-19-local-provider-profile-validation",
+        "providerProfileValidationId": "provider-profile-v2-8-19-local-validation",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "local_read_only_validation",
+      "mutationClass": "none",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-olm-publish-gate-passed",
+      "eventType": "olm_publish_gate_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:12:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-olm-publish-gate"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-olm-publish-gate-passed",
+        "jobRunId": "job-combined-olm-publish-gate-validation",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-19-local-olm-publish-gate",
+        "olmValidationId": "olm-v2-8-19-local-publish-gate",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "local_offline_validation",
+      "mutationClass": "none",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-backup-evidence-available",
+      "eventType": "backup_evidence_available",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:13:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-backup-evidence"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-backup-evidence-available",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-9-1-backup-center-evidence-binding",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "evidence_binding",
+      "mutationClass": "none",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+      "eventType": "rollback_abort_plan_recorded",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:14:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-combined-rollback-plan"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-rollback-abort-plan-recorded",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-8-production-rollback-abort-carryforward",
+        "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "plan_record",
+      "mutationClass": "none",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-combined-future-boundary-created",
+      "eventType": "future_boundary_created",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:15:00-04:00",
+      "outcome": "complete",
+      "evidenceRefs": [
+        "ev-combined-next-phase-prompt"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-combined-future-boundary-created",
+        "correlationId": "corr-combined-v2-8-production-promotion",
+        "approvalReference": "v2-9-1-next-phase-prompt",
+        "boundaryGateId": "gate-combined-future-boundary-created",
+        "outcome": "complete"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "future_gate",
+      "mutationClass": "none",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "jobRuns": [
+    {
+      "jobRunId": "job-combined-production-deployment-attempt",
+      "jobType": "production_deployment_attempt",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T17:40:00-04:00",
+      "completedAt": "2026-06-13T17:45:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-combined-artifact-hash"
+      ],
+      "outputRefs": [
+        "ev-combined-deployment-record"
+      ],
+      "validationRefs": [
+        "ev-combined-canonical-release-map"
+      ],
+      "auditEventIds": [
+        "audit-combined-production-static-release-deployed"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "jobRunId": "job-combined-production-route-check",
+      "jobType": "production_route_check",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:00:00-04:00",
+      "completedAt": "2026-06-13T18:01:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-combined-deployment-record"
+      ],
+      "outputRefs": [
+        "ev-combined-route-check-summary"
+      ],
+      "validationRefs": [
+        "ev-combined-route-check-summary"
+      ],
+      "auditEventIds": [
+        "audit-combined-production-route-verification-passed"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "jobRunId": "job-combined-contact-form-live-verification",
+      "jobType": "contact_form_live_verification",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:01:00-04:00",
+      "completedAt": "2026-06-13T18:05:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-combined-contact-verification"
+      ],
+      "outputRefs": [
+        "ev-combined-contact-verification"
+      ],
+      "validationRefs": [
+        "ev-combined-contact-verification"
+      ],
+      "auditEventIds": [
+        "audit-combined-contact-form-live-submission-verified"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false,
+        "rawContactPayloadStored": false
+      }
+    },
+    {
+      "jobRunId": "job-combined-indexing-deferred-record",
+      "jobType": "indexing_deferred_record",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:07:00-04:00",
+      "completedAt": "2026-06-13T18:08:00-04:00",
+      "status": "deferred",
+      "outcome": "deferred",
+      "inputRefs": [
+        "ev-combined-indexing-deferral"
+      ],
+      "outputRefs": [
+        "ev-combined-indexing-deferral"
+      ],
+      "validationRefs": [
+        "ev-combined-indexing-deferral"
+      ],
+      "auditEventIds": [
+        "audit-combined-indexing-deferred-hard-stop"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "jobRunId": "job-combined-runtime-qa",
+      "jobType": "runtime_qa",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:08:00-04:00",
+      "completedAt": "2026-06-13T18:09:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-combined-runtime-qa"
+      ],
+      "outputRefs": [
+        "ev-combined-runtime-qa"
+      ],
+      "validationRefs": [
+        "ev-combined-runtime-qa"
+      ],
+      "auditEventIds": [
+        "audit-combined-runtime-qa-passed"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "jobRunId": "job-combined-resource-registry-validation",
+      "jobType": "resource_registry_validation",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:09:00-04:00",
+      "completedAt": "2026-06-13T18:10:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-combined-resource-registry"
+      ],
+      "outputRefs": [
+        "ev-combined-resource-registry"
+      ],
+      "validationRefs": [
+        "ev-combined-resource-registry"
+      ],
+      "auditEventIds": [
+        "audit-combined-resource-registry-validation-passed"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "jobRunId": "job-combined-provider-profile-validation",
+      "jobType": "provider_profile_validation",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:10:00-04:00",
+      "completedAt": "2026-06-13T18:11:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-combined-provider-profile"
+      ],
+      "outputRefs": [
+        "ev-combined-provider-profile"
+      ],
+      "validationRefs": [
+        "ev-combined-provider-profile"
+      ],
+      "auditEventIds": [
+        "audit-combined-provider-profile-validation-passed"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "jobRunId": "job-combined-olm-publish-gate-validation",
+      "jobType": "olm_publish_gate_validation",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:11:00-04:00",
+      "completedAt": "2026-06-13T18:12:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-combined-olm-publish-gate"
+      ],
+      "outputRefs": [
+        "ev-combined-olm-publish-gate"
+      ],
+      "validationRefs": [
+        "ev-combined-olm-publish-gate"
+      ],
+      "auditEventIds": [
+        "audit-combined-olm-publish-gate-passed"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "jobRunId": "job-combined-rollback-abort-plan-review",
+      "jobType": "rollback_abort_plan_review",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:13:00-04:00",
+      "completedAt": "2026-06-13T18:15:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-combined-backup-evidence",
+        "ev-combined-rollback-plan"
+      ],
+      "outputRefs": [
+        "ev-combined-next-phase-prompt"
+      ],
+      "validationRefs": [
+        "ev-combined-backup-evidence",
+        "ev-combined-rollback-plan",
+        "ev-combined-next-phase-prompt"
+      ],
+      "auditEventIds": [
+        "audit-combined-backup-evidence-available",
+        "audit-combined-rollback-abort-plan-recorded",
+        "audit-combined-future-boundary-created"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "promotionGates": [
+    {
+      "gateId": "gate-combined-artifact-hash-recorded",
+      "gateType": "artifact_hash_recorded",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-artifact-hash"
+      ],
+      "actualEvidence": [
+        "ev-combined-artifact-hash"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-17d-production-release-execution-approval",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-route-checks-passed",
+      "gateType": "route_checks_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-route-check-summary"
+      ],
+      "actualEvidence": [
+        "ev-combined-route-check-summary"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-production-route-reverification-boundary",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-contact-form-verification-recorded",
+      "gateType": "contact_form_verification_recorded",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-contact-verification"
+      ],
+      "actualEvidence": [
+        "ev-combined-contact-verification"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-one-synthetic-contact-post-approval",
+      "rollbackPlanId": "rollback-plan-v2-8-19-no-second-post",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-indexing-state-explicit",
+      "gateType": "indexing_state_explicit",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-indexing-deferral"
+      ],
+      "actualEvidence": [
+        "ev-combined-indexing-deferral"
+      ],
+      "state": "deferred",
+      "blockers": [],
+      "approvalReference": "v2-8-19-google-indexing-hard-stop",
+      "rollbackPlanId": "rollback-plan-v2-8-19-no-indexing-action",
+      "result": "deferred_non_blocking"
+    },
+    {
+      "gateId": "gate-combined-runtime-qa-passed",
+      "gateType": "runtime_qa_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-runtime-qa"
+      ],
+      "actualEvidence": [
+        "ev-combined-runtime-qa"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-local-runtime-qa-revalidation",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-resource-registry-passed",
+      "gateType": "resource_registry_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-resource-registry"
+      ],
+      "actualEvidence": [
+        "ev-combined-resource-registry"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-local-resource-registry-validation",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-provider-profile-passed",
+      "gateType": "provider_profile_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-provider-profile"
+      ],
+      "actualEvidence": [
+        "ev-combined-provider-profile"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-local-provider-profile-validation",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-olm-publish-gate-passed",
+      "gateType": "olm_publish_gate_passed",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-olm-publish-gate"
+      ],
+      "actualEvidence": [
+        "ev-combined-olm-publish-gate"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-local-olm-publish-gate",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-backup-evidence-available",
+      "gateType": "backup_evidence_available",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-backup-evidence"
+      ],
+      "actualEvidence": [
+        "ev-combined-backup-evidence"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-9-1-backup-center-evidence-binding",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-rollback-abort-owner-recorded",
+      "gateType": "rollback_abort_owner_recorded",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-rollback-plan"
+      ],
+      "actualEvidence": [
+        "ev-combined-rollback-plan"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-production-rollback-abort-carryforward",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-combined-future-boundary-created",
+      "gateType": "future_boundary_created",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-combined-next-phase-prompt"
+      ],
+      "actualEvidence": [
+        "ev-combined-next-phase-prompt"
+      ],
+      "state": "complete",
+      "blockers": [],
+      "approvalReference": "v2-9-1-next-phase-prompt",
+      "rollbackPlanId": "rollback-plan-v2-8-production-static-release",
+      "result": "complete"
+    }
+  ]
+}

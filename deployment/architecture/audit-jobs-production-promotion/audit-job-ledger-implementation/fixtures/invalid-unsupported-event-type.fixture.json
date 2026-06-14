@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "audit-job-ledger.v1",
+  "ledgerId": "invalid-unsupported-event-type",
+  "v2Reference": "V2.8.19",
+  "laneId": "tenant-website-publish-readiness",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "createdAt": "2026-06-13T18:36:00-04:00",
+  "securityBoundary": {
+    "localOnly": true,
+    "deployment": false,
+    "redeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "searchConsoleAction": false,
+    "googleSitemapSubmission": false,
+    "googleUrlInspectionApi": false,
+    "googleIndexingApi": false,
+    "indexingRequest": false,
+    "crawlOrOutboundCheck": false,
+    "contactFormSubmission": false,
+    "contactEndpointPost": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "providerWrite": false,
+    "azureMutation": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "tokenUseOrPrint": false,
+    "deploymentTokenUsed": false,
+    "deploymentTokenPrintedOrExported": false,
+    "oauthTokenUsedOrPrinted": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStringGenerated": false,
+    "sasGenerated": false,
+    "secretExport": false,
+    "rawSecretsStored": false,
+    "rawPiiStored": false,
+    "protectedConfigValuesStored": false,
+    "rawContactPayloadStored": false,
+    "externalNetworkUsed": false,
+    "writesPerformed": false,
+    "gitAddAll": false
+  },
+  "evidenceBindings": [
+    {
+      "evidenceId": "ev-invalid-unsupported-event",
+      "evidenceType": "root_report",
+      "sourceRef": "V2.8.19",
+      "safePath": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19_CONTACT_FORM_LIVE_SUBMISSION_INDEXING_HARD_STOP_DEFERRAL_REPORT.md",
+      "summary": "Safe root report evidence."
+    }
+  ],
+  "auditEvents": [
+    {
+      "auditEventId": "audit-invalid-unsupported-event-type",
+      "eventType": "unsupported_event",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:08:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-invalid-unsupported-event"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-invalid-unsupported-event-type",
+        "correlationId": "corr-invalid-unsupported-event-type",
+        "approvalReference": "v2-8-19-invalid-fixture",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "invalid_fixture",
+      "mutationClass": "none",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "jobRuns": [
+    {
+      "jobRunId": "job-invalid-unsupported-event-type",
+      "jobType": "indexing_deferred_record",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:07:00-04:00",
+      "completedAt": "2026-06-13T18:08:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-invalid-unsupported-event"
+      ],
+      "outputRefs": [
+        "ev-invalid-unsupported-event"
+      ],
+      "validationRefs": [
+        "ev-invalid-unsupported-event"
+      ],
+      "auditEventIds": [
+        "audit-invalid-unsupported-event-type"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "promotionGates": [
+    {
+      "gateId": "gate-invalid-unsupported-event-type",
+      "gateType": "indexing_state_explicit",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-invalid-unsupported-event"
+      ],
+      "actualEvidence": [
+        "ev-invalid-unsupported-event"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-invalid-fixture",
+      "rollbackPlanId": "rollback-plan-invalid",
+      "result": "complete"
+    }
+  ]
+}

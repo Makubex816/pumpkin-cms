@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "audit-job-ledger.v1",
+  "ledgerId": "invalid-promotion-gate-open-with-complete-result",
+  "v2Reference": "V2.8.19",
+  "laneId": "tenant-website-publish-readiness",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "createdAt": "2026-06-13T18:37:00-04:00",
+  "securityBoundary": {
+    "localOnly": true,
+    "deployment": false,
+    "redeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "searchConsoleAction": false,
+    "googleSitemapSubmission": false,
+    "googleUrlInspectionApi": false,
+    "googleIndexingApi": false,
+    "indexingRequest": false,
+    "crawlOrOutboundCheck": false,
+    "contactFormSubmission": false,
+    "contactEndpointPost": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "providerWrite": false,
+    "azureMutation": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "tokenUseOrPrint": false,
+    "deploymentTokenUsed": false,
+    "deploymentTokenPrintedOrExported": false,
+    "oauthTokenUsedOrPrinted": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStringGenerated": false,
+    "sasGenerated": false,
+    "secretExport": false,
+    "rawSecretsStored": false,
+    "rawPiiStored": false,
+    "protectedConfigValuesStored": false,
+    "rawContactPayloadStored": false,
+    "externalNetworkUsed": false,
+    "writesPerformed": false,
+    "gitAddAll": false
+  },
+  "evidenceBindings": [
+    {
+      "evidenceId": "ev-invalid-open-gate-indexing",
+      "evidenceType": "indexing_deferral_record",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/google-search-console-indexing-hard-stop-result.md",
+      "summary": "Safe indexing deferral evidence."
+    }
+  ],
+  "auditEvents": [
+    {
+      "auditEventId": "audit-invalid-open-gate-indexing-deferred",
+      "eventType": "indexing_deferred_hard_stop",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:08:00-04:00",
+      "outcome": "deferred",
+      "evidenceRefs": [
+        "ev-invalid-open-gate-indexing"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-invalid-open-gate-indexing-deferred",
+        "correlationId": "corr-invalid-open-gate",
+        "approvalReference": "v2-8-19-google-indexing-hard-stop",
+        "boundaryGateId": "gate-invalid-open-with-complete-result",
+        "outcome": "deferred"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "hard_stop_deferral",
+      "mutationClass": "no_google_indexing_action",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "jobRuns": [
+    {
+      "jobRunId": "job-invalid-open-gate-indexing-deferred",
+      "jobType": "indexing_deferred_record",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:07:00-04:00",
+      "completedAt": "2026-06-13T18:08:00-04:00",
+      "status": "deferred",
+      "outcome": "deferred",
+      "inputRefs": [
+        "ev-invalid-open-gate-indexing"
+      ],
+      "outputRefs": [
+        "ev-invalid-open-gate-indexing"
+      ],
+      "validationRefs": [
+        "ev-invalid-open-gate-indexing"
+      ],
+      "auditEventIds": [
+        "audit-invalid-open-gate-indexing-deferred"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "promotionGates": [
+    {
+      "gateId": "gate-invalid-open-with-complete-result",
+      "gateType": "indexing_state_explicit",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-invalid-open-gate-indexing"
+      ],
+      "actualEvidence": [
+        "ev-invalid-open-gate-indexing"
+      ],
+      "state": "operator_review",
+      "blockers": [],
+      "approvalReference": "v2-8-19-google-indexing-hard-stop",
+      "rollbackPlanId": "rollback-plan-invalid",
+      "result": "complete"
+    }
+  ]
+}

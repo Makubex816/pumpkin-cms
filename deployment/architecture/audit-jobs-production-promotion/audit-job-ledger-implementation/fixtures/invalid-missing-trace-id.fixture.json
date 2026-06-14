@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "audit-job-ledger.v1",
+  "ledgerId": "invalid-missing-trace-id",
+  "v2Reference": "V2.8.19",
+  "laneId": "tenant-website-publish-readiness",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "createdAt": "2026-06-13T18:34:00-04:00",
+  "securityBoundary": {
+    "localOnly": true,
+    "deployment": false,
+    "redeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "searchConsoleAction": false,
+    "googleSitemapSubmission": false,
+    "googleUrlInspectionApi": false,
+    "googleIndexingApi": false,
+    "indexingRequest": false,
+    "crawlOrOutboundCheck": false,
+    "contactFormSubmission": false,
+    "contactEndpointPost": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "providerWrite": false,
+    "azureMutation": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "tokenUseOrPrint": false,
+    "deploymentTokenUsed": false,
+    "deploymentTokenPrintedOrExported": false,
+    "oauthTokenUsedOrPrinted": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStringGenerated": false,
+    "sasGenerated": false,
+    "secretExport": false,
+    "rawSecretsStored": false,
+    "rawPiiStored": false,
+    "protectedConfigValuesStored": false,
+    "rawContactPayloadStored": false,
+    "externalNetworkUsed": false,
+    "writesPerformed": false,
+    "gitAddAll": false
+  },
+  "evidenceBindings": [
+    {
+      "evidenceId": "ev-invalid-trace-contact",
+      "evidenceType": "contact_form_verification_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/contact-form-response-verification-result.md",
+      "summary": "Safe contact response summary."
+    }
+  ],
+  "auditEvents": [
+    {
+      "auditEventId": "audit-invalid-missing-trace-id",
+      "eventType": "contact_form_live_submission_verified",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:05:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-invalid-trace-contact"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-invalid-missing-trace-id",
+        "jobRunId": "job-invalid-missing-trace-id",
+        "approvalReference": "v2-8-19-one-synthetic-contact-post-approval",
+        "boundaryGateId": "gate-invalid-missing-trace-id",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "historical_approved_one_action",
+      "mutationClass": "historical_contact_form_post_recorded",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "jobRuns": [
+    {
+      "jobRunId": "job-invalid-missing-trace-id",
+      "jobType": "contact_form_live_verification",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:01:00-04:00",
+      "completedAt": "2026-06-13T18:05:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-invalid-trace-contact"
+      ],
+      "outputRefs": [
+        "ev-invalid-trace-contact"
+      ],
+      "validationRefs": [
+        "ev-invalid-trace-contact"
+      ],
+      "auditEventIds": [
+        "audit-invalid-missing-trace-id"
+      ],
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "promotionGates": [
+    {
+      "gateId": "gate-invalid-missing-trace-id",
+      "gateType": "contact_form_verification_recorded",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-invalid-trace-contact"
+      ],
+      "actualEvidence": [
+        "ev-invalid-trace-contact"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-one-synthetic-contact-post-approval",
+      "rollbackPlanId": "rollback-plan-invalid",
+      "result": "complete"
+    }
+  ]
+}

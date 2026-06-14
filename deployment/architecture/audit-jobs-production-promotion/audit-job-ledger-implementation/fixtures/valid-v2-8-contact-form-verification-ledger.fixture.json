@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "audit-job-ledger.v1",
+  "ledgerId": "ledger-v2-8-contact-form-verification",
+  "v2Reference": "V2.8.19",
+  "laneId": "tenant-website-publish-readiness",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "createdAt": "2026-06-13T18:31:00-04:00",
+  "summary": "Safe local ledger fixture for the V2.8.19 one-action synthetic contact-form verification evidence.",
+  "sourceEvidenceRefs": [
+    "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19_CONTACT_FORM_LIVE_SUBMISSION_INDEXING_HARD_STOP_DEFERRAL_REPORT.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/"
+  ],
+  "securityBoundary": {
+    "localOnly": true,
+    "deployment": false,
+    "redeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "searchConsoleAction": false,
+    "googleSitemapSubmission": false,
+    "googleUrlInspectionApi": false,
+    "googleIndexingApi": false,
+    "indexingRequest": false,
+    "crawlOrOutboundCheck": false,
+    "contactFormSubmission": false,
+    "contactEndpointPost": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "providerWrite": false,
+    "azureMutation": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "tokenUseOrPrint": false,
+    "deploymentTokenUsed": false,
+    "deploymentTokenPrintedOrExported": false,
+    "oauthTokenUsedOrPrinted": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStringGenerated": false,
+    "sasGenerated": false,
+    "secretExport": false,
+    "rawSecretsStored": false,
+    "rawPiiStored": false,
+    "protectedConfigValuesStored": false,
+    "rawContactPayloadStored": false,
+    "externalNetworkUsed": false,
+    "writesPerformed": false,
+    "gitAddAll": false
+  },
+  "evidenceBindings": [
+    {
+      "evidenceId": "ev-v2-8-19-root-report",
+      "evidenceType": "root_report",
+      "sourceRef": "V2.8.19",
+      "safePath": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19_CONTACT_FORM_LIVE_SUBMISSION_INDEXING_HARD_STOP_DEFERRAL_REPORT.md",
+      "summary": "Root report records owner acknowledgement, route checks, one synthetic contact POST, response verification, and indexing deferral."
+    },
+    {
+      "evidenceId": "ev-v2-8-19-contact-payload-summary",
+      "evidenceType": "contact_form_verification_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/contact-form-live-payload-result.md",
+      "summary": "Payload shape was synthetic and non-PII; raw payload values were not stored."
+    },
+    {
+      "evidenceId": "ev-v2-8-19-contact-submission-summary",
+      "evidenceType": "contact_form_verification_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/contact-form-live-submission-result.md",
+      "summary": "Exactly one approved synthetic live contact-form POST was sent in V2.8.19 with no retry."
+    },
+    {
+      "evidenceId": "ev-v2-8-19-contact-response-summary",
+      "evidenceType": "contact_form_verification_summary",
+      "sourceRef": "V2.8.19",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-19-contact-form-live-submission-indexing-hard-stop-deferral-result/contact-form-response-verification-result.md",
+      "summary": "Response was 200 OK with ok=true, public success shape, and entry ID present without storing the full ID."
+    }
+  ],
+  "auditEvents": [
+    {
+      "auditEventId": "audit-v2-8-19-contact-form-live-submission-verified",
+      "eventType": "contact_form_live_submission_verified",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T18:05:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-v2-8-19-root-report",
+        "ev-v2-8-19-contact-payload-summary",
+        "ev-v2-8-19-contact-submission-summary",
+        "ev-v2-8-19-contact-response-summary"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.19",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-v2-8-19-contact-form-live-submission-verified",
+        "jobRunId": "job-v2-8-19-contact-form-live-verification",
+        "correlationId": "corr-v2-8-19-contact-form-verification",
+        "approvalReference": "v2-8-19-one-synthetic-contact-post-approval",
+        "boundaryGateId": "gate-v2-8-19-contact-form-verification-recorded",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "historical_approved_one_action",
+      "mutationClass": "historical_contact_form_post_recorded",
+      "summary": "Records the completed V2.8.19 contact verification as safe local evidence without storing raw payload values.",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false,
+        "rawContactPayloadStored": false
+      }
+    }
+  ],
+  "jobRuns": [
+    {
+      "jobRunId": "job-v2-8-19-contact-form-live-verification",
+      "jobType": "contact_form_live_verification",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T18:01:00-04:00",
+      "completedAt": "2026-06-13T18:05:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-v2-8-19-contact-payload-summary"
+      ],
+      "outputRefs": [
+        "ev-v2-8-19-contact-submission-summary",
+        "ev-v2-8-19-contact-response-summary"
+      ],
+      "validationRefs": [
+        "ev-v2-8-19-root-report",
+        "ev-v2-8-19-contact-response-summary"
+      ],
+      "auditEventIds": [
+        "audit-v2-8-19-contact-form-live-submission-verified"
+      ],
+      "approvalReference": "v2-8-19-one-synthetic-contact-post-approval",
+      "correlationId": "corr-v2-8-19-contact-form-verification",
+      "attemptCount": 1,
+      "retryCount": 0,
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false,
+        "rawContactPayloadStored": false
+      }
+    }
+  ],
+  "promotionGates": [
+    {
+      "gateId": "gate-v2-8-19-contact-form-verification-recorded",
+      "gateType": "contact_form_verification_recorded",
+      "v2Reference": "V2.8.19",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-v2-8-19-contact-payload-summary",
+        "ev-v2-8-19-contact-submission-summary",
+        "ev-v2-8-19-contact-response-summary"
+      ],
+      "actualEvidence": [
+        "ev-v2-8-19-contact-payload-summary",
+        "ev-v2-8-19-contact-submission-summary",
+        "ev-v2-8-19-contact-response-summary"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-19-one-synthetic-contact-post-approval",
+      "rollbackPlanId": "rollback-plan-v2-8-19-no-second-post",
+      "result": "complete"
+    }
+  ]
+}

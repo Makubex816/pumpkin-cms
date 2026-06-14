@@ -1,0 +1,284 @@
+{
+  "schemaVersion": "audit-job-ledger.v1",
+  "ledgerId": "ledger-v2-8-production-static-release",
+  "v2Reference": "V2.8.17D",
+  "laneId": "tenant-website-publish-readiness",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "createdAt": "2026-06-13T18:30:00-04:00",
+  "summary": "Safe local ledger fixture for the V2.8.17D production static release and six-route verification evidence.",
+  "sourceEvidenceRefs": [
+    "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17D_PRODUCTION_DEPLOY_WORKING_DIRECTORY_SEPARATION_CORRECTIVE_EXECUTION_REPORT.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/"
+  ],
+  "securityBoundary": {
+    "localOnly": true,
+    "deployment": false,
+    "redeployment": false,
+    "dnsChange": false,
+    "customDomainMutation": false,
+    "searchConsoleAction": false,
+    "googleSitemapSubmission": false,
+    "googleUrlInspectionApi": false,
+    "googleIndexingApi": false,
+    "indexingRequest": false,
+    "crawlOrOutboundCheck": false,
+    "contactFormSubmission": false,
+    "contactEndpointPost": false,
+    "cmsWrite": false,
+    "mediaAssetWrite": false,
+    "providerWrite": false,
+    "azureMutation": false,
+    "azureInfrastructureCreation": false,
+    "azureInfrastructureMutation": false,
+    "azureAppSettingsMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "tokenUseOrPrint": false,
+    "deploymentTokenUsed": false,
+    "deploymentTokenPrintedOrExported": false,
+    "oauthTokenUsedOrPrinted": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionStringGenerated": false,
+    "sasGenerated": false,
+    "secretExport": false,
+    "rawSecretsStored": false,
+    "rawPiiStored": false,
+    "protectedConfigValuesStored": false,
+    "rawContactPayloadStored": false,
+    "externalNetworkUsed": false,
+    "writesPerformed": false,
+    "gitAddAll": false
+  },
+  "evidenceBindings": [
+    {
+      "evidenceId": "ev-v2-8-17d-root-report",
+      "evidenceType": "root_report",
+      "sourceRef": "V2.8.17D",
+      "safePath": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17D_PRODUCTION_DEPLOY_WORKING_DIRECTORY_SEPARATION_CORRECTIVE_EXECUTION_REPORT.md",
+      "summary": "Root report records production static deployment success and six production route checks."
+    },
+    {
+      "evidenceId": "ev-v2-8-17d-result-package",
+      "evidenceType": "result_package",
+      "sourceRef": "V2.8.17D",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/README.md",
+      "summary": "Result package containing corrected deployment, route verification, artifact, and safety evidence."
+    },
+    {
+      "evidenceId": "ev-v2-8-17d-artifact-hash",
+      "evidenceType": "production_artifact_hash",
+      "sourceRef": "V2.8.17D",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/artifact-root-selection-result.md",
+      "artifactHash": "506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899",
+      "summary": "Frozen artifact run sanitized_20260613174033 with aggregate SHA-256."
+    },
+    {
+      "evidenceId": "ev-v2-8-17d-deployment-record",
+      "evidenceType": "deployment_record",
+      "sourceRef": "V2.8.17D",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/corrected-production-deployment-result.md",
+      "summary": "Deployment id 96fd744f-5589-4ac3-bebb-cfa99048dc0e recorded from the completed production static artifact deployment."
+    },
+    {
+      "evidenceId": "ev-v2-8-17d-route-check-summary",
+      "evidenceType": "route_check_summary",
+      "sourceRef": "V2.8.17D",
+      "safePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-17d-production-deploy-working-directory-separation-corrective-execution-result/production-route-verification-result.md",
+      "summary": "Six approved production route checks returned 200 OK."
+    }
+  ],
+  "auditEvents": [
+    {
+      "auditEventId": "audit-v2-8-17d-production-static-release-deployed",
+      "eventType": "production_static_release_deployed",
+      "v2Reference": "V2.8.17D",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T17:40:33-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-v2-8-17d-root-report",
+        "ev-v2-8-17d-artifact-hash",
+        "ev-v2-8-17d-deployment-record"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.17D",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-v2-8-17d-production-static-release-deployed",
+        "jobRunId": "job-v2-8-17d-production-deployment-attempt",
+        "correlationId": "corr-v2-8-17d-production-static-release",
+        "approvalReference": "v2-8-17d-production-release-execution-approval",
+        "artifactRunId": "sanitized_20260613174033",
+        "artifactHash": "506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899",
+        "deploymentId": "96fd744f-5589-4ac3-bebb-cfa99048dc0e",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "historical_approved_execution",
+      "mutationClass": "historical_production_static_deployment_recorded",
+      "summary": "Records the completed V2.8.17D static artifact deployment as safe local evidence.",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "auditEventId": "audit-v2-8-17d-production-route-verification-passed",
+      "eventType": "production_route_verification_passed",
+      "v2Reference": "V2.8.17D",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "occurredAt": "2026-06-13T17:51:00-04:00",
+      "outcome": "passed",
+      "evidenceRefs": [
+        "ev-v2-8-17d-root-report",
+        "ev-v2-8-17d-route-check-summary"
+      ],
+      "traceIds": {
+        "v2Reference": "V2.8.17D",
+        "laneId": "tenant-website-publish-readiness",
+        "tenantKey": "ice-rink-rentals",
+        "siteKey": "ice-rink-rentals",
+        "auditEventId": "audit-v2-8-17d-production-route-verification-passed",
+        "jobRunId": "job-v2-8-17d-production-route-check",
+        "correlationId": "corr-v2-8-17d-production-static-release",
+        "approvalReference": "v2-8-17d-production-route-check-boundary",
+        "routeCheckId": "routecheck-v2-8-17d-six-production-routes",
+        "outcome": "passed"
+      },
+      "actor": "PumpkinCMS operator",
+      "boundaryClass": "historical_bounded_get_verification",
+      "mutationClass": "historical_read_only_route_check_recorded",
+      "summary": "Records that the six approved apex/www production routes returned 200 OK in V2.8.17D.",
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "jobRuns": [
+    {
+      "jobRunId": "job-v2-8-17d-production-deployment-attempt",
+      "jobType": "production_deployment_attempt",
+      "v2Reference": "V2.8.17D",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T17:40:00-04:00",
+      "completedAt": "2026-06-13T17:45:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-v2-8-17d-artifact-hash"
+      ],
+      "outputRefs": [
+        "ev-v2-8-17d-deployment-record"
+      ],
+      "validationRefs": [
+        "ev-v2-8-17d-root-report",
+        "ev-v2-8-17d-result-package"
+      ],
+      "auditEventIds": [
+        "audit-v2-8-17d-production-static-release-deployed"
+      ],
+      "approvalReference": "v2-8-17d-production-release-execution-approval",
+      "correlationId": "corr-v2-8-17d-production-static-release",
+      "attemptCount": 1,
+      "retryCount": 0,
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    },
+    {
+      "jobRunId": "job-v2-8-17d-production-route-check",
+      "jobType": "production_route_check",
+      "v2Reference": "V2.8.17D",
+      "laneId": "tenant-website-publish-readiness",
+      "tenantKey": "ice-rink-rentals",
+      "siteKey": "ice-rink-rentals",
+      "startedAt": "2026-06-13T17:47:00-04:00",
+      "completedAt": "2026-06-13T17:51:00-04:00",
+      "status": "passed",
+      "outcome": "passed",
+      "inputRefs": [
+        "ev-v2-8-17d-deployment-record"
+      ],
+      "outputRefs": [
+        "ev-v2-8-17d-route-check-summary"
+      ],
+      "validationRefs": [
+        "ev-v2-8-17d-route-check-summary"
+      ],
+      "auditEventIds": [
+        "audit-v2-8-17d-production-route-verification-passed"
+      ],
+      "approvalReference": "v2-8-17d-production-route-check-boundary",
+      "correlationId": "corr-v2-8-17d-production-static-release",
+      "attemptCount": 1,
+      "retryCount": 0,
+      "securityBoundary": {
+        "localOnly": true,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "protectedConfigRead": false,
+        "rawSecretsStored": false,
+        "rawPiiStored": false
+      }
+    }
+  ],
+  "promotionGates": [
+    {
+      "gateId": "gate-v2-8-17d-artifact-hash-recorded",
+      "gateType": "artifact_hash_recorded",
+      "v2Reference": "V2.8.17D",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-v2-8-17d-artifact-hash"
+      ],
+      "actualEvidence": [
+        "ev-v2-8-17d-artifact-hash"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-17d-production-release-execution-approval",
+      "rollbackPlanId": "rollback-plan-v2-8-17d",
+      "result": "complete"
+    },
+    {
+      "gateId": "gate-v2-8-17d-route-checks-passed",
+      "gateType": "route_checks_passed",
+      "v2Reference": "V2.8.17D",
+      "laneId": "tenant-website-publish-readiness",
+      "requiredEvidence": [
+        "ev-v2-8-17d-route-check-summary"
+      ],
+      "actualEvidence": [
+        "ev-v2-8-17d-route-check-summary"
+      ],
+      "state": "passed",
+      "blockers": [],
+      "approvalReference": "v2-8-17d-production-route-check-boundary",
+      "rollbackPlanId": "rollback-plan-v2-8-17d",
+      "result": "complete"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@pumpkincms/audit-job-ledger-validator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local no-write validator for PumpkinCMS audit/job/promotion ledger fixtures.",
+  "bin": {
+    "audit-job-ledger": "./src/audit-job-ledger-cli.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/audit-job-ledger-schema.mjs && node --check src/audit-job-ledger-validator.mjs && node --check src/audit-job-ledger-cli.mjs && node --check test/audit-job-ledger.test.mjs",
+    "test": "node --test test/*.test.mjs",
+    "validate:combined": "node src/audit-job-ledger-cli.mjs validate fixtures/valid-v2-8-combined-promotion-ledger.fixture.json",
+    "inspect:combined": "node src/audit-job-ledger-cli.mjs inspect fixtures/valid-v2-8-combined-promotion-ledger.fixture.json"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
