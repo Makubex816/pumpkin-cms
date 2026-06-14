@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "pumpkin.importIntakePreview.readonlyApiEnvelope.v1",
+  "ok": true,
+  "status": "ok",
+  "code": "IMPORT_INTAKE_PREVIEW_OK",
+  "message": "Invalid fixture with an enabled future mutation action.",
+  "requestId": "iip_req_v2_11_3_invalid",
+  "correlationId": "iip_corr_v2_11_3_invalid",
+  "providerMode": "api-local-import-package-fixture-readonly",
+  "readOnly": true,
+  "data": {
+    "schemaVersion": "pumpkin.importIntakePreview.sharedModel.v1",
+    "providerMode": "api-local-import-package-fixture-readonly",
+    "readOnly": true,
+    "packageId": "invalid-enabled-action",
+    "packageType": "tenant_bundle",
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "tenantLifecycleState": "production_published",
+    "importMode": "local_no_write_validate",
+    "readyForFutureImportExecution": true,
+    "routes": ["/"],
+    "contentRefs": ["content"],
+    "mediaRefs": ["media"],
+    "formConfigRefs": ["form"],
+    "resourceRegistryRefs": ["registry"],
+    "providerProfileRefs": ["provider"],
+    "backupEvidenceRefs": ["backup"],
+    "runtimeQaRefs": ["runtime"],
+    "outboundLinkRefs": ["olm"],
+    "auditJobRefs": ["audit"],
+    "noGoConditions": [],
+    "rollbackPlanId": "rollback",
+    "validationRefs": ["validation"],
+    "warnings": [],
+    "blockers": [],
+    "nextGates": [],
+    "futureActions": [
+      {
+        "id": "execute-import",
+        "label": "Execute import",
+        "disabled": false,
+        "reason": "Invalid fixture should fail because this is enabled."
+      }
+    ],
+    "securityBoundary": {
+      "localOnly": true,
+      "noWriteBoundarySatisfied": true,
+      "openFlags": [],
+      "closedFlags": ["tenantImportExecution"]
+    },
+    "redactionPolicy": {
+      "secretsPolicy": "references_only_no_values",
+      "protectedConfigPolicy": "do_not_reference_protected_paths",
+      "piiPolicy": "synthetic_or_redacted_only"
+    },
+    "generatedAt": "2026-06-14T05:00:00-04:00"
+  },
+  "warnings": [],
+  "errors": [],
+  "securityBoundary": {
+    "localOnly": true,
+    "noWriteBoundarySatisfied": true,
+    "openFlags": [],
+    "closedFlags": ["tenantImportExecution"]
+  },
+  "source": {
+    "kind": "local_fixture",
+    "fixturePath": "deployment/architecture/multi-tenant-onboarding/import-package-governance-implementation/fixtures/invalid-import-intake-preview-enabled-action.envelope.json"
+  },
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "meta": {
+    "mode": "api-local-readonly-fixture",
+    "localOnly": true,
+    "readOnly": true,
+    "contractSchemaVersion": "pumpkin.importIntakePreview.readonlyApiEnvelope.v1",
+    "externalHttpCrawling": false,
+    "cmsApiCalls": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "protectedConfigReads": false,
+    "writeActionsAllowed": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "googleIndexingState": "deferred_hard_stop"
+  }
+}

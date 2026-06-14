@@ -65,6 +65,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_PLATFORM_V2_10_1_CLOSEOUT_SOURCE_OF_TRUTH_RECONCILIATION_REPORT.md` | V2.10.1 platform V2 closeout Source-of-Truth reconciliation and next-lane rebaseline root report |
 | `PUMPKIN_MULTI_TENANT_ONBOARDING_V2_11_1_IMPORT_PACKAGE_GOVERNANCE_FOUNDATION_REPORT.md` | V2.11.1 multi-tenant onboarding import package governance foundation root report |
 | `PUMPKIN_MULTI_TENANT_ONBOARDING_V2_11_2_IMPORT_PACKAGE_BUILDER_PREVIEW_REPORT.md` | V2.11.2 multi-tenant onboarding import package builder and intake preview root report |
+| `PUMPKIN_MULTI_TENANT_ONBOARDING_V2_11_3_ADMIN_API_INTAKE_PREVIEW_CONTRACT_REPORT.md` | V2.11.3 Admin/API read-only import intake preview contract root report |
 
 ## Latest Canonical Result Packages
 
@@ -126,7 +127,8 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Platform V2 closeout Source-of-Truth reconciliation | `deployment/architecture/platform-closeout/v2-10-1-platform-v2-closeout-source-of-truth-reconciliation-result/` | V2.10.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2 closeout and next-lane rebaseline package |
 | Multi-Tenant Onboarding import package governance foundation | `deployment/architecture/multi-tenant-onboarding/v2-11-1-multi-tenant-onboarding-import-package-governance-foundation-result/` | V2.11.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.11 governance foundation package |
 | Multi-Tenant Onboarding import package builder and intake preview | `deployment/architecture/multi-tenant-onboarding/v2-11-2-import-package-builder-intake-preview-no-write-foundation-result/` | V2.11.2 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.11 builder/preview foundation package |
-| Multi-Tenant Onboarding import package governance implementation | `deployment/architecture/multi-tenant-onboarding/import-package-governance-implementation/` | V2.11.2 / L01 / L06 / L07 / L10 / L12 / L13 / L14 | Current local no-write validator, builder, preview CLI, fixtures, ignored `.tmp` evidence, and tests |
+| Multi-Tenant Onboarding Admin/API intake preview contract | `deployment/architecture/multi-tenant-onboarding/v2-11-3-admin-api-readonly-import-intake-preview-contract-planning-result/` | V2.11.3 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.11 Admin/API read-only intake preview contract package |
+| Multi-Tenant Onboarding import package governance implementation | `deployment/architecture/multi-tenant-onboarding/import-package-governance-implementation/` | V2.11.3 / L01 / L06 / L07 / L10 / L12 / L13 / L14 | Current local no-write validator, builder, preview CLI, contract fixtures/checks, ignored `.tmp` evidence, and tests |
 | Audit Job Ledger implementation package | `deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/` | V2.9.7 / L12 / L13 / L14 / L15 | Current local no-write validator, read-only viewer model, and read-only API envelope contract implementation package |
 | Audit Job Ledger GET-only Pumpkin API endpoint service | `apps/pumpkin-api/Services/AuditJobs/` | V2.9.9 / L04 / L12 / L13 / L14 | Current local/read-only fixture-backed Pumpkin API endpoint foundation |
 | Audit Job Ledger V2.9.9 API test runner | `apps/pumpkin-api.Tests/AuditJobApiReadOnlyTestRunner.cs` | V2.9.9 / L10 / L12 / L13 / L14 | Current scoped API validation and no-write route guard runner |
@@ -203,6 +205,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Platform V2 closeout Source-of-Truth reconciliation | `PUMPKIN_PLATFORM_V2_10_1_CLOSEOUT_SOURCE_OF_TRUTH_RECONCILIATION_REPORT.md` | V2.10.1 |
 | Multi-Tenant Onboarding import package governance foundation | `PUMPKIN_MULTI_TENANT_ONBOARDING_V2_11_1_IMPORT_PACKAGE_GOVERNANCE_FOUNDATION_REPORT.md` | V2.11.1 |
 | Multi-Tenant Onboarding import package builder and intake preview | `PUMPKIN_MULTI_TENANT_ONBOARDING_V2_11_2_IMPORT_PACKAGE_BUILDER_PREVIEW_REPORT.md` | V2.11.2 |
+| Multi-Tenant Onboarding Admin/API intake preview contract | `PUMPKIN_MULTI_TENANT_ONBOARDING_V2_11_3_ADMIN_API_INTAKE_PREVIEW_CONTRACT_REPORT.md` | V2.11.3 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |

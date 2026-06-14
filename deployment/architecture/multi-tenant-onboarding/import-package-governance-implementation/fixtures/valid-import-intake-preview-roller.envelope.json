@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "pumpkin.importIntakePreview.readonlyApiEnvelope.v1",
+  "ok": true,
+  "status": "ok",
+  "code": "IMPORT_INTAKE_PREVIEW_OK",
+  "message": "Read-only paused tenant intake preview composed from local V2.11.2 package evidence.",
+  "requestId": "iip_req_v2_11_3_roller",
+  "correlationId": "iip_corr_v2_11_3_roller",
+  "providerMode": "api-local-import-package-fixture-readonly",
+  "readOnly": true,
+  "data": {
+    "schemaVersion": "pumpkin.importIntakePreview.sharedModel.v1",
+    "providerMode": "api-local-import-package-fixture-readonly",
+    "readOnly": true,
+    "packageId": "roller-rink-rentals-paused-preview-v2-11-2",
+    "packageType": "tenant_bundle",
+    "tenantKey": "roller-rink-rentals",
+    "siteKey": "roller-rink-rentals",
+    "domain": "rollerrinkrentals.com",
+    "tenantLifecycleState": "paused",
+    "importMode": "paused_no_import",
+    "readyForFutureImportExecution": false,
+    "routes": ["/"],
+    "contentRefs": ["paused-no-import-placeholder", "content:roller-paused-placeholder"],
+    "mediaRefs": ["paused-no-import-placeholder"],
+    "formConfigRefs": ["paused-no-form-import"],
+    "resourceRegistryRefs": ["resource-registry:paused-candidate-placeholder"],
+    "providerProfileRefs": ["provider-profile:paused-provider-placeholder"],
+    "backupEvidenceRefs": ["backup:paused-candidate-no-import-placeholder"],
+    "runtimeQaRefs": ["runtime-qa:paused-no-runtime-qa-required-until-resume"],
+    "outboundLinkRefs": ["olm:paused-no-olm-execution"],
+    "auditJobRefs": ["audit-jobs:v2-11-2-paused-no-import-record"],
+    "noGoConditions": [
+      {
+        "code": "tenant_paused_no_import",
+        "severity": "blocked",
+        "displayState": "paused_no_import",
+        "message": "RollerRinkRentals.com is paused and cannot be imported or resumed without a future explicit approval.",
+        "blocksFutureImport": true
+      }
+    ],
+    "rollbackPlanId": "rollback:paused-no-import-abort-plan",
+    "validationRefs": ["validation:v2-11-2-paused-governance-fixture", "v2-11-2-builder-normalized-manifest", "v2-11-2-local-no-write-validator"],
+    "warnings": [
+      {
+        "code": "PAUSED_TENANT_NO_IMPORT",
+        "state": "blocked",
+        "severity": "warning",
+        "message": "Paused tenant preview is display-only."
+      }
+    ],
+    "blockers": [
+      {
+        "code": "ROLLER_RESUME_NOT_APPROVED",
+        "state": "blocked",
+        "severity": "error",
+        "message": "Resume approval is absent."
+      }
+    ],
+    "nextGates": [
+      {
+        "id": "future-resume-approval-gate",
+        "state": "future_boundary_required",
+        "label": "Future explicit Roller resume approval required before any import action."
+      }
+    ],
+    "futureActions": [
+      {
+        "id": "resume-tenant",
+        "label": "Resume tenant",
+        "disabled": true,
+        "reason": "Roller resume is outside V2.11.3 and not approved."
+      },
+      {
+        "id": "execute-import",
+        "label": "Execute import",
+        "disabled": true,
+        "reason": "Paused tenant cannot import."
+      }
+    ],
+    "securityBoundary": {
+      "localOnly": true,
+      "noWriteBoundarySatisfied": true,
+      "openFlags": [],
+      "closedFlags": ["tenantImportExecution", "liveTenantCreation", "rollerResume", "cmsWrites", "providerWrites", "deployment", "dnsMutation", "googleIndexingAction", "contactPost", "azureMutation", "protectedConfigRead"]
+    },
+    "redactionPolicy": {
+      "secretsPolicy": "references_only_no_values",
+      "protectedConfigPolicy": "do_not_reference_protected_paths",
+      "piiPolicy": "synthetic_or_redacted_only"
+    },
+    "generatedAt": "2026-06-14T05:00:00-04:00"
+  },
+  "warnings": [],
+  "errors": [],
+  "securityBoundary": {
+    "localOnly": true,
+    "noWriteBoundarySatisfied": true,
+    "openFlags": [],
+    "closedFlags": ["tenantImportExecution", "liveTenantCreation", "rollerResume", "cmsWrites", "providerWrites", "deployment", "dnsMutation", "googleIndexingAction", "contactPost", "azureMutation", "protectedConfigRead"]
+  },
+  "source": {
+    "kind": "local_fixture",
+    "fixturePath": "deployment/architecture/multi-tenant-onboarding/import-package-governance-implementation/fixtures/valid-import-intake-preview-roller.envelope.json",
+    "packagePreviewPath": "deployment/architecture/multi-tenant-onboarding/import-package-governance-implementation/.tmp/v2-11-2/roller-paused-package/preview.json"
+  },
+  "tenantKey": "roller-rink-rentals",
+  "siteKey": "roller-rink-rentals",
+  "meta": {
+    "mode": "api-local-readonly-fixture",
+    "localOnly": true,
+    "readOnly": true,
+    "contractSchemaVersion": "pumpkin.importIntakePreview.readonlyApiEnvelope.v1",
+    "externalHttpCrawling": false,
+    "cmsApiCalls": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "protectedConfigReads": false,
+    "writeActionsAllowed": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "googleIndexingState": "deferred_hard_stop"
+  }
+}

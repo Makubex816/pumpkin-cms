@@ -57,6 +57,7 @@
 | Platform V2 Closeout Source-Of-Truth Reconciliation And Next-Lane Rebaseline | Complete, V2 control layer reconciled | V2.10.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | V2.8 and V2.9 carryforwards reconciled, V2 closeout evidence map, hard-stop matrix, live/write/deploy/provider matrix, carryforward summaries, stale-doc candidates, and V2.11 next-lane prompt completed without live/write/deploy/indexing/provider/protected-config action. |
 | Multi-Tenant Onboarding Import Package Governance Foundation | Complete, local no-write foundation created | V2.11.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Tenant lifecycle, package taxonomy, schemas, requirements, approval/pause/no-go/rollback/security models, local no-write validator, 2 valid fixtures, 7 invalid fixtures, package-local tests, result package, root report, and V2.11.2 prompt completed without live tenant creation, import execution, Roller resume, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, or token/key access. |
 | Multi-Tenant Onboarding Import Package Builder And Intake Preview | Complete, local no-write builder/preview created | V2.11.2 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Package builder CLI, intake preview CLI, normalized manifests, Ice carryforward package, paused Roller no-import package, 12 invalid builder fixtures, generated ignored `.tmp` evidence, package-local tests, result package, root report, and V2.11.3 prompt completed without live tenant creation, import execution, Roller resume, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation. |
+| Multi-Tenant Onboarding Admin/API Import Intake Preview Contract | Complete, read-only contract foundation created | V2.11.3 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Admin read-only scope, future API GET-only scope, shared preview model, read-only envelope, route matrix, DTO/read-model plan, panel/detail mappings, provider/fallback plans, no-go/rollback/paused display contracts, contract fixtures/tests, Runtime QA plan, result package, root report, and V2.11.4 prompt completed without Admin/API runtime implementation, import execution, live tenant creation, Roller resume, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -64,7 +65,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9 complete; V2.10.1 platform closeout reconciled; V2.11.2 import builder/preview foundation complete | V2.8 / V2.9 / V2.10 / V2.11 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, tenant import execution, live tenant creation, any further deployment, runtime job integration, live provider endpoints, additional Pumpkin API runtime endpoints beyond explicitly approved read-only surfaces, Electron runtime, and any Azure mutation require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9 complete; V2.10.1 platform closeout reconciled; V2.11.3 Admin/API intake preview contract foundation complete | V2.8 / V2.9 / V2.10 / V2.11 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, tenant import execution, live tenant creation, any further deployment, runtime job integration, live provider endpoints beyond explicitly approved read-only surfaces, Electron runtime, and any Azure mutation require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -733,3 +734,19 @@ Still separately gated:
 - V2.11.2 new API endpoints, POST/PUT/PATCH/DELETE endpoints: `0`
 - V2.11.2 live provider integration, CMS/provider/MediaAsset writes, Electron implementation: `not_added_future_boundary_required`
 - V2.11.2 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS, compressed archives: `0`
+- V2.11.3 classification: `admin_api_readonly_import_intake_preview_contract_planning_complete`
+- V2.11.3 Admin read-only intake preview scope: `created`
+- V2.11.3 API GET-only intake preview scope: `created`
+- V2.11.3 shared preview model contract: `created`
+- V2.11.3 read-only API envelope contract: `created`
+- V2.11.3 future GET route matrix: `8_routes_planned`
+- V2.11.3 DTO/read-model plan: `9_dtos_planned`
+- V2.11.3 Admin panel contracts: `15_panels_planned`
+- V2.11.3 contract fixtures: `2_valid_1_invalid`
+- V2.11.3 package-local tests: `passed`
+- V2.11.3 next phase: `V2.11.4_admin_api_readonly_import_intake_preview_runtime_implementation`
+- V2.11.3 Admin runtime page/component implementation, Pumpkin API runtime endpoint implementation: `0`
+- V2.11.3 live tenant creation, tenant import execution, Roller resume: `0`
+- V2.11.3 POST/PUT/PATCH/DELETE endpoints: `0`
+- V2.11.3 live provider integration, CMS/provider/MediaAsset writes, Electron implementation: `not_added_future_boundary_required`
+- V2.11.3 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS, compressed archives: `0`

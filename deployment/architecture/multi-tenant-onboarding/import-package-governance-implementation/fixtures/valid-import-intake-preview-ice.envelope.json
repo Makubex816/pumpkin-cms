@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "pumpkin.importIntakePreview.readonlyApiEnvelope.v1",
+  "ok": true,
+  "status": "ok",
+  "code": "IMPORT_INTAKE_PREVIEW_OK",
+  "message": "Read-only import intake preview composed from local V2.11.2 package evidence.",
+  "requestId": "iip_req_v2_11_3_ice",
+  "correlationId": "iip_corr_v2_11_3_ice",
+  "providerMode": "api-local-import-package-fixture-readonly",
+  "readOnly": true,
+  "data": {
+    "schemaVersion": "pumpkin.importIntakePreview.sharedModel.v1",
+    "providerMode": "api-local-import-package-fixture-readonly",
+    "readOnly": true,
+    "packageId": "ice-rink-rentals-carryforward-v2-11-2",
+    "packageType": "tenant_bundle",
+    "tenantKey": "ice-rink-rentals",
+    "siteKey": "ice-rink-rentals",
+    "domain": "iceskatingrinkrentals.com",
+    "tenantLifecycleState": "production_published",
+    "importMode": "local_no_write_validate",
+    "readyForFutureImportExecution": true,
+    "routes": ["/", "/service-areas", "/contact"],
+    "contentRefs": ["v2-8-17d-sanitized-static-artifact", "content:ice-home", "content:ice-service-areas", "content:ice-contact"],
+    "mediaRefs": ["media:cloudflare-worker-media-delivery-reference"],
+    "formConfigRefs": ["form:ice-contact-reference"],
+    "resourceRegistryRefs": ["resource-registry:ice-v2-8-19"],
+    "providerProfileRefs": ["provider-profile:static-azure-cloudflare-worker-graph"],
+    "backupEvidenceRefs": ["backup:v2-8-17d-artifact-sha256-506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899"],
+    "runtimeQaRefs": ["runtime-qa:v2-8-19-passed"],
+    "outboundLinkRefs": ["olm:v2-8-19-publish-gate-passed"],
+    "auditJobRefs": ["audit-jobs:v2-9-12-closeout"],
+    "noGoConditions": [],
+    "rollbackPlanId": "rollback:v2-8-17d-production-rollback-plan",
+    "validationRefs": ["validation:v2-8-19-contact-form-verified", "validation:v2-9-12-admin-api-readonly-runtime-signoff", "v2-11-2-builder-normalized-manifest", "v2-11-2-local-no-write-validator"],
+    "warnings": [],
+    "blockers": [],
+    "nextGates": [
+      {
+        "id": "future-import-execution-gate",
+        "state": "future_boundary_required",
+        "label": "Future explicit import execution approval required before any import action."
+      }
+    ],
+    "futureActions": [
+      {
+        "id": "execute-import",
+        "label": "Execute import",
+        "disabled": true,
+        "reason": "Import execution is outside V2.11.3 and requires a future explicit gate."
+      },
+      {
+        "id": "request-indexing",
+        "label": "Request indexing",
+        "disabled": true,
+        "reason": "Google/Search Console/indexing remains deferred."
+      }
+    ],
+    "securityBoundary": {
+      "localOnly": true,
+      "noWriteBoundarySatisfied": true,
+      "openFlags": [],
+      "closedFlags": ["tenantImportExecution", "liveTenantCreation", "cmsWrites", "providerWrites", "deployment", "dnsMutation", "googleIndexingAction", "contactPost", "azureMutation", "protectedConfigRead"]
+    },
+    "redactionPolicy": {
+      "secretsPolicy": "references_only_no_values",
+      "protectedConfigPolicy": "do_not_reference_protected_paths",
+      "piiPolicy": "synthetic_or_redacted_only"
+    },
+    "generatedAt": "2026-06-14T05:00:00-04:00"
+  },
+  "warnings": [],
+  "errors": [],
+  "securityBoundary": {
+    "localOnly": true,
+    "noWriteBoundarySatisfied": true,
+    "openFlags": [],
+    "closedFlags": ["tenantImportExecution", "liveTenantCreation", "cmsWrites", "providerWrites", "deployment", "dnsMutation", "googleIndexingAction", "contactPost", "azureMutation", "protectedConfigRead"]
+  },
+  "source": {
+    "kind": "local_fixture",
+    "fixturePath": "deployment/architecture/multi-tenant-onboarding/import-package-governance-implementation/fixtures/valid-import-intake-preview-ice.envelope.json",
+    "packagePreviewPath": "deployment/architecture/multi-tenant-onboarding/import-package-governance-implementation/.tmp/v2-11-2/ice-carryforward-package/preview.json"
+  },
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "meta": {
+    "mode": "api-local-readonly-fixture",
+    "localOnly": true,
+    "readOnly": true,
+    "contractSchemaVersion": "pumpkin.importIntakePreview.readonlyApiEnvelope.v1",
+    "externalHttpCrawling": false,
+    "cmsApiCalls": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "protectedConfigReads": false,
+    "writeActionsAllowed": false,
+    "deployment": false,
+    "searchConsoleIndexing": false,
+    "googleIndexingState": "deferred_hard_stop"
+  }
+}
