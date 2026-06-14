@@ -1,5 +1,6 @@
 import type {
   AuditJobLedgerAdminContractMetadata,
+  AuditJobLedgerAdminProviderMode,
   AuditJobLedgerFutureAction,
   AuditJobLedgerReadOnlyApiEnvelope,
   AuditJobLedgerViewerModel,
@@ -11,12 +12,17 @@ export const AUDIT_JOB_LEDGER_RUNTIME_HTTP_WARNING = 'local_next_dev_server_list
 export const AUDIT_JOB_LEDGER_ALLOWED_ENVELOPE_PROVIDER_MODES = [
   'local-fixture-readonly',
   'admin-local-fixture-readonly',
+  'api-local-fixture-readonly',
 ] as const
 
 export interface AuditJobLedgerContractAdapterOptions {
-  adminProviderMode: string
+  adminProviderMode: AuditJobLedgerAdminProviderMode
   expectedPanelTitles: readonly string[]
   sourceFixturePath: string
+  apiRequestIds?: string[]
+  apiCorrelationIds?: string[]
+  apiEndpointCount?: number
+  apiBaseUrl?: string | null
 }
 
 export interface AuditJobLedgerContractAdapterResult {
@@ -62,8 +68,12 @@ export function createAuditJobLedgerAdminModelFromEnvelope(
       adminProviderMode: options.adminProviderMode,
       sourceFixturePath: options.sourceFixturePath,
       runtimeHttpWarning: envelope.meta.runtimeHttpWarning ?? envelope.source.runtimeHttpWarning ?? null,
-      generatedAt: envelope.meta.generatedAt,
+      generatedAt: envelope.meta.generatedAt ?? envelope.data.generatedAt,
       readOnly: true,
+      apiRequestIds: options.apiRequestIds,
+      apiCorrelationIds: options.apiCorrelationIds,
+      apiEndpointCount: options.apiEndpointCount,
+      apiBaseUrl: options.apiBaseUrl ?? null,
       adapterValidation: {
         ok: true,
         issues: [],
@@ -102,8 +112,12 @@ export function validateAuditJobLedgerEnvelope(
     issues.push('providerMode missing or unsupported')
   }
 
-  if (options.adminProviderMode !== 'admin-local-fixture-readonly') {
-    issues.push('Admin providerMode must remain admin-local-fixture-readonly')
+  if (options.adminProviderMode === 'admin-local-fixture-readonly' && envelope.providerMode === 'api-local-fixture-readonly') {
+    issues.push('api-local-fixture-readonly envelopes require admin-api-readonly mode')
+  }
+
+  if (options.adminProviderMode === 'admin-api-readonly' && envelope.providerMode !== 'api-local-fixture-readonly') {
+    issues.push('admin-api-readonly mode requires api-local-fixture-readonly envelope provider')
   }
 
   if (!envelope.securityBoundary?.localOnly || !envelope.data?.securityBoundary?.localOnly) {
@@ -122,7 +136,10 @@ export function validateAuditJobLedgerEnvelope(
     issues.push('indexing deferred hard stop is not preserved')
   }
 
-  if ((envelope.meta?.runtimeHttpWarning ?? envelope.source?.runtimeHttpWarning) !== AUDIT_JOB_LEDGER_RUNTIME_HTTP_WARNING) {
+  if (
+    options.adminProviderMode === 'admin-local-fixture-readonly'
+    && (envelope.meta?.runtimeHttpWarning ?? envelope.source?.runtimeHttpWarning) !== AUDIT_JOB_LEDGER_RUNTIME_HTTP_WARNING
+  ) {
     issues.push('runtime HTTP warning carryforward is missing')
   }
 

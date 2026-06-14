@@ -4,6 +4,8 @@ import {
   createAuditJobLedgerAdminModelFromEnvelope,
 } from './contract-adapter'
 import type {
+  AuditJobLedgerAdminApiFallback,
+  AuditJobLedgerAdminProviderMode,
   AuditJobLedgerAdminRecord,
   AuditJobLedgerAdminSnapshot,
   AuditJobLedgerAuditEvent,
@@ -29,7 +31,9 @@ export const AUDIT_JOB_LEDGER_ACTIVE_GOVERNANCE_LANE = 'V2.9 - Audit Jobs / Prod
 export const AUDIT_JOB_LEDGER_LEGACY_LEDGER_FIXTURE_PATH = 'deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/fixtures/valid-v2-8-combined-promotion-ledger.fixture.json'
 export const AUDIT_JOB_LEDGER_API_ENVELOPE_FIXTURE_PATH = 'deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/fixtures/valid-v2-8-combined-readonly-api-envelope.fixture.json'
 export const AUDIT_JOB_LEDGER_FIXTURE_PATH = AUDIT_JOB_LEDGER_API_ENVELOPE_FIXTURE_PATH
-export const AUDIT_JOB_LEDGER_PROVIDER_MODE = 'admin-local-fixture-readonly'
+export const AUDIT_JOB_LEDGER_LOCAL_PROVIDER_MODE = 'admin-local-fixture-readonly'
+export const AUDIT_JOB_LEDGER_API_PROVIDER_MODE = 'admin-api-readonly'
+export const AUDIT_JOB_LEDGER_PROVIDER_MODE = AUDIT_JOB_LEDGER_LOCAL_PROVIDER_MODE
 export const AUDIT_JOB_LEDGER_REQUIRED_PANEL_TITLES = [
   'Release Summary',
   'Promotion Gates',
@@ -168,29 +172,70 @@ let cachedSnapshot: AuditJobLedgerAdminSnapshot | null = null
 export function getAuditJobLedgerAdminSnapshot(): AuditJobLedgerAdminSnapshot {
   if (cachedSnapshot) return cachedSnapshot
 
-  const contractModel = createAuditJobLedgerAdminModelFromEnvelope(
+  const snapshot = createAuditJobLedgerAdminSnapshotFromEnvelope(
     readonlyApiEnvelopeFixture as unknown as AuditJobLedgerReadOnlyApiEnvelope,
     {
       adminProviderMode: AUDIT_JOB_LEDGER_PROVIDER_MODE,
-      expectedPanelTitles: AUDIT_JOB_LEDGER_REQUIRED_PANEL_TITLES,
       sourceFixturePath: AUDIT_JOB_LEDGER_API_ENVELOPE_FIXTURE_PATH,
+    },
+  )
+
+  cachedSnapshot = {
+    ...snapshot,
+    providerMode: AUDIT_JOB_LEDGER_PROVIDER_MODE,
+  }
+
+  return cachedSnapshot
+}
+
+export function getAuditJobLedgerAdminFallbackSnapshot(reason: string): AuditJobLedgerAdminSnapshot {
+  return {
+    ...getAuditJobLedgerAdminSnapshot(),
+    fallback: {
+      attemptedProviderMode: AUDIT_JOB_LEDGER_API_PROVIDER_MODE,
+      reason,
+    },
+  }
+}
+
+export function createAuditJobLedgerAdminSnapshotFromEnvelope(
+  envelope: AuditJobLedgerReadOnlyApiEnvelope,
+  options: {
+    adminProviderMode: AuditJobLedgerAdminProviderMode
+    sourceFixturePath: string
+    fallback?: AuditJobLedgerAdminApiFallback | null
+    apiRequestIds?: string[]
+    apiCorrelationIds?: string[]
+    apiEndpointCount?: number
+    apiBaseUrl?: string | null
+  },
+): AuditJobLedgerAdminSnapshot {
+  const contractModel = createAuditJobLedgerAdminModelFromEnvelope(
+    envelope,
+    {
+      adminProviderMode: options.adminProviderMode,
+      expectedPanelTitles: AUDIT_JOB_LEDGER_REQUIRED_PANEL_TITLES,
+      sourceFixturePath: options.sourceFixturePath,
+      apiRequestIds: options.apiRequestIds,
+      apiCorrelationIds: options.apiCorrelationIds,
+      apiEndpointCount: options.apiEndpointCount,
+      apiBaseUrl: options.apiBaseUrl,
     },
   )
   const futureActions = createFutureActions()
   assertAuditJobLedgerFutureActionsReadOnly(futureActions)
 
-  cachedSnapshot = {
+  return {
     activeGovernanceLane: AUDIT_JOB_LEDGER_ACTIVE_GOVERNANCE_LANE,
-    fixturePath: AUDIT_JOB_LEDGER_FIXTURE_PATH,
-    providerMode: AUDIT_JOB_LEDGER_PROVIDER_MODE,
+    fixturePath: options.sourceFixturePath,
+    providerMode: options.adminProviderMode,
     contract: contractModel.contract,
     route: AUDIT_JOB_LEDGER_ADMIN_ROUTE,
     viewerModel: contractModel.viewerModel,
     records: createAdminRecords(contractModel.viewerModel),
     futureActions,
+    fallback: options.fallback ?? null,
   }
-
-  return cachedSnapshot
 }
 
 export function queryAuditJobLedgerRecords(

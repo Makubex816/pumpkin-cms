@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import {
   AlertTriangle,
@@ -22,6 +22,8 @@ import {
   getAuditJobLedgerStateCounts,
   queryAuditJobLedgerRecords,
 } from '@/lib/audit-jobs/mock-provider'
+import { getAuditJobLedgerAdminApiSnapshotWithFallback } from '@/lib/audit-jobs/api-provider'
+import { useAuth } from '@/contexts/AuthContext'
 import type {
   AuditJobLedgerAdminRecord,
   AuditJobLedgerAdminSnapshot,
@@ -51,22 +53,57 @@ const recordKindLabels: Record<AuditJobLedgerRecordKind, string> = {
 }
 
 export function AuditJobLedgerAdminView() {
-  const snapshot = useMemo(() => getAuditJobLedgerAdminSnapshot(), [])
+  const { token, currentTenant } = useAuth()
+  const [snapshot, setSnapshot] = useState<AuditJobLedgerAdminSnapshot>(() => getAuditJobLedgerAdminSnapshot())
+  const [bridgeState, setBridgeState] = useState<'fixture' | 'loading' | 'api' | 'fallback'>('fixture')
   const [query, setQuery] = useState<AuditJobLedgerQueryState>(defaultAuditJobLedgerQuery)
   const records = useMemo(() => queryAuditJobLedgerRecords(snapshot, query), [snapshot, query])
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null)
   const selectedRecord = getAuditJobLedgerRecordById(snapshot, selectedRecordId) ?? records[0] ?? null
   const stateCounts = useMemo(() => getAuditJobLedgerStateCounts(records), [records])
 
+  useEffect(() => {
+    const config = readApiBridgeConfig(currentTenant?.tenantId ?? null)
+    if (!config.enabled) {
+      setSnapshot(getAuditJobLedgerAdminSnapshot())
+      setBridgeState('fixture')
+      return
+    }
+
+    let cancelled = false
+    setBridgeState('loading')
+
+    getAuditJobLedgerAdminApiSnapshotWithFallback({
+      apiBaseUrl: config.apiBaseUrl,
+      tenantKey: config.tenantKey,
+      siteKey: config.siteKey,
+      authToken: token,
+    }).then((nextSnapshot) => {
+      if (cancelled) return
+      setSnapshot(nextSnapshot)
+      setBridgeState(nextSnapshot.fallback ? 'fallback' : 'api')
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [currentTenant?.tenantId, token])
+
   return (
-    <div className="space-y-6" data-v2-phase="V2.9.7" data-provider-mode={snapshot.providerMode}>
+    <div
+      className="space-y-6"
+      data-v2-phase="V2.9.7"
+      data-v2-api-bridge-phase="V2.9.11"
+      data-provider-mode={snapshot.providerMode}
+      data-api-bridge-state={bridgeState}
+    >
       <header className="card">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
             <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">Read-only governance view</p>
             <h1 className="mt-1 text-3xl font-bold text-neutral-900">Audit Jobs / Production Promotion</h1>
             <p className="mt-2 max-w-4xl text-sm text-neutral-600">
-              Fixture-backed Admin prototype for {snapshot.activeGovernanceLane}. Source data is the validated V2.9.6 read-only API envelope contract, rendered without live APIs or provider calls.
+              {createHeaderDescription(snapshot, bridgeState)}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -119,8 +156,49 @@ export function AuditJobLedgerAdminView() {
   )
 }
 
+function readApiBridgeConfig(currentTenantId: string | null) {
+  if (typeof window === 'undefined') {
+    return { enabled: false, apiBaseUrl: undefined, tenantKey: '', siteKey: '' }
+  }
+
+  const searchParams = new URLSearchParams(window.location.search)
+  const providerMode = searchParams.get('auditJobsProvider')
+  const enabled = providerMode === 'admin-api-readonly' || providerMode === 'api'
+  const fixtureSummary = getAuditJobLedgerAdminSnapshot().viewerModel.summary
+  const tenantKey = searchParams.get('tenantKey') || currentTenantId || fixtureSummary.tenantKey || ''
+  const siteKey = searchParams.get('siteKey') || currentTenantId || fixtureSummary.siteKey || tenantKey
+
+  return {
+    enabled,
+    apiBaseUrl: searchParams.get('auditJobsApiBaseUrl') || undefined,
+    tenantKey,
+    siteKey,
+  }
+}
+
+function createHeaderDescription(snapshot: AuditJobLedgerAdminSnapshot, bridgeState: string) {
+  if (snapshot.fallback) {
+    return `API bridge fallback for ${snapshot.activeGovernanceLane}. The GET-only Pumpkin API path was attempted, then degraded to the validated local read-only API envelope without enabling writes.`
+  }
+
+  if (snapshot.providerMode === 'admin-api-readonly') {
+    return `GET-only Pumpkin API bridge for ${snapshot.activeGovernanceLane}. Endpoint envelopes are composed through the shared contract adapter without provider writes, deployment, indexing, or contact-form actions.`
+  }
+
+  if (bridgeState === 'loading') {
+    return `Loading GET-only Pumpkin API bridge for ${snapshot.activeGovernanceLane}. The local fixture remains the visible read-only state until all endpoint envelopes validate.`
+  }
+
+  return `Fixture-backed Admin prototype for ${snapshot.activeGovernanceLane}. Source data is the validated V2.9.6 read-only API envelope contract, rendered without live APIs or provider calls.`
+}
+
 function ReadOnlySafetyBanner({ snapshot }: { snapshot: AuditJobLedgerAdminSnapshot }) {
   const boundary = snapshot.viewerModel.securityBoundary
+  const headline = snapshot.fallback
+    ? 'No write actions. API bridge degraded to local fixture fallback.'
+    : snapshot.providerMode === 'admin-api-readonly'
+      ? 'No write actions. GET-only Pumpkin API bridge active.'
+      : 'No write actions. Fixture-backed local viewer only.'
 
   return (
     <div className="mt-5 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-900">
@@ -128,10 +206,15 @@ function ReadOnlySafetyBanner({ snapshot }: { snapshot: AuditJobLedgerAdminSnaps
         <div className="flex gap-3">
           <ShieldCheck className="mt-0.5 h-5 w-5 flex-shrink-0" />
           <div>
-            <div className="font-semibold">No write actions. Fixture-backed local viewer only.</div>
+            <div className="font-semibold">{headline}</div>
             <div className="mt-1">
               Shared contract adapter active. Google/Search Console/indexing deferred hard stop. Deployment closed. Contact-form POST closed after V2.8.19 verification.
             </div>
+            {snapshot.fallback && (
+              <div className="mt-1 text-xs text-sky-800">
+                Fallback reason: {snapshot.fallback.reason}
+              </div>
+            )}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
@@ -157,7 +240,7 @@ function SummaryStrip({ snapshot }: { snapshot: AuditJobLedgerAdminSnapshot }) {
       <MetricCard label="Shared Contract" value={snapshot.contract.adapterValidation.ok ? 1 : 0} detail={snapshot.contract.envelopeSchemaVersion} icon={<ShieldCheck className="h-5 w-5" />} />
       <MetricCard label="Envelope Provider" value={snapshot.contract.readOnly ? 1 : 0} detail={snapshot.contract.envelopeProviderMode} icon={<Database className="h-5 w-5" />} />
       <MetricCard label="Runtime Warning" value={snapshot.contract.runtimeHttpWarning ? 1 : 0} detail={snapshot.contract.runtimeHttpWarning ?? 'none'} icon={<AlertTriangle className="h-5 w-5" />} />
-      <MetricCard label="Admin Provider" value={1} detail={snapshot.contract.adminProviderMode} icon={<Lock className="h-5 w-5" />} />
+      <MetricCard label="Admin Provider" value={snapshot.fallback ? 0 : 1} detail={snapshot.fallback ? `fallback: ${snapshot.contract.adminProviderMode}` : snapshot.contract.adminProviderMode} icon={<Lock className="h-5 w-5" />} />
     </section>
   )
 }
@@ -409,11 +492,23 @@ function DetailPanel({
           Read-only detail panel
         </div>
         <p className="mt-1">
-          This view reads {snapshot.fixturePath} through the shared contract adapter and local Admin fixture provider, then exposes no mutation handler.
+          {createDetailSourceDescription(snapshot)}
         </p>
       </div>
     </aside>
   )
+}
+
+function createDetailSourceDescription(snapshot: AuditJobLedgerAdminSnapshot) {
+  if (snapshot.fallback) {
+    return `This view attempted the GET-only Pumpkin API bridge, then reads ${snapshot.fixturePath} through the local fixture fallback and exposes no mutation handler.`
+  }
+
+  if (snapshot.providerMode === 'admin-api-readonly') {
+    return `This view reads the GET-only Pumpkin API endpoint envelopes through the shared contract adapter and exposes no mutation handler.`
+  }
+
+  return `This view reads ${snapshot.fixturePath} through the shared contract adapter and local Admin fixture provider, then exposes no mutation handler.`
 }
 
 function MetricCard({ label, value, detail, icon }: { label: string; value: number; detail: string; icon: ReactNode }) {

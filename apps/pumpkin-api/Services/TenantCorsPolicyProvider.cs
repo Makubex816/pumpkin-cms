@@ -6,19 +6,19 @@ namespace pumpkin_api.Services;
 
 public class TenantCorsPolicyProvider : ICorsPolicyProvider
 {
-    private readonly IDatabaseService _databaseService;
+    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<TenantCorsPolicyProvider> _logger;
     private readonly DefaultCorsPolicyProvider _defaultProvider;
     private readonly TimeSpan _cacheDuration;
     private readonly ConcurrentDictionary<string, (CorsPolicy? Policy, DateTime ExpiresAt)> _policyCache = new();
 
     public TenantCorsPolicyProvider(
-        IDatabaseService databaseService,
+        IServiceProvider serviceProvider,
         ILogger<TenantCorsPolicyProvider> logger,
         IOptions<CorsOptions> options,
         IConfiguration configuration)
     {
-        _databaseService = databaseService;
+        _serviceProvider = serviceProvider;
         _logger = logger;
         _defaultProvider = new DefaultCorsPolicyProvider(options);
         _cacheDuration = TimeSpan.FromMinutes(
@@ -55,7 +55,8 @@ public class TenantCorsPolicyProvider : ICorsPolicyProvider
     {
         try
         {
-            var tenant = await _databaseService.GetTenantAsync(tenantId);
+            var databaseService = _serviceProvider.GetRequiredService<IDatabaseService>();
+            var tenant = await databaseService.GetTenantAsync(tenantId);
 
             if (tenant?.Settings?.AllowedOrigins == null || tenant.Settings.AllowedOrigins.Length == 0)
             {

@@ -17,6 +17,7 @@ export type AuditJobLedgerRecordKind =
 
 export type AuditJobLedgerSortField = 'timestamp' | 'label' | 'kind' | 'state'
 export type AuditJobLedgerSortDirection = 'asc' | 'desc'
+export type AuditJobLedgerAdminProviderMode = 'admin-local-fixture-readonly' | 'admin-api-readonly'
 
 export interface AuditJobLedgerSummary {
   status: AuditJobLedgerState
@@ -216,11 +217,15 @@ export interface AuditJobLedgerAdminContractMetadata {
   requestId: string
   correlationId: string
   envelopeProviderMode: string
-  adminProviderMode: string
+  adminProviderMode: AuditJobLedgerAdminProviderMode
   sourceFixturePath: string
   runtimeHttpWarning: string | null
   generatedAt: string
   readOnly: true
+  apiRequestIds?: string[]
+  apiCorrelationIds?: string[]
+  apiEndpointCount?: number
+  apiBaseUrl?: string | null
   adapterValidation: {
     ok: boolean
     issues: string[]
@@ -258,13 +263,19 @@ export interface AuditJobLedgerFutureAction {
   reason: string
 }
 
+export interface AuditJobLedgerAdminApiFallback {
+  attemptedProviderMode: 'admin-api-readonly'
+  reason: string
+}
+
 export interface AuditJobLedgerAdminSnapshot {
   activeGovernanceLane: string
   fixturePath: string
-  providerMode: string
+  providerMode: AuditJobLedgerAdminProviderMode
   contract: AuditJobLedgerAdminContractMetadata
   route: string
   viewerModel: AuditJobLedgerViewerModel
   records: AuditJobLedgerAdminRecord[]
   futureActions: AuditJobLedgerFutureAction[]
+  fallback: AuditJobLedgerAdminApiFallback | null
 }
