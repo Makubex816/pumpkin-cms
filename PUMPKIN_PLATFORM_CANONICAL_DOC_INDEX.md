@@ -59,6 +59,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_7_ADMIN_CONTRACT_ADAPTER_RUNTIME_HTTP_REMEDIATION_REPORT.md` | V2.9.7 audit job ledger Admin shared contract adapter and local runtime HTTP remediation root report |
 | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_8_GET_ONLY_API_PREFLIGHT_REPORT.md` | V2.9.8 audit job ledger GET-only Pumpkin API read-only endpoint preflight root report |
 | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_9_GET_ONLY_API_IMPLEMENTATION_REPORT.md` | V2.9.9 audit job ledger GET-only Pumpkin API read-only endpoint implementation root report |
+| `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_10_ADMIN_TO_API_BRIDGE_PLANNING_REPORT.md` | V2.9.10 audit job ledger Admin-to-Pumpkin-API read-only bridge planning root report |
 
 ## Latest Canonical Result Packages
 
@@ -114,6 +115,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Audit Job Ledger Admin shared contract adapter and runtime remediation | `deployment/architecture/audit-jobs-production-promotion/v2-9-7-admin-shared-contract-adapter-local-runtime-http-remediation-result/` | V2.9.7 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.9 Admin contract adapter and local route HTTP 200 proof package |
 | Audit Job Ledger GET-only Pumpkin API read-only endpoint preflight | `deployment/architecture/audit-jobs-production-promotion/v2-9-8-get-only-pumpkin-api-readonly-endpoint-preflight-planning-result/` | V2.9.8 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.9 GET-only Pumpkin API endpoint preflight planning package |
 | Audit Job Ledger GET-only Pumpkin API read-only endpoint implementation | `deployment/architecture/audit-jobs-production-promotion/v2-9-9-get-only-pumpkin-api-readonly-endpoint-implementation-result/` | V2.9.9 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.9 fixture-backed GET-only Pumpkin API endpoint implementation package |
+| Audit Job Ledger Admin-to-Pumpkin-API read-only bridge planning | `deployment/architecture/audit-jobs-production-promotion/v2-9-10-admin-to-pumpkin-api-readonly-bridge-planning-result/` | V2.9.10 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Current V2.9 Admin-to-API bridge planning package |
 | Audit Job Ledger implementation package | `deployment/architecture/audit-jobs-production-promotion/audit-job-ledger-implementation/` | V2.9.7 / L12 / L13 / L14 / L15 | Current local no-write validator, read-only viewer model, and read-only API envelope contract implementation package |
 | Audit Job Ledger GET-only Pumpkin API endpoint service | `apps/pumpkin-api/Services/AuditJobs/` | V2.9.9 / L04 / L12 / L13 / L14 | Current local/read-only fixture-backed Pumpkin API endpoint foundation |
 | Audit Job Ledger V2.9.9 API test runner | `apps/pumpkin-api.Tests/AuditJobApiReadOnlyTestRunner.cs` | V2.9.9 / L10 / L12 / L13 / L14 | Current scoped API validation and no-write route guard runner |
@@ -183,6 +185,7 @@ This is the canonical index for current V2 platform navigation. Historical docs 
 | Audit Job Ledger Admin shared contract adapter and runtime remediation | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_7_ADMIN_CONTRACT_ADAPTER_RUNTIME_HTTP_REMEDIATION_REPORT.md` | V2.9.7 |
 | Audit Job Ledger GET-only Pumpkin API read-only endpoint preflight | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_8_GET_ONLY_API_PREFLIGHT_REPORT.md` | V2.9.8 |
 | Audit Job Ledger GET-only Pumpkin API read-only endpoint implementation | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_9_GET_ONLY_API_IMPLEMENTATION_REPORT.md` | V2.9.9 |
+| Audit Job Ledger Admin-to-Pumpkin-API read-only bridge planning | `PUMPKIN_AUDIT_JOBS_PRODUCTION_PROMOTION_V2_9_10_ADMIN_TO_API_BRIDGE_PLANNING_REPORT.md` | V2.9.10 |
 | OLM staging target/resource SOT binding | `PUMPKIN_OUTBOUND_LINK_MANAGER_PHASE_2H24_STAGING_TARGET_RESOURCE_FOUNDATION_SOT_BINDING_REPORT.md` | V2.2 / V2.5 alias |
 | Backup Generator QA | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F14_BACKUP_GENERATOR_QA_SIGNOFF_REPORT.md` | V2.4 |
 | Resource Registry | `PUMPKIN_BACKUP_EXPORT_RESTORE_PHASE_2F12N_REAL_RESOURCE_REGISTRY_LIVE_INVENTORY_REPORT.md` | V2.5 |
