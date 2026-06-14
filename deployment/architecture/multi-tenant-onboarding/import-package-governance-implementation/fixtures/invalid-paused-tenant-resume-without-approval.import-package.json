@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "pumpkin.multiTenantImportPackage.v1",
+  "packageId": "invalid-paused-tenant-resume-without-approval",
+  "packageType": "tenant_bundle",
+  "tenantKey": "roller-rink-rentals",
+  "siteKey": "roller-rink-rentals",
+  "domain": "rollerrinkrentals.com",
+  "sourceSystem": "negative-test",
+  "createdAt": "2026-06-14T02:45:00-04:00",
+  "createdBy": "pumpkin-v2-11-1-local-validator",
+  "ownerApproval": { "approved": true },
+  "tenantLifecycleState": "paused",
+  "pauseResume": {
+    "resumeApproved": false,
+    "resumeApprovalRef": null
+  },
+  "routes": ["/"],
+  "contentRefs": ["content"],
+  "mediaRefs": ["media"],
+  "resourceRegistryRefs": ["registry"],
+  "providerProfileRefs": ["provider"],
+  "backupEvidenceRefs": ["backup"],
+  "runtimeQaRefs": ["runtime"],
+  "outboundLinkRefs": ["olm"],
+  "auditJobRefs": ["audit"],
+  "securityBoundary": {
+    "liveTenantCreation": false,
+    "tenantImportExecution": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "mediaAssetWrites": false,
+    "deployment": false,
+    "redeployment": false,
+    "dnsMutation": false,
+    "customDomainMutation": false,
+    "googleIndexingAction": false,
+    "contactPost": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "secretsIncluded": false,
+    "crawlOrOutboundLiveCheck": false,
+    "electronRuntime": false
+  },
+  "redactionPolicy": {
+    "secretsPolicy": "references_only_no_values",
+    "protectedConfigPolicy": "do_not_reference_protected_paths"
+  },
+  "importMode": "resume_requested",
+  "rollbackPlanId": "rollback",
+  "validationRefs": ["validation"]
+}

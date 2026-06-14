@@ -1,0 +1,11 @@
+{
+  "name": "pumpkin-multi-tenant-import-governance",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/validate-import-package.mjs && node --check test/validator.test.mjs",
+    "test": "node test/validator.test.mjs",
+    "validate": "node src/validate-import-package.mjs validate"
+  }
+}

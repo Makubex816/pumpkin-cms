@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/v2-11-1/tenant-bundle-manifest.schema.json",
+  "title": "PumpkinCMS V2.11.1 Tenant Bundle Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "tenantKey",
+    "siteKey",
+    "domain",
+    "bundleRefs",
+    "ownerApproval",
+    "securityBoundary",
+    "rollbackPlanId"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "pumpkin.tenantBundleManifest.v1" },
+    "tenantKey": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$" },
+    "siteKey": { "type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$" },
+    "domain": { "type": "string", "minLength": 4 },
+    "bundleRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  }
+}

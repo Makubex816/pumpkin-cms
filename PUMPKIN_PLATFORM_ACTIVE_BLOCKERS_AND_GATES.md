@@ -54,6 +54,8 @@
 | Audit Job Ledger Admin-To-Pumpkin-API Read-Only Bridge Planning | Complete, implementation-ready bridge plan created | V2.9.10 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Admin-to-API bridge scope, endpoint/detail mapping, provider transition, API client contract, fallback/loading/error/degraded behavior, tenant/site query behavior, no-write UI carryforward, parity/runtime QA plans, API runtime blocker, and V2.9.11 prompt created with no Admin runtime behavior change. |
 | Audit Job Ledger Admin-To-Pumpkin-API Read-Only Bridge Implementation | Complete, Admin API bridge implemented | V2.9.11 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Admin now has `admin-api-readonly` mode for the existing 8 GET-only Pumpkin API routes, fixture fallback remains default/safe, local API runtime GET checks passed, and no write/live/deploy/indexing/Electron boundary opened. |
 | Audit Job Ledger Admin/API Read-Only Runtime Signoff And V2.9 Closeout | Complete, V2.9 closed with indexing deferred | V2.9.12 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | All 8 API GET endpoints and Admin fixture/API routes passed local runtime signoff; API/Admin/audit-ledger validation, mutation/no-write scans, evidence chain index, closeout decision, and next non-indexing prompt completed. |
+| Platform V2 Closeout Source-Of-Truth Reconciliation And Next-Lane Rebaseline | Complete, V2 control layer reconciled | V2.10.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | V2.8 and V2.9 carryforwards reconciled, V2 closeout evidence map, hard-stop matrix, live/write/deploy/provider matrix, carryforward summaries, stale-doc candidates, and V2.11 next-lane prompt completed without live/write/deploy/indexing/provider/protected-config action. |
+| Multi-Tenant Onboarding Import Package Governance Foundation | Complete, local no-write foundation created | V2.11.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Tenant lifecycle, package taxonomy, schemas, requirements, approval/pause/no-go/rollback/security models, local no-write validator, 2 valid fixtures, 7 invalid fixtures, package-local tests, result package, root report, and V2.11.2 prompt completed without live tenant creation, import execution, Roller resume, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, or token/key access. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -61,7 +63,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9 complete for local/read-only Admin/API governance | V2.8 / V2.9 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, any further deployment, runtime job integration, live provider endpoints, additional Pumpkin API runtime endpoints beyond the V2.9.9 fixture-backed GET surface, Electron runtime, and any Azure mutation require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9 complete; V2.10.1 platform closeout reconciled; V2.11.1 import governance foundation complete | V2.8 / V2.9 / V2.10 / V2.11 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, tenant import execution, live tenant creation, any further deployment, runtime job integration, live provider endpoints, additional Pumpkin API runtime endpoints beyond explicitly approved read-only surfaces, Electron runtime, and any Azure mutation require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -691,3 +693,28 @@ Still separately gated:
 - V2.9.12 new API endpoints, POST/PUT/PATCH/DELETE Audit Jobs endpoints: `0`
 - V2.9.12 live provider integration, CMS/provider writes, Electron implementation: `not_added_future_boundary_required`
 - V2.9.12 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.10.1 classification: `platform_v2_closeout_source_of_truth_reconciled_next_lane_rebased`
+- V2.10.1 V2 overall recommendation: `100%_with_indexing_deferred`
+- V2.10.1 V2.8 carryforward: `complete_with_indexing_deferred`
+- V2.10.1 V2.9 carryforward: `complete_with_indexing_deferred`
+- V2.10.1 V2 closeout evidence chain map: `created`
+- V2.10.1 hard-stop matrix: `created`
+- V2.10.1 live/write/deploy/provider boundary matrix: `created`
+- V2.10.1 next non-indexing lane: `V2.11_multi_tenant_onboarding_import_package_governance_foundation`
+- V2.10.1 new API endpoints, POST/PUT/PATCH/DELETE endpoints: `0`
+- V2.10.1 live provider integration, CMS/provider writes, Electron implementation: `not_added_future_boundary_required`
+- V2.10.1 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`
+- V2.11.1 classification: `multi_tenant_onboarding_import_package_governance_foundation_complete`
+- V2.11.1 tenant lifecycle model: `created`
+- V2.11.1 import package taxonomy: `created`
+- V2.11.1 import package manifest schema: `created`
+- V2.11.1 tenant bundle manifest schema: `created`
+- V2.11.1 local no-write validator: `created`
+- V2.11.1 valid fixtures: `2_passed`
+- V2.11.1 invalid fixtures: `7_failed_as_expected`
+- V2.11.1 package-local tests: `passed`
+- V2.11.1 next phase: `V2.11.2_import_package_validator_hardening_and_builder_planning`
+- V2.11.1 live tenant creation, tenant import execution, Roller resume: `0`
+- V2.11.1 new API endpoints, POST/PUT/PATCH/DELETE endpoints: `0`
+- V2.11.1 live provider integration, CMS/provider/MediaAsset writes, Electron implementation: `not_added_future_boundary_required`
+- V2.11.1 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS: `0`

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "pumpkin.multiTenantImportPackage.v1",
+  "packageId": "ice-rink-rentals-v2-11-1-carryforward",
+  "packageType": "tenant_bundle",
+  "tenantKey": "ice-rink-rentals",
+  "siteKey": "ice-rink-rentals",
+  "domain": "iceskatingrinkrentals.com",
+  "sourceSystem": "v2-8-production-static-release",
+  "createdAt": "2026-06-14T02:45:00-04:00",
+  "createdBy": "pumpkin-v2-11-1-local-validator",
+  "ownerApproval": {
+    "approved": true,
+    "approvalRef": "v2-8-19-owner-operator-acknowledgement",
+    "approvedBy": "PumpkinCMS operator"
+  },
+  "tenantLifecycleState": "production_published",
+  "routes": [
+    "/",
+    "/service-areas",
+    "/contact"
+  ],
+  "contentRefs": [
+    "v2-8-17d-sanitized-static-artifact"
+  ],
+  "mediaRefs": [
+    "cloudflare-worker-media-delivery-reference"
+  ],
+  "resourceRegistryRefs": [
+    "resource-registry-provider-profile-v2-8-19"
+  ],
+  "providerProfileRefs": [
+    "static-azure-cloudflare-worker-graph"
+  ],
+  "backupEvidenceRefs": [
+    "v2-8-17d-artifact-sha256-506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899"
+  ],
+  "runtimeQaRefs": [
+    "v2-8-19-runtime-qa-passed"
+  ],
+  "outboundLinkRefs": [
+    "v2-8-19-olm-publish-gate-passed"
+  ],
+  "auditJobRefs": [
+    "v2-9-12-audit-jobs-closeout"
+  ],
+  "securityBoundary": {
+    "liveTenantCreation": false,
+    "tenantImportExecution": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "mediaAssetWrites": false,
+    "deployment": false,
+    "redeployment": false,
+    "dnsMutation": false,
+    "customDomainMutation": false,
+    "googleIndexingAction": false,
+    "contactPost": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "secretsIncluded": false,
+    "crawlOrOutboundLiveCheck": false,
+    "electronRuntime": false
+  },
+  "redactionPolicy": {
+    "secretsPolicy": "references_only_no_values",
+    "protectedConfigPolicy": "do_not_reference_protected_paths",
+    "piiPolicy": "synthetic_or_redacted_only"
+  },
+  "importMode": "local_no_write_validate",
+  "rollbackPlanId": "v2-8-17d-production-rollback-plan",
+  "validationRefs": [
+    "v2-8-19-contact-form-verified",
+    "v2-9-12-admin-api-readonly-runtime-signoff"
+  ]
+}

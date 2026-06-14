@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "pumpkin.multiTenantImportPackage.v1",
+  "packageId": "roller-rink-rentals-paused-no-import",
+  "packageType": "tenant_bundle",
+  "tenantKey": "roller-rink-rentals",
+  "siteKey": "roller-rink-rentals",
+  "domain": "rollerrinkrentals.com",
+  "sourceSystem": "paused-candidate-record",
+  "createdAt": "2026-06-14T02:45:00-04:00",
+  "createdBy": "pumpkin-v2-11-1-local-validator",
+  "ownerApproval": {
+    "approved": true,
+    "approvalRef": "paused-record-only-no-resume",
+    "approvedBy": "PumpkinCMS operator"
+  },
+  "tenantLifecycleState": "paused",
+  "pauseResume": {
+    "resumeApproved": false,
+    "resumeApprovalRef": null
+  },
+  "routes": [
+    "/"
+  ],
+  "contentRefs": [
+    "paused-no-import-placeholder"
+  ],
+  "mediaRefs": [
+    "paused-no-import-placeholder"
+  ],
+  "resourceRegistryRefs": [
+    "paused-candidate-registry-placeholder"
+  ],
+  "providerProfileRefs": [
+    "paused-provider-profile-placeholder"
+  ],
+  "backupEvidenceRefs": [
+    "paused-candidate-no-import-backup-placeholder"
+  ],
+  "runtimeQaRefs": [
+    "paused-no-runtime-qa-required-until-resume"
+  ],
+  "outboundLinkRefs": [
+    "paused-no-olm-execution"
+  ],
+  "auditJobRefs": [
+    "v2-11-1-paused-no-import-record"
+  ],
+  "securityBoundary": {
+    "liveTenantCreation": false,
+    "tenantImportExecution": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "mediaAssetWrites": false,
+    "deployment": false,
+    "redeployment": false,
+    "dnsMutation": false,
+    "customDomainMutation": false,
+    "googleIndexingAction": false,
+    "contactPost": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "secretsIncluded": false,
+    "crawlOrOutboundLiveCheck": false,
+    "electronRuntime": false
+  },
+  "redactionPolicy": {
+    "secretsPolicy": "references_only_no_values",
+    "protectedConfigPolicy": "do_not_reference_protected_paths",
+    "piiPolicy": "synthetic_or_redacted_only"
+  },
+  "importMode": "paused_no_import",
+  "rollbackPlanId": "paused-no-import-abort-plan",
+  "validationRefs": [
+    "v2-11-1-paused-governance-fixture"
+  ]
+}
