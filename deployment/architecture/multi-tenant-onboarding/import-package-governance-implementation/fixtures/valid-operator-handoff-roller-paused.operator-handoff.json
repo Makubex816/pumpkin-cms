@@ -1,0 +1,105 @@
+{
+  "handoffPacketId": "handoff-roller-rink-rentals-paused-v2-12-1",
+  "schemaVersion": "pumpkin.operatorHandoffPacket.v1",
+  "packetType": "multi_tenant_onboarding_operator_handoff",
+  "tenantKey": "roller-rink-rentals",
+  "siteKey": "roller-rink-rentals",
+  "domain": "rollerrinkrentals.com",
+  "tenantState": "paused_no_import_no_resume",
+  "packageHash": "sha256:e5567ddc0f9b3c4e655f958d9f25cd3bef8ec72ce2f553fa37d36bab38a05b29",
+  "approvalManifestId": null,
+  "executionRunId": null,
+  "targetMode": "blocked_no_import_no_resume",
+  "readbackSummary": {
+    "status": "not_executed",
+    "routes": { "expected": 0, "actual": 0, "ok": true },
+    "contentRefs": { "expected": 0, "actual": 0, "ok": true },
+    "mediaRefs": { "expected": 0, "actual": 0, "ok": true },
+    "formConfigs": { "expected": 0, "actual": 0, "ok": true }
+  },
+  "entityMappingSummary": {
+    "total": 0,
+    "tenant": 0,
+    "routes": 0,
+    "contentRefs": 0,
+    "mediaRefs": 0,
+    "formConfigs": 0
+  },
+  "operatorProjectionRef": {
+    "projectionId": "operator-projection-execution-ice-rink-rentals-carryforward-v2-11-2-v2-11-7a-local-v2-11-8",
+    "schemaVersion": "pumpkin.importExecutionOperatorProjection.v1",
+    "readOnly": true,
+    "panelCount": 15,
+    "futureApiRouteCount": 7,
+    "apiRouteBase": "/api/admin/import-executions",
+    "adminRoute": "/dashboard/import-executions"
+  },
+  "backupCenterRefs": [
+    "backup:paused-candidate-no-import-placeholder"
+  ],
+  "resourceRegistryRefs": [
+    "resource-registry:paused-candidate-placeholder"
+  ],
+  "providerProfileRefs": [
+    "provider-profile:paused-provider-placeholder"
+  ],
+  "runtimeQaRefs": [
+    "runtime-qa:paused-no-runtime-qa-required-until-resume"
+  ],
+  "auditJobRefs": [
+    "audit-jobs:v2-11-2-paused-no-import-record"
+  ],
+  "olmCarryforwardRefs": [
+    "olm-2h23a-separate-future-safety-boundary",
+    "olm:paused-no-olm-execution"
+  ],
+  "hardStops": [
+    "tenant_paused_no_import",
+    "no_roller_resume_without_separate_approval"
+  ],
+  "deferredGates": [
+    "google_search_console_indexing_deferred_hard_stop",
+    "live_provider_import_deferred",
+    "electron_runtime_deferred"
+  ],
+  "securityBoundary": {
+    "liveTenantCreation": false,
+    "tenantImportExecution": false,
+    "rollerImport": false,
+    "rollerResume": false,
+    "cmsWrites": false,
+    "providerWrites": false,
+    "mediaAssetWrites": false,
+    "liveProviderIntegration": false,
+    "olmStagingWrite": false,
+    "deployment": false,
+    "redeployment": false,
+    "dnsMutation": false,
+    "customDomainMutation": false,
+    "googleIndexingAction": false,
+    "contactPost": false,
+    "azureMutation": false,
+    "rbacAssignment": false,
+    "protectedConfigRead": false,
+    "secretsIncluded": false,
+    "compressedArchiveCreated": false,
+    "crawlOrOutboundLiveCheck": false,
+    "electronRuntime": false
+  },
+  "redactionPolicy": {
+    "secretsPolicy": "references_only_no_values",
+    "protectedConfigPolicy": "do_not_reference_protected_paths",
+    "archivePolicy": "no_compressed_handoff_archives_in_repo",
+    "piiPolicy": "synthetic_or_redacted_only"
+  },
+  "pauseResume": {
+    "resumeApproved": false,
+    "resumeApprovalRef": null
+  },
+  "importApproved": false,
+  "nextGates": [
+    "v2-12-2-operator-handoff-consumer-readonly-planning",
+    "future-roller-resume-separate-approval-required"
+  ],
+  "createdAt": "2026-06-14T22:30:00-04:00"
+}

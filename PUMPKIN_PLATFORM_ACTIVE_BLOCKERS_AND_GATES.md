@@ -62,6 +62,11 @@
 | Multi-Tenant Onboarding Admin/API Import Intake Preview Runtime Signoff And Boundary Planning | Complete, signoff and future boundary created | V2.11.5 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | API build/tests, Admin type-check/QA, import-package-governance check/test, Ice/Roller validate/build/preview, mutation/no-write scans, runtime localhost deferral rationale, result package, root report, future approval manifest requirements, no-go matrix, rollback/readback/audit plan, prerequisites, and V2.11.6 no-write dry-run preflight prompt completed without import execution, live tenant creation, Roller resume, mutation import-intake endpoints, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation. |
 | Multi-Tenant Onboarding Import Execution Approval Manifest And No-Write Dry-Run Preflight | Complete, no-write preflight created | V2.11.6 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Approval-manifest and dry-run tooling, package hash computation, execution-false manifests, Ice no-write dry-run pass, Roller paused/no-import dry-run block, prerequisite/no-go/readback/rollback/audit outputs, result package, root report, and V2.11.7 scoped Ice execution approval gate prompt completed without import execution, live tenant creation, Roller resume, mutation import endpoints, active Admin write controls, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation. |
 | Multi-Tenant Onboarding Scoped Ice Import Execution Approval Gate | Blocked before execution | V2.11.7 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Ice package identity/hash/prereqs passed and Roller stayed paused/no-import/no-resume, but execution stopped before import because `executionApprovalGranted: true`, operator approval, exact target, repo-supported write command, and repo-supported readback command are missing; no tenant import execution, live tenant creation, Roller import/resume, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation occurred. |
+| Multi-Tenant Onboarding Scoped Ice Import Execution Manifest Target Command Readback Closure | Complete, local scoped execution/readback passed | V2.11.7A / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Execution-approved Ice manifest finalized, exact local ignored `.tmp` target bound, repo-supported local write/readback commands added, scoped Ice package executed locally, immediate readback passed, Roller stayed paused/no-import/no-resume, and no live tenant creation, API mutation endpoint, Admin write control, deployment, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation occurred. |
+| Multi-Tenant Onboarding Import Execution Evidence Freeze And Operator Console Projection | Complete, read-only evidence freeze/projection foundation created | V2.11.8 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | V2.11.7A approval manifest, package hash, target binding, execution run, entity mappings, readback, trace/audit/rollback IDs, Roller exclusion, and security boundary frozen; read-only operator projection model, local projection builder/validator, 15-panel Admin map, 7-route GET-only future API matrix, DTO/read-model plan, Electron plan, result package, root report, and V2.11.9 prompt completed without second import execution, live tenant creation, Roller import/resume, mutation endpoints, active Admin write controls, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation. |
+| Multi-Tenant Onboarding Import Execution Operator Projection API/Admin Prototype | Complete, GET-only API/Admin read-only prototype implemented | V2.11.9 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Seven GET-only `/api/admin/import-executions` projection endpoints, fixture-backed API DTO/envelope/provider/service contracts, Admin route `/dashboard/import-executions`, local fixture fallback, optional API-backed provider mode, 13 required operator panels, disabled future actions, API/Admin QA, and local route HTTP 200 completed without second import execution, live tenant creation, Roller import/resume, mutation endpoints, active Admin write controls, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation. |
+| Multi-Tenant Onboarding Import Execution Operator Projection Runtime Signoff And V2.11 Closeout | Complete, V2.11 closed with indexing deferred | V2.11.10 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | API build/tests, Admin type-check/QA, governance check/test, projection build/validate CLI, local API auth-bound GET checks, Admin default/API-mode HTTP 200 checks, evidence chain index, mutation/no-secret scans, and V2.11 closeout completed without second import execution, live tenant creation, Roller import/resume, mutation endpoints, active Admin write controls, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation. |
+| Multi-Tenant Onboarding Operator Handoff Packet And Fixture Parity Hardening | Complete, local read-only handoff parity foundation created | V2.12.1 / L01 / L02 / L03 / L04 / L06 / L07 / L08 / L09 / L10 / L11 / L12 / L13 / L14 / L15 | Operator handoff packet contract, Ice/Roller valid handoff fixtures, seven invalid parity fixtures, local validator/CLI/tests, parity matrix, QA checklist, future consumer plan, result package, root report, and platform control updates completed without import execution, live tenant creation, Roller import/resume, OLM staging write, mutation endpoints, active Admin write controls, writes, deploy, DNS, indexing, contact POST, Azure mutation, protected config, token/key access, or compressed archive creation. |
 | OLM real staging provider target | Seeded and readback-hardened for approved scoped batch | V2.2 / V2.3 / V2.5 | Keep `olm-staging-cosmos-nosql-v1` closed to additional writes until a new explicit approval. |
 | OLM readback/rollback | Repeat readback passed; rollback plan preserved | V2.2 / V2.4 / V2.9 | Non-destructive rollback validation passed; rollback deletion was not executed. |
 | Azure resource creation/mutation | Closed | V2.3 / L11 | Separate explicit approval required. |
@@ -69,7 +74,7 @@
 | Production database migration | Closed | V2.9 / L12 | Future explicit production migration approval only. |
 | Production provider writes | Closed | V2.9 / L12 | Future explicit production write approval only. |
 | CMS writes | Closed | L04 / L12 | Separate scoped approval required. |
-| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9 complete; V2.10.1 platform closeout reconciled; V2.11.7 scoped Ice import execution gate blocked before import | V2.8 / V2.9 / V2.10 / V2.11 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, tenant import execution, live tenant creation, any further deployment, runtime job integration, live provider endpoints beyond explicitly approved read-only surfaces, Electron runtime, and any Azure mutation require separate explicit approval. |
+| Deployment/indexing/publication | Isolated staging deployment complete; production static release verified; contact-form live verification passed; indexing deferred; V2.9 complete; V2.10.1 platform closeout reconciled; V2.11.10 closeout complete; V2.12.1 handoff parity foundation complete | V2.8 / V2.9 / V2.10 / V2.11 / V2.12 / L15 | Search Console/indexing execution, DNS, custom domains, CMS/provider writes, contact-form submission, live/provider tenant import execution, live tenant creation, any further deployment, runtime job integration, live provider endpoints beyond explicitly approved read-only surfaces, Electron runtime, and any Azure mutation require separate explicit approval. |
 
 ## Remaining OLM Stage-Ready Gates
 
@@ -805,3 +810,74 @@ Still separately gated:
 - V2.11.7 next phase: `V2.11.7A_scoped_ice_import_execution_manifest_and_target_command_binding_closure`
 - V2.11.7 live tenant creation, tenant import execution, Roller import, Roller resume: `0`
 - V2.11.7 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS, compressed archives: `0`
+- V2.11.7A classification: `scoped_ice_import_execution_manifest_target_command_readback_closure_complete`
+- V2.11.7A execution approval manifest: `executionApprovalGranted_true`
+- V2.11.7A target mode: `local_scoped_import_execution`
+- V2.11.7A target storage: `ignored_tmp_json_files`
+- V2.11.7A write command: `execute-scoped-import_bound`
+- V2.11.7A readback command: `readback-scoped-import_bound`
+- V2.11.7A execution run ID: `execution-ice-rink-rentals-carryforward-v2-11-2-v2-11-7a-local`
+- V2.11.7A Ice package hash: `sha256:b0fdd67d5d31e798bf1a9ae3e5f576c17129030cd816e3a8b726b0767002d073`
+- V2.11.7A local entity mappings written: `10`
+- V2.11.7A readback: `passed_routes_3_content_4_media_1_form_1`
+- V2.11.7A Roller exclusion: `passed_blocked_tenant_paused_no_import`
+- V2.11.7A generated execution/readback evidence: `ignored_import_governance_tmp_v2_11_7a`
+- V2.11.7A next phase: `V2.11.8_import_execution_evidence_freeze_operator_console_readonly_projection_planning`
+- V2.11.7A live tenant creation, Roller import, Roller resume: `0`
+- V2.11.7A deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS, compressed archives: `0`
+- V2.11.8 classification: `import_execution_evidence_freeze_operator_console_readonly_projection_planning_complete`
+- V2.11.8 frozen approval manifest: `approval-ice-rink-rentals-carryforward-v2-11-2-v2-11-7a-execution`
+- V2.11.8 frozen execution run ID: `execution-ice-rink-rentals-carryforward-v2-11-2-v2-11-7a-local`
+- V2.11.8 frozen Ice package hash: `sha256:b0fdd67d5d31e798bf1a9ae3e5f576c17129030cd816e3a8b726b0767002d073`
+- V2.11.8 projection schema: `pumpkin.importExecutionOperatorProjection.v1`
+- V2.11.8 projection mode: `local_readonly_evidence_freeze`
+- V2.11.8 projection panels: `15_readonly`
+- V2.11.8 future API route matrix: `7_get_only_routes`
+- V2.11.8 projection validator: `passed`
+- V2.11.8 generated projection evidence: `ignored_import_governance_tmp_v2_11_8`
+- V2.11.8 next phase: `V2.11.9_operator_console_readonly_projection_api_admin_prototype_approval`
+- V2.11.8 live tenant creation, tenant import execution, Roller import, Roller resume: `0`
+- V2.11.8 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS, compressed archives: `0`
+- V2.11.9 classification: `import_execution_operator_projection_api_admin_readonly_prototype_complete`
+- V2.11.9 API base path: `/api/admin/import-executions`
+- V2.11.9 API provider mode: `api-local-import-execution-projection-readonly`
+- V2.11.9 implemented GET routes: `7`
+- V2.11.9 Admin route: `/dashboard/import-executions`
+- V2.11.9 Admin local provider mode: `admin-local-import-execution-projection-readonly`
+- V2.11.9 Admin API provider mode: `admin-api-import-execution-projection-readonly`
+- V2.11.9 required Admin panels: `13_verified`
+- V2.11.9 disabled future actions: `execute_import_resume_roller_publish_live_run_olm_retry_submit_indexing_all_disabled`
+- V2.11.9 API build and scoped runner: `passed`
+- V2.11.9 Admin type-check and QA: `passed`
+- V2.11.9 Admin local runtime route GET: `http_200`
+- V2.11.9 POST/PUT/PATCH/DELETE import execution projection endpoints: `0`
+- V2.11.9 live tenant creation, tenant import execution, Roller import, Roller resume: `0`
+- V2.11.9 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS, compressed archives: `0`
+- V2.11.10 classification: `import_execution_operator_projection_runtime_signoff_v2_11_closeout_complete`
+- V2.11.10 V2.11 closeout decision: `closed_100_percent_with_indexing_deferred`
+- V2.11.10 API build and scoped runner: `passed`
+- V2.11.10 Admin type-check and QA: `passed`
+- V2.11.10 governance check/test: `passed`
+- V2.11.10 projection build/validate CLI: `passed`
+- V2.11.10 API local runtime unauthenticated GET checks: `7_routes_all_401_auth_boundary`
+- V2.11.10 API authenticated HTTP 200 checks: `skipped_requires_token_or_protected_config`
+- V2.11.10 Admin default route GET: `http_200`
+- V2.11.10 Admin API-provider route GET: `http_200`
+- V2.11.10 local API/Admin processes started or used for signoff: `stopped`
+- V2.11.10 POST/PUT/PATCH/DELETE import execution projection endpoints: `0`
+- V2.11.10 live tenant creation, tenant import execution, Roller import, Roller resume: `0`
+- V2.11.10 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS, compressed archives: `0`
+- V2.12.1 classification: `operator_handoff_packet_fixture_parity_hardening_complete`
+- V2.12.1 handoff packet schema: `pumpkin.operatorHandoffPacket.v1`
+- V2.12.1 required handoff fields: `26`
+- V2.12.1 valid handoff fixtures: `2`
+- V2.12.1 invalid parity fixtures: `7`
+- V2.12.1 parity validator and CLI: `implemented`
+- V2.12.1 governance check/test: `passed`
+- V2.12.1 handoff CLI Ice/Roller: `passed`
+- V2.12.1 projection build/validate CLI: `passed`
+- V2.12.1 generated projection evidence: `ignored_import_governance_tmp_v2_12_1`
+- V2.12.1 POST/PUT/PATCH/DELETE import or projection endpoints: `0`
+- V2.12.1 live tenant creation, tenant import execution, Roller import, Roller resume, OLM staging write: `0`
+- V2.12.1 deployment/redeployment, DNS/custom-domain mutation, Search Console/indexing action, contact-form submission/POST, crawl, outbound URL checks, Azure mutation, RBAC assignment, protected config reads, deployment/OAuth token use/prints/exports/listing, keys/listKeys, connection strings, SAS, compressed archives: `0`
+- Separate future 2H-23A OLM staging target resolution and scoped staging write retry: `carried_forward_not_executed_in_v2_12_1`

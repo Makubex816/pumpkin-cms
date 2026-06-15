@@ -4,12 +4,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/validate-import-package.mjs && node --check src/import-package-builder.mjs && node --check src/import-execution-preflight.mjs && node --check src/import-package-governance-cli.mjs && node --check test/validator.test.mjs && node --check test/builder-preview.test.mjs && node --check test/intake-preview-contract.test.mjs && node --check test/import-execution-preflight.test.mjs",
-    "test": "node test/validator.test.mjs && node test/builder-preview.test.mjs && node test/intake-preview-contract.test.mjs && node test/import-execution-preflight.test.mjs",
+    "check": "node --check src/validate-import-package.mjs && node --check src/import-package-builder.mjs && node --check src/import-execution-preflight.mjs && node --check src/scoped-import-execution.mjs && node --check src/operator-projection.mjs && node --check src/operator-handoff-parity.mjs && node --check src/import-package-governance-cli.mjs && node --check test/validator.test.mjs && node --check test/builder-preview.test.mjs && node --check test/intake-preview-contract.test.mjs && node --check test/import-execution-preflight.test.mjs && node --check test/scoped-import-execution.test.mjs && node --check test/operator-projection.test.mjs && node --check test/operator-handoff-parity.test.mjs",
+    "test": "node test/validator.test.mjs && node test/builder-preview.test.mjs && node test/intake-preview-contract.test.mjs && node test/import-execution-preflight.test.mjs && node test/scoped-import-execution.test.mjs && node test/operator-projection.test.mjs && node test/operator-handoff-parity.test.mjs",
     "validate": "node src/import-package-governance-cli.mjs validate",
     "build-package": "node src/import-package-governance-cli.mjs build-package",
     "preview-package": "node src/import-package-governance-cli.mjs preview-package",
     "build-approval-manifest": "node src/import-package-governance-cli.mjs build-approval-manifest",
-    "dry-run-import": "node src/import-package-governance-cli.mjs dry-run-import"
+    "dry-run-import": "node src/import-package-governance-cli.mjs dry-run-import",
+    "finalize-execution-manifest": "node src/import-package-governance-cli.mjs finalize-execution-manifest",
+    "execute-scoped-import": "node src/import-package-governance-cli.mjs execute-scoped-import",
+    "readback-scoped-import": "node src/import-package-governance-cli.mjs readback-scoped-import",
+    "build-operator-projection": "node src/import-package-governance-cli.mjs build-operator-projection",
+    "validate-operator-projection": "node src/import-package-governance-cli.mjs validate-operator-projection",
+    "validate-operator-handoff": "node src/import-package-governance-cli.mjs validate-operator-handoff"
   }
 }
