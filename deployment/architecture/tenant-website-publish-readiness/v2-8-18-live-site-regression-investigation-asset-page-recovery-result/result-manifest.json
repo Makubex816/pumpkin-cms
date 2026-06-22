@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "V2.8.18",
+  "resultType": "live-site-regression-investigation-asset-page-recovery-plan",
+  "status": "complete_readonly_no_deploy",
+  "createdAt": "2026-06-22",
+  "lane": "V2.8 Tenant Website / Public Website Regression Recovery",
+  "classification": "readonly_live_site_regression_investigation_no_deploy",
+  "boundaryRule": "custom-domain attachment determines production boundary",
+  "noProductionDeployWasPerformedInV2818": true,
+  "productionBoundTarget": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "location": "East US 2",
+    "sku": "Free",
+    "provider": "SwaCli",
+    "customDomains": [
+      {
+        "domain": "iceskatingrinkrentals.com",
+        "status": "Ready",
+        "createdOn": "2026-06-06T15:40:13.863524+00:00"
+      },
+      {
+        "domain": "www.iceskatingrinkrentals.com",
+        "status": "Ready",
+        "createdOn": "2026-06-06T15:51:52.753302+00:00"
+      }
+    ],
+    "classification": "production_bound"
+  },
+  "isolatedStagingTarget": {
+    "name": "swa-ice-static-isolated-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+    "location": "East US 2",
+    "sku": "Free",
+    "provider": "SwaCli",
+    "customDomains": [],
+    "classification": "isolated_staging"
+  },
+  "currentArtifactCandidates": [
+    {
+      "candidateId": "v2-8-17d-proven-production-deploy",
+      "artifactRun": "sanitized_20260613174033",
+      "artifactHash": "506c6b4c99bcabed162466c79b299f900c6070855b90cd6f38ffae37fceff899",
+      "deploymentId": "96fd744f-5589-4ac3-bebb-cfa99048dc0e",
+      "target": "swa-ice-static-staging",
+      "source": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_17D_PRODUCTION_DEPLOY_WORKING_DIRECTORY_SEPARATION_CORRECTIVE_EXECUTION_REPORT.md",
+      "fileCount": 41,
+      "routes": [
+        "/",
+        "/service-areas",
+        "/contact"
+      ],
+      "imageAssetFilesFound": 0,
+      "status": "proven_deployed_minimal_static_artifact"
+    },
+    {
+      "candidateId": "post-v2-8-indexing-cleanup-redeploy",
+      "artifactPath": "apps/ice-rink-web/.static-artifacts/ice-rink-rentals/out",
+      "manifestGeneratedAt": "2026-06-13T19:53:26.069Z",
+      "source": "deployment/azure/ice-production-indexing-cleanup-result/manifest.json",
+      "fileCount": 42,
+      "routes": [
+        "/",
+        "/contact",
+        "/service-areas"
+      ],
+      "imageAssetFilesFound": 0,
+      "status": "documented_redeploy_candidate_without_live_fetch_in_this_phase"
+    }
+  ],
+  "assetInventory": {
+    "appsIceRinkWebPublicExists": false,
+    "committedImageAssetsFoundInIceSource": 0,
+    "currentDeployableIceOutputImageFilesFound": 0,
+    "currentSeedPageImageUrlFields": "empty",
+    "historyWideMediaPathSearchFoundImageHeavyCandidate": false
+  },
+  "rootCause": {
+    "proven": [
+      "swa-ice-static-staging is production-bound by custom-domain attachment.",
+      "V2.8.17D deployed sanitized_20260613174033 to swa-ice-static-staging.",
+      "The deployed/proposed static artifacts are minimal three-route outputs with empty image fields and no image files."
+    ],
+    "unproven": [
+      "The exact storage location of the older image-heavy public site.",
+      "The exact moment the older image-heavy site disappeared.",
+      "Whether the older image-heavy site exists outside Git, backups, CMS media, an old host, or an external design source."
+    ]
+  },
+  "boundaries": {
+    "swaDeploy": false,
+    "productionBoundDeploy": false,
+    "deployToSwaIceStaticStaging": false,
+    "azureMutation": false,
+    "dnsChange": false,
+    "customDomainChange": false,
+    "searchConsoleIndexing": false,
+    "tokenReset": false,
+    "tokenPrintOrInspection": false,
+    "protectedConfigRead": false,
+    "dotenvLocalRead": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionString": false,
+    "sasGeneration": false,
+    "contactFormPost": false,
+    "productionCrawl": false,
+    "liveOutboundUrlCheck": false,
+    "livePublicationAction": false,
+    "filesStaged": false
+  },
+  "validation": {
+    "resultManifestJsonParse": "passed",
+    "requiredPackageFilesPresent": "passed_23_package_files_24_with_root",
+    "gitDiffCheck": "passed",
+    "secretLikeScan": "passed_24_files",
+    "protectedConfigPolicyReferenceScan": "passed_documentation_only_references_reviewed",
+    "noDeployNoMutationBoundary": "passed_24_files",
+    "noFilesStaged": "passed"
+  }
+}
