@@ -5,6 +5,9 @@ import type { SiteKey } from '@/config/sites';
 export type PumpkinRenderMode = 'runtime' | 'static';
 
 const validSiteKeys = new Set<SiteKey>(['ice-rink-rentals', 'roller-rink-rentals']);
+const defaultStaticFormEndpoints: Partial<Record<SiteKey, string>> = {
+  'ice-rink-rentals': '/api/static-contact',
+};
 
 export function getRenderMode(): PumpkinRenderMode {
   return process.env.PUMPKIN_RENDER_MODE === 'static' ? 'static' : 'runtime';
@@ -28,11 +31,17 @@ export function getStaticFormAction(): string {
 }
 
 export function getStaticFormEndpoint(): string {
-  return (
+  const configuredEndpoint = (
     process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT ||
     process.env.STATIC_FORM_ENDPOINT ||
     process.env.NEXT_PUBLIC_STATIC_FORM_ACTION ||
     process.env.STATIC_FORM_ACTION ||
     ''
   );
+
+  if (configuredEndpoint) return configuredEndpoint;
+  if (!isStaticRenderMode()) return '';
+
+  const staticSiteKey = getStaticSiteKey();
+  return staticSiteKey ? defaultStaticFormEndpoints[staticSiteKey] || '' : '';
 }

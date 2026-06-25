@@ -28,6 +28,7 @@ export function buildCorsHeaders(origin = '', env = process.env) {
     'https://iceskatingrinkrentals.com',
     'https://www.iceskatingrinkrentals.com',
     'https://ice-dev.iceskatingrinkrentals.com',
+    'https://kind-island-0a85a740f.7.azurestaticapps.net',
     'https://rollerrinkrentals.com',
     'https://www.rollerrinkrentals.com',
     'https://roller-dev.rollerrinkrentals.com',

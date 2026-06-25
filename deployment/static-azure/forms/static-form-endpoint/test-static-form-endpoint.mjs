@@ -115,6 +115,20 @@ const tests = [
     assert.equal(forwardedEntry.metadata.staticEndpointRef, 'ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT');
     assert.equal(forwardedEntry.metadata.leadRecipientRef, 'ICE_RINK_RENTALS_LEAD_RECIPIENT');
   }],
+  ['accepts isolated staging default host origin for same-origin SWA API posts', async () => {
+    const { result } = await submit(frontendPayload(), {
+      headers: {
+        origin: 'https://kind-island-0a85a740f.7.azurestaticapps.net',
+        host: 'kind-island-0a85a740f.7.azurestaticapps.net',
+      },
+    });
+    assert.equal(result.status, 200);
+    assert.equal(result.body.ok, true);
+    assert.equal(
+      result.headers['Access-Control-Allow-Origin'],
+      'https://kind-island-0a85a740f.7.azurestaticapps.net',
+    );
+  }],
   ['preserves legacy domainRoutingKey and recipientGroup payloads', async () => {
     const { result, forwardedEntry } = await submit(legacyPayload());
     assert.equal(result.status, 200);

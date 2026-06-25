@@ -150,6 +150,20 @@ const tests = [
     assert.equal(fetchCalled, false);
     assert.equal(JSON.stringify(result.jsonBody).includes(defaultEnv.ICE_RINK_RENTALS_API_KEY), false);
   }],
+  ['accepts isolated staging default host origin in no-email dry-run mode', async () => {
+    const result = await submit(frontendPayload(), {
+      headers: {
+        origin: 'https://kind-island-0a85a740f.7.azurestaticapps.net',
+        host: 'kind-island-0a85a740f.7.azurestaticapps.net',
+      },
+    });
+    assert.equal(result.status, 200);
+    assert.equal(result.jsonBody.ok, true);
+    assert.equal(
+      result.headers['Access-Control-Allow-Origin'],
+      'https://kind-island-0a85a740f.7.azurestaticapps.net',
+    );
+  }],
   ['accepts legacy payload through primary wrapper route', async () => {
     const result = await submit(legacyPayload());
     assert.equal(result.status, 200);

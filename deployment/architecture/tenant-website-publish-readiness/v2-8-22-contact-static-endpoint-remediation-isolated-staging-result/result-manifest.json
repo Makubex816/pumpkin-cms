@@ -1,0 +1,82 @@
+{
+  "phase": "V2.8.22",
+  "date": "2026-06-25",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification",
+  "classification": "contact_static_endpoint_remediation_isolated_staging_verification",
+  "status": "completed_with_isolated_staging_api_route_blocker",
+  "carryforward": {
+    "from": "V2.8.21",
+    "knownFailureTraceId": "v2-8-20-live-contact-20260625140126",
+    "knownFailureStatus": 405,
+    "rootCause": [
+      "static_export_excludes_api_route",
+      "api_handler_missing_from_static_artifact",
+      "frontend_points_to_wrong_endpoint"
+    ]
+  },
+  "targets": {
+    "isolatedStaging": {
+      "name": "swa-ice-static-isolated-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+      "deploymentApproved": true,
+      "deploymentAttemptsSent": 1
+    },
+    "productionBound": {
+      "name": "swa-ice-static-staging",
+      "deploymentApproved": false,
+      "postApproved": false,
+      "deploymentAttemptsSent": 0,
+      "contactPostsSent": 0
+    }
+  },
+  "remediation": {
+    "publicStaticFormEndpoint": "/api/static-contact",
+    "runtimeEndpointUnchanged": "/api/contact",
+    "publicContactEmail": "contact@iceskatingrinkrentals.com",
+    "sourceRemediated": true
+  },
+  "artifacts": {
+    "sanitizedBuildRunId": "sanitized_20260625222736",
+    "sanitizedOutDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260625222736/repo/apps/ice-rink-web/out",
+    "isolatedSwaPackageRoot": "apps/ice-rink-web/.tmp/v2-8-22-isolated-swa-package/package_20260625223100",
+    "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-22-contact-static-endpoint-remediation-isolated-staging-result"
+  },
+  "isolatedContactPost": {
+    "sent": true,
+    "sentCount": 1,
+    "retrySent": false,
+    "traceId": "v2-8-22-isolated-contact-20260625181642",
+    "endpoint": "https://kind-island-0a85a740f.7.azurestaticapps.net/api/static-contact",
+    "statusCode": 404,
+    "responseOk": false,
+    "bodySummary": {
+      "isJson": false,
+      "empty": true,
+      "length": 0,
+      "successFlag": null,
+      "entryIdPresent": false
+    }
+  },
+  "validation": {
+    "staticFormEndpointCheck": "pass",
+    "staticFormEndpointTests": "pass",
+    "typeCheck": "pass",
+    "validateStaticIce": "pass_with_34_existing_warnings",
+    "sanitizedStaticBuild": "pass",
+    "contactArtifactEndpointVerification": "pass",
+    "isolatedContactPageGet": "pass",
+    "strictStaticOutputValidator": "failed_known_non_contact_media_origin_policy; static_form_gate_passed",
+    "strictStagingPackageValidator": "failed_known_non_contact_media_origin_policy; static_form_gate_passed",
+    "isolatedContactPost": "failed_404_empty_body"
+  },
+  "securityBoundary": {
+    "protectedConfigRead": false,
+    "deploymentTokenPrinted": false,
+    "deploymentTokenListedOrReset": false,
+    "productionDeployOccurred": false,
+    "productionPostOccurred": false,
+    "dnsOrCustomDomainMutation": false,
+    "searchConsoleOrIndexing": false
+  }
+}

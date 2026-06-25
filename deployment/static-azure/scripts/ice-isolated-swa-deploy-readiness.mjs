@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, statSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import path from 'path';
 import process from 'process';
 
@@ -98,6 +98,74 @@ function validateArtifactRoot(artifactRoot) {
   };
 }
 
+function validateApiRoot(apiRoot) {
+  const errors = [];
+  const requiredFiles = [
+    'host.json',
+    'package.json',
+    'azure-function-static-contact.mjs',
+    'azure-function-adapter.mjs',
+    'contact-handler.mjs',
+    'validate-static-form-payload.mjs',
+    'sanitize-static-form-payload.mjs',
+    'graph-send-mail-delivery.mjs',
+  ];
+
+  if (!apiRoot) {
+    errors.push('Missing --api-root.');
+    return { ok: false, errors, fileCount: 0 };
+  }
+
+  const resolvedRoot = path.resolve(apiRoot);
+  if (!existsSync(resolvedRoot)) {
+    errors.push(`API root does not exist: ${resolvedRoot}`);
+    return { ok: false, errors, fileCount: 0, resolvedRoot };
+  }
+
+  if (!statSync(resolvedRoot).isDirectory()) {
+    errors.push(`API root is not a directory: ${resolvedRoot}`);
+    return { ok: false, errors, fileCount: 0, resolvedRoot };
+  }
+
+  for (const requiredFile of requiredFiles) {
+    const requiredPath = path.join(resolvedRoot, requiredFile);
+    if (!existsSync(requiredPath) || !statSync(requiredPath).isFile()) {
+      errors.push(`Missing required API file: ${requiredFile}`);
+    }
+  }
+
+  const adapterPath = path.join(resolvedRoot, 'azure-function-adapter.mjs');
+  if (existsSync(adapterPath)) {
+    const adapterText = readFileSync(adapterPath, 'utf8');
+    if (!adapterText.includes("STATIC_CONTACT_PUBLIC_PATH = '/api/static-contact'")) {
+      errors.push('API adapter does not declare STATIC_CONTACT_PUBLIC_PATH as /api/static-contact.');
+    }
+    if (!adapterText.includes("STATIC_CONTACT_ROUTE = 'static-contact'")) {
+      errors.push('API adapter does not declare STATIC_CONTACT_ROUTE as static-contact.');
+    }
+  }
+
+  const hostPath = path.join(resolvedRoot, 'host.json');
+  if (existsSync(hostPath)) {
+    try {
+      const host = JSON.parse(readFileSync(hostPath, 'utf8'));
+      if (host?.extensions?.http?.routePrefix !== 'api') {
+        errors.push('API host.json routePrefix is not api.');
+      }
+    } catch (error) {
+      errors.push(`API host.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+    }
+  }
+
+  return {
+    ok: errors.length === 0,
+    errors,
+    fileCount: walkFiles(resolvedRoot).length,
+    resolvedRoot,
+    publicPath: '/api/static-contact',
+  };
+}
+
 function checkForbiddenArgs(argv) {
   return argv.slice(2).filter((arg) => forbiddenArgs.has(arg));
 }
@@ -111,6 +179,7 @@ function main() {
     defaultHostname: String(args['default-hostname'] || expected.defaultHostname),
   };
   const artifact = validateArtifactRoot(args['artifact-root'] ? String(args['artifact-root']) : '');
+  const api = validateApiRoot(args['api-root'] ? String(args['api-root']) : '');
   const tokenPresent = Boolean(process.env[expected.tokenEnvVar]);
   const targetMatchesExpected =
     target.appName === expected.appName &&
@@ -118,6 +187,7 @@ function main() {
     target.defaultHostname === expected.defaultHostname;
   const errors = [
     ...artifact.errors,
+    ...api.errors,
     ...forbidden.map((arg) => `Forbidden deployment-secret argument supplied to readiness wrapper: ${arg}`),
   ];
 
@@ -141,7 +211,14 @@ function main() {
       customDomainsRequired: [],
     },
     artifactRoot: artifact.resolvedRoot || null,
+    apiRoot: api.resolvedRoot || null,
     fileCount: artifact.fileCount,
+    apiFileCount: api.fileCount,
+    apiDeploymentShape: {
+      included: api.ok,
+      publicPath: api.publicPath || '/api/static-contact',
+      swaCliFlag: '--api-location',
+    },
     deploymentAuth: {
       requiredEnvVar: expected.tokenEnvVar,
       presentInCurrentProcess: tokenPresent,
@@ -154,7 +231,7 @@ function main() {
       usesDeploymentTokenArgument: false,
       forbiddenPrintTokenFlag: true,
       futureCommandShape:
-        `npx --yes ${expected.swaCliPackage} deploy "<artifact-root>" --env production`,
+        `npx --yes ${expected.swaCliPackage} deploy --app-location "<package-root>" --output-location app --api-location api --env production`,
       tokenSource: `${expected.tokenEnvVar} process environment variable`,
     },
     deploymentAttempted: false,

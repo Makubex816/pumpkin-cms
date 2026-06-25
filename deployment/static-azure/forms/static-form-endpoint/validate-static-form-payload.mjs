@@ -37,6 +37,7 @@ export function getSiteConfigs(env = process.env) {
         'https://iceskatingrinkrentals.com',
         'https://www.iceskatingrinkrentals.com',
         'https://ice-dev.iceskatingrinkrentals.com',
+        'https://kind-island-0a85a740f.7.azurestaticapps.net',
         ...sharedLocalOrigins,
       ],
       apiKeyEnv: 'ICE_RINK_RENTALS_API_KEY',

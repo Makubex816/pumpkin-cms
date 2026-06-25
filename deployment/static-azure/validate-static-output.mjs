@@ -11,6 +11,8 @@ const sites = {
     expectedPageSlugs: ['home', 'contact', 'service-areas'],
     mediaOrigin: 'https://media.iceskatingrinkrentals.com',
     requiresStaticFormEndpoint: true,
+    defaultStaticFormEndpoint: '/api/static-contact',
+    sameOriginStaticFormEndpoints: ['/api/static-contact'],
   },
   'roller-rink-rentals': {
     domain: 'rollerrinkrentals.com',
@@ -98,14 +100,34 @@ function isTextFile(filePath) {
   return textExtensions.has(path.extname(filePath).toLowerCase());
 }
 
-function getConfiguredStaticFormEndpoint() {
+function getConfiguredStaticFormEndpoint(site) {
   return (
     process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT ||
     process.env.STATIC_FORM_ENDPOINT ||
     process.env.NEXT_PUBLIC_STATIC_FORM_ACTION ||
     process.env.STATIC_FORM_ACTION ||
+    site.defaultStaticFormEndpoint ||
     ''
   );
+}
+
+function isConfiguredStaticFormEndpointFromEnv() {
+  return Boolean(
+    process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT ||
+    process.env.STATIC_FORM_ENDPOINT ||
+    process.env.NEXT_PUBLIC_STATIC_FORM_ACTION ||
+    process.env.STATIC_FORM_ACTION
+  );
+}
+
+function isApprovedStaticFormEndpointShape(endpoint, site) {
+  if (!endpoint) return false;
+  if (/^https:\/\//i.test(endpoint) && !/localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint)) {
+    return true;
+  }
+
+  return Array.isArray(site.sameOriginStaticFormEndpoints) &&
+    site.sameOriginStaticFormEndpoints.includes(endpoint);
 }
 
 function validateRequiredArtifacts(outDir, site, errors, warnings) {
@@ -247,11 +269,10 @@ function getStaticFormGateState(site) {
     };
   }
 
-  const endpoint = getConfiguredStaticFormEndpoint();
+  const endpoint = getConfiguredStaticFormEndpoint(site);
   const endpointConfigured = Boolean(endpoint);
-  const endpointApprovedHttps = endpointConfigured &&
-    /^https:\/\//i.test(endpoint) &&
-    !/localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint);
+  const endpointApprovedShape = endpointConfigured &&
+    isApprovedStaticFormEndpointShape(endpoint, site);
   const ownerApproved = isTrueEnv('STATIC_FORM_ENDPOINT_OWNER_APPROVED', 'STATIC_FORM_OWNER_APPROVED');
   const backendVerified = isTrueEnv('STATIC_FORM_ENDPOINT_VERIFIED', 'STATIC_FORM_BACKEND_VERIFIED');
   const liveCheckApproved = isTrueEnv('STATIC_FORM_LIVE_CHECK_APPROVED');
@@ -259,7 +280,7 @@ function getStaticFormGateState(site) {
   let status = 'configured_owner_approved_backend_verified';
   if (!endpointConfigured) {
     status = 'blocked_endpoint_missing';
-  } else if (!endpointApprovedHttps) {
+  } else if (!endpointApprovedShape) {
     status = 'blocked_endpoint_unapproved_shape';
   } else if (!ownerApproved) {
     status = 'blocked_owner_approval_missing';
@@ -271,16 +292,18 @@ function getStaticFormGateState(site) {
     required: true,
     status,
     endpointConfiguration: endpointConfigured
-      ? (endpointApprovedHttps ? 'configured_approved_https_shape' : 'configured_unapproved_or_placeholder_shape')
+      ? (endpointApprovedShape ? 'configured_approved_swa_endpoint_shape' : 'configured_unapproved_or_placeholder_shape')
       : 'missing',
-    ownerApproval: endpointConfigured && endpointApprovedHttps
+    ownerApproval: endpointConfigured && endpointApprovedShape
       ? (ownerApproved ? 'approved' : 'missing')
       : 'not_evaluated_until_endpoint_configured',
-    backendVerification: endpointConfigured && endpointApprovedHttps
+    backendVerification: endpointConfigured && endpointApprovedShape
       ? (backendVerified ? 'verified' : 'missing')
       : 'not_evaluated_until_endpoint_configured',
     liveCheck: liveCheckApproved ? 'explicitly_approved' : 'not_approved_not_performed',
-    valueSource: endpointConfigured ? 'process_environment_public_static_form_endpoint' : 'none',
+    valueSource: endpointConfigured
+      ? (isConfiguredStaticFormEndpointFromEnv() ? 'process_environment_public_static_form_endpoint' : 'site_default_same_origin_static_contact_endpoint')
+      : 'none',
   };
 }
 
@@ -299,8 +322,8 @@ function validateStaticFormProductionGate(site, externalApprovalGates) {
     addExternalApprovalGate(
       externalApprovalGates,
       'static-form-endpoint-approved-https',
-      'Static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.',
-      'Owner-approved non-placeholder HTTPS endpoint for the Ice static contact form.',
+      'Static form endpoint must be a verified HTTPS endpoint or approved same-origin Static Web Apps API path.',
+      'Owner-approved non-placeholder HTTPS endpoint or /api/static-contact same-origin SWA API path for the Ice static contact form.',
     );
   } else if (staticFormGate.ownerApproval !== 'approved') {
     addClassifiedExternalApprovalGate(

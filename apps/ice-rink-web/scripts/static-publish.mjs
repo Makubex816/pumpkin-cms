@@ -9,6 +9,7 @@ const siteDefinitions = {
     expectedSlugs: ['home', 'contact', 'service-areas'],
     obsoleteSlugs: ['ice-rink-rentals', 'events-holiday-activations'],
     mediaOrigin: 'https://media.iceskatingrinkrentals.com',
+    defaultStaticFormEndpoint: '/api/static-contact',
   },
   'roller-rink-rentals': {
     domain: 'rollerrinkrentals.com',
@@ -196,7 +197,18 @@ function getConfiguredStaticFormEndpoint() {
   return stringValue(process.env.NEXT_PUBLIC_STATIC_FORM_ENDPOINT) ||
     stringValue(process.env.STATIC_FORM_ENDPOINT) ||
     stringValue(process.env.NEXT_PUBLIC_STATIC_FORM_ACTION) ||
-    stringValue(process.env.STATIC_FORM_ACTION);
+    stringValue(process.env.STATIC_FORM_ACTION) ||
+    stringValue(siteDefinitions[siteKey]?.defaultStaticFormEndpoint);
+}
+
+function isApprovedStaticFormEndpoint(endpoint) {
+  const value = stringValue(endpoint).trim();
+  if (!value) return false;
+  if (/^https:\/\//i.test(value) && !/localhost|127\.0\.0\.1|<|>|\bexample\./i.test(value)) {
+    return true;
+  }
+
+  return value === '/api/static-contact';
 }
 
 function collectStrings(value, pathLabel = 'page', output = []) {
@@ -275,8 +287,8 @@ function addProductionStaticGates(site, page, label, warnings) {
     const endpointVerified = process.env.STATIC_FORM_ENDPOINT_VERIFIED === 'true';
     if (!endpoint) {
       warnings.push(`${label}: contact form production readiness blocker: static form endpoint is not configured for static production readiness.`);
-    } else if (!/^https:\/\//i.test(endpoint) || /localhost|127\.0\.0\.1|<|>|\bexample\./i.test(endpoint)) {
-      warnings.push(`${label}: contact form production readiness blocker: static form endpoint must be a verified HTTPS endpoint, not a local or placeholder URL.`);
+    } else if (!isApprovedStaticFormEndpoint(endpoint)) {
+      warnings.push(`${label}: contact form production readiness blocker: static form endpoint must be a verified HTTPS endpoint or approved same-origin Static Web Apps API path.`);
     }
     if (!endpointVerified) {
       warnings.push(`${label}: contact form production readiness blocker: static form endpoint/backend verification is missing; Microsoft 365 mailbox status is not app form readiness.`);
