@@ -90,7 +90,7 @@ function seo(site: ResolvedSite, slug: string, title: string, description: strin
       'ice rink rental quote',
       'holiday ice rink rental',
     ],
-    robots: 'noindex, nofollow',
+    robots: 'index, follow',
     canonicalUrl: url,
     alternateUrls: [],
     structuredData: [],

@@ -1,0 +1,226 @@
+{
+  "id": "v2-8-19h-production-bound-release-execution-after-owner-signoff",
+  "createdAt": "2026-06-25T00:00:00-04:00",
+  "phaseStatus": "complete_production_bound_deployed_and_route_checked",
+  "lane": "V2.8 Tenant Website / Public Website Regression Recovery",
+  "classification": "production_bound_release_execution_owner_approved",
+  "ownerApproval": {
+    "homepageApproved": true,
+    "serviceAreasApproved": true,
+    "contactPageApproved": true,
+    "headerNavFooterApproved": true,
+    "azureMediaVisualsApproved": true,
+    "publicContactEmailApproved": true,
+    "mobileResponsiveApproved": true,
+    "ownerApprovesProductionRelease": true,
+    "statement": "Owner reviewed isolated staging pages and approved them being live."
+  },
+  "targets": {
+    "productionBound": {
+      "name": "swa-ice-static-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+      "customDomains": [
+        {
+          "name": "iceskatingrinkrentals.com",
+          "status": "Ready"
+        },
+        {
+          "name": "www.iceskatingrinkrentals.com",
+          "status": "Ready"
+        }
+      ],
+      "deploymentApproved": true,
+      "deploymentAttemptsSent": 1,
+      "deploymentResult": "success"
+    },
+    "isolatedStagingExcluded": {
+      "name": "swa-ice-static-isolated-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+      "customDomainCount": 0,
+      "deploymentApproved": false,
+      "deploymentAttemptsSent": 0
+    }
+  },
+  "sourceFixes": [
+    {
+      "path": "apps/ice-rink-web/src/data/ice-rink-recovered-pages.ts",
+      "reason": "Tiny validation fix: recovered production pages now emit index, follow robots metadata instead of noindex, nofollow after owner production approval."
+    }
+  ],
+  "artifact": {
+    "sanitizedBuildRunId": "sanitized_20260625063439",
+    "staticOutDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260625063439/repo/apps/ice-rink-web/out",
+    "fileCount": 41,
+    "totalBytes": 2219077,
+    "aggregateSha256": "a7adb1cb7f3779c6e3232fe0f5e65886de62cdb60e89dffb44ef3c470cba3119",
+    "hashMethod": "sha256(sorted relative path + NUL + per-file sha256 + newline)",
+    "routeFilesPresent": [
+      "/",
+      "/service-areas",
+      "/contact"
+    ]
+  },
+  "validations": [
+    {
+      "command": "git status --short",
+      "result": "busy_worktree_observed_index_empty"
+    },
+    {
+      "command": "git diff --cached --name-only",
+      "result": "empty"
+    },
+    {
+      "command": "az staticwebapp show and hostname list read-only checks",
+      "result": "pass"
+    },
+    {
+      "command": "npm run validate:static:ice",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass_with_known_34_warnings"
+    },
+    {
+      "command": "npm run type-check",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass"
+    },
+    {
+      "command": "npm run build:static:ice:sanitized",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass",
+      "runId": "sanitized_20260625063439",
+      "protectedConfigCopied": false,
+      "protectedConfigReferenceInOutput": false
+    },
+    {
+      "command": "artifact route/content/email/media validation",
+      "result": "pass"
+    },
+    {
+      "command": "Node exact known Azure media HEAD checks",
+      "result": "pass_9_of_9_status_200_image_png"
+    },
+    {
+      "command": "npx --yes @azure/static-web-apps-cli@2.0.9 --version",
+      "result": "2.0.9"
+    },
+    {
+      "command": "PowerShell boolean-only token readiness",
+      "result": "pass"
+    },
+    {
+      "command": "Node boolean-only token readiness",
+      "result": "pass"
+    },
+    {
+      "command": "npx --yes @azure/static-web-apps-cli@2.0.9 deploy",
+      "result": "success",
+      "attemptsSent": 1
+    },
+    {
+      "command": "bounded production-domain GET checks",
+      "result": "pass_6_of_6_status_200"
+    },
+    {
+      "command": "JSON parse for result-manifest.json",
+      "result": "pass"
+    },
+    {
+      "command": "node --check for changed/new JS/MJS",
+      "result": "not_applicable_no_v2_8_19h_js_or_mjs_files_changed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass_with_existing_busy_worktree_line_ending_warnings"
+    },
+    {
+      "command": "scoped trailing whitespace scan",
+      "result": "pass"
+    },
+    {
+      "command": "scoped secret-like scan",
+      "result": "pass_25_files_scanned"
+    },
+    {
+      "command": "deploy-target guard",
+      "result": "pass_production_attempt_1_isolated_attempt_0"
+    },
+    {
+      "command": "protected/generated/raw path guard",
+      "result": "pass"
+    },
+    {
+      "command": "final git diff --cached --name-only",
+      "result": "empty"
+    }
+  ],
+  "productionRouteChecks": [
+    {
+      "url": "https://iceskatingrinkrentals.com/",
+      "status": 200
+    },
+    {
+      "url": "https://iceskatingrinkrentals.com/service-areas",
+      "status": 200
+    },
+    {
+      "url": "https://iceskatingrinkrentals.com/contact",
+      "status": 200
+    },
+    {
+      "url": "https://www.iceskatingrinkrentals.com/",
+      "status": 200
+    },
+    {
+      "url": "https://www.iceskatingrinkrentals.com/service-areas",
+      "status": 200
+    },
+    {
+      "url": "https://www.iceskatingrinkrentals.com/contact",
+      "status": 200
+    }
+  ],
+  "hardStopConfirmations": {
+    "isolatedStagingDeployOccurred": false,
+    "productionBoundDeployOccurred": true,
+    "productionBoundDeployAttemptsSent": 1,
+    "dnsMutated": false,
+    "customDomainsMutated": false,
+    "searchConsoleOrIndexingRun": false,
+    "azureMediaUploadedOrMutated": false,
+    "swaConfigMutated": false,
+    "contactFormPostRun": false,
+    "protectedConfigContentRead": false,
+    "deploymentTokenPrintedListedExportedOrReset": false,
+    "productionRouteGetChecks": 6,
+    "arbitraryOutboundUrlChecks": false,
+    "filesStaged": false
+  },
+  "resultPackageFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-19g-carryforward.md",
+    "owner-approval-record.md",
+    "target-classification-result.md",
+    "production-bound-target-verification.md",
+    "isolated-staging-target-exclusion.md",
+    "local-build-validation-result.md",
+    "static-artifact-manifest.md",
+    "image-reference-validation-result.md",
+    "route-content-validation-result.md",
+    "public-contact-email-validation-result.md",
+    "swa-cli-and-token-readiness-result.md",
+    "production-deployment-result.md",
+    "production-route-check-result.md",
+    "production-release-evidence-summary.md",
+    "post-release-owner-verification-checklist.md",
+    "security-boundary-result.md",
+    "no-dns-indexing-contact-post-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ],
+  "nextGate": "production_post_release_owner_business_content_verification"
+}
