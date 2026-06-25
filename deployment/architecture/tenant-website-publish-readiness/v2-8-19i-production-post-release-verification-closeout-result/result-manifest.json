@@ -1,0 +1,209 @@
+{
+  "id": "v2-8-19i-production-post-release-verification-regression-recovery-closeout",
+  "createdAt": "2026-06-25T00:00:00-04:00",
+  "phaseStatus": "complete_post_release_verified_recovery_lane_closed",
+  "lane": "V2.8 Tenant Website / Public Website Regression Recovery",
+  "classification": "production_post_release_verification_no_deploy_closeout",
+  "carryforward": {
+    "completedReference": "V2.8.19H",
+    "commit": "f69de00",
+    "report": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19H_PRODUCTION_RELEASE_EXECUTION_REPORT.md",
+    "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-19h-production-bound-release-execution-result/",
+    "artifactRunId": "sanitized_20260625063439",
+    "artifactSha256": "a7adb1cb7f3779c6e3232fe0f5e65886de62cdb60e89dffb44ef3c470cba3119",
+    "productionDeploymentAttemptsSent": 1,
+    "productionDeploymentResult": "success"
+  },
+  "ownerPostReleaseInputs": {
+    "ownerAcknowledgesLiveRecoveredSite": true,
+    "ownerAcceptsHomepageLive": true,
+    "ownerAcceptsServiceAreasLive": true,
+    "ownerAcceptsContactPageLive": true,
+    "ownerAcceptsAzureMediaLive": true,
+    "ownerAcceptsPublicEmailLive": true,
+    "ownerRequestsSearchConsoleIndexing": false,
+    "ownerRequestsLiveContactFormPost": false
+  },
+  "targets": {
+    "productionBound": {
+      "name": "swa-ice-static-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+      "customDomains": [
+        {
+          "name": "iceskatingrinkrentals.com",
+          "status": "Ready"
+        },
+        {
+          "name": "www.iceskatingrinkrentals.com",
+          "status": "Ready"
+        }
+      ],
+      "classification": "production_bound"
+    },
+    "isolatedStagingExcluded": {
+      "name": "swa-ice-static-isolated-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+      "customDomainCount": 0,
+      "classification": "isolated_staging_excluded"
+    }
+  },
+  "productionRouteChecks": {
+    "checked": 6,
+    "status200Count": 6,
+    "totalEmailOccurrences": 16,
+    "totalAzureBlobOccurrences": 204,
+    "totalRepoLocalImageReferences": 0,
+    "contactMailtoRoutes": [
+      "https://iceskatingrinkrentals.com/contact",
+      "https://www.iceskatingrinkrentals.com/contact"
+    ],
+    "results": [
+      {
+        "url": "https://iceskatingrinkrentals.com/",
+        "status": 200,
+        "expectedContent": true,
+        "robotsIndexFollow": true,
+        "noNoindexNofollow": true,
+        "emailOccurrences": 1,
+        "azureBlobOccurrences": 35,
+        "repoLocalImageReferences": 0
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/service-areas",
+        "status": 200,
+        "expectedContent": true,
+        "robotsIndexFollow": true,
+        "noNoindexNofollow": true,
+        "emailOccurrences": 1,
+        "azureBlobOccurrences": 26,
+        "repoLocalImageReferences": 0
+      },
+      {
+        "url": "https://iceskatingrinkrentals.com/contact",
+        "status": 200,
+        "expectedContent": true,
+        "robotsIndexFollow": true,
+        "noNoindexNofollow": true,
+        "emailOccurrences": 6,
+        "mailtoOccurrences": 1,
+        "azureBlobOccurrences": 41,
+        "repoLocalImageReferences": 0
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/",
+        "status": 200,
+        "expectedContent": true,
+        "robotsIndexFollow": true,
+        "noNoindexNofollow": true,
+        "emailOccurrences": 1,
+        "azureBlobOccurrences": 35,
+        "repoLocalImageReferences": 0
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/service-areas",
+        "status": 200,
+        "expectedContent": true,
+        "robotsIndexFollow": true,
+        "noNoindexNofollow": true,
+        "emailOccurrences": 1,
+        "azureBlobOccurrences": 26,
+        "repoLocalImageReferences": 0
+      },
+      {
+        "url": "https://www.iceskatingrinkrentals.com/contact",
+        "status": 200,
+        "expectedContent": true,
+        "robotsIndexFollow": true,
+        "noNoindexNofollow": true,
+        "emailOccurrences": 6,
+        "mailtoOccurrences": 1,
+        "azureBlobOccurrences": 41,
+        "repoLocalImageReferences": 0
+      }
+    ]
+  },
+  "validations": [
+    {
+      "command": "git status --short",
+      "result": "busy_worktree_observed"
+    },
+    {
+      "command": "git log --oneline -15",
+      "result": "latest_commit_f69de00_v2_8_19h"
+    },
+    {
+      "command": "git diff --cached --name-only",
+      "result": "empty"
+    },
+    {
+      "command": "read-only Static Web Apps target metadata checks",
+      "result": "pass"
+    },
+    {
+      "command": "bounded production-domain GET checks",
+      "result": "pass_6_of_6_status_200"
+    },
+    {
+      "command": "JSON parse for result-manifest.json",
+      "result": "pass"
+    },
+    {
+      "command": "node --check for changed/new JS/MJS",
+      "result": "not_applicable_no_v2_8_19i_js_or_mjs_files_changed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass_with_existing_busy_worktree_line_ending_warnings"
+    },
+    {
+      "command": "scoped trailing whitespace scan",
+      "result": "pass"
+    },
+    {
+      "command": "scoped secret-like scan",
+      "result": "pass_20_files_scanned"
+    },
+    {
+      "command": "deploy/mutation command guard",
+      "result": "pass_20_files_scanned"
+    },
+    {
+      "command": "protected/generated/raw path guard",
+      "result": "pass"
+    },
+    {
+      "command": "final git diff --cached --name-only",
+      "result": "empty"
+    }
+  ],
+  "hardStopConfirmations": {
+    "deployOccurred": false,
+    "redeployOccurred": false,
+    "swaDeployCommandRun": false,
+    "dnsMutated": false,
+    "customDomainsMutated": false,
+    "searchConsoleOrIndexingRun": false,
+    "sitemapSubmitted": false,
+    "urlInspectionApiRun": false,
+    "googleIndexingApiRun": false,
+    "azureMediaUploadedOrMutated": false,
+    "protectedConfigContentRead": false,
+    "deploymentTokenPrintedListedExportedResetOrUsed": false,
+    "contactFormPostRun": false,
+    "productionRouteGetChecks": 6,
+    "arbitraryOutboundUrlChecks": false,
+    "filesStaged": false
+  },
+  "deferredGates": [
+    "Search Console/indexing",
+    "sitemap submission",
+    "URL Inspection API",
+    "Google Indexing API",
+    "live contact form POST",
+    "backend form delivery verification"
+  ],
+  "closeoutDecision": "V2.8 public website regression recovery lane closed complete",
+  "nextLaneRecommendation": "Resume paused product/platform lane work, with any indexing or contact-form test requiring a separate explicit approval prompt."
+}
