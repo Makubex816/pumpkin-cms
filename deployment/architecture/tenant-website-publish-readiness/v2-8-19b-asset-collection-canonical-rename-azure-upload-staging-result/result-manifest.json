@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "V2.8.19B",
+  "resultType": "recovery-asset-collection-canonical-rename-azure-upload-staging-preflight",
+  "status": "complete_no_upload_no_deploy",
+  "createdAt": "2026-06-24",
+  "lane": "V2.8 Tenant Website / Public Website Regression Recovery",
+  "classification": "asset_collection_canonical_rename_azure_upload_staging_preflight_no_upload_no_deploy",
+  "approval": {
+    "ownerAssetRenameApproval": true,
+    "azureUploadApproval": false,
+    "repoImageStorageApproval": false
+  },
+  "externalRoots": {
+    "cmsBackupZip": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\backup-inspection\\source\\Ice CMS BCKP.zip",
+      "exists": true,
+      "outsideRepo": true
+    },
+    "mediaBinariesRoot": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\ice-site-recovery-intake\\media-binaries",
+      "exists": true,
+      "outsideRepo": true
+    },
+    "azureMediaCandidatesRoot": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\ice-site-recovery-intake\\azure-media-candidates",
+      "exists": false
+    },
+    "designReferenceRoot": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\ice-site-recovery-intake\\design-reference",
+      "exists": false
+    },
+    "ownerCopyRoot": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\ice-site-recovery-intake\\owner-copy",
+      "exists": false
+    },
+    "uploadStagingRoot": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\ice-site-recovery-intake\\azure-upload-staging\\v2-8-19b",
+      "exists": true,
+      "outsideRepo": true,
+      "fileCount": 10,
+      "totalBytes": 34385062
+    },
+    "previewExtractionRoot": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\ice-site-recovery-intake\\preview-extracted-media\\v2-8-19b",
+      "exists": true,
+      "outsideRepo": true,
+      "fileCount": 14,
+      "totalBytes": 2370304
+    }
+  },
+  "candidateInventory": {
+    "mediaBinariesTopLevelItems": 9,
+    "zipArchivesReviewed": 6,
+    "zipImageEntries": 22,
+    "looseTopLevelImageFiles": 0,
+    "previewHtmlFilesReviewed": 4,
+    "previewHtmlFilesWithEmbeddedImages": 2,
+    "embeddedPreviewImagesExtracted": 14,
+    "candidateHashGroupsIncludingExtractedPreview": 17
+  },
+  "selection": {
+    "targetCanonicalAssets": 11,
+    "selectedUploadStagingCopies": 10,
+    "readyForUploadPreflight": 7,
+    "stagedContactReplacementCandidatesPendingOwnerApproval": 3,
+    "unresolvedCanonicalTargets": 1,
+    "uploadApproved": false,
+    "selectedAssetIds": [
+      "home-hero-portable-ice-rink",
+      "home-corporate-rink-event",
+      "home-holiday-rink",
+      "home-rink-setup",
+      "home-winter-fest-rink",
+      "site-logo-primary",
+      "contact-consultation-image",
+      "contact-event-planning-image",
+      "contact-installation-image",
+      "service-area-portable-rink"
+    ],
+    "unresolvedAssetIds": [
+      "partner-ppec-logo"
+    ]
+  },
+  "uploadStaging": {
+    "root": "C:\\Users\\User\\Desktop\\PumpkinCMS\\ice-site-recovery-intake\\azure-upload-staging\\v2-8-19b",
+    "outsideRepo": true,
+    "filesStagedInGit": false,
+    "allSelectedFilesPngSignatureValidated": true
+  },
+  "boundaries": {
+    "swaDeploy": false,
+    "deployToSwaIceStaticStaging": false,
+    "deployToSwaIceStaticIsolatedStaging": false,
+    "azureMediaUpload": false,
+    "azureMutation": false,
+    "dnsOrCustomDomainMutation": false,
+    "searchConsoleIndexing": false,
+    "tokenResetPrintOrUse": false,
+    "protectedConfigRead": false,
+    "dotenvLocalRead": false,
+    "suspectedSecretContentInspection": false,
+    "contactFormPost": false,
+    "productionCrawl": false,
+    "liveOutboundUrlCheck": false,
+    "livePublication": false,
+    "backupCopiedIntoRepo": false,
+    "rawIntakeFolderCopiedIntoRepo": false,
+    "backupFilesStaged": false,
+    "uploadStagingFilesStaged": false,
+    "sourceIntegrationPerformed": false,
+    "imageBinariesCommitted": false
+  },
+  "validation": {
+    "resultManifestJsonParse": "passed",
+    "requiredPackageFilesPresent": "passed_31_package_files_32_with_root",
+    "jsonParseChangedNewJson": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed_32_files",
+    "secretLikeScan": "passed_32_files",
+    "deployMutationScan": "passed_strict_command_scan_32_files",
+    "azureWriteScan": "passed_strict_command_scan_32_files",
+    "protectedGeneratedRawPathGuard": "passed_result_package_docs_only_no_media_artifacts",
+    "uploadStagingOutsideRepo": "passed",
+    "uploadStagingNotInGit": "passed_canonical_media_filename_guard",
+    "noFilesStaged": "passed"
+  }
+}
