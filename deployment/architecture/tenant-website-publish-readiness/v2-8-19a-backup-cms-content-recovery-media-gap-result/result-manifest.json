@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "V2.8.19A",
+  "resultType": "backup-cms-content-recovery-media-binary-gap-analysis",
+  "status": "complete_readonly_no_deploy",
+  "createdAt": "2026-06-24",
+  "lane": "V2.8 Tenant Website / Public Website Regression Recovery",
+  "classification": "readonly_backup_cms_recovery_media_binary_gap_analysis_no_deploy",
+  "backup": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\backup-inspection\\source\\Ice CMS BCKP.zip",
+    "inspectionRoot": "C:\\Users\\User\\Desktop\\PumpkinCMS\\backup-inspection",
+    "outsideRepo": true,
+    "entryCount": 61,
+    "totalUncompressedBytes": 669801,
+    "imageFileEntries": 0,
+    "staticOutEntries": 0,
+    "sensitiveFilenameCandidates": [
+      "config-inventory/",
+      "config-inventory/CONFIG_VALUES_REDACTED.md",
+      "config-inventory/env-inventory.redacted.json"
+    ],
+    "suspectedSecretContentInspected": false
+  },
+  "v2818Carryforward": {
+    "productionBoundTarget": "swa-ice-static-staging",
+    "isolatedStagingTarget": "swa-ice-static-isolated-staging",
+    "productionBoundaryRule": "custom-domain attachment determines production boundary",
+    "currentSourceHadImageFields": "empty",
+    "currentDeployableImageFilesFound": 0
+  },
+  "backupClassification": {
+    "sourceRebuildCandidate": true,
+    "mediaMetadataRecoveryCandidate": true,
+    "fullStaticRollbackCandidate": false,
+    "completeBinaryAssetBundle": false,
+    "assetOnlyCandidate": false
+  },
+  "cmsRecovery": {
+    "pages": 3,
+    "routes": 5,
+    "forms": 3,
+    "seoRecords": 3,
+    "themes": 1,
+    "publishedRoutes": [
+      "/",
+      "/service-areas",
+      "/contact"
+    ],
+    "expected404Routes": [
+      "/ice-rink-rentals",
+      "/events-holiday-activations"
+    ]
+  },
+  "mediaRecovery": {
+    "mediaAssetMetadataRecords": 12,
+    "expectedBlobInventoryRecords": 9,
+    "expectedBlobTotalBytes": 22639448,
+    "imageFilesInUploadedZip": 0,
+    "localMatchesUnderBackupInspection": 0,
+    "publicMediaUrlsRecorded": true,
+    "liveUrlChecksPerformed": false,
+    "azureLiveReadOnlyProofAvailableFromBackupInventory": true
+  },
+  "missingBinaries": [
+    "chatgpt-image-jun-3--2026--01_25_32-pm-9ab697f5d9c7.png",
+    "chatgpt-image-jun-3--2026--01_26_01-pm-40c9a505552d.png",
+    "chatgpt-image-jun-3--2026--12_37_40-pm-841162071dfd.png",
+    "corporateicerinkrentalevent-18e985ca59bd.png",
+    "holidayicerink-973ce7691377.png",
+    "icerinkrentalssetup-113d218572e4.png",
+    "iceskatingrinkrentalslogo-0d1f970f0411.png",
+    "partyproseastcoastlogo-cfd1fc9f60ae.png",
+    "winterfesticerinkrentals-324b1b89777d.png"
+  ],
+  "boundaries": {
+    "swaDeploy": false,
+    "deployToSwaIceStaticStaging": false,
+    "deployToSwaIceStaticIsolatedStaging": false,
+    "azureMutation": false,
+    "dnsOrCustomDomainMutation": false,
+    "searchConsoleIndexing": false,
+    "tokenResetPrintOrUse": false,
+    "protectedConfigRead": false,
+    "dotenvLocalRead": false,
+    "suspectedSecretContentInspection": false,
+    "keyVaultSecretQuery": false,
+    "keysListKeys": false,
+    "connectionString": false,
+    "sasGeneration": false,
+    "contactFormPost": false,
+    "productionCrawl": false,
+    "liveOutboundUrlCheck": false,
+    "livePublication": false,
+    "backupCopiedIntoRepo": false,
+    "backupFilesStaged": false,
+    "sourceIntegrationPerformed": false,
+    "imageBinariesCommitted": false
+  },
+  "validation": {
+    "resultManifestJsonParse": "passed",
+    "requiredPackageFilesPresent": "passed_24_package_files_25_with_root",
+    "jsonParseChangedNewJson": "passed",
+    "gitDiffCheck": "passed",
+    "trailingWhitespaceScan": "passed_25_files",
+    "secretLikeScan": "passed_25_files",
+    "protectedGeneratedRawPathGuard": "passed_documentation_only_policy_references_reviewed",
+    "noDeployNoMutationBoundary": "passed_25_files",
+    "backupOutsideRepo": "passed",
+    "backupNotCopiedIntoRepo": "passed",
+    "noBackupFilesStaged": "passed",
+    "noFilesStaged": "passed"
+  }
+}

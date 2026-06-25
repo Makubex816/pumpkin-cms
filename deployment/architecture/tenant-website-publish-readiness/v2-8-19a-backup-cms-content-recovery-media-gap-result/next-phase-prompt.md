@@ -1,0 +1,6 @@
+# Next Phase Prompt
+
+```text
+Approve V2.8.19B controlled local source integration planning only: use the V2.8.19A backup CMS content recovery and media binary gap package as source evidence, keep the external Ice CMS BCKP.zip outside the repo, do not copy the full backup into pumpkin-cms, and create sanitized local source integration files only for the approved Ice website recovery model. Map backup CMS pages, routes, SEO, theme, forms, and media metadata into implementation-ready local source changes for /, /service-areas, and /contact; preserve expected-404 routes for /ice-rink-rentals and /events-holiday-activations; produce an image-binary intake contract for the 9 missing PNGs; and prepare validation gates for isolated staging only. Do not deploy, mutate Azure, change DNS/custom domains, run Search Console/indexing, reset/print/use tokens, read .env.local or protected config, inspect suspected secret contents, query Key Vault secrets, call keys/listKeys, generate connection strings or SAS, submit contact forms, crawl production, run live outbound URL checks, copy backup files into the repo, stage backup files, commit image binaries, or touch the production-bound swa-ice-static-staging target.
+```
+
