@@ -76,7 +76,7 @@ export const sites: SiteDefinition[] = [
     domainRouting: {
       domain: 'iceskatingrinkrentals.com',
       brandName: 'Ice Skating Rink Rentals',
-      publicContactEmail: '',
+      publicContactEmail: 'contact@iceskatingrinkrentals.com',
       quoteRequestEmail: '',
       supportEmail: '',
       replyToEmail: '',
@@ -84,7 +84,7 @@ export const sites: SiteDefinition[] = [
       fromEmail: '',
       contactPageSlug: 'contact',
       primaryPhone: '',
-      mailtoLinksEnabled: false,
+      mailtoLinksEnabled: true,
       defaultLeadRoutingMode: 'manual_review_then_provider_match',
       defaultRecipientGroup: 'quote_requests',
       staticFormEndpointKey: '',

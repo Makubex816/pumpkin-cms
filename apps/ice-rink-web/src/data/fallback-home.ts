@@ -1,6 +1,7 @@
 import type { Page } from 'pumpkin-ts-models';
 import type { ResolvedSite } from '@/config/sites';
 import { replaceSiteTokens } from '@/lib/token-replace';
+import { getIceRinkRecoveredHome } from './ice-rink-recovered-pages';
 
 const fallbackHomeTemplate: Page = {
   id: 'fallback-home',
@@ -210,7 +211,7 @@ const fallbackHomeTemplate: Page = {
           subtitle: 'Share your event details and the team can follow up with availability, requirements, and package options.',
           address: '',
           phone: '',
-          email: 'hello@{{domain}}',
+          email: 'contact@{{domain}}',
           hours: 'Responses are prioritized by event date and season.',
           formFields: [
             { label: 'Name', type: 'text', required: true, placeholder: 'Your name' },
@@ -228,6 +229,10 @@ const fallbackHomeTemplate: Page = {
 };
 
 export function getFallbackHome(site: ResolvedSite): Page {
+  if (site.key === 'ice-rink-rentals') {
+    return getIceRinkRecoveredHome(site);
+  }
+
   return {
     ...replaceSiteTokens(fallbackHomeTemplate, site),
     id: `${site.key}-fallback-home`,

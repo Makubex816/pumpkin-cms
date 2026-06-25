@@ -2,6 +2,7 @@ import type { IHtmlBlock, Page } from 'pumpkin-ts-models';
 import type { ResolvedSite } from '@/config/sites';
 import { replaceSiteTokens } from '@/lib/token-replace';
 import { getFallbackHome } from './fallback-home';
+import { getIceRinkRecoveredPage } from './ice-rink-recovered-pages';
 
 const PAGE_DATE = '2026-05-12T00:00:00Z';
 
@@ -216,6 +217,10 @@ const fallbackPageTemplates: Record<string, Page> = {
 
 export function getFallbackPage(site: ResolvedSite, slug: string): Page | null {
   const normalizedSlug = normalizeSlug(slug);
+
+  if (site.key === 'ice-rink-rentals') {
+    return getIceRinkRecoveredPage(site, normalizedSlug);
+  }
 
   if (!normalizedSlug || normalizedSlug === 'home') {
     return getFallbackHome(site);
@@ -472,7 +477,7 @@ function contactBlock(): IHtmlBlock {
         'Share the basics below and the rental conversation can start with the details that matter most.',
       address: '',
       phone: '',
-      email: 'hello@{{domain}}',
+      email: 'contact@{{domain}}',
       hours: 'Responses are prioritized by event date, season, and venue readiness.',
       formFields: [
         { label: 'Name', type: 'text', required: true, placeholder: 'Your name' },

@@ -1,0 +1,123 @@
+{
+  "id": "v2-8-19f-existing-azure-media-source-integration-local-rebuild",
+  "createdAt": "2026-06-25T00:00:00-04:00",
+  "phaseStatus": "complete_local_source_integration_validated",
+  "lane": "V2.8 Tenant Website / Public Website Regression Recovery",
+  "classification": "local_source_integration_existing_azure_media_no_upload_no_deploy",
+  "targetSite": "iceskatingrinkrentals.com",
+  "routesIntegrated": [
+    "/",
+    "/service-areas",
+    "/contact"
+  ],
+  "canonicalPublicContactEmail": "contact@iceskatingrinkrentals.com",
+  "existingAzureMedia": {
+    "provider": "Azure Blob Storage",
+    "storageAccount": "iceskatingmedia",
+    "resourceGroup": "rg-ice-production-media",
+    "container": "ice-rink-rentals-media",
+    "publicBaseUrl": "https://iceskatingmedia.blob.core.windows.net/ice-rink-rentals-media",
+    "prefix": "ice-rink-rentals/assets/",
+    "expectedBlobCount": 9,
+    "referencedBlobUrlCount": 9,
+    "unknownReferenceCount": 0,
+    "missingReferenceCount": 0
+  },
+  "sourceFilesCreated": [
+    "apps/ice-rink-web/src/data/ice-rink-media.ts",
+    "apps/ice-rink-web/src/data/ice-rink-recovered-pages.ts"
+  ],
+  "sourceFilesModified": [
+    "apps/ice-rink-web/src/config/sites.ts",
+    "apps/ice-rink-web/src/data/fallback-home.ts",
+    "apps/ice-rink-web/src/data/fallback-pages.ts",
+    "apps/ice-rink-web/src/data/index.ts"
+  ],
+  "resultPackageFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-19e-carryforward.md",
+    "existing-azure-media-url-map-carryforward.md",
+    "recovered-cms-content-integration-result.md",
+    "source-media-reference-map-result.md",
+    "route-source-integration-result.md",
+    "homepage-integration-result.md",
+    "service-areas-integration-result.md",
+    "contact-page-integration-result.md",
+    "public-contact-email-source-update.md",
+    "image-reference-validation-result.md",
+    "route-content-manifest-validation-result.md",
+    "local-static-build-validation-result.md",
+    "typecheck-validation-result.md",
+    "no-image-binary-repo-storage-confirmation.md",
+    "owner-visual-content-approval-required.md",
+    "isolated-staging-preview-readiness.md",
+    "production-bound-deploy-still-blocked.md",
+    "no-deploy-no-azure-write-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ],
+  "validations": [
+    {
+      "command": "npm run type-check",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass"
+    },
+    {
+      "command": "npm run build",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass_with_existing_warnings"
+    },
+    {
+      "command": "npm run build:static:ice:sanitized",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass",
+      "runId": "sanitized_20260625053836",
+      "protectedConfigCopied": false,
+      "protectedConfigReferenceInOutput": false
+    },
+    {
+      "command": "source image reference validation by string map",
+      "result": "pass"
+    },
+    {
+      "command": "route/content source manifest validation by string inspection",
+      "result": "pass"
+    },
+    {
+      "command": "required result package inventory and result-manifest JSON parse",
+      "result": "pass"
+    },
+    {
+      "command": "source deploy/Azure-write/secret-like scan",
+      "result": "pass"
+    },
+    {
+      "command": "exact V2.8.19F path guard for binaries, archives, generated paths, and write patterns",
+      "result": "pass",
+      "fileCount": 31
+    },
+    {
+      "command": "node --check for changed JS/MJS",
+      "result": "not_applicable_no_js_or_mjs_files_changed"
+    },
+    {
+      "command": "git diff --check on V2.8.19F source paths",
+      "result": "pass"
+    }
+  ],
+  "hardStopConfirmations": {
+    "deployed": false,
+    "azureMediaUploaded": false,
+    "azureMutated": false,
+    "dnsMutated": false,
+    "searchConsoleOrIndexingRun": false,
+    "contactFormPostRun": false,
+    "imageBinariesCopiedIntoRepo": false,
+    "filesStaged": false
+  },
+  "nextGate": "isolated_staging_preview_approval_required",
+  "productionBoundDeployBlocked": true
+}
