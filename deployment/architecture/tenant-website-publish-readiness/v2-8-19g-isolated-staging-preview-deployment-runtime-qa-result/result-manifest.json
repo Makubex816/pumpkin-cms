@@ -1,0 +1,186 @@
+{
+  "id": "v2-8-19g-isolated-staging-preview-deployment-runtime-qa",
+  "createdAt": "2026-06-25T00:00:00-04:00",
+  "phaseStatus": "complete_isolated_staging_deployed_and_runtime_checked",
+  "lane": "V2.8 Tenant Website / Public Website Regression Recovery",
+  "classification": "isolated_staging_preview_deployment_runtime_qa_no_production_deploy",
+  "carryforward": {
+    "completedReference": "V2.8.19F",
+    "commit": "2286aec",
+    "report": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_19F_EXISTING_AZURE_MEDIA_SOURCE_INTEGRATION_REPORT.md"
+  },
+  "targets": {
+    "isolatedStaging": {
+      "name": "swa-ice-static-isolated-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+      "customDomainCount": 0,
+      "deploymentApproved": true
+    },
+    "productionBound": {
+      "name": "swa-ice-static-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+      "customDomains": [
+        "iceskatingrinkrentals.com",
+        "www.iceskatingrinkrentals.com"
+      ],
+      "deploymentApproved": false
+    }
+  },
+  "sourceFixes": [
+    {
+      "path": "apps/ice-rink-web/src/lib/content-source.ts",
+      "reason": "Static seed-site rendering now prefers the V2.8.19F recovered Ice page builders for the three approved routes so the sanitized artifact contains the recovered image-rich site instead of older generic seed JSON."
+    }
+  ],
+  "artifact": {
+    "sanitizedBuildRunId": "sanitized_20260625060958",
+    "staticOutDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260625060958/repo/apps/ice-rink-web/out",
+    "fileCount": 41,
+    "totalBytes": 2219129,
+    "aggregateSha256": "4c0f5e7babc104c8223ddfdc37d95dd863190796db809544d4e9e3acf44e9897",
+    "routeFilesPresent": [
+      "/",
+      "/service-areas",
+      "/contact"
+    ]
+  },
+  "validations": [
+    {
+      "command": "git status --short",
+      "result": "busy_worktree_index_empty"
+    },
+    {
+      "command": "git log --oneline -15",
+      "result": "latest_commit_2286aec_v2_8_19f"
+    },
+    {
+      "command": "git diff --cached --name-only",
+      "result": "empty"
+    },
+    {
+      "command": "az staticwebapp show/list hostname read-only checks",
+      "result": "pass"
+    },
+    {
+      "command": "npm run validate:static:ice",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass_with_existing_34_warnings"
+    },
+    {
+      "command": "npm run type-check",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass"
+    },
+    {
+      "command": "npm run build:static:ice:sanitized",
+      "cwd": "apps/ice-rink-web",
+      "result": "pass",
+      "runId": "sanitized_20260625060958",
+      "protectedConfigCopied": false,
+      "protectedConfigReferenceInOutput": false
+    },
+    {
+      "command": "artifact route/content/email/media validation",
+      "result": "pass"
+    },
+    {
+      "command": "Node exact known Azure media HEAD checks",
+      "result": "pass_9_of_9_status_200_image_png"
+    },
+    {
+      "command": "npx --yes @azure/static-web-apps-cli@2.0.9 --version",
+      "result": "2.0.9"
+    },
+    {
+      "command": "PowerShell boolean-only token readiness",
+      "result": "pass"
+    },
+    {
+      "command": "Node boolean-only token readiness",
+      "result": "pass"
+    },
+    {
+      "command": "npx --yes @azure/static-web-apps-cli@2.0.9 deploy",
+      "result": "success",
+      "attemptsSent": 1
+    },
+    {
+      "command": "bounded isolated staging GET checks",
+      "result": "pass_3_of_3_status_200"
+    },
+    {
+      "command": "JSON parse for result-manifest.json",
+      "result": "pass"
+    },
+    {
+      "command": "node --check for changed/new JS/MJS",
+      "result": "not_applicable_no_v2_8_19g_js_or_mjs_files_changed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass_with_existing_busy_worktree_line_ending_warnings"
+    },
+    {
+      "command": "scoped trailing whitespace scan",
+      "result": "pass"
+    },
+    {
+      "command": "scoped secret-like scan",
+      "result": "pass"
+    },
+    {
+      "command": "deploy-target manifest scan",
+      "result": "pass_isolated_only"
+    },
+    {
+      "command": "protected/generated/raw path guard for result package",
+      "result": "pass"
+    },
+    {
+      "command": "final git diff --cached --name-only",
+      "result": "empty"
+    }
+  ],
+  "hardStopConfirmations": {
+    "productionBoundDeployOccurred": false,
+    "isolatedStagingDeployOccurred": true,
+    "isolatedStagingDeployAttemptsSent": 1,
+    "productionDomainRouteChecksOccurred": false,
+    "dnsMutated": false,
+    "customDomainsMutated": false,
+    "searchConsoleOrIndexingRun": false,
+    "azureMediaUploadedOrMutated": false,
+    "contactFormPostRun": false,
+    "protectedConfigContentRead": false,
+    "deploymentTokenPrintedListedExportedOrReset": false,
+    "filesStaged": false
+  },
+  "resultPackageFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-19f-carryforward.md",
+    "target-classification-result.md",
+    "isolated-staging-target-verification.md",
+    "production-bound-target-exclusion.md",
+    "local-build-validation-result.md",
+    "static-artifact-manifest.md",
+    "image-reference-validation-result.md",
+    "route-content-validation-result.md",
+    "public-contact-email-validation-result.md",
+    "swa-cli-and-token-readiness-result.md",
+    "isolated-staging-deployment-result.md",
+    "isolated-staging-route-check-result.md",
+    "owner-visual-content-qa-checklist.md",
+    "isolated-staging-preview-url-summary.md",
+    "production-bound-deploy-still-blocked.md",
+    "security-boundary-result.md",
+    "no-production-deploy-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ],
+  "nextGate": "owner_visual_content_review_and_isolated_staging_signoff"
+}

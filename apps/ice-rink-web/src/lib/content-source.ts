@@ -2,9 +2,9 @@ import 'server-only';
 
 import type { Page, Theme } from 'pumpkin-ts-models';
 import type { ResolvedSite } from '@/config/sites';
-import { getFallbackTheme } from '@/data';
+import { getFallbackHome, getFallbackPage, getFallbackTheme } from '@/data';
 import { fetchPage, fetchSitemapData, fetchTheme, type SitemapEntry } from '@/lib/pumpkin-api';
-import { isStaticRenderMode } from '@/lib/render-mode';
+import { getStaticContentSource, isStaticRenderMode } from '@/lib/render-mode';
 import {
   getStaticPageSlugs,
   getStaticSitemapEntries,
@@ -12,9 +12,22 @@ import {
   loadStaticTheme,
 } from '@/lib/static-content';
 
+const iceRecoveredStaticSlugs = ['home', 'service-areas', 'contact'];
+
+function getIceRecoveredStaticPage(site: ResolvedSite, slug: string): Page | null {
+  if (site.key !== 'ice-rink-rentals' || getStaticContentSource() !== 'seed-sites') {
+    return null;
+  }
+
+  const normalizedSlug = slug === '/' || !slug ? 'home' : slug.replace(/^\/+|\/+$/g, '');
+  if (!iceRecoveredStaticSlugs.includes(normalizedSlug)) return null;
+
+  return normalizedSlug === 'home' ? getFallbackHome(site) : getFallbackPage(site, normalizedSlug);
+}
+
 export async function getPageForRender(site: ResolvedSite, slug: string): Promise<Page | null> {
   if (isStaticRenderMode()) {
-    return loadStaticPage(site, slug);
+    return getIceRecoveredStaticPage(site, slug) ?? loadStaticPage(site, slug);
   }
 
   return fetchPage(site, slug);
@@ -38,5 +51,9 @@ export async function getSitemapEntriesForRender(site: ResolvedSite): Promise<Si
 
 export function getStaticSlugsForBuild(site: ResolvedSite): string[] {
   if (!isStaticRenderMode()) return [];
+  if (site.key === 'ice-rink-rentals' && getStaticContentSource() === 'seed-sites') {
+    return iceRecoveredStaticSlugs.filter((slug) => slug !== 'home');
+  }
+
   return getStaticPageSlugs(site).filter((slug) => slug !== 'home');
 }
