@@ -1,0 +1,127 @@
+{
+  "phase": "V2.8.26 Contact Managed API Production Remediation Release + Live POST Verification",
+  "status": "completed_verified_production",
+  "date": "2026-06-26",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification",
+  "classification": "contact_managed_api_production_release_live_post_verification",
+  "carryForward": {
+    "from": "V2.8.25 Contact Managed API Discovery Sentinel + Isolated Staging Verification",
+    "isolatedHealthStatus": 200,
+    "isolatedHealthOk": true,
+    "isolatedMethodCheckStatus": 204,
+    "isolatedPostStatus": 200,
+    "isolatedPostOk": true,
+    "isolatedTraceId": "v2-8-25-isolated-contact-20260626092010",
+    "isolatedEntryId": "ice-rink-rentals-default-quote-request-3dd6171a-62ef-48bb-9f7a-029759ac71ba"
+  },
+  "productionTarget": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "customDomains": [
+      "iceskatingrinkrentals.com",
+      "www.iceskatingrinkrentals.com"
+    ],
+    "ownsApex": true,
+    "ownsWww": true
+  },
+  "isolatedTargetExcluded": {
+    "name": "swa-ice-static-isolated-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+    "customDomains": [],
+    "deploymentOccurred": false
+  },
+  "localValidation": {
+    "compatApiCheck": "passed",
+    "compatApiTest": "passed",
+    "iceTypeCheck": "passed",
+    "validateStaticIce": "passed_with_34_known_warnings",
+    "sanitizedStaticBuild": "passed"
+  },
+  "sanitizedBuild": {
+    "runId": "sanitized_20260626142333",
+    "runDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260626142333",
+    "staticOutDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260626142333/repo/apps/ice-rink-web/out",
+    "protectedConfigCopied": false,
+    "protectedConfigReferenceInOutput": false
+  },
+  "deploymentPackage": {
+    "root": "apps/ice-rink-web/.tmp/v2-8-26-production-swa-package/package_20260626142333",
+    "appFileCount": 42,
+    "apiFileCount": 13,
+    "apiRuntime": "node:20",
+    "programmingModel": "azure-functions-v3-function-json",
+    "contactEndpoint": "/api/static-contact",
+    "healthEndpoint": "/api/static-contact-health",
+    "v4MarkersFound": false
+  },
+  "deployment": {
+    "target": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "attemptsSent": 1,
+    "result": "succeeded",
+    "reportedUrl": "https://happy-mud-0b375e20f.7.azurestaticapps.net",
+    "isolatedDeploymentOccurred": false
+  },
+  "productionVerification": {
+    "contactPageStatus": 200,
+    "contactPageContainsStaticContact": true,
+    "contactPageContainsNextApiContact": false,
+    "contactPageContainsPublicEmail": true,
+    "healthStatus": 200,
+    "healthOk": true,
+    "healthProgrammingModel": "azure-functions-v3-function-json",
+    "methodCheckStatus": 204,
+    "productionPostSentCount": 1,
+    "productionPostRetrySent": false,
+    "productionPostStatus": 200,
+    "productionPostOk": true,
+    "traceId": "v2-8-26-production-contact-20260626101926",
+    "entryId": "ice-rink-rentals-default-quote-request-f9e8a6d2-3f9c-41d2-92e0-39f8ea83dbd5"
+  },
+  "backendDelivery": {
+    "apiAcceptedSubmission": true,
+    "operatorDeliveryConfirmation": "pending",
+    "providerOrInboxAccessed": false
+  },
+  "securityBoundary": {
+    "deploymentTokenPresentBooleanOnly": true,
+    "deploymentTokenPrinted": false,
+    "deploymentTokenListedOrReset": false,
+    "protectedConfigRead": false,
+    "appSettingsReadOrMutated": false,
+    "dnsOrCustomDomainMutation": false,
+    "searchConsoleOrIndexingAction": false,
+    "keysOrListKeysUsed": false,
+    "connectionStringOrSasGenerated": false,
+    "azureMediaMutation": false,
+    "inboxOrProviderAccessed": false,
+    "secondProductionDeployOccurred": false,
+    "secondProductionPostOccurred": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-25-carryforward.md",
+    "production-target-verification.md",
+    "isolated-target-exclusion.md",
+    "local-contact-validation-result.md",
+    "static-artifact-contact-endpoint-verification.md",
+    "app-api-production-readiness.md",
+    "production-app-api-deployment-result.md",
+    "production-contact-page-preflight-result.md",
+    "production-health-endpoint-result.md",
+    "production-static-contact-method-check-result.md",
+    "production-contact-post-execution-result.md",
+    "production-contact-response-verification.md",
+    "backend-delivery-confirmation-result.md",
+    "post-contact-closeout-plan.md",
+    "security-boundary-result.md",
+    "no-indexing-no-dns-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
