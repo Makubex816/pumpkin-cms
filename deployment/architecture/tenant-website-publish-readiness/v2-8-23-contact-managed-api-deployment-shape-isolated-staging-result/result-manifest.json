@@ -1,0 +1,80 @@
+{
+  "phase": "V2.8.23",
+  "date": "2026-06-25",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification",
+  "classification": "contact_managed_api_deployment_shape_isolated_staging_verification",
+  "status": "completed_with_isolated_api_post_blocker",
+  "targets": {
+    "isolatedStaging": {
+      "name": "swa-ice-static-isolated-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+      "customDomains": [],
+      "deploymentApproved": true,
+      "deploymentAttemptsSent": 1
+    },
+    "productionBound": {
+      "name": "swa-ice-static-staging",
+      "resourceGroup": "rg-ice-static-staging",
+      "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+      "customDomains": [
+        "iceskatingrinkrentals.com",
+        "www.iceskatingrinkrentals.com"
+      ],
+      "deploymentApproved": false,
+      "deploymentAttemptsSent": 0,
+      "contactPostsSent": 0
+    }
+  },
+  "artifacts": {
+    "sanitizedBuildRunId": "sanitized_20260625230507",
+    "deployedPackageRoot": "apps/ice-rink-web/.tmp/v2-8-23-isolated-swa-package/package_20260625190621",
+    "nextCandidatePackageRoot": "apps/ice-rink-web/.tmp/v2-8-23-isolated-swa-package-next-candidate/package_20260625191247",
+    "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-23-contact-managed-api-deployment-shape-isolated-staging-result"
+  },
+  "deployment": {
+    "sent": true,
+    "sentCount": 1,
+    "target": "swa-ice-static-isolated-staging",
+    "apiLocation": "api",
+    "apiLanguage": "node",
+    "apiVersion": "20",
+    "swaConfigLocation": "app",
+    "tokenSource": "SWA_CLI_DEPLOYMENT_TOKEN",
+    "tokenPrinted": false
+  },
+  "isolatedVerification": {
+    "contactGetStatus": 200,
+    "contactContainedStaticContact": true,
+    "contactContainedApiContact": false,
+    "methodCheck": {
+      "method": "OPTIONS",
+      "status": 204
+    },
+    "post": {
+      "sent": true,
+      "sentCount": 1,
+      "retrySent": false,
+      "traceId": "v2-8-23-isolated-contact-20260625185951",
+      "endpoint": "https://kind-island-0a85a740f.7.azurestaticapps.net/api/static-contact",
+      "statusCode": 404,
+      "responseOk": false,
+      "bodySummary": {
+        "empty": true,
+        "length": 0,
+        "successFlag": null,
+        "entryIdPresent": false
+      }
+    }
+  },
+  "securityBoundary": {
+    "productionDeployOccurred": false,
+    "productionPostOccurred": false,
+    "protectedConfigRead": false,
+    "deploymentTokenPrinted": false,
+    "tokenListOrResetUsed": false,
+    "dnsOrCustomDomainMutation": false,
+    "searchConsoleOrIndexing": false,
+    "appSettingsMutation": false
+  }
+}

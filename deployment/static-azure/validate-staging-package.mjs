@@ -270,10 +270,27 @@ function validatePackage({ siteKey, folder }) {
     errors.push('Staging package folder contains no files.');
   }
 
-  for (const requiredFile of site.requiredFiles) {
+  const requiredFiles = [...site.requiredFiles];
+  if (site.requiresStaticFormEndpoint) {
+    requiredFiles.push('staticwebapp.config.json');
+  }
+
+  for (const requiredFile of requiredFiles) {
     const requiredPath = path.join(resolvedFolder, requiredFile);
     if (!existsSync(requiredPath) || !statSync(requiredPath).isFile()) {
       errors.push(`Missing required file: ${requiredFile}`);
+    }
+  }
+
+  const staticWebAppConfigPath = path.join(resolvedFolder, 'staticwebapp.config.json');
+  if (site.requiresStaticFormEndpoint && existsSync(staticWebAppConfigPath)) {
+    try {
+      const staticWebAppConfig = JSON.parse(readFileSync(staticWebAppConfigPath, 'utf8'));
+      if (staticWebAppConfig?.platform?.apiRuntime !== 'node:20') {
+        errors.push('staticwebapp.config.json platform.apiRuntime must be node:20 for the managed contact API.');
+      }
+    } catch (error) {
+      errors.push(`staticwebapp.config.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
     }
   }
 

@@ -752,6 +752,11 @@ function validatePageShape(site, pages) {
 
 function writeStaticArtifacts(site, pages, targetDir, qualityWarnings = [], redirects = []) {
   mkdirSync(targetDir, { recursive: true });
+  writeFileSync(path.join(targetDir, 'staticwebapp.config.json'), JSON.stringify({
+    platform: {
+      apiRuntime: 'node:20',
+    },
+  }, null, 2), 'utf8');
   writeFileSync(path.join(targetDir, 'sitemap.xml'), generateSitemapXml(site, pages), 'utf8');
   writeFileSync(path.join(targetDir, 'robots.txt'), generateRobotsTxt(site), 'utf8');
   writeFileSync(path.join(targetDir, 'redirects.json'), JSON.stringify({

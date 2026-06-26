@@ -21,7 +21,8 @@ Static browser formBlock -> external static form endpoint -> Pumpkin API -> Form
 - `sanitize-static-form-payload.mjs` - string/key/formData sanitizers.
 - `graph-send-mail-delivery.mjs` - local Microsoft Graph `sendMail` delivery adapter, disabled unless explicitly selected.
 - `azure-function-adapter.mjs` - Azure Function request adapter and route constants.
-- `azure-function-static-contact.mjs` - deployable Azure Functions entrypoint for `/api/static-contact`.
+- `src/functions/static-contact.js` - deployable Azure Functions v4 registration entrypoint for `/api/static-contact`.
+- `azure-function-static-contact.mjs` - ESM registration wrapper kept for local/legacy package analysis.
 - `azure-function-contact.example.ts` - TypeScript wrapper example aligned to `/api/static-contact`.
 - `host.json` - Azure Functions host metadata with the default `api` route prefix.
 - `local.settings.sample.json` - placeholder-only local settings sample; do not copy real secrets into repo files.
@@ -120,7 +121,7 @@ The current adapter uses the Microsoft identity platform client credentials toke
 The deployable scaffold uses the Azure Functions Node programming model entrypoint:
 
 ```text
-azure-function-static-contact.mjs
+src/functions/static-contact.js
 ```
 
 Route metadata:

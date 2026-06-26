@@ -132,6 +132,9 @@ function isApprovedStaticFormEndpointShape(endpoint, site) {
 
 function validateRequiredArtifacts(outDir, site, errors, warnings) {
   const requiredFiles = ['index.html', 'sitemap.xml', 'robots.txt'];
+  if (site.requiresStaticFormEndpoint) {
+    requiredFiles.push('staticwebapp.config.json');
+  }
 
   for (const fileName of requiredFiles) {
     const filePath = path.join(outDir, fileName);
@@ -140,6 +143,18 @@ function validateRequiredArtifacts(outDir, site, errors, warnings) {
       errors.push(`Missing required file: ${fileName}`);
     } else if (!statSync(filePath).isFile()) {
       errors.push(`Required artifact is not a file: ${fileName}`);
+    }
+  }
+
+  const staticWebAppConfigPath = path.join(outDir, 'staticwebapp.config.json');
+  if (site.requiresStaticFormEndpoint && existsSync(staticWebAppConfigPath)) {
+    try {
+      const staticWebAppConfig = JSON.parse(readText(staticWebAppConfigPath));
+      if (staticWebAppConfig?.platform?.apiRuntime !== 'node:20') {
+        errors.push('staticwebapp.config.json platform.apiRuntime must be node:20 for the managed contact API.');
+      }
+    } catch (error) {
+      errors.push(`staticwebapp.config.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
     }
   }
 

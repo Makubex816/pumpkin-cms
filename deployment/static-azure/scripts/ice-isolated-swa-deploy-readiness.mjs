@@ -9,6 +9,7 @@ const expected = {
   defaultHostname: 'kind-island-0a85a740f.7.azurestaticapps.net',
   tokenEnvVar: 'SWA_CLI_DEPLOYMENT_TOKEN',
   swaCliPackage: '@azure/static-web-apps-cli@2.0.9',
+  apiRuntime: 'node:20',
 };
 
 const forbiddenArgs = new Set([
@@ -61,6 +62,7 @@ function validateArtifactRoot(artifactRoot) {
   const errors = [];
   const requiredFiles = [
     'index.html',
+    'staticwebapp.config.json',
     'sitemap.xml',
     'robots.txt',
     path.join('contact', 'index.html'),
@@ -90,11 +92,24 @@ function validateArtifactRoot(artifactRoot) {
     }
   }
 
+  const staticWebAppConfigPath = path.join(resolvedRoot, 'staticwebapp.config.json');
+  if (existsSync(staticWebAppConfigPath)) {
+    try {
+      const staticWebAppConfig = JSON.parse(readFileSync(staticWebAppConfigPath, 'utf8'));
+      if (staticWebAppConfig?.platform?.apiRuntime !== expected.apiRuntime) {
+        errors.push(`staticwebapp.config.json platform.apiRuntime must be ${expected.apiRuntime}.`);
+      }
+    } catch (error) {
+      errors.push(`staticwebapp.config.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+    }
+  }
+
   return {
     ok: errors.length === 0,
     errors,
     fileCount: walkFiles(resolvedRoot).length,
     resolvedRoot,
+    apiRuntime: expected.apiRuntime,
   };
 }
 
@@ -103,6 +118,8 @@ function validateApiRoot(apiRoot) {
   const requiredFiles = [
     'host.json',
     'package.json',
+    'package-lock.json',
+    path.join('src', 'functions', 'static-contact.js'),
     'azure-function-static-contact.mjs',
     'azure-function-adapter.mjs',
     'contact-handler.mjs',
@@ -131,6 +148,33 @@ function validateApiRoot(apiRoot) {
     const requiredPath = path.join(resolvedRoot, requiredFile);
     if (!existsSync(requiredPath) || !statSync(requiredPath).isFile()) {
       errors.push(`Missing required API file: ${requiredFile}`);
+    }
+  }
+
+  const packagePath = path.join(resolvedRoot, 'package.json');
+  if (existsSync(packagePath)) {
+    try {
+      const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+      if (packageJson?.main !== 'src/functions/static-contact.js') {
+        errors.push('API package.json main must be src/functions/static-contact.js.');
+      }
+      if (!packageJson?.dependencies?.['@azure/functions']) {
+        errors.push('API package.json must include @azure/functions in dependencies.');
+      }
+    } catch (error) {
+      errors.push(`API package.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+    }
+  }
+
+  const packageLockPath = path.join(resolvedRoot, 'package-lock.json');
+  if (existsSync(packageLockPath)) {
+    try {
+      const packageLock = JSON.parse(readFileSync(packageLockPath, 'utf8'));
+      if (!packageLock?.packages?.['node_modules/@azure/functions']) {
+        errors.push('API package-lock.json does not include node_modules/@azure/functions.');
+      }
+    } catch (error) {
+      errors.push(`API package-lock.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
     }
   }
 
@@ -218,6 +262,7 @@ function main() {
       included: api.ok,
       publicPath: api.publicPath || '/api/static-contact',
       swaCliFlag: '--api-location',
+      apiRuntime: artifact.apiRuntime || expected.apiRuntime,
     },
     deploymentAuth: {
       requiredEnvVar: expected.tokenEnvVar,
@@ -231,7 +276,7 @@ function main() {
       usesDeploymentTokenArgument: false,
       forbiddenPrintTokenFlag: true,
       futureCommandShape:
-        `npx --yes ${expected.swaCliPackage} deploy --app-location "<package-root>" --output-location app --api-location api --env production`,
+        `cd "<package-root>"; npx --yes ${expected.swaCliPackage} deploy app --api-location api --api-language node --api-version 20 --swa-config-location app --app-name "${expected.appName}" --resource-group "${expected.resourceGroup}" --env production --no-use-keychain`,
       tokenSource: `${expected.tokenEnvVar} process environment variable`,
     },
     deploymentAttempted: false,

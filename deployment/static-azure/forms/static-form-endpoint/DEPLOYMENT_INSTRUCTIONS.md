@@ -116,8 +116,9 @@ Invoke-WebRequest `
 
 The deployable scaffold includes:
 
-- `package.json` with `main=azure-function-static-contact.mjs`
-- `azure-function-static-contact.mjs`
+- `package.json` with `main=src/functions/static-contact.js`
+- `src/functions/static-contact.js`
+- `azure-function-static-contact.mjs` retained as a local/legacy ESM wrapper
 - `azure-function-adapter.mjs`
 - `contact-handler.mjs`
 - validation and sanitization helpers
