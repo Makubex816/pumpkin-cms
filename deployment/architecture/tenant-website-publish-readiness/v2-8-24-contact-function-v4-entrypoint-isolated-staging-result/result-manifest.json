@@ -1,0 +1,95 @@
+{
+  "phase": "V2.8.24",
+  "date": "2026-06-26",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification",
+  "classification": "contact_function_v4_entrypoint_isolated_staging_post_verification",
+  "status": "completed_with_isolated_post_blocker",
+  "branch": "feature/admin-page-editor-import-export",
+  "isolatedTarget": {
+    "name": "swa-ice-static-isolated-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+    "customDomains": []
+  },
+  "productionBoundTarget": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "customDomains": [
+      "iceskatingrinkrentals.com",
+      "www.iceskatingrinkrentals.com"
+    ],
+    "deployed": false,
+    "postSent": false
+  },
+  "build": {
+    "sanitizedRunId": "sanitized_20260626011945",
+    "sanitizedOutDir": "apps/ice-rink-web/.tmp/sanitized-static-build/ice-rink-rentals/sanitized_20260626011945/repo/apps/ice-rink-web/out",
+    "deploymentPackageRoot": "apps/ice-rink-web/.tmp/v2-8-24-isolated-swa-package/package_20260626011945",
+    "appFileCount": 42,
+    "apiFileCount": 11
+  },
+  "api": {
+    "entrypoint": "deployment/static-azure/forms/static-form-endpoint/src/functions/static-contact.js",
+    "packageMain": "src/functions/static-contact.js",
+    "runtimeDependency": "@azure/functions",
+    "route": "static-contact",
+    "publicPath": "/api/static-contact",
+    "apiRuntime": "node:20"
+  },
+  "deployment": {
+    "attemptsSent": 1,
+    "succeeded": true,
+    "commandShape": "npx --yes @azure/static-web-apps-cli@2.0.9 deploy app --api-location api --api-language node --api-version 20 --swa-config-location app --app-name swa-ice-static-isolated-staging --resource-group rg-ice-static-staging --env production --no-use-keychain",
+    "deploymentTokenValuePrinted": false
+  },
+  "isolatedVerification": {
+    "contactGetStatus": 200,
+    "contactContainsStaticContact": true,
+    "contactContainsApiContact": false,
+    "contactContainsPublicEmail": true,
+    "optionsStatus": 204,
+    "postSentCount": 1,
+    "postRetrySent": false,
+    "postStatus": 404,
+    "postBodyEmpty": true,
+    "postSuccessFlag": null,
+    "entryIdReturned": null,
+    "traceId": "v2-8-24-isolated-contact-20260625211731"
+  },
+  "validation": {
+    "staticFunctionCheck": "pass",
+    "staticFunctionTests": "pass",
+    "iceTypeCheck": "pass",
+    "iceStaticValidate": "pass_with_34_existing_warnings",
+    "sanitizedStaticBuild": "pass",
+    "readinessWrapper": "pass",
+    "strictStaticOutputValidator": "failed_165_known_non_contact_media_origin_findings",
+    "strictStagingPackageValidator": "failed_165_known_non_contact_media_origin_findings",
+    "finalChecks": "pass"
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-23-carryforward.md",
+    "function-v4-entrypoint-analysis.md",
+    "api-package-discovery-readiness.md",
+    "contact-function-entrypoint-fix-result.md",
+    "local-contact-validation-result.md",
+    "static-artifact-contact-endpoint-verification.md",
+    "isolated-staging-target-verification.md",
+    "isolated-app-api-deployment-result.md",
+    "isolated-static-contact-method-check-result.md",
+    "isolated-contact-page-preflight-result.md",
+    "isolated-contact-post-execution-result.md",
+    "isolated-contact-response-verification.md",
+    "production-remediation-release-plan.md",
+    "future-production-live-post-retry-gate-plan.md",
+    "security-boundary-result.md",
+    "no-production-deploy-no-production-post-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
