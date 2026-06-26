@@ -1,0 +1,10 @@
+{
+  "name": "pumpkin-static-form-endpoint-compat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Azure Static Web Apps managed API compatibility package for contact discovery verification.",
+  "scripts": {
+    "check": "node --check static-contact/index.js && node --check static-contact-health/index.js && node --check contact-handler.mjs && node --check validate-static-form-payload.mjs && node --check sanitize-static-form-payload.mjs && node --check graph-send-mail-delivery.mjs && node --check test-static-form-endpoint-compat.mjs",
+    "test": "node test-static-form-endpoint-compat.mjs"
+  }
+}

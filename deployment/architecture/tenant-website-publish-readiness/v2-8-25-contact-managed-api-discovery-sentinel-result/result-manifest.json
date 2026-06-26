@@ -1,0 +1,95 @@
+{
+  "phase": "V2.8.25 Contact Managed API Discovery Sentinel + Isolated Staging Verification",
+  "status": "completed_verified_isolated_staging",
+  "date": "2026-06-26",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification",
+  "classification": "contact_managed_api_discovery_sentinel_isolated_staging_verification",
+  "carryForward": {
+    "from": "V2.8.24 Contact Function v4 Entrypoint + Isolated Staging POST Verification",
+    "traceId": "v2-8-24-isolated-contact-20260625211731",
+    "isolatedPostStatus": 404
+  },
+  "apiPackage": {
+    "sourceRoot": "deployment/static-azure/forms/static-form-endpoint-compat",
+    "packagedRoot": "apps/ice-rink-web/.tmp/v2-8-25-isolated-swa-package/package_20260626092703/api",
+    "programmingModel": "azure-functions-v3-function-json",
+    "healthEndpoint": "/api/static-contact-health",
+    "contactEndpoint": "/api/static-contact",
+    "appFileCount": 42,
+    "apiFileCount": 13
+  },
+  "sanitizedBuild": {
+    "runId": "sanitized_20260626132555",
+    "protectedConfigCopied": false,
+    "protectedConfigReferenceInOutput": false
+  },
+  "isolatedTarget": {
+    "name": "swa-ice-static-isolated-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+    "customDomains": []
+  },
+  "productionBoundTargetExcluded": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+    "customDomains": [
+      "iceskatingrinkrentals.com",
+      "www.iceskatingrinkrentals.com"
+    ]
+  },
+  "deployment": {
+    "target": "swa-ice-static-isolated-staging",
+    "attemptsSent": 1,
+    "result": "succeeded",
+    "productionDeploymentOccurred": false
+  },
+  "runtimeVerification": {
+    "contactPageStatus": 200,
+    "healthStatus": 200,
+    "healthOk": true,
+    "methodCheckStatus": 204,
+    "isolatedPostSentCount": 1,
+    "isolatedPostStatus": 200,
+    "isolatedPostOk": true,
+    "isolatedPostRetrySent": false,
+    "traceId": "v2-8-25-isolated-contact-20260626092010",
+    "entryId": "ice-rink-rentals-default-quote-request-3dd6171a-62ef-48bb-9f7a-029759ac71ba"
+  },
+  "securityBoundary": {
+    "deploymentTokenPrinted": false,
+    "protectedConfigRead": false,
+    "productionPostOccurred": false,
+    "dnsOrCustomDomainMutation": false,
+    "searchConsoleOrIndexingAction": false,
+    "keysOrListKeysUsed": false,
+    "connectionStringOrSasGenerated": false,
+    "inboxOrProviderAccessed": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-24-carryforward.md",
+    "managed-api-discovery-strategy.md",
+    "api-programming-model-decision.md",
+    "sentinel-api-package-result.md",
+    "api-package-discovery-readiness.md",
+    "local-contact-validation-result.md",
+    "static-artifact-contact-endpoint-verification.md",
+    "isolated-staging-target-verification.md",
+    "isolated-app-api-deployment-result.md",
+    "isolated-health-endpoint-result.md",
+    "isolated-static-contact-method-check-result.md",
+    "isolated-contact-page-preflight-result.md",
+    "isolated-contact-post-execution-result.md",
+    "isolated-contact-response-verification.md",
+    "production-remediation-release-plan.md",
+    "future-production-live-post-retry-gate-plan.md",
+    "security-boundary-result.md",
+    "no-production-deploy-no-production-post-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}

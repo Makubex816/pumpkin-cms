@@ -1,0 +1,9 @@
+local.settings.json
+local.settings.*
+.env
+.env.*
+.git
+.gitignore
+test-*.mjs
+sample-*.json
+*.md

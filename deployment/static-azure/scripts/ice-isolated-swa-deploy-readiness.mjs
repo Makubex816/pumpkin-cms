@@ -113,7 +113,7 @@ function validateArtifactRoot(artifactRoot) {
   };
 }
 
-function validateApiRoot(apiRoot) {
+function validateV4ApiRoot(resolvedRoot) {
   const errors = [];
   const requiredFiles = [
     'host.json',
@@ -127,22 +127,6 @@ function validateApiRoot(apiRoot) {
     'sanitize-static-form-payload.mjs',
     'graph-send-mail-delivery.mjs',
   ];
-
-  if (!apiRoot) {
-    errors.push('Missing --api-root.');
-    return { ok: false, errors, fileCount: 0 };
-  }
-
-  const resolvedRoot = path.resolve(apiRoot);
-  if (!existsSync(resolvedRoot)) {
-    errors.push(`API root does not exist: ${resolvedRoot}`);
-    return { ok: false, errors, fileCount: 0, resolvedRoot };
-  }
-
-  if (!statSync(resolvedRoot).isDirectory()) {
-    errors.push(`API root is not a directory: ${resolvedRoot}`);
-    return { ok: false, errors, fileCount: 0, resolvedRoot };
-  }
 
   for (const requiredFile of requiredFiles) {
     const requiredPath = path.join(resolvedRoot, requiredFile);
@@ -204,9 +188,168 @@ function validateApiRoot(apiRoot) {
   return {
     ok: errors.length === 0,
     errors,
-    fileCount: walkFiles(resolvedRoot).length,
     resolvedRoot,
     publicPath: '/api/static-contact',
+    healthPath: null,
+    programmingModel: 'azure-functions-v4-app-http',
+  };
+}
+
+function validateV3CompatApiRoot(resolvedRoot) {
+  const errors = [];
+  const requiredFiles = [
+    'host.json',
+    'package.json',
+    'package-lock.json',
+    path.join('static-contact', 'function.json'),
+    path.join('static-contact', 'index.js'),
+    path.join('static-contact-health', 'function.json'),
+    path.join('static-contact-health', 'index.js'),
+    'contact-handler.mjs',
+    'validate-static-form-payload.mjs',
+    'sanitize-static-form-payload.mjs',
+    'graph-send-mail-delivery.mjs',
+  ];
+
+  for (const requiredFile of requiredFiles) {
+    const requiredPath = path.join(resolvedRoot, requiredFile);
+    if (!existsSync(requiredPath) || !statSync(requiredPath).isFile()) {
+      errors.push(`Missing required API file: ${requiredFile}`);
+    }
+  }
+
+  const forbiddenV4Files = [
+    path.join('src', 'functions', 'static-contact.js'),
+    'azure-function-static-contact.mjs',
+    'azure-function-adapter.mjs',
+  ];
+
+  for (const forbiddenFile of forbiddenV4Files) {
+    const forbiddenPath = path.join(resolvedRoot, forbiddenFile);
+    if (existsSync(forbiddenPath)) {
+      errors.push(`V3-compatible API package must not include v4 registration file: ${forbiddenFile}`);
+    }
+  }
+
+  const packagePath = path.join(resolvedRoot, 'package.json');
+  if (existsSync(packagePath)) {
+    try {
+      const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+      if (packageJson?.dependencies?.['@azure/functions'] || packageJson?.devDependencies?.['@azure/functions']) {
+        errors.push('V3-compatible API package must not include @azure/functions.');
+      }
+      if (packageJson?.main) {
+        errors.push('V3-compatible API package should rely on function.json discovery and must not set package.json main.');
+      }
+    } catch (error) {
+      errors.push(`API package.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+    }
+  }
+
+  const packageLockPath = path.join(resolvedRoot, 'package-lock.json');
+  if (existsSync(packageLockPath)) {
+    try {
+      const packageLock = JSON.parse(readFileSync(packageLockPath, 'utf8'));
+      if (packageLock?.packages?.['node_modules/@azure/functions']) {
+        errors.push('V3-compatible API package-lock.json must not include node_modules/@azure/functions.');
+      }
+    } catch (error) {
+      errors.push(`API package-lock.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+    }
+  }
+
+  const hostPath = path.join(resolvedRoot, 'host.json');
+  if (existsSync(hostPath)) {
+    try {
+      const host = JSON.parse(readFileSync(hostPath, 'utf8'));
+      if (host?.extensions?.http?.routePrefix !== 'api') {
+        errors.push('API host.json routePrefix is not api.');
+      }
+    } catch (error) {
+      errors.push(`API host.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+    }
+  }
+
+  const contactFunctionPath = path.join(resolvedRoot, 'static-contact', 'function.json');
+  if (existsSync(contactFunctionPath)) {
+    try {
+      const functionJson = JSON.parse(readFileSync(contactFunctionPath, 'utf8'));
+      const trigger = functionJson?.bindings?.find((binding) => binding?.type === 'httpTrigger');
+      const methods = new Set((trigger?.methods || []).map((method) => String(method).toLowerCase()));
+      if (trigger?.route !== 'static-contact') {
+        errors.push('static-contact function.json route must be static-contact.');
+      }
+      if (!methods.has('post') || !methods.has('options')) {
+        errors.push('static-contact function.json must include POST and OPTIONS methods.');
+      }
+    } catch (error) {
+      errors.push(`static-contact/function.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+    }
+  }
+
+  const healthFunctionPath = path.join(resolvedRoot, 'static-contact-health', 'function.json');
+  if (existsSync(healthFunctionPath)) {
+    try {
+      const functionJson = JSON.parse(readFileSync(healthFunctionPath, 'utf8'));
+      const trigger = functionJson?.bindings?.find((binding) => binding?.type === 'httpTrigger');
+      const methods = new Set((trigger?.methods || []).map((method) => String(method).toLowerCase()));
+      if (trigger?.route !== 'static-contact-health') {
+        errors.push('static-contact-health function.json route must be static-contact-health.');
+      }
+      if (!methods.has('get')) {
+        errors.push('static-contact-health function.json must include GET method.');
+      }
+    } catch (error) {
+      errors.push(`static-contact-health/function.json could not be parsed: ${error instanceof Error ? error.message : 'unknown parse error'}`);
+    }
+  }
+
+  const apiFiles = walkFiles(resolvedRoot);
+  for (const apiFile of apiFiles) {
+    const relativePath = path.relative(resolvedRoot, apiFile).split(path.sep).join('/');
+    if (relativePath.includes('node_modules/')) continue;
+    const text = readFileSync(apiFile, 'utf8');
+    if (text.includes("from '@azure/functions'") || text.includes("require('@azure/functions')") || text.includes('app.http(')) {
+      errors.push(`V3-compatible API file contains v4 registration marker: ${relativePath}`);
+    }
+  }
+
+  return {
+    ok: errors.length === 0,
+    errors,
+    resolvedRoot,
+    publicPath: '/api/static-contact',
+    healthPath: '/api/static-contact-health',
+    programmingModel: 'azure-functions-v3-function-json',
+  };
+}
+
+function validateApiRoot(apiRoot, apiModel = 'v4') {
+  const errors = [];
+
+  if (!apiRoot) {
+    errors.push('Missing --api-root.');
+    return { ok: false, errors, fileCount: 0 };
+  }
+
+  const resolvedRoot = path.resolve(apiRoot);
+  if (!existsSync(resolvedRoot)) {
+    errors.push(`API root does not exist: ${resolvedRoot}`);
+    return { ok: false, errors, fileCount: 0, resolvedRoot };
+  }
+
+  if (!statSync(resolvedRoot).isDirectory()) {
+    errors.push(`API root is not a directory: ${resolvedRoot}`);
+    return { ok: false, errors, fileCount: 0, resolvedRoot };
+  }
+
+  const modelResult = apiModel === 'v3-compat'
+    ? validateV3CompatApiRoot(resolvedRoot)
+    : validateV4ApiRoot(resolvedRoot);
+
+  return {
+    ...modelResult,
+    fileCount: walkFiles(resolvedRoot).length,
   };
 }
 
@@ -222,8 +365,9 @@ function main() {
     resourceGroup: String(args['resource-group'] || expected.resourceGroup),
     defaultHostname: String(args['default-hostname'] || expected.defaultHostname),
   };
+  const apiModel = String(args['api-model'] || 'v4');
   const artifact = validateArtifactRoot(args['artifact-root'] ? String(args['artifact-root']) : '');
-  const api = validateApiRoot(args['api-root'] ? String(args['api-root']) : '');
+  const api = validateApiRoot(args['api-root'] ? String(args['api-root']) : '', apiModel);
   const tokenPresent = Boolean(process.env[expected.tokenEnvVar]);
   const targetMatchesExpected =
     target.appName === expected.appName &&
@@ -261,6 +405,8 @@ function main() {
     apiDeploymentShape: {
       included: api.ok,
       publicPath: api.publicPath || '/api/static-contact',
+      healthPath: api.healthPath || null,
+      programmingModel: api.programmingModel || apiModel,
       swaCliFlag: '--api-location',
       apiRuntime: artifact.apiRuntime || expected.apiRuntime,
     },
