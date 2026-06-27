@@ -42,6 +42,7 @@ export function getSiteConfigs(env = process.env) {
       ],
       apiKeyEnv: 'ICE_RINK_RENTALS_API_KEY',
       defaultFormId: 'default-quote-request',
+      allowedFormIds: ['default-quote-request'],
       defaultLeadRoutingMode: 'manual_review_then_provider_match',
       defaultRecipientGroup: 'ICE_RINK_RENTALS_LEAD_RECIPIENT',
       staticFormEndpointKey: env.ICE_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY || 'ice-rink-rentals-default',
@@ -66,6 +67,7 @@ export function getSiteConfigs(env = process.env) {
       ],
       apiKeyEnv: 'ROLLER_RINK_RENTALS_API_KEY',
       defaultFormId: 'default-contact',
+      allowedFormIds: ['default-contact'],
       defaultLeadRoutingMode: 'manual_review_then_provider_match',
       defaultRecipientGroup: 'local_admin',
       staticFormEndpointKey: env.ROLLER_RINK_RENTALS_STATIC_FORM_ENDPOINT_KEY || 'roller-rink-rentals-default',
@@ -227,6 +229,15 @@ export function validateStaticFormPayload({
       errors.push('recipientGroup is required.');
     } else if (!site.allowedRecipientGroups.includes(routing.recipientGroup)) {
       errors.push('recipientGroup is not allowed for this site.');
+    }
+
+    const allowedFormIds = site.allowedFormIds || [site.defaultFormId].filter(Boolean);
+    if (formId && allowedFormIds.length > 0 && !allowedFormIds.includes(formId)) {
+      errors.push('formId is not allowed for this site.');
+    }
+
+    if (formKey && allowedFormIds.length > 0 && !allowedFormIds.includes(formKey)) {
+      errors.push('formKey is not allowed for this site.');
     }
 
     if (hasNonEmpty(payload?.domainRoutingKey) && hasNonEmpty(payload?.staticEndpointRef)) {

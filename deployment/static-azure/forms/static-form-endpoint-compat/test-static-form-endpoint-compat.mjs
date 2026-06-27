@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { handleStaticContactRequest } from './contact-handler.mjs';
 
 const require = createRequire(import.meta.url);
 const staticContact = require('./static-contact/index.js');
@@ -61,6 +62,11 @@ function makeContext() {
   };
 }
 
+const silentLogger = {
+  info() {},
+  error() {},
+};
+
 function withEnv(env, run) {
   const previous = {};
   for (const key of Object.keys(env)) {
@@ -98,6 +104,35 @@ async function invokeContact(payload, { method = 'POST', headers = {} } = {}) {
   return context.res;
 }
 
+async function submitToHandler(payload, {
+  env = {},
+  fetchImpl,
+  method = 'POST',
+  headers = {},
+  logger = silentLogger,
+} = {}) {
+  const rawBody = JSON.stringify(payload || {});
+
+  return handleStaticContactRequest({
+    method,
+    headers: {
+      ...defaultHeaders,
+      'content-length': String(Buffer.byteLength(rawBody)),
+      ...headers,
+    },
+    body: rawBody,
+    env: {
+      ...defaultEnv,
+      ...env,
+    },
+    fetchImpl: fetchImpl || (async () => {
+      throw new Error('Unexpected fetch call in local compat test.');
+    }),
+    now: () => new Date('2026-06-27T12:00:00.000Z'),
+    logger,
+  });
+}
+
 const tests = [
   ['returns health sentinel success', async () => {
     const context = makeContext();
@@ -120,6 +155,133 @@ const tests = [
     assert.equal(result.status, 200);
     assert.equal(result.body.ok, true);
     assert.match(result.body.entryId, /^ice-rink-rentals-default-quote-request-/);
+  }],
+  ['dry-run and no-email modes do not call Pumpkin API persistence', async () => {
+    let fetchCallCount = 0;
+    const result = await submitToHandler(frontendPayload(), {
+      env: {
+        FORM_DELIVERY_MODE: 'no-email',
+      },
+      fetchImpl: async () => {
+        fetchCallCount += 1;
+        throw new Error('No-email mode must not call fetch.');
+      },
+    });
+
+    assert.equal(result.status, 200);
+    assert.equal(result.body.ok, true);
+    assert.match(result.body.entryId, /^ice-rink-rentals-default-quote-request-/);
+    assert.equal(fetchCallCount, 0);
+  }],
+  ['pumpkin-api mode forwards valid FormEntry payload and returns Pumpkin entry id', async () => {
+    let forwardedUrl = '';
+    let forwardedOptions = null;
+    const savedEntryId = 'ice-rink-rentals-default-quote-request-saved-by-pumpkin';
+    const result = await submitToHandler(frontendPayload(), {
+      env: {
+        FORM_DELIVERY_MODE: 'pumpkin-api',
+        PUMPKIN_API_URL: 'https://pumpkin-api.local.test',
+        PUMPKIN_CONTACT_PUMPKIN_API_WRITE_ROUTE: '/api/forms/ice-rink-rentals/entries',
+        PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME: 'PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY',
+        PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY: 'dummy',
+      },
+      fetchImpl: async (url, options) => {
+        forwardedUrl = url;
+        forwardedOptions = options;
+        return {
+          ok: true,
+          status: 201,
+          async json() {
+            return { id: savedEntryId };
+          },
+        };
+      },
+    });
+
+    assert.equal(result.status, 200);
+    assert.equal(result.body.ok, true);
+    assert.equal(result.body.entryId, savedEntryId);
+    assert.equal(forwardedUrl, 'https://pumpkin-api.local.test/api/forms/ice-rink-rentals/entries');
+    assert.equal(forwardedOptions.method, 'POST');
+    assert.equal(forwardedOptions.headers.Accept, 'application/json');
+    assert.equal(forwardedOptions.headers['Content-Type'], 'application/json');
+    assert.match(forwardedOptions.headers.Authorization, /^Bearer /);
+
+    const forwardedEntry = JSON.parse(forwardedOptions.body);
+    assert.equal(forwardedEntry.tenantId, 'ice-rink-rentals');
+    assert.equal(forwardedEntry.siteKey, 'ice-rink-rentals');
+    assert.equal(forwardedEntry.formId, 'default-quote-request');
+    assert.equal(forwardedEntry.formKey, 'default-quote-request');
+    assert.equal(forwardedEntry.sourcePage, '/contact');
+    assert.equal(forwardedEntry.status, 'new');
+    assert.equal(forwardedEntry.spamStatus, 'clean');
+    assert.equal(forwardedEntry.metadata.source, 'static-form-endpoint');
+    assert.equal(forwardedEntry.metadata.staticEndpointRef, 'ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT');
+    assert.equal(forwardedEntry.metadata.leadRecipientRef, 'ICE_RINK_RENTALS_LEAD_RECIPIENT');
+    assert.ok(forwardedEntry.metadata.tags.includes('ice-rink-rentals'));
+    assert.ok(forwardedEntry.metadata.tags.includes('default-quote-request'));
+  }],
+  ['pumpkin-api mode fails safely before persistence when base URL is missing', async () => {
+    let fetchCallCount = 0;
+    const result = await submitToHandler(frontendPayload(), {
+      env: {
+        FORM_DELIVERY_MODE: 'pumpkin-api',
+        PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME: 'PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY',
+        PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY: 'dummy',
+      },
+      fetchImpl: async () => {
+        fetchCallCount += 1;
+        throw new Error('Missing config must not call fetch.');
+      },
+    });
+
+    assert.equal(result.status, 502);
+    assert.equal(result.body.ok, false);
+    assert.equal(Object.hasOwn(result.body, 'entryId'), false);
+    assert.equal(fetchCallCount, 0);
+  }],
+  ['pumpkin-api mode fails safely before persistence when protected key is missing', async () => {
+    let fetchCallCount = 0;
+    const result = await submitToHandler(frontendPayload(), {
+      env: {
+        FORM_DELIVERY_MODE: 'pumpkin-api',
+        PUMPKIN_API_URL: 'https://pumpkin-api.local.test',
+        PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME: 'PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY',
+      },
+      fetchImpl: async () => {
+        fetchCallCount += 1;
+        throw new Error('Missing protected binding must not call fetch.');
+      },
+    });
+
+    assert.equal(result.status, 502);
+    assert.equal(result.body.ok, false);
+    assert.equal(Object.hasOwn(result.body, 'entryId'), false);
+    assert.equal(fetchCallCount, 0);
+  }],
+  ['rejects mismatched Ice form id before Pumpkin API persistence', async () => {
+    let fetchCallCount = 0;
+    const result = await submitToHandler(frontendPayload({
+      formId: 'unexpected-contact-form',
+      formKey: 'unexpected-contact-form',
+    }), {
+      env: {
+        FORM_DELIVERY_MODE: 'pumpkin-api',
+        PUMPKIN_API_URL: 'https://pumpkin-api.local.test',
+        PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME: 'PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY',
+        PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY: 'dummy',
+      },
+      fetchImpl: async () => {
+        fetchCallCount += 1;
+        throw new Error('Validation failure must not call fetch.');
+      },
+    });
+
+    assert.equal(result.status, 400);
+    assert.equal(result.body.ok, false);
+    assert.ok(result.body.validationErrors.includes('formId is not allowed for this site.'));
+    assert.ok(result.body.validationErrors.includes('formKey is not allowed for this site.'));
+    assert.equal(fetchCallCount, 0);
   }],
   ['rejects invalid email without echoing unknown secrets', async () => {
     const result = await invokeContact(frontendPayload({

@@ -3,6 +3,8 @@ import { validateStaticFormPayload } from './validate-static-form-payload.mjs';
 import { sanitizeString } from './sanitize-static-form-payload.mjs';
 import { sendGraphMailDelivery } from './graph-send-mail-delivery.mjs';
 
+const ENV_VAR_NAME_PATTERN = /^[A-Z][A-Z0-9_]*$/;
+
 export function buildCorsHeaders(origin = '', env = process.env) {
   const headers = {
     'Cache-Control': 'no-store',
@@ -203,14 +205,16 @@ function normalizeMode(value) {
 }
 
 async function forwardToPumpkin({ entry, site, env, fetchImpl }) {
-  const apiUrl = String(env.PUMPKIN_API_URL || 'http://localhost:5064').replace(/\/+$/, '');
-  const apiKey = env[site.apiKeyEnv] || '';
+  const apiUrl = getPumpkinApiBaseUrl(env);
+  const apiKeyEnvName = getPumpkinApiKeyEnvName({ site, env });
+  const apiKey = env[apiKeyEnvName] || '';
+  const writePath = getPumpkinApiWritePath({ site, env });
 
   if (!apiKey) {
-    throw new Error(`Missing API key env var ${site.apiKeyEnv}.`);
+    throw new Error(`Missing API key env var ${apiKeyEnvName}.`);
   }
 
-  const response = await fetchImpl(`${apiUrl}/api/forms/${encodeURIComponent(site.tenantId)}/entries`, {
+  const response = await fetchImpl(`${apiUrl}${writePath}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -225,6 +229,51 @@ async function forwardToPumpkin({ entry, site, env, fetchImpl }) {
   }
 
   return response.json().catch(() => ({ id: entry.id }));
+}
+
+function getPumpkinApiBaseUrl(env) {
+  const value = sanitizeString(env.PUMPKIN_API_URL, 2048).replace(/\/+$/, '');
+
+  if (!value) {
+    throw new Error('Missing Pumpkin API base URL env var PUMPKIN_API_URL.');
+  }
+
+  try {
+    const parsed = new URL(value);
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      throw new Error('Unsupported protocol.');
+    }
+  } catch {
+    throw new Error('PUMPKIN_API_URL must be an absolute HTTP(S) URL.');
+  }
+
+  return value;
+}
+
+function getPumpkinApiKeyEnvName({ site, env }) {
+  const configuredName = sanitizeString(env.PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME || site.apiKeyEnv, 160);
+
+  if (!ENV_VAR_NAME_PATTERN.test(configuredName)) {
+    throw new Error('Pumpkin API key env var name is invalid.');
+  }
+
+  return configuredName;
+}
+
+function getPumpkinApiWritePath({ site, env }) {
+  const expectedPath = `/api/forms/${encodeURIComponent(site.tenantId)}/entries`;
+  const configuredPath = sanitizeString(env.PUMPKIN_CONTACT_PUMPKIN_API_WRITE_ROUTE || env.PUMPKIN_API_WRITE_ROUTE, 240);
+
+  if (!configuredPath) {
+    return expectedPath;
+  }
+
+  const normalizedPath = configuredPath.startsWith('/') ? configuredPath : `/${configuredPath}`;
+  if (normalizedPath !== expectedPath) {
+    throw new Error(`Pumpkin API write route must match ${expectedPath}.`);
+  }
+
+  return normalizedPath;
 }
 
 function response(status, body, origin, env) {
