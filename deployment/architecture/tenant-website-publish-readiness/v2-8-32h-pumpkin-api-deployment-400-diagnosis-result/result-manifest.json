@@ -1,0 +1,126 @@
+{
+  "phase": "V2.8.32H",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Pumpkin API live deployment recovery",
+  "classification": "pumpkin_api_deployment_400_diagnosis_corrected_health_deployment",
+  "status": "deployment_400_resolved_health_500_blocked",
+  "subscriptionLock": {
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "environmentName": "AzureCloud",
+    "state": "Enabled",
+    "tenantDefaultDomain": "iceskatingrinkrentals.com",
+    "operatorUser": "Contact@iceskatingrinkrentals.com",
+    "verified": true
+  },
+  "selectedTarget": {
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "plan": "asp-pumpkin-api-prod-centralus-001",
+    "webApp": "app-pumpkin-api-prod-centralus-001",
+    "region": "Central US",
+    "runtime": "DOTNETCORE|10.0",
+    "apiBaseUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "defaultHostName": "app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "state": "Running"
+  },
+  "originalArtifact": {
+    "path": ".tmp/v2-8-32c/pumpkin-api.zip",
+    "sha256": "05E9567DD47F7B59288569EA66815DC5059DF903481F097E3222F0036EE5B854",
+    "entryCount": 61,
+    "fileEntryCount": 56,
+    "rootFileCount": 44,
+    "backslashEntryCount": 17,
+    "appSettingsLikeEntryCount": 0,
+    "diagnosis": "ZIP entries included Windows-style backslashes, causing Linux Kudu rsync invalid-argument failures."
+  },
+  "correctedArtifact": {
+    "path": ".tmp/v2-8-32h/pumpkin-api-posix.zip",
+    "sha256": "4F10B7A16BA066D11BAFA0BE29DE77DBBAE1A29769F71B5CCB2658CA037EB46E",
+    "lengthBytes": 11758516,
+    "entryCount": 56,
+    "fileEntryCount": 56,
+    "rootFileCount": 44,
+    "backslashEntryCount": 0,
+    "appSettingsLikeEntryCount": 0,
+    "hasRootPumpkinDll": true,
+    "hasRootRuntimeConfig": true,
+    "hasRootDeps": true,
+    "hasRootWebConfig": true
+  },
+  "deployment": {
+    "priorFailedDeploymentId": "4f072de2-9bec-4caf-81ee-23a4ebaa8c94",
+    "priorFailure": "OneDeploy rsync failed with invalid argument on backslash paths and surfaced as HTTP 400.",
+    "correctedDeploymentAttempted": true,
+    "correctedDeploymentAttemptCount": 1,
+    "correctedDeploymentId": "09a22446-d448-4cea-b77f-fb7dc256af9b",
+    "correctedDeploymentStatus": "RuntimeSuccessful",
+    "numberOfInstancesSuccessful": 1,
+    "numberOfInstancesFailed": 0,
+    "cleanDeployUsed": true,
+    "restartUsed": true
+  },
+  "health": {
+    "checkedRoutes": [
+      {
+        "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/health",
+        "method": "GET",
+        "statusCode": 500,
+        "body": ""
+      },
+      {
+        "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/health",
+        "method": "GET",
+        "statusCode": 500,
+        "body": ""
+      }
+    ],
+    "passed": false
+  },
+  "unresolvableClassification": "runtime_health_500_requires_separate_startup_secret_or_auth_configuration_diagnostics",
+  "canonicalPumpkinApiUrl": {
+    "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "promoteForFutureBinding": false,
+    "reason": "Deployment succeeded but health gate returned HTTP 500."
+  },
+  "securityBoundary": {
+    "contactPostOccurred": false,
+    "productionApiWriteOccurred": false,
+    "formEntryValidationOccurred": false,
+    "adminLiveReadOccurred": false,
+    "appSettingsListedShownOrSet": false,
+    "secretAppSettingSet": false,
+    "protectedConfigRead": false,
+    "keyVaultAccessOccurred": false,
+    "deploymentTokenActionOccurred": false,
+    "keysListKeysOccurred": false,
+    "connectionStringOrSasGenerated": false,
+    "dnsMutationOccurred": false,
+    "searchConsoleOrIndexingOccurred": false,
+    "arbitraryOutboundUrlChecksOccurred": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32g-carryforward.md",
+    "subscription-lock-proof.md",
+    "selected-host-confirmation.md",
+    "deployment-log-diagnosis.md",
+    "webapp-runtime-config-diagnosis.md",
+    "original-artifact-structure-analysis.md",
+    "corrected-artifact-result.md",
+    "corrected-deployment-result.md",
+    "live-health-check-result.md",
+    "canonical-pumpkin-api-url.md",
+    "live-api-readiness-summary.md",
+    "fallback-diagnosis-result.md",
+    "unresolvable-classification-if-any.md",
+    "future-provider-binding-plan.md",
+    "contact-gate-status.md",
+    "security-boundary-result.md",
+    "no-contact-post-no-secret-appsetting-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
