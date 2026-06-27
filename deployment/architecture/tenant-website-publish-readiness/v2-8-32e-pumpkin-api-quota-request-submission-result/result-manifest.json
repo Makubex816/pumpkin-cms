@@ -1,0 +1,89 @@
+{
+  "phase": "V2.8.32E",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "pumpkin_api_eastus_quota_request_submitted_no_deploy_no_resource_mutation",
+  "status": "complete_quota_request_submitted_approval_pending",
+  "pathSelection": "Path A - East US quota increase",
+  "subscriptionLock": {
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "environmentName": "AzureCloud",
+    "state": "Enabled",
+    "tenantDefaultDomain": "iceskatingrinkrentals.com",
+    "operatorUser": "Contact@iceskatingrinkrentals.com",
+    "verified": true
+  },
+  "quotaTicket": {
+    "submitted": true,
+    "ticketName": "PumpkinApiEastUSAppServiceQuotaIncrease-20260627120242",
+    "ticketId": null,
+    "requestedRegion": "East US",
+    "currentLimit": 0,
+    "requestedLimit": 1,
+    "evidencePath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\quota-requests\\v2-8-32e",
+    "summaryFile": "C:\\Users\\User\\Desktop\\PumpkinCMS\\quota-requests\\v2-8-32e\\quota-ticket-summary.json",
+    "summaryCreatedAt": "2026-06-27T12:07:44.3055841-04:00",
+    "supportTicketShow": {
+      "attempted": true,
+      "result": "ResourceNotFound",
+      "statusConfirmed": false
+    }
+  },
+  "targetResourceLock": {
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "region": "East US",
+    "resourceGroup": "rg-pumpkin-api-prod-eastus",
+    "appServicePlan": "asp-pumpkin-api-prod-eastus-001",
+    "webApp": "app-pumpkin-api-prod-eastus-001",
+    "apiBaseUrl": "https://app-pumpkin-api-prod-eastus-001.azurewebsites.net"
+  },
+  "v2_8_32dCarryforward": {
+    "resourceGroup": "created",
+    "appServicePlan": "blocked_by_eastus_total_vms_quota",
+    "webApp": "not_created",
+    "zipDeploy": "not_attempted",
+    "healthChecks": "not_attempted",
+    "artifactSha256": "05e9567dd47f7b59288569ea66815dc5059df903481f097e3222f0036ee5b854"
+  },
+  "gates": {
+    "quotaApproval": "pending",
+    "deploymentRetry": "blocked_until_quota_approved_and_reapproved",
+    "contactPost": "not_approved",
+    "protectedConfig": "not_approved"
+  },
+  "securityBoundary": {
+    "azureResourceCreationOccurredInV2_8_32E": false,
+    "azureResourceUpdateOccurredInV2_8_32E": false,
+    "azureResourceDeletionOccurredInV2_8_32E": false,
+    "deploymentOccurredInV2_8_32E": false,
+    "appSettingsListedShownOrSet": false,
+    "protectedConfigRead": false,
+    "contactPostOccurred": false,
+    "dnsMutationOccurred": false,
+    "searchConsoleOrIndexingOccurred": false,
+    "deploymentTokenActionOccurred": false,
+    "keysListKeysOccurred": false,
+    "connectionStringOrSasGenerated": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32d-carryforward.md",
+    "subscription-lock-proof.md",
+    "quota-ticket-submission-result.md",
+    "path-a-decision-record.md",
+    "target-resource-lock-record.md",
+    "quota-approval-pending-status.md",
+    "partial-resource-state.md",
+    "next-quota-approval-polling-plan.md",
+    "future-health-deployment-retry-plan.md",
+    "contact-gate-status.md",
+    "security-boundary-result.md",
+    "no-deploy-no-resource-mutation-no-post-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
