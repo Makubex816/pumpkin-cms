@@ -1,0 +1,146 @@
+{
+  "phase": "V2.8.32G",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "pumpkin_api_resource_creation_retry_health_deployment",
+  "status": "blocked_by_eastus_total_vms_quota_after_single_plan_create_attempt",
+  "pathSelection": "Path A - East US App Service target",
+  "subscriptionLock": {
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "environmentName": "AzureCloud",
+    "state": "Enabled",
+    "tenantDefaultDomain": "iceskatingrinkrentals.com",
+    "operatorUser": "Contact@iceskatingrinkrentals.com",
+    "verified": true
+  },
+  "operatorEnv": {
+    "targetSubscriptionId": null,
+    "targetSubscriptionName": null,
+    "targetOperatorUser": null,
+    "resourceGroup": "rg-pumpkin-api-prod-eastus",
+    "plan": "asp-pumpkin-api-prod-eastus-001",
+    "webApp": "app-pumpkin-api-prod-eastus-001",
+    "region": "eastus",
+    "sku": null,
+    "isLinux": null,
+    "baseUrl": "https://app-pumpkin-api-prod-eastus-001.azurewebsites.net",
+    "healthRoute": "/api/health",
+    "rootHealthRoute": "/health",
+    "artifactSource": ".tmp/v2-8-32c/pumpkin-api.zip",
+    "artifactSha256": null,
+    "planCreateApproved": true,
+    "webAppCreateApproved": true,
+    "zipDeployApproved": true,
+    "contactPostApproved": false,
+    "protectedConfigApproved": false,
+    "appSettingSecretBindingApproved": false,
+    "dnsApproved": false,
+    "indexingApproved": false
+  },
+  "artifact": {
+    "source": ".tmp/v2-8-32c/pumpkin-api.zip",
+    "exists": true,
+    "sha256": "05e9567dd47f7b59288569ea66815dc5059df903481f097e3222f0036ee5b854",
+    "matchesExpected": true,
+    "zipEntryCountIncludingDirectories": 61,
+    "blockedConfigEntryCount": 0,
+    "rebuildPerformed": false
+  },
+  "runtime": {
+    "requiredConfig": "DOTNETCORE|10.0",
+    "available": true,
+    "version": "10.0 (LTS)",
+    "support": "Active",
+    "endOfLife": "2028-12-01"
+  },
+  "target": {
+    "resourceGroup": "rg-pumpkin-api-prod-eastus",
+    "appServicePlan": "asp-pumpkin-api-prod-eastus-001",
+    "webApp": "app-pumpkin-api-prod-eastus-001",
+    "region": "eastus",
+    "sku": "B1",
+    "linux": true,
+    "apiBaseUrl": "https://app-pumpkin-api-prod-eastus-001.azurewebsites.net"
+  },
+  "azureResourceState": {
+    "resourceGroup": {
+      "exists": true,
+      "createdInThisPhase": false,
+      "id": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-eastus",
+      "location": "eastus",
+      "provisioningState": "Succeeded"
+    },
+    "appServicePlan": {
+      "existsBeforeCreate": false,
+      "createAttempted": true,
+      "createAttemptCount": 1,
+      "created": false,
+      "followUpExists": false,
+      "failureClassification": "quota_unresolved",
+      "quota": {
+        "location": "East US",
+        "currentLimitTotalVMs": 0,
+        "currentUsage": 0,
+        "requiredTotalVMs": 1,
+        "minimumNewLimit": 1
+      }
+    },
+    "webApp": {
+      "existsBeforePlanAttempt": false,
+      "createAttempted": false,
+      "created": false,
+      "reason": "App Service plan was not created."
+    }
+  },
+  "deployment": {
+    "zipDeployAttempted": false,
+    "zipDeployAttemptCount": 0,
+    "reason": "Web App does not exist.",
+    "healthGetAttempted": false,
+    "approvedHealthUrls": [
+      "https://app-pumpkin-api-prod-eastus-001.azurewebsites.net/health",
+      "https://app-pumpkin-api-prod-eastus-001.azurewebsites.net/api/health"
+    ]
+  },
+  "unresolvableClassification": "unresolvable_via_path_a_until_quota_approved",
+  "securityBoundary": {
+    "contactPostOccurred": false,
+    "productionApiWriteOccurred": false,
+    "formEntryValidationOccurred": false,
+    "adminLiveReadOccurred": false,
+    "appSettingsListedShownOrSet": false,
+    "protectedConfigRead": false,
+    "dnsMutationOccurred": false,
+    "searchConsoleOrIndexingOccurred": false,
+    "deploymentTokenActionOccurred": false,
+    "keysListKeysOccurred": false,
+    "connectionStringOrSasGenerated": false,
+    "arbitraryOutboundUrlChecksOccurred": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32f-carryforward.md",
+    "subscription-lock-proof.md",
+    "artifact-reverification-result.md",
+    "linux-runtime-availability-result.md",
+    "resource-group-create-confirm-result.md",
+    "app-service-plan-create-confirm-result.md",
+    "webapp-create-confirm-result.md",
+    "zip-deployment-result.md",
+    "live-health-check-result.md",
+    "fallback-diagnosis-result.md",
+    "unresolvable-classification-if-any.md",
+    "live-api-readiness-summary.md",
+    "future-provider-binding-plan.md",
+    "rollback-plan.md",
+    "contact-gate-status.md",
+    "security-boundary-result.md",
+    "no-contact-post-no-appsetting-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
