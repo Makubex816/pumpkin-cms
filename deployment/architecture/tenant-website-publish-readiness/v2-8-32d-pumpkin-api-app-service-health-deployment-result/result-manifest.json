@@ -1,0 +1,63 @@
+{
+  "phase": "V2.8.32D",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "pumpkin_api_app_service_provision_health_deploy",
+  "status": "blocked_by_azure_quota_after_resource_group_create",
+  "plannedTarget": {
+    "resourceGroup": "rg-pumpkin-api-prod-eastus",
+    "appServicePlan": "asp-pumpkin-api-prod-eastus-001",
+    "webApp": "app-pumpkin-api-prod-eastus-001",
+    "region": "eastus",
+    "apiBaseUrl": "https://app-pumpkin-api-prod-eastus-001.azurewebsites.net",
+    "runtime": "DOTNETCORE|10.0"
+  },
+  "artifact": {
+    "source": ".tmp/v2-8-32c/pumpkin-api.zip",
+    "sha256": "05e9567dd47f7b59288569ea66815dc5059df903481f097e3222f0036ee5b854",
+    "manifestFileCount": 56,
+    "zipEntryCountIncludingDirectories": 61,
+    "blockedConfigEntryCount": 0
+  },
+  "azureProvisioning": {
+    "resourceGroup": "created",
+    "appServicePlan": "blocked_by_quota",
+    "webApp": "not_attempted_after_plan_blocker",
+    "zipDeploy": "not_attempted",
+    "healthChecks": "not_attempted"
+  },
+  "securityBoundary": {
+    "contactPostOccurred": false,
+    "protectedConfigReadOccurred": false,
+    "appSettingSecretBindingOccurred": false,
+    "dnsMutationOccurred": false,
+    "indexingActionOccurred": false,
+    "deploymentTokenActionOccurred": false,
+    "keysListKeysOccurred": false,
+    "connectionStringOrSasGenerationOccurred": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32c-carryforward.md",
+    "operator-deployment-env-summary.md",
+    "azure-account-context.md",
+    "linux-runtime-availability-result.md",
+    "resource-group-provision-result.md",
+    "app-service-plan-provision-result.md",
+    "webapp-provision-result.md",
+    "artifact-reverification.md",
+    "zip-deployment-result.md",
+    "live-health-check-result.md",
+    "live-api-readiness-summary.md",
+    "future-provider-binding-plan.md",
+    "rollback-plan.md",
+    "security-boundary-result.md",
+    "no-contact-post-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+
