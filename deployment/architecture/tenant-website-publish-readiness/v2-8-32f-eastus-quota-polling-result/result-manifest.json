@@ -1,0 +1,108 @@
+{
+  "phase": "V2.8.32F",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "eastus_quota_polling_no_deploy_no_mutation",
+  "status": "complete_quota_not_visible_not_confirmed_retry_blocked",
+  "pathSelection": "Path A - East US quota increase",
+  "subscriptionLock": {
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "environmentName": "AzureCloud",
+    "state": "Enabled",
+    "tenantDefaultDomain": "iceskatingrinkrentals.com",
+    "operatorUser": "Contact@iceskatingrinkrentals.com",
+    "verified": true
+  },
+  "pollingEnv": {
+    "targetSubscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "targetSubscriptionName": null,
+    "targetUser": null,
+    "supportTicketName": "PumpkinApiEastUSAppServiceQuotaIncrease-20260627120242",
+    "requestedRegion": "East US",
+    "currentLimit": 0,
+    "requestedLimit": 1,
+    "targetResourceGroup": "rg-pumpkin-api-prod-eastus",
+    "targetPlan": "asp-pumpkin-api-prod-eastus-001",
+    "targetWebApp": "app-pumpkin-api-prod-eastus-001",
+    "pathSelection": null,
+    "deployRetryApproved": null,
+    "resourceMutationApproved": null,
+    "contactPostApproved": false,
+    "appSettingApproved": null
+  },
+  "quotaTicketStatus": {
+    "ticketName": "PumpkinApiEastUSAppServiceQuotaIncrease-20260627120242",
+    "showAttempted": true,
+    "showResult": "ResourceNotFound",
+    "listAttempted": true,
+    "listResultCount": 0,
+    "visibleThroughCli": false,
+    "approvalConfirmed": false,
+    "statusClassification": "not_visible_not_confirmed"
+  },
+  "partialResourceState": {
+    "resourceGroup": {
+      "name": "rg-pumpkin-api-prod-eastus",
+      "id": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-eastus",
+      "location": "eastus",
+      "provisioningState": "Succeeded",
+      "exists": true
+    },
+    "appServicePlan": {
+      "name": "asp-pumpkin-api-prod-eastus-001",
+      "exists": false,
+      "showResult": "ResourceNotFound"
+    },
+    "webApp": {
+      "name": "app-pumpkin-api-prod-eastus-001",
+      "exists": false,
+      "showResult": "ResourceNotFound"
+    }
+  },
+  "deploymentRetryReadiness": {
+    "ready": false,
+    "reason": "Quota approval is not confirmed and deploy/resource mutation retry approval is not provided.",
+    "quotaApprovalConfirmed": false,
+    "resourceGroupReady": true,
+    "appServicePlanReady": false,
+    "webAppReady": false,
+    "deployRetryApproved": false,
+    "resourceMutationApproved": false,
+    "contactPostApproved": false,
+    "appSettingApproved": false
+  },
+  "nextStatusAction": "follow_up_quota_polling_or_portal_ticket_verification",
+  "securityBoundary": {
+    "azureResourceCreationOccurredInV2_8_32F": false,
+    "azureResourceUpdateOccurredInV2_8_32F": false,
+    "azureResourceDeletionOccurredInV2_8_32F": false,
+    "deploymentOccurredInV2_8_32F": false,
+    "appSettingsListedShownOrSet": false,
+    "protectedConfigRead": false,
+    "contactPostOccurred": false,
+    "dnsMutationOccurred": false,
+    "searchConsoleOrIndexingOccurred": false,
+    "deploymentTokenActionOccurred": false,
+    "keysListKeysOccurred": false,
+    "connectionStringOrSasGenerated": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32e-carryforward.md",
+    "subscription-lock-proof.md",
+    "quota-ticket-status-result.md",
+    "partial-resource-state.md",
+    "deployment-retry-readiness.md",
+    "next-status-action.md",
+    "future-health-deployment-retry-plan.md",
+    "contact-gate-status.md",
+    "security-boundary-result.md",
+    "no-deploy-no-mutation-no-post-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
