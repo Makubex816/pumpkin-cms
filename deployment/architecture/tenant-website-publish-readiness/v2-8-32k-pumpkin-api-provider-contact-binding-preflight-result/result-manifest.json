@@ -1,0 +1,70 @@
+{
+  "phase": "V2.8.32K",
+  "status": "completed_static_contact_binding_contact_gate_open",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "provider_contact_binding_preflight_static_contact_admin_persistence_binding_no_post",
+  "subscription": {
+    "id": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "name": "Azure subscription 1",
+    "operatorUser": "Contact@iceskatingrinkrentals.com"
+  },
+  "targets": {
+    "pumpkinApiWebApp": "app-pumpkin-api-prod-centralus-001",
+    "pumpkinApiResourceGroup": "rg-pumpkin-api-prod-centralus",
+    "pumpkinApiCanonicalUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "staticWebApp": "swa-ice-static-staging",
+    "staticWebAppResourceGroup": "rg-ice-static-staging",
+    "productionHosts": [
+      "iceskatingrinkrentals.com",
+      "www.iceskatingrinkrentals.com"
+    ]
+  },
+  "binding": {
+    "staticSwaAppsettingsSet": true,
+    "pumpkinApiWebAppAppsettingsSet": false,
+    "pumpkinApiWebAppAppsettingsSetReason": "No source-confirmed Pumpkin API app setting maps the tenant binding secret to FormEntry writes; source validates Bearer keys against the tenant database record.",
+    "staticSettingsBound": [
+      "FORM_DELIVERY_MODE",
+      "PUMPKIN_API_URL",
+      "PUMPKIN_CONTACT_PUMPKIN_API_WRITE_ROUTE",
+      "PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME",
+      "PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY",
+      "STATIC_FORM_ALLOWED_SITE_KEYS",
+      "STATIC_FORM_ALLOWED_ORIGINS"
+    ],
+    "apiSourceSettingsDiscovered": [
+      "Database__Provider",
+      "Database__CosmosDb__ConnectionString",
+      "Database__CosmosDb__DatabaseName",
+      "Jwt__SecretKey",
+      "Jwt__Issuer",
+      "Jwt__Audience",
+      "Jwt__ExpirationMinutes"
+    ],
+    "nonSourceConfirmedOperatorSecretNames": [
+      "PUMPKIN_API_FORMENTRY_PROVIDER_BINDING_SECRET"
+    ]
+  },
+  "protectedValuePresenceOnly": {
+    "PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY": true,
+    "PUMPKIN_API_FORMENTRY_PROVIDER_BINDING_SECRET": true,
+    "PUMPKIN_API_JWT_SECRET_KEY": false,
+    "tenantApiKeysMatch": true
+  },
+  "readiness": {
+    "pumpkinApiHealth": 200,
+    "pumpkinApiApiHealth": 200,
+    "staticContactHealth": 200
+  },
+  "hardStopsRespected": {
+    "noDeploy": true,
+    "noContactPost": true,
+    "noFormEntryLiveWriteRead": true,
+    "noAdminLiveReadback": true,
+    "noAppsettingListShow": true,
+    "noProtectedConfigRead": true,
+    "noDnsOrIndexing": true
+  },
+  "nextGate": "V2.8.32L live contact POST plus Admin FormEntry readback, only after explicit approval"
+}
