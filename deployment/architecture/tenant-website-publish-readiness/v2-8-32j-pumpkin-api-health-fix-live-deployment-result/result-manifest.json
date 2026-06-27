@@ -1,0 +1,136 @@
+{
+  "phase": "V2.8.32J",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "pumpkin_api_locally_validated_health_fix_deploy_once_live_health_promotion",
+  "status": "live_health_passed_canonical_pumpkin_api_url_promoted",
+  "subscriptionLock": {
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "environmentName": "AzureCloud",
+    "state": "Enabled",
+    "tenantDefaultDomain": "iceskatingrinkrentals.com",
+    "operatorUser": "Contact@iceskatingrinkrentals.com",
+    "verified": true
+  },
+  "selectedTarget": {
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "plan": "asp-pumpkin-api-prod-centralus-001",
+    "webApp": "app-pumpkin-api-prod-centralus-001",
+    "region": "Central US",
+    "apiBaseUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "defaultHostName": "app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "state": "Running"
+  },
+  "v2832iCarryforward": {
+    "rootCause": "Missing Jwt:SecretKey caused JWT bearer setup to throw before health response.",
+    "localFixValidated": true,
+    "localHealthStatus": "passed_no_secret_health_200_for_health_and_api_health",
+    "fixedArtifactPath": ".tmp/v2-8-32i/pumpkin-api-health-recovery-local-fixed-posix.zip",
+    "fixedArtifactSha256": "722BC5B481043FF0B9B9B4566B2B23A52D93E7D6FDF3378087352F4904276D58"
+  },
+  "sourceFixCarryforward": {
+    "jwtBearerOptionsNullSafe": true,
+    "missingJwtSecretReturnsNoAuthResult": true,
+    "healthRoutesAllowAnonymous": true,
+    "healthRoutesDependencyLight": true,
+    "sourceImplementationChangesInJ": false
+  },
+  "artifact": {
+    "path": ".tmp/v2-8-32i/pumpkin-api-health-recovery-local-fixed-posix.zip",
+    "exists": true,
+    "sha256": "722BC5B481043FF0B9B9B4566B2B23A52D93E7D6FDF3378087352F4904276D58",
+    "shaMatchesExpected": true,
+    "lengthBytes": 11758885,
+    "entryCount": 56,
+    "fileEntryCount": 56,
+    "backslashEntryCount": 0,
+    "appSettingsLikeEntryCount": 0,
+    "hasRootPumpkinDll": true,
+    "hasRootRuntimeConfig": true,
+    "hasRootDeps": true,
+    "hasRootWebConfig": true,
+    "rebuildPerformed": false
+  },
+  "deployment": {
+    "deploymentAttempted": true,
+    "deploymentAttemptCount": 1,
+    "deploymentId": "e224d49c-4db7-40ca-b0e1-f6bffedbf8ab",
+    "deploymentStatus": "RuntimeSuccessful",
+    "numberOfInstancesSuccessful": 1,
+    "numberOfInstancesFailed": 0,
+    "cleanDeployUsed": true,
+    "restartUsed": true
+  },
+  "liveHealth": {
+    "checkedRoutes": [
+      {
+        "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/health",
+        "method": "GET",
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentType": "application/json; charset=utf-8",
+        "providerStatus": "not_checked"
+      },
+      {
+        "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/health",
+        "method": "GET",
+        "statusCode": 200,
+        "statusDescription": "OK",
+        "contentType": "application/json; charset=utf-8",
+        "providerStatus": "not_checked"
+      }
+    ],
+    "passed": true
+  },
+  "canonicalPumpkinApiUrl": {
+    "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "promoteForFutureBinding": true,
+    "futureEnvName": "PUMPKIN_API_URL"
+  },
+  "readiness": {
+    "liveHealthReady": true,
+    "providerBindingReadyForNextApproval": true,
+    "contactPostReady": false,
+    "contactPostReason": "Contact POST remains a separately approved phase after provider/contact binding."
+  },
+  "securityBoundary": {
+    "sourceImplementationChangesInJ": false,
+    "contactPostOccurred": false,
+    "productionApiWriteBeyondHealthGetOccurred": false,
+    "formEntryReadOrWriteOccurred": false,
+    "adminLiveReadOccurred": false,
+    "appSettingsListedShownOrSet": false,
+    "secretAppSettingSet": false,
+    "protectedConfigRead": false,
+    "keyVaultAccessOccurred": false,
+    "deploymentTokenActionOccurred": false,
+    "keysListKeysOccurred": false,
+    "connectionStringOrSasGenerated": false,
+    "dnsMutationOccurred": false,
+    "searchConsoleOrIndexingOccurred": false,
+    "arbitraryOutboundUrlChecksOccurred": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32i-carryforward.md",
+    "subscription-lock-proof.md",
+    "selected-host-confirmation.md",
+    "jwt-null-safe-fix-carryforward.md",
+    "fixed-artifact-reverification-result.md",
+    "artifact-rebuild-result-if-any.md",
+    "fixed-deployment-result.md",
+    "live-health-check-result.md",
+    "canonical-pumpkin-api-url.md",
+    "live-api-readiness-summary.md",
+    "future-provider-binding-plan.md",
+    "contact-gate-status.md",
+    "security-boundary-result.md",
+    "no-contact-post-no-formentry-no-admin-read-no-secret-appsetting-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
