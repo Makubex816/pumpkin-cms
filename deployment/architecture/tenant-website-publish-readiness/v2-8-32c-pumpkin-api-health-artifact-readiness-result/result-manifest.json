@@ -1,0 +1,51 @@
+{
+  "phase": "V2.8.32C",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "pumpkin_api_health_artifact_readiness_no_deploy_no_mutation",
+  "status": "complete_local_no_deploy",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_32C_PUMPKIN_API_HEALTH_ARTIFACT_READINESS_REPORT.md",
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-32c-pumpkin-api-health-artifact-readiness-result/",
+  "publishArtifact": {
+    "publishDir": ".tmp/v2-8-32c/pumpkin-api-publish",
+    "zipPath": ".tmp/v2-8-32c/pumpkin-api.zip",
+    "manifestPath": ".tmp/v2-8-32c/publish-manifest.json",
+    "fileCount": 56,
+    "aggregateSha256": "22c6c0132bbee0cea8489ddf4c9553c06812b5a328dc6d3f69fc802e22201783",
+    "zipSha256": "05e9567dd47f7b59288569ea66815dc5059df903481f097e3222f0036ee5b854",
+    "blockedConfigFileCount": 0
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32b-carryforward.md",
+    "operator-readiness-env-summary.md",
+    "pumpkin-api-source-readiness.md",
+    "health-endpoint-implementation-result.md",
+    "form-entry-route-shape-verification.md",
+    "admin-form-entry-read-route-verification.md",
+    "local-build-validation-result.md",
+    "local-test-validation-result.md",
+    "dotnet-runtime-sdk-summary.md",
+    "local-publish-artifact-manifest.md",
+    "app-service-deployment-command-plan.md",
+    "future-app-setting-protected-binding-plan.md",
+    "rollback-plan.md",
+    "runtime-qa-smoke-test-plan.md",
+    "contact-gate-status.md",
+    "deferred-gates-summary.md",
+    "security-boundary-result.md",
+    "no-deploy-no-post-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ],
+  "sourceChanges": [
+    ".gitignore",
+    "apps/pumpkin-api/Program.cs",
+    "apps/pumpkin-api/pumpkin-api.csproj",
+    "apps/pumpkin-api.Tests/Program.cs",
+    "apps/pumpkin-api.Tests/PumpkinApiHealthArtifactReadinessTestRunner.cs"
+  ]
+}

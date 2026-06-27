@@ -30,6 +30,24 @@ if (args.Contains("--v2-11-4", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-11-9", StringComparer.OrdinalIgnoreCase))
+{
+    await ImportExecutionProjectionApiReadOnlyTestRunner.RunAsync();
+    return;
+}
+
+if (args.Contains("--v2-12-3", StringComparer.OrdinalIgnoreCase))
+{
+    await OperatorHandoffApiReadOnlyTestRunner.RunAsync();
+    return;
+}
+
+if (args.Contains("--v2-8-32c", StringComparer.OrdinalIgnoreCase))
+{
+    await PumpkinApiHealthArtifactReadinessTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
@@ -201,7 +219,7 @@ public static class PumpkinApiTests
             if (databaseSettings != null)
             {
                 var loggerFactory = LoggerFactory.Create(builder => { });
-                
+
                 // Create the appropriate data connection based on provider
                 if (databaseSettings.Provider.Equals("CosmosDb", StringComparison.OrdinalIgnoreCase))
                 {
@@ -212,7 +230,7 @@ public static class PumpkinApiTests
                             Microsoft.Extensions.Options.Options.Create(cosmosSettings),
                             loggerFactory.CreateLogger<CosmosDataConnection>()
                         );
-                        
+
                         // For testing, we'll use the connection directly instead of DatabaseService
                         // In production, use DatabaseService through DI
                         databaseService = cosmosConnection as IDatabaseService ?? new TestDatabaseService(cosmosConnection);
@@ -706,12 +724,12 @@ public static class UserGenerator
         params (string email, string username, string password, string tenantId, string? firstName, string? lastName, int role)[] users)
     {
         var results = new List<(dynamic userDoc, string password)>();
-        
+
         foreach (var (email, username, password, tenantId, firstName, lastName, role) in users)
         {
             results.Add(GenerateUser(email, username, password, tenantId, firstName, lastName, role));
         }
-        
+
         return results;
     }
 }

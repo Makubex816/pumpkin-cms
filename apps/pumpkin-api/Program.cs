@@ -119,6 +119,8 @@ builder.Services.AddOutboundLinkReadOnlyFoundation();
 builder.Services.AddOutboundLinkWriteFoundation();
 builder.Services.AddAuditJobReadOnlyFoundation();
 builder.Services.AddImportIntakeReadOnlyFoundation();
+builder.Services.AddImportExecutionProjectionReadOnlyFoundation();
+builder.Services.AddOperatorHandoffReadOnlyFoundation();
 
 var app = builder.Build();
 
@@ -152,6 +154,29 @@ if (app.Environment.IsDevelopment())
         options.DefaultModelExpandDepth(2);
     });
 }
+
+IResult GetHealth() => Results.Ok(new
+{
+    ok = true,
+    service = "pumpkin-api",
+    version = typeof(PumpkinManager).Assembly.GetName().Version?.ToString() ?? "unknown",
+    environment = app.Environment.EnvironmentName,
+    providerConfigured = false,
+    providerStatus = "not_checked",
+    timestampUtc = DateTimeOffset.UtcNow
+});
+
+app.MapGet("/api/health", GetHealth)
+    .WithTags("Health")
+    .WithName("GetApiHealth")
+    .WithSummary("Get API health")
+    .WithDescription("Returns dependency-light API process health without provider dependency checks.");
+
+app.MapGet("/health", GetHealth)
+    .WithTags("Health")
+    .WithName("GetRootHealth")
+    .WithSummary("Get root health")
+    .WithDescription("Returns dependency-light API process health for platform smoke checks.");
 
 // Root endpoint
 app.MapGet("/", PumpkinManager.GetWelcomeMessage)
@@ -529,6 +554,8 @@ app.MapOutboundLinkReadOnlyEndpoints();
 app.MapOutboundLinkWriteEndpoints();
 app.MapAuditJobReadOnlyEndpoints();
 app.MapImportIntakeReadOnlyEndpoints();
+app.MapImportExecutionProjectionReadOnlyEndpoints();
+app.MapOperatorHandoffReadOnlyEndpoints();
 
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",
