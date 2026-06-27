@@ -1,0 +1,170 @@
+{
+  "phase": "V2.8.32I",
+  "date": "2026-06-27",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "pumpkin_api_runtime_500_diagnosis_health_recovery",
+  "status": "runtime_500_root_cause_found_local_fix_validated_live_health_still_blocked",
+  "subscriptionLock": {
+    "subscriptionName": "Azure subscription 1",
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "environmentName": "AzureCloud",
+    "state": "Enabled",
+    "tenantDefaultDomain": "iceskatingrinkrentals.com",
+    "operatorUser": "Contact@iceskatingrinkrentals.com",
+    "verified": true
+  },
+  "selectedTarget": {
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "plan": "asp-pumpkin-api-prod-centralus-001",
+    "webApp": "app-pumpkin-api-prod-centralus-001",
+    "region": "Central US",
+    "runtime": "DOTNETCORE|10.0",
+    "apiBaseUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "defaultHostName": "app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "state": "Running"
+  },
+  "v2832hCarryforward": {
+    "deploymentId": "09a22446-d448-4cea-b77f-fb7dc256af9b",
+    "deploymentStatus": "RuntimeSuccessful",
+    "healthStatus": "both_health_routes_returned_500",
+    "deployment400Resolved": true
+  },
+  "diagnosis": {
+    "runtimeLogSource": "local no-secret run from corrected artifact, because Web App runtime logging was disabled",
+    "exceptionType": "System.ArgumentNullException",
+    "exceptionMessage": "Value cannot be null. (Parameter 's')",
+    "rootCause": "JWT bearer options directly encoded missing Jwt:SecretKey during authentication middleware execution before health handler response.",
+    "healthHandlerDependsOnProviderConfig": false,
+    "webAppRuntimeStackCause": false,
+    "deploymentPipelineCause": false
+  },
+  "sourceFix": {
+    "filesChanged": [
+      "apps/pumpkin-api/Program.cs",
+      "apps/pumpkin-api.Tests/PumpkinApiHealthArtifactReadinessTestRunner.cs"
+    ],
+    "jwtMissingSecretGuardAdded": true,
+    "healthRoutesAllowAnonymous": true,
+    "healthAuthBypassAdded": true,
+    "protectedRoutesRemainBehindAuthorization": true
+  },
+  "artifacts": {
+    "deployedAttemptArtifact": {
+      "path": ".tmp/v2-8-32i/pumpkin-api-health-recovery-posix.zip",
+      "sha256": "1DDD81DC000E4B1FC9F7E2C1BA7938B166D1CE5156B0E42A174B6E55F18BA2AA",
+      "entryCount": 56,
+      "backslashEntryCount": 0,
+      "appSettingsLikeEntryCount": 0,
+      "deployed": true
+    },
+    "localFixedArtifact": {
+      "path": ".tmp/v2-8-32i/pumpkin-api-health-recovery-local-fixed-posix.zip",
+      "sha256": "722BC5B481043FF0B9B9B4566B2B23A52D93E7D6FDF3378087352F4904276D58",
+      "entryCount": 56,
+      "backslashEntryCount": 0,
+      "appSettingsLikeEntryCount": 0,
+      "deployed": false
+    }
+  },
+  "deployment": {
+    "correctedDeploymentAttempted": true,
+    "correctedDeploymentAttemptCount": 1,
+    "deploymentId": "fa765264-2b74-4861-aaf4-b627ccf42028",
+    "deploymentStatus": "RuntimeSuccessful",
+    "numberOfInstancesSuccessful": 1,
+    "numberOfInstancesFailed": 0,
+    "cleanDeployUsed": true,
+    "restartUsed": true,
+    "secondDeploymentAttempted": false
+  },
+  "liveHealth": {
+    "checkedRoutes": [
+      {
+        "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/health",
+        "method": "GET",
+        "statusCode": 500,
+        "body": ""
+      },
+      {
+        "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/health",
+        "method": "GET",
+        "statusCode": 500,
+        "body": ""
+      }
+    ],
+    "passed": false
+  },
+  "localNoSecretHealth": {
+    "artifact": ".tmp/v2-8-32i/pumpkin-api-health-recovery-local-fixed-posix.zip",
+    "appSettingsLikeFilesInRunDir": 0,
+    "checkedRoutes": [
+      {
+        "path": "/health",
+        "statusCode": 200
+      },
+      {
+        "path": "/api/health",
+        "statusCode": 200
+      }
+    ],
+    "passed": true
+  },
+  "canonicalPumpkinApiUrl": {
+    "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "promoteForFutureBinding": false,
+    "reason": "Live health did not pass in V2.8.32I."
+  },
+  "unresolvableClassification": "live_health_500_persists_until_locally_validated_null_safe_jwt_fix_is_deployed_under_new_approval",
+  "securityBoundary": {
+    "contactPostOccurred": false,
+    "productionApiWriteOccurred": false,
+    "formEntryValidationOccurred": false,
+    "adminLiveReadOccurred": false,
+    "appSettingsListedShownOrSet": false,
+    "secretAppSettingSet": false,
+    "protectedConfigRead": false,
+    "keyVaultAccessOccurred": false,
+    "deploymentTokenActionOccurred": false,
+    "keysListKeysOccurred": false,
+    "connectionStringOrSasGenerated": false,
+    "dnsMutationOccurred": false,
+    "searchConsoleOrIndexingOccurred": false,
+    "arbitraryOutboundUrlChecksOccurred": false,
+    "temporaryDiagnosticLoggingEnabled": false
+  },
+  "validation": {
+    "dotnetBuildRelease": "passed",
+    "scopedHealthReadinessRunnerRelease": "passed",
+    "localNoSecretHealthRun": "passed",
+    "liveHealth": "failed_500"
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32h-carryforward.md",
+    "subscription-lock-proof.md",
+    "selected-host-confirmation.md",
+    "runtime-log-diagnosis.md",
+    "webapp-runtime-config-diagnosis.md",
+    "health-endpoint-source-analysis.md",
+    "startup-middleware-auth-analysis.md",
+    "dependency-config-analysis.md",
+    "local-no-secret-health-reproduction-result.md",
+    "runtime-500-root-cause.md",
+    "health-recovery-fix-result.md",
+    "corrected-artifact-result.md",
+    "corrected-deployment-result.md",
+    "live-health-check-result.md",
+    "canonical-pumpkin-api-url.md",
+    "live-api-readiness-summary.md",
+    "future-provider-binding-plan.md",
+    "contact-gate-status.md",
+    "security-boundary-result.md",
+    "no-contact-post-no-secret-appsetting-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md",
+    "unresolvable-classification-if-any.md"
+  ]
+}

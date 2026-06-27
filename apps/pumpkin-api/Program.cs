@@ -79,6 +79,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         var jwtSettings = builder.Configuration.GetSection("Jwt");
+        var jwtSecretKey = jwtSettings["SecretKey"];
+        if (string.IsNullOrWhiteSpace(jwtSecretKey))
+        {
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    context.NoResult();
+                    return Task.CompletedTask;
+                }
+            };
+
+            return;
+        }
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -88,7 +103,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = jwtSettings["Issuer"],
             ValidAudience = jwtSettings["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!))
+                System.Text.Encoding.UTF8.GetBytes(jwtSecretKey))
         };
     });
 
@@ -128,9 +143,21 @@ var app = builder.Build();
 // "AllowAll" is the default for admin/auth routes; content routes override with "TenantCors".
 app.UseCors("AllowAll");
 
-// Configure authentication and authorization
-app.UseAuthentication();
-app.UseAuthorization();
+// Keep dependency-light health checks independent from protected JWT/runtime bindings.
+app.UseWhen(
+    context => !IsDependencyLightHealthPath(context),
+    protectedBranch =>
+    {
+        protectedBranch.UseAuthentication();
+        protectedBranch.UseAuthorization();
+    });
+
+static bool IsDependencyLightHealthPath(HttpContext context)
+{
+    var path = context.Request.Path.Value;
+    return string.Equals(path, "/health", StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(path, "/api/health", StringComparison.OrdinalIgnoreCase);
+}
 
 // Local development media serving. Production media should use Azure Blob/CDN-compatible storage.
 var localMediaRoot = Path.Combine(app.Environment.ContentRootPath, ".local-media");
@@ -170,13 +197,15 @@ app.MapGet("/api/health", GetHealth)
     .WithTags("Health")
     .WithName("GetApiHealth")
     .WithSummary("Get API health")
-    .WithDescription("Returns dependency-light API process health without provider dependency checks.");
+    .WithDescription("Returns dependency-light API process health without provider dependency checks.")
+    .AllowAnonymous();
 
 app.MapGet("/health", GetHealth)
     .WithTags("Health")
     .WithName("GetRootHealth")
     .WithSummary("Get root health")
-    .WithDescription("Returns dependency-light API process health for platform smoke checks.");
+    .WithDescription("Returns dependency-light API process health for platform smoke checks.")
+    .AllowAnonymous();
 
 // Root endpoint
 app.MapGet("/", PumpkinManager.GetWelcomeMessage)
