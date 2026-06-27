@@ -1,0 +1,103 @@
+{
+  "phase": "V2.8.32A",
+  "slug": "pumpkin-live-runtime-wiring-preflight",
+  "createdDate": "2026-06-27",
+  "scope": "read-only preflight and planning",
+  "status": "complete",
+  "recommendation": "no-go-for-production-contact-persistence-binding",
+  "activeSubscription": {
+    "id": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "name": "Azure subscription 1",
+    "tenantId": "38b16667-a82c-4ff8-98d8-aeebbec4536a",
+    "state": "Enabled"
+  },
+  "liveResourceSummary": {
+    "webApps": [],
+    "functionApps": [
+      {
+        "name": "func-ice-static-contact-20260605",
+        "resourceGroup": "rg-ice-static-form-endpoint",
+        "state": "Running",
+        "defaultHostName": "func-ice-static-contact-20260605.azurewebsites.net"
+      }
+    ],
+    "staticWebApps": [
+      {
+        "name": "swa-ice-static-staging",
+        "resourceGroup": "rg-ice-static-staging",
+        "defaultHostname": "happy-mud-0b375e20f.7.azurestaticapps.net",
+        "customHostnames": [
+          "iceskatingrinkrentals.com",
+          "www.iceskatingrinkrentals.com"
+        ]
+      },
+      {
+        "name": "swa-ice-static-isolated-staging",
+        "resourceGroup": "rg-ice-static-staging",
+        "defaultHostname": "kind-island-0a85a740f.7.azurestaticapps.net",
+        "customHostnames": []
+      }
+    ],
+    "cosmosAccounts": [
+      {
+        "name": "cosmos-pumpkin-prod-eastus",
+        "resourceGroup": "rg-ice-production-cosmos",
+        "database": "pumpkin-prod-cms",
+        "containers": [
+          "forms",
+          "importRuns",
+          "routes",
+          "mediaAssets",
+          "users",
+          "themes",
+          "pages",
+          "sites",
+          "tenants",
+          "publishRuns"
+        ]
+      },
+      {
+        "name": "cosmos-pumpkincms-stg-olm01",
+        "resourceGroup": "rg-pumpkincms-stg-eastus-olm",
+        "database": "pumpkincms-olm-staging"
+      }
+    ]
+  },
+  "guardrails": {
+    "deploymentPerformed": false,
+    "contactPostPerformed": false,
+    "productionApiHealthCallPerformed": false,
+    "azureMutationPerformed": false,
+    "azureAppSettingsRead": false,
+    "protectedConfigRead": false,
+    "secretQueried": false,
+    "deploymentTokenActionPerformed": false,
+    "dnsMutationPerformed": false
+  },
+  "createdFiles": [
+    "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_32A_PUMPKIN_LIVE_RUNTIME_WIRING_PREFLIGHT_REPORT.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/README.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/result-manifest.json",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/current-state-summary.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/v2-8-26-through-v2-8-31-carryforward.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/pumpkin-live-runtime-inventory.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/resource-state-matrix.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/pumpkin-api-live-resource-verification.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/admin-to-pumpkin-api-wiring-map.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/public-contact-to-pumpkin-api-persistence-map.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/form-entry-write-read-topology.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/protected-binding-app-setting-matrix.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/resource-registry-provider-profile-gap-list.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/backup-center-runtime-qa-requirements.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/deployment-and-rollback-lane-plan.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/validation-runtime-qa-matrix.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/prioritized-implementation-sequence.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/contact-gate-status.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/deferred-gates-summary.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/security-boundary-result.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/no-deploy-no-post-confirmation.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/risk-and-open-decisions.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/next-phase-prompt.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-32a-pumpkin-live-runtime-wiring-preflight-result/validation-summary.md"
+  ]
+}
