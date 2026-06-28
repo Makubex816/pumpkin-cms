@@ -1,0 +1,94 @@
+{
+  "phase": "V2.8.32Q",
+  "generatedAtLocal": "2026-06-27T22:55:20.6548122-04:00",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "corrected_live_admin_jwt_binding_production_contact_admin_readback",
+  "fallbackClassification": "live_admin_login_failed_http_500",
+  "status": "blocked_before_production_post",
+  "approvedProductionPostCount": 1,
+  "actualProductionPostCount": 0,
+  "contactGateStatus": "open",
+  "secureFile": {
+    "path": ".tmp/v2-8-32q/secure/live-admin-auth-binding.json",
+    "exists": true,
+    "gitIgnored": true,
+    "jsonParsed": true,
+    "subscriptionIdMatches": true,
+    "resourceGroupMatches": true,
+    "webAppMatches": true,
+    "apiBaseUrlMatches": true,
+    "adminEmailPresent": true,
+    "adminPasswordPresent": true,
+    "adminJwtSecretAppSettingName": "Jwt__SecretKey",
+    "adminJwtSecretConfigPath": "Jwt:SecretKey",
+    "adminJwtSecretValuePresent": true,
+    "adminFormEntryReadUrlMatches": true,
+    "contactPostUrlMatches": true,
+    "secretValuesWritten": false
+  },
+  "azure": {
+    "accountSetRun": true,
+    "accountShowRun": true,
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "subscriptionMatched": true,
+    "appsettingsSetRun": true,
+    "appsettingsSetSucceeded": true,
+    "mutatedSettings": [
+      "Jwt__SecretKey"
+    ],
+    "restartRun": true,
+    "restartSucceeded": true
+  },
+  "pumpkinApiHealth": {
+    "rootHealthStatus": 200,
+    "rootHealthOk": true,
+    "apiHealthStatus": 200,
+    "apiHealthOk": true
+  },
+  "liveAdminLogin": {
+    "attempted": true,
+    "status": 500,
+    "ok": false,
+    "tokenPresent": false
+  },
+  "adminReadbackPreflight": {
+    "attempted": false,
+    "reason": "login_returned_http_500_no_token",
+    "ok": false
+  },
+  "staticContactPreflight": {
+    "staticContactHealthStatus": 200,
+    "staticContactHealthOk": true,
+    "contactPageStatus": 200,
+    "contactPageOk": true,
+    "contactPageSerializesStaticContact": true,
+    "contactPageSerializesLegacyContact": false,
+    "contactPageContainsExpectedEmail": true
+  },
+  "post": {
+    "sent": false,
+    "status": null,
+    "ok": false,
+    "entryId": null,
+    "traceId": null
+  },
+  "readback": {
+    "attemptedAfterPost": false,
+    "found": false,
+    "matchedBy": null,
+    "entryId": null
+  },
+  "securityBoundary": {
+    "noDeploy": true,
+    "noAzureResourceCreationDeletion": true,
+    "noProviderContactDatabaseSecretMutation": true,
+    "noAppsettingsListShow": true,
+    "noProtectedConfigReadBeyondApprovedSecureFile": true,
+    "noDnsMutation": true,
+    "noIndexingAction": true,
+    "noInboxOrProviderAccess": true,
+    "noProductionPost": true,
+    "secretValuesPrintedOrWritten": false
+  }
+}
+
