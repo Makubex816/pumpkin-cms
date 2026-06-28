@@ -1,0 +1,75 @@
+{
+  "phase": "V2.8.32M",
+  "generatedAtUtc": "2026-06-28T01:37:20Z",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "production_static_contact_post_authenticated_admin_formentry_readback",
+  "status": "blocked_before_post",
+  "fallbackClassification": "readback_custom_header_env_missing",
+  "auth": {
+    "mode": "custom-header",
+    "headerNameEnv": "PUMPKIN_FORMENTRY_READBACK_AUTH_HEADER_NAME",
+    "headerNamePresent": false,
+    "authValueEnv": "PUMPKIN_FORMENTRY_READBACK_AUTH_VALUE",
+    "authValuePresent": false,
+    "authValuePrinted": false,
+    "authValueWritten": false
+  },
+  "approvedProductionPostCount": 1,
+  "productionPostCount": 0,
+  "adminPersistenceProven": false,
+  "contactGate": "open",
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32l-carryforward.md",
+    "runtime-env-summary.md",
+    "preflight-health-result.md",
+    "contact-page-endpoint-verification.md",
+    "admin-formentry-auth-preflight.md",
+    "synthetic-contact-payload-summary.md",
+    "production-contact-post-execution-result.md",
+    "production-contact-response-verification.md",
+    "admin-formentry-readback-result.md",
+    "contact-gate-closeout-result.md",
+    "fallback-diagnosis-result.md",
+    "security-boundary-result.md",
+    "no-deploy-no-appsetting-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ],
+  "approvedUrlsChecked": [
+    {
+      "label": "pumpkin-api-health-root",
+      "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/health",
+      "status": 200,
+      "jsonOk": true
+    },
+    {
+      "label": "pumpkin-api-health-api",
+      "url": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/health",
+      "status": 200,
+      "jsonOk": true
+    },
+    {
+      "label": "static-contact-health",
+      "url": "https://iceskatingrinkrentals.com/api/static-contact-health",
+      "status": 200,
+      "jsonOk": true
+    },
+    {
+      "label": "contact-page",
+      "url": "https://iceskatingrinkrentals.com/contact",
+      "status": 200
+    }
+  ],
+  "hardStops": {
+    "deployOccurred": false,
+    "appSettingMutationOccurred": false,
+    "protectedConfigReadOccurred": false,
+    "dnsOrIndexingOccurred": false,
+    "inboxProviderAccessOccurred": false,
+    "moreThanOneProductionPostOccurred": false
+  }
+}
