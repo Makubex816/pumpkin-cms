@@ -1,0 +1,89 @@
+{
+  "phase": "V2.8.32P",
+  "generatedAtLocal": "2026-06-27T22:37:51.0888257-04:00",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "live_admin_auth_resolution_production_contact_admin_readback",
+  "fallbackClassification": "saved_jwt_invalid_and_admin_jwt_secret_value_missing",
+  "status": "blocked_before_azure_mutation_and_before_production_post",
+  "approvedProductionPostCount": 1,
+  "actualProductionPostCount": 0,
+  "contactGateStatus": "open",
+  "secureFiles": {
+    "savedJwtFile": {
+      "path": ".tmp/v2-8-32p/secure/saved-jwt-admin-readback-auth.json",
+      "exists": true,
+      "gitIgnored": true,
+      "jsonParsed": true,
+      "mode": "saved-jwt",
+      "headerName": "Authorization",
+      "headerValuePresent": true,
+      "pumpkinApiBaseUrlMatches": true,
+      "readbackUrlMatches": true,
+      "preflightStatus": 401,
+      "preflightOk": false
+    },
+    "jwtBindingFile": {
+      "path": ".tmp/v2-8-32p/secure/live-admin-auth-binding.json",
+      "exists": true,
+      "gitIgnored": true,
+      "jsonParsed": true,
+      "subscriptionIdMatches": true,
+      "resourceGroupMatches": true,
+      "webAppMatches": true,
+      "apiBaseUrlMatches": true,
+      "adminEmailPresent": true,
+      "adminPasswordPresent": true,
+      "adminJwtSecretAppSettingName": "Jwt__SecretKey",
+      "adminJwtSecretAppSettingNameMatches": true,
+      "adminJwtSecretValuePresent": false,
+      "adminFormEntryReadUrlMatches": true,
+      "contactPostUrlMatches": true
+    }
+  },
+  "authPathSelection": {
+    "selectedPath": "none",
+    "savedJwtUsable": false,
+    "bindingPathUsable": false,
+    "reason": "saved JWT returned 401 and binding file did not include adminJwtSecretValue"
+  },
+  "azure": {
+    "accountSetRun": false,
+    "accountShowRun": false,
+    "appsettingsSetRun": false,
+    "allowedSettingName": "Jwt__SecretKey",
+    "settingsMutated": [],
+    "restartRun": false
+  },
+  "runtimeChecks": {
+    "pumpkinApiHealthAfterAuthResolution": "not_run_no_valid_auth_path",
+    "liveAdminLogin": "not_run_no_binding",
+    "authenticatedAdminReadbackPreflight": "saved_jwt_401_binding_not_reached",
+    "staticContactPreflight": "not_run_pre_post_blocker"
+  },
+  "post": {
+    "sent": false,
+    "status": null,
+    "ok": false,
+    "entryId": null,
+    "traceId": null
+  },
+  "readback": {
+    "attemptedAfterPost": false,
+    "found": false,
+    "matchedBy": null,
+    "entryId": null
+  },
+  "securityBoundary": {
+    "noDeploy": true,
+    "noAzureResourceCreationDeletion": true,
+    "noProviderContactDatabaseSecretMutation": true,
+    "noAppsettingsListShow": true,
+    "noProtectedConfigReadBeyondApprovedSecureFiles": true,
+    "noDnsMutation": true,
+    "noIndexingAction": true,
+    "noInboxOrProviderAccess": true,
+    "noProductionPost": true,
+    "secretValuesPrintedOrWritten": false
+  }
+}
+
