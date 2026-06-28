@@ -1,0 +1,73 @@
+{
+  "phase": "V2.8.32V",
+  "status": "blocked",
+  "classification": "admin_login_failed_http_500_after_identity_repair",
+  "contactGateStatus": "open",
+  "productionContactPostCount": 0,
+  "secureFileRead": ".tmp/v2-8-32v/secure/live-admin-user-container-identity-repair.json",
+  "secureFileCopiedToPackage": false,
+  "helper": {
+    "path": ".tmp/v2-8-32v/admin-user-container-helper/",
+    "gitIgnored": true,
+    "buildSucceeded": true,
+    "rawValuesPrintedByHelper": false
+  },
+  "sourceDiscoveredIdentity": {
+    "container": "User",
+    "partitionKeyPath": "/tenantId",
+    "partitionKeyValue": "ice-rink-rentals",
+    "lookupField": "email",
+    "activeField": "isActive",
+    "passwordField": "passwordHash",
+    "roleField": "role",
+    "tenantAdminRoleValue": 1,
+    "passwordHashAlgorithm": "BCrypt"
+  },
+  "containerResult": {
+    "databaseExists": true,
+    "containerName": "User",
+    "partitionKeyPath": "/tenantId",
+    "containerExistsAfter": true,
+    "containerOperationFinalConfirmation": "confirmed_existing"
+  },
+  "adminIdentityResult": {
+    "recordsReadForEmail": 1,
+    "recordsMatchingTenant": 1,
+    "finalTenantMatches": true,
+    "finalRole": "TenantAdmin",
+    "finalIsActive": true,
+    "passwordVerified": true,
+    "classification": "admin_identity_repaired"
+  },
+  "loginResult": {
+    "attempted": true,
+    "statusCode": 500,
+    "bearerTokenIssued": false,
+    "tokenPrinted": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32u-carryforward.md",
+    "secure-file-readiness.md",
+    "admin-identity-source-reconfirmation.md",
+    "user-container-create-confirm-result.md",
+    "admin-identity-record-read-result.md",
+    "admin-identity-repair-result.md",
+    "live-admin-login-result.md",
+    "admin-formentry-authenticated-readback-preflight.md",
+    "static-contact-preflight-result.md",
+    "synthetic-contact-payload-summary.md",
+    "production-contact-post-execution-result.md",
+    "production-contact-response-verification.md",
+    "admin-formentry-readback-result.md",
+    "contact-gate-closeout-result.md",
+    "fallback-diagnosis-result.md",
+    "secret-handling-and-cleanup-instructions.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
+
