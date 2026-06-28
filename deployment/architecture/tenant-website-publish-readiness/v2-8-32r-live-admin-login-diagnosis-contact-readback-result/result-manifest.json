@@ -1,0 +1,78 @@
+{
+  "phase": "V2.8.32R",
+  "status": "blocked",
+  "classification": "provider_store_access_failed",
+  "contactGateStatus": "open",
+  "productionContactPostCount": 0,
+  "adminBearerTokenIssued": false,
+  "adminReadbackPreflightSucceeded": false,
+  "secureFileRead": ".tmp/v2-8-32r/secure/live-admin-login-repair.json",
+  "secureFileCopiedToPackage": false,
+  "diagnosticLogArchive": ".tmp/v2-8-32r/logs/appservice-logs.zip",
+  "diagnosticLogExtract": ".tmp/v2-8-32r/logs/extract",
+  "subscription": {
+    "id": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "name": "Azure subscription 1",
+    "operatorUser": "Contact@iceskatingrinkrentals.com"
+  },
+  "runtime": {
+    "pumpkinApiBaseUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "pumpkinApiResourceGroup": "rg-pumpkin-api-prod-centralus",
+    "pumpkinApiWebApp": "app-pumpkin-api-prod-centralus-001",
+    "loginEndpoint": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/auth/login",
+    "adminFormEntryReadUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/admin/ice-rink-rentals/form-entries",
+    "contactHealthUrl": "https://iceskatingrinkrentals.com/api/static-contact-health",
+    "contactPostUrl": "https://iceskatingrinkrentals.com/api/static-contact",
+    "contactPageUrl": "https://iceskatingrinkrentals.com/contact"
+  },
+  "sourceEvidence": {
+    "loginRoute": "apps/pumpkin-api/Program.cs:388",
+    "loginUserLookup": "apps/pumpkin-api/Program.cs:391",
+    "databaseProviderRouting": "apps/pumpkin-api/Services/DatabaseService.cs:25",
+    "cosmosClientConstruction": "apps/pumpkin-api/Services/CosmosDataConnection.cs:40",
+    "cosmosConnectionSetting": "apps/pumpkin-api/Services/DatabaseSettings.cs:27"
+  },
+  "liveEvidence": {
+    "healthStatusCodes": {
+      "/health": 200,
+      "/api/health": 200
+    },
+    "healthProviderConfigured": false,
+    "loginStatusCode": 500,
+    "logException": "System.ArgumentException: The connection string is missing a required property: AccountEndpoint"
+  },
+  "azureMutationsThisPhase": [
+    "App Service filesystem application logging enabled at error level for the diagnostic window",
+    "App Service filesystem application logging turned off after log readback"
+  ],
+  "appSettingsSetThisPhase": [],
+  "providerContactDatabaseSecretMutations": [],
+  "deployments": [],
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32q-carryforward.md",
+    "secure-file-readiness.md",
+    "login-source-dependency-analysis.md",
+    "live-login-500-diagnosis.md",
+    "admin-auth-repair-result.md",
+    "pumpkin-api-health-after-repair.md",
+    "live-admin-login-result.md",
+    "admin-formentry-authenticated-readback-preflight.md",
+    "static-contact-preflight-result.md",
+    "synthetic-contact-payload-summary.md",
+    "production-contact-post-execution-result.md",
+    "production-contact-response-verification.md",
+    "admin-formentry-readback-result.md",
+    "contact-gate-closeout-result.md",
+    "fallback-diagnosis-result.md",
+    "secret-handling-and-cleanup-instructions.md",
+    "security-boundary-result.md",
+    "no-deploy-no-provider-secret-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+
