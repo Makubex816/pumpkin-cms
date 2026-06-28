@@ -1,0 +1,81 @@
+{
+  "phase": "V2.8.32O",
+  "generatedAtLocal": "2026-06-27T22:18:21.0783849-04:00",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "live_pumpkin_api_admin_auth_binding_production_contact_admin_readback",
+  "fallbackClassification": "secure_file_missing_required_admin_jwt_secret_value",
+  "status": "blocked_before_azure_mutation",
+  "approvedProductionPostCount": 1,
+  "actualProductionPostCount": 0,
+  "contactGateStatus": "open",
+  "secureFile": {
+    "path": ".tmp/v2-8-32o/secure/live-admin-auth-binding.json",
+    "exists": true,
+    "gitIgnored": true,
+    "phase": "V2.8.32O",
+    "purpose": "live-pumpkin-api-admin-auth-binding-and-login",
+    "subscriptionIdMatches": true,
+    "resourceGroupMatches": true,
+    "webAppMatches": true,
+    "apiBaseUrlMatches": true,
+    "adminEmailPresent": true,
+    "adminPasswordPresent": true,
+    "adminJwtSecretValuePresent": false,
+    "contactPostUrlMatches": true,
+    "adminFormEntryReadUrlMatches": true,
+    "secretValuesWritten": false
+  },
+  "sourceDiscovery": {
+    "succeeded": true,
+    "sourceFiles": [
+      "apps/pumpkin-api/Program.cs",
+      "apps/admin/src/lib/api.ts"
+    ],
+    "jwtConfigSection": "Jwt",
+    "jwtConfigKey": "Jwt:SecretKey",
+    "azureAppSettingName": "Jwt__SecretKey",
+    "loginEndpoint": "/api/auth/login",
+    "loginMethod": "POST",
+    "loginPayloadShape": "{ email, password }",
+    "readbackAuthorizationHeader": "Authorization: Bearer <token>"
+  },
+  "azure": {
+    "accountSetRun": false,
+    "accountShowRun": false,
+    "appsettingsSetRun": false,
+    "settingsMutated": [],
+    "restartRun": false,
+    "blockerBeforeMutation": "secure_file_missing_required_admin_jwt_secret_value"
+  },
+  "runtimeChecks": {
+    "pumpkinApiHealthAfterBinding": "not_run_no_binding",
+    "liveAdminLogin": "not_run_no_binding",
+    "authenticatedAdminReadbackPreflight": "not_run_no_login",
+    "staticContactPreflight": "not_run_pre_post_blocker"
+  },
+  "post": {
+    "sent": false,
+    "status": null,
+    "ok": false,
+    "entryId": null,
+    "traceId": null
+  },
+  "readback": {
+    "attemptedAfterPost": false,
+    "found": false,
+    "matchedBy": null,
+    "entryId": null
+  },
+  "securityBoundary": {
+    "noDeploy": true,
+    "noProviderContactDatabaseSecretMutation": true,
+    "noAppsettingsListShow": true,
+    "noProtectedConfigReadBeyondApprovedSecureFile": true,
+    "noDnsMutation": true,
+    "noIndexingAction": true,
+    "noInboxOrProviderAccess": true,
+    "noProductionPost": true,
+    "secretValuesPrintedOrWritten": false
+  }
+}
+
