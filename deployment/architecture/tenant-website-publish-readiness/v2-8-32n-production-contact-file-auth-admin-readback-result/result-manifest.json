@@ -1,0 +1,69 @@
+{
+  "phase": "V2.8.32N",
+  "generatedAtLocal": "2026-06-27T21:58:35.7809657-04:00",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "production_static_contact_post_file_injected_admin_formentry_readback_auth",
+  "fallbackClassification": "readback_auth_invalid_or_insufficient",
+  "status": "blocked_before_production_post",
+  "approvedProductionPostCount": 1,
+  "actualProductionPostCount": 0,
+  "contactGateStatus": "open",
+  "runtime": {
+    "pumpkinApiBaseUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "publicSiteBaseUrl": "https://iceskatingrinkrentals.com",
+    "publicWwwSiteBaseUrl": "https://www.iceskatingrinkrentals.com",
+    "contactHealthUrl": "https://iceskatingrinkrentals.com/api/static-contact-health",
+    "contactPostUrl": "https://iceskatingrinkrentals.com/api/static-contact",
+    "contactPageUrl": "https://iceskatingrinkrentals.com/contact",
+    "adminFormEntryReadUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/admin/ice-rink-rentals/form-entries",
+    "tenantId": "ice-rink-rentals",
+    "formId": "default-quote-request"
+  },
+  "authFile": {
+    "path": ".tmp/v2-8-32n/secure/formentry-readback-auth.json",
+    "exists": true,
+    "gitIgnored": true,
+    "mode": "custom-header",
+    "headerName": "Authorization",
+    "headerNamePresent": true,
+    "headerValuePresent": true,
+    "readbackUrlMatchesApproved": true,
+    "headerValueWritten": false
+  },
+  "preflights": {
+    "pumpkinHealth": 200,
+    "pumpkinApiHealth": 200,
+    "staticContactHealth": 200,
+    "contactPage": 200,
+    "adminFormEntryReadback": 401
+  },
+  "contactPage": {
+    "serializesStaticContact": true,
+    "serializesLegacyContact": false,
+    "containsExpectedPublicEmail": true
+  },
+  "post": {
+    "sent": false,
+    "status": null,
+    "ok": false,
+    "entryId": null,
+    "traceId": null
+  },
+  "readback": {
+    "attemptedAfterPost": false,
+    "found": false,
+    "matchedBy": null,
+    "entryId": null
+  },
+  "securityBoundary": {
+    "noDeploy": true,
+    "noAppSettingMutation": true,
+    "noAzureResourceMutation": true,
+    "noDnsMutation": true,
+    "noIndexingAction": true,
+    "noProtectedConfigReadBeyondApprovedAuthFile": true,
+    "noInboxOrProviderAccess": true,
+    "authValuePrintedOrWritten": false
+  }
+}
+
