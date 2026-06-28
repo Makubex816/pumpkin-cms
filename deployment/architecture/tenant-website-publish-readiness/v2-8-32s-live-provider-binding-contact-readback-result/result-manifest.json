@@ -1,0 +1,80 @@
+{
+  "phase": "V2.8.32S",
+  "status": "blocked",
+  "classification": "provider_binding_not_active",
+  "contactGateStatus": "open",
+  "productionContactPostCount": 0,
+  "adminLoginAttempted": false,
+  "adminBearerTokenIssued": false,
+  "adminReadbackPreflightSucceeded": false,
+  "secureFileRead": ".tmp/v2-8-32s/secure/live-provider-auth-binding.json",
+  "secureFileCopiedToPackage": false,
+  "subscription": {
+    "id": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "name": "Azure subscription 1",
+    "operatorUser": "Contact@iceskatingrinkrentals.com"
+  },
+  "runtime": {
+    "pumpkinApiBaseUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+    "pumpkinApiResourceGroup": "rg-pumpkin-api-prod-centralus",
+    "pumpkinApiWebApp": "app-pumpkin-api-prod-centralus-001",
+    "loginEndpoint": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/auth/login",
+    "adminFormEntryReadUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/api/admin/ice-rink-rentals/form-entries",
+    "contactHealthUrl": "https://iceskatingrinkrentals.com/api/static-contact-health",
+    "contactPostUrl": "https://iceskatingrinkrentals.com/api/static-contact",
+    "contactPageUrl": "https://iceskatingrinkrentals.com/contact"
+  },
+  "sourceDiscoveredSettings": {
+    "databaseProvider": "Database__Provider",
+    "providerConnectionString": "Database__CosmosDb__ConnectionString",
+    "cosmosDatabaseName": "Database__CosmosDb__DatabaseName",
+    "adminJwtSecret": "Jwt__SecretKey",
+    "formEntryContainerAppSetting": null,
+    "formEntryContainerSourceLiteral": "FormEntry"
+  },
+  "mutation": {
+    "appSettingsSet": [
+      "Database__Provider",
+      "Database__CosmosDb__ConnectionString",
+      "Database__CosmosDb__DatabaseName",
+      "Jwt__SecretKey"
+    ],
+    "webAppRestarted": true,
+    "appSettingsListedOrShown": false,
+    "secretValuesPrinted": false
+  },
+  "healthAfterBinding": {
+    "rootHealthStatusCode": 200,
+    "apiHealthStatusCode": 200,
+    "rootProviderConfigured": false,
+    "apiProviderConfigured": false,
+    "providerStatus": "not_checked"
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32r-carryforward.md",
+    "secure-file-readiness.md",
+    "provider-setting-source-discovery.md",
+    "provider-appsetting-mutation-result.md",
+    "pumpkin-api-health-after-provider-binding.md",
+    "live-admin-login-result.md",
+    "admin-auth-seed-repair-result.md",
+    "admin-formentry-authenticated-readback-preflight.md",
+    "static-contact-preflight-result.md",
+    "synthetic-contact-payload-summary.md",
+    "production-contact-post-execution-result.md",
+    "production-contact-response-verification.md",
+    "admin-formentry-readback-result.md",
+    "contact-gate-closeout-result.md",
+    "fallback-diagnosis-result.md",
+    "secret-handling-and-cleanup-instructions.md",
+    "security-boundary-result.md",
+    "no-deploy-no-protected-config-confirmation.md",
+    "risk-and-open-decisions.md",
+    "next-phase-prompt.md",
+    "validation-summary.md"
+  ]
+}
+
