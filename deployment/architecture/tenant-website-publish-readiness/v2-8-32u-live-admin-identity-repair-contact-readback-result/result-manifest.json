@@ -1,0 +1,61 @@
+{
+  "phase": "V2.8.32U",
+  "status": "blocked",
+  "classification": "admin_identity_container_not_found",
+  "contactGateStatus": "open",
+  "productionContactPostCount": 0,
+  "adminIdentityRecordMutated": false,
+  "adminLoginAttemptedAfterRepair": false,
+  "adminBearerTokenIssued": false,
+  "adminReadbackPreflightSucceeded": false,
+  "secureFileRead": ".tmp/v2-8-32u/secure/live-admin-identity-repair.json",
+  "secureFileCopiedToPackage": false,
+  "helper": {
+    "path": ".tmp/v2-8-32u/admin-identity-helper/",
+    "gitIgnored": true,
+    "buildSucceeded": true,
+    "rawValuesPrintedByHelper": false
+  },
+  "sourceDiscoveredIdentity": {
+    "container": "User",
+    "query": "SELECT * FROM c WHERE c.email = @email",
+    "partitionKeyValue": "tenantId",
+    "roleForRepair": "TenantAdmin",
+    "roleNumericValue": 1,
+    "activeField": "isActive",
+    "passwordHashField": "passwordHash",
+    "passwordVerification": "BCrypt.Net.BCrypt.Verify",
+    "passwordHashGeneration": "BCrypt.Net.BCrypt.HashPassword",
+    "jsonNamingPolicy": "camelCase"
+  },
+  "identityReadResult": {
+    "container": "User",
+    "recordsReadForEmail": 0,
+    "cosmosStatusCode": 404,
+    "classification": "admin_identity_container_not_found"
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32t-carryforward.md",
+    "secure-file-readiness.md",
+    "admin-identity-source-analysis.md",
+    "admin-identity-record-read-result.md",
+    "admin-identity-repair-result.md",
+    "live-admin-login-result.md",
+    "admin-formentry-authenticated-readback-preflight.md",
+    "static-contact-preflight-result.md",
+    "synthetic-contact-payload-summary.md",
+    "production-contact-post-execution-result.md",
+    "production-contact-response-verification.md",
+    "admin-formentry-readback-result.md",
+    "contact-gate-closeout-result.md",
+    "fallback-diagnosis-result.md",
+    "secret-handling-and-cleanup-instructions.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
+
