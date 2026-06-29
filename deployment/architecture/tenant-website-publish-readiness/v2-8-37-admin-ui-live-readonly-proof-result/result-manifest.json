@@ -1,0 +1,61 @@
+{
+  "phase": "V2.8.37",
+  "status": "blocked_after_isolated_onedeploy_failure",
+  "classification": "admin_ui_live_deployment_tenant_page_content_readonly_proof",
+  "createdAtUtc": "2026-06-29T00:00:00Z",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_37_ADMIN_UI_LIVE_READONLY_PROOF_REPORT.md",
+  "resultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-36-carryforward.md",
+    "secure-file-readiness.md",
+    "admin-ui-source-readiness.md",
+    "admin-ui-deployment-shape-decision.md",
+    "admin-ui-build-validation-result.md",
+    "admin-ui-isolated-target-result.md",
+    "admin-ui-isolated-deployment-result.md",
+    "admin-ui-isolated-runtime-proof.md",
+    "admin-api-login-proof.md",
+    "admin-api-readonly-proof-result.md",
+    "tenant-page-content-readiness-result.md",
+    "admin-ui-production-target-result.md",
+    "admin-ui-production-deployment-result.md",
+    "admin-ui-production-runtime-proof.md",
+    "multi-tenancy-guard-result.md",
+    "admin-ui-live-status-result.md",
+    "fallback-diagnosis-result.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "isolated": {
+    "targetCreated": true,
+    "deploymentAttempted": true,
+    "deploymentSucceeded": false,
+    "runtimeProofSucceeded": false,
+    "deploymentId": "45998942-bc56-47ff-a3a0-976e76c1a3ed"
+  },
+  "production": {
+    "targetCreated": false,
+    "deploymentAttempted": false,
+    "runtimeProofSucceeded": false,
+    "blockedBy": "isolated_onedeploy_failed_before_runtime_proof"
+  },
+  "adminApiReadOnlyProof": {
+    "loginStatus": 200,
+    "tenantMatched": true,
+    "role": "TenantAdmin",
+    "tenantsStatus": 200,
+    "pagesStatus": 200,
+    "hubsStatus": 200,
+    "hierarchyStatus": 200
+  },
+  "disallowedActions": {
+    "contactPost": false,
+    "contentWrite": false,
+    "dnsMutation": false,
+    "indexing": false,
+    "themeOrFormWork": false
+  }
+}
