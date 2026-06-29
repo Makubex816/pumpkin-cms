@@ -1,0 +1,72 @@
+{
+  "phase": "V2.8.34B",
+  "title": "Final Contact Runtime and Key Rotation Closeout",
+  "status": "complete",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "final_contact_runtime_and_key_rotation_closeout_no_deploy_no_post",
+  "contactGateStatus": "closed",
+  "keyRotationStatus": "closed_success",
+  "sourceEvidence": {
+    "contactGateCloseout": {
+      "phase": "V2.8.33C",
+      "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_33C_CONTACT_GATE_CLOSEOUT_REPORT.md",
+      "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-33c-contact-gate-closeout-result/",
+      "classification": "contact_gate_closed_evidence_consolidation_no_deploy_no_post"
+    },
+    "correctedKeyRotation": {
+      "phase": "V2.8.34A",
+      "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_34A_CORRECTED_KEY_ROTATION_REPORT.md",
+      "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-34a-corrected-key-rotation-result/",
+      "classification": "corrected_payload_contract_static_contact_key_rotation_success_production_readback_confirmed"
+    }
+  },
+  "traceRecords": {
+    "v2_8_33bProduction": {
+      "traceId": "v2-8-33b-production-static-contact-20260629015903-78f5b35b",
+      "entryId": "ice-rink-rentals-default-quote-request-97389127-25ea-4731-8bbe-62f6c59e88b4",
+      "adminVisible": true
+    },
+    "v2_8_34aIsolated": {
+      "traceId": "v2-8-34a-isolated-key-rotation-20260629134931-a88a0d37",
+      "entryId": "ice-rink-rentals-default-quote-request-64735477-8f5b-41bb-846c-e6f8078b057e",
+      "adminVisible": true
+    },
+    "v2_8_34aProduction": {
+      "traceId": "v2-8-34a-production-key-rotation-20260629134931-bf80dd04",
+      "entryId": "ice-rink-rentals-default-quote-request-1fb21846-365d-4478-96e7-1e76cae92747",
+      "adminVisible": true
+    }
+  },
+  "ownerHardCopy": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\v2-8-34a-corrected-key-rotation\\ROTATED_VALUES_OPERATOR_HARD_COPY.txt",
+    "checksumPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\v2-8-34a-corrected-key-rotation\\ROTATED_VALUES_OPERATOR_HARD_COPY.sha256",
+    "sha256": "f12c6f8f2afb0da7fbac0788477195e3269b3eeec34c361da7b3b50369ce004d",
+    "fileExists": true,
+    "checksumFileExists": true,
+    "outsideRepo": true,
+    "sha256Matches": true,
+    "contentsReadInV2_8_34B": false,
+    "contentsPrintedInV2_8_34B": false
+  },
+  "securityCleanup": {
+    "v2_8_34aSecureDirectoryExists": false,
+    "v2_8_34aHashHelperExists": false,
+    "legacyV2_8_34SecureDirectoryExists": true,
+    "legacyV2_8_34SecureDirectoryIgnored": true,
+    "tmpFilesStaged": false,
+    "outsideRepoHardCopyStaged": false,
+    "filesStagedAtCloseout": false
+  },
+  "actionsTakenInV2_8_34B": {
+    "deploy": false,
+    "contactPost": false,
+    "directPumpkinApiWrite": false,
+    "azureResourceMutation": false,
+    "appsettingMutation": false,
+    "dnsOrCustomDomainMutation": false,
+    "indexingAction": false,
+    "protectedConfigRead": false,
+    "ownerHardCopyContentRead": false,
+    "inboxOrProviderLogin": false
+  }
+}
