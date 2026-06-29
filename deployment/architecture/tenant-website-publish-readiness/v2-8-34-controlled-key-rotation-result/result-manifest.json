@@ -1,0 +1,93 @@
+{
+  "phase": "V2.8.34",
+  "title": "Controlled Static Contact Key Rotation",
+  "date": "2026-06-29",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "controlled_static_contact_key_rotation_blocked_isolated_http_400_rollback_complete",
+  "result": "blocked_before_production_rollback_complete",
+  "tenantId": "ice-rink-rentals",
+  "formId": "default-quote-request",
+  "carryforward": {
+    "phase": "V2.8.33C",
+    "contactGateStatus": "closed",
+    "productionTraceId": "v2-8-33b-production-static-contact-20260629015903-78f5b35b",
+    "productionEntryId": "ice-rink-rentals-default-quote-request-97389127-25ea-4731-8bbe-62f6c59e88b4"
+  },
+  "generatedKey": {
+    "created": true,
+    "valueDisclosedInRepo": false,
+    "hashCreated": true,
+    "operationalAfterRollback": false
+  },
+  "tenantRotation": {
+    "performed": true,
+    "container": "Tenant",
+    "fieldsUpdated": [
+      "apiKey",
+      "apiKeyHash",
+      "apiKeyMeta",
+      "updatedAt"
+    ],
+    "rolledBack": true
+  },
+  "isolated": {
+    "appsettingsSet": true,
+    "appsettingsRolledBack": true,
+    "verificationPostAttempts": 1,
+    "verificationPostStatus": 400,
+    "traceId": "v2-8-34-isolated-key-rotation-20260629045108-9b13ff26",
+    "returnedEntryId": null,
+    "adminReadbackFound": false,
+    "adminReadbackPolls": 5
+  },
+  "production": {
+    "appsettingsSet": false,
+    "verificationPostAttempts": 0,
+    "adminReadbackRun": false,
+    "touched": false
+  },
+  "ownerHardCopy": {
+    "created": true,
+    "outsideRepo": true,
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\v2-8-34-controlled-key-rotation\\ROTATED_VALUES_OPERATOR_HARD_COPY.txt",
+    "checksumPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\v2-8-34-controlled-key-rotation\\ROTATED_VALUES_OPERATOR_HARD_COPY.sha256",
+    "sha256": "ee1c8af6572dc0cbd6a819856136a0cf6759424cf895ee180d1c417603b6db43",
+    "adminPasswordIncluded": true,
+    "jwtSecretIncluded": true,
+    "cosmosConnectionStringIncluded": true
+  },
+  "security": {
+    "deployOccurred": false,
+    "dnsOrIndexingOccurred": false,
+    "productionPostOccurred": false,
+    "secretValuesWrittenToRepo": false,
+    "secureWorkingFilesRemoved": true,
+    "clipboardClearAttempted": true,
+    "filesStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-33c-carryforward.md",
+    "secure-file-readiness.md",
+    "rotation-source-analysis.md",
+    "generated-key-result.md",
+    "tenant-key-rotation-result.md",
+    "isolated-appsetting-rotation-result.md",
+    "admin-readback-preflight-result.md",
+    "isolated-verification-post-result.md",
+    "isolated-admin-readback-result.md",
+    "production-appsetting-rotation-result.md",
+    "production-verification-post-result.md",
+    "production-admin-readback-result.md",
+    "contact-gate-post-rotation-status.md",
+    "owner-hard-copy-status.md",
+    "hard-copy-checksum-record.md",
+    "secret-cleanup-result.md",
+    "security-boundary-result.md",
+    "rollback-result-if-any.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
