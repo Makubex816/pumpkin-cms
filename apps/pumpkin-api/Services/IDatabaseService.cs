@@ -36,6 +36,7 @@ public interface IDatabaseService
     Task<List<Tenant>> GetTenantsForUserAsync(string userTenantId, bool isSuperAdmin);
     Task<Page> SavePageAdminAsync(string tenantId, Page page);
     Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null);
+    Task<bool> DeletePageAdminAsync(string tenantId, string pageSlug);
 
     // Publish run registry methods (JWT authentication required at endpoint level)
     Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId);

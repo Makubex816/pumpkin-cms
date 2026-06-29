@@ -1,0 +1,75 @@
+{
+  "phase": "V2.8.43",
+  "status": "blocked",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "page_import_returned_409_after_mediaasset_retry_and_export_success",
+  "mediaAssetRetry": {
+    "status": "succeeded",
+    "traceId": "v2-8-43-20260629231308-1e59f529",
+    "blobUploadAttempted": true,
+    "publicHttpTool": "curl.exe",
+    "publicHttpStatusCode": 200,
+    "recordCreateStatusCode": 201,
+    "recordReadStatusCode": 200,
+    "recordUpdateStatusCode": 200,
+    "recordArchiveStatusCode": 200,
+    "recordRestoreStatusCode": 200,
+    "recordDeleteStatusCode": 200,
+    "recordAbsentAfterDelete": true,
+    "blobAbsentAfterDelete": true,
+    "proofPrefixFinalCount": 0
+  },
+  "apiFix": {
+    "required": true,
+    "implemented": true,
+    "scope": "single-page export/import/upsert and Admin page cleanup delete",
+    "themesFormsMediaBinariesExcluded": true
+  },
+  "apiBuildDeploy": {
+    "tests": {
+      "pageImportExportSource": "pass",
+      "mediaAssetLifecycleCleanupCarryforward": "pass"
+    },
+    "build": "pass",
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "deployAttempted": true,
+    "deployCount": 1,
+    "deploymentId": "f22da331-2942-4391-9463-1a5ecc8404f7",
+    "deploymentStatus": "RuntimeSuccessful",
+    "postDeployHealthStatusCode": 200,
+    "postDeployApiHealthStatusCode": 200,
+    "postDeployLoginStatusCode": 200
+  },
+  "pageImportExportProof": {
+    "status": "blocked",
+    "traceId": "v2-8-43-page-20260629232233-954f1c21",
+    "sourcePageCreateStatusCode": 201,
+    "exportStatusCode": 200,
+    "exportPackageSecretHitCount": 0,
+    "importStatusCode": 409,
+    "importRunReadbackStatusCode": null,
+    "cleanupStatusCode": 200,
+    "finalReadStatusCode": 404,
+    "finalAbsent": true,
+    "classification": "page_import_returned_409_after_export_package_validated"
+  },
+  "adminUi": {
+    "isolated": "admin_ui_media_import_export_ready_readonly",
+    "production": "admin_ui_media_import_export_ready_readonly",
+    "localhostApiRequests": 0,
+    "writeRequests": 0
+  },
+  "securityBoundary": {
+    "contactPost": false,
+    "themeFormWork": false,
+    "directCosmosMutation": false,
+    "storageKeyRetrieval": false,
+    "sasGeneration": false,
+    "appsettingMutation": false,
+    "dnsIndexingMutation": false,
+    "secretsWritten": false,
+    "tokensWritten": false,
+    "stagedFiles": false
+  }
+}

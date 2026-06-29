@@ -150,6 +150,11 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.UpdatePageAdminAsync(tenantId, pageSlug, page, changeContext);
     }
 
+    public Task<bool> DeletePageAdminAsync(string tenantId, string pageSlug)
+    {
+        return _dataConnection.DeletePageAdminAsync(tenantId, pageSlug);
+    }
+
     public Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId)
     {
         return _dataConnection.GetPublishRunsByTenantAsync(tenantId);

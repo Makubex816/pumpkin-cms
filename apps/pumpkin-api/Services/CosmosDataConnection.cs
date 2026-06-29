@@ -1185,6 +1185,35 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<bool> DeletePageAdminAsync(string tenantId, string pageSlug)
+    {
+        try
+        {
+            var pageContainer = _database.GetContainer("Page");
+            var existingPage = await GetPageBySlugAsync(tenantId, pageSlug);
+            if (existingPage == null)
+            {
+                _logger.LogInformation("DeletePageAdminAsync - Page not found - Slug: {Slug}, TenantId: {TenantId}", pageSlug, tenantId);
+                return false;
+            }
+
+            await pageContainer.DeleteItemAsync<Page>(existingPage.PageId, new PartitionKey(tenantId));
+            _logger.LogInformation("DeletePageAdminAsync - Page deleted - Slug: {Slug}, PageId: {PageId}, TenantId: {TenantId}",
+                pageSlug, existingPage.PageId, tenantId);
+            return true;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation("DeletePageAdminAsync - Page not found - Slug: {Slug}, TenantId: {TenantId}", pageSlug, tenantId);
+            return false;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "DeletePageAdminAsync error - Slug: {Slug}, TenantId: {TenantId}", pageSlug, tenantId);
+            throw;
+        }
+    }
+
     public async Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId)
     {
         try

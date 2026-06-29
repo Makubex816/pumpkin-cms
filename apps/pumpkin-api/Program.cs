@@ -939,6 +939,46 @@ app.MapGet("/api/admin/pages",
     .WithSummary("Get all pages for authenticated user's tenant")
     .WithDescription("Retrieves pages for the authenticated user's tenant. Requires JWT authentication via Bearer token.");
 
+// Admin: Export one tenant-scoped page as a page-only package (JWT auth, no API key)
+app.MapGet("/api/admin/pages/{tenantId}/export",
+    async (IDatabaseService databaseService, string tenantId, HttpContext context, string? slug) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        if (string.IsNullOrWhiteSpace(slug))
+            return Results.BadRequest("Single-page export requires a slug query parameter.");
+
+        var decodedSlug = Uri.UnescapeDataString(slug);
+        var page = await databaseService.GetPageBySlugAsync(tenantId, decodedSlug);
+        if (page == null)
+            return Results.NotFound("Page not found");
+
+        return Results.Ok(new
+        {
+            format = "pumpkin-cms-pages-export",
+            schemaVersion = "v2-8-43-page-only",
+            tenantId,
+            exportedAt = DateTime.UtcNow.ToString("O"),
+            pageCount = 1,
+            pages = new[] { page }
+        });
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Page Import Export")
+    .WithName("ExportSinglePage")
+    .WithSummary("Export one tenant-scoped page")
+    .WithDescription("Exports one page-only package for the route tenant. Does not export themes, forms, media binaries, secrets, or cross-tenant data.");
+
 // Admin: Get a single page by slug (JWT, no API key, includes drafts)
 app.MapGet("/api/admin/pages/{tenantId}/{**pageSlug}",
     async (IDatabaseService databaseService, string tenantId, string pageSlug, HttpContext context) =>
@@ -1039,6 +1079,200 @@ app.MapPost("/api/admin/pages/{tenantId}",
     .WithName("AdminCreatePage")
     .WithSummary("Create a new page (admin)")
     .WithDescription("Creates a new page for a specific tenant. Requires JWT authentication.");
+
+// Admin: Import one page from a page-only package (JWT auth, no API key)
+app.MapPost("/api/admin/pages/{tenantId}/import",
+    async (IDatabaseService databaseService, string tenantId, PageImportRequest importRequest, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        if (importRequest?.Pages == null || importRequest.Pages.Count != 1)
+            return Results.BadRequest("Page import requires exactly one page.");
+
+        var importMode = string.IsNullOrWhiteSpace(importRequest.ImportMode) ? "upsert" : importRequest.ImportMode;
+        if (importMode != "upsert" && importMode != "create-only" && importMode != "update-only")
+            return Results.BadRequest("Unsupported page import mode.");
+
+        var page = importRequest.Pages[0];
+        if (page == null)
+            return Results.BadRequest("Page data is required.");
+        if (!string.IsNullOrWhiteSpace(page.TenantId) && page.TenantId != tenantId)
+            return Results.BadRequest("Imported page tenant ID must match the route tenant ID.");
+        if (string.IsNullOrWhiteSpace(page.PageId))
+            return Results.BadRequest("Imported page PageId is required.");
+        if (string.IsNullOrWhiteSpace(page.PageSlug))
+            return Results.BadRequest("Imported page slug is required.");
+
+        var normalizedSlug = PageRedirectGuard.NormalizeSlug(page.PageSlug);
+        if (string.IsNullOrWhiteSpace(normalizedSlug))
+            return Results.BadRequest("Imported page slug must contain valid slug characters.");
+
+        page.TenantId = tenantId;
+        page.PageSlug = normalizedSlug;
+        page.ImportProvenance ??= new PageImportProvenance();
+        var importRunId = string.IsNullOrWhiteSpace(importRequest.ImportRunId)
+            ? $"page-import-{DateTime.UtcNow:yyyyMMddHHmmss}"
+            : importRequest.ImportRunId;
+        page.ImportProvenance.LastImportBatchId = importRunId;
+        page.ImportProvenance.SourceFile = string.IsNullOrWhiteSpace(importRequest.FileName)
+            ? "page-only-export.json"
+            : importRequest.FileName;
+        page.ImportProvenance.ExternalId = string.IsNullOrWhiteSpace(page.ImportProvenance.ExternalId)
+            ? page.PageId
+            : page.ImportProvenance.ExternalId;
+        page.ImportProvenance.OverwriteBehavior = importMode == "create-only" ? "create-only" : "upsert";
+
+        var designValidation = DesignSystemGuard.ValidatePage(page);
+        if (!designValidation.Ok)
+            return Results.BadRequest(designValidation);
+
+        try
+        {
+            var existingPage = await databaseService.GetPageBySlugAsync(tenantId, normalizedSlug);
+            string action;
+            Page savedPage;
+
+            if (existingPage == null)
+            {
+                if (importMode == "update-only")
+                    return Results.NotFound("Imported page target was not found for update-only mode.");
+
+                savedPage = await databaseService.SavePageAdminAsync(tenantId, page);
+                action = "created";
+            }
+            else
+            {
+                if (importMode == "create-only")
+                    return Results.Conflict($"Page with slug '{normalizedSlug}' already exists.");
+
+                page.PageId = existingPage.PageId;
+                page.Id = existingPage.PageId;
+                var changedBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                    ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                    ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                    ?? "Pumpkin CMS Admin";
+                var changeContext = new PageChangeContext
+                {
+                    ChangeSource = "json_import",
+                    ChangeSummary = $"Page-only import {importRunId}",
+                    ChangedBy = changedBy
+                };
+                savedPage = await databaseService.UpdatePageAdminAsync(tenantId, normalizedSlug, page, changeContext);
+                action = "updated";
+            }
+
+            var now = DateTime.UtcNow.ToString("O");
+            var importRun = new ImportRun
+            {
+                TenantId = tenantId,
+                ImportRunId = importRunId,
+                Source = "json_import",
+                SourceLabel = "Page-only API import",
+                SourcePackageId = importRequest.SourcePackageId,
+                SourcePackageName = string.IsNullOrWhiteSpace(importRequest.SourcePackageName) ? "Page-only export package" : importRequest.SourcePackageName,
+                FileName = string.IsNullOrWhiteSpace(importRequest.FileName) ? "page-only-export.json" : importRequest.FileName,
+                ImportMode = importMode,
+                Status = "completed",
+                CreatedAt = now,
+                CompletedAt = now,
+                Notes = "V2.8.43 page-only import/export proof. No themes, forms, media binaries, deployment, or protected config changes.",
+                TenantMatch = true,
+                PageCount = 1,
+                CreateCount = action == "created" ? 1 : 0,
+                UpdateCount = action == "updated" ? 1 : 0,
+                AffectedPages = new List<ImportRunAffectedPage>
+                {
+                    new()
+                    {
+                        PageId = savedPage.PageId,
+                        PageSlug = savedPage.PageSlug,
+                        Title = savedPage.MetaData?.Title ?? savedPage.PageSlug,
+                        Action = action,
+                        RevisionCreated = action == "updated",
+                        NewSlug = savedPage.PageSlug,
+                        NeedsRebuild = true
+                    }
+                },
+                ValidationSummary = new ImportRunValidationSummary
+                {
+                    GeneratedAt = now,
+                    PageCount = 1
+                },
+                DiffSummary = new ImportRunDiffSummary
+                {
+                    GeneratedAt = now,
+                    IncomingCount = 1,
+                    CreateCount = action == "created" ? 1 : 0,
+                    UpdateCount = action == "updated" ? 1 : 0,
+                    StaticRebuildCount = 1
+                },
+                ImportResultSummary = new ImportRunResultSummary
+                {
+                    Timestamp = now,
+                    Total = 1,
+                    CreatedCount = action == "created" ? 1 : 0,
+                    UpdatedCount = action == "updated" ? 1 : 0
+                },
+                PreflightAcknowledgements = new ImportRunPreflightAcknowledgements
+                {
+                    PublishedUpdatesAcknowledged = true,
+                    SlugChangesAcknowledged = true,
+                    WarningsAcknowledged = true
+                },
+                ReportSummary = new ImportRunReportSummary
+                {
+                    SourceType = "json",
+                    ImportMode = importMode,
+                    DryRunOnly = false,
+                    WriteAttempted = true,
+                    WroteCount = 1,
+                    RevisionCreatedCount = action == "updated" ? 1 : 0
+                },
+                ProtectedConfigChanged = "false",
+                DeploymentTriggered = false
+            };
+
+            var savedImportRun = await databaseService.SaveImportRunAsync(tenantId, importRun);
+            return Results.Ok(new
+            {
+                tenantId,
+                action,
+                page = savedPage,
+                importRun = savedImportRun
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.Conflict(ex.Message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error importing page package: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Page Import Export")
+    .WithName("ImportSinglePage")
+    .WithSummary("Import one page-only package")
+    .WithDescription("Imports exactly one tenant-scoped Page and records an ImportRun audit entry. Themes, forms, media binaries, deployment, and protected config are out of scope.");
 
 // Admin: Update an existing page (JWT auth, no API key)
 app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
@@ -1143,6 +1377,34 @@ app.MapPut("/api/admin/pages/{tenantId}/{**pageSlug}",
     .WithName("AdminUpdatePage")
     .WithSummary("Update an existing page (admin)")
     .WithDescription("Updates a page by slug for a specific tenant. Requires JWT authentication.");
+
+// Admin: Delete one page by slug for scoped cleanup (JWT auth, no API key)
+app.MapDelete("/api/admin/pages/{tenantId}/{**pageSlug}",
+    async (IDatabaseService databaseService, string tenantId, string pageSlug, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        var decodedSlug = Uri.UnescapeDataString(pageSlug);
+        var deleted = await databaseService.DeletePageAdminAsync(tenantId, decodedSlug);
+        return deleted
+            ? Results.Ok(new { message = "Page deleted", tenantId, pageSlug = decodedSlug })
+            : Results.NotFound("Page not found");
+    })
+    .RequireAuthorization()
+    .WithTags("Admin")
+    .WithName("AdminDeletePage")
+    .WithSummary("Delete one page by slug (admin)")
+    .WithDescription("Deletes one tenant-scoped page by slug. Requires JWT authentication and does not touch themes, forms, media, deployment, or indexing.");
 
 // Admin: Roll back a page to its latest stored pre-update snapshot (JWT auth, no API key)
 app.MapPost("/api/admin/pages/{tenantId}/{pageSlug}/rollback",
@@ -2282,3 +2544,13 @@ app.MapDelete("/api/admin/themes/{tenantId}/{themeId}",
     .WithDescription("Deletes a theme by ID for a specific tenant. Requires JWT authentication.");
 
 app.Run();
+
+public sealed class PageImportRequest
+{
+    public string ImportRunId { get; set; } = string.Empty;
+    public string ImportMode { get; set; } = "upsert";
+    public string SourcePackageId { get; set; } = string.Empty;
+    public string SourcePackageName { get; set; } = string.Empty;
+    public string FileName { get; set; } = string.Empty;
+    public List<pumpkin_net_models.Models.Page> Pages { get; set; } = new();
+}

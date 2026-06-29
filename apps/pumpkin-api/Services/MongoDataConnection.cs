@@ -732,6 +732,18 @@ public class MongoDataConnection : IDataConnection, IDisposable
         return pageToSave;
     }
 
+    public async Task<bool> DeletePageAdminAsync(string tenantId, string pageSlug)
+    {
+        var pageCollection = _database.GetCollection<Page>("Page");
+        var normalizedSlug = pageSlug.ToLowerInvariant();
+        var filter = Builders<Page>.Filter.And(
+            Builders<Page>.Filter.Eq(p => p.TenantId, tenantId),
+            Builders<Page>.Filter.Eq(p => p.PageSlug, normalizedSlug)
+        );
+        var result = await pageCollection.DeleteOneAsync(filter);
+        return result.DeletedCount > 0;
+    }
+
     public async Task<List<Page>> GetHubPagesAsync(string tenantId)
     {
         var pageCollection = _database.GetCollection<Page>("Page");
@@ -1204,6 +1216,11 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<bool> DeletePageAdminAsync(string tenantId, string pageSlug)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

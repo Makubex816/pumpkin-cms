@@ -54,6 +54,12 @@ if (args.Contains("--v2-8-42-mediaasset", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-8-43-importrun", StringComparer.OrdinalIgnoreCase))
+{
+    await PageImportExportSourceTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
@@ -119,7 +125,7 @@ Console.WriteLine("\n🔐 Pumpkin CMS - User Generator\n");
 var (userDoc, userPassword) = UserGenerator.GenerateUser(
     email: "admin@pumpkincms.io",
     username: "superadmin",
-    password: "CHANGE-ME-BEFORE-PRODUCTION",  // ⚠️ REPLACE WITH YOUR SECURE PASSWORD
+    password: "SET-A-REAL-ADMIN-PASSWORD",  // ⚠️ REPLACE WITH YOUR SECURE PASSWORD
     tenantId: "admin",
     firstName: "Super",
     lastName: "Admin",
@@ -558,6 +564,9 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
 
     public Task<Page> UpdatePageAdminAsync(string tenantId, string pageSlug, Page page, PageChangeContext? changeContext = null)
         => _connection.UpdatePageAdminAsync(tenantId, pageSlug, page, changeContext);
+
+    public Task<bool> DeletePageAdminAsync(string tenantId, string pageSlug)
+        => _connection.DeletePageAdminAsync(tenantId, pageSlug);
 
     public Task<List<PublishRun>> GetPublishRunsByTenantAsync(string tenantId)
         => _connection.GetPublishRunsByTenantAsync(tenantId);
