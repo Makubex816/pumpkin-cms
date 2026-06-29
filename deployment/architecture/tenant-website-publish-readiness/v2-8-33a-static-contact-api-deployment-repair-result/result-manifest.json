@@ -1,0 +1,53 @@
+{
+  "phase": "V2.8.33A",
+  "title": "Static Contact API Deployment Repair",
+  "date": "2026-06-29",
+  "classification": "isolated_static_contact_delivery_failed_http_502_after_api_deploy_no_production",
+  "result": "blocked_before_production",
+  "isolated": {
+    "appsettingsSet": true,
+    "deploymentAttempts": 1,
+    "deploymentSucceeded": true,
+    "contactPostAttempts": 1,
+    "contactPostStatus": 502,
+    "adminReadbackFound": false
+  },
+  "production": {
+    "appsettingsSet": false,
+    "deploymentAttempts": 0,
+    "contactPostAttempts": 0,
+    "adminReadbackRun": false
+  },
+  "secretHandling": {
+    "secretValuesPrinted": false,
+    "deploymentTokenPrinted": false,
+    "deploymentTokenPersisted": false,
+    "secureFileCopiedToPackage": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32z-carryforward.md",
+    "secure-file-readiness.md",
+    "static-contact-source-readiness.md",
+    "static-contact-test-result.md",
+    "artifact-build-validation-result.md",
+    "isolated-appsetting-binding-result.md",
+    "isolated-deployment-result.md",
+    "isolated-runtime-preflight-result.md",
+    "isolated-contact-post-result.md",
+    "isolated-admin-readback-result.md",
+    "production-appsetting-binding-result.md",
+    "production-deployment-result.md",
+    "production-runtime-preflight-result.md",
+    "production-contact-post-result.md",
+    "production-admin-readback-result.md",
+    "contact-gate-closeout-result.md",
+    "fallback-diagnosis-result.md",
+    "secret-handling-and-cleanup-instructions.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
