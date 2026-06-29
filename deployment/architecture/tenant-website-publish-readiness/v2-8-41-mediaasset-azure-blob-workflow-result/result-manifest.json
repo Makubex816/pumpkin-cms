@@ -1,0 +1,48 @@
+{
+  "phase": "V2.8.41",
+  "status": "conditional_pass",
+  "classification": "media_blob_data_plane_verified_mediaasset_record_write_skipped_no_hard_cleanup_route",
+  "traceId": "v2-8-41-20260629175421-107d7805",
+  "storage": {
+    "account": "iceskatingmedia",
+    "container": "ice-rink-rentals-media",
+    "tenantPrefix": "ice-rink-rentals/assets/",
+    "proofPrefix": "ice-rink-rentals/assets/__pumpkin-proof/v2-8-41/",
+    "blobName": "ice-rink-rentals/assets/__pumpkin-proof/v2-8-41/pumpkin-v2-8-41-20260629175421-107d7805.png",
+    "uploadAttemptedExactlyOnce": true,
+    "existsAfterUpload": true,
+    "deleteAttemptedExactlyOnce": true,
+    "deleteExitCode": 0,
+    "existsAfterDelete": false,
+    "proofBlobCountAfter": 0,
+    "publicAccess": "blob",
+    "publicHttpReadDirectlyObserved": false,
+    "publicHttpReadCaveat": "Public HEAD for the synthetic blob was not captured before cleanup; no second upload was sent."
+  },
+  "pumpkinApi": {
+    "adminLoginStatus": 200,
+    "mediaAssetListStatus": 200,
+    "mediaAssetCount": 0,
+    "mediaAssetReadClassification": "mediaasset_api_read_route_live"
+  },
+  "adminUi": {
+    "hostKind": "isolated",
+    "route": "/dashboard/media",
+    "loginPageStatus": 200,
+    "finalUrlPath": "/dashboard/media",
+    "classification": "admin_ui_media_route_readonly_loaded",
+    "mediaWriteRequests": 0
+  },
+  "mediaAssetRecordProof": {
+    "created": false,
+    "reason": "Source exposes archive/restore/replace but no hard cleanup route; no synthetic live record was created."
+  },
+  "securityBoundary": {
+    "secureFileRead": "approved_only",
+    "secretsPrintedOrWritten": false,
+    "storageKeysListed": false,
+    "delegatedSignedUrlUsed": false,
+    "directCosmosMutation": false,
+    "deploymentPerformed": false
+  }
+}
