@@ -1,0 +1,76 @@
+{
+  "phase": "V2.8.42A",
+  "status": "blocked",
+  "classification": "synthetic_blob_public_http_and_mediaasset_lifecycle_blocked_after_single_upload_consumed",
+  "traceId": "v2-8-42a-20260629185450-e6dd9366",
+  "pumpkinApiDeployment": {
+    "attempts": 1,
+    "status": "RuntimeSuccessful",
+    "deploymentId": "37a5322c-5771-4217-b298-205a35ee8040",
+    "zipDeployType": "OneDeploy"
+  },
+  "posixZip": {
+    "zipBytes": 11760001,
+    "entryCount": 56,
+    "hasPumpkinApiDll": true,
+    "backslashEntryCount": 0,
+    "nestedParentEntryCount": 0,
+    "protectedConfigEntryCount": 0
+  },
+  "localValidation": {
+    "mediaAssetTenantScopeTest": "pass",
+    "pumpkinApiBuild": "pass",
+    "buildWarnings": 0,
+    "buildErrors": 0
+  },
+  "postDeployRuntime": {
+    "health": {
+      "statusCode": 200,
+      "providerConfigured": false
+    },
+    "apiHealth": {
+      "statusCode": 200,
+      "providerConfigured": false
+    },
+    "adminLogin": {
+      "statusCode": 200,
+      "tokenFound": true
+    }
+  },
+  "blobProof": {
+    "uploadCommandInvokedOnce": true,
+    "matchingBlobObservedBeforeContinuation": true,
+    "publicHttpObserved": false,
+    "cleanupDeleteAttempted": true,
+    "blobDeleted": true,
+    "proofPrefixFinalCount": 0,
+    "classification": "single_upload_consumed_then_cleaned_before_public_http_probe"
+  },
+  "mediaAssetLifecycle": {
+    "createAttempted": false,
+    "readAttempted": false,
+    "updateAttempted": false,
+    "archiveAttempted": false,
+    "restoreAttempted": false,
+    "deleteAttempted": false,
+    "reason": "single uploaded proof blob was cleaned up before public HTTP and API lifecycle proof; no second upload allowed"
+  },
+  "adminUi": {
+    "isolated": "admin_ui_media_route_ready_readonly",
+    "production": "admin_ui_media_route_ready_readonly",
+    "mediaWriteRequests": 0,
+    "localhostApiRequests": 0
+  },
+  "securityBoundary": {
+    "secretsWritten": false,
+    "tokenWritten": false,
+    "contactPost": false,
+    "themeFormWork": false,
+    "storageKeyRetrieval": false,
+    "delegatedSignedUrl": false,
+    "directCosmosMutation": false,
+    "appsettingMutation": false,
+    "dnsIndexingMutation": false,
+    "secondBlobUpload": false
+  }
+}
