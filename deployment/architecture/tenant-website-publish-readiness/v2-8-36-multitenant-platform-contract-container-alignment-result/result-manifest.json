@@ -1,0 +1,77 @@
+{
+  "phase": "V2.8.36",
+  "status": "completed_with_container_alignment",
+  "classification": "multitenant_platform_contract_active_scope_container_alignment_no_deploy_no_content_mutation",
+  "createdAtUtc": "2026-06-29T00:00:00Z",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_36_MULTITENANT_PLATFORM_CONTRACT_CONTAINER_ALIGNMENT_REPORT.md",
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_MULTI_TENANT_PLATFORM_CONTRACT.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_ACTIVE_ENDPOINT_CONTRACT_V2_8_36.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_FUTURE_PHASE_MULTITENANCY_GATE.md"
+  ],
+  "resultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-35-carryforward.md",
+    "developer-endpoint-contract-review.md",
+    "multi-tenant-architecture-contract-summary.md",
+    "tenant-resource-isolation-matrix.md",
+    "active-scope-and-exclusions.md",
+    "tenant-admin-rbac-contract-review.md",
+    "public-page-endpoint-contract-review.md",
+    "admin-page-endpoint-contract-review.md",
+    "content-hierarchy-contract-review.md",
+    "sitemap-contract-review.md",
+    "cosmos-container-source-live-alignment.md",
+    "cosmos-container-create-confirm-result-if-any.md",
+    "container-partition-key-review.md",
+    "source-tenant-scope-audit.md",
+    "hardcoded-tenant-value-audit.md",
+    "admin-tenant-scope-review.md",
+    "tenant-auth-key-path-review.md",
+    "media-tenant-isolation-review.md",
+    "formentry-no-regression-carryforward.md",
+    "roller-rink-rentals-readiness.md",
+    "admin-ui-page-content-implications.md",
+    "backup-monitoring-multitenancy-implications.md",
+    "guardrail-implementation-result.md",
+    "resource-registry-update.md",
+    "next-priority-roadmap.md",
+    "proof-gate-status-matrix.md",
+    "security-boundary-result.md",
+    "no-deploy-no-post-confirmation.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "containerCreates": [
+    {
+      "name": "Page",
+      "partitionKey": "/tenantId"
+    },
+    {
+      "name": "MediaAsset",
+      "partitionKey": "/tenantId"
+    },
+    {
+      "name": "PublishRun",
+      "partitionKey": "/tenantId"
+    },
+    {
+      "name": "ImportRun",
+      "partitionKey": "/tenantId"
+    }
+  ],
+  "disallowedMutations": {
+    "deploy": false,
+    "contactPost": false,
+    "appsettingMutation": false,
+    "dnsMutation": false,
+    "indexing": false,
+    "tenantDocumentWrite": false,
+    "contentDocumentWrite": false,
+    "themeContainerCreate": false,
+    "formDefinitionContainerCreate": false,
+    "formsContainerCreate": false
+  }
+}
