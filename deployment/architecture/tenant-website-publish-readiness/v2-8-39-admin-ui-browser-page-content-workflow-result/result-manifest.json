@@ -1,0 +1,84 @@
+{
+  "phase": "v2-8-39",
+  "createdAt": "2026-06-29",
+  "status": "complete_with_documented_ui_cleanup_gap",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "admin_ui_browser_create_update_proven_ui_rollback_gap_api_fallback_revert_succeeded_residual_draft",
+  "tenantId": "ice-rink-rentals",
+  "syntheticPage": {
+    "slug": "pumpkin-ui-proof-v2-8-39-admin-ui-browser-proof-20260629203906-e77382",
+    "initialTitle": "Pumpkin V2.8.39 Admin UI Browser Proof e77382",
+    "updatedTitle": "Pumpkin V2.8.39 Admin UI Browser Proof Updated e77382",
+    "residualState": "reverted_draft_present",
+    "isPublished": false,
+    "includeInSitemap": false
+  },
+  "browserAutomation": {
+    "runtime": "playwright",
+    "repoBrowserDependencyPresentBeforePhase": false,
+    "ignoredTmpRuntimeUsed": true,
+    "scriptSyntaxChecked": true,
+    "browserRuntimeInstalledInCache": true,
+    "tmpArtifactsDeletedAfterCloseout": true
+  },
+  "secureFile": {
+    "approvedFileRead": true,
+    "gitIgnored": true,
+    "requiredFieldsPresent": true,
+    "secretsPrinted": false,
+    "tokensPrinted": false,
+    "deletedAfterCloseout": true
+  },
+  "isolated": {
+    "host": "https://app-pumpkin-admin-isolated-centralus-001.azurewebsites.net",
+    "rootStatus": 200,
+    "loginStatus": 200,
+    "uiLoginSucceeded": true,
+    "role": "TenantAdmin",
+    "tenantMatched": true,
+    "pagesRouteLoaded": true,
+    "localhostApiRequestsObserved": 0,
+    "uiCreateAttempts": 1,
+    "uiCreateStatus": 201,
+    "uiUpdateAttempts": 1,
+    "uiUpdateStatus": 200,
+    "uiRollbackClickRequestObserved": false,
+    "apiFallbackRollbackAttempts": 1,
+    "apiFallbackRollbackStatus": 200
+  },
+  "adminApiReadback": {
+    "createdReadStatus": 200,
+    "createdTenantMatched": true,
+    "updatedReadStatus": 200,
+    "updatedVersion": 2,
+    "revertedReadStatus": 200,
+    "revertedVersion": 3,
+    "revertedTitleMatchedInitial": true,
+    "finalPageCount": 1
+  },
+  "production": {
+    "host": "https://app-pumpkin-admin-prod-centralus-001.azurewebsites.net",
+    "rootStatus": 200,
+    "loginStatus": 200,
+    "uiLoginSucceeded": true,
+    "role": "TenantAdmin",
+    "tenantMatched": true,
+    "pagesRouteLoaded": true,
+    "residualSyntheticPageVisibleReadOnly": true,
+    "liveApiRequestsObserved": 9,
+    "localhostApiRequestsObserved": 0,
+    "pageErrors": []
+  },
+  "guardrails": {
+    "pumpkinApiDeployOccurred": false,
+    "adminUiRedeployOccurred": false,
+    "appsettingMutationOccurred": false,
+    "dnsMutationOccurred": false,
+    "indexingToolingOccurred": false,
+    "contactPostOccurred": false,
+    "themeWorkOccurred": false,
+    "formDefinitionWorkOccurred": false,
+    "tenantMutationOccurred": false,
+    "unrelatedContentMutationOccurred": false
+  }
+}
