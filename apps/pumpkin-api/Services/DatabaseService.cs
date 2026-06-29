@@ -200,6 +200,11 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.UpdateMediaAssetAsync(tenantId, id, mediaAsset);
     }
 
+    public Task<bool> DeleteMediaAssetAsync(string tenantId, string id)
+    {
+        return _dataConnection.DeleteMediaAssetAsync(tenantId, id);
+    }
+
     // Theme methods (content serving - API key required)
     public Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId)
     {

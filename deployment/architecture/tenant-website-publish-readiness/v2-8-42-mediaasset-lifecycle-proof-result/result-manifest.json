@@ -1,0 +1,60 @@
+{
+  "phase": "V2.8.42",
+  "status": "blocked",
+  "classification": "pumpkin_api_deploy_failed_mediaasset_record_proof_blocked",
+  "sourceRepair": {
+    "required": true,
+    "implemented": true,
+    "cleanupRoute": "DELETE /api/admin/{tenantId}/media-assets/{id}",
+    "metadataOnly": true,
+    "tenantScoped": true
+  },
+  "localValidation": {
+    "mediaAssetTenantScopeTest": "pass",
+    "pumpkinApiBuild": "pass",
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "publishArtifactHasPumpkinApiDll": true,
+    "publishArtifactConfigEntries": 0
+  },
+  "deployment": {
+    "required": true,
+    "observedOneDeployId": "8fd507e5-f9a8-48a0-a5a6-65065dbf9b16",
+    "status": "failed",
+    "blocker": "kudu_rsync_invalid_argument_windows_path_entries",
+    "healthAfterAttempt": {
+      "health": 200,
+      "apiHealth": 200
+    }
+  },
+  "blobProof": {
+    "localPngCreated": true,
+    "traceId": "v2-8-42-20260629183228-f5e75dc0",
+    "uploadCommandInvokedOnce": true,
+    "uploadedBlobObserved": false,
+    "publicHttpObserved": false,
+    "proofPrefixFinalCount": 0,
+    "classification": "blob_upload_attempt_ambiguous_no_residual_no_retry"
+  },
+  "mediaAssetRecordProof": {
+    "attempted": false,
+    "reason": "pumpkin_api_deploy_failed_before_cleanup_route_live",
+    "residualRecord": false
+  },
+  "adminUi": {
+    "isolated": "admin_ui_media_route_ready_readonly",
+    "production": "admin_ui_media_route_ready_readonly",
+    "mediaWriteRequests": 0,
+    "localhostApiRequests": 0
+  },
+  "securityBoundary": {
+    "secretsWritten": false,
+    "contactPost": false,
+    "themeFormWork": false,
+    "storageKeyListing": false,
+    "delegatedSignedUrl": false,
+    "directCosmosMutation": false,
+    "appsettingMutation": false,
+    "dnsIndexingMutation": false
+  }
+}

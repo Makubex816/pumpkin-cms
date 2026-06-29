@@ -48,6 +48,12 @@ if (args.Contains("--v2-8-32c", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-8-42-mediaasset", StringComparer.OrdinalIgnoreCase))
+{
+    await MediaAssetLifecycleCleanupTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
@@ -582,6 +588,9 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
 
     public Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset)
         => _connection.UpdateMediaAssetAsync(tenantId, id, mediaAsset);
+
+    public Task<bool> DeleteMediaAssetAsync(string tenantId, string id)
+        => _connection.DeleteMediaAssetAsync(tenantId, id);
 
     public Task<List<Page>> GetHubPagesAsync(string tenantId)
         => _connection.GetHubPagesAsync(tenantId);

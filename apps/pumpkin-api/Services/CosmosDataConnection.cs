@@ -1464,6 +1464,36 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<bool> DeleteMediaAssetAsync(string tenantId, string id)
+    {
+        try
+        {
+            var mediaAssetContainer = _database.GetContainer("MediaAsset");
+            var existingMediaAsset = await GetMediaAssetAsync(tenantId, id);
+            if (existingMediaAsset == null)
+            {
+                _logger.LogInformation("DeleteMediaAssetAsync - Media asset not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+                return false;
+            }
+
+            await mediaAssetContainer.DeleteItemAsync<MediaAsset>(existingMediaAsset.Id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("DeleteMediaAssetAsync - Media asset deleted - TenantId: {TenantId}, Id: {Id}, AssetId: {AssetId}",
+                tenantId, existingMediaAsset.Id, existingMediaAsset.AssetId);
+            return true;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation("DeleteMediaAssetAsync - Media asset not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            return false;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "DeleteMediaAssetAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
     // Admin: Get hub pages for a tenant (JWT authentication required at endpoint level)
     public async Task<List<Page>> GetHubPagesAsync(string tenantId)
     {

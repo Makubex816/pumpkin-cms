@@ -52,6 +52,7 @@ public interface IDataConnection
     Task<MediaAsset?> GetMediaAssetAsync(string tenantId, string id);
     Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset);
     Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset);
+    Task<bool> DeleteMediaAssetAsync(string tenantId, string id);
     
     // Theme methods (content serving - API key required)
     Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId);

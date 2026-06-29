@@ -1999,6 +1999,40 @@ app.MapPost("/api/admin/{tenantId}/media-assets/{id}/replace",
     .WithSummary("Replace media asset")
     .WithDescription("Marks a media asset as replaced by another tenant-scoped asset without deleting either record.");
 
+// Admin: Delete media asset metadata only without deleting the underlying blob
+app.MapDelete("/api/admin/{tenantId}/media-assets/{id}",
+    async (IDatabaseService databaseService, string tenantId, string id, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var deleted = await databaseService.DeleteMediaAssetAsync(tenantId, id);
+            return deleted
+                ? Results.Ok(new { message = "Media asset deleted", tenantId, id })
+                : Results.NotFound("Media asset not found");
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error deleting media asset: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Media Assets")
+    .WithName("DeleteMediaAsset")
+    .WithSummary("Delete media asset metadata")
+    .WithDescription("Deletes one tenant-scoped media asset metadata record. The underlying blob is not deleted by this endpoint.");
+
 // Admin: Get hub pages for a tenant
 app.MapGet("/api/admin/tenants/{tenantId}/hubs",
     async (IDatabaseService databaseService, string tenantId, HttpContext context) =>

@@ -930,6 +930,22 @@ public class MongoDataConnection : IDataConnection, IDisposable
         return mediaAsset;
     }
 
+    public async Task<bool> DeleteMediaAssetAsync(string tenantId, string id)
+    {
+        var mediaAssetCollection = _database.GetCollection<MediaAsset>("MediaAsset");
+        var existingMediaAsset = await GetMediaAssetAsync(tenantId, id);
+        if (existingMediaAsset == null)
+            return false;
+
+        var filter = Builders<MediaAsset>.Filter.And(
+            Builders<MediaAsset>.Filter.Eq(asset => asset.TenantId, tenantId),
+            Builders<MediaAsset>.Filter.Eq(asset => asset.Id, existingMediaAsset.Id)
+        );
+
+        var result = await mediaAssetCollection.DeleteOneAsync(filter);
+        return result.DeletedCount > 0;
+    }
+
     public void Dispose()
     {
         if (!_disposed)
@@ -1238,6 +1254,11 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<bool> DeleteMediaAssetAsync(string tenantId, string id)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }
