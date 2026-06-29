@@ -221,6 +221,73 @@ const tests = [
     assert.ok(forwardedEntry.metadata.tags.includes('ice-rink-rentals'));
     assert.ok(forwardedEntry.metadata.tags.includes('default-quote-request'));
   }],
+  ['pumpkin-api mode falls back to local entry id when upstream success body is empty', async () => {
+    const result = await submitToHandler(frontendPayload(), {
+      env: {
+        FORM_DELIVERY_MODE: 'pumpkin-api',
+        PUMPKIN_API_URL: 'https://pumpkin-api.local.test',
+        PUMPKIN_CONTACT_PUMPKIN_API_WRITE_ROUTE: '/api/forms/ice-rink-rentals/entries',
+        PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME: 'PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY',
+        PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY: 'dummy',
+      },
+      fetchImpl: async () => ({
+        ok: true,
+        status: 201,
+        async json() {
+          throw new Error('No JSON body.');
+        },
+      }),
+    });
+
+    assert.equal(result.status, 200);
+    assert.equal(result.body.ok, true);
+    assert.match(result.body.entryId, /^ice-rink-rentals-default-quote-request-/);
+  }],
+  ['pumpkin-api mode preserves public-safe upstream auth failure status', async () => {
+    const result = await submitToHandler(frontendPayload(), {
+      env: {
+        FORM_DELIVERY_MODE: 'pumpkin-api',
+        PUMPKIN_API_URL: 'https://pumpkin-api.local.test',
+        PUMPKIN_CONTACT_PUMPKIN_API_WRITE_ROUTE: '/api/forms/ice-rink-rentals/entries',
+        PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME: 'PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY',
+        PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY: 'dummy',
+      },
+      fetchImpl: async () => ({
+        ok: false,
+        status: 401,
+        async json() {
+          return {};
+        },
+      }),
+    });
+
+    assert.equal(result.status, 401);
+    assert.equal(result.body.ok, false);
+    assert.equal(result.body.code, 'pumpkin_api_auth_failed');
+    assert.equal(Object.hasOwn(result.body, 'entryId'), false);
+  }],
+  ['pumpkin-api mode maps upstream server errors to public-safe 502', async () => {
+    const result = await submitToHandler(frontendPayload(), {
+      env: {
+        FORM_DELIVERY_MODE: 'pumpkin-api',
+        PUMPKIN_API_URL: 'https://pumpkin-api.local.test',
+        PUMPKIN_CONTACT_PUMPKIN_API_WRITE_ROUTE: '/api/forms/ice-rink-rentals/entries',
+        PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME: 'PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY',
+        PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY: 'dummy',
+      },
+      fetchImpl: async () => ({
+        ok: false,
+        status: 500,
+        async json() {
+          return {};
+        },
+      }),
+    });
+
+    assert.equal(result.status, 502);
+    assert.equal(result.body.ok, false);
+    assert.equal(result.body.code, 'pumpkin_api_delivery_failed');
+  }],
   ['pumpkin-api mode fails safely before persistence when base URL is missing', async () => {
     let fetchCallCount = 0;
     const result = await submitToHandler(frontendPayload(), {

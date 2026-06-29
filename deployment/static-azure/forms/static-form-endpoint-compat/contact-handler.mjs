@@ -121,9 +121,11 @@ export async function handleStaticContactRequest({
     }, origin, env);
   } catch (error) {
     logger.error?.('Static form delivery failed:', getSafeErrorMessage(error));
-    return response(502, {
+    const publicFailure = getPublicDeliveryFailure(error);
+    return response(publicFailure.status, {
       ok: false,
-      message: 'Unable to submit this request right now.',
+      message: publicFailure.message,
+      code: publicFailure.code,
     }, origin, env);
   }
 }
@@ -225,10 +227,63 @@ async function forwardToPumpkin({ entry, site, env, fetchImpl }) {
   });
 
   if (!response.ok) {
-    throw new Error(`Pumpkin API returned ${response.status}.`);
+    throw new StaticFormDeliveryError(`Pumpkin API returned ${response.status}.`, {
+      status: getPublicUpstreamStatus(response.status),
+      code: getPublicUpstreamCode(response.status),
+    });
   }
 
-  return response.json().catch(() => ({ id: entry.id }));
+  return readPumpkinSuccessResponse(response, entry.id);
+}
+
+async function readPumpkinSuccessResponse(response, fallbackId) {
+  const body = await response.json().catch(() => null);
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { id: fallbackId };
+  }
+
+  const savedEntry = { ...body };
+  if (!savedEntry.id && savedEntry.entryId) savedEntry.id = savedEntry.entryId;
+  if (!savedEntry.id) savedEntry.id = fallbackId;
+  return savedEntry;
+}
+
+class StaticFormDeliveryError extends Error {
+  constructor(message, { status = 502, code = 'static_contact_delivery_failed' } = {}) {
+    super(message);
+    this.name = 'StaticFormDeliveryError';
+    this.status = status;
+    this.code = code;
+  }
+}
+
+function getPublicDeliveryFailure(error) {
+  if (error instanceof StaticFormDeliveryError) {
+    return {
+      status: error.status,
+      code: error.code,
+      message: 'Unable to submit this request right now.',
+    };
+  }
+
+  return {
+    status: 502,
+    code: 'static_contact_delivery_failed',
+    message: 'Unable to submit this request right now.',
+  };
+}
+
+function getPublicUpstreamStatus(status) {
+  if ([400, 401, 403, 404, 405, 409].includes(status)) return status;
+  return 502;
+}
+
+function getPublicUpstreamCode(status) {
+  if (status === 400) return 'pumpkin_api_validation_failed';
+  if (status === 401 || status === 403) return 'pumpkin_api_auth_failed';
+  if (status === 404 || status === 405) return 'pumpkin_api_route_failed';
+  if (status === 409) return 'pumpkin_api_conflict';
+  return 'pumpkin_api_delivery_failed';
 }
 
 function getPumpkinApiBaseUrl(env) {

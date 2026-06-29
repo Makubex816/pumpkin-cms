@@ -1,0 +1,46 @@
+{
+  "phase": "V2.8.33B",
+  "title": "Static Contact Upstream Probe Bridge Repair",
+  "date": "2026-06-29",
+  "classification": "static_contact_bridge_repaired_and_production_admin_readback_confirmed",
+  "result": "contact_gate_closed",
+  "directProbes": {
+    "invalidAuthValidationProbeStatus": 400,
+    "validWriteProbeAttempts": 1,
+    "validWriteProbeStatus": 401,
+    "validWriteProbeCreatedEntry": false
+  },
+  "tenantAlignment": {
+    "performed": true,
+    "tenantContainerCreatedOrConfirmed": true,
+    "tenantDocumentCreated": true,
+    "afterAccepted": true
+  },
+  "sourceRepair": {
+    "performed": true,
+    "filesChanged": [
+      "deployment/static-azure/forms/static-form-endpoint-compat/contact-handler.mjs",
+      "deployment/static-azure/forms/static-form-endpoint-compat/test-static-form-endpoint-compat.mjs"
+    ]
+  },
+  "isolated": {
+    "appsettingsSet": true,
+    "deploymentAttempts": 1,
+    "contactPostAttempts": 1,
+    "contactPostStatus": 200,
+    "adminReadbackFound": true
+  },
+  "production": {
+    "appsettingsSet": true,
+    "deploymentAttempts": 1,
+    "contactPostAttempts": 1,
+    "contactPostStatus": 200,
+    "adminReadbackFound": true
+  },
+  "secretHandling": {
+    "secretValuesPrinted": false,
+    "deploymentTokenPrinted": false,
+    "generatedEnvFilesRemovedWithoutRead": true,
+    "secureFileCopiedToPackage": false
+  }
+}
