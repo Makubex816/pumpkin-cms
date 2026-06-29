@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Pumpkin CMS Admin',
   description: 'Content management system for Pumpkin CMS',
+  robots: 'noindex, nofollow, noarchive',
 }
 
 export default function RootLayout({

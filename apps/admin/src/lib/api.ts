@@ -14,7 +14,11 @@ export interface ActivityItem {
   user: string
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5064'
+const DEFAULT_API_URL = process.env.NODE_ENV === 'production'
+  ? 'https://app-pumpkin-api-prod-centralus-001.azurewebsites.net'
+  : 'http://localhost:5064'
+
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL).replace(/\/+$/, '')
 
 interface ApiError {
   message: string

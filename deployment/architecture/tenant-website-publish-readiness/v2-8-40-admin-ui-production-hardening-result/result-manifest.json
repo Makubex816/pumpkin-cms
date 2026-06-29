@@ -1,0 +1,42 @@
+{
+  "phase": "V2.8.40",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "admin_ui_production_hardening_operator_runbook_no_write_runtime_proof",
+  "tenantId": "ice-rink-rentals",
+  "status": "pass",
+  "sourceFixMade": true,
+  "isolatedRedeploy": {
+    "performed": true,
+    "webApp": "app-pumpkin-admin-isolated-centralus-001",
+    "status": "RuntimeSuccessful",
+    "deploymentId": "035d1fb2-bc91-4f95-956c-c1bc1c986954"
+  },
+  "productionRedeploy": {
+    "performed": true,
+    "webApp": "app-pumpkin-admin-prod-centralus-001",
+    "status": "RuntimeSuccessful",
+    "deploymentId": "4c70235e-40aa-432c-8e54-51025ad28813"
+  },
+  "proof": {
+    "isolatedNoWrite": "pass",
+    "productionNoWrite": "pass",
+    "localhostApiEvents": 0,
+    "contentWriteEvents": 0,
+    "contactPostEvents": 0,
+    "themeFormWriteEvents": 0
+  },
+  "package": {
+    "type": "next-standalone-appservice-zip",
+    "zipEntryPathStyle": "posix-forward-slash",
+    "zipBytes": 7372073,
+    "entryCount": 1993,
+    "backslashEntryPresent": false,
+    "rootServerJs": true,
+    "rootPackageJson": true,
+    "nextStatic": true,
+    "nextServer": true,
+    "nodeModules": true,
+    "protectedEnv": false
+  }
+}
+
