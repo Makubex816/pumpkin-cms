@@ -1,0 +1,109 @@
+{
+  "phase": "V2.8.34A",
+  "title": "Corrected Payload-Contract Static Contact Key Rotation Retry",
+  "date": "2026-06-29",
+  "lane": "V2.8 Tenant Website / Post-Release Contact Verification + Pumpkin Live Runtime Wiring",
+  "classification": "corrected_payload_contract_static_contact_key_rotation_success_production_readback_confirmed",
+  "result": "contact_gate_closed_after_successful_rotation",
+  "tenantId": "ice-rink-rentals",
+  "formId": "default-quote-request",
+  "carryforward": {
+    "phase": "V2.8.34",
+    "classification": "controlled_static_contact_key_rotation_blocked_isolated_http_400_rollback_complete",
+    "failedIsolatedTrace": "v2-8-34-isolated-key-rotation-20260629045108-9b13ff26",
+    "failedKeyReused": false
+  },
+  "payloadContract": {
+    "diagnosed": true,
+    "exactPayloadValidationPassed": true,
+    "compatTestsPassed": true,
+    "requiredFormDataKeys": [
+      "fullName",
+      "email",
+      "phone",
+      "eventCity",
+      "eventState",
+      "eventDateOrDateRange",
+      "eventType",
+      "venueSetting",
+      "message",
+      "consent"
+    ]
+  },
+  "rotation": {
+    "freshKeyGenerated": true,
+    "secretValuesWrittenToRepo": false,
+    "tenantRecordRotated": true,
+    "tenantContainer": "Tenant",
+    "tenantFieldsUpdated": [
+      "apiKey",
+      "apiKeyHash",
+      "apiKeyMeta",
+      "updatedAt"
+    ],
+    "rollbackPerformed": false
+  },
+  "isolated": {
+    "appsettingsSet": true,
+    "verificationPostAttempts": 1,
+    "verificationPostStatus": 200,
+    "traceId": "v2-8-34a-isolated-key-rotation-20260629134931-a88a0d37",
+    "returnedEntryId": "ice-rink-rentals-default-quote-request-64735477-8f5b-41bb-846c-e6f8078b057e",
+    "adminReadbackFound": true,
+    "adminReadbackPolls": 1
+  },
+  "production": {
+    "appsettingsSet": true,
+    "verificationPostAttempts": 1,
+    "verificationPostStatus": 200,
+    "traceId": "v2-8-34a-production-key-rotation-20260629134931-bf80dd04",
+    "returnedEntryId": "ice-rink-rentals-default-quote-request-1fb21846-365d-4478-96e7-1e76cae92747",
+    "adminReadbackFound": true,
+    "adminReadbackPolls": 1
+  },
+  "ownerHardCopy": {
+    "created": true,
+    "outsideRepo": true,
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\v2-8-34a-corrected-key-rotation\\ROTATED_VALUES_OPERATOR_HARD_COPY.txt",
+    "checksumPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\v2-8-34a-corrected-key-rotation\\ROTATED_VALUES_OPERATOR_HARD_COPY.sha256",
+    "sha256": "f12c6f8f2afb0da7fbac0788477195e3269b3eeec34c361da7b3b50369ce004d",
+    "adminPasswordIncluded": true,
+    "jwtSecretIncluded": true,
+    "cosmosConnectionStringIncluded": true
+  },
+  "security": {
+    "deployOccurred": false,
+    "dnsOrIndexingOccurred": false,
+    "isolatedPostCount": 1,
+    "productionPostCount": 1,
+    "secretValuesWrittenToRepo": false,
+    "filesStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-34-carryforward.md",
+    "previous-hard-copy-readiness.md",
+    "payload-contract-diagnosis.md",
+    "corrected-payload-validation-result.md",
+    "secure-working-file-readiness.md",
+    "generated-key-result.md",
+    "tenant-key-rotation-result.md",
+    "isolated-appsetting-rotation-result.md",
+    "admin-readback-preflight-result.md",
+    "isolated-verification-post-result.md",
+    "isolated-admin-readback-result.md",
+    "production-appsetting-rotation-result.md",
+    "production-verification-post-result.md",
+    "production-admin-readback-result.md",
+    "contact-gate-post-rotation-status.md",
+    "owner-hard-copy-status.md",
+    "hard-copy-checksum-record.md",
+    "rollback-result-if-any.md",
+    "secret-cleanup-result.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}

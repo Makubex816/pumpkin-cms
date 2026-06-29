@@ -1,0 +1,24 @@
+# Production Appsetting Rotation Result
+
+Target:
+
+- Static Web App: `swa-ice-static-staging`.
+- Resource group: `rg-ice-static-staging`.
+
+Settings set:
+
+- `FORM_DELIVERY_MODE`
+- `PUMPKIN_API_URL`
+- `PUMPKIN_CONTACT_PUMPKIN_API_WRITE_ROUTE`
+- `PUMPKIN_CONTACT_PROTECTED_KEY_ENV_NAME`
+- `PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY`
+- `STATIC_FORM_ALLOWED_SITE_KEYS`
+- `STATIC_FORM_ALLOWED_ORIGINS`
+
+Result:
+
+- Production appsettings set: yes.
+- Production mutation was run only after isolated POST/readback succeeded.
+- Propagation wait: 20 seconds.
+- Azure appsettings warning was redacted: yes.
+- Secret values printed: no.
