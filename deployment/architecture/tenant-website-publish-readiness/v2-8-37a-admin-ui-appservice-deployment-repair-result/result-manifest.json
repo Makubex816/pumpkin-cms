@@ -1,0 +1,66 @@
+{
+  "phase": "v2-8-37a",
+  "createdAt": "2026-06-29",
+  "status": "complete",
+  "classification": "admin_ui_appservice_package_repair_succeeded_production_default_host_live_readonly_proven",
+  "isolatedWebApp": "app-pumpkin-admin-isolated-centralus-001",
+  "productionWebApp": "app-pumpkin-admin-prod-centralus-001",
+  "resourceGroup": "rg-pumpkin-api-prod-centralus",
+  "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+  "correctedPackage": {
+    "type": "next-standalone-appservice-zip",
+    "zipEntryPathStyle": "posix-forward-slash",
+    "zipBytes": 7319447,
+    "entryCount": 1987,
+    "hasBackslashEntry": false,
+    "hasRootServerJs": true,
+    "hasRootPackageJson": true,
+    "hasNextServer": true,
+    "hasNextStatic": true,
+    "hasNodeModules": true,
+    "hasProtectedEnv": false
+  },
+  "isolatedDeployment": {
+    "attempts": 1,
+    "succeeded": true,
+    "deploymentId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/sites/app-pumpkin-admin-isolated-centralus-001/deploymentStatus/63da55be-c1c4-492e-b86a-6530ee3789a6",
+    "rootStatus": 200,
+    "loginStatus": 200,
+    "sampledAssetStatus": 200
+  },
+  "adminApiProof": {
+    "loginStatus": 200,
+    "userRole": "TenantAdmin",
+    "tenantMatched": true,
+    "tenantsStatus": 200,
+    "tenantCount": 1,
+    "expectedTenantVisible": true,
+    "pagesStatus": 200,
+    "pageCount": 0,
+    "hubsStatus": 200,
+    "hubCount": 0,
+    "contentHierarchyStatus": 200,
+    "contentHierarchyTotalPages": 0,
+    "classification": "container_ready_no_content_seeded"
+  },
+  "productionDeployment": {
+    "targetCreated": true,
+    "attempts": 1,
+    "succeeded": true,
+    "deploymentId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/sites/app-pumpkin-admin-prod-centralus-001/deploymentStatus/2a16f72a-a3a7-42d0-be53-aafafdb5daea",
+    "rootStatus": 200,
+    "loginStatus": 200,
+    "sampledAssetStatus": 200
+  },
+  "security": {
+    "secretsPrinted": false,
+    "bearerTokenPrinted": false,
+    "approvedSecureFileOnly": true,
+    "secureDirectoryDeletedAfterSuccess": true,
+    "contactPostSent": false,
+    "tenantWritePerformed": false,
+    "contentWritePerformed": false,
+    "dnsMutationPerformed": false,
+    "indexingToolingUsed": false
+  }
+}
