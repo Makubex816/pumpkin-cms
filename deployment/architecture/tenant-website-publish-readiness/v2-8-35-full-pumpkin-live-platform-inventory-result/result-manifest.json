@@ -1,0 +1,53 @@
+{
+  "phase": "V2.8.35",
+  "title": "Full Pumpkin Live Platform Inventory",
+  "status": "complete",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "full_live_platform_inventory_admin_ui_status_backup_monitoring_gap_audit_no_deploy_no_mutation",
+  "subscription": {
+    "name": "Azure subscription 1",
+    "id": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "operatorUser": "Contact@iceskatingrinkrentals.com"
+  },
+  "carryforward": {
+    "contactGateStatus": "closed",
+    "keyRotationStatus": "closed_success",
+    "v2_8_33bProductionTrace": "v2-8-33b-production-static-contact-20260629015903-78f5b35b",
+    "v2_8_33bProductionEntryId": "ice-rink-rentals-default-quote-request-97389127-25ea-4731-8bbe-62f6c59e88b4",
+    "v2_8_34aIsolatedTrace": "v2-8-34a-isolated-key-rotation-20260629134931-a88a0d37",
+    "v2_8_34aIsolatedEntryId": "ice-rink-rentals-default-quote-request-64735477-8f5b-41bb-846c-e6f8078b057e",
+    "v2_8_34aProductionTrace": "v2-8-34a-production-key-rotation-20260629134931-bf80dd04",
+    "v2_8_34aProductionEntryId": "ice-rink-rentals-default-quote-request-1fb21846-365d-4478-96e7-1e76cae92747"
+  },
+  "liveRuntime": {
+    "pumpkinApiHealthStatus": 200,
+    "pumpkinApiHealthProviderConfigured": false,
+    "pumpkinApiHealthProviderConfiguredSource": "hardcoded dependency-light health response",
+    "productionContactStatus": 200,
+    "productionStaticContactHealthStatus": 200,
+    "isolatedContactStatus": 200,
+    "isolatedStaticContactHealthStatus": 200
+  },
+  "adminUi": {
+    "classification": "local_only_not_live_deployed",
+    "sourcePath": "apps/admin",
+    "typeCheck": "passed",
+    "azureDeploymentFound": false,
+    "recommendedTarget": "swa-pumpkin-admin-prod-centralus-001"
+  },
+  "adminApiProof": {
+    "priorProof": "V2.8.34A",
+    "v2_8_35LoginAttempted": false,
+    "classification": "not_revalidated_credentials_not_extracted_from_hard_copy"
+  },
+  "actionsPerformed": {
+    "deploy": false,
+    "contactPost": false,
+    "liveDataWrite": false,
+    "azureMutation": false,
+    "appsettingMutation": false,
+    "dnsMutation": false,
+    "indexingAction": false,
+    "protectedConfigRead": false
+  }
+}
