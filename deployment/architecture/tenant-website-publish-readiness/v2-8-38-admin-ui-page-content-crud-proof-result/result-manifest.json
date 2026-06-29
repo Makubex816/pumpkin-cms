@@ -1,0 +1,102 @@
+{
+  "phase": "v2-8-38",
+  "createdAt": "2026-06-29",
+  "status": "complete",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "controlled_page_crud_public_sitemap_proof_cleanup_succeeded",
+  "tenantId": "ice-rink-rentals",
+  "traceId": "v2-8-38-page-content-proof-20260629201535-1023d4",
+  "slug": "pumpkin-proof-v2-8-38-page-content-proof-20260629201535-1023d4",
+  "secureAuth": {
+    "hardCopyHashMatched": true,
+    "adminAuthValuesLoadedInMemoryOnly": true,
+    "tenantApiKeyLoadedInMemoryOnly": true,
+    "secretValuesPrinted": false,
+    "tmpSecureFileCreated": false
+  },
+  "preMutation": {
+    "loginStatus": 200,
+    "role": "TenantAdmin",
+    "tenantMatchesExpected": true,
+    "tenantsStatus": 200,
+    "tenantCount": 1,
+    "expectedTenantVisible": true,
+    "pagesStatus": 200,
+    "pageCountBefore": 0,
+    "proofSlugPreReadStatus": 404
+  },
+  "mutationCounts": {
+    "approvedCreateAttempts": 1,
+    "actualCreateAttempts": 1,
+    "createSucceeded": true,
+    "approvedUpdateAttempts": 1,
+    "actualUpdateAttempts": 1,
+    "updateSucceeded": true,
+    "approvedCleanupOrRevertAttempts": 1,
+    "actualCleanupAttempts": 1,
+    "cleanupSucceeded": true
+  },
+  "create": {
+    "status": 201,
+    "slugMatched": true,
+    "titleMatched": true,
+    "isPublished": true,
+    "includeInSitemap": false
+  },
+  "adminReadCreated": {
+    "status": 200,
+    "slugMatched": true,
+    "tenantMatched": true
+  },
+  "update": {
+    "status": 200,
+    "titleMatched": true,
+    "version": 2,
+    "isPublished": true,
+    "includeInSitemap": false
+  },
+  "adminReadUpdated": {
+    "status": 200,
+    "slugMatched": true,
+    "titleMatched": true,
+    "tenantMatched": true,
+    "version": 2
+  },
+  "hierarchy": {
+    "hubsStatus": 200,
+    "hubCount": 0,
+    "hierarchyStatus": 200,
+    "totalPagesDuringProof": 1,
+    "proofSlugPresentInHierarchyBody": true
+  },
+  "publicRead": {
+    "status": 200,
+    "slugMatched": true,
+    "titleMatched": true,
+    "isPublished": true,
+    "includeInSitemap": false
+  },
+  "sitemap": {
+    "status": 200,
+    "entryCount": 0,
+    "proofSlugPresent": false,
+    "expectedExcludedBecauseIncludeInSitemapFalse": true
+  },
+  "cleanup": {
+    "method": "DELETE",
+    "status": 204,
+    "finalAdminReadStatus": 404,
+    "finalPublicReadStatus": 404,
+    "pageCountAfterCleanup": 0
+  },
+  "guardrails": {
+    "deployOccurred": false,
+    "appsettingMutationOccurred": false,
+    "dnsMutationOccurred": false,
+    "indexingOccurred": false,
+    "contactPostOccurred": false,
+    "themeOrFormDefinitionWorkOccurred": false,
+    "tenantMutationOccurred": false,
+    "unrelatedContentMutationOccurred": false
+  }
+}
