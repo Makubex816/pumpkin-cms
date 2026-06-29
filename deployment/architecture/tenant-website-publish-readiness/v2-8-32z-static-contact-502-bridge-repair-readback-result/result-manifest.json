@@ -1,0 +1,41 @@
+{
+  "phase": "v2-8-32z-static-contact-502-bridge-repair-readback",
+  "dateUtc": "2026-06-28",
+  "status": "blocked_after_single_corrected_production_post_attempt",
+  "classification": "static_contact_delivery_failed_http_502_after_normalized_key_repair_no_retry",
+  "staticContactAppsettingMutated": [
+    "PUMPKIN_STATIC_CONTACT_PUMPKIN_API_KEY"
+  ],
+  "appsettingsListShowUsed": false,
+  "correctedProductionContactPostCount": 1,
+  "correctedProductionContactPostStatusCode": 502,
+  "returnedEntryId": null,
+  "traceId": "v2-8-32z-production-contact-admin-persistence-20260628203100-99e05c96",
+  "adminReadbackFound": false,
+  "secretValuesWritten": false,
+  "resultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-32y-carryforward.md",
+    "secure-file-readiness.md",
+    "static-contact-source-delivery-analysis.md",
+    "redacted-static-appsetting-contract-comparison.md",
+    "static-contact-appsetting-repair-result.md",
+    "upstream-auth-negative-probe-result.md",
+    "tenant-api-key-alignment-result-if-any.md",
+    "local-validator-and-test-result.md",
+    "live-admin-login-result.md",
+    "admin-formentry-authenticated-readback-preflight.md",
+    "static-contact-preflight-result.md",
+    "corrected-production-contact-post-execution-result.md",
+    "corrected-production-contact-response-verification.md",
+    "admin-formentry-readback-result.md",
+    "contact-gate-closeout-result.md",
+    "fallback-diagnosis-result.md",
+    "secret-handling-and-cleanup-instructions.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
