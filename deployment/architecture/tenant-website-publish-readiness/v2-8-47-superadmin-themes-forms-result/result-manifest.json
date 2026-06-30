@@ -1,0 +1,94 @@
+{
+  "phase": "V2.8.47",
+  "status": "closed_success_with_formdefinition_design_gap",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "spectre_dev_superadmin_themes_forms_contract_reactivation_lifecycle_proof",
+  "tenantId": "ice-rink-rentals",
+  "superAdmin": {
+    "displayName": "Spectre Dev",
+    "username": "spectre-dev",
+    "createdOrVerified": true,
+    "action": "created",
+    "role": "SuperAdmin",
+    "roleNumeric": 0,
+    "tenantPartition": "ice-rink-rentals",
+    "loginProof": "passed",
+    "verifyProof": "passed",
+    "allCurrentTenantReadProof": "passed",
+    "hardCopySha256": "9668D227B516BDB6811B1CFCA77F4017BB5F6117F742C38176B51706D8147256"
+  },
+  "containers": {
+    "themeContainer": {
+      "name": "Theme",
+      "partitionKey": "/tenantId",
+      "createdInThisPhase": true
+    },
+    "formDefinitionContainer": {
+      "createdInThisPhase": false,
+      "reason": "standalone FormDefinition API/service/storage path not source-supported"
+    }
+  },
+  "themeLifecycle": {
+    "status": "passed",
+    "traceId": "v2-8-47-proof-theme-20260630041842",
+    "beforeCount": 0,
+    "afterCount": 0,
+    "syntheticResidual": 0
+  },
+  "formDefinitionLifecycle": {
+    "status": "not_run",
+    "classification": "formdefinition_api_requires_design_phase"
+  },
+  "adminUi": {
+    "themesRouteGet": 200,
+    "formBuilderRouteGet": 200,
+    "deploymentOccurred": false
+  },
+  "runtimeNoRegression": {
+    "passed": true,
+    "contactSubmissionOccurred": false
+  },
+  "securityBoundary": {
+    "contactSubmissionOccurred": false,
+    "otherTenantContentMutationOccurred": false,
+    "appsettingMutationOccurred": false,
+    "dnsIndexingOccurred": false,
+    "storageCredentialOperationOccurred": false,
+    "pumpkinApiDeployOccurred": false,
+    "adminUiDeployOccurred": false,
+    "secretValuesWrittenToRepoReports": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-46b-carryforward.md",
+    "secure-file-readiness.md",
+    "superadmin-source-model-review.md",
+    "superadmin-create-or-repair-result.md",
+    "superadmin-login-proof.md",
+    "superadmin-all-tenant-access-proof.md",
+    "superadmin-hard-copy-result.md",
+    "endpoint-contract-reactivation.md",
+    "theme-source-readiness.md",
+    "formdefinition-source-readiness.md",
+    "container-alignment-result.md",
+    "api-fix-result-if-any.md",
+    "pumpkin-api-build-deploy-result-if-any.md",
+    "theme-lifecycle-proof-result-if-any.md",
+    "theme-cleanup-final-state.md",
+    "formdefinition-lifecycle-proof-result-if-any.md",
+    "public-formdefinition-read-result-if-any.md",
+    "synthetic-form-submission-result-if-any.md",
+    "formentry-readback-cleanup-result-if-any.md",
+    "formdefinition-cleanup-final-state.md",
+    "admin-ui-theme-readiness.md",
+    "admin-ui-form-builder-readiness.md",
+    "tenant-scope-proof.md",
+    "runtime-no-regression-proof.md",
+    "tenant-onboarding-impact-matrix.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
