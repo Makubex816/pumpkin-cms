@@ -1,0 +1,177 @@
+{
+  "phase": "V2.8.45",
+  "status": "blocked_after_approved_hardening",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "runtime_no_regression_static_contact_health_failed_after_monitoring_storage_hardening",
+  "tenantId": "ice-rink-rentals",
+  "subscription": {
+    "expectedId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "activeId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "activeName": "Azure subscription 1",
+    "operatorUser": "Contact@iceskatingrinkrentals.com",
+    "matched": true
+  },
+  "observabilityFoundation": {
+    "resourceGroup": "rg-pumpkin-observability-prod-centralus",
+    "region": "centralus",
+    "logAnalyticsWorkspace": "law-pumpkin-prod-centralus-001",
+    "workspaceSku": "PerGB2018",
+    "workspaceRetentionDays": 30,
+    "actionGroup": "ag-pumpkin-prod-ops-email-001",
+    "emailReceiverName": "OpsEmail"
+  },
+  "diagnosticSettingName": "diag-to-law-pumpkin-prod-001",
+  "diagnosticTargets": [
+    {
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "resource": "app-pumpkin-api-prod-centralus-001",
+      "type": "App Service",
+      "logs": "AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceAuditLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, AppServiceAuthenticationLogs",
+      "metrics": "AllMetrics",
+      "status": "created_or_updated"
+    },
+    {
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "resource": "app-pumpkin-admin-isolated-centralus-001",
+      "type": "App Service",
+      "logs": "AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceAuditLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, AppServiceAuthenticationLogs",
+      "metrics": "AllMetrics",
+      "status": "created_or_updated"
+    },
+    {
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "resource": "app-pumpkin-admin-prod-centralus-001",
+      "type": "App Service",
+      "logs": "AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceAuditLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, AppServiceAuthenticationLogs",
+      "metrics": "AllMetrics",
+      "status": "created_or_updated"
+    },
+    {
+      "resourceGroup": "rg-ice-production-cosmos",
+      "resource": "cosmos-pumpkin-prod-eastus",
+      "type": "Cosmos DB",
+      "logs": "DataPlaneRequests, DataPlaneRequests5M, DataPlaneRequests15M, MongoRequests, QueryRuntimeStatistics, PartitionKeyStatistics, PartitionKeyRUConsumption, ControlPlaneRequests, CassandraRequests, GremlinRequests, TableApiRequests",
+      "metrics": "SLI, Requests",
+      "status": "created_or_updated"
+    },
+    {
+      "resourceGroup": "rg-ice-production-media",
+      "resource": "iceskatingmedia",
+      "type": "Storage account",
+      "logs": "none",
+      "metrics": "Capacity, Transaction",
+      "status": "created_or_updated"
+    },
+    {
+      "resourceGroup": "rg-ice-production-media",
+      "resource": "iceskatingmedia/blobServices/default",
+      "type": "Blob service",
+      "logs": "StorageRead, StorageWrite, StorageDelete",
+      "metrics": "Capacity, Transaction",
+      "status": "created_or_updated"
+    },
+    {
+      "resourceGroup": "rg-ice-static-staging",
+      "resource": "swa-ice-static-staging",
+      "type": "Static Web App",
+      "logs": "StaticSiteHttpLogs, StaticSiteDiagnosticLogs",
+      "metrics": "AllMetrics",
+      "status": "created_or_updated"
+    },
+    {
+      "resourceGroup": "rg-ice-static-staging",
+      "resource": "swa-ice-static-isolated-staging",
+      "type": "Static Web App",
+      "logs": "StaticSiteHttpLogs, StaticSiteDiagnosticLogs",
+      "metrics": "AllMetrics",
+      "status": "created_or_updated"
+    }
+  ],
+  "storageProtection": {
+    "account": "iceskatingmedia",
+    "blobSoftDeleteEnabled": true,
+    "blobSoftDeleteDays": 30,
+    "containerSoftDeleteEnabled": true,
+    "containerSoftDeleteDays": 30,
+    "blobVersioningEnabled": true,
+    "changeFeedEnabled": true,
+    "pointInTimeRestoreEnabled": false
+  },
+  "backupPosture": {
+    "cosmosBackupMode": "Continuous",
+    "cosmosContinuousTier": "Continuous30Days",
+    "cosmosOldestRestorableTime": "2026-06-09T18:09:04+00:00",
+    "appServiceCustomBackupConfigured": false,
+    "appServiceSnapshotsVisible": true,
+    "staticWebAppDefaultEnvironmentsReady": true
+  },
+  "alerts": [
+    {
+      "name": "alert-pumpkin-api-prod-http5xx-001",
+      "target": "app-pumpkin-api-prod-centralus-001",
+      "condition": "total Http5xx > 5",
+      "severity": 2,
+      "enabled": true
+    },
+    {
+      "name": "alert-pumpkin-admin-prod-http5xx-001",
+      "target": "app-pumpkin-admin-prod-centralus-001",
+      "condition": "total Http5xx > 5",
+      "severity": 3,
+      "enabled": true
+    },
+    {
+      "name": "alert-pumpkin-admin-isolated-http5xx-001",
+      "target": "app-pumpkin-admin-isolated-centralus-001",
+      "condition": "total Http5xx > 10",
+      "severity": 4,
+      "enabled": true
+    },
+    {
+      "name": "alert-pumpkin-cosmos-normalized-ru-high-001",
+      "target": "cosmos-pumpkin-prod-eastus",
+      "condition": "max NormalizedRUConsumption > 90",
+      "severity": 3,
+      "enabled": true
+    },
+    {
+      "name": "alert-ice-media-storage-availability-low-001",
+      "target": "iceskatingmedia",
+      "condition": "avg Availability < 99",
+      "severity": 3,
+      "enabled": true
+    },
+    {
+      "name": "alert-ice-swa-prod-function-errors-001",
+      "target": "swa-ice-static-staging",
+      "condition": "total FunctionErrors > 5",
+      "severity": 3,
+      "enabled": true
+    }
+  ],
+  "runtimeNoRegression": {
+    "status": "failed_static_contact_health",
+    "publicPagesOk": true,
+    "pumpkinApiHealthOk": true,
+    "adminUiOk": true,
+    "staticContactHealthStatus": 500,
+    "contactPostSent": false
+  },
+  "securityBoundary": {
+    "appDeploy": false,
+    "swaDeploy": false,
+    "contactPost": false,
+    "contentWrite": false,
+    "tenantMutation": false,
+    "cosmosDocumentMutation": false,
+    "dnsIndexingMutation": false,
+    "protectedConfigRead": false,
+    "ownerHardCopyRead": false,
+    "keyVaultSecretRead": false,
+    "storageKeysListKeys": false,
+    "sasGeneration": false,
+    "connectionStringGeneration": false,
+    "tmpStaged": false,
+    "filesStaged": false
+  }
+}
