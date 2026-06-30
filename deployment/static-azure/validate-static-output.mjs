@@ -272,6 +272,22 @@ function isTrueEnv(...keys) {
   return keys.some((key) => process.env[key] === 'true');
 }
 
+function normalizeSlug(value) {
+  return String(value || '')
+    .trim()
+    .replace(/^\/+|\/+$/g, '')
+    .toLowerCase();
+}
+
+function getAllowedNoindexStaticPaths() {
+  const slugs = String(process.env.PUMPKIN_STATIC_EXTRA_ALLOWED_NOINDEX_SLUGS || process.env.STATIC_EXTRA_ALLOWED_NOINDEX_SLUGS || '')
+    .split(',')
+    .map(normalizeSlug)
+    .filter(Boolean);
+
+  return new Set(slugs.flatMap((slug) => [`${slug}/index.html`, `${slug}.html`]));
+}
+
 function getStaticFormGateState(site) {
   if (!site.requiresStaticFormEndpoint) {
     return {
@@ -366,6 +382,8 @@ function validateStaticFormProductionGate(site, externalApprovalGates) {
 }
 
 function validateNoindexProductionGate(outDir, files, errors) {
+  const allowedNoindexPaths = getAllowedNoindexStaticPaths();
+
   for (const filePath of files) {
     if (path.extname(filePath).toLowerCase() !== '.html') continue;
     if (getRelativePath(outDir, filePath).startsWith('_next/')) continue;
@@ -376,6 +394,9 @@ function validateNoindexProductionGate(outDir, files, errors) {
     const content = readText(filePath);
 
     if (/<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*\bnoindex\b/i.test(content)) {
+      if (allowedNoindexPaths.has(relativePath.toLowerCase())) {
+        continue;
+      }
       errors.push(`Noindex robots meta found in production static page: ${relativePath}`);
     }
   }

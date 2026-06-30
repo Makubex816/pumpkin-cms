@@ -1,0 +1,90 @@
+{
+  "phase": "V2.8.44",
+  "status": "succeeded",
+  "classification": "publishrun_static_site_integration_proved",
+  "tenantId": "ice-rink-rentals",
+  "traceId": "v2-8-44-publish-20260630003547-ef4cda80",
+  "proofSlug": "pumpkin-publish-proof-v2-8-44-static-site-proof-20260630003547-ef4cda80",
+  "publishRunId": "ice-rink-rentals-publishrun-v2-8-44-publish-20260630003547-ef4cda80",
+  "publishRunStatus": "ready_for_manual_upload",
+  "publishRunDeploymentStatus": "staged",
+  "deployCounts": {
+    "pumpkinApiDeploy": 0,
+    "isolatedProofPublishBuild": 1,
+    "isolatedProofDeploy": 1,
+    "isolatedCleanupPublishBuild": 1,
+    "isolatedCleanupDeploy": 1,
+    "productionCleanPublishBuild": 1,
+    "productionCleanDeploy": 1
+  },
+  "finalResidualState": {
+    "adminProofReadStatusCode": 404,
+    "adminProofAbsent": true,
+    "isolatedProofAbsent": true,
+    "productionProofAbsent": true
+  },
+  "productionRuntime": {
+    "checks": [
+      {
+        "host": "apex",
+        "route": "/",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "host": "apex",
+        "route": "/contact",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "host": "apex",
+        "route": "/service-areas",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "host": "apex",
+        "route": "/api/static-contact-health",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "host": "www",
+        "route": "/",
+        "status": 200,
+        "ok": true
+      }
+    ],
+    "proofStatusCode": 404,
+    "proofContainsTrace": false,
+    "proofAbsent": true,
+    "ok": true
+  },
+  "securityBoundary": {
+    "secureFileRead": true,
+    "protectedConfigReads": 0,
+    "appsettingsMutation": false,
+    "appsettingsListShow": false,
+    "directCosmosMutation": false,
+    "storageKeyRetrieval": false,
+    "sasGeneration": false,
+    "keyVaultSecretRead": false,
+    "contactPost": false,
+    "themeFormWork": false,
+    "mediaUpload": false,
+    "tenantMutation": false,
+    "dnsIndexingMutation": false,
+    "secretValuesPrinted": false,
+    "secretValuesWritten": false,
+    "tokenWritten": false,
+    "gitAddAll": false
+  },
+  "sourceFilesChangedInScope": [
+    "apps/ice-rink-web/scripts/snapshot-cms-content.mjs",
+    "apps/ice-rink-web/scripts/static-publish.mjs",
+    "apps/ice-rink-web/scripts/sanitized-static-build.mjs",
+    "deployment/static-azure/validate-static-output.mjs",
+    "deployment/static-azure/validate-staging-package.mjs"
+  ]
+}

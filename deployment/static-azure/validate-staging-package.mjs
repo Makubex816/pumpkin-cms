@@ -129,6 +129,22 @@ function isTrueEnv(...keys) {
   return keys.some((key) => process.env[key] === 'true');
 }
 
+function normalizeSlug(value) {
+  return String(value || '')
+    .trim()
+    .replace(/^\/+|\/+$/g, '')
+    .toLowerCase();
+}
+
+function getAllowedNoindexStaticPaths() {
+  const slugs = String(process.env.PUMPKIN_STATIC_EXTRA_ALLOWED_NOINDEX_SLUGS || process.env.STATIC_EXTRA_ALLOWED_NOINDEX_SLUGS || '')
+    .split(',')
+    .map(normalizeSlug)
+    .filter(Boolean);
+
+  return new Set(slugs.flatMap((slug) => [`${slug}/index.html`, `${slug}.html`]));
+}
+
 function getStaticFormGateState(site) {
   if (!site.requiresStaticFormEndpoint) {
     return {
@@ -266,6 +282,7 @@ function validatePackage({ siteKey, folder }) {
   }
 
   const files = walkFiles(resolvedFolder);
+  const allowedNoindexPaths = getAllowedNoindexStaticPaths();
   if (files.length === 0) {
     errors.push('Staging package folder contains no files.');
   }
@@ -382,7 +399,8 @@ function validatePackage({ siteKey, folder }) {
       if (
         rel !== '404.html' &&
         rel !== '404/index.html' &&
-        /<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*\bnoindex\b/i.test(content)
+        /<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*\bnoindex\b/i.test(content) &&
+        !allowedNoindexPaths.has(rel.toLowerCase())
       ) {
         errors.push(`Noindex robots meta found in production static page: ${rel}`);
       }

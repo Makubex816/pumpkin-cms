@@ -53,7 +53,7 @@ function parseArgs(argv) {
       options.keep = false;
     } else if (value === '--help') {
       console.log([
-        'Usage: node scripts/sanitized-static-build.mjs [--site ice-rink-rentals] [--source seed-sites] [--out .tmp/sanitized-static-build]',
+        'Usage: node scripts/sanitized-static-build.mjs [--site ice-rink-rentals] [--source seed-sites|cms-snapshot] [--out .tmp/sanitized-static-build]',
         '',
         'Runs the Ice static validation/build/generate flow from an allowlisted temporary workspace that excludes dotenv and protected config files by path/name.',
       ].join('\n'));
@@ -175,6 +175,30 @@ function copyAllowlistedSource(tmpRepoRoot, siteKey) {
   return stats;
 }
 
+function copyCmsSnapshot(tmpRepoRoot, siteKey, stats) {
+  copySafeEntry(
+    path.join(sourceAppRoot, '.static-content-snapshots', siteKey),
+    path.join(tmpRepoRoot, 'apps', 'ice-rink-web', '.static-content-snapshots', siteKey),
+    stats,
+  );
+}
+
+function linkWorkspacePackageDependencies(tmpRepoRoot) {
+  const blockViewsNodeModules = path.join(tmpRepoRoot, 'packages', 'pumpkin-block-views', 'node_modules');
+
+  linkDirectory(
+    path.join(tmpRepoRoot, 'packages', 'pumpkin-ts-models'),
+    path.join(blockViewsNodeModules, 'pumpkin-ts-models'),
+  );
+
+  for (const packageName of ['lucide-react', 'react', 'react-dom']) {
+    linkDirectory(
+      path.join(sourceAppRoot, 'node_modules', packageName),
+      path.join(blockViewsNodeModules, packageName),
+    );
+  }
+}
+
 function linkDirectory(targetPath, linkPath) {
   if (!existsSync(targetPath)) return false;
   if (existsSync(linkPath)) return true;
@@ -207,6 +231,7 @@ function createSanitizedEnv(options) {
   const allowedBuildKeys = [
     'NEXT_PUBLIC_STATIC_FORM_ACTION',
     'NEXT_PUBLIC_STATIC_FORM_ENDPOINT',
+    'PUMPKIN_STATIC_EXTRA_ALLOWED_SLUGS',
     'STATIC_FORM_ACTION',
     'STATIC_FORM_BACKEND_VERIFIED',
     'STATIC_FORM_ENDPOINT',
@@ -214,6 +239,7 @@ function createSanitizedEnv(options) {
     'STATIC_FORM_ENDPOINT_VERIFIED',
     'STATIC_FORM_LIVE_CHECK_APPROVED',
     'STATIC_FORM_OWNER_APPROVED',
+    'STATIC_EXTRA_ALLOWED_SLUGS',
   ];
 
   for (const key of passThroughKeys) {
@@ -303,8 +329,8 @@ function main() {
   if (!supportedSiteKeys.has(options.siteKey)) {
     throw new Error(`Unsupported sanitized static build site: ${options.siteKey}`);
   }
-  if (options.contentSource !== 'seed-sites') {
-    throw new Error('The sanitized static build wrapper currently supports seed-sites only.');
+  if (options.contentSource !== 'seed-sites' && options.contentSource !== 'cms-snapshot') {
+    throw new Error('The sanitized static build wrapper supports seed-sites and cms-snapshot only.');
   }
 
   const runId = `sanitized_${new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14)}`;
@@ -317,6 +343,10 @@ function main() {
   ensureDir(logDir);
 
   const copyStats = copyAllowlistedSource(tmpRepoRoot, options.siteKey);
+  if (options.contentSource === 'cms-snapshot') {
+    copyCmsSnapshot(tmpRepoRoot, options.siteKey, copyStats);
+  }
+  linkWorkspacePackageDependencies(tmpRepoRoot);
   const appNodeModulesLinked = linkDirectory(
     path.join(sourceAppRoot, 'node_modules'),
     path.join(tmpAppRoot, 'node_modules'),

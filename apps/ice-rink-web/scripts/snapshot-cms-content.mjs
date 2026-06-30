@@ -217,7 +217,64 @@ function getAdminToken() {
 }
 
 function getApprovedSnapshotSlugs(site) {
-  return site.siteKey === 'ice-rink-rentals' ? new Set(site.expectedSlugs || []) : null;
+  if (site.siteKey !== 'ice-rink-rentals') {
+    return null;
+  }
+
+  return new Set([
+    ...(site.expectedSlugs || []),
+    ...getExtraSnapshotSlugs(),
+  ]);
+}
+
+function readJsonIfExists(filePath) {
+  if (!existsSync(filePath)) {
+    return null;
+  }
+
+  return JSON.parse(readFileSync(filePath, 'utf8'));
+}
+
+function loadSeedPage(site, slug) {
+  return readJsonIfExists(path.join(repoRoot, 'tools', 'ice-rink-local-seed', 'seed-sites', site.siteKey, 'pages', `${slug}.json`));
+}
+
+function loadSeedTheme(site) {
+  return readJsonIfExists(path.join(repoRoot, 'tools', 'ice-rink-local-seed', 'seed-sites', site.siteKey, 'theme.json'));
+}
+
+function backfillMissingExpectedPages(site, pages, warnings) {
+  if (site.siteKey !== 'ice-rink-rentals') {
+    return pages;
+  }
+
+  const output = [...pages];
+  const slugs = new Set(output.map(getPageSlug).filter(Boolean));
+
+  for (const slug of site.expectedSlugs || []) {
+    if (slugs.has(slug)) {
+      continue;
+    }
+
+    const seedPage = loadSeedPage(site, slug);
+    if (!seedPage) {
+      warnings.push(`Seed fallback page is missing for approved Ice slug: ${slug}.`);
+      continue;
+    }
+
+    output.push(seedPage);
+    slugs.add(slug);
+    warnings.push(`Backfilled missing approved Ice launch page from seed snapshot: ${slug}.`);
+  }
+
+  return output;
+}
+
+function getExtraSnapshotSlugs() {
+  return String(process.env.PUMPKIN_STATIC_EXTRA_SNAPSHOT_SLUGS || process.env.STATIC_EXTRA_SNAPSHOT_SLUGS || '')
+    .split(',')
+    .map(normalizeSlug)
+    .filter(Boolean);
 }
 
 function applySnapshotRouteScope(site, pages, warnings) {
@@ -791,7 +848,7 @@ function writeSnapshot(site, pages, theme, warnings, includeUnpublished, scope =
     includeUnpublished,
     discoveredPageCount: Number.isFinite(scope.discoveredPageCount) ? scope.discoveredPageCount : sortedPages.length,
     excludedPageSlugs: Array.isArray(scope.excludedSlugs) ? scope.excludedSlugs : [],
-    approvedSnapshotSlugs: site.siteKey === 'ice-rink-rentals' ? [...site.expectedSlugs] : undefined,
+    approvedSnapshotSlugs: site.siteKey === 'ice-rink-rentals' ? [...(getApprovedSnapshotSlugs(site) ?? [])] : undefined,
     pageCount: sortedPages.length,
     publishedCount: sortedPages.filter((page) => page?.isPublished === true).length,
     unpublishedCount: sortedPages.filter((page) => page?.isPublished !== true).length,
@@ -1007,10 +1064,11 @@ function validateSnapshot(site, { allowUnpublished = false } = {}) {
 }
 
 async function runSnapshot() {
-  const site = getSiteContext({ requireApiKey: true });
+  const site = getSiteContext({ requireApiKey: !getAdminToken() });
   const includeUnpublished = args['include-unpublished'] === true;
   const warnings = [];
-  const discoveredPages = await fetchPagesForSnapshot(site, includeUnpublished, warnings);
+  const fetchedPages = await fetchPagesForSnapshot(site, includeUnpublished, warnings);
+  const discoveredPages = backfillMissingExpectedPages(site, fetchedPages, warnings);
   const routeScope = applySnapshotRouteScope(site, discoveredPages, warnings);
   const pages = routeScope.pages;
   const themeResult = await fetchTheme(site);
@@ -1019,7 +1077,12 @@ async function runSnapshot() {
     warnings.push(themeResult.warning);
   }
 
-  const manifest = writeSnapshot(site, pages, themeResult.data, warnings, includeUnpublished, {
+  const theme = themeResult.data || loadSeedTheme(site);
+  if (!themeResult.data && theme) {
+    warnings.push('Backfilled missing Ice theme snapshot from seed snapshot.');
+  }
+
+  const manifest = writeSnapshot(site, pages, theme, warnings, includeUnpublished, {
     discoveredPageCount: discoveredPages.length,
     excludedSlugs: routeScope.excludedSlugs,
   });

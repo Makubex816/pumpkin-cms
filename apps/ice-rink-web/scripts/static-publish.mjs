@@ -211,6 +211,13 @@ function isApprovedStaticFormEndpoint(endpoint) {
   return value === '/api/static-contact';
 }
 
+function getExtraAllowedSlugs() {
+  return String(process.env.PUMPKIN_STATIC_EXTRA_ALLOWED_SLUGS || process.env.STATIC_EXTRA_ALLOWED_SLUGS || '')
+    .split(',')
+    .map(normalizeSlug)
+    .filter(Boolean);
+}
+
 function collectStrings(value, pathLabel = 'page', output = []) {
   if (typeof value === 'string') {
     output.push({ path: pathLabel, value });
@@ -707,7 +714,10 @@ function validatePageShape(site, pages) {
   }
 
   if (siteKey === 'ice-rink-rentals') {
-    const approvedSlugs = new Set(site.expectedSlugs);
+    const approvedSlugs = new Set([
+      ...site.expectedSlugs,
+      ...getExtraAllowedSlugs(),
+    ]);
     for (const slug of slugs) {
       if (!approvedSlugs.has(slug)) {
         errors.push(`Non-approved Ice static slug is present in static content: ${slug}.`);
