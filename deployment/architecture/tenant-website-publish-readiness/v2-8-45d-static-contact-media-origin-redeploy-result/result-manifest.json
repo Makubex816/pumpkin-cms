@@ -1,0 +1,66 @@
+{
+  "phase": "V2.8.45D",
+  "status": "closed_success",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "static_contact_managed_api_redeployed_after_media_origin_validator_alignment",
+  "tenantId": "ice-rink-rentals",
+  "productionStaticWebApp": {
+    "name": "swa-ice-static-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHost": "https://happy-mud-0b375e20f.7.azurestaticapps.net",
+    "deployed": true,
+    "deploymentAttemptsUsed": 1
+  },
+  "isolatedStaticWebApp": {
+    "name": "swa-ice-static-isolated-staging",
+    "resourceGroup": "rg-ice-static-staging",
+    "defaultHost": "https://kind-island-0a85a740f.7.azurestaticapps.net",
+    "deployed": true,
+    "deploymentAttemptsUsed": 1
+  },
+  "runtimeProof": {
+    "productionApexStaticContactHealth": 200,
+    "productionWwwStaticContactHealth": 200,
+    "productionDefaultStaticContactHealth": 200,
+    "isolatedStaticContactHealth": 200,
+    "publicPages": 200,
+    "pumpkinApiHealth": 200,
+    "adminUiProduction": 200
+  },
+  "securityBoundary": {
+    "contactPost": false,
+    "contentWrite": false,
+    "dnsOrIndexingMutation": false,
+    "pumpkinApiDeploy": false,
+    "adminUiDeploy": false,
+    "appsettingMutation": false,
+    "diagnosticRollback": false,
+    "storageRollback": false,
+    "keyVaultRead": false,
+    "storageKeysOrListKeys": false,
+    "sasGeneration": false,
+    "connectionStringGeneration": false,
+    "secretValuesWritten": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-45c-carryforward.md",
+    "secure-file-readiness.md",
+    "deployment-token-lifecycle-result.md",
+    "media-origin-validator-alignment-result.md",
+    "static-contact-package-readiness.md",
+    "static-contact-compat-test-result.md",
+    "managed-api-route-inclusion-result.md",
+    "isolated-deployment-result.md",
+    "isolated-health-runtime-result.md",
+    "production-deployment-result.md",
+    "production-health-runtime-result.md",
+    "runtime-no-regression-proof.md",
+    "hardening-preservation-result.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}

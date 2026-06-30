@@ -130,6 +130,24 @@ function isApprovedStaticFormEndpointShape(endpoint, site) {
     site.sameOriginStaticFormEndpoints.includes(endpoint);
 }
 
+function parseOriginList(value) {
+  return String(value || '')
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/+$/, ''))
+    .filter(Boolean);
+}
+
+function getAllowedMediaOrigins(site) {
+  return [
+    site.mediaOrigin,
+    ...parseOriginList(process.env.PUMPKIN_STATIC_APPROVED_MEDIA_ORIGINS || process.env.STATIC_APPROVED_MEDIA_ORIGINS),
+  ].filter(Boolean);
+}
+
+function isAllowedMediaUrl(url, allowedOrigins) {
+  return allowedOrigins.some((origin) => url.startsWith(`${origin}/`));
+}
+
 function validateRequiredArtifacts(outDir, site, errors, warnings) {
   const requiredFiles = ['index.html', 'sitemap.xml', 'robots.txt'];
   if (site.requiresStaticFormEndpoint) {
@@ -218,6 +236,7 @@ function validateStaticPublishManifest(outDir, site, errors, warnings) {
 
 function validateProductionMediaUrls(outDir, files, site, errors) {
   if (!site.mediaOrigin) return;
+  const allowedMediaOrigins = getAllowedMediaOrigins(site);
 
   for (const filePath of files) {
     if (!isTextFile(filePath)) continue;
@@ -240,7 +259,7 @@ function validateProductionMediaUrls(outDir, files, site, errors) {
     const imageUrls = [...content.matchAll(/https?:\/\/[^"'\s)]+?\.(?:png|jpe?g|webp|gif|svg)(?:[?#][^"'\s)]*)?/gi)]
       .map((match) => match[0]);
     for (const url of imageUrls) {
-      if (!url.startsWith(`${site.mediaOrigin}/`)) {
+      if (!isAllowedMediaUrl(url, allowedMediaOrigins)) {
         errors.push(`Unapproved image URL found in static output: ${relativePath} -> ${url}`);
       }
     }

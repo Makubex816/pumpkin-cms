@@ -104,6 +104,24 @@ function isApprovedStaticFormEndpointShape(endpoint, site) {
     site.sameOriginStaticFormEndpoints.includes(endpoint);
 }
 
+function parseOriginList(value) {
+  return String(value || '')
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/+$/, ''))
+    .filter(Boolean);
+}
+
+function getAllowedMediaOrigins(site) {
+  return [
+    site.mediaOrigin,
+    ...parseOriginList(process.env.PUMPKIN_STATIC_APPROVED_MEDIA_ORIGINS || process.env.STATIC_APPROVED_MEDIA_ORIGINS),
+  ].filter(Boolean);
+}
+
+function isAllowedMediaUrl(url, allowedOrigins) {
+  return allowedOrigins.some((origin) => url.startsWith(`${origin}/`));
+}
+
 function addExternalApprovalGate(externalApprovalGates, id, message, requiredEvidence) {
   externalApprovalGates.push({
     id,
@@ -364,6 +382,7 @@ function validatePackage({ siteKey, folder }) {
     }
 
     if (site.mediaOrigin) {
+      const allowedMediaOrigins = getAllowedMediaOrigins(site);
       if (/["'(]\s*\/media\/ice-rink-rentals\//i.test(content) || /src=["']\/media\/ice-rink-rentals\//i.test(content)) {
         errors.push(`Local-dev media URL found in staging package: ${rel}`);
       }
@@ -379,7 +398,7 @@ function validatePackage({ siteKey, folder }) {
       const imageUrls = [...content.matchAll(/https?:\/\/[^"'\s)]+?\.(?:png|jpe?g|webp|gif|svg)(?:[?#][^"'\s)]*)?/gi)]
         .map((match) => match[0]);
       for (const url of imageUrls) {
-        if (!url.startsWith(`${site.mediaOrigin}/`)) {
+        if (!isAllowedMediaUrl(url, allowedMediaOrigins)) {
           errors.push(`Unapproved image URL found in staging package: ${rel} -> ${url}`);
         }
       }
