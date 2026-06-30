@@ -1,0 +1,68 @@
+{
+  "phase": "V2.8.43A",
+  "status": "succeeded",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "page_import_409_repaired_importrun_closeout",
+  "tenantId": "ice-rink-rentals",
+  "traceId": "v2-8-43a-page-20260629235514-2bc2a7f1",
+  "sourceSlug": "pumpkin-proof-v2-8-43a-page-20260629235514-2bc2a7f1-source",
+  "importedSlug": "pumpkin-proof-v2-8-43a-page-20260629235514-2bc2a7f1-imported",
+  "authLifecycle": {
+    "secureFileGatePassed": true,
+    "adminLoginStatusCode": 200,
+    "tokenFound": true,
+    "tokenPrinted": false,
+    "tokenWritten": false,
+    "tokenRefreshAttempted": false
+  },
+  "apiFix": {
+    "required": true,
+    "implemented": true,
+    "scope": "page-only import conflict repair and ImportRun audit id preparation",
+    "deployCount": 1,
+    "deploymentId": "f333055c-3bb0-4419-8fa9-40fd5a632608",
+    "deploymentStatus": "RuntimeSuccessful"
+  },
+  "postDeploy": {
+    "healthStatusCode": 200,
+    "apiHealthStatusCode": 200,
+    "providerConfigured": false,
+    "loginStatusCode": 200
+  },
+  "proof": {
+    "previousResidualAbsent": true,
+    "sourcePreflightAbsent": true,
+    "targetPreflightAbsent": true,
+    "sourcePageCreateStatusCode": 201,
+    "exportStatusCode": 200,
+    "exportPackageSecretHitCount": 0,
+    "importStatusCode": 200,
+    "importAction": "created",
+    "importedPageReadbackStatusCode": 200,
+    "importRunReadbackStatusCode": 200,
+    "importRunStatus": "completed",
+    "sourceCleanupStatusCode": 200,
+    "importedCleanupStatusCode": 200,
+    "sourceFinalReadStatusCode": 404,
+    "importedFinalReadStatusCode": 404
+  },
+  "adminUi": {
+    "isolated": "admin_ui_media_import_export_ready_readonly",
+    "production": "admin_ui_media_import_export_ready_readonly",
+    "writeRequestsOutsideLogin": 0,
+    "localhostApiRequests": 0
+  },
+  "securityBoundary": {
+    "contactPost": false,
+    "themeFormWork": false,
+    "mediaBlobUpload": false,
+    "directCosmosMutation": false,
+    "storageKeyRetrieval": false,
+    "sasGeneration": false,
+    "appsettingMutation": false,
+    "dnsIndexingMutation": false,
+    "secretsWritten": false,
+    "tokensWritten": false,
+    "stagedFiles": false
+  }
+}

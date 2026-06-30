@@ -24,7 +24,15 @@ public static class PageImportExportSourceTestRunner
             "Import should reject multi-page packages in this phase");
         Assert(programSource.Contains("Imported page tenant ID must match the route tenant ID.", StringComparison.Ordinal),
             "Import should reject cross-tenant page bodies");
-        Assert(programSource.Contains("SaveImportRunAsync(tenantId, importRun)", StringComparison.Ordinal),
+        Assert(programSource.Contains("var sourcePageId = page.PageId;", StringComparison.Ordinal),
+            "Import should preserve the exported source page ID before target mutation");
+        Assert(programSource.Contains("var requestedSlug = string.IsNullOrWhiteSpace(importRequest.TargetSlug) ? page.PageSlug : importRequest.TargetSlug;", StringComparison.Ordinal),
+            "Import should support a source-confirmed target slug for corrected proof imports");
+        Assert(programSource.Contains("page.PageId = $\"page-import-{Guid.NewGuid():N}\";", StringComparison.Ordinal),
+            "Import create path should generate a fresh page document ID instead of reusing the exported ID");
+        Assert(programSource.Contains("ImportRunSanitizer.PrepareForSave(importRun, tenantId, changedBy)", StringComparison.Ordinal),
+            "Import should sanitize and assign a stable ImportRun document ID before saving audit metadata");
+        Assert(programSource.Contains("SaveImportRunAsync(tenantId, preparedImportRun)", StringComparison.Ordinal),
             "Import should save a tenant-scoped ImportRun audit record");
         Assert(programSource.Contains("No themes, forms, media binaries", StringComparison.Ordinal),
             "Import/export route descriptions should document out-of-scope resources");
@@ -59,6 +67,8 @@ public static class PageImportExportSourceTestRunner
             "Cosmos admin page cleanup should resolve through tenant-scoped slug read");
         Assert(cosmosSource.Contains("DeleteItemAsync<Page>(existingPage.PageId, new PartitionKey(tenantId))", StringComparison.Ordinal),
             "Cosmos admin page cleanup should delete by page id and tenant partition key");
+        Assert(programSource.Contains("public string TargetSlug { get; set; } = string.Empty;", StringComparison.Ordinal),
+            "PageImportRequest should expose targetSlug for one-page corrected import proofs");
 
         Console.WriteLine("V2.8.43 page import/export source tests passed");
     }

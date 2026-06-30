@@ -1113,7 +1113,9 @@ app.MapPost("/api/admin/pages/{tenantId}/import",
         if (string.IsNullOrWhiteSpace(page.PageSlug))
             return Results.BadRequest("Imported page slug is required.");
 
-        var normalizedSlug = PageRedirectGuard.NormalizeSlug(page.PageSlug);
+        var sourcePageId = page.PageId;
+        var requestedSlug = string.IsNullOrWhiteSpace(importRequest.TargetSlug) ? page.PageSlug : importRequest.TargetSlug;
+        var normalizedSlug = PageRedirectGuard.NormalizeSlug(requestedSlug);
         if (string.IsNullOrWhiteSpace(normalizedSlug))
             return Results.BadRequest("Imported page slug must contain valid slug characters.");
 
@@ -1128,7 +1130,7 @@ app.MapPost("/api/admin/pages/{tenantId}/import",
             ? "page-only-export.json"
             : importRequest.FileName;
         page.ImportProvenance.ExternalId = string.IsNullOrWhiteSpace(page.ImportProvenance.ExternalId)
-            ? page.PageId
+            ? sourcePageId
             : page.ImportProvenance.ExternalId;
         page.ImportProvenance.OverwriteBehavior = importMode == "create-only" ? "create-only" : "upsert";
 
@@ -1138,6 +1140,10 @@ app.MapPost("/api/admin/pages/{tenantId}/import",
 
         try
         {
+            var changedBy = context.User.FindFirst(ClaimTypes.Email)?.Value
+                ?? context.User.FindFirst(ClaimTypes.Name)?.Value
+                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? "Pumpkin CMS Admin";
             var existingPage = await databaseService.GetPageBySlugAsync(tenantId, normalizedSlug);
             string action;
             Page savedPage;
@@ -1147,6 +1153,8 @@ app.MapPost("/api/admin/pages/{tenantId}/import",
                 if (importMode == "update-only")
                     return Results.NotFound("Imported page target was not found for update-only mode.");
 
+                page.PageId = $"page-import-{Guid.NewGuid():N}";
+                page.Id = page.PageId;
                 savedPage = await databaseService.SavePageAdminAsync(tenantId, page);
                 action = "created";
             }
@@ -1157,10 +1165,6 @@ app.MapPost("/api/admin/pages/{tenantId}/import",
 
                 page.PageId = existingPage.PageId;
                 page.Id = existingPage.PageId;
-                var changedBy = context.User.FindFirst(ClaimTypes.Email)?.Value
-                    ?? context.User.FindFirst(ClaimTypes.Name)?.Value
-                    ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                    ?? "Pumpkin CMS Admin";
                 var changeContext = new PageChangeContext
                 {
                     ChangeSource = "json_import",
@@ -1242,7 +1246,8 @@ app.MapPost("/api/admin/pages/{tenantId}/import",
                 DeploymentTriggered = false
             };
 
-            var savedImportRun = await databaseService.SaveImportRunAsync(tenantId, importRun);
+            var preparedImportRun = ImportRunSanitizer.PrepareForSave(importRun, tenantId, changedBy);
+            var savedImportRun = await databaseService.SaveImportRunAsync(tenantId, preparedImportRun);
             return Results.Ok(new
             {
                 tenantId,
@@ -2552,5 +2557,6 @@ public sealed class PageImportRequest
     public string SourcePackageId { get; set; } = string.Empty;
     public string SourcePackageName { get; set; } = string.Empty;
     public string FileName { get; set; } = string.Empty;
+    public string TargetSlug { get; set; } = string.Empty;
     public List<pumpkin_net_models.Models.Page> Pages { get; set; } = new();
 }
