@@ -1,0 +1,52 @@
+{
+  "phase": "V2.8.46",
+  "status": "closed_success",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "resource_cleanup_dependency_proof_safe_decommission_no_runtime_mutation",
+  "tenantId": "ice-rink-rentals",
+  "subscription": {
+    "name": "Azure subscription 1",
+    "id": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "operatorUser": "Contact@iceskatingrinkrentals.com"
+  },
+  "deletedResourceGroups": [
+    {
+      "name": "rg-pumpkin-api-prod-eastus",
+      "preCleanupResourceCount": 0,
+      "preCleanupLockCount": 0,
+      "postCleanupExists": false
+    },
+    {
+      "name": "rg-pumpkin-api-prod-eastus2",
+      "preCleanupResourceCount": 0,
+      "preCleanupLockCount": 0,
+      "postCleanupExists": false
+    }
+  ],
+  "deferredResourceGroups": [
+    {
+      "name": "rg-ice-static-form-endpoint",
+      "resourceCount": 3,
+      "reason": "non_empty_legacy_static_form_endpoint_stack"
+    }
+  ],
+  "runtimeNoRegression": {
+    "allGetChecksHttp200": true,
+    "contactPostSent": false,
+    "contentWrite": false
+  },
+  "registryFile": "deployment/architecture/pumpkin-platform/PUMPKIN_LIVE_RESOURCE_REGISTRY_V2_8_46.md",
+  "securityBoundary": {
+    "deploy": false,
+    "contactPost": false,
+    "contentWrite": false,
+    "appsettingMutation": false,
+    "dnsOrIndexingMutation": false,
+    "liveResourceDeletion": false,
+    "keyVaultSecretQuery": false,
+    "keysOrListKeys": false,
+    "sasGeneration": false,
+    "connectionStringGeneration": false,
+    "protectedConfigRead": false
+  }
+}
