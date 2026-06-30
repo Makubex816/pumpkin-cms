@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
+import { Edit3, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
 import { getDefaultFormDefinitions } from 'pumpkin-ts-models'
-import type { IHtmlBlock, Page, PageChangeSource, PageFormConfig } from 'pumpkin-ts-models'
+import type { FormDefinition, IHtmlBlock, Page, PageChangeSource, PageFormConfig } from 'pumpkin-ts-models'
 
 const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
   'ice-rink-rentals': 'http://localhost:3002',
@@ -13,10 +14,14 @@ const LOCAL_PREVIEW_HOSTS: Record<string, string> = {
 }
 
 const FIELD_TYPES = ['text', 'email', 'tel', 'phone', 'date', 'number', 'textarea', 'select', 'checkbox', 'hidden'] as const
+const FORM_DEFINITION_FIELD_TYPES = ['text', 'email', 'tel', 'textarea', 'select', 'checkbox', 'hidden', 'dateText', 'number'] as const
+const FORM_DEFINITION_STATUSES = ['draft', 'active', 'archived'] as const
+const FORM_DEFINITION_TYPES = ['contact', 'quote-request', 'newsletter', 'custom'] as const
 const NORMALIZED_FIELDS = ['name', 'email', 'phone', 'eventDate', 'eventLocation', 'eventType', 'estimatedAttendance', 'message'] as const
 
 type FieldType = (typeof FIELD_TYPES)[number]
 type NormalizedLeadField = (typeof NORMALIZED_FIELDS)[number]
+type FormDefinitionFieldType = (typeof FORM_DEFINITION_FIELD_TYPES)[number]
 
 interface EditableContent {
   [key: string]: unknown
@@ -80,7 +85,35 @@ export default function FormBuilderPage() {
   const [showAdvancedKeys, setShowAdvancedKeys] = useState(false)
   const [saving, setSaving] = useState(false)
   const [editFeedback, setEditFeedback] = useState('')
+  const [formDefinitions, setFormDefinitions] = useState<FormDefinition[]>([])
+  const [loadingFormDefinitions, setLoadingFormDefinitions] = useState(false)
+  const [definitionError, setDefinitionError] = useState<string | null>(null)
+  const [definitionMode, setDefinitionMode] = useState<'create' | 'edit' | null>(null)
+  const [definitionOriginalId, setDefinitionOriginalId] = useState('')
+  const [definitionDraft, setDefinitionDraft] = useState<FormDefinition | null>(null)
+  const [definitionSaving, setDefinitionSaving] = useState(false)
+  const [definitionDeletingId, setDefinitionDeletingId] = useState('')
   const editorRef = useRef<HTMLElement | null>(null)
+
+  async function loadFormDefinitions() {
+    if (!token || !currentTenant) {
+      setFormDefinitions([])
+      setLoadingFormDefinitions(false)
+      return
+    }
+
+    try {
+      setLoadingFormDefinitions(true)
+      setDefinitionError(null)
+      const definitions = await apiClient.getFormDefinitions(token, currentTenant.tenantId)
+      setFormDefinitions(definitions)
+    } catch (err) {
+      console.error('[Form Builder] Failed to load FormDefinitions:', err)
+      setDefinitionError(getErrorMessage(err, 'Failed to load standalone form definitions.'))
+    } finally {
+      setLoadingFormDefinitions(false)
+    }
+  }
 
   useEffect(() => {
     let isCurrent = true
@@ -116,6 +149,11 @@ export default function FormBuilderPage() {
     return () => {
       isCurrent = false
     }
+  }, [token, currentTenant])
+
+  useEffect(() => {
+    loadFormDefinitions()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, currentTenant])
 
   const forms = useMemo(() => buildFormDescriptors(pages), [pages])
@@ -262,6 +300,101 @@ export default function FormBuilderPage() {
     })
   }
 
+  function startCreateDefinition() {
+    if (!currentTenant) return
+
+    setDefinitionMode('create')
+    setDefinitionOriginalId('')
+    setDefinitionDraft(createEmptyFormDefinition(currentTenant.tenantId))
+    setDefinitionError(null)
+  }
+
+  function startEditDefinition(definition: FormDefinition) {
+    setDefinitionMode('edit')
+    setDefinitionOriginalId(definition.id)
+    setDefinitionDraft(cloneFormDefinition(definition))
+    setDefinitionError(null)
+  }
+
+  function cancelDefinitionEdit() {
+    setDefinitionMode(null)
+    setDefinitionOriginalId('')
+    setDefinitionDraft(null)
+    setDefinitionError(null)
+  }
+
+  function updateDefinitionDraft(patch: Partial<FormDefinition>) {
+    setDefinitionDraft((current) => current ? { ...current, ...patch } : current)
+  }
+
+  function updateDefinitionPrimaryField(patch: Partial<FormDefinition['fields'][number]>) {
+    setDefinitionDraft((current) => {
+      if (!current) return current
+      const fields = current.fields.length > 0
+        ? [...current.fields]
+        : [createDefaultDefinitionField()]
+      fields[0] = {
+        ...fields[0],
+        ...patch,
+      }
+      return { ...current, fields }
+    })
+  }
+
+  async function saveFormDefinition() {
+    if (!token || !currentTenant || !definitionDraft || definitionSaving) return
+
+    const validationError = validateDefinitionDraft(definitionDraft)
+    if (validationError) {
+      setDefinitionError(validationError)
+      return
+    }
+
+    const payload = prepareFormDefinitionForSave(definitionDraft, currentTenant.tenantId)
+
+    try {
+      setDefinitionSaving(true)
+      setDefinitionError(null)
+      setSuccess(null)
+
+      const saved = definitionMode === 'edit'
+        ? await apiClient.updateFormDefinition(token, currentTenant.tenantId, definitionOriginalId || payload.id, payload)
+        : await apiClient.createFormDefinition(token, currentTenant.tenantId, payload)
+
+      await loadFormDefinitions()
+      setDefinitionMode('edit')
+      setDefinitionOriginalId(saved.id)
+      setDefinitionDraft(cloneFormDefinition(saved))
+      setSuccess(definitionMode === 'edit' ? 'Form definition saved.' : 'Form definition created.')
+    } catch (err) {
+      console.error('[Form Builder] Failed to save FormDefinition:', err)
+      setDefinitionError(getErrorMessage(err, 'Failed to save form definition.'))
+    } finally {
+      setDefinitionSaving(false)
+    }
+  }
+
+  async function deleteFormDefinition(definition: FormDefinition) {
+    if (!token || !currentTenant || definitionDeletingId) return
+    if (!window.confirm(`Delete ${definition.name || definition.formKey}?`)) return
+
+    try {
+      setDefinitionDeletingId(definition.id)
+      setDefinitionError(null)
+      await apiClient.deleteFormDefinition(token, currentTenant.tenantId, definition.id)
+      await loadFormDefinitions()
+      if (definitionOriginalId === definition.id) {
+        cancelDefinitionEdit()
+      }
+      setSuccess('Form definition deleted.')
+    } catch (err) {
+      console.error('[Form Builder] Failed to delete FormDefinition:', err)
+      setDefinitionError(getErrorMessage(err, 'Failed to delete form definition.'))
+    } finally {
+      setDefinitionDeletingId('')
+    }
+  }
+
   async function saveForm() {
     if (!token || !currentTenant || !editingPage || !selectedDescriptor || saving) return
 
@@ -361,6 +494,24 @@ export default function FormBuilderPage() {
       {loading && <div className="card text-sm text-neutral-600">Loading form templates...</div>}
       {error && <div className="card border-red-200 bg-red-50 text-sm text-red-800">{error}</div>}
       {success && <div className="card border-green-200 bg-green-50 text-sm text-green-800">{success}</div>}
+
+      <StandaloneFormDefinitionsPanel
+        definitions={formDefinitions}
+        draft={definitionDraft}
+        mode={definitionMode}
+        loading={loadingFormDefinitions}
+        saving={definitionSaving}
+        deletingId={definitionDeletingId}
+        error={definitionError}
+        onRefresh={loadFormDefinitions}
+        onCreate={startCreateDefinition}
+        onEdit={startEditDefinition}
+        onCancel={cancelDefinitionEdit}
+        onSave={saveFormDefinition}
+        onDelete={deleteFormDefinition}
+        onDraftChange={updateDefinitionDraft}
+        onPrimaryFieldChange={updateDefinitionPrimaryField}
+      />
 
       <DefaultFormsPanel definitions={defaultDefinitions} />
 
@@ -499,6 +650,196 @@ export default function FormBuilderPage() {
         </>
       )}
     </div>
+  )
+}
+
+function StandaloneFormDefinitionsPanel({
+  definitions,
+  draft,
+  mode,
+  loading,
+  saving,
+  deletingId,
+  error,
+  onRefresh,
+  onCreate,
+  onEdit,
+  onCancel,
+  onSave,
+  onDelete,
+  onDraftChange,
+  onPrimaryFieldChange,
+}: {
+  definitions: FormDefinition[]
+  draft: FormDefinition | null
+  mode: 'create' | 'edit' | null
+  loading: boolean
+  saving: boolean
+  deletingId: string
+  error: string | null
+  onRefresh: () => void
+  onCreate: () => void
+  onEdit: (definition: FormDefinition) => void
+  onCancel: () => void
+  onSave: () => void
+  onDelete: (definition: FormDefinition) => void
+  onDraftChange: (patch: Partial<FormDefinition>) => void
+  onPrimaryFieldChange: (patch: Partial<FormDefinition['fields'][number]>) => void
+}) {
+  const primaryField = draft?.fields[0] || createDefaultDefinitionField()
+
+  return (
+    <section className="card overflow-hidden">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-neutral-900">Standalone Form Definitions</h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            API-backed definitions for the selected tenant.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button type="button" onClick={onRefresh} disabled={loading} className="btn btn-secondary inline-flex items-center gap-2 disabled:opacity-50">
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} aria-hidden="true" />
+            <span>Refresh</span>
+          </button>
+          <button type="button" onClick={onCreate} className="btn btn-primary inline-flex items-center gap-2">
+            <Plus className="h-4 w-4" aria-hidden="true" />
+            <span>New Definition</span>
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          {error}
+        </div>
+      )}
+
+      <div className="mt-4 overflow-x-auto">
+        <table className="min-w-full divide-y divide-neutral-200 text-sm">
+          <thead className="bg-neutral-50 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500">
+            <tr>
+              <th className="px-4 py-3">Form Key</th>
+              <th className="px-4 py-3">Name</th>
+              <th className="px-4 py-3">Type</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Fields</th>
+              <th className="px-4 py-3">Updated</th>
+              <th className="px-4 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-neutral-100 bg-white">
+            {loading ? (
+              <tr>
+                <td colSpan={7} className="px-4 py-6 text-center text-neutral-600">Loading definitions...</td>
+              </tr>
+            ) : definitions.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="px-4 py-6 text-center text-neutral-600">No standalone definitions found.</td>
+              </tr>
+            ) : (
+              definitions.map((definition) => (
+                <tr key={definition.id} className={draft?.id === definition.id ? 'bg-primary-50/70' : undefined}>
+                  <td className="px-4 py-3 font-medium text-neutral-900">{definition.formKey}</td>
+                  <td className="px-4 py-3 text-neutral-700">{definition.name}</td>
+                  <td className="px-4 py-3 text-neutral-700">{definition.formType}</td>
+                  <td className="px-4 py-3 text-neutral-700">{definition.status}</td>
+                  <td className="px-4 py-3 text-neutral-700">{(definition.fields || []).length + (definition.hiddenFields || []).length}</td>
+                  <td className="px-4 py-3 text-neutral-700">{formatDisplayDate(definition.updatedAt)}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex justify-end gap-2">
+                      <button type="button" onClick={() => onEdit(definition)} className="btn btn-secondary inline-flex items-center gap-2 text-xs">
+                        <Edit3 className="h-3.5 w-3.5" aria-hidden="true" />
+                        <span>Edit</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onDelete(definition)}
+                        disabled={Boolean(deletingId)}
+                        className="btn inline-flex items-center gap-2 bg-red-600 text-xs text-white hover:bg-red-700 disabled:opacity-50"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                        <span>{deletingId === definition.id ? 'Deleting...' : 'Delete'}</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {draft && (
+        <div className="mt-5 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+          <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <h3 className="text-base font-semibold text-neutral-900">
+              {mode === 'edit' ? 'Edit Definition' : 'New Definition'}
+            </h3>
+            <div className="flex gap-2">
+              <button type="button" onClick={onCancel} className="btn btn-secondary inline-flex items-center gap-2">
+                <X className="h-4 w-4" aria-hidden="true" />
+                <span>Cancel</span>
+              </button>
+              <button type="button" onClick={onSave} disabled={saving} className="btn btn-primary inline-flex items-center gap-2 disabled:opacity-50">
+                <Save className="h-4 w-4" aria-hidden="true" />
+                <span>{saving ? 'Saving...' : mode === 'edit' ? 'Save Definition' : 'Create Definition'}</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <TextField label="Form Key" value={draft.formKey} onChange={(value) => onDraftChange({ formKey: normalizeFormDefinitionKey(value), id: normalizeFormDefinitionKey(value) })} readOnly={mode === 'edit'} />
+            <TextField label="Name" value={draft.name} onChange={(value) => onDraftChange({ name: value })} />
+            <TextField label="Description" value={draft.description || ''} onChange={(value) => onDraftChange({ description: value })} multiline />
+            <label className="block">
+              <span className="text-sm font-medium text-neutral-700">Status</span>
+              <select
+                value={FORM_DEFINITION_STATUSES.includes(draft.status as typeof FORM_DEFINITION_STATUSES[number]) ? draft.status : 'active'}
+                onChange={(event) => onDraftChange({ status: event.target.value as FormDefinition['status'] })}
+                className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+              >
+                {FORM_DEFINITION_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}
+              </select>
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium text-neutral-700">Form Type</span>
+              <select
+                value={FORM_DEFINITION_TYPES.includes(draft.formType as typeof FORM_DEFINITION_TYPES[number]) ? draft.formType : 'custom'}
+                onChange={(event) => onDraftChange({ formType: event.target.value as FormDefinition['formType'] })}
+                className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+              >
+                {FORM_DEFINITION_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
+              </select>
+            </label>
+            <TextField label="Success Message" value={draft.successMessage || ''} onChange={(value) => onDraftChange({ successMessage: value })} />
+            <TextField label="Error Message" value={draft.errorMessage || ''} onChange={(value) => onDraftChange({ errorMessage: value })} />
+            <TextField label="Lead Recipient Ref" value={draft.leadRecipientRef || ''} onChange={(value) => onDraftChange({ leadRecipientRef: normalizeSafeRef(value) })} />
+          </div>
+
+          <div className="mt-5 rounded-lg border border-neutral-200 bg-white p-4">
+            <h4 className="text-sm font-semibold text-neutral-900">Primary Field</h4>
+            <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <TextField label="Field Name" value={primaryField.name} onChange={(value) => onPrimaryFieldChange({ name: normalizeFieldKey(value), id: normalizeFieldKey(value) })} />
+              <TextField label="Label" value={primaryField.label} onChange={(value) => onPrimaryFieldChange({ label: value })} />
+              <label className="block">
+                <span className="text-sm font-medium text-neutral-700">Type</span>
+                <select
+                  value={FORM_DEFINITION_FIELD_TYPES.includes(primaryField.type as FormDefinitionFieldType) ? primaryField.type : 'text'}
+                  onChange={(event) => onPrimaryFieldChange({ type: event.target.value as FormDefinition['fields'][number]['type'] })}
+                  className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+                >
+                  {FORM_DEFINITION_FIELD_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
+                </select>
+              </label>
+              <TextField label="Placeholder" value={primaryField.placeholder || ''} onChange={(value) => onPrimaryFieldChange({ placeholder: value })} />
+              <CheckboxField label="Required" checked={Boolean(primaryField.required)} onChange={(value) => onPrimaryFieldChange({ required: value })} />
+              <CheckboxField label="Include In Lead Summary" checked={Boolean(primaryField.includeInLeadSummary)} onChange={(value) => onPrimaryFieldChange({ includeInLeadSummary: value })} />
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
   )
 }
 
@@ -775,6 +1116,163 @@ function StateCard({ title, message, tone = 'neutral' }: { title: string; messag
       <p className={`mt-2 ${tone === 'error' ? 'text-red-800' : 'text-neutral-600'}`}>{message}</p>
     </div>
   )
+}
+
+function createEmptyFormDefinition(tenantId: string): FormDefinition {
+  const now = new Date().toISOString()
+  return {
+    id: '',
+    tenantId,
+    siteKey: tenantId,
+    formKey: '',
+    name: '',
+    description: '',
+    status: 'active',
+    formType: 'custom',
+    version: 'v2-8-49',
+    submitAction: 'form-entry',
+    runtimeSubmitPath: `/api/forms/${tenantId}/entries`,
+    staticEndpointRef: '',
+    leadRecipientRef: 'no-email-proof',
+    notificationEmailRef: '',
+    successMessage: 'Form received.',
+    errorMessage: 'Form could not be sent.',
+    spamProtection: {
+      honeypotFieldName: 'website',
+      minMessageLength: 0,
+      maxPayloadBytes: 20000,
+      maxFieldLength: 1000,
+    },
+    consent: {
+      required: false,
+      fieldName: 'consent',
+      text: '',
+    },
+    fields: [createDefaultDefinitionField()],
+    hiddenFields: [],
+    validationRules: {},
+    routing: {
+      leadType: 'internal-proof',
+      routingMode: 'admin-readback-only',
+      recipientGroupRef: 'no-email-proof',
+    },
+    createdAt: now,
+    updatedAt: now,
+    createdBy: '',
+    updatedBy: '',
+    systemDefault: false,
+  }
+}
+
+function createDefaultDefinitionField(): FormDefinition['fields'][number] {
+  return {
+    id: 'proof-code',
+    name: 'proof-code',
+    label: 'Proof Code',
+    type: 'text',
+    required: true,
+    placeholder: '',
+    helpText: '',
+    autocomplete: 'off',
+    options: [],
+    defaultValue: '',
+    hidden: false,
+    validation: {},
+    order: 1,
+    width: 'half',
+    sensitive: false,
+    includeInLeadSummary: true,
+  }
+}
+
+function cloneFormDefinition(definition: FormDefinition): FormDefinition {
+  return JSON.parse(JSON.stringify(definition)) as FormDefinition
+}
+
+function prepareFormDefinitionForSave(definition: FormDefinition, tenantId: string): FormDefinition {
+  const now = new Date().toISOString()
+  const formKey = normalizeFormDefinitionKey(definition.formKey || definition.id)
+  const fields = (definition.fields.length > 0 ? definition.fields : [createDefaultDefinitionField()])
+    .map((field, index) => {
+      const name = normalizeFieldKey(field.name || field.id || field.label || `field-${index + 1}`) || `field-${index + 1}`
+      return {
+        ...createDefaultDefinitionField(),
+        ...field,
+        id: normalizeFieldKey(field.id || name) || name,
+        name,
+        label: (field.label || name).trim(),
+        type: FORM_DEFINITION_FIELD_TYPES.includes(field.type as FormDefinitionFieldType) ? field.type : 'text',
+        order: index + 1,
+        width: field.width || 'half',
+        options: field.options || [],
+        validation: field.validation || {},
+      }
+    })
+
+  return {
+    ...definition,
+    id: formKey,
+    tenantId,
+    siteKey: normalizeFormDefinitionKey(definition.siteKey || tenantId) || tenantId,
+    formKey,
+    name: definition.name.trim(),
+    description: (definition.description || '').trim(),
+    status: FORM_DEFINITION_STATUSES.includes(definition.status as typeof FORM_DEFINITION_STATUSES[number]) ? definition.status : 'active',
+    formType: FORM_DEFINITION_TYPES.includes(definition.formType as typeof FORM_DEFINITION_TYPES[number]) ? definition.formType : 'custom',
+    submitAction: 'form-entry',
+    runtimeSubmitPath: definition.runtimeSubmitPath || `/api/forms/${tenantId}/entries`,
+    staticEndpointRef: normalizeSafeRef(definition.staticEndpointRef || ''),
+    leadRecipientRef: normalizeSafeRef(definition.leadRecipientRef || 'no-email-proof') || 'no-email-proof',
+    notificationEmailRef: normalizeSafeRef(definition.notificationEmailRef || ''),
+    fields,
+    hiddenFields: definition.hiddenFields || [],
+    validationRules: definition.validationRules || {},
+    routing: {
+      leadType: definition.routing?.leadType || 'internal-proof',
+      routingMode: definition.routing?.routingMode || 'admin-readback-only',
+      recipientGroupRef: normalizeSafeRef(definition.routing?.recipientGroupRef || definition.leadRecipientRef || 'no-email-proof') || 'no-email-proof',
+    },
+    spamProtection: definition.spamProtection || createEmptyFormDefinition(tenantId).spamProtection,
+    consent: definition.consent || createEmptyFormDefinition(tenantId).consent,
+    createdAt: definition.createdAt || now,
+    updatedAt: now,
+    createdBy: definition.createdBy || '',
+    updatedBy: definition.updatedBy || '',
+    systemDefault: false,
+  }
+}
+
+function validateDefinitionDraft(definition: FormDefinition) {
+  if (!normalizeFormDefinitionKey(definition.formKey || definition.id)) return 'Form key is required.'
+  if (!definition.name.trim()) return 'Name is required.'
+  if ((definition.formKey || '').includes('default-quote-request')) return 'default-quote-request is not allowed in this phase.'
+  const primaryField = definition.fields[0]
+  if (!primaryField || !normalizeFieldKey(primaryField.name || primaryField.id || primaryField.label)) return 'Primary field name is required.'
+  if (!primaryField.label.trim()) return 'Primary field label is required.'
+  return ''
+}
+
+function normalizeSafeRef(value: string) {
+  return value
+    .trim()
+    .replace(/[^A-Za-z0-9_:-]/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 160)
+}
+
+function normalizeFormDefinitionKey(value: string) {
+  return normalizeFieldKey(value).slice(0, 120)
+}
+
+function formatDisplayDate(value: string | null | undefined) {
+  if (!value) return 'Never'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
 }
 
 function buildFormDescriptors(pages: Page[]): ContactFormDescriptor[] {

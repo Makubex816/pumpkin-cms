@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, ImportRun, FormEntry, MediaAsset } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, ImportRun, FormEntry, MediaAsset, FormDefinition } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -644,6 +644,71 @@ class ApiClient {
     console.log('[API Client] Deleting theme:', { tenantId, themeId })
     return this.request<{ message: string; tenantId: string; themeId: string }>(
       `/api/admin/themes/${encodeURIComponent(tenantId)}/${encodeURIComponent(themeId)}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  // ===== FORM DEFINITION METHODS =====
+
+  async getFormDefinitions(token: string, tenantId: string): Promise<FormDefinition[]> {
+    const response = await this.request<{ formDefinitions: FormDefinition[]; count: number; tenantId: string }>(
+      `/api/admin/forms/${encodeURIComponent(tenantId)}/definitions`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+    return response.formDefinitions
+  }
+
+  async getFormDefinition(token: string, tenantId: string, formDefinitionId: string): Promise<FormDefinition> {
+    return this.request<FormDefinition>(
+      `/api/admin/forms/${encodeURIComponent(tenantId)}/definitions/${encodeURIComponent(formDefinitionId)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  async createFormDefinition(token: string, tenantId: string, definition: FormDefinition): Promise<FormDefinition> {
+    return this.request<FormDefinition>(
+      `/api/admin/forms/${encodeURIComponent(tenantId)}/definitions`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(definition),
+      }
+    )
+  }
+
+  async updateFormDefinition(token: string, tenantId: string, formDefinitionId: string, definition: FormDefinition): Promise<FormDefinition> {
+    return this.request<FormDefinition>(
+      `/api/admin/forms/${encodeURIComponent(tenantId)}/definitions/${encodeURIComponent(formDefinitionId)}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(definition),
+      }
+    )
+  }
+
+  async deleteFormDefinition(token: string, tenantId: string, formDefinitionId: string): Promise<{ message: string; tenantId: string; id: string }> {
+    return this.request<{ message: string; tenantId: string; id: string }>(
+      `/api/admin/forms/${encodeURIComponent(tenantId)}/definitions/${encodeURIComponent(formDefinitionId)}`,
       {
         method: 'DELETE',
         headers: {
