@@ -1,0 +1,62 @@
+{
+  "phase": "v2-8-45b-static-contact-health-repair",
+  "status": "blocked_exact_next_handoff_required",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "swa_managed_api_backend_unavailable_redeploy_requires_missing_swa_deployment_token",
+  "tenantId": "ice-rink-rentals",
+  "generatedAtUtc": "2026-06-30T01:36:58Z",
+  "contactPostSent": false,
+  "contentWritePerformed": false,
+  "dnsOrIndexingPerformed": false,
+  "pumpkinApiDeployPerformed": false,
+  "adminUiDeployPerformed": false,
+  "swaDeployPerformed": false,
+  "storageRollbackPerformed": false,
+  "keysListKeysSasOrConnectionStringGenerated": false,
+  "secretValuesPrintedOrWritten": false,
+  "staticContactHealth": {
+    "productionApexStatus": 500,
+    "productionWwwStatus": 500,
+    "productionDefaultHostStatus": 500,
+    "isolatedStatus": 500,
+    "publicBodySummary": "Backend call failure"
+  },
+  "repairActions": {
+    "staticContactAppsettingsSetFromSecureFile": true,
+    "swaDiagnosticRollbackProbeOnIsolated": true,
+    "isolatedDiagnosticRestored": true,
+    "productionDiagnosticRolledBack": false,
+    "sourceEdited": false,
+    "isolatedDeploymentAttempted": false,
+    "productionDeploymentAttempted": false
+  },
+  "hardeningPreserved": {
+    "swaDiagnosticsPresent": true,
+    "storageSoftDeleteVersioningChangeFeedPreserved": true,
+    "alertsWorkspaceActionGroupPreserved": true
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-45-carryforward.md",
+    "secure-file-readiness.md",
+    "static-contact-health-start-state.md",
+    "static-contact-source-analysis.md",
+    "static-contact-compat-test-result.md",
+    "swa-appsetting-redacted-comparison.md",
+    "log-analytics-static-contact-query-result.md",
+    "root-cause-classification.md",
+    "appsetting-repair-result-if-any.md",
+    "swa-diagnostic-rollback-result-if-any.md",
+    "static-contact-source-fix-result-if-any.md",
+    "isolated-deployment-result-if-any.md",
+    "production-deployment-result-if-any.md",
+    "runtime-no-regression-proof.md",
+    "hardening-preservation-result.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
+
