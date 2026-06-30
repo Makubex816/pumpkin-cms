@@ -1,0 +1,13 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "name":  "Ice Rink Rentals",
+    "tagline":  "Portable ice rink rentals for events, seasonal activations, venues, and private celebrations.",
+    "colors":  {
+                   "primary":  "#0369a1",
+                   "accent":  "#0ea5e9",
+                   "neutral":  "#0f172a",
+                   "surface":  "#ffffff"
+               },
+    "logoRef":  "media:ice-rink-rentals-iceskatingrinkrentalslogo-0d1f970f0411",
+    "voice":  "clear, practical, event-planning focused"
+}

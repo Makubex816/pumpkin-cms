@@ -1,67 +1,54 @@
 {
-  "schemaVersion": "1.0.0",
-  "packageMode": "retrofit-summary",
-  "tenantId": "ice-rink-rentals",
-  "displayName": "Ice Rink Rentals",
-  "modules": [
-    "tenant",
-    "users",
-    "pages",
-    "media",
-    "theme",
-    "forms",
-    "contact",
-    "importExport",
-    "publish",
-    "monitoring",
-    "validation"
-  ],
-  "retrofitSummary": {
-    "source": "V2.8.50 live read-only verification and prior V2.8 proof chain",
-    "tenantPresent": true,
-    "liveCounts": {
-      "pages": 3,
-      "mediaAssets": 9,
-      "themes": 0,
-      "formDefinitions": 0
-    },
-    "pages": [
-      { "pageSlug": "home", "route": "/" },
-      { "pageSlug": "contact", "route": "/contact" },
-      { "pageSlug": "service-areas", "route": "/service-areas" }
-    ],
-    "mediaManifest": {
-      "expectedActiveAzureBlobAssets": 9,
-      "assets": [
-        { "id": "ice-media-01", "fileRef": "live-readonly-media/ice-media-01" },
-        { "id": "ice-media-02", "fileRef": "live-readonly-media/ice-media-02" },
-        { "id": "ice-media-03", "fileRef": "live-readonly-media/ice-media-03" },
-        { "id": "ice-media-04", "fileRef": "live-readonly-media/ice-media-04" },
-        { "id": "ice-media-05", "fileRef": "live-readonly-media/ice-media-05" },
-        { "id": "ice-media-06", "fileRef": "live-readonly-media/ice-media-06" },
-        { "id": "ice-media-07", "fileRef": "live-readonly-media/ice-media-07" },
-        { "id": "ice-media-08", "fileRef": "live-readonly-media/ice-media-08" },
-        { "id": "ice-media-09", "fileRef": "live-readonly-media/ice-media-09" }
-      ]
-    },
-    "publicRoutes": [
-      { "path": "/", "status": 200 },
-      { "path": "/contact", "status": 200 },
-      { "path": "/service-areas", "status": 200 },
-      { "path": "/api/static-contact-health", "status": 200 }
-    ],
-    "proofStatus": {
-      "themeCrudSupported": true,
-      "formDefinitionCrudSupported": true,
-      "contactGateClosed": true,
-      "publishRunProven": true,
-      "staticContactHealthRecovered": true
-    }
-  },
-  "knownGaps": [
-    "No permanent live Theme baseline record exists at V2.8.50 read-only verification time.",
-    "No permanent live FormDefinition baseline record exists at V2.8.50 read-only verification time.",
-    "This retrofit summary is not a full import package and should not be used to create a new tenant directly."
-  ],
-  "secureHandoffRequired": true
+    "schemaVersion":  "1.0.0",
+    "packageMode":  "full-template",
+    "tenantId":  "ice-rink-rentals",
+    "displayName":  "Ice Rink Rentals",
+    "modules":  [
+                    "tenant",
+                    "users",
+                    "pages",
+                    "media",
+                    "theme",
+                    "forms",
+                    "contact",
+                    "importExport",
+                    "publish",
+                    "monitoring",
+                    "validation"
+                ],
+    "files":  {
+                  "tenantProfile":  "tenant-profile.json",
+                  "domains":  "domains.json",
+                  "brand":  "brand.json",
+                  "theme":  "theme.json",
+                  "users":  "users/admin-users.json",
+                  "mediaManifest":  "media/manifest.json",
+                  "publish":  "publish/static-site.json",
+                  "contact":  "contact/static-contact.json",
+                  "monitoring":  "monitoring/runtime-checks.json",
+                  "importExport":  "import-export/readiness.json",
+                  "validation":  "validation/expected-routes.json",
+                  "pages":  [
+                                "pages/home.json",
+                                "pages/contact.json",
+                                "pages/service-areas.json"
+                            ],
+                  "forms":  [
+                                "forms/default-quote-request.json"
+                            ]
+              },
+    "secureHandoffRequired":  true,
+    "readiness":  {
+                      "directImportPackage":  true,
+                      "liveThemeBaseline":  "created-v2.8.51",
+                      "liveFormDefinitionBaseline":  "created-v2.8.51",
+                      "mediaUploadRequired":  false,
+                      "deployApproved":  false,
+                      "dnsApproved":  false,
+                      "indexingApproved":  false
+                  },
+    "notes":  "Full direct non-secret Ice package upgraded in V2.8.51. Credentials, tenant/static keys, deployment credentials, and provider credentials are excluded and must remain in secure handoff only.",
+    "knownGaps":  [
+
+                  ]
 }

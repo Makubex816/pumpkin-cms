@@ -1,0 +1,31 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "expectedRoutes":  [
+                           {
+                               "path":  "/",
+                               "expectedStatus":  200
+                           },
+                           {
+                               "path":  "/contact",
+                               "expectedStatus":  200
+                           },
+                           {
+                               "path":  "/service-areas",
+                               "expectedStatus":  200
+                           },
+                           {
+                               "path":  "/api/static-contact-health",
+                               "expectedStatus":  200
+                           }
+                       ],
+    "adminRoutes":  [
+                        {
+                            "path":  "/dashboard/themes",
+                            "expectedStatus":  200
+                        },
+                        {
+                            "path":  "/dashboard/form-builder",
+                            "expectedStatus":  200
+                        }
+                    ]
+}

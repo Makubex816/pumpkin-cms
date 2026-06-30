@@ -1,0 +1,11 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "users":  [
+                  {
+                      "email":  "tenant-admin@iceskatingrinkrentals.com",
+                      "role":  "TenantAdmin",
+                      "passwordSource":  "secure-handoff",
+                      "notes":  "Password is supplied only through secure handoff."
+                  }
+              ]
+}

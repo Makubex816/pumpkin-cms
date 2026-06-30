@@ -1,0 +1,176 @@
+{
+  "id": "ice-rink-rentals-service-areas",
+  "PageId": "ice-rink-rentals-service-areas",
+  "tenantId": "ice-rink-rentals",
+  "pageSlug": "service-areas",
+  "PageVersion": 1,
+  "Layout": "default",
+  "MetaData": {
+    "category": "rentals",
+    "product": "portable ice rink",
+    "keyword": "portable ice rink rental service areas",
+    "pageType": "serviceAreas",
+    "title": "Portable Ice Rink Rental Service Areas",
+    "description": "Review portable ice rink rental service-area planning and request availability review for your event city, date, venue, and support needs.",
+    "createdAt": "2026-06-03T20:39:52.125Z",
+    "updatedAt": "2026-06-11T00:00:00Z",
+    "author": "Ice Skating Rink Rentals Team",
+    "language": "en-us",
+    "market": "us"
+  },
+  "searchData": {
+    "state": "",
+    "city": "",
+    "metro": "",
+    "county": "",
+    "keyword": "portable ice rink rental service areas",
+    "tags": ["portable ice rink rental service areas", "portable ice rink availability", "temporary rink coverage"],
+    "contentSummary": "Service areas page explaining request review, route feasibility, venue details, and quote path without unsupported local claims.",
+    "blockTypes": ["Hero", "TrustBar", "CardGrid", "HowItWorks", "FAQ", "PrimaryCTA"]
+  },
+  "ContentData": {
+    "ContentBlocks": [
+      {
+        "type": "Hero",
+        "content": {
+          "type": "Main",
+          "headline": "Portable Ice Rink Rental Service Areas",
+          "subheadline": "Ice Skating Rink Rentals reviews portable rink rental requests using event details, venue logistics, timing, and route feasibility before availability is confirmed.",
+          "backgroundImage": "",
+          "backgroundImageAltText": "",
+          "mainImage": "",
+          "mainImageAltText": "Portable ice rink rental service-area planning",
+          "buttonText": "Request Availability",
+          "buttonLink": "/contact"
+        }
+      },
+      {
+        "type": "TrustBar",
+        "content": {
+          "items": [
+            { "icon": "MapPin", "title": "Route Review", "text": "Event city, venue access, and timing are reviewed before availability is confirmed.", "alt": "Route review" },
+            { "icon": "CalendarCheck", "title": "Date Fit", "text": "Peak winter and holiday dates need earlier review and clearer setup windows.", "alt": "Date fit" },
+            { "icon": "Ruler", "title": "Venue Details", "text": "Surface, space, power, loading, and guest flow shape rental feasibility.", "alt": "Venue details" },
+            { "icon": "ClipboardCheck", "title": "Quote Path", "text": "Share the basics so the team can identify the right next step.", "alt": "Quote path" }
+          ]
+        }
+      },
+      {
+        "type": "CardGrid",
+        "content": {
+          "title": "What service-area review considers",
+          "subtitle": "Availability is reviewed from the event location and the practical setup requirements, not just the city name.",
+          "layout": "grid-3",
+          "cards": [
+            {
+              "title": "Event location",
+              "description": "Share the city, state, venue name, access notes, and whether the site is public, private, indoor, or outdoor.",
+              "image": "",
+              "image-alt": "",
+              "icon": "MapPinned",
+              "link": "/contact",
+              "alt": "Event location"
+            },
+            {
+              "title": "Setup surface",
+              "description": "Surface type, slope, size, nearby access, and power availability all affect whether a portable rink can fit.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Warehouse",
+              "link": "/contact",
+              "alt": "Setup surface"
+            },
+            {
+              "title": "Seasonal timing",
+              "description": "Holiday activations, town events, school programs, and winter weekends should be reviewed as early as possible.",
+              "image": "",
+              "image-alt": "",
+              "icon": "Clock",
+              "link": "/contact",
+              "alt": "Seasonal timing"
+            }
+          ]
+        }
+      },
+      {
+        "type": "HowItWorks",
+        "content": {
+          "title": "How coverage is reviewed",
+          "steps": [
+            { "title": "Send location details", "text": "Include the city, state, venue address, indoor or outdoor placement, and event date range.", "image": "", "alt": "Send location details" },
+            { "title": "Review site fit", "text": "The team reviews available space, surface conditions, access, setup windows, power, and guest flow.", "image": "", "alt": "Review site fit" },
+            { "title": "Confirm next steps", "text": "If the route and venue details are workable, the quote conversation can move into size, schedule, and support options.", "image": "", "alt": "Confirm next steps" }
+          ]
+        }
+      },
+      {
+        "type": "FAQ",
+        "content": {
+          "title": "Service-area questions",
+          "subtitle": "These answers help frame availability before a formal quote.",
+          "layout": "accordion",
+          "items": [
+            { "question": "Do you list every city you can serve?", "answer": "No. Local proof content uses a request-review model. Share your city, venue, event date, and setup details so availability can be reviewed." },
+            { "question": "What details make service-area review faster?", "answer": "Helpful details include venue address, indoor or outdoor placement, available footprint, surface type, access path, rental dates, and expected attendance." },
+            { "question": "Can new city pages be created from this route?", "answer": "Future city or state pages require separate content, approval, and publish gates. This local source only repairs the canonical service-areas route." },
+            { "question": "Does this page confirm service everywhere?", "answer": "No. It explains the review process and avoids unsupported geographic claims until a request is reviewed." }
+          ]
+        }
+      },
+      {
+        "type": "PrimaryCTA",
+        "content": {
+          "title": "Need service-area review for your event?",
+          "description": "Send your location, date, venue type, and setup details so the rental conversation can begin with the right context.",
+          "buttonText": "Request Availability",
+          "buttonLink": "/contact",
+          "secondaryText": "Need the basics first?",
+          "secondaryLinkText": "Return home",
+          "secondaryLink": "/",
+          "backgroundImage": "",
+          "mainImage": "",
+          "alt": "Portable ice rink rental service-area review"
+        }
+      }
+    ]
+  },
+  "contentRelationships": {
+    "isHub": false,
+    "hubPageSlug": "home",
+    "topicCluster": "ice-rink-rentals",
+    "relatedHubs": [],
+    "spokePriority": 1
+  },
+  "seo": {
+    "metaTitle": "Portable Ice Rink Rental Service Areas | Ice Skating Rink Rentals",
+    "metaDescription": "Review portable ice rink rental service-area planning and request availability review for your event city, date, venue, and support needs.",
+    "keywords": ["portable ice rink rental service areas", "portable ice rink rentals", "temporary rink coverage"],
+    "robots": "index, follow",
+    "canonicalUrl": "https://iceskatingrinkrentals.com/service-areas",
+    "alternateUrls": [],
+    "structuredData": [
+      "{\"@context\":\"https://schema.org\",\"@type\":\"WebPage\",\"name\":\"Portable Ice Rink Rental Service Areas\",\"url\":\"https://iceskatingrinkrentals.com/service-areas\",\"description\":\"Review portable ice rink rental service-area planning and request availability review for your event city, date, venue, and support needs.\"}"
+    ],
+    "openGraph": {
+      "og:title": "Portable Ice Rink Rental Service Areas | Ice Skating Rink Rentals",
+      "og:description": "Review portable ice rink rental service-area planning and request availability review for your event city, date, venue, and support needs.",
+      "og:type": "website",
+      "og:url": "https://iceskatingrinkrentals.com/service-areas",
+      "og:image": "",
+      "og:image:alt": "Ice Skating Rink Rentals",
+      "og:site_name": "Ice Skating Rink Rentals",
+      "og:locale": "en_US"
+    },
+    "twitterCard": {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Portable Ice Rink Rental Service Areas | Ice Skating Rink Rentals",
+      "twitter:description": "Review portable ice rink rental service-area planning and request availability review for your event city, date, venue, and support needs.",
+      "twitter:image": "",
+      "twitter:site": "",
+      "twitter:creator": ""
+    }
+  },
+  "isPublished": true,
+  "publishedAt": "2026-06-11T00:00:00Z",
+  "includeInSitemap": true
+}

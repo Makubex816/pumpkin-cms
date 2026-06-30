@@ -1,0 +1,36 @@
+{
+  "phase": "V2.8.51",
+  "classification": "ice_theme_form_baseline_secondary_package_intake_dry_run",
+  "tenantId": "ice-rink-rentals",
+  "status": "completed_secondary_package_not_provided",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_51_ICE_BASELINE_SECONDARY_PACKAGE_DRYRUN_REPORT.md",
+  "resultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-50-carryforward.md",
+    "secure-file-readiness.md",
+    "ice-theme-baseline-result.md",
+    "ice-formdefinition-baseline-result.md",
+    "ice-full-package-upgrade-result.md",
+    "ice-package-validator-result.md",
+    "secondary-package-location-result.md",
+    "secondary-package-validator-result-if-any.md",
+    "secondary-package-gap-report.md",
+    "secondary-secure-handoff-requirements.md",
+    "secondary-package-readiness-decision.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "liveMutations": {
+    "iceThemeBaseline": "created",
+    "iceFormDefinitionBaseline": "created",
+    "secondaryTenantCreated": false,
+    "contactPostSent": false,
+    "deployPerformed": false,
+    "dnsOrIndexingPerformed": false
+  }
+}
+

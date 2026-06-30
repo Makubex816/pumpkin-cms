@@ -1,0 +1,11 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "displayName":  "Ice Rink Rentals",
+    "status":  "active",
+    "owner":  {
+                  "organization":  "Ice Skating Rink Rentals",
+                  "publicContact":  "contact@iceskatingrinkrentals.com"
+              },
+    "source":  "V2.8.51 direct package upgrade from live Ice baseline and non-secret seed content",
+    "notes":  "Non-secret tenant profile only. Operational credentials are supplied through secure handoff."
+}

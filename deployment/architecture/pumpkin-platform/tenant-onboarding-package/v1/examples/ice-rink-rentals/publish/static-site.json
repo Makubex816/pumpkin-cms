@@ -1,0 +1,19 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "profile":  "static-site",
+    "productionHosts":  [
+                            "https://iceskatingrinkrentals.com",
+                            "https://www.iceskatingrinkrentals.com"
+                        ],
+    "isolatedHost":  "https://kind-island-0a85a740f.7.azurestaticapps.net",
+    "requiredRoutes":  [
+                           "/",
+                           "/contact",
+                           "/service-areas"
+                       ],
+    "staticContactHealthPath":  "/api/static-contact-health",
+    "deployApproved":  false,
+    "dnsApproved":  false,
+    "indexingApproved":  false,
+    "notes":  "Publish/deploy, DNS, and indexing require separate approval."
+}

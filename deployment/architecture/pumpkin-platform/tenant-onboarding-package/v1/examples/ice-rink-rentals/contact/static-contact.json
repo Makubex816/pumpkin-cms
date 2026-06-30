@@ -1,0 +1,11 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "contactMode":  "static-contact-managed-api",
+    "runtimeSubmitPath":  "/api/static-contact",
+    "healthPath":  "/api/static-contact-health",
+    "formKey":  "default-quote-request",
+    "staticEndpointRef":  "ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT",
+    "leadRecipientRef":  "ICE_RINK_RENTALS_LEAD_RECIPIENT",
+    "contactPostApproved":  false,
+    "notes":  "No contact POST is approved or included in V2.8.51."
+}

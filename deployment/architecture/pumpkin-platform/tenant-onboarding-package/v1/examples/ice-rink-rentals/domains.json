@@ -1,0 +1,15 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "primaryHost":  "iceskatingrinkrentals.com",
+    "hosts":  [
+                  "iceskatingrinkrentals.com",
+                  "www.iceskatingrinkrentals.com"
+              ],
+    "staticHosts":  [
+                        "https://iceskatingrinkrentals.com",
+                        "https://www.iceskatingrinkrentals.com"
+                    ],
+    "dnsApproved":  false,
+    "indexingApproved":  false,
+    "notes":  "Existing production hosts are documented for package validation only. DNS and indexing are outside this phase."
+}

@@ -1,0 +1,9 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "packageMode":  "full-template",
+    "importMode":  "dry-run-first",
+    "directTenantCreationApproved":  false,
+    "mediaUploadApproved":  false,
+    "expectedValidator":  "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/validate-tenant-package.mjs",
+    "notes":  "Use this package for validator dry-run only until a separate controlled creation approval exists."
+}

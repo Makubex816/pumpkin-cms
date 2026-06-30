@@ -1,0 +1,30 @@
+{
+    "tenantId":  "ice-rink-rentals",
+    "checks":  [
+                   {
+                       "name":  "public-root",
+                       "host":  "https://iceskatingrinkrentals.com",
+                       "path":  "/",
+                       "expectedStatus":  200
+                   },
+                   {
+                       "name":  "public-contact",
+                       "host":  "https://iceskatingrinkrentals.com",
+                       "path":  "/contact",
+                       "expectedStatus":  200
+                   },
+                   {
+                       "name":  "public-service-areas",
+                       "host":  "https://iceskatingrinkrentals.com",
+                       "path":  "/service-areas",
+                       "expectedStatus":  200
+                   },
+                   {
+                       "name":  "static-contact-health",
+                       "host":  "https://iceskatingrinkrentals.com",
+                       "path":  "/api/static-contact-health",
+                       "expectedStatus":  200
+                   }
+               ],
+    "notes":  "GET-only runtime checks; no form submission."
+}
