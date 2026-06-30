@@ -16,6 +16,12 @@ public interface IDatabaseService
     Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId);
     Task<FormEntry?> GetFormEntryAsync(string tenantId, string id);
     Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate);
+    Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type);
+    Task<List<FormDefinition>> GetFormDefinitionsByTenantAsync(string tenantId);
+    Task<FormDefinition?> GetFormDefinitionAdminAsync(string tenantId, string id);
+    Task<FormDefinition> CreateFormDefinitionAsync(string tenantId, FormDefinition definition);
+    Task<FormDefinition> UpdateFormDefinitionAsync(string tenantId, string id, FormDefinition definition);
+    Task<bool> DeleteFormDefinitionAsync(string tenantId, string id);
     Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId);
     
     

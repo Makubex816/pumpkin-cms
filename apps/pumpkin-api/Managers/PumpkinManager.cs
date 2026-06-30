@@ -417,6 +417,250 @@ public static class PumpkinManager
         }
     }
 
+    // ===== FORM DEFINITION METHODS (Content Serving - API Key) =====
+
+    public static async Task<IResult> GetFormDefinitionAsync(IDatabaseService databaseService, string apiKey, string tenantId, string type, ILogger? logger = null)
+    {
+        try
+        {
+            logger?.LogInformation("GetFormDefinitionAsync called - TenantId: {TenantId}, Type: {Type}", tenantId, type);
+
+            if (string.IsNullOrEmpty(apiKey))
+                return Results.BadRequest("API key is required");
+            if (string.IsNullOrEmpty(tenantId))
+                return Results.BadRequest("Tenant ID is required");
+            if (string.IsNullOrEmpty(type))
+                return Results.BadRequest("Form type is required");
+
+            var formDefinition = await databaseService.GetFormDefinitionAsync(apiKey, tenantId, PageRedirectGuard.NormalizeSlug(type));
+
+            if (formDefinition == null)
+            {
+                logger?.LogWarning("GetFormDefinitionAsync - Form definition not found or access denied - TenantId: {TenantId}, Type: {Type}", tenantId, type);
+                return Results.NotFound("Form definition not found or access denied");
+            }
+
+            return Results.Ok(formDefinition);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Results.Unauthorized();
+        }
+        catch (Exception ex)
+        {
+            logger?.LogError(ex, "GetFormDefinitionAsync - Error - TenantId: {TenantId}, Type: {Type}", tenantId, type);
+            return Results.Problem($"Error retrieving form definition: {ex.Message}");
+        }
+    }
+
+    // ===== FORM DEFINITION ADMIN METHODS (JWT Authentication) =====
+
+    public static async Task<IResult> GetFormDefinitionsByTenantAsync(IDatabaseService databaseService, string tenantId)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(tenantId))
+                return Results.BadRequest("Tenant ID is required");
+
+            var formDefinitions = await databaseService.GetFormDefinitionsByTenantAsync(tenantId);
+
+            return Results.Ok(new { formDefinitions, count = formDefinitions.Count, tenantId });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving form definitions: {ex.Message}");
+        }
+    }
+
+    public static async Task<IResult> GetFormDefinitionAdminAsync(IDatabaseService databaseService, string tenantId, string id)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(tenantId))
+                return Results.BadRequest("Tenant ID is required");
+            if (string.IsNullOrEmpty(id))
+                return Results.BadRequest("Form definition ID is required");
+
+            var formDefinition = await databaseService.GetFormDefinitionAdminAsync(tenantId, PageRedirectGuard.NormalizeSlug(id));
+
+            return formDefinition == null ? Results.NotFound("Form definition not found") : Results.Ok(formDefinition);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving form definition: {ex.Message}");
+        }
+    }
+
+    public static async Task<IResult> CreateFormDefinitionAsync(IDatabaseService databaseService, string tenantId, FormDefinition definition, string actor)
+    {
+        try
+        {
+            var validation = PrepareFormDefinition(tenantId, definition, actor, existing: null, isUpdate: false);
+            if (!validation.Ok)
+                return Results.BadRequest(validation);
+
+            var created = await databaseService.CreateFormDefinitionAsync(tenantId, definition);
+
+            return Results.Created($"/api/admin/forms/{tenantId}/definitions/{created.Id}", created);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.Conflict(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error creating form definition: {ex.Message}");
+        }
+    }
+
+    public static async Task<IResult> UpdateFormDefinitionAsync(IDatabaseService databaseService, string tenantId, string id, FormDefinition definition, string actor)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(id))
+                return Results.BadRequest("Form definition ID is required");
+
+            var normalizedId = PageRedirectGuard.NormalizeSlug(id);
+            var existing = await databaseService.GetFormDefinitionAdminAsync(tenantId, normalizedId);
+            if (existing == null)
+                return Results.NotFound("Form definition not found");
+
+            var validation = PrepareFormDefinition(tenantId, definition, actor, existing, isUpdate: true);
+            if (!validation.Ok)
+                return Results.BadRequest(validation);
+
+            if (!string.Equals(definition.Id, normalizedId, StringComparison.OrdinalIgnoreCase))
+                return Results.BadRequest("Form definition ID cannot change");
+
+            var updated = await databaseService.UpdateFormDefinitionAsync(tenantId, normalizedId, definition);
+
+            return Results.Ok(updated);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error updating form definition: {ex.Message}");
+        }
+    }
+
+    public static async Task<IResult> DeleteFormDefinitionAsync(IDatabaseService databaseService, string tenantId, string id)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(tenantId))
+                return Results.BadRequest("Tenant ID is required");
+            if (string.IsNullOrEmpty(id))
+                return Results.BadRequest("Form definition ID is required");
+
+            var normalizedId = PageRedirectGuard.NormalizeSlug(id);
+            var deleted = await databaseService.DeleteFormDefinitionAsync(tenantId, normalizedId);
+
+            if (deleted)
+                return Results.Ok(new { message = "Form definition deleted successfully", tenantId, id = normalizedId });
+
+            return Results.NotFound("Form definition not found");
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error deleting form definition: {ex.Message}");
+        }
+    }
+
+    private static (bool Ok, string Message) PrepareFormDefinition(string tenantId, FormDefinition? definition, string actor, FormDefinition? existing, bool isUpdate)
+    {
+        if (string.IsNullOrWhiteSpace(tenantId))
+            return (false, "Tenant ID is required");
+        if (definition == null)
+            return (false, "Form definition data is required");
+
+        var normalizedId = PageRedirectGuard.NormalizeSlug(definition.Id);
+        var normalizedFormKey = PageRedirectGuard.NormalizeSlug(definition.FormKey);
+        var normalizedFormType = PageRedirectGuard.NormalizeSlug(definition.FormType);
+
+        if (string.IsNullOrWhiteSpace(normalizedId) && !string.IsNullOrWhiteSpace(normalizedFormKey))
+            normalizedId = normalizedFormKey;
+        if (string.IsNullOrWhiteSpace(normalizedFormKey) && !string.IsNullOrWhiteSpace(normalizedId))
+            normalizedFormKey = normalizedId;
+
+        if (string.IsNullOrWhiteSpace(normalizedId))
+            return (false, "Form definition ID or formKey is required");
+        if (string.IsNullOrWhiteSpace(definition.Name))
+            return (false, "Form definition name is required");
+
+        var status = (definition.Status ?? string.Empty).Trim().ToLowerInvariant();
+        var allowedStatuses = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "draft", "active", "published", "archived" };
+        if (string.IsNullOrWhiteSpace(status))
+            status = "active";
+        if (!allowedStatuses.Contains(status))
+            return (false, "Status must be one of: draft, active, published, archived");
+
+        if (ContainsSecretLikeValue(definition.StaticEndpointRef) ||
+            ContainsSecretLikeValue(definition.LeadRecipientRef) ||
+            ContainsSecretLikeValue(definition.NotificationEmailRef))
+        {
+            return (false, "Form definition references must not contain secret values");
+        }
+
+        var fields = definition.Fields ?? new List<FormDefinitionField>();
+        foreach (var field in fields.Concat(definition.HiddenFields ?? new List<FormDefinitionField>()))
+        {
+            var fieldName = PageRedirectGuard.NormalizeSlug(string.IsNullOrWhiteSpace(field.Name) ? field.Id : field.Name);
+            if (string.IsNullOrWhiteSpace(fieldName))
+                return (false, "Each form field must include an id or name");
+
+            field.Id = string.IsNullOrWhiteSpace(field.Id) ? fieldName : PageRedirectGuard.NormalizeSlug(field.Id);
+            field.Name = fieldName;
+            field.Label = (field.Label ?? string.Empty).Trim();
+            field.Type = string.IsNullOrWhiteSpace(field.Type) ? "text" : PageRedirectGuard.NormalizeSlug(field.Type);
+            field.Width = string.IsNullOrWhiteSpace(field.Width) ? "half" : PageRedirectGuard.NormalizeSlug(field.Width);
+        }
+
+        var now = DateTime.UtcNow.ToString("O");
+        definition.Id = normalizedId;
+        definition.TenantId = tenantId;
+        definition.SiteKey = string.IsNullOrWhiteSpace(definition.SiteKey) ? tenantId : PageRedirectGuard.NormalizeSlug(definition.SiteKey);
+        definition.FormKey = normalizedFormKey;
+        definition.FormType = string.IsNullOrWhiteSpace(normalizedFormType) ? "custom" : normalizedFormType;
+        definition.Status = status;
+        definition.Name = definition.Name.Trim();
+        definition.Description = (definition.Description ?? string.Empty).Trim();
+        definition.SubmitAction = string.IsNullOrWhiteSpace(definition.SubmitAction) ? "form-entry" : PageRedirectGuard.NormalizeSlug(definition.SubmitAction);
+        definition.RuntimeSubmitPath = string.IsNullOrWhiteSpace(definition.RuntimeSubmitPath) ? $"/api/forms/{tenantId}/entries" : definition.RuntimeSubmitPath.Trim();
+        definition.StaticEndpointRef = (definition.StaticEndpointRef ?? string.Empty).Trim();
+        definition.LeadRecipientRef = (definition.LeadRecipientRef ?? string.Empty).Trim();
+        definition.NotificationEmailRef = (definition.NotificationEmailRef ?? string.Empty).Trim();
+        definition.SuccessMessage = (definition.SuccessMessage ?? string.Empty).Trim();
+        definition.ErrorMessage = (definition.ErrorMessage ?? string.Empty).Trim();
+        definition.Fields = fields;
+        definition.HiddenFields ??= new List<FormDefinitionField>();
+        definition.ValidationRules ??= new Dictionary<string, object>();
+        definition.SpamProtection ??= new FormSpamProtection();
+        definition.Consent ??= new FormConsent();
+        definition.Routing ??= new FormRouting();
+        definition.CreatedAt = isUpdate && existing != null ? existing.CreatedAt : (string.IsNullOrWhiteSpace(definition.CreatedAt) ? now : definition.CreatedAt);
+        definition.CreatedBy = isUpdate && existing != null ? existing.CreatedBy : (string.IsNullOrWhiteSpace(definition.CreatedBy) ? actor : definition.CreatedBy.Trim());
+        definition.UpdatedAt = now;
+        definition.UpdatedBy = string.IsNullOrWhiteSpace(actor) ? definition.UpdatedBy : actor;
+
+        return (true, "OK");
+    }
+
+    private static bool ContainsSecretLikeValue(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return false;
+
+        var candidate = value.ToLowerInvariant();
+        return candidate.Contains("accountkey=", StringComparison.Ordinal) ||
+               candidate.Contains("sharedaccesssignature=", StringComparison.Ordinal) ||
+               candidate.Contains("sig=", StringComparison.Ordinal) ||
+               candidate.Contains("bearer ", StringComparison.Ordinal) ||
+               candidate.Contains("password=", StringComparison.Ordinal);
+    }
+
     // ===== THEME METHODS (Content Serving - API Key) =====
 
     public static async Task<IResult> GetThemeAsync(IDatabaseService databaseService, string apiKey, string tenantId, string themeId, ILogger? logger = null)

@@ -60,6 +60,12 @@ if (args.Contains("--v2-8-43-importrun", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-8-48-formdefinition", StringComparer.OrdinalIgnoreCase))
+{
+    await FormDefinitionApiSourceTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
@@ -533,6 +539,24 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
 
     public Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate)
         => _connection.UpdateFormEntryStatusAsync(tenantId, id, statusUpdate);
+
+    public Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type)
+        => _connection.GetFormDefinitionAsync(apiKey, tenantId, type);
+
+    public Task<List<FormDefinition>> GetFormDefinitionsByTenantAsync(string tenantId)
+        => _connection.GetFormDefinitionsByTenantAsync(tenantId);
+
+    public Task<FormDefinition?> GetFormDefinitionAdminAsync(string tenantId, string id)
+        => _connection.GetFormDefinitionAdminAsync(tenantId, id);
+
+    public Task<FormDefinition> CreateFormDefinitionAsync(string tenantId, FormDefinition definition)
+        => _connection.CreateFormDefinitionAsync(tenantId, definition);
+
+    public Task<FormDefinition> UpdateFormDefinitionAsync(string tenantId, string id, FormDefinition definition)
+        => _connection.UpdateFormDefinitionAsync(tenantId, id, definition);
+
+    public Task<bool> DeleteFormDefinitionAsync(string tenantId, string id)
+        => _connection.DeleteFormDefinitionAsync(tenantId, id);
 
     public Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
         => _connection.GetSitemapPagesAsync(apiKey, tenantId);

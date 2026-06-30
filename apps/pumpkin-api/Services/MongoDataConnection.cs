@@ -390,6 +390,98 @@ public class MongoDataConnection : IDataConnection, IDisposable
         return formEntry;
     }
 
+    public async Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type)
+    {
+        var isValid = await ValidateTenantApiKeyAsync(apiKey, tenantId);
+        if (!isValid)
+            throw new UnauthorizedAccessException("Invalid API key");
+
+        var definition = await GetFormDefinitionByTypeAdminAsync(tenantId, type);
+        return definition != null && IsPublicFormDefinition(definition) ? definition : null;
+    }
+
+    public async Task<List<FormDefinition>> GetFormDefinitionsByTenantAsync(string tenantId)
+    {
+        var collection = _database.GetCollection<FormDefinition>("FormDefinition");
+        var filter = Builders<FormDefinition>.Filter.Eq(definition => definition.TenantId, tenantId);
+        var sort = Builders<FormDefinition>.Sort.Descending(definition => definition.UpdatedAt);
+        return await collection.Find(filter).Sort(sort).ToListAsync();
+    }
+
+    public async Task<FormDefinition?> GetFormDefinitionAdminAsync(string tenantId, string id)
+    {
+        var collection = _database.GetCollection<FormDefinition>("FormDefinition");
+        var filter = Builders<FormDefinition>.Filter.And(
+            Builders<FormDefinition>.Filter.Eq(definition => definition.TenantId, tenantId),
+            Builders<FormDefinition>.Filter.Eq(definition => definition.Id, id)
+        );
+        return await collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<FormDefinition> CreateFormDefinitionAsync(string tenantId, FormDefinition definition)
+    {
+        var collection = _database.GetCollection<FormDefinition>("FormDefinition");
+        var existing = await GetFormDefinitionAdminAsync(tenantId, definition.Id);
+        if (existing != null)
+            throw new InvalidOperationException($"FormDefinition with ID '{definition.Id}' already exists for tenant '{tenantId}'");
+
+        definition.TenantId = tenantId;
+        await collection.InsertOneAsync(definition);
+        return definition;
+    }
+
+    public async Task<FormDefinition> UpdateFormDefinitionAsync(string tenantId, string id, FormDefinition definition)
+    {
+        var collection = _database.GetCollection<FormDefinition>("FormDefinition");
+        var filter = Builders<FormDefinition>.Filter.And(
+            Builders<FormDefinition>.Filter.Eq(item => item.TenantId, tenantId),
+            Builders<FormDefinition>.Filter.Eq(item => item.Id, id)
+        );
+
+        var existing = await collection.Find(filter).FirstOrDefaultAsync();
+        if (existing == null)
+            throw new KeyNotFoundException($"FormDefinition with ID '{id}' not found for tenant '{tenantId}'");
+
+        definition.Id = id;
+        definition.TenantId = tenantId;
+        definition.CreatedAt = existing.CreatedAt;
+        definition.CreatedBy = existing.CreatedBy;
+
+        await collection.ReplaceOneAsync(filter, definition);
+        return definition;
+    }
+
+    public async Task<bool> DeleteFormDefinitionAsync(string tenantId, string id)
+    {
+        var collection = _database.GetCollection<FormDefinition>("FormDefinition");
+        var filter = Builders<FormDefinition>.Filter.And(
+            Builders<FormDefinition>.Filter.Eq(definition => definition.TenantId, tenantId),
+            Builders<FormDefinition>.Filter.Eq(definition => definition.Id, id)
+        );
+        var result = await collection.DeleteOneAsync(filter);
+        return result.DeletedCount > 0;
+    }
+
+    private async Task<FormDefinition?> GetFormDefinitionByTypeAdminAsync(string tenantId, string type)
+    {
+        var collection = _database.GetCollection<FormDefinition>("FormDefinition");
+        var filter = Builders<FormDefinition>.Filter.And(
+            Builders<FormDefinition>.Filter.Eq(definition => definition.TenantId, tenantId),
+            Builders<FormDefinition>.Filter.Or(
+                Builders<FormDefinition>.Filter.Eq(definition => definition.FormKey, type),
+                Builders<FormDefinition>.Filter.Eq(definition => definition.FormType, type)
+            )
+        );
+        var sort = Builders<FormDefinition>.Sort.Descending(definition => definition.UpdatedAt);
+        return await collection.Find(filter).Sort(sort).FirstOrDefaultAsync();
+    }
+
+    private static bool IsPublicFormDefinition(FormDefinition definition)
+    {
+        return string.Equals(definition.Status, "active", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(definition.Status, "published", StringComparison.OrdinalIgnoreCase);
+    }
+
     public async Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
     {
         try
@@ -1156,6 +1248,36 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<List<FormDefinition>> GetFormDefinitionsByTenantAsync(string tenantId)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<FormDefinition?> GetFormDefinitionAdminAsync(string tenantId, string id)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<FormDefinition> CreateFormDefinitionAsync(string tenantId, FormDefinition definition)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<FormDefinition> UpdateFormDefinitionAsync(string tenantId, string id, FormDefinition definition)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<bool> DeleteFormDefinitionAsync(string tenantId, string id)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

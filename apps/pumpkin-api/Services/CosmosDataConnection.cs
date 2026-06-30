@@ -571,6 +571,194 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type)
+    {
+        var isValidTenant = await ValidateTenantApiKeyAsync(apiKey, tenantId);
+        if (!isValidTenant)
+        {
+            throw new UnauthorizedAccessException("Invalid API key or tenant ID");
+        }
+
+        var definition = await GetFormDefinitionByTypeAdminAsync(tenantId, type);
+        return definition != null && IsPublicFormDefinition(definition) ? definition : null;
+    }
+
+    public async Task<List<FormDefinition>> GetFormDefinitionsByTenantAsync(string tenantId)
+    {
+        try
+        {
+            var formDefinitionContainer = _database.GetContainer("FormDefinition");
+            var query = "SELECT * FROM c WHERE c.tenantId = @tenantId ORDER BY c.updatedAt DESC";
+            var queryDefinition = new QueryDefinition(query)
+                .WithParameter("@tenantId", tenantId);
+
+            var definitions = new List<FormDefinition>();
+            using var iterator = formDefinitionContainer.GetItemQueryIterator<FormDefinition>(queryDefinition, requestOptions: new QueryRequestOptions
+            {
+                PartitionKey = new PartitionKey(tenantId)
+            });
+
+            while (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync();
+                definitions.AddRange(response);
+                _logger.LogInformation("GetFormDefinitionsByTenantAsync - TenantId: {TenantId}, BatchCount: {Count}, RU: {RU}",
+                    tenantId, response.Count, response.RequestCharge);
+            }
+
+            return definitions;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetFormDefinitionsByTenantAsync error - TenantId: {TenantId}", tenantId);
+            throw;
+        }
+    }
+
+    public async Task<FormDefinition?> GetFormDefinitionAdminAsync(string tenantId, string id)
+    {
+        try
+        {
+            var formDefinitionContainer = _database.GetContainer("FormDefinition");
+            var response = await formDefinitionContainer.ReadItemAsync<FormDefinition>(id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("GetFormDefinitionAdminAsync - TenantId: {TenantId}, Id: {Id}, RU: {RU}",
+                tenantId, id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation("GetFormDefinitionAdminAsync - Not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            return null;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "GetFormDefinitionAdminAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
+    public async Task<FormDefinition> CreateFormDefinitionAsync(string tenantId, FormDefinition definition)
+    {
+        try
+        {
+            var formDefinitionContainer = _database.GetContainer("FormDefinition");
+            var existing = await GetFormDefinitionAdminAsync(tenantId, definition.Id);
+            if (existing != null)
+            {
+                throw new InvalidOperationException($"FormDefinition with ID '{definition.Id}' already exists for tenant '{tenantId}'");
+            }
+
+            definition.TenantId = tenantId;
+            var response = await formDefinitionContainer.CreateItemAsync(definition, new PartitionKey(tenantId));
+
+            _logger.LogInformation("CreateFormDefinitionAsync - Created - TenantId: {TenantId}, Id: {Id}, RU: {RU}",
+                tenantId, definition.Id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
+        {
+            throw new InvalidOperationException($"FormDefinition with ID '{definition.Id}' already exists", ex);
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "CreateFormDefinitionAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, definition.Id);
+            throw;
+        }
+    }
+
+    public async Task<FormDefinition> UpdateFormDefinitionAsync(string tenantId, string id, FormDefinition definition)
+    {
+        try
+        {
+            var formDefinitionContainer = _database.GetContainer("FormDefinition");
+            var existing = await GetFormDefinitionAdminAsync(tenantId, id);
+            if (existing == null)
+            {
+                throw new KeyNotFoundException($"FormDefinition with ID '{id}' not found for tenant '{tenantId}'");
+            }
+
+            definition.Id = id;
+            definition.TenantId = tenantId;
+            definition.CreatedAt = existing.CreatedAt;
+            definition.CreatedBy = existing.CreatedBy;
+
+            var response = await formDefinitionContainer.ReplaceItemAsync(definition, id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("UpdateFormDefinitionAsync - Updated - TenantId: {TenantId}, Id: {Id}, RU: {RU}",
+                tenantId, id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            throw new KeyNotFoundException($"FormDefinition with ID '{id}' not found", ex);
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "UpdateFormDefinitionAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteFormDefinitionAsync(string tenantId, string id)
+    {
+        try
+        {
+            var formDefinitionContainer = _database.GetContainer("FormDefinition");
+            var existing = await GetFormDefinitionAdminAsync(tenantId, id);
+            if (existing == null)
+            {
+                return false;
+            }
+
+            await formDefinitionContainer.DeleteItemAsync<FormDefinition>(id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("DeleteFormDefinitionAsync - Deleted - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            return true;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogWarning("DeleteFormDefinitionAsync - Not found - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            return false;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "DeleteFormDefinitionAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
+            throw;
+        }
+    }
+
+    private async Task<FormDefinition?> GetFormDefinitionByTypeAdminAsync(string tenantId, string type)
+    {
+        var formDefinitionContainer = _database.GetContainer("FormDefinition");
+        var query = "SELECT * FROM c WHERE c.tenantId = @tenantId AND (c.formKey = @type OR c.formType = @type) ORDER BY c.updatedAt DESC";
+        var queryDefinition = new QueryDefinition(query)
+            .WithParameter("@tenantId", tenantId)
+            .WithParameter("@type", type);
+
+        using var iterator = formDefinitionContainer.GetItemQueryIterator<FormDefinition>(queryDefinition, requestOptions: new QueryRequestOptions
+        {
+            PartitionKey = new PartitionKey(tenantId)
+        });
+
+        if (!iterator.HasMoreResults)
+        {
+            return null;
+        }
+
+        var response = await iterator.ReadNextAsync();
+        return response.FirstOrDefault();
+    }
+
+    private static bool IsPublicFormDefinition(FormDefinition definition)
+    {
+        return string.Equals(definition.Status, "active", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(definition.Status, "published", StringComparison.OrdinalIgnoreCase);
+    }
+
     public async Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
     {
         try

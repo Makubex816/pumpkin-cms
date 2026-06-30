@@ -73,6 +73,36 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.UpdateFormEntryStatusAsync(tenantId, id, statusUpdate);
     }
 
+    public Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type)
+    {
+        return _dataConnection.GetFormDefinitionAsync(apiKey, tenantId, type);
+    }
+
+    public Task<List<FormDefinition>> GetFormDefinitionsByTenantAsync(string tenantId)
+    {
+        return _dataConnection.GetFormDefinitionsByTenantAsync(tenantId);
+    }
+
+    public Task<FormDefinition?> GetFormDefinitionAdminAsync(string tenantId, string id)
+    {
+        return _dataConnection.GetFormDefinitionAdminAsync(tenantId, id);
+    }
+
+    public Task<FormDefinition> CreateFormDefinitionAsync(string tenantId, FormDefinition definition)
+    {
+        return _dataConnection.CreateFormDefinitionAsync(tenantId, definition);
+    }
+
+    public Task<FormDefinition> UpdateFormDefinitionAsync(string tenantId, string id, FormDefinition definition)
+    {
+        return _dataConnection.UpdateFormDefinitionAsync(tenantId, id, definition);
+    }
+
+    public Task<bool> DeleteFormDefinitionAsync(string tenantId, string id)
+    {
+        return _dataConnection.DeleteFormDefinitionAsync(tenantId, id);
+    }
+
     public Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
     {
         return _dataConnection.GetSitemapPagesAsync(apiKey, tenantId);

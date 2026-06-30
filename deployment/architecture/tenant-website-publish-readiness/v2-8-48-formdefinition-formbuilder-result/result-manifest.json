@@ -1,0 +1,72 @@
+{
+  "phase": "V2.8.48",
+  "classification": "formdefinition_formbuilder_design_implementation_lifecycle_proof",
+  "tenantId": "ice-rink-rentals",
+  "status": "complete",
+  "sourceChanges": [
+    "apps/pumpkin-api/Program.cs",
+    "apps/pumpkin-api/Managers/PumpkinManager.cs",
+    "apps/pumpkin-api/Services/IDatabaseService.cs",
+    "apps/pumpkin-api/Services/IDataConnection.cs",
+    "apps/pumpkin-api/Services/DatabaseService.cs",
+    "apps/pumpkin-api/Services/CosmosDataConnection.cs",
+    "apps/pumpkin-api/Services/MongoDataConnection.cs",
+    "apps/pumpkin-api.Tests/Program.cs",
+    "apps/pumpkin-api.Tests/FormDefinitionApiSourceTestRunner.cs"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_48_FORMDEFINITION_FORMBUILDER_REPORT.md",
+  "container": {
+    "name": "FormDefinition",
+    "partitionKey": "/tenantId",
+    "action": "created"
+  },
+  "pumpkinApiDeploy": {
+    "count": 1,
+    "status": "RuntimeSuccessful",
+    "successfulInstances": 1,
+    "failedInstances": 0
+  },
+  "proof": {
+    "traceId": "V2.8.48-3e4b1897b1ca4375912f5d469b743276",
+    "syntheticFormDefinitionCreated": 1,
+    "syntheticFormDefinitionUpdated": 1,
+    "publicFormDefinitionReads": 1,
+    "syntheticSubmissionsSent": 0,
+    "residualSyntheticFormDefinitions": 0
+  },
+  "security": {
+    "secretsPrintedOrWritten": false,
+    "contactPostSent": false,
+    "contentWriteOccurred": false,
+    "dnsOrIndexingOccurred": false,
+    "appsettingMutationOccurred": false,
+    "storageKeysListKeysSasOrConnectionStringGenerationOccurred": false,
+    "protectedConfigReadOccurred": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-47-carryforward.md",
+    "secure-file-readiness.md",
+    "formdefinition-source-design.md",
+    "endpoint-contract-alignment.md",
+    "container-alignment-result.md",
+    "api-implementation-result-if-any.md",
+    "pumpkin-api-build-deploy-result-if-any.md",
+    "formdefinition-create-result.md",
+    "formdefinition-readback-result.md",
+    "formdefinition-update-result.md",
+    "public-formdefinition-read-result.md",
+    "synthetic-noncontact-submit-result-if-any.md",
+    "formentry-readback-cleanup-result-if-any.md",
+    "formdefinition-cleanup-final-state.md",
+    "admin-ui-formbuilder-readiness.md",
+    "tenant-scope-proof.md",
+    "runtime-no-regression-proof.md",
+    "tenant-onboarding-impact-matrix.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
