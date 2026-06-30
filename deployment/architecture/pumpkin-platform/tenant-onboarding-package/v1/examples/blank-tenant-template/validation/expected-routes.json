@@ -1,0 +1,13 @@
+{
+  "tenantId": "blank-tenant",
+  "expectedRoutes": [
+    { "path": "/", "expectedStatus": 200 },
+    { "path": "/contact", "expectedStatus": 200 },
+    { "path": "/service-areas", "expectedStatus": 200 },
+    { "path": "/api/static-contact-health", "expectedStatus": 200 }
+  ],
+  "monitoringChecks": [
+    { "name": "public-root", "path": "/", "expectedStatus": 200 },
+    { "name": "contact-health", "path": "/api/static-contact-health", "expectedStatus": 200 }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "tenantId": "blank-tenant",
+  "name": "Blank Tenant",
+  "tagline": "Tenant tagline goes here.",
+  "colors": {
+    "primary": "#2563eb",
+    "accent": "#16a34a",
+    "neutral": "#334155"
+  },
+  "logoRef": "media/logo-placeholder.svg"
+}

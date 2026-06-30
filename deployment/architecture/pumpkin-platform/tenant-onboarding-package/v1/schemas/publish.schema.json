@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/publish.schema.json",
+  "title": "Tenant Publish Config",
+  "type": "object",
+  "required": ["tenantId", "profile", "requiredRoutes"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "profile": { "type": "string" },
+    "requiredRoutes": { "type": "array", "items": { "type": "string" } },
+    "dnsApproved": { "type": "boolean" },
+    "indexingApproved": { "type": "boolean" }
+  },
+  "additionalProperties": true
+}

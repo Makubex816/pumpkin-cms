@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/brand.schema.json",
+  "title": "Tenant Brand",
+  "type": "object",
+  "required": ["tenantId", "name", "colors"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "name": { "type": "string" },
+    "tagline": { "type": "string" },
+    "colors": { "type": "object" },
+    "logoRef": { "type": "string" }
+  },
+  "additionalProperties": true
+}

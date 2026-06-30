@@ -1,0 +1,8 @@
+{
+  "tenantId": "blank-tenant",
+  "profile": "static-site",
+  "requiredRoutes": ["/", "/contact", "/service-areas"],
+  "dnsApproved": false,
+  "indexingApproved": false,
+  "notes": "Publish/deploy requires separate approval."
+}

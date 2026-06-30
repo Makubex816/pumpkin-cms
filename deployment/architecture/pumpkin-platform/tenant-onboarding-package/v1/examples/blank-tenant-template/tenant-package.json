@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "packageMode": "full-template",
+  "tenantId": "blank-tenant",
+  "displayName": "Blank Tenant",
+  "modules": [
+    "tenant",
+    "users",
+    "pages",
+    "media",
+    "theme",
+    "forms",
+    "contact",
+    "importExport",
+    "publish",
+    "monitoring",
+    "validation"
+  ],
+  "files": {
+    "tenantProfile": "tenant-profile.json",
+    "domains": "domains.json",
+    "brand": "brand.json",
+    "theme": "theme.json",
+    "users": "users/admin-users.json",
+    "mediaManifest": "media/manifest.json",
+    "publish": "publish/static-site.json",
+    "validation": "validation/expected-routes.json",
+    "pages": [
+      "pages/home.json",
+      "pages/contact.json",
+      "pages/service-areas.json"
+    ],
+    "forms": [
+      "forms/default-quote-request.json"
+    ]
+  },
+  "secureHandoffRequired": true,
+  "notes": "Template values are placeholders. Add tenant-specific public content before dry-run intake."
+}

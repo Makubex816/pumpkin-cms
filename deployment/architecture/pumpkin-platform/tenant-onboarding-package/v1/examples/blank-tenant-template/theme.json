@@ -1,0 +1,16 @@
+{
+  "tenantId": "blank-tenant",
+  "themeId": "blank-tenant-default",
+  "name": "Blank Tenant Default Theme",
+  "isActiveOnCreate": false,
+  "menu": [
+    { "label": "Home", "url": "/" },
+    { "label": "Service Areas", "url": "/service-areas" },
+    { "label": "Contact", "url": "/contact" }
+  ],
+  "designSystem": {
+    "version": "1",
+    "tokens": {},
+    "approvedClasses": []
+  }
+}

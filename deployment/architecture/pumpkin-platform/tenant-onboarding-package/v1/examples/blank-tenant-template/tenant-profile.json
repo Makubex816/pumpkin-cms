@@ -1,0 +1,10 @@
+{
+  "tenantId": "blank-tenant",
+  "displayName": "Blank Tenant",
+  "status": "draft",
+  "owner": {
+    "name": "Owner Name",
+    "email": "owner@example.invalid"
+  },
+  "notes": "Replace placeholder values during tenant intake."
+}

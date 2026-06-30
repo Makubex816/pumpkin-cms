@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/domains.schema.json",
+  "title": "Tenant Domains",
+  "type": "object",
+  "required": ["tenantId", "primaryHost", "hosts"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "primaryHost": { "type": "string" },
+    "hosts": { "type": "array", "items": { "type": "string" } },
+    "dnsApproved": { "type": "boolean" },
+    "indexingApproved": { "type": "boolean" }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/tenant-package.schema.json",
+  "title": "Pumpkin Tenant Package",
+  "type": "object",
+  "required": ["schemaVersion", "packageMode", "tenantId", "modules"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "packageMode": { "enum": ["full-template", "retrofit-summary"] },
+    "tenantId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "displayName": { "type": "string" },
+    "modules": {
+      "type": "array",
+      "items": {
+        "enum": ["tenant", "users", "pages", "media", "theme", "forms", "contact", "importExport", "publish", "monitoring", "validation"]
+      },
+      "uniqueItems": true
+    },
+    "files": { "type": "object", "additionalProperties": { "type": "string" } },
+    "retrofitSummary": { "type": "object" },
+    "knownGaps": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

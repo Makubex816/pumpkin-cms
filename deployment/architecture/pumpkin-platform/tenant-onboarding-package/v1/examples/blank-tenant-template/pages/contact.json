@@ -1,0 +1,17 @@
+{
+  "tenantId": "blank-tenant",
+  "pageSlug": "contact",
+  "title": "Contact Blank Tenant",
+  "isPublished": true,
+  "includeInSitemap": true,
+  "blocks": [
+    {
+      "type": "Contact",
+      "content": {
+        "headline": "Contact Blank Tenant",
+        "formDefinitionRef": "default-quote-request",
+        "publicContactEmail": "contact@example.invalid"
+      }
+    }
+  ]
+}

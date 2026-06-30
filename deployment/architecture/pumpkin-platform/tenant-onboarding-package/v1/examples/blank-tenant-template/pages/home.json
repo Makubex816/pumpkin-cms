@@ -1,0 +1,18 @@
+{
+  "tenantId": "blank-tenant",
+  "pageSlug": "home",
+  "title": "Blank Tenant Home",
+  "isPublished": true,
+  "includeInSitemap": true,
+  "blocks": [
+    {
+      "type": "Hero",
+      "content": {
+        "headline": "Blank Tenant",
+        "subheadline": "Replace this with the tenant's primary offer.",
+        "ctaText": "Contact Us",
+        "ctaHref": "/contact"
+      }
+    }
+  ]
+}

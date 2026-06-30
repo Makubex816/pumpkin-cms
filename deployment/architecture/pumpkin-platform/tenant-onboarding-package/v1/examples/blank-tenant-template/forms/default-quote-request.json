@@ -1,0 +1,18 @@
+{
+  "tenantId": "blank-tenant",
+  "formKey": "default-quote-request",
+  "name": "Default Quote Request",
+  "formType": "quote-request",
+  "status": "draft",
+  "leadRecipientRef": "secure-handoff-lead-recipient",
+  "fields": [
+    { "name": "name", "label": "Name", "type": "text", "required": true },
+    { "name": "email", "label": "Email", "type": "email", "required": true },
+    { "name": "phone", "label": "Phone", "type": "tel", "required": false },
+    { "name": "message", "label": "Message", "type": "textarea", "required": true }
+  ],
+  "routing": {
+    "routingMode": "secure-handoff",
+    "recipientGroupRef": "secure-handoff-lead-recipient"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "tenantId": "blank-tenant",
+  "pageSlug": "service-areas",
+  "title": "Service Areas",
+  "isPublished": true,
+  "includeInSitemap": true,
+  "blocks": [
+    {
+      "type": "RichText",
+      "content": {
+        "headline": "Service Areas",
+        "body": "List the cities, regions, or service categories for this tenant."
+      }
+    }
+  ]
+}

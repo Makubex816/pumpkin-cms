@@ -1,0 +1,11 @@
+{
+  "tenantId": "blank-tenant",
+  "users": [
+    {
+      "email": "tenant-admin@example.invalid",
+      "role": "TenantAdmin",
+      "passwordSource": "secure-handoff",
+      "notes": "Password is supplied only through secure handoff."
+    }
+  ]
+}

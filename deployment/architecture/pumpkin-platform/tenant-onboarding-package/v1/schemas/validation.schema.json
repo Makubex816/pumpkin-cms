@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/validation.schema.json",
+  "title": "Tenant Validation Expectations",
+  "type": "object",
+  "required": ["tenantId", "expectedRoutes"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "expectedRoutes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "expectedStatus"],
+        "properties": {
+          "path": { "type": "string" },
+          "expectedStatus": { "type": "integer" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

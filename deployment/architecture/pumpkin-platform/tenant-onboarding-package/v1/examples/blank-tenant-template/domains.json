@@ -1,0 +1,10 @@
+{
+  "tenantId": "blank-tenant",
+  "primaryHost": "https://blank-tenant.example.invalid",
+  "hosts": [
+    "https://blank-tenant.example.invalid",
+    "https://www.blank-tenant.example.invalid"
+  ],
+  "dnsApproved": false,
+  "indexingApproved": false
+}

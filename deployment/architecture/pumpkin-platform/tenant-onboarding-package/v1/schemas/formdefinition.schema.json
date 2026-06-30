@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/formdefinition.schema.json",
+  "title": "Tenant FormDefinition",
+  "type": "object",
+  "required": ["tenantId", "formKey", "name", "formType", "status", "fields"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "formKey": { "type": "string" },
+    "name": { "type": "string" },
+    "formType": { "type": "string" },
+    "status": { "enum": ["draft", "active", "archived"] },
+    "fields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "label", "type"],
+        "properties": {
+          "name": { "type": "string" },
+          "label": { "type": "string" },
+          "type": { "type": "string" },
+          "required": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

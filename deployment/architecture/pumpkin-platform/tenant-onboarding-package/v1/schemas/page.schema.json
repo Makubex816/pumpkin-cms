@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/page.schema.json",
+  "title": "Tenant Page",
+  "type": "object",
+  "required": ["tenantId", "pageSlug", "title", "isPublished", "blocks"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "pageSlug": { "type": "string" },
+    "title": { "type": "string" },
+    "isPublished": { "type": "boolean" },
+    "includeInSitemap": { "type": "boolean" },
+    "blocks": { "type": "array" }
+  },
+  "additionalProperties": true
+}

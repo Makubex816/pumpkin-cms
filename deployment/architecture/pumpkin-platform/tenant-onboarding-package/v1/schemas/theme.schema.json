@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/theme.schema.json",
+  "title": "Tenant Theme",
+  "type": "object",
+  "required": ["tenantId", "themeId", "name", "menu"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "themeId": { "type": "string" },
+    "name": { "type": "string" },
+    "isActiveOnCreate": { "type": "boolean" },
+    "menu": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "url"],
+        "properties": {
+          "label": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

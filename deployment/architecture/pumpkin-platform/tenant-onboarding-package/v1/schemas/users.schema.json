@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/users.schema.json",
+  "title": "Tenant Users",
+  "type": "object",
+  "required": ["tenantId", "users"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["email", "role", "passwordSource"],
+        "properties": {
+          "email": { "type": "string" },
+          "role": { "type": "string" },
+          "passwordSource": { "type": "string" }
+        },
+        "not": { "required": ["password"] }
+      }
+    }
+  },
+  "additionalProperties": true
+}

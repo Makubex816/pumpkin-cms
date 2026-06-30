@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.local/schemas/monitoring.schema.json",
+  "title": "Tenant Monitoring Expectations",
+  "type": "object",
+  "required": ["tenantId", "checks"],
+  "properties": {
+    "tenantId": { "type": "string" },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url", "expectedStatus"],
+        "properties": {
+          "name": { "type": "string" },
+          "url": { "type": "string" },
+          "expectedStatus": { "type": "integer" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
