@@ -1,0 +1,34 @@
+{
+  "phase": "V2.8.53R",
+  "status": "completed_read_only_external_repo_audit_compatibility_map_created",
+  "classification": "external_sdi_ai_pumpkin_cms_repo_audit_compatibility_map_no_mutation",
+  "createdAtUtc": "2026-07-01T03:40:00Z",
+  "externalRepo": {
+    "url": "https://github.com/SDI-AI/pumpkin-cms",
+    "branch": "main",
+    "commit": "947cf05a1b6fbf1721bc3c112e1052f0c6c59b8a",
+    "commitDate": "2026-05-27T14:48:34-04:00",
+    "localReferencePath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\external-reference\\SDI-AI-pumpkin-cms",
+    "fileCount": 188
+  },
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-53r-external-sdi-ai-repo-audit-result/",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_53R_EXTERNAL_SDI_AI_REPO_AUDIT_REPORT.md",
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_EXTERNAL_SDI_AI_REPO_AUDIT_V2_8_53R.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_EXTERNAL_COMPATIBILITY_MATRIX_V2_8_53R.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_EXTERNAL_HARDCODED_REQUIREMENTS_V2_8_53R.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_EXTERNAL_INTEGRATION_BUILD_MAP_V2_8_53R.md"
+  ],
+  "securityBoundary": {
+    "externalMutation": false,
+    "liveMutation": false,
+    "deploy": false,
+    "tenantCreation": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "mediaUpload": false,
+    "azureMutation": false,
+    "dnsIndexing": false,
+    "secretsWritten": false
+  }
+}
