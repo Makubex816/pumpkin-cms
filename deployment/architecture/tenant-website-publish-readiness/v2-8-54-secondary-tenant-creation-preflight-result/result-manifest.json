@@ -1,0 +1,42 @@
+{
+  "phase": "V2.8.54",
+  "status": "blocked_no_mutation_approved_secure_file_missing",
+  "classification": "controlled_secondary_tenant_creation_preflight_external_compatibility_gate_no_live_mutation",
+  "candidateTenantId": "strip-club-near-me-vegas",
+  "package": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\secondary-candidate",
+    "exists": true,
+    "tenantPackageJsonExists": true,
+    "validatorValid": true,
+    "errors": 0,
+    "warnings": 0,
+    "secretScanHits": 0
+  },
+  "secureFile": {
+    "path": ".tmp/v2-8-54/secure/controlled-secondary-tenant-preflight.json",
+    "exists": false,
+    "ignoredByGitignore": true,
+    "blocker": "approved_secure_file_missing"
+  },
+  "externalCompatibility": {
+    "externalRepoUrl": "https://github.com/SDI-AI/pumpkin-cms",
+    "externalRepoCommit": "947cf05a1b6fbf1721bc3c112e1052f0c6c59b8a",
+    "externalCloneClean": true,
+    "v2_8_53sProofExists": true
+  },
+  "runtimeNoRegression": {
+    "getOnlyChecksPassed": true,
+    "routeCount": 14
+  },
+  "securityBoundary": {
+    "liveMutationOccurred": false,
+    "tenantCreationOccurred": false,
+    "deployOccurred": false,
+    "contactPostOccurred": false,
+    "formSubmissionOccurred": false,
+    "azureMutationOccurred": false,
+    "externalRepoMutationOccurred": false,
+    "secretValuesWritten": false,
+    "filesStaged": false
+  }
+}
