@@ -1,0 +1,51 @@
+{
+  "phase": "V2.8.54C",
+  "classification": "owner_decision_worktree_resolution_commit_archive_delete_plan_pre_partner_tenant_readiness",
+  "status": "validation_passed_owner_decisions_remaining",
+  "createdAt": "2026-07-01T20:25:49.309Z",
+  "branch": "feature/admin-page-editor-import-export",
+  "head": "a331a73",
+  "headSubject": "Add V2.8.54B worktree hygiene audit",
+  "approvedScope": "repo-local worktree resolution reports only",
+  "liveMutation": false,
+  "cleanupMutation": false,
+  "stagedFilesAtGeneration": 0,
+  "countsBefore": {
+    "trackedModified": 157,
+    "trackedDeleted": 0,
+    "staged": 0,
+    "untrackedNonIgnored": 581,
+    "ignored": 85478
+  },
+  "countsAfterReportCreation": {
+    "trackedModified": 157,
+    "trackedDeleted": 0,
+    "staged": 0,
+    "untrackedNonIgnored": 601,
+    "ignored": 85478
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-54b-carryforward.md",
+    "git-state-before-resolution.md",
+    "tracked-modified-resolution-map.md",
+    "untracked-resolution-map.md",
+    "ignored-generated-resolution-map.md",
+    "completed-phase-commit-candidates.md",
+    "safe-cleanup-actions-taken.md",
+    "owner-decision-required-register.md",
+    "partner-tenant-readiness-impact.md",
+    "git-state-after-resolution.md",
+    "recommended-commit-batches.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_OWNER_DECISION_WORKTREE_RESOLUTION_V2_8_54C.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_PRE_PARTNER_TENANT_REPO_READINESS_V2_8_54C.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_54C_OWNER_DECISION_WORKTREE_RESOLUTION_REPORT.md"
+}
