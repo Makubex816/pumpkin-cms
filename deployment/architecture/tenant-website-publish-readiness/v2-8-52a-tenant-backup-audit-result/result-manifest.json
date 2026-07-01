@@ -1,0 +1,57 @@
+{
+  "phase": "V2.8.52A",
+  "tenantId": "ice-rink-rentals",
+  "status": "completed_protected_backup_bundle_created_restore_dry_run_passed_with_gaps",
+  "classification": "tenant_backup_system_audit_ice_full_backup_dry_run_restore_readiness",
+  "createdAtUtc": "2026-06-30T20:10:00Z",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_52A_TENANT_BACKUP_AUDIT_REPORT.md",
+  "resultPackage": "deployment/architecture/tenant-website-publish-readiness/v2-8-52a-tenant-backup-audit-result/",
+  "protectedBackupBundle": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-backups\\v2-8-52a-ice-rink-rentals-backup-proof",
+    "outsideRepository": true,
+    "manifestSha256": "60386efdcf3b3ac9d15e30c5113c8ffd49f4faab877c635eb796d5cb941f8187",
+    "checksumsSha256": "8f36a6b5e0ea4c8bb1e3c4c40d5e4753c7e5d480e1df4b69da916021ac9f620f",
+    "checksumLineCount": 26
+  },
+  "counts": {
+    "pages": 3,
+    "mediaAssets": 9,
+    "mediaBlobs": 9,
+    "mediaBytes": 22639448,
+    "themes": 1,
+    "formDefinitions": 1,
+    "formEntries": 4,
+    "importRuns": 1,
+    "publishRuns": 1,
+    "usersRedactedRecords": 1
+  },
+  "requiredResultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-52-carryforward.md",
+    "secure-file-readiness.md",
+    "backup-system-discovery.md",
+    "backup-coverage-model.md",
+    "protected-backup-bundle-result.md",
+    "tenant-data-backup-result.md",
+    "media-backup-result.md",
+    "formentry-pii-backup-classification.md",
+    "user-identity-backup-classification.md",
+    "static-publish-snapshot-backup-result.md",
+    "backup-manifest-checksum-result.md",
+    "local-restore-dry-run-result.md",
+    "restore-readiness-classification.md",
+    "backup-gap-register.md",
+    "backup-restore-runbook-result.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_BACKUP_PACKAGE_SPEC_V2_8_52A.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_BACKUP_RESTORE_RUNBOOK_V2_8_52A.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_BACKUP_COVERAGE_MATRIX_V2_8_52A.md"
+  ]
+}
