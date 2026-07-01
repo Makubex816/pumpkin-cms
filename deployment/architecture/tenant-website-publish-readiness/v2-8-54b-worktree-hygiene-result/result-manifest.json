@@ -1,0 +1,50 @@
+{
+  "phase": "V2.8.54B",
+  "status": "completed_with_owner_decisions_remaining",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "full_worktree_hygiene_unresolved_file_disposition_stale_artifact_cleanup_no_live_mutation",
+  "generatedAt": "2026-07-01T00:00:00-04:00",
+  "beforeCounts": {
+    "modified": 157,
+    "staged": 0,
+    "deleted": 0,
+    "untracked": 581,
+    "ignored": 791436
+  },
+  "afterCounts": {
+    "modified": 157,
+    "staged": 0,
+    "deleted": 0,
+    "untracked": 581,
+    "ignored": 85478
+  },
+  "cleanupDeletedDirectoryCount": 21,
+  "liveMutationOccurred": false,
+  "deployOccurred": false,
+  "contactPostOccurred": false,
+  "tenantCreationOccurred": false,
+  "protectedConfigContentRead": false,
+  "stagedAtEnd": false,
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-54a-carryforward.md",
+    "git-state-before-cleanup.md",
+    "tracked-change-disposition.md",
+    "untracked-file-disposition.md",
+    "ignored-artifact-disposition.md",
+    "safe-cleanup-actions-taken.md",
+    "stale-process-artifact-review.md",
+    "owner-decision-register.md",
+    "git-state-after-cleanup.md",
+    "pre-partner-tenant-cleanliness-readiness.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_WORKTREE_HYGIENE_REGISTER_V2_8_54B.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_UNRESOLVED_FILE_DISPOSITION_V2_8_54B.md"
+  ]
+}
