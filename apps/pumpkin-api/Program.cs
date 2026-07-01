@@ -1,6 +1,7 @@
 using pumpkin_api.Services;
 using pumpkin_api.Managers;
 using pumpkin_net_models.Models;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -193,6 +194,110 @@ IResult GetHealth() => Results.Ok(new
     timestampUtc = DateTimeOffset.UtcNow
 });
 
+FormEntry BuildFormEntryFromSubmitAliasPayload(string tenantId, string type, JsonElement payload, HttpContext context)
+{
+    var formData = new Dictionary<string, object>(StringComparer.Ordinal);
+    var formId = string.Empty;
+    var formKey = type.Trim();
+    var siteKey = tenantId;
+    var sourcePage = "external-submit-alias";
+
+    if (payload.ValueKind == JsonValueKind.Object)
+    {
+        if (payload.TryGetProperty("formId", out var formIdElement))
+            formId = JsonElementToString(formIdElement);
+        if (payload.TryGetProperty("formKey", out var formKeyElement))
+            formKey = JsonElementToString(formKeyElement);
+        if (payload.TryGetProperty("siteKey", out var siteKeyElement))
+            siteKey = JsonElementToString(siteKeyElement);
+        if (payload.TryGetProperty("sourcePage", out var sourcePageElement))
+            sourcePage = JsonElementToString(sourcePageElement);
+
+        if (payload.TryGetProperty("formData", out var formDataElement) && formDataElement.ValueKind == JsonValueKind.Object)
+        {
+            AddJsonObjectProperties(formDataElement, formData);
+        }
+        else
+        {
+            AddJsonObjectProperties(payload, formData, new HashSet<string>(StringComparer.Ordinal)
+            {
+                "formId",
+                "formKey",
+                "formData",
+                "siteKey",
+                "sourcePage",
+                "tenantId"
+            });
+        }
+    }
+
+    if (string.IsNullOrWhiteSpace(formId))
+        formId = formKey;
+    if (string.IsNullOrWhiteSpace(formKey))
+        formKey = type.Trim();
+    if (string.IsNullOrWhiteSpace(siteKey))
+        siteKey = tenantId;
+    if (string.IsNullOrWhiteSpace(sourcePage))
+        sourcePage = "external-submit-alias";
+
+    formData.TryAdd("tenantId", tenantId);
+    formData.TryAdd("siteKey", siteKey);
+    formData.TryAdd("formKey", formKey);
+    formData.TryAdd("sourcePage", sourcePage);
+
+    return new FormEntry
+    {
+        TenantId = tenantId,
+        SiteKey = siteKey,
+        FormId = formId,
+        FormKey = formKey,
+        PageSlug = sourcePage,
+        SourcePage = sourcePage,
+        FormData = formData,
+        SubmittedAt = DateTime.UtcNow,
+        IpAddress = context.Connection.RemoteIpAddress?.ToString() ?? string.Empty,
+        UserAgent = context.Request.Headers.UserAgent.FirstOrDefault() ?? string.Empty,
+        Metadata = new FormEntryMetadata
+        {
+            Source = "external-submit-alias",
+            Tags = new List<string> { "external-compat-alias", tenantId, formKey }
+                .Where(tag => !string.IsNullOrWhiteSpace(tag))
+                .Distinct(StringComparer.Ordinal)
+                .ToList()
+        }
+    };
+}
+
+static void AddJsonObjectProperties(JsonElement source, Dictionary<string, object> target, HashSet<string>? excludedKeys = null)
+{
+    foreach (var property in source.EnumerateObject())
+    {
+        if (excludedKeys?.Contains(property.Name) == true)
+            continue;
+
+        target[property.Name] = JsonElementToObject(property.Value);
+    }
+}
+
+static object JsonElementToObject(JsonElement element)
+{
+    return element.ValueKind switch
+    {
+        JsonValueKind.String => element.GetString() ?? string.Empty,
+        JsonValueKind.True => true,
+        JsonValueKind.False => false,
+        JsonValueKind.Number => element.ToString(),
+        JsonValueKind.Null => string.Empty,
+        JsonValueKind.Undefined => string.Empty,
+        _ => element.Clone()
+    };
+}
+
+static string JsonElementToString(JsonElement element)
+{
+    return JsonElementToObject(element).ToString()?.Trim() ?? string.Empty;
+}
+
 app.MapGet("/api/health", GetHealth)
     .WithTags("Health")
     .WithName("GetApiHealth")
@@ -319,6 +424,28 @@ app.MapPost("/api/forms/{tenantId}/entries",
     .WithName("SaveFormEntry")
     .WithSummary("Submit a form entry")
     .WithDescription("Submits a new form entry for a specific tenant. Requires API key authentication via Authorization header (Bearer {apiKey})")
+    .RequireCors("TenantCors");
+
+// External compatibility alias: submit a form entry by tenant and form type
+app.MapPost("/api/forms/{tenantId}/submit/{type}",
+    async (IDatabaseService databaseService, string tenantId, string type, JsonElement payload, HttpContext context) =>
+    {
+        // Extract API key from Authorization header (Bearer token format)
+        var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
+        var apiKey = string.Empty;
+
+        if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+        {
+            apiKey = authHeader.Substring("Bearer ".Length).Trim();
+        }
+
+        var formEntry = BuildFormEntryFromSubmitAliasPayload(tenantId, type, payload, context);
+        return await PumpkinManager.SaveFormEntrySubmitAliasAsync(databaseService, apiKey, tenantId, type, formEntry);
+    })
+    .WithTags("Forms")
+    .WithName("SaveFormEntrySubmitAlias")
+    .WithSummary("Submit a form entry by type")
+    .WithDescription("Compatibility alias for external form submit clients. Requires API key authentication via Authorization header (Bearer {apiKey})")
     .RequireCors("TenantCors");
 
 // Get a tenant form definition by type or form key
@@ -1594,6 +1721,81 @@ app.MapGet("/api/admin/{tenantId}/form-entries/{id}",
     .WithName("GetFormEntry")
     .WithSummary("Get one form entry")
     .WithDescription("Reads one tenant-scoped form submission. Requires JWT authentication.");
+
+// Admin compatibility alias: List form entries for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/forms/{tenantId}/entries",
+    async (IDatabaseService databaseService, string tenantId, string? type, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var formEntries = await databaseService.GetFormEntriesByTenantAsync(tenantId);
+            var normalizedType = (type ?? string.Empty).Trim();
+            if (!string.IsNullOrWhiteSpace(normalizedType))
+            {
+                formEntries = formEntries
+                    .Where(entry =>
+                        string.Equals(entry.FormKey, normalizedType, StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(entry.FormId, normalizedType, StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(entry.LeadType, normalizedType, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            return Results.Ok(new { formEntries, count = formEntries.Count, tenantId, type = string.IsNullOrWhiteSpace(normalizedType) ? null : normalizedType });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving form entries: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Form Entries")
+    .WithName("GetFormEntriesExternalAlias")
+    .WithSummary("Get form entries for a tenant")
+    .WithDescription("Compatibility alias for listing tenant-scoped form submissions newest first. Requires JWT authentication.");
+
+// Admin compatibility alias: Get one form entry for a tenant (JWT auth, no API key)
+app.MapGet("/api/admin/forms/{tenantId}/entries/{entryId}",
+    async (IDatabaseService databaseService, string tenantId, string entryId, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        try
+        {
+            var formEntry = await databaseService.GetFormEntryAsync(tenantId, entryId);
+            return formEntry == null ? Results.NotFound("Form entry not found") : Results.Ok(formEntry);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error retrieving form entry: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Form Entries")
+    .WithName("GetFormEntryExternalAlias")
+    .WithSummary("Get one form entry")
+    .WithDescription("Compatibility alias for reading one tenant-scoped form submission. Requires JWT authentication.");
 
 // Admin: Update form entry status/tags only (JWT auth, no API key)
 app.MapPatch("/api/admin/{tenantId}/form-entries/{id}",

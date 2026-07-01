@@ -220,6 +220,71 @@ public static class PumpkinManager
         }
     }
 
+    public static async Task<IResult> SaveFormEntrySubmitAliasAsync(IDatabaseService databaseService, string apiKey, string tenantId, string type, FormEntry formEntry)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(apiKey))
+                return Results.BadRequest("API key is required");
+
+            if (string.IsNullOrEmpty(tenantId))
+                return Results.BadRequest("Tenant ID is required");
+
+            var normalizedType = NormalizeSubmitAliasFormKey(PageRedirectGuard.NormalizeSlug(type));
+            if (string.IsNullOrWhiteSpace(normalizedType))
+                return Results.BadRequest("Form type is required");
+
+            if (formEntry == null)
+                return Results.BadRequest("Form entry data is required");
+
+            formEntry.TenantId = tenantId;
+            formEntry.FormKey = NormalizeSubmitAliasFormKey(PageRedirectGuard.NormalizeSlug(FirstNonEmpty(formEntry.FormKey, normalizedType)));
+            formEntry.FormId = FirstNonEmpty(formEntry.FormId, formEntry.FormKey);
+
+            if (IsDefaultFormKey(formEntry.FormKey))
+            {
+                return await SaveFormEntryAsync(databaseService, apiKey, tenantId, formEntry);
+            }
+
+            var formDefinition = await databaseService.GetFormDefinitionAsync(apiKey, tenantId, normalizedType);
+            if (formDefinition == null)
+                return Results.NotFound("Form definition not found or access denied");
+
+            formEntry.FormKey = formDefinition.FormKey;
+            formEntry.FormId = FirstNonEmpty(formEntry.FormId, formDefinition.Id, formDefinition.FormKey);
+            formEntry.SiteKey = FirstNonEmpty(formEntry.SiteKey, formDefinition.SiteKey, tenantId);
+
+            var submissionValidation = FormSubmissionGuard.SanitizeDynamic(formEntry, formDefinition);
+            if (!submissionValidation.Ok)
+            {
+                return Results.BadRequest(new
+                {
+                    errors = submissionValidation.Errors.Select(issue => issue.Message).ToList(),
+                    warnings = submissionValidation.Warnings.Select(issue => issue.Message).ToList()
+                });
+            }
+
+            if (string.IsNullOrEmpty(formEntry.FormId))
+                return Results.BadRequest("Form ID is required");
+
+            var savedFormEntry = await databaseService.SaveFormEntryAsync(apiKey, tenantId, formEntry);
+
+            return Results.Created($"/api/forms/{tenantId}/entries/{savedFormEntry.Id}", savedFormEntry);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Results.Unauthorized();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.Conflict(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error saving form entry: {ex.Message}");
+        }
+    }
+
     public static async Task<IResult> GetSitemapPagesAsync(IDatabaseService databaseService, string apiKey, string tenantId)
     {
         try
@@ -659,6 +724,35 @@ public static class PumpkinManager
                candidate.Contains("sig=", StringComparison.Ordinal) ||
                candidate.Contains("bearer ", StringComparison.Ordinal) ||
                candidate.Contains("password=", StringComparison.Ordinal);
+    }
+
+    private static bool IsDefaultFormKey(string formKey)
+    {
+        return string.Equals(formKey, "default-contact", StringComparison.Ordinal) ||
+               string.Equals(formKey, "contact", StringComparison.Ordinal) ||
+               string.Equals(formKey, "default-quote-request", StringComparison.Ordinal) ||
+               string.Equals(formKey, "quote", StringComparison.Ordinal) ||
+               string.Equals(formKey, "quote-request", StringComparison.Ordinal) ||
+               string.Equals(formKey, "default-quote", StringComparison.Ordinal) ||
+               string.Equals(formKey, "ice-contact-quote-request", StringComparison.Ordinal);
+    }
+
+    private static string NormalizeSubmitAliasFormKey(string formKey)
+    {
+        return formKey switch
+        {
+            "contact" => "default-contact",
+            "quote" => "default-quote-request",
+            "quote-request" => "default-quote-request",
+            "default-quote" => "default-quote-request",
+            "ice-contact-quote-request" => "default-quote-request",
+            _ => formKey
+        };
+    }
+
+    private static string FirstNonEmpty(params string[] values)
+    {
+        return values.FirstOrDefault(value => !string.IsNullOrWhiteSpace(value))?.Trim() ?? string.Empty;
     }
 
     // ===== THEME METHODS (Content Serving - API Key) =====

@@ -115,6 +115,118 @@ public static class FormSubmissionGuard
         return result;
     }
 
+    public static FormSubmissionGuardResult SanitizeDynamic(FormEntry entry, FormDefinition definition)
+    {
+        var result = new FormSubmissionGuardResult();
+        var spamProtection = definition.SpamProtection ?? new FormSpamProtection();
+        var consent = definition.Consent ?? new FormConsent();
+        var routing = definition.Routing ?? new FormRouting();
+        var maxPayloadBytes = spamProtection.MaxPayloadBytes > 0
+            ? Math.Min(spamProtection.MaxPayloadBytes, MaxPayloadBytes)
+            : MaxPayloadBytes;
+        var maxFieldLength = spamProtection.MaxFieldLength > 0
+            ? Math.Min(spamProtection.MaxFieldLength, MaxFieldLength)
+            : MaxFieldLength;
+
+        entry.FormKey = FirstNonEmpty(definition.FormKey, entry.FormKey, entry.FormId);
+        entry.FormId = FirstNonEmpty(entry.FormId, definition.Id, entry.FormKey);
+        entry.SiteKey = FirstNonEmpty(entry.SiteKey, definition.SiteKey, GetDataValue(entry, "siteKey"), entry.TenantId);
+        entry.SourcePage = FirstNonEmpty(entry.SourcePage, GetDataValue(entry, "sourcePage"), entry.PageSlug, "external-submit-alias");
+        entry.PageSlug = FirstNonEmpty(entry.PageSlug, entry.SourcePage, "external-submit-alias");
+        entry.LeadType = FirstNonEmpty(routing.LeadType, definition.FormType, entry.LeadType, "custom");
+        entry.Status = "new";
+        entry.Metadata ??= new FormEntryMetadata();
+
+        var serialized = JsonSerializer.Serialize(entry.FormData ?? new Dictionary<string, object>());
+        if (serialized.Length > maxPayloadBytes)
+        {
+            Error(result, "submission.size", "Form submission exceeds the configured payload size.", "formData");
+            return result;
+        }
+
+        var fields = (definition.Fields ?? new List<FormDefinitionField>())
+            .Concat(definition.HiddenFields ?? new List<FormDefinitionField>())
+            .ToList();
+        var allowed = new HashSet<string>(fields
+            .SelectMany(field => new[] { field.Name, field.Id })
+            .Where(value => !string.IsNullOrWhiteSpace(value)), StringComparer.Ordinal);
+        allowed.Add("tenantId");
+        allowed.Add("siteKey");
+        allowed.Add("formKey");
+        allowed.Add("sourcePage");
+
+        var honeypotFieldName = FirstNonEmpty(spamProtection.HoneypotFieldName, "honeypot");
+        var consentFieldName = FirstNonEmpty(consent.FieldName, "consent");
+        allowed.Add(honeypotFieldName);
+        allowed.Add(consentFieldName);
+
+        var sanitized = new Dictionary<string, object>(StringComparer.Ordinal);
+        foreach (var item in entry.FormData ?? new Dictionary<string, object>())
+        {
+            if (!allowed.Contains(item.Key))
+            {
+                Warn(result, "submission.unknownField", $"Unknown field \"{item.Key}\" was ignored.", $"formData.{item.Key}");
+                continue;
+            }
+
+            sanitized[item.Key] = SanitizeString(item.Value, maxFieldLength);
+        }
+
+        foreach (var field in fields.Where(field => field.Required))
+        {
+            var fieldName = FirstNonEmpty(field.Name, field.Id);
+            if (string.IsNullOrWhiteSpace(fieldName))
+                continue;
+
+            if (!sanitized.TryGetValue(fieldName, out var value) || string.IsNullOrWhiteSpace(Convert.ToString(value)))
+            {
+                Error(result, "submission.required", $"{fieldName} is required.", $"formData.{fieldName}");
+            }
+        }
+
+        foreach (var field in fields.Where(field =>
+            string.Equals(field.Type, "email", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(field.Name, "email", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(field.Id, "email", StringComparison.OrdinalIgnoreCase)))
+        {
+            var fieldName = FirstNonEmpty(field.Name, field.Id);
+            if (sanitized.TryGetValue(fieldName, out var emailValue))
+            {
+                var email = Convert.ToString(emailValue) ?? string.Empty;
+                if (!string.IsNullOrWhiteSpace(email) && !EmailPattern.IsMatch(email))
+                {
+                    Error(result, "submission.email", $"{fieldName} must be valid.", $"formData.{fieldName}");
+                }
+            }
+        }
+
+        var honeypot = sanitized.TryGetValue(honeypotFieldName, out var honeypotValue)
+            ? Convert.ToString(honeypotValue) ?? string.Empty
+            : string.Empty;
+        entry.HoneypotFilled = !string.IsNullOrWhiteSpace(honeypot);
+        entry.SpamStatus = entry.HoneypotFilled ? "suspected-spam" : "clean";
+
+        entry.ConsentAccepted = sanitized.TryGetValue(consentFieldName, out var consentValue) && IsTruthy(Convert.ToString(consentValue));
+        if (consent.Required && !entry.ConsentAccepted)
+        {
+            Error(result, "submission.consent", "Consent is required.", $"formData.{consentFieldName}");
+        }
+
+        entry.Status = entry.SpamStatus == "suspected-spam" ? "suspected-spam" : "new";
+        entry.FormData = sanitized;
+
+        entry.Metadata.Status = entry.Status;
+        entry.Metadata.SpamStatus = entry.SpamStatus;
+        entry.Metadata.ConsentAccepted = entry.ConsentAccepted;
+        entry.Metadata.Tags = entry.Metadata.Tags
+            .Concat(new[] { entry.SiteKey, entry.PageSlug, entry.FormKey, entry.LeadType, entry.SpamStatus })
+            .Where(tag => !string.IsNullOrWhiteSpace(tag))
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+
+        return result;
+    }
+
     private static string GetDataValue(FormEntry entry, string key)
     {
         if (entry.FormData == null || !entry.FormData.TryGetValue(key, out var value)) return string.Empty;

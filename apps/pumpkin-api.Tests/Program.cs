@@ -66,6 +66,12 @@ if (args.Contains("--v2-8-48-formdefinition", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-8-53s-external-compat", StringComparer.OrdinalIgnoreCase))
+{
+    await ExternalSdiAiCompatibilitySourceTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
