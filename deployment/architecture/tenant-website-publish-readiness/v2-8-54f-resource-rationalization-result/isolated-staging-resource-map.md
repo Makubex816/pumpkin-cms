@@ -1,0 +1,8 @@
+# Isolated Staging Resource Map
+
+| subscriptionId | subscriptionName | resourceGroup | resourceName | resourceType | location | resourceId | knownBinding | classificationBucket | evidence | doNotDeleteReason | nextAction |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ff887def-fd83-4a19-9298-13d4b1687873 | Azure subscription 1 | rg-ice-static-staging | swa-ice-static-isolated-staging | Microsoft.Web/staticSites | eastus2 | /subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-ice-static-staging/providers/Microsoft.Web/staticSites/swa-ice-static-isolated-staging | Isolated Ice Static Web App proof environment | active_isolated_or_staging_do_not_delete | Read-only az resource list; type=Microsoft.Web/staticSites; group=rg-ice-static-staging | Used for isolated/staging proof and no-regression validation. | Keep until a replacement isolated/staging strategy is approved. |
+| ff887def-fd83-4a19-9298-13d4b1687873 | Azure subscription 1 | rg-pumpkin-api-prod-centralus | app-pumpkin-admin-isolated-centralus-001 | Microsoft.Web/sites | centralus | /subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/sites/app-pumpkin-admin-isolated-centralus-001 | Admin UI isolated proof App Service | active_isolated_or_staging_do_not_delete | Read-only az resource list; type=Microsoft.Web/sites; group=rg-pumpkin-api-prod-centralus | Used for isolated/staging proof and no-regression validation. | Keep until a replacement isolated/staging strategy is approved. |
+
+These are not deletion candidates until a replacement proof path exists.
