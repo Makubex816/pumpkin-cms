@@ -2160,6 +2160,44 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     }
 
     /// <summary>
+    /// Create a user in the tenant-scoped User container.
+    /// </summary>
+    public async Task<pumpkin_net_models.Models.User> CreateUserAsync(pumpkin_net_models.Models.User user)
+    {
+        try
+        {
+            var userContainer = _database.GetContainer("User");
+
+            var existing = await GetUserByEmailAsync(user.Email);
+            if (existing != null)
+            {
+                throw new InvalidOperationException($"User with email '{user.Email}' already exists");
+            }
+
+            user.Id = string.IsNullOrWhiteSpace(user.Id) ? Guid.NewGuid().ToString() : user.Id;
+            user.TenantId = user.TenantId.Trim().ToLowerInvariant();
+            user.Email = user.Email.Trim().ToLowerInvariant();
+            user.CreatedDate = DateTime.UtcNow;
+
+            var response = await userContainer.CreateItemAsync(user, new PartitionKey(user.TenantId));
+
+            _logger.LogInformation("User created - UserId: {UserId}, TenantId: {TenantId}, Role: {Role}, RU Cost: {RequestCharge}",
+                user.Id, user.TenantId, user.Role, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
+        {
+            throw new InvalidOperationException($"User with ID '{user.Id}' already exists");
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "Error creating user - UserId: {UserId}, TenantId: {TenantId}", user.Id, user.TenantId);
+            throw;
+        }
+    }
+
+    /// <summary>
     /// Update user's last login timestamp
     /// </summary>
     public async Task UpdateUserLastLoginAsync(string userId, string tenantId)

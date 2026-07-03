@@ -288,6 +288,11 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.GetUserByEmailAsync(email);
     }
 
+    public Task<User> CreateUserAsync(User user)
+    {
+        return _dataConnection.CreateUserAsync(user);
+    }
+
     public Task UpdateUserLastLoginAsync(string userId, string tenantId)
     {
         return _dataConnection.UpdateUserLastLoginAsync(userId, tenantId);

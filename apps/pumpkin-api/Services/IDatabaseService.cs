@@ -75,5 +75,6 @@ public interface IDatabaseService
 
     // User authentication methods
     Task<User?> GetUserByEmailAsync(string email);
+    Task<User> CreateUserAsync(User user);
     Task UpdateUserLastLoginAsync(string userId, string tenantId);
 }

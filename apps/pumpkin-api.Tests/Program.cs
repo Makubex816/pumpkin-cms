@@ -72,6 +72,12 @@ if (args.Contains("--v2-8-53s-external-compat", StringComparer.OrdinalIgnoreCase
     return;
 }
 
+if (args.Contains("--v2-8-58a-tenantadmin", StringComparer.OrdinalIgnoreCase))
+{
+    await TenantAdminProvisioningSourceTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
@@ -649,6 +655,9 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
     // User authentication methods
     public Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(string email)
         => _connection.GetUserByEmailAsync(email);
+
+    public Task<pumpkin_net_models.Models.User> CreateUserAsync(pumpkin_net_models.Models.User user)
+        => _connection.CreateUserAsync(user);
 
     public Task UpdateUserLastLoginAsync(string userId, string tenantId)
         => _connection.UpdateUserLastLoginAsync(userId, tenantId);

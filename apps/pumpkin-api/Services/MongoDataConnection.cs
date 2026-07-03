@@ -1190,6 +1190,28 @@ public class MongoDataConnection : IDataConnection, IDisposable
         return user;
     }
 
+    public async Task<User> CreateUserAsync(User user)
+    {
+        var collection = _database.GetCollection<User>("User");
+        var existing = await GetUserByEmailAsync(user.Email);
+        if (existing != null)
+        {
+            throw new InvalidOperationException($"User with email '{user.Email}' already exists");
+        }
+
+        user.Id = string.IsNullOrWhiteSpace(user.Id) ? Guid.NewGuid().ToString() : user.Id;
+        user.TenantId = user.TenantId.Trim().ToLowerInvariant();
+        user.Email = user.Email.Trim().ToLowerInvariant();
+        user.CreatedDate = DateTime.UtcNow;
+
+        await collection.InsertOneAsync(user);
+
+        _logger.LogInformation("User created - UserId: {UserId}, TenantId: {TenantId}, Role: {Role}",
+            user.Id, user.TenantId, user.Role);
+
+        return user;
+    }
+
     public async Task UpdateUserLastLoginAsync(string userId, string tenantId)
     {
         var collection = _database.GetCollection<User>("User");
@@ -1418,6 +1440,11 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<User?> GetUserByEmailAsync(string email)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<User> CreateUserAsync(User user)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

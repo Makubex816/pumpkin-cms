@@ -1041,6 +1041,56 @@ app.MapDelete("/api/admin/tenants/{tenantId}",
     .WithSummary("Delete tenant (SuperAdmin only)")
     .WithDescription("Deletes a tenant. Requires SuperAdmin role and JWT authentication via Bearer token. Cannot delete own tenant.");
 
+// Admin: Create a TenantAdmin user for an existing tenant (JWT-authenticated)
+app.MapPost("/api/admin/tenants/{tenantId}/tenant-admins",
+    async (IDatabaseService databaseService, HttpContext context, string tenantId, CreateTenantAdminUserRequest request) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+        {
+            return Results.BadRequest("User tenant ID not found in token");
+        }
+
+        if (!TenantAdminUserProvisioningService.IsSuperAdminRole(userRole))
+        {
+            return Results.Forbid();
+        }
+
+        try
+        {
+            var result = await TenantAdminUserProvisioningService.CreateTenantAdminAsync(databaseService, tenantId, request);
+            return result.Status switch
+            {
+                TenantAdminUserProvisioningStatus.Created => Results.Created(
+                    $"/api/admin/tenants/{tenantId}/tenant-admins/{result.User!.Id}",
+                    result.User),
+                TenantAdminUserProvisioningStatus.TenantNotFound => Results.NotFound(result.Message),
+                TenantAdminUserProvisioningStatus.Conflict => Results.Conflict(result.Message),
+                _ => Results.BadRequest(result.Message)
+            };
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.Conflict(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error creating tenant admin user: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin")
+    .WithName("CreateTenantAdminUser")
+    .WithSummary("Create TenantAdmin user (SuperAdmin only)")
+    .WithDescription("Creates an active TenantAdmin user for an existing tenant. Requires SuperAdmin role and JWT authentication. Does not return password or password hash.");
+
 // Admin: Get all pages (optionally filtered by tenant)
 app.MapGet("/api/admin/pages",
     async (IDatabaseService databaseService, HttpContext context, string? tenantId = null) =>

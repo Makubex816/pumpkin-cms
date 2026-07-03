@@ -1,0 +1,20 @@
+{
+  "phase": "V2.8.58A",
+  "status": "blocked_after_route_repair_and_api_deploy",
+  "classification": "airstrip_media_upload_rbac_failed_after_tenantadmin_route_repair",
+  "tenantId": "airstrip-club-las-vegas",
+  "targetDomain": "airstripclublasvegas.com",
+  "pumpkinApiDeployOccurred": true,
+  "pumpkinApiDeployCount": 1,
+  "adminUiDeployOccurred": false,
+  "swaDeployOccurred": false,
+  "productionCutoverOccurred": false,
+  "airstripTenantCreated": false,
+  "airstripMediaContainerResidual": false,
+  "contactPostOccurred": false,
+  "formSubmissionOccurred": false,
+  "dnsOrIndexingOccurred": false,
+  "storageKeysListKeysOrSasOccurred": false,
+  "iceMutationOccurred": false
+}
+
