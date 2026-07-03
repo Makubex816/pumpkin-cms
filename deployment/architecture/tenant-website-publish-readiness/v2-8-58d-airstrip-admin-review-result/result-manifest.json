@@ -1,0 +1,39 @@
+{
+  "phase": "v2-8-58d",
+  "status": "closed_success_with_public_page_api_blocker_documented",
+  "classification": "airstrip_admin_ui_tenant_review_public_preview_readiness_no_live_mutation",
+  "tenantId": "airstrip-club-las-vegas",
+  "createdDate": "2026-07-03",
+  "proofSummary": {
+    "superAdminReview": "passed",
+    "tenantAdminReview": "passed",
+    "tenantIsolation": "passed",
+    "mediaUrlReadback": "passed",
+    "publicFormDefinitionRead": "passed",
+    "publicPageReadiness": "blocked_by_unpublished_airstrip_pages",
+    "iceNoRegression": "passed"
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-58c-carryforward.md",
+    "secure-file-readiness.md",
+    "superadmin-airstrip-review-proof.md",
+    "airstrip-tenantadmin-review-proof.md",
+    "onboarding-users-denial-proof.md",
+    "airstrip-pages-review-proof.md",
+    "airstrip-media-review-proof.md",
+    "airstrip-theme-review-proof.md",
+    "airstrip-formdefinition-review-proof.md",
+    "media-public-url-readback-proof.md",
+    "public-api-readiness-proof.md",
+    "tenant-isolation-review-proof.md",
+    "ice-no-regression-proof.md",
+    "airstrip-isolated-proof-readiness.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
