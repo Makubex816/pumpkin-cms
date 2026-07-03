@@ -1178,6 +1178,30 @@ public class MongoDataConnection : IDataConnection, IDisposable
         return false;
     }
 
+    public async Task<List<User>> GetUsersAsync(string? tenantId = null)
+    {
+        var collection = _database.GetCollection<User>("User");
+        var filter = string.IsNullOrWhiteSpace(tenantId)
+            ? Builders<User>.Filter.Empty
+            : Builders<User>.Filter.Eq(u => u.TenantId, tenantId.Trim().ToLowerInvariant());
+
+        var users = await collection.Find(filter).ToListAsync();
+        return users
+            .OrderBy(user => user.TenantId, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(user => user.Email, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+    }
+
+    public async Task<User?> GetUserByIdAsync(string tenantId, string userId)
+    {
+        var collection = _database.GetCollection<User>("User");
+        var filter = Builders<User>.Filter.And(
+            Builders<User>.Filter.Eq(u => u.Id, userId),
+            Builders<User>.Filter.Eq(u => u.TenantId, tenantId.Trim().ToLowerInvariant()));
+
+        return await collection.Find(filter).FirstOrDefaultAsync();
+    }
+
     public async Task<User?> GetUserByEmailAsync(string email)
     {
         var collection = _database.GetCollection<User>("User");
@@ -1186,7 +1210,25 @@ public class MongoDataConnection : IDataConnection, IDisposable
         
         _logger.LogInformation("GetUserByEmail - Email: {Email}, Found: {Found}", 
             email, user != null);
-        
+
+        return user;
+    }
+
+    public async Task<User> UpdateUserAsync(User user)
+    {
+        var collection = _database.GetCollection<User>("User");
+        user.TenantId = user.TenantId.Trim().ToLowerInvariant();
+        user.Email = user.Email.Trim().ToLowerInvariant();
+
+        var filter = Builders<User>.Filter.And(
+            Builders<User>.Filter.Eq(u => u.Id, user.Id),
+            Builders<User>.Filter.Eq(u => u.TenantId, user.TenantId));
+
+        await collection.ReplaceOneAsync(filter, user);
+
+        _logger.LogInformation("User updated - UserId: {UserId}, TenantId: {TenantId}, Role: {Role}",
+            user.Id, user.TenantId, user.Role);
+
         return user;
     }
 
@@ -1439,7 +1481,22 @@ public class MongoDataConnection : IDataConnection, IDisposable
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }
 
+    public Task<List<User>> GetUsersAsync(string? tenantId = null)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<User?> GetUserByIdAsync(string tenantId, string userId)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
     public Task<User?> GetUserByEmailAsync(string email)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<User> UpdateUserAsync(User user)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

@@ -6,7 +6,9 @@ export type {
   User,
   LoginRequest,
   LoginResponse,
-  UserInfo
+  UserInfo,
+  AdminUserProfile,
+  UpdateUserProfileRequest
 } from './models/User';
 
 export {

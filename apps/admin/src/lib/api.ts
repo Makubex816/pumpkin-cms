@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse, UserInfo, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, ImportRun, FormEntry, MediaAsset, FormDefinition } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, AdminUserProfile, UpdateUserProfileRequest, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, ImportRun, FormEntry, MediaAsset, FormDefinition } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -225,6 +225,39 @@ class ApiClient {
 
     console.log('[API Client] Tenant deleted:', response)
     return response
+  }
+
+  async getAdminUsers(token: string, tenantId?: string): Promise<AdminUserProfile[]> {
+    const query = tenantId ? `?${new URLSearchParams({ tenantId }).toString()}` : ''
+    const response = await this.request<{ users: AdminUserProfile[]; count: number }>(
+      `/api/admin/users${query}`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+
+    return response.users
+  }
+
+  async updateAdminUserProfile(
+    token: string,
+    tenantId: string,
+    userId: string,
+    profile: UpdateUserProfileRequest
+  ): Promise<AdminUserProfile> {
+    return this.request<AdminUserProfile>(
+      `/api/admin/users/${encodeURIComponent(tenantId)}/${encodeURIComponent(userId)}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(profile),
+      }
+    )
   }
 
   // Get all pages for a tenant (requires authentication)

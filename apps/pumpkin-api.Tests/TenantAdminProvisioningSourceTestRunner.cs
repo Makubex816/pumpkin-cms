@@ -123,6 +123,10 @@ public static class TenantAdminProvisioningSourceTestRunner
             return Task.FromResult(user);
         }
 
+        public Task<List<User>> GetUsersAsync(string? tenantId = null) => throw NotUsed();
+        public Task<User?> GetUserByIdAsync(string tenantId, string userId) => throw NotUsed();
+        public Task<User> UpdateUserAsync(User user) => throw NotUsed();
+
         public Task<Page?> GetPageAsync(string apiKey, string tenantId, string pageSlug) => throw NotUsed();
         public Task<Page> SavePageAsync(string apiKey, string tenantId, Page page) => throw NotUsed();
         public Task<Page> UpdatePageAsync(string apiKey, string tenantId, string pageSlug, Page page) => throw NotUsed();

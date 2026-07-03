@@ -3,7 +3,22 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FileSearch, Link2 } from 'lucide-react'
+import {
+  Boxes,
+  Building2,
+  FileSearch,
+  FileText,
+  Home,
+  Image as ImageIcon,
+  Link2,
+  Mail,
+  Map,
+  Palette,
+  PenLine,
+  Rocket,
+  UploadCloud,
+  Users,
+} from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import TenantSelector from '@/components/TenantSelector'
@@ -12,62 +27,39 @@ interface NavItem {
   name: string
   href: string
   icon: ReactNode
+  roles?: string[]
 }
 
 const navigation: NavItem[] = [
   {
     name: 'Dashboard',
     href: '/dashboard',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
+    icon: <Home className="w-5 h-5" />,
   },
   {
     name: 'Pages',
     href: '/dashboard/pages',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-    ),
+    icon: <FileText className="w-5 h-5" />,
   },
   {
-    name: 'Leads',
+    name: 'Leads/Form Entries',
     href: '/dashboard/forms',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V6a2 2 0 00-2-2H3a2 2 0 00-2 2v8a2 2 0 002 2z" />
-      </svg>
-    ),
+    icon: <Mail className="w-5 h-5" />,
   },
   {
     name: 'Form Builder',
     href: '/dashboard/form-builder',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-      </svg>
-    ),
+    icon: <PenLine className="w-5 h-5" />,
   },
   {
     name: 'Media',
     href: '/dashboard/media',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-16 6h16a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v12a2 2 0 002 2zm14-10h.01" />
-      </svg>
-    ),
+    icon: <ImageIcon className="w-5 h-5" />,
   },
   {
     name: 'Publishing',
     href: '/dashboard/publishing',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 17l6-6 4 4 7-7m0 0v5m0-5h-5" />
-      </svg>
-    ),
+    icon: <UploadCloud className="w-5 h-5" />,
   },
   {
     name: 'Outbound Links',
@@ -82,44 +74,44 @@ const navigation: NavItem[] = [
   {
     name: 'Page Map',
     href: '/dashboard/page-map',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-      </svg>
-    ),
+    icon: <Map className="w-5 h-5" />,
   },
   {
     name: 'Themes',
     href: '/dashboard/themes',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-      </svg>
-    ),
+    icon: <Palette className="w-5 h-5" />,
+  },
+  {
+    name: 'Onboarding',
+    href: '/dashboard/onboarding',
+    icon: <Rocket className="w-5 h-5" />,
+    roles: ['SuperAdmin'],
+  },
+  {
+    name: 'Users/Admins',
+    href: '/dashboard/users',
+    icon: <Users className="w-5 h-5" />,
+    roles: ['SuperAdmin'],
   },
   {
     name: 'Tenants',
     href: '/dashboard/tenants',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-      </svg>
-    ),
+    icon: <Building2 className="w-5 h-5" />,
+    roles: ['SuperAdmin'],
   },
   {
     name: 'Icons',
     href: '/dashboard/icons',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
-      </svg>
-    ),
+    icon: <Boxes className="w-5 h-5" />,
   },
 ]
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const { user, logout } = useAuth()
+  const visibleNavigation = navigation.filter((item) =>
+    !item.roles || (user?.role ? item.roles.includes(user.role) : false)
+  )
 
   return (
     <ProtectedRoute>
@@ -141,7 +133,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
                 {/* Navigation Links */}
                 <nav className="hidden md:flex items-center space-x-1">
-                  {navigation.map((item) => {
+                  {visibleNavigation.map((item) => {
                     const isActive = item.href === '/dashboard'
                       ? pathname === '/dashboard'
                       : pathname === item.href || pathname?.startsWith(`${item.href}/`)
@@ -183,7 +175,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           {/* Mobile Navigation */}
           <div className="md:hidden border-t border-neutral-200">
             <nav className="px-4 py-2 flex items-center space-x-1 overflow-x-auto">
-              {navigation.map((item) => {
+              {visibleNavigation.map((item) => {
                 const isActive = item.href === '/dashboard'
                   ? pathname === '/dashboard'
                   : pathname === item.href || pathname?.startsWith(`${item.href}/`)

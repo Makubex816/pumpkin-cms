@@ -283,6 +283,16 @@ public class DatabaseService : IDatabaseService, IDisposable
     }
 
     // User authentication methods
+    public Task<List<User>> GetUsersAsync(string? tenantId = null)
+    {
+        return _dataConnection.GetUsersAsync(tenantId);
+    }
+
+    public Task<User?> GetUserByIdAsync(string tenantId, string userId)
+    {
+        return _dataConnection.GetUserByIdAsync(tenantId, userId);
+    }
+
     public Task<User?> GetUserByEmailAsync(string email)
     {
         return _dataConnection.GetUserByEmailAsync(email);
@@ -291,6 +301,11 @@ public class DatabaseService : IDatabaseService, IDisposable
     public Task<User> CreateUserAsync(User user)
     {
         return _dataConnection.CreateUserAsync(user);
+    }
+
+    public Task<User> UpdateUserAsync(User user)
+    {
+        return _dataConnection.UpdateUserAsync(user);
     }
 
     public Task UpdateUserLastLoginAsync(string userId, string tenantId)

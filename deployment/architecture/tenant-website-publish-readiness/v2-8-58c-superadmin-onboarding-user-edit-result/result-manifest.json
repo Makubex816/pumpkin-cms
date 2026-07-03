@@ -1,0 +1,46 @@
+{
+  "phase": "v2-8-58c",
+  "status": "closed_success",
+  "classification": "superadmin_only_onboarding_ui_admin_user_profile_editing_authorization_proof",
+  "createdDate": "2026-07-03",
+  "apiDeployment": {
+    "webApp": "app-pumpkin-api-prod-centralus-001",
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "deploymentId": "019083f5-df57-45a1-9f06-86e8efb14bae",
+    "status": "RuntimeSuccessful"
+  },
+  "adminUiDeployments": {
+    "isolated": {
+      "webApp": "app-pumpkin-admin-isolated-centralus-001",
+      "deploymentId": "a7d23f29-685c-44ad-bc0b-d065c1152548",
+      "status": "RuntimeSuccessful"
+    },
+    "production": {
+      "webApp": "app-pumpkin-admin-prod-centralus-001",
+      "deploymentId": "c151495a-4b5e-4dd6-aaa9-c25bb38de354",
+      "status": "RuntimeSuccessful"
+    }
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-58b-carryforward.md",
+    "secure-file-readiness.md",
+    "role-auth-source-discovery.md",
+    "superadmin-onboarding-ui-result.md",
+    "tenantadmin-onboarding-denial-proof.md",
+    "user-profile-edit-api-result-if-any.md",
+    "admin-ui-user-edit-result.md",
+    "user-edit-proof-result.md",
+    "pumpkin-api-build-deploy-result-if-any.md",
+    "admin-ui-build-deploy-result-if-any.md",
+    "authorization-boundary-proof.md",
+    "secret-field-nondisclosure-proof.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
+

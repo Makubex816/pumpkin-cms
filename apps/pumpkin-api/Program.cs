@@ -1091,6 +1091,74 @@ app.MapPost("/api/admin/tenants/{tenantId}/tenant-admins",
     .WithSummary("Create TenantAdmin user (SuperAdmin only)")
     .WithDescription("Creates an active TenantAdmin user for an existing tenant. Requires SuperAdmin role and JWT authentication. Does not return password or password hash.");
 
+// Admin: List users for SuperAdmin user management. Responses are sanitized.
+app.MapGet("/api/admin/users",
+    async (IDatabaseService databaseService, HttpContext context, string? tenantId = null) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+        if (!UserProfileManagementService.IsSuperAdminRole(userRole))
+        {
+            return Results.Forbid();
+        }
+
+        try
+        {
+            var users = await UserProfileManagementService.ListUsersAsync(databaseService, tenantId);
+            return Results.Ok(new { users, count = users.Count });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error listing users: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin")
+    .WithName("ListAdminUsers")
+    .WithSummary("List users (SuperAdmin only)")
+    .WithDescription("Lists sanitized admin/user profiles. Requires SuperAdmin role and JWT authentication. Does not return password or password hash.");
+
+// Admin: Update only user email and name fields. Role, tenant, password, and active state are not editable here.
+app.MapPatch("/api/admin/users/{tenantId}/{userId}",
+    async (IDatabaseService databaseService, HttpContext context, string tenantId, string userId, UpdateUserProfileRequest request) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+        if (!UserProfileManagementService.IsSuperAdminRole(userRole))
+        {
+            return Results.Forbid();
+        }
+
+        try
+        {
+            var result = await UserProfileManagementService.UpdateUserProfileAsync(databaseService, tenantId, userId, request);
+            return result.Status switch
+            {
+                UserProfileUpdateStatus.Updated => Results.Ok(result.User),
+                UserProfileUpdateStatus.NotFound => Results.NotFound(result.Message),
+                UserProfileUpdateStatus.Conflict => Results.Conflict(result.Message),
+                _ => Results.BadRequest(result.Message)
+            };
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error updating user profile: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin")
+    .WithName("UpdateAdminUserProfile")
+    .WithSummary("Update user name/email (SuperAdmin only)")
+    .WithDescription("Updates only email, firstName, and lastName for an existing user. Requires SuperAdmin role and JWT authentication.");
+
 // Admin: Get all pages (optionally filtered by tenant)
 app.MapGet("/api/admin/pages",
     async (IDatabaseService databaseService, HttpContext context, string? tenantId = null) =>

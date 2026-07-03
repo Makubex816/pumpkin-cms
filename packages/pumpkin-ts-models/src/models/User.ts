@@ -61,6 +61,33 @@ export interface UserInfo {
 }
 
 /**
+ * Sanitized admin user profile for SuperAdmin user management.
+ */
+export interface AdminUserProfile {
+  id: string;
+  tenantId: string;
+  email: string;
+  username: string;
+  firstName?: string;
+  lastName?: string;
+  displayName: string;
+  role: string;
+  isActive: boolean;
+  createdDate: string;
+  lastLogin?: string;
+  permissions: string[];
+}
+
+/**
+ * Approved user profile update payload.
+ */
+export interface UpdateUserProfileRequest {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+/**
  * Helper function to convert UserRole enum to string
  */
 export function userRoleToString(role: UserRole): string {

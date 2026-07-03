@@ -2119,6 +2119,64 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     }
 
     /// <summary>
+    /// Get users for an admin surface. Values are sanitized before leaving API routes.
+    /// </summary>
+    public async Task<List<pumpkin_net_models.Models.User>> GetUsersAsync(string? tenantId = null)
+    {
+        try
+        {
+            var userContainer = _database.GetContainer("User");
+            QueryDefinition queryDefinition;
+
+            if (string.IsNullOrWhiteSpace(tenantId))
+            {
+                queryDefinition = new QueryDefinition("SELECT * FROM c");
+            }
+            else
+            {
+                queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.tenantId = @tenantId")
+                    .WithParameter("@tenantId", tenantId.Trim().ToLowerInvariant());
+            }
+
+            using var iterator = userContainer.GetItemQueryIterator<pumpkin_net_models.Models.User>(queryDefinition);
+            var users = new List<pumpkin_net_models.Models.User>();
+
+            while (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync();
+                users.AddRange(response);
+            }
+
+            return users
+                .OrderBy(user => user.TenantId, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(user => user.Email, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "Error retrieving users for admin surface");
+            throw;
+        }
+    }
+
+    public async Task<pumpkin_net_models.Models.User?> GetUserByIdAsync(string tenantId, string userId)
+    {
+        try
+        {
+            var userContainer = _database.GetContainer("User");
+            var response = await userContainer.ReadItemAsync<pumpkin_net_models.Models.User>(
+                userId,
+                new PartitionKey(tenantId.Trim().ToLowerInvariant()));
+
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
     /// Get user by email address for authentication
     /// </summary>
     public async Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(string email)
@@ -2193,6 +2251,31 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         catch (CosmosException ex)
         {
             _logger.LogError(ex, "Error creating user - UserId: {UserId}, TenantId: {TenantId}", user.Id, user.TenantId);
+            throw;
+        }
+    }
+
+    public async Task<pumpkin_net_models.Models.User> UpdateUserAsync(pumpkin_net_models.Models.User user)
+    {
+        try
+        {
+            var userContainer = _database.GetContainer("User");
+            user.TenantId = user.TenantId.Trim().ToLowerInvariant();
+            user.Email = user.Email.Trim().ToLowerInvariant();
+
+            var response = await userContainer.ReplaceItemAsync(
+                user,
+                user.Id,
+                new PartitionKey(user.TenantId));
+
+            _logger.LogInformation("User updated - UserId: {UserId}, TenantId: {TenantId}, Role: {Role}, RU Cost: {RequestCharge}",
+                user.Id, user.TenantId, user.Role, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "Error updating user - UserId: {UserId}, TenantId: {TenantId}", user.Id, user.TenantId);
             throw;
         }
     }

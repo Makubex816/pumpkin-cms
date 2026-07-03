@@ -74,7 +74,10 @@ public interface IDataConnection
     Task<bool> DeleteThemeAsync(string tenantId, string themeId);
 
     // User authentication methods
+    Task<List<User>> GetUsersAsync(string? tenantId = null);
+    Task<User?> GetUserByIdAsync(string tenantId, string userId);
     Task<User?> GetUserByEmailAsync(string email);
     Task<User> CreateUserAsync(User user);
+    Task<User> UpdateUserAsync(User user);
     Task UpdateUserLastLoginAsync(string userId, string tenantId);
 }

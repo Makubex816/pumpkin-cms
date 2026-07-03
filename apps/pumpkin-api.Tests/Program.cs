@@ -78,6 +78,12 @@ if (args.Contains("--v2-8-58a-tenantadmin", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-8-58c-user-profile", StringComparer.OrdinalIgnoreCase))
+{
+    await UserProfileManagementSourceTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
@@ -653,11 +659,20 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
         => _connection.DeleteTenantAsync(tenantId);
 
     // User authentication methods
+    public Task<List<pumpkin_net_models.Models.User>> GetUsersAsync(string? tenantId = null)
+        => _connection.GetUsersAsync(tenantId);
+
+    public Task<pumpkin_net_models.Models.User?> GetUserByIdAsync(string tenantId, string userId)
+        => _connection.GetUserByIdAsync(tenantId, userId);
+
     public Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(string email)
         => _connection.GetUserByEmailAsync(email);
 
     public Task<pumpkin_net_models.Models.User> CreateUserAsync(pumpkin_net_models.Models.User user)
         => _connection.CreateUserAsync(user);
+
+    public Task<pumpkin_net_models.Models.User> UpdateUserAsync(pumpkin_net_models.Models.User user)
+        => _connection.UpdateUserAsync(user);
 
     public Task UpdateUserLastLoginAsync(string userId, string tenantId)
         => _connection.UpdateUserLastLoginAsync(userId, tenantId);
