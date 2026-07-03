@@ -1,0 +1,54 @@
+{
+  "phase": "v2-8-59",
+  "status": "closed_success",
+  "classification": "airstrip_isolated_hybrid_public_preview_proof_no_production_cutover",
+  "tenantId": "airstrip-club-las-vegas",
+  "createdDate": "2026-07-03",
+  "isolatedPreview": {
+    "webApp": "app-airstrip-preview-isolated-centralus-001",
+    "host": "https://app-airstrip-preview-isolated-centralus-001.azurewebsites.net",
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "deploymentId": "891799a1-679b-4f21-9b97-c2592ce80f50",
+    "deploymentStatus": "RuntimeSuccessful"
+  },
+  "proofSummary": {
+    "pageReadinessRepair": "passed",
+    "publicPageApi": "passed",
+    "isolatedBuildPackage": "passed",
+    "isolatedAppCreate": "passed",
+    "isolatedDeployCount": 1,
+    "isolatedRouteProof": "passed",
+    "screenshotProof": "passed",
+    "tenantIsolation": "passed",
+    "iceNoRegression": "passed",
+    "productionCutover": "not_approved_not_performed"
+  },
+  "visualReview": {
+    "folder": "C:\\Users\\User\\Desktop\\PumpkinCMS\\visual-review\\v2-8-59-airstrip-isolated-preview\\",
+    "aboveFoldChecksum": "42cdcf3f7621a58dacf8d7fd1a6d03ff837f1d9418d3a2495168ee698ca07008",
+    "fullPageChecksum": "579f3b7d7701b2b8a9e6dc96b98895cb4ad9980fbee1c40391350267289968be"
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-58d-carryforward.md",
+    "secure-file-readiness.md",
+    "airstrip-page-readiness-repair-result.md",
+    "public-page-api-proof.md",
+    "public-form-theme-sitemap-proof.md",
+    "isolated-preview-build-package-result.md",
+    "isolated-preview-app-result.md",
+    "isolated-preview-deploy-result.md",
+    "isolated-preview-route-proof.md",
+    "isolated-preview-screenshot-result.md",
+    "tenant-isolation-proof.md",
+    "ice-no-regression-proof.md",
+    "production-cutover-readiness.md",
+    "indexing-exclusion-confirmation.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
