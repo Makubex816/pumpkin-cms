@@ -1,0 +1,80 @@
+{
+  "phase": "v2-8-60",
+  "status": "production_default_host_live_bluehost_dns_owner_action_required",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "airstrip_production_cutover_bluehost_dns_no_indexing",
+  "tenantId": "airstrip-club-las-vegas",
+  "productionAppService": {
+    "name": "app-airstrip-prod-centralus-001",
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "defaultHost": "https://app-airstrip-prod-centralus-001.azurewebsites.net",
+    "plan": "asp-pumpkin-api-prod-centralus-001",
+    "runtime": "NODE|22-lts",
+    "deploymentId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/sites/app-airstrip-prod-centralus-001/deploymentStatus/54ce2939-fad0-4b76-a0cd-3467972e2524",
+    "deployCountThisPhase": 1
+  },
+  "customDomain": {
+    "apex": "airstripclublasvegas.com",
+    "www": "www.airstripclublasvegas.com",
+    "status": "bluehost_dns_owner_action_required",
+    "boundThisPhase": false
+  },
+  "bluehostDns": {
+    "nameservers": [
+      "ns1.bluehost.com",
+      "ns2.bluehost.com"
+    ],
+    "appServiceInboundIp": "20.118.48.17",
+    "defaultHost": "app-airstrip-prod-centralus-001.azurewebsites.net",
+    "customDomainVerificationId": "17FA81D26688CC438E7CF3402F33A438B12FDB881933AB1322B14006013C1FCD",
+    "ownerActionRequired": true
+  },
+  "visualReview": {
+    "folder": "C:\\Users\\User\\Desktop\\PumpkinCMS\\visual-review\\v2-8-60-airstrip-production-cutover\\",
+    "aboveFoldChecksum": "42cdcf3f7621a58dacf8d7fd1a6d03ff837f1d9418d3a2495168ee698ca07008",
+    "fullPageChecksum": "579f3b7d7701b2b8a9e6dc96b98895cb4ad9980fbee1c40391350267289968be"
+  },
+  "proofSummary": {
+    "preCutoverHealth": "passed",
+    "productionBuildPackage": "passed",
+    "productionDeploy": "passed",
+    "productionDefaultHostRouteProof": "passed",
+    "productionBrowserDiagnostics": "passed",
+    "bluehostDnsRecordPacket": "created",
+    "customDomainValidation": "not_ready_bluehost_owner_action_required",
+    "airstripProductionStatusUpdate": "passed",
+    "iceNoRegression": "passed",
+    "indexingExcluded": true,
+    "googleWorkspaceEmailActivated": false,
+    "cdnFrontDoorUsed": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-59-carryforward.md",
+    "secure-file-readiness.md",
+    "pre-cutover-health-checks.md",
+    "production-build-package-result.md",
+    "production-appservice-result.md",
+    "production-deploy-result.md",
+    "production-default-host-route-proof.md",
+    "production-browser-diagnostics.md",
+    "production-screenshot-result.md",
+    "bluehost-dns-record-packet.md",
+    "bluehost-dns-owner-action-required.md",
+    "custom-domain-validation-result.md",
+    "custom-domain-binding-result.md",
+    "custom-domain-route-proof-if-any.md",
+    "google-workspace-email-not-activated.md",
+    "cdn-frontdoor-not-used.md",
+    "airstrip-production-status-update-result.md",
+    "ice-no-regression-proof.md",
+    "indexing-exclusion-confirmation.md",
+    "rollback-residual-state.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
