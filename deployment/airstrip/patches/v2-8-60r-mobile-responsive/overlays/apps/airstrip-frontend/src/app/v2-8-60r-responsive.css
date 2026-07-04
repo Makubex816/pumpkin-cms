@@ -1,0 +1,249 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+@media (max-width: 991px) {
+  .as-nav {
+    max-width: 100vw;
+    overflow-x: clip;
+  }
+
+  .as-nav-topbar {
+    padding: 6px 12px;
+  }
+
+  .as-nav-actions {
+    display: block;
+    max-width: 100%;
+    font-size: 11px;
+    letter-spacing: 1px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .as-nav-inner {
+    min-width: 0;
+    padding: 12px 16px;
+  }
+
+  .as-nav-logo {
+    width: auto;
+    max-width: min(220px, calc(100vw - 96px));
+    height: auto;
+    max-height: 48px;
+  }
+
+  .as-nav-right {
+    flex: 0 0 auto;
+    min-width: 0;
+    gap: 0;
+  }
+
+  .as-nav-right > .as-nav-link,
+  .as-nav-right > .as-nav-cta {
+    display: none;
+  }
+
+  .as-nav-hamburger {
+    display: flex;
+    flex: 0 0 44px;
+  }
+
+  .mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    display: none;
+    width: 100%;
+    max-width: 100vw;
+    flex-direction: column;
+    gap: 0;
+    padding: 12px 0;
+    background: #0a0a0a;
+    border-top: 1px solid #2a2a2a;
+  }
+
+  .as-nav.is-open .mobile-menu {
+    display: flex;
+  }
+
+  .mobile-menu .as-nav-link,
+  .mobile-menu .as-nav-cta {
+    display: block;
+    width: auto;
+    padding: 14px 24px;
+    border-bottom: 1px solid #222;
+    font-size: 15px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .mobile-menu .as-nav-cta {
+    display: flex;
+    justify-content: center;
+    margin: 12px 24px;
+    border-radius: 4px;
+  }
+
+  .as-why-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    max-width: 100%;
+  }
+
+  .as-savings-card {
+    min-height: auto;
+    aspect-ratio: auto;
+  }
+
+  .as-groups-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  .as-container,
+  .as-footer > .as-container,
+  .as-reviews-inner,
+  .as-news-list-inner,
+  .as-blog-cta-inner,
+  .as-pkg-detail-hero-inner,
+  .as-page-hero-inner,
+  .as-hero-inner {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .as-section {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .as-hero {
+    min-height: auto;
+    padding: 128px 16px 48px;
+  }
+
+  .as-hero-inner {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .as-hero-logo {
+    max-width: min(320px, 82vw);
+    margin-bottom: 32px;
+  }
+
+  .as-hero-h1,
+  .as-page-h1,
+  .as-news-hero-h1,
+  .as-aud-h1 {
+    font-size: clamp(42px, 12vw, 58px);
+    line-height: 1.02;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+
+  .as-h2,
+  .as-blog-cta-title {
+    font-size: clamp(34px, 10vw, 44px);
+    line-height: 1.05;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+
+  .as-page-hero,
+  .as-news-hero,
+  .as-aud-hero,
+  .as-club-hero,
+  .as-pkg-detail-hero {
+    min-height: auto;
+    padding: 128px 16px 56px;
+  }
+
+  .as-page-hero-stats,
+  .as-aud-stats,
+  .as-hero-stats {
+    gap: 24px;
+  }
+
+  .as-section-intro {
+    align-items: flex-start;
+  }
+
+  .as-pkg-grid,
+  .as-pkg-grid-1,
+  .as-pkg-grid-3,
+  .as-pkg-grid-4,
+  .as-pkg-grid-bach,
+  .as-tier-grid,
+  .as-corp-grid,
+  .as-corp-tiers,
+  .as-corp-faq-grid,
+  .as-why-cards,
+  .as-benefits,
+  .as-groups-grid,
+  .as-extras-card,
+  .as-loc-split {
+    grid-template-columns: 1fr;
+  }
+
+  .as-pkg-card.as-pkg-featured,
+  .as-pkg-card.as-pkg-standard {
+    grid-column: auto;
+  }
+
+  .as-pkg-content-wide,
+  .as-pkg-content-std,
+  .as-extras-card,
+  .as-inquire,
+  .as-savings-card {
+    padding: 28px 20px;
+  }
+
+  .as-savings-num {
+    font-size: clamp(64px, 24vw, 92px);
+  }
+
+  .as-group-type {
+    padding: 24px 20px;
+  }
+
+  .as-map-pin .as-pin-label {
+    max-width: 112px;
+    white-space: normal;
+  }
+
+  .as-loc-map {
+    min-height: 280px;
+  }
+
+  .as-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .as-footer-bottom {
+    flex-direction: column;
+  }
+}

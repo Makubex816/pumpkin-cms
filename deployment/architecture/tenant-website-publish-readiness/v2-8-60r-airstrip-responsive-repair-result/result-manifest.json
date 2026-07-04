@@ -1,0 +1,55 @@
+{
+  "phase": "V2.8.60R",
+  "status": "completed",
+  "classification": "airstrip_mobile_responsive_layout_repair_production_default_host_proof_no_dns_no_indexing",
+  "tenant": "airstrip-club-las-vegas",
+  "productionDefaultHost": "https://app-airstrip-prod-centralus-001.azurewebsites.net",
+  "isolatedPreviewHost": "https://app-airstrip-preview-isolated-centralus-001.azurewebsites.net",
+  "before": {
+    "mobileChecks": 20,
+    "overflowFailures": 13,
+    "httpNon200": 0,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "missingImageCases": 0
+  },
+  "after": {
+    "localChecks": 28,
+    "isolatedChecks": 28,
+    "productionChecks": 28,
+    "overflowFailures": 0,
+    "httpNon200": 0,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "missingImageCases": 0
+  },
+  "deployments": {
+    "isolated": {
+      "webApp": "app-airstrip-preview-isolated-centralus-001",
+      "deploymentCount": 1,
+      "deploymentId": "501c3af3-2949-49bf-9a38-35c48a32615f",
+      "status": "RuntimeSuccessful"
+    },
+    "production": {
+      "webApp": "app-airstrip-prod-centralus-001",
+      "deploymentCount": 1,
+      "deploymentId": "ea8652db-9f73-47b9-bbfa-a92ce3c43da9",
+      "status": "RuntimeSuccessful"
+    }
+  },
+  "artifact": {
+    "path": ".tmp/v2-8-60r/artifacts/airstrip-responsive-v2-8-60r-posix.zip",
+    "bytes": 10152228,
+    "entries": 1923,
+    "backslashEntries": 0,
+    "protectedConfigEntries": 0
+  },
+  "visualReviewFolder": "C:/Users/User/Desktop/PumpkinCMS/visual-review/v2-8-60r-airstrip-responsive-repair",
+  "dnsMutation": false,
+  "customDomainBinding": false,
+  "indexing": false,
+  "contactPost": false,
+  "formSubmission": false,
+  "mediaMutation": false,
+  "iceMutation": false
+}
