@@ -240,6 +240,31 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.DeleteMediaAssetAsync(tenantId, id);
     }
 
+    public Task EnsureDomainBindingContainerAsync()
+    {
+        return _dataConnection.EnsureDomainBindingContainerAsync();
+    }
+
+    public Task<List<DomainBinding>> GetDomainBindingsAsync(string? tenantId = null)
+    {
+        return _dataConnection.GetDomainBindingsAsync(tenantId);
+    }
+
+    public Task<DomainBinding?> GetDomainBindingAsync(string tenantId, string id)
+    {
+        return _dataConnection.GetDomainBindingAsync(tenantId, id);
+    }
+
+    public Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding)
+    {
+        return _dataConnection.CreateDomainBindingAsync(tenantId, domainBinding);
+    }
+
+    public Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding)
+    {
+        return _dataConnection.UpdateDomainBindingAsync(tenantId, id, domainBinding);
+    }
+
     // Theme methods (content serving - API key required)
     public Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId)
     {

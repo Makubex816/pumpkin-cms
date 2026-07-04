@@ -84,6 +84,12 @@ if (args.Contains("--v2-8-58c-user-profile", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-8-60t-domainbinding", StringComparer.OrdinalIgnoreCase))
+{
+    await DomainBindingSourceTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
@@ -642,6 +648,21 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
 
     public Task<bool> DeleteMediaAssetAsync(string tenantId, string id)
         => _connection.DeleteMediaAssetAsync(tenantId, id);
+
+    public Task EnsureDomainBindingContainerAsync()
+        => _connection.EnsureDomainBindingContainerAsync();
+
+    public Task<List<DomainBinding>> GetDomainBindingsAsync(string? tenantId = null)
+        => _connection.GetDomainBindingsAsync(tenantId);
+
+    public Task<DomainBinding?> GetDomainBindingAsync(string tenantId, string id)
+        => _connection.GetDomainBindingAsync(tenantId, id);
+
+    public Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding)
+        => _connection.CreateDomainBindingAsync(tenantId, domainBinding);
+
+    public Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding)
+        => _connection.UpdateDomainBindingAsync(tenantId, id, domainBinding);
 
     public Task<List<Page>> GetHubPagesAsync(string tenantId)
         => _connection.GetHubPagesAsync(tenantId);

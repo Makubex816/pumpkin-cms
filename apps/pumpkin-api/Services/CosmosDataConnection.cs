@@ -2320,6 +2320,179 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task EnsureDomainBindingContainerAsync()
+    {
+        try
+        {
+            await _database.CreateContainerIfNotExistsAsync(
+                new ContainerProperties("DomainBinding", "/tenantId"));
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "Error ensuring DomainBinding container");
+            throw;
+        }
+    }
+
+    public async Task<List<DomainBinding>> GetDomainBindingsAsync(string? tenantId = null)
+    {
+        await EnsureDomainBindingContainerAsync();
+
+        var container = _database.GetContainer("DomainBinding");
+        var query = string.IsNullOrWhiteSpace(tenantId)
+            ? "SELECT * FROM c ORDER BY c.updatedAt DESC"
+            : "SELECT * FROM c WHERE c.tenantId = @tenantId ORDER BY c.updatedAt DESC";
+        var queryDefinition = new QueryDefinition(query);
+        QueryRequestOptions? requestOptions = null;
+
+        if (!string.IsNullOrWhiteSpace(tenantId))
+        {
+            var normalizedTenantId = NormalizeDomainBindingKey(tenantId);
+            queryDefinition = queryDefinition.WithParameter("@tenantId", normalizedTenantId);
+            requestOptions = new QueryRequestOptions { PartitionKey = new PartitionKey(normalizedTenantId) };
+        }
+
+        var results = new List<DomainBinding>();
+        using var iterator = container.GetItemQueryIterator<DomainBinding>(queryDefinition, requestOptions: requestOptions);
+        while (iterator.HasMoreResults)
+        {
+            var response = await iterator.ReadNextAsync();
+            results.AddRange(response);
+        }
+
+        return results;
+    }
+
+    public async Task<DomainBinding?> GetDomainBindingAsync(string tenantId, string id)
+    {
+        await EnsureDomainBindingContainerAsync();
+
+        try
+        {
+            var container = _database.GetContainer("DomainBinding");
+            var response = await container.ReadItemAsync<DomainBinding>(
+                id,
+                new PartitionKey(NormalizeDomainBindingKey(tenantId)));
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+    }
+
+    public async Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding)
+    {
+        await EnsureDomainBindingContainerAsync();
+
+        var container = _database.GetContainer("DomainBinding");
+        PrepareDomainBindingForSave(tenantId, domainBinding, isCreate: true);
+        await ThrowIfDuplicateDomainBindingAsync(container, domainBinding, existingId: null);
+
+        try
+        {
+            var response = await container.CreateItemAsync(
+                domainBinding,
+                new PartitionKey(domainBinding.TenantId));
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
+        {
+            throw new InvalidOperationException($"DomainBinding with ID '{domainBinding.Id}' already exists", ex);
+        }
+    }
+
+    public async Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding)
+    {
+        await EnsureDomainBindingContainerAsync();
+
+        var container = _database.GetContainer("DomainBinding");
+        var existing = await GetDomainBindingAsync(tenantId, id);
+        if (existing == null)
+        {
+            throw new KeyNotFoundException($"DomainBinding '{id}' was not found for tenant '{tenantId}'.");
+        }
+
+        PrepareDomainBindingForSave(tenantId, domainBinding, isCreate: false);
+        domainBinding.Id = id;
+        domainBinding.CreatedAt = existing.CreatedAt;
+        domainBinding.CreatedBy = string.IsNullOrWhiteSpace(domainBinding.CreatedBy) ? existing.CreatedBy : domainBinding.CreatedBy;
+        if (domainBinding.AuditEvents.Count == 0 && existing.AuditEvents.Count > 0)
+        {
+            domainBinding.AuditEvents = existing.AuditEvents;
+        }
+
+        await ThrowIfDuplicateDomainBindingAsync(container, domainBinding, existingId: id);
+
+        var response = await container.ReplaceItemAsync(
+            domainBinding,
+            id,
+            new PartitionKey(domainBinding.TenantId));
+        return response.Resource;
+    }
+
+    private static void PrepareDomainBindingForSave(string tenantId, DomainBinding binding, bool isCreate)
+    {
+        var normalizedTenantId = NormalizeDomainBindingKey(tenantId);
+        binding.TenantId = normalizedTenantId;
+        binding.Domain = NormalizeDomainName(binding.Domain);
+        binding.WwwDomain = NormalizeDomainName(binding.WwwDomain);
+        binding.Provider = NormalizeDomainBindingKey(binding.Provider);
+        binding.Status = NormalizeDomainBindingKey(binding.Status);
+        binding.DnsValidationStatus = NormalizeDomainBindingKey(binding.DnsValidationStatus);
+        binding.AzureHostnameStatus = NormalizeDomainBindingKey(binding.AzureHostnameStatus);
+        binding.TlsStatus = NormalizeDomainBindingKey(binding.TlsStatus);
+        binding.RuntimeStatus = NormalizeDomainBindingKey(binding.RuntimeStatus);
+        binding.PromotionStatus = NormalizeDomainBindingKey(binding.PromotionStatus);
+        binding.UpdatedAt = DateTime.UtcNow;
+        if (isCreate)
+        {
+            binding.CreatedAt = DateTime.UtcNow;
+        }
+
+        if (string.IsNullOrWhiteSpace(binding.Id))
+        {
+            binding.Id = $"domainbinding-{normalizedTenantId}-{binding.Domain.Replace(".", "-", StringComparison.Ordinal)}";
+        }
+    }
+
+    private static async Task ThrowIfDuplicateDomainBindingAsync(Container container, DomainBinding binding, string? existingId)
+    {
+        var query = new QueryDefinition(
+                "SELECT * FROM c WHERE (c.domain = @domain OR c.wwwDomain = @domain OR c.domain = @wwwDomain OR c.wwwDomain = @wwwDomain)")
+            .WithParameter("@domain", binding.Domain)
+            .WithParameter("@wwwDomain", binding.WwwDomain);
+
+        using var iterator = container.GetItemQueryIterator<DomainBinding>(query);
+        while (iterator.HasMoreResults)
+        {
+            var response = await iterator.ReadNextAsync();
+            var duplicate = response.FirstOrDefault(item =>
+                !string.Equals(item.Id, existingId, StringComparison.OrdinalIgnoreCase));
+            if (duplicate != null)
+            {
+                throw new InvalidOperationException($"DomainBinding for domain '{binding.Domain}' already exists.");
+            }
+        }
+    }
+
+    private static string NormalizeDomainBindingKey(string value)
+    {
+        return string.IsNullOrWhiteSpace(value)
+            ? string.Empty
+            : value.Trim().ToLowerInvariant();
+    }
+
+    private static string NormalizeDomainName(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+        var trimmed = value.Trim().ToLowerInvariant();
+        trimmed = trimmed.Replace("https://", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Replace("http://", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Trim('/');
+        return trimmed;
+    }
+
     public void Dispose()
     {
         if (!_disposed)

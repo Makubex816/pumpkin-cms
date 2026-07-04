@@ -34,6 +34,14 @@ export {
   tenantToTenantInfo
 } from './models/Tenant';
 
+// Domain binding models
+export type {
+  DomainBinding,
+  DomainBindingAuditEvent,
+  DomainBindingDnsRecord,
+  DomainBindingHostingTarget
+} from './models/DomainBinding';
+
 // Form Entry models
 export type {
   FormEntry,

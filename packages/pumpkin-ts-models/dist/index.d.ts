@@ -3,6 +3,7 @@ export type { User, LoginRequest, LoginResponse, UserInfo, AdminUserProfile, Upd
 export { UserRole, userRoleToString, stringToUserRole, isUserRole, userToUserInfo } from './models/User';
 export type { Tenant, ApiKeyMeta, TenantSettings, Features, Contact, Billing, TenantInfo } from './models/Tenant';
 export { tenantToTenantInfo } from './models/Tenant';
+export type { DomainBinding, DomainBindingAuditEvent, DomainBindingDnsRecord, DomainBindingHostingTarget } from './models/DomainBinding';
 export type { FormEntry, FormEntryMetadata } from './models/FormEntry';
 export type { DefaultFormKey, FormBlock, FormBlockContent, FormBlockVariant, FormDefinition, FormDefinitionConsent, FormDefinitionField, FormDefinitionRouting, FormDefinitionSpamProtection, FormDefinitionStatus, FormDefinitionType, FormFieldType, FormSpamStatus, FormSubmissionPayload, FormSubmitAction, FormValidationIssue, FormValidationResult } from './forms';
 export { DEFAULT_CONTACT_FORM_DEFINITION, DEFAULT_FORM_KEYS, FORM_BLOCK_VARIANTS, FORM_FIELD_TYPES, ICE_DEFAULT_QUOTE_REQUEST_FORM_DEFINITION, getDefaultFormDefinition, getDefaultFormDefinitions, validateFormBlockContent, validateFormDefinition, validateFormSubmissionPayload, validatePageFormBlocks } from './forms';

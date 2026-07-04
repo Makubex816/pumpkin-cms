@@ -60,6 +60,13 @@ public interface IDatabaseService
     Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset);
     Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset);
     Task<bool> DeleteMediaAssetAsync(string tenantId, string id);
+
+    // Domain binding registry methods (SuperAdmin authorization required at endpoint level)
+    Task EnsureDomainBindingContainerAsync();
+    Task<List<DomainBinding>> GetDomainBindingsAsync(string? tenantId = null);
+    Task<DomainBinding?> GetDomainBindingAsync(string tenantId, string id);
+    Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding);
+    Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding);
     
     // Theme methods (content serving - API key required)
     Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId);

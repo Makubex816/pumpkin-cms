@@ -209,6 +209,11 @@ public static class UserProfileManagementSourceTestRunner
         public Task<MediaAsset> SaveMediaAssetAsync(string tenantId, MediaAsset mediaAsset) => throw NotUsed();
         public Task<MediaAsset> UpdateMediaAssetAsync(string tenantId, string id, MediaAsset mediaAsset) => throw NotUsed();
         public Task<bool> DeleteMediaAssetAsync(string tenantId, string id) => throw NotUsed();
+        public Task EnsureDomainBindingContainerAsync() => throw NotUsed();
+        public Task<List<DomainBinding>> GetDomainBindingsAsync(string? tenantId = null) => throw NotUsed();
+        public Task<DomainBinding?> GetDomainBindingAsync(string tenantId, string id) => throw NotUsed();
+        public Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding) => throw NotUsed();
+        public Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding) => throw NotUsed();
         public Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId) => throw NotUsed();
         public Task<Theme?> GetActiveThemeAsync(string apiKey, string tenantId) => throw NotUsed();
         public Task<Theme?> GetThemeAdminAsync(string tenantId, string themeId) => throw NotUsed();

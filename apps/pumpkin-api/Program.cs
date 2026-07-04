@@ -1,4 +1,5 @@
 using pumpkin_api.Services;
+using pumpkin_api.Services.DomainBindings;
 using pumpkin_api.Managers;
 using pumpkin_net_models.Models;
 using System.Text.Json;
@@ -137,6 +138,7 @@ builder.Services.AddAuditJobReadOnlyFoundation();
 builder.Services.AddImportIntakeReadOnlyFoundation();
 builder.Services.AddImportExecutionProjectionReadOnlyFoundation();
 builder.Services.AddOperatorHandoffReadOnlyFoundation();
+builder.Services.AddDomainBindingFoundation();
 
 var app = builder.Build();
 
@@ -733,6 +735,7 @@ app.MapAuditJobReadOnlyEndpoints();
 app.MapImportIntakeReadOnlyEndpoints();
 app.MapImportExecutionProjectionReadOnlyEndpoints();
 app.MapOperatorHandoffReadOnlyEndpoints();
+app.MapDomainBindingEndpoints();
 
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",

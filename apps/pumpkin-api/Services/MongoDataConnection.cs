@@ -1267,6 +1267,126 @@ public class MongoDataConnection : IDataConnection, IDisposable
         _logger.LogInformation("UpdateUserLastLogin - UserId: {UserId}, TenantId: {TenantId}", 
             userId, tenantId);
     }
+
+    public Task EnsureDomainBindingContainerAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    public async Task<List<DomainBinding>> GetDomainBindingsAsync(string? tenantId = null)
+    {
+        var collection = _database.GetCollection<DomainBinding>("DomainBinding");
+        var filter = string.IsNullOrWhiteSpace(tenantId)
+            ? Builders<DomainBinding>.Filter.Empty
+            : Builders<DomainBinding>.Filter.Eq(binding => binding.TenantId, NormalizeDomainBindingKey(tenantId));
+        var sort = Builders<DomainBinding>.Sort.Descending(binding => binding.UpdatedAt);
+        return await collection.Find(filter).Sort(sort).ToListAsync();
+    }
+
+    public async Task<DomainBinding?> GetDomainBindingAsync(string tenantId, string id)
+    {
+        var collection = _database.GetCollection<DomainBinding>("DomainBinding");
+        var filter = Builders<DomainBinding>.Filter.And(
+            Builders<DomainBinding>.Filter.Eq(binding => binding.TenantId, NormalizeDomainBindingKey(tenantId)),
+            Builders<DomainBinding>.Filter.Eq(binding => binding.Id, id));
+        return await collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding)
+    {
+        var collection = _database.GetCollection<DomainBinding>("DomainBinding");
+        PrepareDomainBindingForSave(tenantId, domainBinding, isCreate: true);
+        await ThrowIfDuplicateDomainBindingAsync(collection, domainBinding, existingId: null);
+        await collection.InsertOneAsync(domainBinding);
+        return domainBinding;
+    }
+
+    public async Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding)
+    {
+        var collection = _database.GetCollection<DomainBinding>("DomainBinding");
+        var existing = await GetDomainBindingAsync(tenantId, id);
+        if (existing == null)
+        {
+            throw new KeyNotFoundException($"DomainBinding '{id}' was not found for tenant '{tenantId}'.");
+        }
+
+        PrepareDomainBindingForSave(tenantId, domainBinding, isCreate: false);
+        domainBinding.Id = id;
+        domainBinding.CreatedAt = existing.CreatedAt;
+        domainBinding.CreatedBy = string.IsNullOrWhiteSpace(domainBinding.CreatedBy) ? existing.CreatedBy : domainBinding.CreatedBy;
+        if (domainBinding.AuditEvents.Count == 0 && existing.AuditEvents.Count > 0)
+        {
+            domainBinding.AuditEvents = existing.AuditEvents;
+        }
+
+        await ThrowIfDuplicateDomainBindingAsync(collection, domainBinding, existingId: id);
+        var filter = Builders<DomainBinding>.Filter.And(
+            Builders<DomainBinding>.Filter.Eq(binding => binding.TenantId, domainBinding.TenantId),
+            Builders<DomainBinding>.Filter.Eq(binding => binding.Id, id));
+        await collection.ReplaceOneAsync(filter, domainBinding);
+        return domainBinding;
+    }
+
+    private static void PrepareDomainBindingForSave(string tenantId, DomainBinding binding, bool isCreate)
+    {
+        var normalizedTenantId = NormalizeDomainBindingKey(tenantId);
+        binding.TenantId = normalizedTenantId;
+        binding.Domain = NormalizeDomainName(binding.Domain);
+        binding.WwwDomain = NormalizeDomainName(binding.WwwDomain);
+        binding.Provider = NormalizeDomainBindingKey(binding.Provider);
+        binding.Status = NormalizeDomainBindingKey(binding.Status);
+        binding.DnsValidationStatus = NormalizeDomainBindingKey(binding.DnsValidationStatus);
+        binding.AzureHostnameStatus = NormalizeDomainBindingKey(binding.AzureHostnameStatus);
+        binding.TlsStatus = NormalizeDomainBindingKey(binding.TlsStatus);
+        binding.RuntimeStatus = NormalizeDomainBindingKey(binding.RuntimeStatus);
+        binding.PromotionStatus = NormalizeDomainBindingKey(binding.PromotionStatus);
+        binding.UpdatedAt = DateTime.UtcNow;
+        if (isCreate)
+        {
+            binding.CreatedAt = DateTime.UtcNow;
+        }
+
+        if (string.IsNullOrWhiteSpace(binding.Id))
+        {
+            binding.Id = $"domainbinding-{normalizedTenantId}-{binding.Domain.Replace(".", "-", StringComparison.Ordinal)}";
+        }
+    }
+
+    private static async Task ThrowIfDuplicateDomainBindingAsync(
+        IMongoCollection<DomainBinding> collection,
+        DomainBinding binding,
+        string? existingId)
+    {
+        var filter = Builders<DomainBinding>.Filter.Or(
+            Builders<DomainBinding>.Filter.Eq(item => item.Domain, binding.Domain),
+            Builders<DomainBinding>.Filter.Eq(item => item.WwwDomain, binding.Domain),
+            Builders<DomainBinding>.Filter.Eq(item => item.Domain, binding.WwwDomain),
+            Builders<DomainBinding>.Filter.Eq(item => item.WwwDomain, binding.WwwDomain));
+        var matches = await collection.Find(filter).ToListAsync();
+        var duplicate = matches.FirstOrDefault(item =>
+            !string.Equals(item.Id, existingId, StringComparison.OrdinalIgnoreCase));
+        if (duplicate != null)
+        {
+            throw new InvalidOperationException($"DomainBinding for domain '{binding.Domain}' already exists.");
+        }
+    }
+
+    private static string NormalizeDomainBindingKey(string value)
+    {
+        return string.IsNullOrWhiteSpace(value)
+            ? string.Empty
+            : value.Trim().ToLowerInvariant();
+    }
+
+    private static string NormalizeDomainName(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+        var trimmed = value.Trim().ToLowerInvariant();
+        trimmed = trimmed.Replace("https://", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Replace("http://", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Trim('/');
+        return trimmed;
+    }
 #else
     private readonly ILogger<MongoDataConnection> _logger;
 
@@ -1547,6 +1667,31 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<bool> DeleteThemeAsync(string tenantId, string themeId)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task EnsureDomainBindingContainerAsync()
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<List<DomainBinding>> GetDomainBindingsAsync(string? tenantId = null)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<DomainBinding?> GetDomainBindingAsync(string tenantId, string id)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }
