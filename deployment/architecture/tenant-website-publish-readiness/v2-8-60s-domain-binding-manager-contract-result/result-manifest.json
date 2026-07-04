@@ -1,0 +1,45 @@
+{
+  "phase": "v2-8-60s-domain-binding-manager-contract",
+  "status": "completed",
+  "classification": "tenant_domain_binding_manager_contract_design_no_mutation",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "tenantFirstUse": "airstrip-club-las-vegas",
+  "liveMutationOccurred": false,
+  "dnsMutationOccurred": false,
+  "customDomainBindingOccurred": false,
+  "deployOccurred": false,
+  "indexingOccurred": false,
+  "contactPostOccurred": false,
+  "formSubmissionOccurred": false,
+  "sourceImplementationOccurred": false,
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-60r-carryforward.md",
+    "domain-handling-source-audit.md",
+    "tenant-domain-binding-model.md",
+    "domain-binding-state-machine.md",
+    "superadmin-domain-manager-ui-plan.md",
+    "domain-binding-api-plan.md",
+    "dns-provider-workflow-plan.md",
+    "azure-appservice-binding-plan.md",
+    "bluehost-provider-plan.md",
+    "google-workspace-separation-plan.md",
+    "cdn-frontdoor-separation-plan.md",
+    "rollback-audit-plan.md",
+    "airstrip-first-use-plan.md",
+    "implementation-phase-map.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_DOMAIN_BINDING_MANAGER_V2_8_60S.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_DOMAIN_BINDING_DATA_MODEL_V2_8_60S.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_DOMAIN_BINDING_API_UI_PLAN_V2_8_60S.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_AIRSTRIP_DOMAIN_MANAGER_FIRST_USE_V2_8_60S.md"
+  ]
+}
+
