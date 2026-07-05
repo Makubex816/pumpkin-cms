@@ -12,11 +12,20 @@
     "modules": {
       "type": "array",
       "items": {
-        "enum": ["tenant", "users", "pages", "media", "theme", "forms", "contact", "importExport", "publish", "monitoring", "validation"]
+        "enum": ["tenant", "users", "pages", "media", "theme", "forms", "contact", "importExport", "publish", "monitoring", "validation", "responsive"]
       },
       "uniqueItems": true
     },
-    "files": { "type": "object", "additionalProperties": { "type": "string" } },
+    "files": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "array", "items": { "type": "string" } }
+        ]
+      }
+    },
+    "responsiveReadinessRequired": { "type": "boolean" },
     "retrofitSummary": { "type": "object" },
     "knownGaps": { "type": "array", "items": { "type": "string" } }
   },

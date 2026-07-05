@@ -34,6 +34,24 @@ const FULL_PACKAGE_FILES = [
 ];
 
 const BASELINE_PAGES = ['home', 'contact', 'service-areas'];
+const REQUIRED_RESPONSIVE_VIEWPORTS = [
+  { label: 'small-mobile', width: 360, height: 800 },
+  { label: 'iphone-standard', width: 375, height: 812 },
+  { label: 'modern-mobile', width: 390, height: 844 },
+  { label: 'large-mobile', width: 414, height: 896 },
+  { label: 'large-modern-mobile', width: 430, height: 932 },
+  { label: 'tablet', width: 768, height: 1024 },
+  { label: 'desktop', width: 1440, height: 1200 },
+];
+const RESPONSIVE_ROUTE_HINTS = [
+  '/contact',
+  '/request-booking',
+  '/reserve',
+  '/packages',
+  '/service-areas',
+  '/airstrip-the-club',
+];
+const RESPONSIVE_RESULT_VALUES = new Set(['zero', 'documented']);
 const SECRET_KEY_RE = /(password|apiKey|secret|token|cookie|connectionString|sas|bearer)/i;
 const SECRET_VALUE_RE = /(AccountEndpoint=|SharedAccessSignature=|BEGIN PRIVATE KEY|Bearer\s+[A-Za-z0-9._-]{20,}|sig=[A-Za-z0-9%_-]{20,})/i;
 const SECRET_KEY_ALLOWLIST = new Set([
@@ -88,6 +106,13 @@ async function main() {
     checkUsers(parsed.get('users/admin-users.json'), result);
     checkForms(parsed, result);
     checkValidationRoutes(parsed.get('validation/expected-routes.json'), result);
+    checkResponsiveRoutes(
+      parsed.get('validation/responsive-routes.json'),
+      parsed.get('validation/expected-routes.json'),
+      manifest,
+      tenantId,
+      result,
+    );
   } else if (packageMode === 'retrofit-summary') {
     checkRetrofitSummary(manifest, result);
   } else if (manifest) {
@@ -244,6 +269,121 @@ function checkValidationRoutes(routesFile, result) {
     }
   }
   result.checks.validationRoutes = { routeCount: routes.length };
+}
+
+function checkResponsiveRoutes(responsiveFile, expectedRoutesFile, manifest, tenantId, result) {
+  const requiredByManifest = manifest?.responsiveReadinessRequired === true
+    || manifest?.readiness?.responsiveReadinessRequired === true;
+  const expectedPublicPaths = getExpectedPublicPaths(expectedRoutesFile);
+
+  if (!responsiveFile) {
+    result.checks.responsiveRoutes = {
+      present: false,
+      required: requiredByManifest,
+      requiredViewports: REQUIRED_RESPONSIVE_VIEWPORTS.length,
+      expectedPublicRoutes: expectedPublicPaths.length,
+    };
+    const message = 'Missing validation/responsive-routes.json. This file is required for packages converted or updated after V2.8.60V.';
+    if (requiredByManifest) {
+      result.errors.push(message);
+    } else {
+      result.warnings.push(message);
+    }
+    return;
+  }
+
+  const viewports = Array.isArray(responsiveFile.viewports) ? responsiveFile.viewports : [];
+  const routes = Array.isArray(responsiveFile.routes) ? responsiveFile.routes : [];
+  const routePaths = routes.map((route) => route.path).filter(Boolean);
+  const checks = responsiveFile.checks || {};
+
+  if (responsiveFile.tenantId !== tenantId) {
+    result.errors.push(`Responsive tenantId mismatch: ${responsiveFile.tenantId || '(missing)'}`);
+  }
+
+  const missingViewports = REQUIRED_RESPONSIVE_VIEWPORTS.filter((required) => (
+    !viewports.some((actual) => (
+      actual.label === required.label
+      && Number(actual.width) === required.width
+      && Number(actual.height) === required.height
+    ))
+  ));
+  for (const viewport of missingViewports) {
+    result.errors.push(`validation/responsive-routes.json missing viewport: ${viewport.label} ${viewport.width}x${viewport.height}`);
+  }
+
+  const requiredRoutePaths = getRequiredResponsivePaths(expectedPublicPaths);
+  const missingRoutes = requiredRoutePaths.filter((routePath) => !routePaths.includes(routePath));
+  for (const routePath of missingRoutes) {
+    result.errors.push(`validation/responsive-routes.json missing responsive route: ${routePath}`);
+  }
+
+  const minimumRouteCount = Math.min(3, Math.max(1, expectedPublicPaths.length));
+  if (routePaths.length < minimumRouteCount) {
+    result.errors.push(`validation/responsive-routes.json must include at least ${minimumRouteCount} responsive route(s)`);
+  }
+
+  for (const routePath of routePaths) {
+    if (!routePath.startsWith('/')) {
+      result.errors.push(`Responsive route must start with /: ${routePath}`);
+    }
+  }
+
+  if (checks.horizontalOverflow !== true) {
+    result.errors.push('Responsive checks must require horizontalOverflow detection');
+  }
+  if (checks.formsNoSubmit !== true) {
+    result.errors.push('Responsive checks must require formsNoSubmit');
+  }
+  if (checks.missingImages !== 'zero') {
+    result.errors.push('Responsive checks must require missingImages: zero');
+  }
+  if (!RESPONSIVE_RESULT_VALUES.has(checks.consoleErrors)) {
+    result.errors.push('Responsive checks must set consoleErrors to zero or documented');
+  }
+  if (!RESPONSIVE_RESULT_VALUES.has(checks.failedRequests)) {
+    result.errors.push('Responsive checks must set failedRequests to zero or documented');
+  }
+
+  const routesOutsideExpected = routePaths.filter((routePath) => (
+    expectedPublicPaths.length > 0
+    && !expectedPublicPaths.includes(routePath)
+  ));
+  if (routesOutsideExpected.length > 0) {
+    result.warnings.push(`Responsive routes not present in validation/expected-routes.json: ${routesOutsideExpected.join(', ')}`);
+  }
+
+  result.checks.responsiveRoutes = {
+    present: true,
+    required: requiredByManifest,
+    viewportCount: viewports.length,
+    routeCount: routes.length,
+    expectedPublicRoutes: expectedPublicPaths.length,
+    missingViewports: missingViewports.map((viewport) => viewport.label),
+    missingRoutes,
+  };
+}
+
+function getExpectedPublicPaths(routesFile) {
+  const routes = Array.isArray(routesFile?.expectedRoutes) ? routesFile.expectedRoutes : [];
+  return routes
+    .filter((route) => !route.method || route.method === 'GET')
+    .map((route) => route.path)
+    .filter((routePath) => (
+      typeof routePath === 'string'
+      && routePath.startsWith('/')
+      && !routePath.startsWith('/api/')
+      && !routePath.startsWith('/dashboard')
+    ));
+}
+
+function getRequiredResponsivePaths(expectedPublicPaths) {
+  const required = new Set();
+  if (expectedPublicPaths.includes('/')) required.add('/');
+  for (const routePath of RESPONSIVE_ROUTE_HINTS) {
+    if (expectedPublicPaths.includes(routePath)) required.add(routePath);
+  }
+  return [...required];
 }
 
 function checkRetrofitSummary(manifest, result) {

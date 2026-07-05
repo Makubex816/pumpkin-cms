@@ -14,7 +14,8 @@
                     "importExport",
                     "publish",
                     "monitoring",
-                    "validation"
+                    "validation",
+                    "responsive"
                 ],
     "files":  {
                   "tenantProfile":  "tenant-profile.json",
@@ -28,6 +29,7 @@
                   "monitoring":  "monitoring/runtime-checks.json",
                   "importExport":  "import-export/readiness.json",
                   "validation":  "validation/expected-routes.json",
+                  "responsive":  "validation/responsive-routes.json",
                   "pages":  [
                                 "pages/home.json",
                                 "pages/contact.json",
@@ -38,6 +40,7 @@
                             ]
               },
     "secureHandoffRequired":  true,
+    "responsiveReadinessRequired":  true,
     "readiness":  {
                       "directImportPackage":  true,
                       "liveThemeBaseline":  "created-v2.8.51",

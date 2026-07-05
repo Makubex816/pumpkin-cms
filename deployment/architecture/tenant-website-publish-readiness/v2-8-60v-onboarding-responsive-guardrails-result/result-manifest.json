@@ -1,0 +1,45 @@
+{
+  "phase": "V2.8.60V",
+  "status": "completed_with_responsive_replay_blocker_recorded",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "tenant_onboarding_mobile_responsive_guardrails_package_conversion_output_checks_no_mutation",
+  "generatedOn": "2026-07-05",
+  "liveMutationOccurred": false,
+  "deployOccurred": false,
+  "contactPostOccurred": false,
+  "formSubmitOccurred": false,
+  "dnsOrCustomDomainActionOccurred": false,
+  "indexingOccurred": false,
+  "responsiveChecker": {
+    "implemented": true,
+    "airstripProductionDefaultHostRun": true,
+    "valid": false,
+    "checks": 28,
+    "overflowFailures": 5,
+    "failedRoute": "/airstrip-the-club"
+  },
+  "validatorReplay": {
+    "blankTemplate": "pass_with_blank_media_warning",
+    "iceExample": "pass",
+    "airstripNormalizedPackage": "pass_with_v2_8_60v_responsive_file_warning"
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-60r-carryforward.md",
+    "airstrip-responsive-root-cause-carryforward.md",
+    "onboarding-package-contract-update-result.md",
+    "responsive-schema-template-result.md",
+    "responsive-checker-tool-result.md",
+    "package-validator-update-result.md",
+    "airstrip-package-validator-replay.md",
+    "responsive-proof-replay-result.md",
+    "future-package-conversion-standard.md",
+    "dns-custom-domain-hold-confirmation.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}

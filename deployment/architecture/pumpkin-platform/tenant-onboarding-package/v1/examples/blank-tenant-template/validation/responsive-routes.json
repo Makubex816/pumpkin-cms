@@ -1,0 +1,25 @@
+{
+  "tenantId": "blank-tenant",
+  "standard": "v2.8.60v-mobile-responsive",
+  "viewports": [
+    { "label": "small-mobile", "width": 360, "height": 800 },
+    { "label": "iphone-standard", "width": 375, "height": 812 },
+    { "label": "modern-mobile", "width": 390, "height": 844 },
+    { "label": "large-mobile", "width": 414, "height": 896 },
+    { "label": "large-modern-mobile", "width": 430, "height": 932 },
+    { "label": "tablet", "width": 768, "height": 1024 },
+    { "label": "desktop", "width": 1440, "height": 1200 }
+  ],
+  "routes": [
+    { "path": "/", "purpose": "homepage and primary brand proof", "critical": true, "source": "validation/expected-routes.json" },
+    { "path": "/contact", "purpose": "conversion and contact route proof", "critical": true, "source": "validation/expected-routes.json" },
+    { "path": "/service-areas", "purpose": "primary service content route proof", "critical": true, "source": "validation/expected-routes.json" }
+  ],
+  "checks": {
+    "horizontalOverflow": true,
+    "consoleErrors": "zero",
+    "failedRequests": "zero",
+    "missingImages": "zero",
+    "formsNoSubmit": true
+  }
+}

@@ -23,6 +23,7 @@ V1 makes tenant onboarding package-driven. A future tenant should arrive as a pu
 - publish
 - monitoring
 - validation
+- responsive
 
 ## Required Public Files For A Full Package
 
@@ -39,6 +40,23 @@ V1 makes tenant onboarding package-driven. A future tenant should arrive as a pu
 - `users/admin-users.json`
 - `publish/static-site.json`
 - `validation/expected-routes.json`
+
+## Responsive Readiness
+
+Packages converted or updated after V2.8.60V must set `responsiveReadinessRequired` to `true` and include `validation/responsive-routes.json`.
+
+Legacy normalized packages that predate V2.8.60V may still validate with a warning, but they must not proceed to isolated proof, production default-host proof, or custom-domain cutover until responsive proof exists.
+
+`validation/responsive-routes.json` declares:
+
+- the required viewport matrix: 360x800, 375x812, 390x844, 414x896, 430x932, 768x1024, and 1440x1200;
+- the public routes selected for mobile proof;
+- horizontal overflow detection;
+- zero missing images;
+- console and failed request expectations;
+- confirmation that proof is browser/GET-only and does not submit forms.
+
+At minimum the responsive route set must include `/`. It must also include the main contact, booking, request, package, service, or conversion route when present, plus a representative content route. If the package has many public routes, test the homepage, all critical conversion routes, and a representative sample before any production/cutover approval.
 
 ## Tenant Identity
 
@@ -73,3 +91,5 @@ The secure handoff lives outside the repo or under an approved ignored `.tmp` pa
 ## Execution
 
 Package validation is a read-only local step. Tenant creation, media upload, deploy, DNS, indexing, appsettings, and secret binding require separate explicit approvals.
+
+Responsive output proof is also read-only. It may load public pages in a browser and write local JSON evidence, but it must not submit forms, upload media, mutate content, deploy, bind DNS, or run indexing.

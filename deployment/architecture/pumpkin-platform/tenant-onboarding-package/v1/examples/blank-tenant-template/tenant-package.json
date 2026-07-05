@@ -14,7 +14,8 @@
     "importExport",
     "publish",
     "monitoring",
-    "validation"
+    "validation",
+    "responsive"
   ],
   "files": {
     "tenantProfile": "tenant-profile.json",
@@ -25,6 +26,7 @@
     "mediaManifest": "media/manifest.json",
     "publish": "publish/static-site.json",
     "validation": "validation/expected-routes.json",
+    "responsive": "validation/responsive-routes.json",
     "pages": [
       "pages/home.json",
       "pages/contact.json",
@@ -35,5 +37,6 @@
     ]
   },
   "secureHandoffRequired": true,
+  "responsiveReadinessRequired": true,
   "notes": "Template values are placeholders. Add tenant-specific public content before dry-run intake."
 }
