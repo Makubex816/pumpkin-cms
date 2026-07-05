@@ -1,0 +1,43 @@
+{
+  "phase": "V2.8.60W",
+  "status": "blocked_before_rotation_api_deploy_failed",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "spectre_dev_superadmin_custom_password_rotation_secure_hardcopy_no_domain_no_contact_form_post",
+  "generatedOn": "2026-07-05",
+  "passwordRotated": false,
+  "routeRepairRequired": true,
+  "routeRepairImplementedInSource": true,
+  "pumpkinApiDeployAttempts": 1,
+  "pumpkinApiDeploySucceeded": false,
+  "rotationAttempted": false,
+  "newHardcopyCreated": false,
+  "secureFileRetained": true,
+  "oldHardcopyPreserved": true,
+  "runtimeNoRegressionPassed": true,
+  "deploymentFailure": {
+    "deploymentId": "0d230f3b-019f-4f41-8d9c-04434a9c34fd",
+    "deployer": "OneDeploy",
+    "status": 3,
+    "classification": "kudu_onedeploy_parallel_rsync_failed_invalid_argument_windows_style_paths"
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-60v-carryforward.md",
+    "secure-file-readiness.md",
+    "source-password-route-discovery.md",
+    "password-route-repair-result-if-any.md",
+    "test-build-deploy-result-if-any.md",
+    "spectre-dev-password-rotation-result.md",
+    "old-password-rejection-proof.md",
+    "new-password-login-proof.md",
+    "superadmin-role-preservation-proof.md",
+    "tenantadmin-no-change-proof.md",
+    "hardcopy-path-and-checksum.md",
+    "security-boundary-result.md",
+    "runtime-no-regression-proof.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}

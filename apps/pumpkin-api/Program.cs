@@ -1162,6 +1162,54 @@ app.MapPatch("/api/admin/users/{tenantId}/{userId}",
     .WithSummary("Update user name/email (SuperAdmin only)")
     .WithDescription("Updates only email, firstName, and lastName for an existing user. Requires SuperAdmin role and JWT authentication.");
 
+// Admin: Rotate the authenticated SuperAdmin user's own password. Responses are sanitized.
+app.MapPost("/api/admin/users/{tenantId}/{userId}/password",
+    async (IDatabaseService databaseService, HttpContext context, string tenantId, string userId, ChangeUserPasswordRequest request) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+        if (!UserProfileManagementService.IsSuperAdminRole(userRole))
+        {
+            return Results.Forbid();
+        }
+
+        var actorTenantId = context.User.FindFirst("tenantId")?.Value;
+        var actorUserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var targetTenantId = tenantId.Trim().ToLowerInvariant();
+        if (string.IsNullOrWhiteSpace(actorTenantId) ||
+            string.IsNullOrWhiteSpace(actorUserId) ||
+            targetTenantId != actorTenantId ||
+            userId != actorUserId)
+        {
+            return Results.Forbid();
+        }
+
+        try
+        {
+            var result = await UserProfileManagementService.ChangeUserPasswordAsync(databaseService, tenantId, userId, request);
+            return result.Status switch
+            {
+                UserPasswordUpdateStatus.Updated => Results.Ok(result.User),
+                UserPasswordUpdateStatus.NotFound => Results.NotFound(result.Message),
+                UserPasswordUpdateStatus.CurrentPasswordRejected => Results.Unauthorized(),
+                _ => Results.BadRequest(result.Message)
+            };
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error updating password: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin")
+    .WithName("ChangeOwnSuperAdminPassword")
+    .WithSummary("Change own SuperAdmin password")
+    .WithDescription("Rotates the authenticated SuperAdmin user's own password. Requires current password and does not return password or password hash.");
+
 // Admin: Get all pages (optionally filtered by tenant)
 app.MapGet("/api/admin/pages",
     async (IDatabaseService databaseService, HttpContext context, string? tenantId = null) =>

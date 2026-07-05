@@ -26,6 +26,12 @@ public sealed class UpdateUserProfileRequest
     public string? LastName { get; set; }
 }
 
+public sealed class ChangeUserPasswordRequest
+{
+    public string CurrentPassword { get; set; } = string.Empty;
+    public string NewPassword { get; set; } = string.Empty;
+}
+
 public enum UserProfileUpdateStatus
 {
     Updated,
@@ -34,8 +40,21 @@ public enum UserProfileUpdateStatus
     Conflict
 }
 
+public enum UserPasswordUpdateStatus
+{
+    Updated,
+    BadRequest,
+    NotFound,
+    CurrentPasswordRejected
+}
+
 public sealed record UserProfileUpdateResult(
     UserProfileUpdateStatus Status,
+    AdminUserProfileResponse? User = null,
+    string? Message = null);
+
+public sealed record UserPasswordUpdateResult(
+    UserPasswordUpdateStatus Status,
     AdminUserProfileResponse? User = null,
     string? Message = null);
 
@@ -128,9 +147,85 @@ public static class UserProfileManagementService
             ToResponse(updated));
     }
 
+    public static async Task<UserPasswordUpdateResult> ChangeUserPasswordAsync(
+        IDatabaseService databaseService,
+        string tenantId,
+        string userId,
+        ChangeUserPasswordRequest request)
+    {
+        var normalizedTenantId = NormalizeTenantId(tenantId);
+        if (string.IsNullOrWhiteSpace(normalizedTenantId))
+        {
+            return PasswordBadRequest("Tenant ID is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return PasswordBadRequest("User ID is required.");
+        }
+
+        var validationError = ValidatePasswordRequest(request);
+        if (validationError != null)
+        {
+            return PasswordBadRequest(validationError);
+        }
+
+        var user = await databaseService.GetUserByIdAsync(normalizedTenantId, userId);
+        if (user == null)
+        {
+            return new UserPasswordUpdateResult(
+                UserPasswordUpdateStatus.NotFound,
+                Message: "User was not found.");
+        }
+
+        if (!user.IsActive || !BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.PasswordHash))
+        {
+            return new UserPasswordUpdateResult(
+                UserPasswordUpdateStatus.CurrentPasswordRejected,
+                Message: "Current password was rejected.");
+        }
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+        var updated = await databaseService.UpdateUserAsync(user);
+        return new UserPasswordUpdateResult(
+            UserPasswordUpdateStatus.Updated,
+            ToResponse(updated));
+    }
+
     private static UserProfileUpdateResult BadRequest(string message)
     {
         return new UserProfileUpdateResult(UserProfileUpdateStatus.BadRequest, Message: message);
+    }
+
+    private static UserPasswordUpdateResult PasswordBadRequest(string message)
+    {
+        return new UserPasswordUpdateResult(UserPasswordUpdateStatus.BadRequest, Message: message);
+    }
+
+    private static string? ValidatePasswordRequest(ChangeUserPasswordRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.CurrentPassword))
+        {
+            return "Current password is required.";
+        }
+
+        if (string.IsNullOrWhiteSpace(request.NewPassword))
+        {
+            return "New password is required.";
+        }
+
+        if (request.NewPassword.Length < 12)
+        {
+            return "New password must be at least 12 characters.";
+        }
+
+        if (request.NewPassword == request.CurrentPassword)
+        {
+            return "New password must differ from current password.";
+        }
+
+        return null;
     }
 
     private static string BuildDisplayName(User user)

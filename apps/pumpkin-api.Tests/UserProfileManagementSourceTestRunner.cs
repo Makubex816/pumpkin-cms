@@ -74,6 +74,71 @@ public static class UserProfileManagementSourceTestRunner
         Assert(stored?.TenantId == "airstrip-club-las-vegas", "profile update preserves tenant");
         Assert(stored?.IsActive == true, "profile update preserves active state");
 
+        var superAdminOriginalHash = BCrypt.Net.BCrypt.HashPassword("Source-Test-Current-Password-58C!");
+        var superAdmin = new User
+        {
+            Id = "spectre-dev-superadmin",
+            TenantId = "spectre-dev",
+            Email = "spectre-dev@example.test",
+            Username = "spectre-dev",
+            PasswordHash = superAdminOriginalHash,
+            FirstName = "Spectre",
+            LastName = "Dev",
+            Role = UserRole.SuperAdmin,
+            IsActive = true,
+            Permissions = ["tenants:read", "users:read"]
+        };
+        database.AddUser(superAdmin);
+
+        var passwordUpdate = await UserProfileManagementService.ChangeUserPasswordAsync(
+            database,
+            "SPECTRE-DEV",
+            "spectre-dev-superadmin",
+            new ChangeUserPasswordRequest
+            {
+                CurrentPassword = "Source-Test-Current-Password-58C!",
+                NewPassword = "Source-Test-New-Password-58C!"
+            });
+
+        Assert(passwordUpdate.Status == UserPasswordUpdateStatus.Updated, "password rotation succeeds with current password");
+        Assert(passwordUpdate.User?.Role == UserRole.SuperAdmin.ToString(), "password rotation response preserves SuperAdmin role");
+        Assert(passwordUpdate.User?.TenantId == "spectre-dev", "password rotation response preserves tenant");
+        Assert(passwordUpdate.User?.GetType().GetProperty("PasswordHash") == null, "password rotation response omits password hash");
+        Assert(passwordUpdate.User?.GetType().GetProperty("Password") == null, "password rotation response omits password");
+
+        var rotatedSuperAdmin = await database.GetUserByIdAsync("spectre-dev", "spectre-dev-superadmin");
+        Assert(rotatedSuperAdmin?.Role == UserRole.SuperAdmin, "password rotation preserves stored role");
+        Assert(rotatedSuperAdmin?.TenantId == "spectre-dev", "password rotation preserves stored tenant");
+        Assert(rotatedSuperAdmin?.Email == "spectre-dev@example.test", "password rotation preserves email");
+        Assert(rotatedSuperAdmin?.PasswordHash != superAdminOriginalHash, "password rotation changes stored password hash");
+        Assert(BCrypt.Net.BCrypt.Verify("Source-Test-New-Password-58C!", rotatedSuperAdmin!.PasswordHash), "new password verifies with BCrypt");
+        Assert(!BCrypt.Net.BCrypt.Verify("Source-Test-Current-Password-58C!", rotatedSuperAdmin.PasswordHash), "old password is rejected by new hash");
+
+        var wrongCurrent = await UserProfileManagementService.ChangeUserPasswordAsync(
+            database,
+            "spectre-dev",
+            "spectre-dev-superadmin",
+            new ChangeUserPasswordRequest
+            {
+                CurrentPassword = "Wrong-Source-Test-Password-58C!",
+                NewPassword = "Another-Source-Test-New-Password-58C!"
+            });
+
+        Assert(wrongCurrent.Status == UserPasswordUpdateStatus.CurrentPasswordRejected, "wrong current password is rejected");
+        Assert(BCrypt.Net.BCrypt.Verify("Source-Test-New-Password-58C!", rotatedSuperAdmin.PasswordHash), "wrong current password leaves password unchanged");
+
+        var programSource = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "pumpkin-api", "Program.cs"));
+        Assert(programSource.Contains("app.MapPost(\"/api/admin/users/{tenantId}/{userId}/password\"", StringComparison.Ordinal),
+            "password rotation route is registered");
+        Assert(programSource.Contains("if (!UserProfileManagementService.IsSuperAdminRole(userRole))", StringComparison.Ordinal),
+            "password rotation route rejects non-SuperAdmin callers");
+        Assert(programSource.Contains("targetTenantId != actorTenantId", StringComparison.Ordinal) &&
+               programSource.Contains("userId != actorUserId", StringComparison.Ordinal),
+            "password rotation route is self-targeting");
+        Assert(programSource.Contains("WithDescription(\"Rotates the authenticated SuperAdmin user's own password", StringComparison.Ordinal) &&
+               programSource.Contains("does not return password or password hash", StringComparison.Ordinal),
+            "password rotation route documents hash non-disclosure");
+
         var conflict = await UserProfileManagementService.UpdateUserProfileAsync(
             database,
             "airstrip-club-las-vegas",
@@ -130,6 +195,11 @@ public static class UserProfileManagementSourceTestRunner
         public UserProfileFakeDatabase(params User[] users)
         {
             _users = users.ToList();
+        }
+
+        public void AddUser(User user)
+        {
+            _users.Add(user);
         }
 
         public Task<List<User>> GetUsersAsync(string? tenantId = null)
