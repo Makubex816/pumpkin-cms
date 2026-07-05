@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse, UserInfo, AdminUserProfile, UpdateUserProfileRequest, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, ImportRun, FormEntry, MediaAsset, FormDefinition } from 'pumpkin-ts-models'
+import type { LoginRequest, LoginResponse, UserInfo, AdminUserProfile, UpdateUserProfileRequest, Page, Tenant, TenantInfo, Theme, PageChangeSource, PublishRun, ImportRun, FormEntry, MediaAsset, FormDefinition, DomainBinding } from 'pumpkin-ts-models'
 
 export interface DashboardStats {
   totalPages: number
@@ -29,6 +29,23 @@ interface ApiError {
 interface PageUpdateOptions {
   changeSource?: PageChangeSource
   changeSummary?: string
+}
+
+export interface DomainBindingListResponse {
+  domainBindings: DomainBinding[]
+  count: number
+}
+
+export interface DomainBindingDnsPacketRequest {
+  inboundIpAddress?: string
+  customDomainVerificationId?: string
+  defaultHost?: string
+}
+
+export interface DomainBindingDnsValidationResponse {
+  domainBinding: DomainBinding
+  status: string
+  allRecordsVerified: boolean
 }
 
 class ApiClient {
@@ -99,7 +116,7 @@ class ApiClient {
       }
 
       const data = await response.json()
-      console.log('[API Client] Success:', data)
+      console.log('[API Client] Success:', { ok: true })
       return data
     } catch (error) {
       if ((error as ApiError).status) {
@@ -153,7 +170,7 @@ class ApiClient {
       }
     )
 
-    console.log('[API Client] Tenants response:', response)
+    console.log('[API Client] Tenants response:', { count: response.count })
     return response.tenants
   }
 
@@ -171,7 +188,7 @@ class ApiClient {
       }
     )
 
-    console.log('[API Client] Tenant created:', response)
+    console.log('[API Client] Tenant created:', { tenantId: response.tenantId })
     return response
   }
 
@@ -189,7 +206,7 @@ class ApiClient {
       }
     )
 
-    console.log('[API Client] Tenant updated:', response)
+    console.log('[API Client] Tenant updated:', { tenantId: response.tenantId })
     return response
   }
 
@@ -225,6 +242,83 @@ class ApiClient {
 
     console.log('[API Client] Tenant deleted:', response)
     return response
+  }
+
+  async listDomainBindings(token: string): Promise<DomainBinding[]> {
+    const response = await this.request<DomainBindingListResponse>(
+      '/api/admin/domain-bindings',
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+
+    return response.domainBindings
+  }
+
+  async listTenantDomainBindings(token: string, tenantId: string): Promise<DomainBinding[]> {
+    const response = await this.request<DomainBindingListResponse>(
+      `/api/admin/tenants/${encodeURIComponent(tenantId)}/domain-bindings`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+
+    return response.domainBindings
+  }
+
+  async getDomainBinding(token: string, tenantId: string, id: string): Promise<DomainBinding> {
+    return this.request<DomainBinding>(
+      `/api/admin/tenants/${encodeURIComponent(tenantId)}/domain-bindings/${encodeURIComponent(id)}`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+  }
+
+  async generateDomainBindingDnsPacket(
+    token: string,
+    tenantId: string,
+    id: string,
+    request: DomainBindingDnsPacketRequest = {}
+  ): Promise<DomainBinding> {
+    return this.request<DomainBinding>(
+      `/api/admin/tenants/${encodeURIComponent(tenantId)}/domain-bindings/${encodeURIComponent(id)}/generate-dns-packet`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(request),
+      }
+    )
+  }
+
+  async validateDomainBindingDns(
+    token: string,
+    tenantId: string,
+    id: string
+  ): Promise<DomainBindingDnsValidationResponse> {
+    return this.request<DomainBindingDnsValidationResponse>(
+      `/api/admin/tenants/${encodeURIComponent(tenantId)}/domain-bindings/${encodeURIComponent(id)}/validate-dns`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
   }
 
   async getAdminUsers(token: string, tenantId?: string): Promise<AdminUserProfile[]> {

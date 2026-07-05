@@ -8,6 +8,7 @@ import {
   Building2,
   FileSearch,
   FileText,
+  Globe2,
   Home,
   Image as ImageIcon,
   Link2,
@@ -28,6 +29,7 @@ interface NavItem {
   href: string
   icon: ReactNode
   roles?: string[]
+  exact?: boolean
 }
 
 const navigation: NavItem[] = [
@@ -86,6 +88,13 @@ const navigation: NavItem[] = [
     href: '/dashboard/onboarding',
     icon: <Rocket className="w-5 h-5" />,
     roles: ['SuperAdmin'],
+    exact: true,
+  },
+  {
+    name: 'Domains',
+    href: '/dashboard/onboarding/domains',
+    icon: <Globe2 className="w-5 h-5" />,
+    roles: ['SuperAdmin'],
   },
   {
     name: 'Users/Admins',
@@ -136,7 +145,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   {visibleNavigation.map((item) => {
                     const isActive = item.href === '/dashboard'
                       ? pathname === '/dashboard'
-                      : pathname === item.href || pathname?.startsWith(`${item.href}/`)
+                      : item.exact
+                        ? pathname === item.href
+                        : pathname === item.href || pathname?.startsWith(`${item.href}/`)
                     return (
                       <Link
                         key={item.name}
@@ -178,7 +189,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               {visibleNavigation.map((item) => {
                 const isActive = item.href === '/dashboard'
                   ? pathname === '/dashboard'
-                  : pathname === item.href || pathname?.startsWith(`${item.href}/`)
+                  : item.exact
+                    ? pathname === item.href
+                    : pathname === item.href || pathname?.startsWith(`${item.href}/`)
                 return (
                   <Link
                     key={item.name}
