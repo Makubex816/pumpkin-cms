@@ -1,0 +1,67 @@
+{
+  "phase": "v2-8-60u-superadmin-domain-manager-ui",
+  "status": "completed",
+  "classification": "superadmin_domain_manager_ui_proof_no_dns_no_binding",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "route": "/dashboard/onboarding/domains",
+  "adminUiDeployments": {
+    "isolated": {
+      "webApp": "app-pumpkin-admin-isolated-centralus-001",
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "attempts": 1,
+      "deploymentId": "9fa0a9af-2888-4431-8690-a4e0972a9e8c"
+    },
+    "production": {
+      "webApp": "app-pumpkin-admin-prod-centralus-001",
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "attempts": 1,
+      "deploymentId": "3a745a66-de6c-43da-896a-7d25c9c4ba8d"
+    }
+  },
+  "proof": {
+    "superAdminDomainManager": "passed",
+    "tenantAdminDenial": "passed",
+    "dnsPacketVisible": "passed",
+    "readonlyDnsValidation": "passed_pending",
+    "runtimeNoRegression": "passed"
+  },
+  "boundaries": {
+    "pumpkinApiDeployOccurred": false,
+    "bluehostDnsMutationOccurred": false,
+    "customDomainBindingOccurred": false,
+    "nameserverChangeOccurred": false,
+    "azureDnsZoneCreationOccurred": false,
+    "googleWorkspaceDnsActivationOccurred": false,
+    "cdnFrontDoorOccurred": false,
+    "indexingOccurred": false,
+    "contactPostOccurred": false,
+    "formSubmissionOccurred": false,
+    "mediaMutationOccurred": false,
+    "contentMutationOccurred": false,
+    "storageKeysListSasOccurred": false,
+    "tmpStaged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-60t-carryforward.md",
+    "secure-file-readiness.md",
+    "domain-manager-ui-source-result.md",
+    "domainbinding-api-client-result.md",
+    "admin-ui-typecheck-build-result.md",
+    "isolated-admin-ui-deploy-result.md",
+    "isolated-superadmin-domain-manager-proof.md",
+    "isolated-tenantadmin-denial-proof.md",
+    "production-admin-ui-deploy-result.md",
+    "production-superadmin-domain-manager-proof.md",
+    "production-tenantadmin-denial-proof.md",
+    "dns-packet-ui-proof.md",
+    "readonly-dns-validation-ui-proof.md",
+    "v2-8-60v-cutover-readiness.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
