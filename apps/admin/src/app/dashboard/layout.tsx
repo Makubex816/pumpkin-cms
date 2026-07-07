@@ -91,6 +91,18 @@ const navigation: NavItem[] = [
     exact: true,
   },
   {
+    name: 'Backups',
+    href: '/dashboard/onboarding/backups',
+    icon: <FileSearch className="w-5 h-5" />,
+    roles: ['SuperAdmin'],
+  },
+  {
+    name: 'Packages',
+    href: '/dashboard/onboarding/packages',
+    icon: <Boxes className="w-5 h-5" />,
+    roles: ['SuperAdmin'],
+  },
+  {
     name: 'Domains',
     href: '/dashboard/onboarding/domains',
     icon: <Globe2 className="w-5 h-5" />,
