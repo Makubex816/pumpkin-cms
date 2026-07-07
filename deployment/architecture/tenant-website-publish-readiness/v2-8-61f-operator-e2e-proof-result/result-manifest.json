@@ -1,0 +1,67 @@
+{
+  "phase": "V2.8.61F",
+  "status": "completed_success",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "backup_intake_end_to_end_operator_proof_no_live_restore_no_domain_no_post",
+  "outsideProofRoot": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\operator-workflow-proofs\\v2-8-61f-airstrip-backup-intake-e2e",
+  "outsideProofFiles": {
+    "summary": "OPERATOR_E2E_SUMMARY.md",
+    "result": "OPERATOR_E2E_RESULT.json",
+    "checksums": "OPERATOR_E2E_CHECKSUMS.sha256"
+  },
+  "outsideProof": {
+    "fileCount": 147,
+    "checksumEntries": 146,
+    "checksumValid": true
+  },
+  "workflow": {
+    "freshBackupExport": "passed",
+    "restoreDryRun": "passed_with_documented_gaps",
+    "packageIntake": "passed",
+    "packageCompiler": "compiled",
+    "packageValidator": "passed",
+    "responsiveProof": "passed",
+    "adminUiReview": "passed",
+    "tenantAdminDenial": "passed",
+    "runtimeNoRegression": "passed"
+  },
+  "counts": {
+    "backupPages": 5,
+    "backupMediaAssets": 13,
+    "backupMediaBlobs": 13,
+    "backupThemes": 1,
+    "backupFormDefinitions": 1,
+    "backupDomainBindings": 1,
+    "restoreSteps": 15,
+    "intakeFiles": 355,
+    "intakeDirectories": 57,
+    "intakeRoutes": 25,
+    "intakeMediaCandidates": 13,
+    "intakeFormCandidates": 54,
+    "compilerRouteClassifications": 27,
+    "compilerExpectedRoutes": 26,
+    "compilerResponsiveRoutes": 12,
+    "responsiveChecks": 28,
+    "runtimeHttp200Checks": 17
+  },
+  "securityBoundary": {
+    "liveRestore": false,
+    "deploy": false,
+    "dnsCustomDomain": false,
+    "contentMutation": false,
+    "mediaUploadDelete": false,
+    "contactOrFormSubmission": false,
+    "customerFacingSubmission": false,
+    "packageDependencyInstallOrBuild": false,
+    "keySasConnectionStringAction": false,
+    "proofOutputOutsideRepo": true
+  },
+  "repoFiles": [
+    "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_61F_OPERATOR_E2E_PROOF_REPORT.md",
+    "deployment/architecture/tenant-website-publish-readiness/v2-8-61f-operator-e2e-proof-result/",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_OPERATOR_BACKUP_INTAKE_E2E_PROOF_V2_8_61F.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_AIRSTRIP_PRE_DOMAIN_OPERATOR_READINESS_V2_8_61F.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_BACKUP_ONBOARDING_OPERATOR_RUNBOOK_V2_8_61F.md",
+    "deployment/architecture/pumpkin-platform/operator-workflows/v2-8-61f/airstrip-backup-intake-e2e.mjs"
+  ]
+}
