@@ -1,0 +1,37 @@
+{
+  "phase": "V2.8.61G",
+  "status": "completed_success",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "pre_domain_cutover_master_operator_hardcopy_full_secret_resource_binding_inventory_no_mutation",
+  "createdAtUtc": "2026-07-07T16:31:23.089Z",
+  "hardcopyFolder": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\v2-8-61g-pre-domain-cutover-master-operator-hardcopy",
+  "hardcopySha256": {
+    "txt": "bae494f459ed8c7c91e154c4807b4960fde3ad09113f24e144d50c44c4187657",
+    "json": "534c34addfd62948429b0eae94d0f053d2b4bee51e5daf567a25b1a55a9ab1a0",
+    "missing": "7fc166e9884844c445d39fc80769a55885180a3eaec745c7cb412459a61ee419",
+    "resourceIndex": "d60c5b65be96867edb27b90419adf503352348f15fd619e4d8b7ef1561a075ce"
+  },
+  "counts": {
+    "azureResources": 29,
+    "appServices": 6,
+    "staticWebApps": 2,
+    "cosmosAccounts": 2,
+    "storageAccounts": 3,
+    "keyVaults": 1,
+    "tenants": 2,
+    "users": 3,
+    "domainBindings": 1,
+    "runtimePassed": 17,
+    "runtimeTotal": 17
+  },
+  "securityBoundary": {
+    "azureMutation": false,
+    "deploy": false,
+    "dnsMutation": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "sasGenerated": false,
+    "rawSecretsInRepo": false
+  }
+}
