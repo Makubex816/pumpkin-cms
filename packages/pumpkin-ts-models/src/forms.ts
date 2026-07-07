@@ -40,18 +40,18 @@ export interface FormDefinitionField {
   label: string;
   type: FormFieldType;
   required: boolean;
-  placeholder?: string;
-  helpText?: string;
-  autocomplete?: string;
-  options?: Array<string | FormFieldOption>;
-  defaultValue?: string;
-  hidden?: boolean;
-  validation?: FormFieldValidation;
+  placeholder: string;
+  helpText: string;
+  autocomplete: string;
+  options: Array<string | FormFieldOption>;
+  defaultValue: string;
+  hidden: boolean;
+  validation: FormFieldValidation;
   order: number;
-  width?: FormFieldWidth;
+  width: FormFieldWidth;
   sensitive?: boolean;
   includeInLeadSummary?: boolean;
-  attributes?: Record<string, string>;
+  attributes: Record<string, string>;
 }
 
 export type FormFieldDefinition = FormDefinitionField;
@@ -98,12 +98,12 @@ export interface FormDefinitionConsent {
 
 export interface FormDefinition {
   id: string;
-  formDefinitionId?: string;
+  formDefinitionId: string;
   tenantId: string;
   siteKey: string;
   formKey: string;
   name: string;
-  type?: string;
+  type: string;
   description: string;
   status: FormDefinitionStatus;
   formType: FormDefinitionType;
@@ -113,21 +113,21 @@ export interface FormDefinition {
   staticEndpointRef: string;
   leadRecipientRef: string;
   notificationEmailRef?: string;
-  submitButtonText?: string;
-  submitBehavior?: FormSubmitBehavior | string;
-  redirectUrl?: string;
-  notificationEmails?: string[];
-  notifications?: FormNotificationSettings;
+  submitButtonText: string;
+  submitBehavior: FormSubmitBehavior | string;
+  redirectUrl: string;
+  notificationEmails: string[];
+  notifications: FormNotificationSettings;
   successMessage: string;
   errorMessage: string;
-  spamProtection: FormDefinitionSpamProtection & Partial<StarterFormSpamProtection>;
+  spamProtection: FormDefinitionSpamProtection & StarterFormSpamProtection;
   consent: FormDefinitionConsent;
   fields: FormDefinitionField[];
   hiddenFields: FormDefinitionField[];
   validationRules: Record<string, unknown>;
   routing: FormDefinitionRouting;
-  rateLimit?: FormRateLimit;
-  isActive?: boolean;
+  rateLimit: FormRateLimit;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
   createdBy: string;
@@ -198,10 +198,12 @@ const SECRET_PATTERNS = [
 
 export const DEFAULT_CONTACT_FORM_DEFINITION: FormDefinition = {
   id: 'default-contact',
+  formDefinitionId: 'default-contact',
   tenantId: 'default',
   siteKey: 'default',
   formKey: 'default-contact',
   name: 'Default Contact',
+  type: 'contact',
   description: 'Reusable tenant-safe default contact form.',
   status: 'active',
   formType: 'contact',
@@ -211,6 +213,15 @@ export const DEFAULT_CONTACT_FORM_DEFINITION: FormDefinition = {
   staticEndpointRef: 'DEFAULT_STATIC_CONTACT_ENDPOINT',
   leadRecipientRef: 'DEFAULT_LEAD_RECIPIENT',
   notificationEmailRef: 'DEFAULT_NOTIFICATION_EMAIL_REF',
+  submitButtonText: 'Submit',
+  submitBehavior: 'message',
+  redirectUrl: '',
+  notificationEmails: [],
+  notifications: {
+    enabled: false,
+    replyToField: 'email',
+    subjectTemplate: '',
+  },
   successMessage: 'Thanks. Your message has been received.',
   errorMessage: 'Unable to submit this request right now. Please try again.',
   spamProtection: {
@@ -218,6 +229,9 @@ export const DEFAULT_CONTACT_FORM_DEFINITION: FormDefinition = {
     minMessageLength: 10,
     maxPayloadBytes: 20000,
     maxFieldLength: 4000,
+    rejectWhenHoneypotFilled: true,
+    requireConsent: true,
+    consentFieldName: 'consent',
   },
   consent: {
     required: true,
@@ -244,6 +258,12 @@ export const DEFAULT_CONTACT_FORM_DEFINITION: FormDefinition = {
     routingMode: 'manual_review_then_provider_match',
     recipientGroupRef: 'DEFAULT_LEAD_RECIPIENT',
   },
+  rateLimit: {
+    enabled: false,
+    maxSubmissions: 5,
+    windowSeconds: 3600,
+  },
+  isActive: true,
   createdAt: '2026-05-27T00:00:00Z',
   updatedAt: '2026-05-27T00:00:00Z',
   createdBy: 'system_default_phase8c11',
@@ -254,10 +274,12 @@ export const DEFAULT_CONTACT_FORM_DEFINITION: FormDefinition = {
 export const ICE_DEFAULT_QUOTE_REQUEST_FORM_DEFINITION: FormDefinition = {
   ...DEFAULT_CONTACT_FORM_DEFINITION,
   id: 'ice-rink-rentals-default-quote-request',
+  formDefinitionId: 'ice-rink-rentals-default-quote-request',
   tenantId: 'ice-rink-rentals',
   siteKey: 'ice-rink-rentals',
   formKey: 'default-quote-request',
   name: 'Ice Default Quote Request',
+  type: 'quote_request',
   description: 'Default quote request form for IceSkatingRinkRentals.com contact pages.',
   formType: 'quote-request',
   staticEndpointRef: 'ICE_RINK_RENTALS_STATIC_CONTACT_ENDPOINT',
@@ -554,6 +576,7 @@ function field(
     required,
     placeholder: '',
     helpText: '',
+    autocomplete: '',
     options: [],
     defaultValue: '',
     hidden: false,
@@ -562,6 +585,7 @@ function field(
     width: 'half',
     sensitive: false,
     includeInLeadSummary: false,
+    attributes: {},
     ...extras,
   };
 }

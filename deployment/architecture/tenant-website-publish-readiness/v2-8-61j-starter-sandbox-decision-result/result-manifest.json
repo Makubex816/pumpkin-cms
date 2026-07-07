@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "pumpkin.v2.result-manifest.v1",
+  "phase": "V2.8.61J",
+  "classification": "starter_app_local_runtime_existing_resource_sandbox_decision_no_deploy_no_airstrip_no_new_resource",
+  "status": "completed",
+  "generatedLockfile": "apps/starter-app/package-lock.json",
+  "starterBuild": "passed_with_warning",
+  "existingResourceSandboxDecision": "local_only_now_future_admin_isolated_appservice_candidate"
+}

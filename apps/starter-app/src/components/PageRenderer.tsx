@@ -1,6 +1,6 @@
 'use client';
 
-import type { BlockClassNamesMap } from 'pumpkin-block-views';
+import type { BlockClassNamesMap, FormBlockSubmitPayload } from 'pumpkin-block-views';
 import { BlockViewRenderer } from 'pumpkin-block-views';
 import type { BlockStyleMap, ContactBlock, FormDefinition, IHtmlBlock, Page } from 'pumpkin-ts-models';
 import { ContactFormBlock } from '@/components/ContactFormBlock';
@@ -43,8 +43,8 @@ export function PageRenderer({ page, blockStyles, formDefinitions = {} }: PageRe
                     <div dangerouslySetInnerHTML={{ __html: body }} />
                   ),
                 },
-                Form: {
-                  formDefinition: getFormDefinition(block, formDefinitions),
+                formBlock: {
+                  definitions: Object.values(formDefinitions),
                   pageSlug: page.pageSlug,
                   onSubmit: submitForm,
                 },
@@ -85,15 +85,17 @@ function getSectionId(block: CmsBlock) {
   return ids[block.type] ?? block.id ?? block.type.toLowerCase();
 }
 
-async function submitForm(formType: string, formData: Record<string, string>, pageSlug?: string) {
-  const response = await fetch(`/api/forms/submit/${encodeURIComponent(formType.trim().toLowerCase())}`, {
+async function submitForm(payload: FormBlockSubmitPayload) {
+  const response = await fetch(`/api/forms/submit/${encodeURIComponent(payload.formType.trim().toLowerCase())}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      ...formData,
-      pageSlug,
+      ...payload.formData,
+      formKey: payload.formKey,
+      pageSlug: payload.pageSlug,
+      sourcePage: payload.sourcePage,
     }),
   });
 

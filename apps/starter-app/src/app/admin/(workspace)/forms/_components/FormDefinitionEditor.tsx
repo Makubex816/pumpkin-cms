@@ -327,7 +327,7 @@ export function FormDefinitionEditor({ initialDefinition, mode }: FormDefinition
                 <TextField label="Autocomplete" value={field.autocomplete} onChange={(value) => updateField(field.name, { autocomplete: value })} />
                 <TextField
                   label="Options"
-                  value={(field.options ?? []).map((option) => `${option.value}:${option.label}`).join(', ')}
+                  value={(field.options ?? []).map(formatOption).join(', ')}
                   onChange={(value) => updateField(field.name, { options: parseOptions(value) })}
                 />
                 <TextField
@@ -341,8 +341,8 @@ export function FormDefinitionEditor({ initialDefinition, mode }: FormDefinition
                 <TextField label="Max Length" value={String(field.validation.maxLength ?? '')} onChange={(value) => updateField(field.name, { validation: { ...field.validation, maxLength: parseOptionalNumber(value) } })} />
                 <TextField label="Min" value={String(field.validation.min ?? '')} onChange={(value) => updateField(field.name, { validation: { ...field.validation, min: parseOptionalNumber(value) } })} />
                 <TextField label="Max" value={String(field.validation.max ?? '')} onChange={(value) => updateField(field.name, { validation: { ...field.validation, max: parseOptionalNumber(value) } })} />
-                <TextField label="Pattern" value={field.validation.pattern} onChange={(value) => updateField(field.name, { validation: { ...field.validation, pattern: value } })} />
-                <TextField label="Validation Message" value={field.validation.message} onChange={(value) => updateField(field.name, { validation: { ...field.validation, message: value } })} />
+                <TextField label="Pattern" value={field.validation.pattern || ''} onChange={(value) => updateField(field.name, { validation: { ...field.validation, pattern: value } })} />
+                <TextField label="Validation Message" value={field.validation.message || ''} onChange={(value) => updateField(field.name, { validation: { ...field.validation, message: value } })} />
               </div>
               <div className="mt-3 flex flex-wrap gap-4">
                 <Checkbox label="Required" checked={field.required} onChange={(checked) => updateField(field.name, { required: checked })} />
@@ -550,6 +550,7 @@ function createField(name: string, order: number, type: FormFieldType = 'text'):
     placeholder: '',
     helpText: '',
     autocomplete: type === 'email' ? 'email' : '',
+    defaultValue: '',
     order,
     hidden: type === 'hidden',
     width: 'full',
@@ -672,6 +673,10 @@ function parseOptions(value: string) {
         label: (labelPart || valuePart).trim(),
       };
     });
+}
+
+function formatOption(option: string | { value: string; label: string }) {
+  return typeof option === 'string' ? option : `${option.value}:${option.label}`;
 }
 
 function parseAttributes(value: string) {

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AlertTriangle, CheckCircle2, FileText, FormInput, Map, Palette } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, FileText, FormInput, Gauge, Map, Palette } from 'lucide-react';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
 import { getStarterAdminContext } from '@/lib/admin-auth';
 import {

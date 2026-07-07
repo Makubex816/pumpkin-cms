@@ -231,6 +231,7 @@ function getFields(content: ContactBlockContent, formDefinition?: FormDefinition
     placeholder: field.placeholder,
     helpText: '',
     autocomplete: '',
+    defaultValue: '',
     order: index,
     hidden: false,
     width: 'full',
