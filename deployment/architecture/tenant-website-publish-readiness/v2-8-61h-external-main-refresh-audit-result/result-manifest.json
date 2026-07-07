@@ -1,0 +1,63 @@
+{
+  "phase": "V2.8.61H",
+  "status": "completed_read_only_no_mutation",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "external_pumpkin_main_refresh_api_starter_forms_admin_impact_audit_no_mutation",
+  "completedAt": "2026-07-07T16:25:48-04:00",
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_61H_EXTERNAL_MAIN_REFRESH_AUDIT_REPORT.md",
+  "resultPath": "deployment/architecture/tenant-website-publish-readiness/v2-8-61h-external-main-refresh-audit-result/",
+  "externalRefs": {
+    "sdiAi": {
+      "url": "https://github.com/SDI-AI/pumpkin-cms",
+      "localPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\external-reference\\SDI-AI-pumpkin-cms",
+      "ref": "origin/main",
+      "commit": "565a8afd669a42224a9d15759f7060faa375d000",
+      "commitDate": "2026-07-07T16:05:11-04:00"
+    },
+    "ownerMain": {
+      "url": "https://github.com/Makubex816/pumpkin-cms",
+      "localPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\external-reference\\Makubex816-pumpkin-cms",
+      "ref": "origin/main",
+      "commit": "64156a3015943f08bc89cadb2caae910d5cadf4f",
+      "commitDate": "2026-02-26T09:59:59-05:00"
+    },
+    "activeRepo": {
+      "branch": "feature/admin-page-editor-import-export",
+      "commit": "7664e030325ea3ed1928f7e875cbb4161e0511d6",
+      "commitDate": "2026-07-07T16:12:56-04:00"
+    }
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "repo-fetch-and-pin-result.md",
+    "upstream-commit-summary.md",
+    "owner-repo-comparison-summary.md",
+    "api-update-impact-audit.md",
+    "forms-contact-form-designer-impact-audit.md",
+    "starter-sample-app-impact-audit.md",
+    "admin-ui-overlap-impact-audit.md",
+    "models-packages-compatibility-audit.md",
+    "domainbinding-backup-intake-impact-audit.md",
+    "airstrip-cutover-impact-summary.md",
+    "adopt-adapt-defer-reject-matrix.md",
+    "integration-risk-register.md",
+    "recommended-integration-phase-map.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "mutationSummary": {
+    "merge": false,
+    "deploy": false,
+    "azureMutation": false,
+    "appsettingMutation": false,
+    "dnsMutation": false,
+    "indexing": false,
+    "contactPost": false,
+    "formSubmit": false,
+    "sourceImplementation": false
+  }
+}
