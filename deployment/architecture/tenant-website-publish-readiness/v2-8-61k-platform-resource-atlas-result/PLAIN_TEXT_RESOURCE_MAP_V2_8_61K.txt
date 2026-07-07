@@ -1,0 +1,237 @@
+V2.8.61K PLAIN TEXT RESOURCE MAP
+
+What this is
+- This is a plain-English map of the current Pumpkin resources.
+- It is not a password or secret hardcopy.
+- It does not contain raw secret values.
+- Do not delete anything listed as do-not-delete unless a later approved cleanup proof says it is safe.
+
+Top level
+- Subscription:
+  - Name: Azure subscription 1
+  - ID: ff887def-fd83-4a19-9298-13d4b1687873
+  - Operator seen by Azure CLI: Contact@iceskatingrinkrentals.com
+  - Status: active/readable
+  - Do-not-delete status: subscription is the live Pumpkin platform home
+
+- Resource groups:
+  - rg-pumpkin-api-prod-centralus
+    - Purpose: Pumpkin API, Admin UI, Airstrip App Services, and shared App Service plan.
+    - Region: centralus
+    - Status: active
+    - Do-not-delete: yes
+  - rg-ice-static-staging
+    - Purpose: Ice production public Static Web App and isolated Static Web App.
+    - Region: eastus2
+    - Status: active
+    - Do-not-delete: yes
+  - rg-ice-production-cosmos
+    - Purpose: production Pumpkin CMS Cosmos account.
+    - Region: eastus
+    - Status: active
+    - Do-not-delete: yes
+  - rg-ice-production-media
+    - Purpose: production tenant media Blob Storage.
+    - Region: eastus
+    - Status: active
+    - Do-not-delete: yes
+  - rg-pumpkin-observability-prod-centralus
+    - Purpose: production monitoring, action group, and metric alerts.
+    - Region: centralus
+    - Status: active
+    - Do-not-delete: yes
+  - rg-ice-static-form-endpoint
+    - Purpose: old static contact function/storage.
+    - Region: eastus
+    - Status: legacy/deferred
+    - Do-not-delete: yes, until a later dependency-proof cleanup is approved
+  - rg-pumpkincms-stg-eastus-olm
+    - Purpose: older staging/outbound-link-manager resources.
+    - Region: eastus
+    - Status: possible cleanup candidate
+    - Do-not-delete: yes, until dependency proof is complete
+  - DefaultResourceGroup-EUS
+    - Purpose: default Log Analytics workspace outside the current Pumpkin live scope.
+    - Region: eastus
+    - Status: outside current Pumpkin scope
+    - Do-not-delete: no Pumpkin deletion action approved
+
+Production Pumpkin core
+- app-pumpkin-api-prod-centralus-001
+  - Type: App Service
+  - Group: rg-pumpkin-api-prod-centralus
+  - Purpose: Pumpkin API
+  - Bound to: platform API for Ice, Admin UI, forms, pages, tenants, media, DomainBinding, publish/import records
+  - Public host: app-pumpkin-api-prod-centralus-001.azurewebsites.net
+  - Status: Running
+  - Do-not-delete: yes
+
+- app-pumpkin-admin-prod-centralus-001
+  - Type: App Service
+  - Group: rg-pumpkin-api-prod-centralus
+  - Purpose: standalone platform/SuperAdmin Admin UI
+  - Bound to: production Pumpkin control plane
+  - Public host: app-pumpkin-admin-prod-centralus-001.azurewebsites.net
+  - Status: Running
+  - Do-not-delete: yes
+
+- asp-pumpkin-api-prod-centralus-001
+  - Type: App Service plan
+  - Group: rg-pumpkin-api-prod-centralus
+  - Purpose: compute plan shared by API/Admin/Airstrip App Services
+  - Status: Ready, Basic B1, 5 sites
+  - Do-not-delete: yes
+
+Ice public website
+- swa-ice-static-staging
+  - Type: Static Web App
+  - Group: rg-ice-static-staging
+  - Purpose: production public Ice website
+  - Bound tenant: ice-rink-rentals
+  - Public hosts: iceskatingrinkrentals.com, www.iceskatingrinkrentals.com, happy-mud-0b375e20f.7.azurestaticapps.net
+  - Status: active, custom domains Ready
+  - Do-not-delete: yes
+
+- swa-ice-static-isolated-staging
+  - Type: Static Web App
+  - Group: rg-ice-static-staging
+  - Purpose: isolated/staging proof website
+  - Public host: kind-island-0a85a740f.7.azurestaticapps.net
+  - Status: active isolated proof resource, no custom domains
+  - Do-not-delete: yes, unless replacement isolated strategy is approved
+
+Airstrip
+- app-airstrip-prod-centralus-001
+  - Type: App Service
+  - Group: rg-pumpkin-api-prod-centralus
+  - Purpose: Airstrip production default-host runtime
+  - Bound tenant: airstrip-club-las-vegas
+  - Public host: app-airstrip-prod-centralus-001.azurewebsites.net
+  - Status: Running, frozen in V2.8.61K
+  - Do-not-delete: yes
+
+- app-airstrip-preview-isolated-centralus-001
+  - Type: App Service
+  - Group: rg-pumpkin-api-prod-centralus
+  - Purpose: Airstrip isolated preview runtime
+  - Bound tenant: airstrip-club-las-vegas
+  - Public host: app-airstrip-preview-isolated-centralus-001.azurewebsites.net
+  - Status: Running, frozen in V2.8.61K
+  - Do-not-delete: yes
+
+- Airstrip custom domain state
+  - Target domains: airstripclublasvegas.com and www.airstripclublasvegas.com
+  - Current owner state from V2.8.61 docs: manual Bluehost DNS action still required
+  - Azure hostname binding: not attempted
+  - Managed TLS: not attempted
+  - V2.8.61K action: no Airstrip route probe, no DNS mutation, no Azure custom-domain mutation
+
+Data
+- cosmos-pumpkin-prod-eastus
+  - Type: Cosmos DB account
+  - Group: rg-ice-production-cosmos
+  - Database: pumpkin-prod-cms
+  - Containers: 20
+  - Data held: tenants, pages, themes, forms, form entries, users, media assets, DomainBinding, import/publish runs
+  - Backup: Continuous
+  - Do-not-delete: yes
+
+- cosmos-pumpkincms-stg-olm01
+  - Type: Cosmos DB account
+  - Group: rg-pumpkincms-stg-eastus-olm
+  - Database: pumpkincms-olm-staging
+  - Containers: 10 outbound-link-manager containers
+  - Status: older staging/redundant-looking
+  - Do-not-delete: yes, until dependency proof is complete
+
+Media and storage
+- iceskatingmedia
+  - Type: Storage account
+  - Group: rg-ice-production-media
+  - Containers:
+    - ice-rink-rentals-media
+    - airstrip-club-las-vegas-media
+  - Public blob access: enabled at account level; listed containers use blob public access
+  - Protections: soft delete, container soft delete, versioning, change feed enabled
+  - Do-not-delete: yes
+
+- iceforms20260605
+  - Type: Storage account
+  - Group: rg-ice-static-form-endpoint
+  - Purpose: legacy static contact function storage
+  - Status: legacy/deferred
+  - Do-not-delete: yes, until dependency proof is complete
+
+- pumpkincmsstgolm01
+  - Type: Storage account
+  - Group: rg-pumpkincms-stg-eastus-olm
+  - Purpose: older staging resource registry/backup/runtime QA storage
+  - Status: possible cleanup candidate
+  - Do-not-delete: yes, until dependency proof is complete
+
+Monitoring
+- law-pumpkin-prod-centralus-001
+  - Type: Log Analytics workspace
+  - Group: rg-pumpkin-observability-prod-centralus
+  - Purpose: production monitoring workspace
+  - Status: Succeeded, 30-day retention
+  - Do-not-delete: yes
+
+- ag-pumpkin-prod-ops-email-001
+  - Type: Action group
+  - Purpose: production ops email alerting
+  - Status: enabled
+  - Do-not-delete: yes
+
+- Production metric alerts
+  - alert-pumpkin-api-prod-http5xx-001
+  - alert-pumpkin-admin-prod-http5xx-001
+  - alert-pumpkin-admin-isolated-http5xx-001
+  - alert-pumpkin-cosmos-normalized-ru-high-001
+  - alert-ice-media-storage-availability-low-001
+  - alert-ice-swa-prod-function-errors-001
+  - Status: enabled
+  - Do-not-delete: yes
+
+Starter app
+- apps/starter-app
+  - Type: local repo app
+  - Purpose: future tenant starter/template baseline
+  - Runtime proof: local-only proof passed in V2.8.61J
+  - Admin boundary: /admin is tenant-local only
+  - Deployment status: not deployed
+  - Do-not-delete: keep as source baseline
+
+Backup and proof locations outside repo
+- secure-operator-handoff/tenant-backups/v2-8-61a-airstrip-full-backup-proof
+  - Purpose: Airstrip backup proof
+  - Sensitive: yes
+  - Repo-safe to stage: no
+- secure-operator-handoff/tenant-backups/v2-8-61b-airstrip-restore-dryrun-proof
+  - Purpose: restore dry-run proof
+  - Sensitive: yes or protected
+  - Repo-safe to stage: no
+- tenant-onboarding-intake/TRUENewestTenant/v2-8-61c-intake-analysis-proof
+  - Purpose: package intake analysis proof
+  - Sensitive: protected intake/proof output
+  - Repo-safe to stage: no
+- tenant-onboarding-intake/TRUENewestTenant/v2-8-61d-compiled-package-proof
+  - Purpose: compiled package proof
+  - Sensitive: protected intake/proof output
+  - Repo-safe to stage: no
+- secure-operator-handoff/operator-workflow-proofs/v2-8-61f-airstrip-backup-intake-e2e
+  - Purpose: end-to-end operator proof
+  - Sensitive: protected proof output
+  - Repo-safe to stage: no
+- secure-operator-handoff/v2-8-61g-pre-domain-cutover-master-operator-hardcopy
+  - Purpose: master operator hardcopy
+  - Sensitive: yes
+  - Repo-safe to stage: no
+
+Known gaps
+- Airstrip DNS/custom-domain cutover still needs manual owner DNS work and separate approval.
+- Airstrip Azure hostname binding and managed TLS are not attempted.
+- Starter app is not deployed to any Azure sandbox.
+- Live restore adapter is not implemented.
+- Legacy/deferred and redundant-looking resources require dependency proof before deletion.
+- Raw secrets live only in secure/off-repo hardcopy or Azure, not in this atlas.

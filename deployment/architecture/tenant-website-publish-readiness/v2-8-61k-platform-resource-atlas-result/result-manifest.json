@@ -1,0 +1,41 @@
+{
+  "phase": "V2.8.61K",
+  "status": "completed",
+  "classification": "post_integration_platform_resource_atlas_plain_text_resource_map_no_mutation",
+  "createdArtifacts": [
+    "README.md",
+    "result-manifest.json",
+    "PLAIN_TEXT_RESOURCE_MAP_V2_8_61K.txt",
+    "current-state-summary.md",
+    "executive-owner-resource-summary.md",
+    "subscription-resource-group-map.md",
+    "appservice-swa-map.md",
+    "cosmos-storage-map.md",
+    "tenant-resource-binding-map.md",
+    "media-binding-map.md",
+    "domainbinding-domain-state-map.md",
+    "backup-intake-proof-artifact-map.md",
+    "starter-app-resource-and-proof-state.md",
+    "observability-monitoring-map.md",
+    "do-not-delete-register.md",
+    "legacy-deferred-cleanup-candidates.md",
+    "known-gaps-pending-work.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_PLATFORM_RESOURCE_ATLAS_V2_8_61K.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TOP_DOWN_RESOURCE_MAP_V2_8_61K.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_RESOURCE_BINDING_LEDGER_V2_8_61K.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_DO_NOT_DELETE_RESOURCE_REGISTER_V2_8_61K.md"
+  ],
+  "azureReadOnlyResourceCount": 29,
+  "resourceGroupCount": 8,
+  "runtimeNoRegression": "passed_13_of_13_get_only_non_airstrip",
+  "airstripFrozen": true,
+  "liveMutationOccurred": false,
+  "deployOccurred": false,
+  "rawSecretsWritten": false
+}
