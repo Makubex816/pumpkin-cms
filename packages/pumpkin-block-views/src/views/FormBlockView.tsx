@@ -224,7 +224,9 @@ function renderField(field: FormDefinitionField, cx: typeof formBlockDefaults, d
           className={cx.fieldInput}
         >
           <option value="" disabled>{field.placeholder || 'Select an option'}</option>
-          {(field.options || []).map((option) => <option key={option} value={option}>{option}</option>)}
+          {(field.options || []).map((option) => (
+            <option key={getOptionValue(option)} value={getOptionValue(option)}>{getOptionLabel(option)}</option>
+          ))}
         </select>
         {renderHelpText(field, cx)}
       </label>
@@ -250,7 +252,7 @@ function renderField(field: FormDefinitionField, cx: typeof formBlockDefaults, d
     );
   }
 
-  const type = field.type === 'dateText' ? 'text' : field.type;
+  const type = field.type === 'dateText' || field.type === 'radio' ? 'text' : field.type === 'phone' ? 'tel' : field.type;
   return (
     <label key={field.name} className={wrapperClass}>
       <span className={cx.fieldLabel}>{field.label}{requiredMark}</span>
@@ -272,6 +274,14 @@ function renderField(field: FormDefinitionField, cx: typeof formBlockDefaults, d
 function renderHelpText(field: FormDefinitionField, cx: typeof formBlockDefaults) {
   if (!field.helpText) return null;
   return <span id={`${field.name}-help`} className={cx.helpText}>{field.helpText}</span>;
+}
+
+function getOptionValue(option: string | { value: string; label: string }) {
+  return typeof option === 'string' ? option : option.value;
+}
+
+function getOptionLabel(option: string | { value: string; label: string }) {
+  return typeof option === 'string' ? option : option.label;
 }
 
 function collectFormData(

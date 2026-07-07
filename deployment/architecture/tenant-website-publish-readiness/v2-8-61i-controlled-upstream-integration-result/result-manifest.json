@@ -1,0 +1,65 @@
+{
+  "phase": "V2.8.61I",
+  "status": "completed_source_integration_no_deploy_no_live_mutation",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "controlled_upstream_api_forms_starter_integration_airstrip_frozen_no_deploy_no_mutation",
+  "completedAt": "2026-07-07T16:55:17-04:00",
+  "upstreamCommit": "565a8afd669a42224a9d15759f7060faa375d000",
+  "ownerMainCommit": "64156a3015943f08bc89cadb2caae910d5cadf4f",
+  "sourceIntegration": {
+    "adopted": [
+      "apps/starter-app"
+    ],
+    "adapted": [
+      "packages/pumpkin-ts-models form compatibility exports",
+      "packages/pumpkin-block-views option normalization",
+      "starter-app active FormDefinition metadata adapter",
+      "starter-app admin form definitions response adapter"
+    ],
+    "deferred": [
+      "apps/sample-app-2",
+      "starter-app dependency install/type-check/build",
+      "starter-app deploy",
+      "customer-facing form submit proof"
+    ],
+    "rejected": [
+      "blind merge",
+      "standalone Admin UI replacement",
+      "Airstrip use for proof"
+    ]
+  },
+  "mutationSummary": {
+    "deploy": false,
+    "newResources": false,
+    "liveAzureMutation": false,
+    "dnsMutation": false,
+    "airstripTouched": false,
+    "contactPost": false,
+    "formSubmit": false,
+    "gitMerge": false,
+    "gitPull": false,
+    "gitRebase": false,
+    "gitCherryPick": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61h-carryforward.md",
+    "prechange-preservation-ledger.md",
+    "upstream-source-port-ledger.md",
+    "api-forms-integration-result.md",
+    "admin-form-designer-integration-result.md",
+    "starter-app-integration-result.md",
+    "models-packages-integration-result.md",
+    "protected-downstream-preservation-proof.md",
+    "airstrip-freeze-proof.md",
+    "local-test-build-result.md",
+    "non-airstrip-runtime-no-regression-proof.md",
+    "adopt-adapt-defer-reject-final.md",
+    "v2-8-61j-existing-resource-sandbox-readiness.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}

@@ -10,17 +10,27 @@ export type FormFieldType =
   | 'text'
   | 'email'
   | 'tel'
+  | 'phone'
   | 'textarea'
   | 'select'
+  | 'radio'
   | 'checkbox'
   | 'hidden'
   | 'dateText'
   | 'number';
+export type FormFieldWidth = 'full' | 'half' | 'third' | 'two-thirds' | string;
+
+export interface FormFieldOption {
+  value: string;
+  label: string;
+}
 
 export interface FormFieldValidation {
   minLength?: number;
   maxLength?: number;
   pattern?: string;
+  min?: number;
+  max?: number;
   message?: string;
 }
 
@@ -33,14 +43,38 @@ export interface FormDefinitionField {
   placeholder?: string;
   helpText?: string;
   autocomplete?: string;
-  options?: string[];
+  options?: Array<string | FormFieldOption>;
   defaultValue?: string;
   hidden?: boolean;
   validation?: FormFieldValidation;
   order: number;
-  width?: 'full' | 'half' | 'third';
+  width?: FormFieldWidth;
   sensitive?: boolean;
   includeInLeadSummary?: boolean;
+  attributes?: Record<string, string>;
+}
+
+export type FormFieldDefinition = FormDefinitionField;
+
+export type FormSubmitBehavior = 'message' | 'redirect';
+
+export interface FormNotificationSettings {
+  enabled: boolean;
+  replyToField: string;
+  subjectTemplate: string;
+}
+
+export interface StarterFormSpamProtection {
+  honeypotFieldName: string;
+  rejectWhenHoneypotFilled: boolean;
+  requireConsent: boolean;
+  consentFieldName: string;
+}
+
+export interface FormRateLimit {
+  enabled: boolean;
+  maxSubmissions: number;
+  windowSeconds: number;
 }
 
 export interface FormDefinitionRouting {
@@ -64,10 +98,12 @@ export interface FormDefinitionConsent {
 
 export interface FormDefinition {
   id: string;
+  formDefinitionId?: string;
   tenantId: string;
   siteKey: string;
   formKey: string;
   name: string;
+  type?: string;
   description: string;
   status: FormDefinitionStatus;
   formType: FormDefinitionType;
@@ -77,14 +113,21 @@ export interface FormDefinition {
   staticEndpointRef: string;
   leadRecipientRef: string;
   notificationEmailRef?: string;
+  submitButtonText?: string;
+  submitBehavior?: FormSubmitBehavior | string;
+  redirectUrl?: string;
+  notificationEmails?: string[];
+  notifications?: FormNotificationSettings;
   successMessage: string;
   errorMessage: string;
-  spamProtection: FormDefinitionSpamProtection;
+  spamProtection: FormDefinitionSpamProtection & Partial<StarterFormSpamProtection>;
   consent: FormDefinitionConsent;
   fields: FormDefinitionField[];
   hiddenFields: FormDefinitionField[];
   validationRules: Record<string, unknown>;
   routing: FormDefinitionRouting;
+  rateLimit?: FormRateLimit;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   createdBy: string;
@@ -141,7 +184,7 @@ export interface FormSubmissionPayload {
 
 export const DEFAULT_FORM_KEYS: DefaultFormKey[] = ['default-contact', 'default-quote-request'];
 export const FORM_BLOCK_VARIANTS: FormBlockVariant[] = ['quote-form-panel', 'contact-card', 'inline-contact', 'compact-contact'];
-export const FORM_FIELD_TYPES: FormFieldType[] = ['text', 'email', 'tel', 'textarea', 'select', 'checkbox', 'hidden', 'dateText', 'number'];
+export const FORM_FIELD_TYPES: FormFieldType[] = ['text', 'email', 'tel', 'phone', 'textarea', 'select', 'radio', 'checkbox', 'hidden', 'dateText', 'number'];
 
 const SAFE_REF_PATTERN = /^[A-Z0-9_:-]{3,160}$/;
 const FIELD_NAME_PATTERN = /^[A-Za-z][A-Za-z0-9_-]{1,80}$/;

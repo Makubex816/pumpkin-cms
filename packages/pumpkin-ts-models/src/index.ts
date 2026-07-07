@@ -61,10 +61,18 @@ export type {
   FormDefinitionSpamProtection,
   FormDefinitionStatus,
   FormDefinitionType,
+  FormFieldDefinition,
+  FormFieldOption,
   FormFieldType,
+  FormFieldValidation,
+  FormFieldWidth,
+  FormNotificationSettings,
+  FormRateLimit,
   FormSpamStatus,
+  FormSubmitBehavior,
   FormSubmissionPayload,
   FormSubmitAction,
+  StarterFormSpamProtection,
   FormValidationIssue,
   FormValidationResult
 } from './forms';
