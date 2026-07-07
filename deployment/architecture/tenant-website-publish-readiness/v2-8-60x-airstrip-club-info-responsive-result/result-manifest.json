@@ -1,0 +1,65 @@
+{
+  "phase": "V2.8.60X",
+  "status": "completed_airstrip_club_info_responsive_repair_replayed_and_deployed",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "airstrip_club_info_responsive_repair_replay_proof_no_dns_no_custom_domain",
+  "generatedOn": "2026-07-06",
+  "airstrip": {
+    "productionDefaultHost": "https://app-airstrip-prod-centralus-001.azurewebsites.net",
+    "isolatedPreviewHost": "https://app-airstrip-preview-isolated-centralus-001.azurewebsites.net",
+    "repairedRoute": "/airstrip-the-club",
+    "knownBlockerSelector": ".as-club-info"
+  },
+  "responsiveReplay": {
+    "beforeProduction": { "valid": false, "checks": 28, "overflowFailures": 5 },
+    "localAfterRepair": { "valid": true, "checks": 28, "overflowFailures": 0 },
+    "isolatedAfterDeploy": { "valid": true, "checks": 28, "overflowFailures": 0 },
+    "productionAfterDeploy": { "valid": true, "checks": 28, "overflowFailures": 0 }
+  },
+  "artifact": {
+    "zipSha256": "8ece6bfc0670755ad6c33b3ad0da7c5182075563edad1b9fa49ab22e26be9cf4",
+    "bytes": 10152557,
+    "entries": 1925,
+    "backslashEntries": 0,
+    "rootServerJs": true,
+    "protectedConfigEntries": 0
+  },
+  "deployments": {
+    "isolatedDeployCount": 1,
+    "isolatedDeploymentId": "f08a69c0-9e7a-428d-8d84-6ace3fd6d701",
+    "isolatedStatus": "RuntimeSuccessful",
+    "productionDeployCount": 1,
+    "productionDeploymentId": "dfc54ec4-ea78-4358-9567-a3badc9e98fe",
+    "productionStatus": "RuntimeSuccessful"
+  },
+  "runtimeNoRegression": {
+    "method": "GET-only",
+    "passed": true,
+    "okCount": 17,
+    "totalCount": 17,
+    "contactPostSent": false,
+    "formSubmitted": false
+  },
+  "resultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-60v-wd-carryforward.md",
+    "before-club-info-overflow-reproduction.md",
+    "source-cause-analysis.md",
+    "responsive-overlay-result.md",
+    "local-build-smoke-result.md",
+    "local-responsive-replay-proof.md",
+    "isolated-deploy-result.md",
+    "isolated-responsive-replay-proof.md",
+    "production-deploy-result.md",
+    "production-responsive-replay-proof.md",
+    "airstrip-benchmark-fixture-update.md",
+    "visual-review-artifact-paths.md",
+    "pre-domain-cutover-readiness.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
