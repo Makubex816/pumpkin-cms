@@ -1,0 +1,43 @@
+{
+  "phase": "V2.8.61C",
+  "status": "completed",
+  "classification": "universal_package_intake_upload_quarantine_analyze_no_live_mutation_no_post",
+  "tenantId": "airstrip-club-las-vegas",
+  "completedAt": "2026-07-06T21:34:14-04:00",
+  "toolPath": "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/intake-analyze-package.mjs",
+  "airstripSourceZip": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\TRUENewestTenant\\newest upload package\\pumpkinairstrip.zip",
+  "proofOutputPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\TRUENewestTenant\\v2-8-61c-intake-analysis-proof",
+  "airstripReplay": {
+    "zipSha256": "3bf93c6b016eb2aa0caa802cc52b0f9ef133aa9fae44ad59bc06be70b6f579f0",
+    "files": 355,
+    "directories": 57,
+    "framework": "nextjs",
+    "frameworkConfidence": "high",
+    "renderingModeCandidate": "hybrid_next_server_required",
+    "routes": 25,
+    "dynamicRoutes": 1,
+    "mediaCandidates": 13,
+    "formCandidates": 54,
+    "protectedConfigFindings": 2,
+    "protectedConfigContentsRead": false,
+    "compilerReadiness": "ready_for_v2_8_61d_compiler_analysis"
+  },
+  "proofHashes": {
+    "intakeAnalysisSha256": "C1BE4E196A7A7653E52303CBFB1518620F3BCA0B21D5FBAF91B14C1CCB313003",
+    "sourceMapSha256": "F85405A5CF0F99DE94560CB34D0C06F415E107E9E2C339A5EA56B2760BF75EBC",
+    "ownerActionPacketSha256": "D3A66E9D44B30F426782D607AF70366689B473F58CFB1B6672195115AB1EBA25"
+  },
+  "runtimeNoRegression": {
+    "method": "GET-only",
+    "passed": 17,
+    "total": 17
+  },
+  "packageInstallOrBuildExecuted": false,
+  "uploadedScriptExecuted": false,
+  "liveMutationPerformed": false,
+  "deployPerformed": false,
+  "contactPostPerformed": false,
+  "formSubmissionPerformed": false,
+  "mediaUploadDeletePerformed": false,
+  "filesStagedAtEnd": false
+}
