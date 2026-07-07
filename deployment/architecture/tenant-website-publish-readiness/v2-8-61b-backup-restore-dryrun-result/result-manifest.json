@@ -1,0 +1,50 @@
+{
+  "phase": "V2.8.61B",
+  "status": "completed_with_documented_gaps",
+  "classification": "backup_manager_restore_dryrun_airstrip_bundle_no_live_restore_no_domain_no_post",
+  "tenantId": "airstrip-club-las-vegas",
+  "completedAt": "2026-07-06T21:09:41-04:00",
+  "backupBundlePath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-backups\\v2-8-61a-airstrip-full-backup-proof",
+  "restoreDryRunOutputPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-backups\\v2-8-61b-airstrip-restore-dryrun-proof",
+  "dryRunResult": {
+    "status": "passed_with_documented_gaps",
+    "backupChecksumEntriesValidated": 61,
+    "restoreOrderSteps": 15,
+    "bundleGaps": 1,
+    "expectedLiveAdapterGaps": 5,
+    "outputChecksumEntries": 4,
+    "outputChecksumFailures": 0
+  },
+  "counts": {
+    "pages": 5,
+    "mediaAssets": 13,
+    "mediaFilesValidated": 13,
+    "themes": 1,
+    "formDefinitions": 1,
+    "formEntries": 0,
+    "importRuns": 0,
+    "publishRuns": 0,
+    "domainBindings": 1,
+    "usersSanitized": 1,
+    "backupRuns": 0
+  },
+  "hashes": {
+    "restoreDryRunReportSha256": "32B5428CE2D457DCDA468AB03FDA826E06AD18D643180361B2370A3DDDA0332B",
+    "restoreOrderPlanSha256": "C329CF02E36AA0199B17DE1EBA36F3BB161F10B2EE726BD18B387D013D512960",
+    "restoreValidationChecksumsSha256": "3E963BADFAB7DD70D935268E74F67F2FE64CF7365C27C4E143CF08D21FC57896"
+  },
+  "runtimeNoRegression": {
+    "method": "GET-only",
+    "passed": 17,
+    "total": 17
+  },
+  "liveRestorePerformed": false,
+  "deployPerformed": false,
+  "dnsOrIndexingPerformed": false,
+  "contactPostPerformed": false,
+  "formSubmissionPerformed": false,
+  "mediaUploadDeletePerformed": false,
+  "contentOrIdentityMutationPerformed": false,
+  "storageKeysListKeysSasOrConnectionStringGenerated": false,
+  "filesStagedAtEnd": false
+}
