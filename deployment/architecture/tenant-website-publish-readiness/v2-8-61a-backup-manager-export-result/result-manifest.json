@@ -1,0 +1,40 @@
+{
+  "phase": "V2.8.61A",
+  "status": "completed",
+  "classification": "backup_manager_package_export_airstrip_full_backup_no_domain_no_post",
+  "tenantId": "airstrip-club-las-vegas",
+  "completedAt": "2026-07-06T20:34:31-04:00",
+  "backupBundlePath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-backups\\v2-8-61a-airstrip-full-backup-proof",
+  "counts": {
+    "pages": 5,
+    "mediaAssets": 13,
+    "mediaBlobsDownloaded": 13,
+    "themes": 1,
+    "formDefinitions": 1,
+    "formEntries": 0,
+    "importRuns": 0,
+    "publishRuns": 0,
+    "domainBindings": 1,
+    "usersSanitized": 1,
+    "backupRuns": 0
+  },
+  "checksums": {
+    "entries": 61,
+    "failures": 0,
+    "manifestSha256": "2D342D417C557E1642F470CDFD3808C2CA7A752A7D82B7BA341291BFB80144C1",
+    "checksumsSha256": "23F85668A07846D8F20E1DE5C8276F3D70C66C7617FBBA0B00E25E7F2ADE6655"
+  },
+  "runtimeNoRegression": {
+    "method": "GET-only",
+    "passed": 17,
+    "total": 17
+  },
+  "apiDeployPerformed": false,
+  "disallowedLiveMutationPerformed": false,
+  "authLoginPostForReadOnlyExport": true,
+  "sourceLoginMayUpdateLastLogin": true,
+  "contactPostPerformed": false,
+  "formSubmissionPerformed": false,
+  "dnsOrIndexingPerformed": false,
+  "storageKeysListKeysSasOrConnectionStringGenerated": false
+}
