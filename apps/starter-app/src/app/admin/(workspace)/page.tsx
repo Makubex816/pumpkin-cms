@@ -2,33 +2,27 @@ import Link from 'next/link';
 import { AlertTriangle, CheckCircle2, FileText, FormInput, Map, Palette } from 'lucide-react';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
 import { getStarterAdminContext } from '@/lib/admin-auth';
+import {
+  STARTER_ADMIN_WORKFLOWS,
+  type StarterAdminWorkflowId,
+} from '@/lib/starter-admin-boundary';
 
-const workflowCards = [
-  {
-    title: 'Page Map',
-    href: '/admin/page-map',
-    icon: Map,
-    description: 'Move the existing page-map workflow into the starter admin.',
-  },
-  {
-    title: 'Pages',
-    href: '/admin/pages',
-    icon: FileText,
-    description: 'Bring over page editing, block editing, and publish/save actions.',
-  },
-  {
-    title: 'Forms',
-    href: '/admin/forms',
-    icon: FormInput,
-    description: 'Add the form definition builder for fields, validation, and submit behavior.',
-  },
-  {
-    title: 'Themes',
-    href: '/admin/themes',
-    icon: Palette,
-    description: 'Manage active themes, installed themes, and runtime theme tokens.',
-  },
-];
+const workflowIcons: Record<StarterAdminWorkflowId, typeof Gauge> = {
+  dashboard: Gauge,
+  pages: FileText,
+  'page-map': Map,
+  forms: FormInput,
+  themes: Palette,
+};
+
+const workflowCards = STARTER_ADMIN_WORKFLOWS
+  .filter((workflow) => workflow.showOnDashboard)
+  .map((workflow) => ({
+    title: workflow.name,
+    href: workflow.href,
+    icon: workflowIcons[workflow.id],
+    description: workflow.description,
+  }));
 
 export default function StarterAdminDashboardPage() {
   const context = getStarterAdminContext();
@@ -37,9 +31,9 @@ export default function StarterAdminDashboardPage() {
   return (
     <section>
       <AdminPageHeader
-        eyebrow="Starter Admin"
+        eyebrow="Starter Tenant-local Admin"
         title="Tenant workspace"
-        description="Single-tenant administration for this deployed starter app. The workflows here are scoped to the configured tenant and can later roll up into the multi-tenant admin."
+        description="Single-tenant administration for this deployed starter app. The workflows here are scoped to the configured tenant and do not expose platform control-plane operations."
       />
 
       <div className="mb-6 rounded-lg border border-neutral-200 bg-white p-5 shadow-sm">

@@ -48,7 +48,30 @@ npm run dev
 
 Open http://localhost:3003.
 
-The single-tenant admin shell is available at http://localhost:3003/admin. It uses Pumpkin admin accounts and stores the JWT in an HTTP-only cookie.
+The tenant-local admin shell is available at http://localhost:3003/admin. It uses Pumpkin admin accounts and stores the JWT in an HTTP-only cookie.
+
+## Admin Boundary
+
+Starter `/admin` is a tenant-site-local admin surface. It is not the Pumpkin platform/SuperAdmin control plane, and it must not replace the standalone Admin UI in `apps/admin`.
+
+Allowed tenant-local workflows:
+
+- dashboard
+- pages
+- page map
+- forms
+- themes
+
+Denied platform controls:
+
+- Backup Manager
+- Package Intake or Universal Onboarding
+- Domain Manager
+- users/admins platform management
+- hardcopy, recovery, or resource controls
+- cross-tenant operations
+
+The source allowlist for starter admin workflows lives in `src/lib/starter-admin-boundary.ts`.
 
 ## Phase 1 Boundary
 

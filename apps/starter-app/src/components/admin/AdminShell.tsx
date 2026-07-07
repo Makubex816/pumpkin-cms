@@ -3,21 +3,30 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { FileText, FormInput, Gauge, LogOut, Map, Palette } from 'lucide-react';
+import { FileText, FormInput, Gauge, LogOut, Map, Palette, type LucideIcon } from 'lucide-react';
 import type { StarterAdminContext } from '@/lib/admin-auth';
+import {
+  STARTER_ADMIN_WORKFLOWS,
+  type StarterAdminWorkflowId,
+} from '@/lib/starter-admin-boundary';
 
 interface AdminShellProps {
   context: StarterAdminContext;
   children: ReactNode;
 }
 
-const navigation = [
-  { name: 'Dashboard', href: '/admin', icon: Gauge },
-  { name: 'Pages', href: '/admin/pages', icon: FileText },
-  { name: 'Page Map', href: '/admin/page-map', icon: Map },
-  { name: 'Forms', href: '/admin/forms', icon: FormInput },
-  { name: 'Themes', href: '/admin/themes', icon: Palette },
-];
+const workflowIcons: Record<StarterAdminWorkflowId, LucideIcon> = {
+  dashboard: Gauge,
+  pages: FileText,
+  'page-map': Map,
+  forms: FormInput,
+  themes: Palette,
+};
+
+const navigation = STARTER_ADMIN_WORKFLOWS.map((workflow) => ({
+  ...workflow,
+  icon: workflowIcons[workflow.id],
+}));
 
 export function AdminShell({ context, children }: AdminShellProps) {
   const pathname = usePathname();
@@ -40,7 +49,7 @@ export function AdminShell({ context, children }: AdminShellProps) {
               </span>
               <span>
                 <span className="block text-sm font-bold leading-4">{context.siteName}</span>
-                <span className="block text-xs text-neutral-500">Tenant Admin</span>
+                <span className="block text-xs text-neutral-500">Tenant-local Admin</span>
               </span>
             </Link>
 
