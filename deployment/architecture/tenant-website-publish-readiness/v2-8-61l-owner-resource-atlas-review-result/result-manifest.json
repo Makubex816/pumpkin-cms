@@ -1,0 +1,27 @@
+{
+  "phase": "V2.8.61L",
+  "status": "completed",
+  "classification": "owner_resource_atlas_review_decision_packet_no_mutation",
+  "carryforwardCommit": "61357bee Add V2.8.61K platform resource atlas",
+  "defaultOwnerStates": {
+    "airstrip": "demo_only_default_host",
+    "cleanup": "do_not_delete_until_dependency_proof",
+    "starter": "local_only_until_separate_approval",
+    "forms": "no_contact_or_form_post_approved"
+  },
+  "decisionLanes": [
+    "airstrip-domain-cutover",
+    "authenticated-admin-cms-proof",
+    "diagnostic-settings-reconciliation",
+    "legacy-static-contact-cleanup",
+    "olm-staging-cleanup",
+    "starter-app-sandbox-proof",
+    "resource-cleanup-general"
+  ],
+  "runtimeNoRegression": "passed_13_of_13_get_only_non_airstrip",
+  "airstripProbeOccurred": false,
+  "liveMutationOccurred": false,
+  "deployOccurred": false,
+  "dnsMutationOccurred": false,
+  "rawSecretsWritten": false
+}
