@@ -1,0 +1,61 @@
+{
+  "phase": "V2.8.61M",
+  "status": "completed",
+  "date": "2026-07-08",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "superadmin_authenticated_admin_cms_gap_closure_readonly_no_mutation_no_airstrip",
+  "tenantUsedForReadProof": "ice-rink-rentals",
+  "airstripFrozen": true,
+  "liveMutationOccurred": false,
+  "deployOccurred": false,
+  "contactPostOccurred": false,
+  "formSubmissionOccurred": false,
+  "customerFacingPostOccurred": false,
+  "adminAuth": {
+    "loginStatus": 200,
+    "verifyStatus": 200,
+    "role": "SuperAdmin",
+    "secretsRedacted": true
+  },
+  "apiReadCounts": {
+    "accessibleTenantCount": 2,
+    "iceTenantRows": 1,
+    "users": 2,
+    "pages": 3,
+    "themes": 1,
+    "activeThemes": 1,
+    "mediaAssets": 9,
+    "formDefinitions": 1,
+    "formEntries": 5,
+    "allDomainBindings": 1,
+    "iceDomainBindings": 0,
+    "publishRuns": 1,
+    "importRuns": 1
+  },
+  "runtimeNoRegression": {
+    "method": "GET-only",
+    "passed": 13,
+    "total": 13
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61l-carryforward.md",
+    "secure-file-readiness.md",
+    "superadmin-login-proof.md",
+    "admin-ui-authenticated-browser-proof.md",
+    "read-only-admin-api-proof.md",
+    "cms-read-surface-proof.md",
+    "tenant-row-readback-proof.md",
+    "tenantadmin-credential-gap.md",
+    "airstrip-freeze-proof.md",
+    "authenticated-workflow-gap-update.md",
+    "remaining-atlas-gap-register.md",
+    "safe-next-phase-map.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
