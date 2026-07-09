@@ -1,0 +1,93 @@
+{
+  "phase": "V2.8.61OC",
+  "tenantCandidate": "Party Pros",
+  "tenantId": "party-pros-philadelphia",
+  "tenantName": "Party Pros East Coast Philadelphia",
+  "businessName": "Party Pros East Coast",
+  "status": "completed_no_mutation_preflight",
+  "lane": "party_pros_controlled_tenant_creation_preflight",
+  "classification": "party_pros_controlled_tenant_creation_preflight_no_mutation_no_deploy_no_post",
+  "v2_8_61obCarryforward": {
+    "verified": true,
+    "commit": "52824080",
+    "subject": "Add V2.8.61OB Party Pros compiler proof"
+  },
+  "secureFile": {
+    "path": ".tmp/v2-8-61oc/secure/party-pros-creation-preflight.json",
+    "presentAtStart": true,
+    "gitIgnored": true,
+    "readApproved": true,
+    "secretValuesPrinted": false,
+    "copiedIntoRepo": false,
+    "staged": false,
+    "cleanupStatus": "removed_after_successful_closeout"
+  },
+  "superAdminProof": {
+    "loginStatus": 200,
+    "verifyStatus": 200,
+    "role": "SuperAdmin",
+    "tokenPrinted": false,
+    "passwordPrinted": false,
+    "authTokenPersisted": false
+  },
+  "tenantAbsence": {
+    "tenantListStatus": 200,
+    "tenantCount": 2,
+    "targetFoundInTenantList": false,
+    "directGetStatus": 404,
+    "targetTenantAbsent": true
+  },
+  "sourcePackage": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\PartyPros\\source-upload\\pp_next_pumpkin_ready_2026-07-08 1.zip",
+    "sha256": "158fbbdc12664ec258d75a021bfe198ce4169e35bfc9bccdea2e6a5bb810e5f8",
+    "expectedHashMatch": true
+  },
+  "compiledPackage": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\PartyPros\\v2-8-61ob-compiled-package-proof\\compiled-package",
+    "exists": true,
+    "tenantId": "party-pros-philadelphia",
+    "packageMode": "full-template",
+    "mediaAssets": 627,
+    "formDefinition": "party-pros-quote-request",
+    "sourceRoutes": 398,
+    "preservedRoutes": 400,
+    "expectedRoutes": 397,
+    "responsiveRoutes": 10
+  },
+  "validatorReplay": {
+    "valid": true,
+    "errors": 0,
+    "warnings": 0,
+    "secretHits": 0
+  },
+  "readiness": {
+    "tenantAdminCredentialHandoffPresent": false,
+    "tenantAdminCredentialHandoffRequired": true,
+    "mediaUploadApproved": false,
+    "mediaContainerCreateApproved": false,
+    "dnsMutationApproved": false,
+    "customDomainCutoverRequested": false,
+    "contactPostApproved": false,
+    "formSubmitApproved": false,
+    "tenantCreationApproved": false
+  },
+  "runtimeNoRegression": {
+    "status": "passed",
+    "method": "GET only",
+    "probes": 13,
+    "airstripTouched": false
+  },
+  "prohibitedActions": {
+    "tenantCreate": false,
+    "tenantAdminCreate": false,
+    "recordImport": false,
+    "mediaUploadDelete": false,
+    "mediaContainerCreate": false,
+    "deployment": false,
+    "dnsMutation": false,
+    "livePost": false,
+    "airstripMutation": false,
+    "keysListKeysSas": false,
+    "secretPrinted": false
+  }
+}
