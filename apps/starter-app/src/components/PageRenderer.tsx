@@ -14,13 +14,23 @@ interface PageRendererProps {
   page: Page;
   blockStyles?: BlockStyleMap;
   formDefinitions?: Record<string, FormDefinition>;
+  previewMode?: boolean;
+  tenantId?: string;
+  siteKey?: string;
 }
 
-export function PageRenderer({ page, blockStyles, formDefinitions = {} }: PageRendererProps) {
+export function PageRenderer({
+  page,
+  blockStyles,
+  formDefinitions = {},
+  previewMode = false,
+  tenantId = page.tenantId,
+  siteKey = tenantId,
+}: PageRendererProps) {
   const blocks = (page.ContentData.ContentBlocks as CmsBlock[]).filter(
     (block) => block.enabled !== false,
   );
-  const classNames = (blockStyles ?? {}) as BlockClassNamesMap;
+  const classNames = normalizeClassNames(blockStyles ?? {});
 
   return (
     <>
@@ -32,6 +42,7 @@ export function PageRenderer({ page, blockStyles, formDefinitions = {} }: PageRe
               classNames={classNames.Contact}
               formDefinition={getFormDefinition(block, formDefinitions)}
               pageSlug={page.pageSlug}
+              previewMode={previewMode}
             />
           ) : (
             <BlockViewRenderer
@@ -45,8 +56,10 @@ export function PageRenderer({ page, blockStyles, formDefinitions = {} }: PageRe
                 },
                 formBlock: {
                   definitions: Object.values(formDefinitions),
+                  tenantId,
+                  siteKey,
                   pageSlug: page.pageSlug,
-                  onSubmit: submitForm,
+                  onSubmit: previewMode ? previewFormNoop : submitForm,
                 },
               }}
               fallback={
@@ -60,6 +73,17 @@ export function PageRenderer({ page, blockStyles, formDefinitions = {} }: PageRe
       ))}
     </>
   );
+}
+
+function normalizeClassNames(blockStyles: BlockStyleMap): BlockClassNamesMap {
+  const classNames = blockStyles as BlockClassNamesMap & {
+    Form?: BlockClassNamesMap['formBlock'];
+  };
+
+  return {
+    ...classNames,
+    formBlock: classNames.formBlock ?? classNames.Form,
+  };
 }
 
 function getFormDefinition(block: CmsBlock, formDefinitions: Record<string, FormDefinition>) {
@@ -102,6 +126,10 @@ async function submitForm(payload: FormBlockSubmitPayload) {
   if (!response.ok) {
     throw new Error(await getErrorMessage(response));
   }
+}
+
+async function previewFormNoop() {
+  throw new Error('Preview mode: form submission is disabled.');
 }
 
 async function getErrorMessage(response: Response) {

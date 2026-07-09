@@ -1,0 +1,192 @@
+{
+  "phase": "v2-8-61oj",
+  "status": "complete",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "starter_preview_adapter_party_pros_unpublished_preview_live_proven_one_starter_redeploy_no_dns_no_post",
+  "generatedOn": "2026-07-09",
+  "carryforward": {
+    "ohCommit": "f1d92953",
+    "oiCommit": "13710ee9",
+    "summary": "Starter live host exists; Party Pros preview was blocked by source/runtime gap; OJ resumed existing source changes and redeployed only the starter preview host."
+  },
+  "preexistingOjSourceReview": {
+    "completed": true,
+    "oiScopedStatusClean": true,
+    "genericAdapter": true,
+    "partyProsHardCodedInSource": false
+  },
+  "sourceResult": {
+    "implemented": true,
+    "files": [
+      "apps/starter-app/src/lib/preview-fixtures.ts",
+      "apps/starter-app/src/app/preview/[tenantId]/[[...slug]]/page.tsx",
+      "apps/starter-app/src/components/PageRenderer.tsx",
+      "apps/starter-app/src/components/ContactFormBlock.tsx"
+    ],
+    "routes": [
+      "/preview/[tenantId]",
+      "/preview/[tenantId]/[...slug]"
+    ],
+    "requiresApiKey": false,
+    "requiresPublishedPages": false,
+    "requiresAppsettingMutation": false,
+    "formsPreviewDisabled": true
+  },
+  "fixture": {
+    "tenantId": "party-pros-philadelphia",
+    "stagedInRepo": false,
+    "uploadedPackageCodeExecuted": false,
+    "tempPathDuringRun": "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-v2-8-61oj-resume\\preview-fixtures\\party-pros-philadelphia\\preview.json",
+    "bytes": 29587,
+    "sha256": "9a5d8244c20f7c225ee572888b69ac5b0fc66b3ec67991c3c7e8cacdf7a0bdf6",
+    "pages": [
+      "home",
+      "contact",
+      "service-areas"
+    ],
+    "formDefinitions": [
+      "party-pros-quote-request"
+    ],
+    "themeId": "party-pros-orange-slate-v1"
+  },
+  "build": {
+    "typeCheck": "passed",
+    "build": "passed",
+    "warning": "Known pumpkin-ts-models dist/PageJsonConverter.js fs warning; build completed."
+  },
+  "localStandaloneProof": {
+    "passed": true,
+    "routes": [
+      {
+        "path": "/",
+        "status": 200,
+        "bytes": 32616
+      },
+      {
+        "path": "/preview/party-pros-philadelphia",
+        "status": 200,
+        "bytes": 32233,
+        "hasPartyPros": true,
+        "hasPreviewDisabled": true
+      },
+      {
+        "path": "/preview/party-pros-philadelphia/contact",
+        "status": 200,
+        "bytes": 36505,
+        "hasPartyPros": true,
+        "hasPreviewDisabled": true
+      },
+      {
+        "path": "/preview/party-pros-philadelphia/service-areas",
+        "status": 200,
+        "bytes": 32031,
+        "hasPartyPros": true,
+        "hasPreviewDisabled": true
+      }
+    ]
+  },
+  "deploymentPackage": {
+    "tempZipDuringRun": "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-v2-8-61oj-resume\\deploy\\starter-preview-v2-8-61oj-resume.zip",
+    "bytes": 5844992,
+    "sha256": "cbcc2f551dec154bf8bb07e779d1637a9241bb377f8de8554920b2d7210d7390",
+    "entries": 1825,
+    "hasServer": true,
+    "hasStatic": true,
+    "hasPublic": true,
+    "hasFixture": true,
+    "badSeparators": false
+  },
+  "redeploy": {
+    "approvedCount": 1,
+    "attemptedCount": 1,
+    "successfulCount": 1,
+    "failedCount": 0,
+    "retried": false,
+    "targetAppService": "app-pumpkin-starter-preview-centralus-001",
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "deploymentId": "28d1bd67-834d-4710-a295-e9abcb4b1601",
+    "result": "RuntimeSuccessful",
+    "successfulInstances": 1,
+    "failedInstances": 0
+  },
+  "livePostDeployReadback": {
+    "appsettingNamesUnchanged": true,
+    "appsettingNames": [
+      "NEXT_PUBLIC_PUMPKIN_API_URL",
+      "NEXT_TELEMETRY_DISABLED",
+      "PORT",
+      "PUMPKIN_API_URL",
+      "PUMPKIN_SITE_NAME",
+      "WEBSITES_PORT"
+    ],
+    "defaultRoutes": [
+      {
+        "path": "/",
+        "status": 200,
+        "bytes": 32616
+      },
+      {
+        "path": "/admin/login",
+        "status": 200,
+        "bytes": 6367
+      },
+      {
+        "path": "/admin",
+        "status": 307,
+        "location": "/admin/login",
+        "bytes": 12024
+      }
+    ],
+    "previewRoutes": [
+      {
+        "path": "/preview/party-pros-philadelphia",
+        "status": 200,
+        "bytes": 32233,
+        "hasPartyPros": true,
+        "hasPreviewDisabled": true,
+        "hasQuoteForm": true
+      },
+      {
+        "path": "/preview/party-pros-philadelphia/contact",
+        "status": 200,
+        "bytes": 36505,
+        "hasPartyPros": true,
+        "hasPreviewDisabled": true,
+        "hasQuoteForm": true
+      },
+      {
+        "path": "/preview/party-pros-philadelphia/service-areas",
+        "status": 200,
+        "bytes": 32031,
+        "hasPartyPros": true,
+        "hasPreviewDisabled": true,
+        "hasQuoteForm": true
+      }
+    ]
+  },
+  "runtimeNoRegression": {
+    "method": "GET",
+    "airstripIncluded": false,
+    "passed": 14,
+    "total": 14
+  },
+  "mutations": {
+    "starterSourceChanges": true,
+    "starterRedeployAttempt": true,
+    "starterRedeploySuccess": true,
+    "pumpkinApiDeploy": false,
+    "adminUiDeploy": false,
+    "airstrip": false,
+    "ice": false,
+    "newAzureResource": false,
+    "appsettingMutation": false,
+    "dns": false,
+    "partyProsPublish": false,
+    "partyProsRecordMutation": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "storageKeysOrSas": false,
+    "gitStaging": false
+  }
+}

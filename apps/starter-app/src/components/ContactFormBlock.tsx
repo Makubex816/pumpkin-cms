@@ -19,6 +19,7 @@ interface ContactFormBlockProps {
   classNames?: ContactClassNames;
   formDefinition?: FormDefinition;
   pageSlug: string;
+  previewMode?: boolean;
 }
 
 type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
@@ -28,6 +29,7 @@ export function ContactFormBlock({
   classNames,
   formDefinition,
   pageSlug,
+  previewMode = false,
 }: ContactFormBlockProps) {
   const cx = { ...contactDefaults, ...classNames };
   const { content } = block;
@@ -40,6 +42,13 @@ export function ContactFormBlock({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (previewMode) {
+      setSubmitState('error');
+      setMessage('Preview mode: form submission is disabled.');
+      return;
+    }
+
     const form = formRef.current ?? event.currentTarget;
 
     if (!formType) {
@@ -123,12 +132,17 @@ export function ContactFormBlock({
             ))}
             <input type="hidden" name="pageSlug" value={pageSlug} />
             <button
-              type="submit"
+              type={previewMode ? 'button' : 'submit'}
               className={cx.submitButton}
-              disabled={submitState === 'submitting'}
+              disabled={previewMode || submitState === 'submitting'}
             >
-              {submitState === 'submitting' ? 'Sending...' : submitButtonText}
+              {previewMode ? 'Preview only' : submitState === 'submitting' ? 'Sending...' : submitButtonText}
             </button>
+            {previewMode && (
+              <p className="pk-contact__status pk-contact__status--error">
+                Preview mode: form submission is disabled.
+              </p>
+            )}
             {message && (
               <p className={submitState === 'error' ? 'pk-contact__status pk-contact__status--error' : 'pk-contact__status pk-contact__status--success'}>
                 {message}
