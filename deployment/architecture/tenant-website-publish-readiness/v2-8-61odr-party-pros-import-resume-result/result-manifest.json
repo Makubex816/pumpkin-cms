@@ -1,0 +1,70 @@
+{
+  "phase": "V2.8.61ODR",
+  "status": "completed",
+  "tenantId": "party-pros-philadelphia",
+  "generatedAt": "2026-07-09T03:59:54.689Z",
+  "odPartialCloseoutCommit": "5b6d0acc Document V2.8.61OD Party Pros partial creation",
+  "repairedPackageValidatorPassed": true,
+  "tenantCreatedInCarryforward": true,
+  "tenantAdminCreatedInCarryforward": true,
+  "mediaContainerCreatedInCarryforward": true,
+  "mediaBlobReadback": {
+    "storageAccount": "iceskatingmedia",
+    "container": "party-pros-philadelphia-media",
+    "prefix": "party-pros-philadelphia/",
+    "count": 627,
+    "uniqueNames": 627,
+    "duplicateGroups": 0,
+    "zeroByteCount": 0,
+    "totalBytes": 108264654
+  },
+  "mediaAssetRecords": {
+    "beforeCount": 0,
+    "created": 627,
+    "readbackCount": 627,
+    "missingBlobPathCount": 0,
+    "wrongUrlCount": 0
+  },
+  "pages": {
+    "home": "carried_forward_unpublished",
+    "contact": "created_and_read_back_unpublished",
+    "serviceAreas": "created_and_read_back_unpublished"
+  },
+  "formDefinition": {
+    "id": "party-pros-quote-request",
+    "exists": true
+  },
+  "theme": {
+    "themeId": "party-pros-orange-slate-v1",
+    "exists": true,
+    "isActive": true
+  },
+  "tenantAdminLoginScopeProof": true,
+  "iceCountsUnchanged": true,
+  "runtimeNoRegression": {
+    "method": "GET only",
+    "passed": 14,
+    "total": 14
+  },
+  "outsideHardcopyAddendumCreated": true,
+  "boundaries": {
+    "airstripTouched": false,
+    "deployOccurred": false,
+    "dnsOccurred": false,
+    "contactPostOccurred": false,
+    "formSubmissionOccurred": false,
+    "customerFacingPostOccurred": false,
+    "iceMutationOccurred": false,
+    "storageKeysListKeysSasUsed": false
+  },
+  "evidence": {
+    "liveImportResult": ".tmp/v2-8-61odr/live-import/odr-live-import-result.json",
+    "mediaBlobList": ".tmp/v2-8-61odr/live-import/media-blob-list-live.json",
+    "mediaAssetImport": ".tmp/v2-8-61odr/live-import/mediaasset-record-import-result.json",
+    "missingPageImport": ".tmp/v2-8-61odr/live-import/missing-page-import-result.json",
+    "tenantAdminProof": ".tmp/v2-8-61odr/live-import/tenantadmin-login-scope-proof.json",
+    "iceProof": ".tmp/v2-8-61odr/live-import/ice-no-change-proof.json",
+    "runtimeProof": ".tmp/v2-8-61odr/live-import/runtime-no-regression-proof.json"
+  }
+}
+
