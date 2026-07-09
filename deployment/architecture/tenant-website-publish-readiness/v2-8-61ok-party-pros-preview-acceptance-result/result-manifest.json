@@ -1,0 +1,94 @@
+{
+  "phase": "v2-8-61ok",
+  "status": "complete",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_starter_preview_acceptance_responsive_publish_decision_no_mutation_no_deploy_no_post",
+  "generatedOn": "2026-07-09",
+  "carryforward": {
+    "ojCommit": "9d50a472",
+    "ojDeploymentId": "28d1bd67-834d-4710-a295-e9abcb4b1601",
+    "starterHost": "https://app-pumpkin-starter-preview-centralus-001.azurewebsites.net"
+  },
+  "routeProof": {
+    "method": "GET",
+    "starterRoutes": [
+      { "path": "/", "status": 200, "bytes": 32616 },
+      { "path": "/admin/login", "status": 200, "bytes": 6367 },
+      { "path": "/admin", "status": 307, "location": "/admin/login", "bytes": 12024 }
+    ],
+    "partyProsRoutes": [
+      { "path": "/preview/party-pros-philadelphia", "status": 200, "bytes": 32233, "hasPartyPros": true, "hasQuote": true, "hasPreview": true, "hasPreviewDisabled": true },
+      { "path": "/preview/party-pros-philadelphia/contact", "status": 200, "bytes": 36505, "hasPartyPros": true, "hasQuote": true, "hasPreview": true, "hasPreviewDisabled": true },
+      { "path": "/preview/party-pros-philadelphia/service-areas", "status": 200, "bytes": 32031, "hasPartyPros": true, "hasQuote": true, "hasPreview": true, "hasPreviewDisabled": true }
+    ]
+  },
+  "formNoPostProof": {
+    "formSubmitted": false,
+    "contactPost": false,
+    "customerFacingPost": false,
+    "formKey": "party-pros-quote-request",
+    "formActionCount": 0,
+    "methodPostCount": 0,
+    "browserPostRequests": 0,
+    "sourcePreviewNoop": true,
+    "nuance": "formBlock renders a submit button, but no live POST path was found or exercised."
+  },
+  "responsiveQa": {
+    "tooling": "headless Chrome CDP",
+    "browserToolingGap": false,
+    "routes": [
+      "/preview/party-pros-philadelphia",
+      "/preview/party-pros-philadelphia/contact",
+      "/preview/party-pros-philadelphia/service-areas"
+    ],
+    "viewports": [
+      { "label": "mobile-small", "width": 375, "height": 812 },
+      { "label": "mobile-standard", "width": 390, "height": 844 },
+      { "label": "tablet", "width": 768, "height": 1024 },
+      { "label": "desktop", "width": 1366, "height": 900 }
+    ],
+    "checks": 12,
+    "horizontalOverflowFailures": 0,
+    "imageFailures": 0,
+    "badStatuses": 0,
+    "postRequests": 0,
+    "screenshotsCapturedOutsideRepo": 12,
+    "screenshotRoot": "C:\\Users\\User\\Desktop\\PumpkinCMS\\visual-review\\v2-8-61ok-party-pros-preview-acceptance",
+    "ownerReviewNuances": [
+      "Home mobile initial viewport uses Contact Party Pros rather than a visible quote CTA.",
+      "Contact desktop screenshot shows narrow quote form controls."
+    ]
+  },
+  "runtimeNoRegression": {
+    "method": "GET",
+    "airstripIncluded": false,
+    "passed": 17,
+    "total": 17
+  },
+  "decisions": {
+    "previewAcceptedForOwnerReview": true,
+    "previewAcceptedForPublish": false,
+    "cmsPublishApproved": false,
+    "productionDeployApproved": false,
+    "dnsCustomDomainApproved": false,
+    "contactFormPostApproved": false,
+    "packageIntakeWizardBackendApproved": false
+  },
+  "mutations": {
+    "deployOrRedeploy": false,
+    "partyProsPublish": false,
+    "partyProsCmsMutation": false,
+    "dns": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "apiDeploy": false,
+    "adminUiDeploy": false,
+    "airstrip": false,
+    "ice": false,
+    "newAzureResource": false,
+    "appsettingMutation": false,
+    "storageKeysListKeysSas": false,
+    "gitStaging": false
+  }
+}
