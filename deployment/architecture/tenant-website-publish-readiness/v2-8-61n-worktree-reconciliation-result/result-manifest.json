@@ -1,0 +1,24 @@
+{
+  "phase": "V2.8.61N",
+  "status": "completed",
+  "date": "2026-07-08",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "busy_worktree_reconciliation_safe_cleanup_decision_packet_no_deletion_no_mutation",
+  "branch": "feature/admin-page-editor-import-export",
+  "head": "f6d5eb26",
+  "counts": {
+    "trackedModified": 161,
+    "trackedDeleted": 0,
+    "untrackedNonIgnored": 627,
+    "ignoredStatusEntries": 94565,
+    "stagedAtStart": 0
+  },
+  "actions": {
+    "deleted": false,
+    "archived": false,
+    "staged": false,
+    "liveMutation": false,
+    "airstripDisturbance": false
+  },
+  "ownerDecisionTemplate": ".tmp/v2-8-61n/owner-decisions/worktree-cleanup-owner-decisions.json"
+}
