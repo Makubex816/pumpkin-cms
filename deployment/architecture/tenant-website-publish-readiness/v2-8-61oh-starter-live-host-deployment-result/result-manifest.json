@@ -1,0 +1,58 @@
+{
+  "phase": "V2.8.61OH",
+  "status": "passed_with_browser_tooling_gap",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "starter_app_shared_live_onboarding_host_controlled_deployment_no_dns_no_post",
+  "ofCarryforwardCommit": "9bcfc8e8",
+  "target": {
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "appServicePlan": "asp-pumpkin-api-prod-centralus-001",
+    "appName": "app-pumpkin-starter-preview-centralus-001",
+    "defaultHost": "https://app-pumpkin-starter-preview-centralus-001.azurewebsites.net",
+    "runtime": "NODE|22-lts",
+    "startupCommand": "node server.js"
+  },
+  "sourceBuild": {
+    "sourcePath": "apps/starter-app",
+    "packageLockPresent": true,
+    "npmCi": "passed",
+    "typeCheck": "passed",
+    "build": "passed",
+    "standaloneOutput": true
+  },
+  "deployment": {
+    "successfulZipDeployCount": 1,
+    "failedZipDeployCount": 0,
+    "packageBytes": 6053498,
+    "packageEntries": 2201,
+    "packageSha256": "511a46bdfce199bcbdc30032d825b1e861f3bd5701c03fef9ad506b62b2b1343"
+  },
+  "runtimeProof": {
+    "starterRoutes": {
+      "/": 200,
+      "/admin/login": 200,
+      "/admin": 307
+    },
+    "adminRedirectLocation": "/admin/login",
+    "runtimeNoRegressionChecked": 14,
+    "runtimeNoRegressionPassed": 14,
+    "airstripProbed": false,
+    "browserProof": "blocked_by_local_headless_tooling"
+  },
+  "boundaries": {
+    "pumpkinApiDeploy": false,
+    "standaloneAdminUiDeploy": false,
+    "airstripAction": false,
+    "iceAction": false,
+    "partyProsMutation": false,
+    "partyProsPublish": false,
+    "dnsCustomDomain": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "newAppServicePlan": false,
+    "newCosmosStorageSwaKeyVaultDatabase": false,
+    "storageKeysListKeysSas": false,
+    "gitAddAllUsed": false
+  }
+}
