@@ -1,0 +1,59 @@
+{
+  "taskId": "v2-8-61on-party-pros-azure-dns-zone-target-nameserver-packet-corrected",
+  "generatedDate": "2026-07-09",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_azure_dns_zone_preprovision_nameserver_packet_partial_record_prestage_no_registrar_mutation_no_binding_no_post",
+  "status": "complete_with_apex_a_pending",
+  "carryforwardCommit": "10a2ef9f",
+  "azureDnsZone": {
+    "name": "partyrentalphiladelphia.com",
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "location": "global",
+    "id": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Network/dnszones/partyrentalphiladelphia.com",
+    "nameServers": [
+      "ns1-03.azure-dns.com.",
+      "ns2-03.azure-dns.net.",
+      "ns3-03.azure-dns.org.",
+      "ns4-03.azure-dns.info."
+    ]
+  },
+  "currentPublicNameservers": [
+    "ns1.afternic.com",
+    "ns2.afternic.com"
+  ],
+  "records": [
+    {
+      "name": "@",
+      "type": "A",
+      "status": "pending",
+      "reason": "starter App Service inbound IP unavailable from safe Azure metadata"
+    },
+    {
+      "name": "asuid",
+      "type": "TXT",
+      "status": "staged"
+    },
+    {
+      "name": "www",
+      "type": "CNAME",
+      "status": "staged"
+    },
+    {
+      "name": "asuid.www",
+      "type": "TXT",
+      "status": "staged"
+    }
+  ],
+  "notPerformed": [
+    "registrarLogin",
+    "registrarDnsMutation",
+    "registrarNameserverChange",
+    "azureHostnameBinding",
+    "managedTls",
+    "deploy",
+    "partyProsPublish",
+    "contactPost",
+    "formSubmission",
+    "airstripAction"
+  ]
+}
