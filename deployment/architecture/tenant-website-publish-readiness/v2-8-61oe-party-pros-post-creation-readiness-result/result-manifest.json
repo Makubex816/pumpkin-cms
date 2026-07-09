@@ -1,0 +1,80 @@
+{
+  "phase": "V2.8.61OE",
+  "status": "completed_readonly_closeout",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_post_creation_backup_admin_preview_readiness_no_deploy_no_dns_no_post",
+  "tenantId": "party-pros-philadelphia",
+  "generatedAt": "2026-07-09T04:25:29.069Z",
+  "odrCommit": "0d0cbca0 Resume Party Pros import after form block repair",
+  "liveReadback": {
+    "tenantExists": true,
+    "pages": 3,
+    "themes": 1,
+    "formDefinitions": 1,
+    "mediaAssets": 627,
+    "users": 1,
+    "publishRuns": 0,
+    "importRuns": 0
+  },
+  "mediaBlobs": {
+    "storageAccount": "iceskatingmedia",
+    "container": "party-pros-philadelphia-media",
+    "prefix": "party-pros-philadelphia/",
+    "count": 627,
+    "uniqueNames": 627,
+    "duplicateGroups": 0,
+    "zeroByteCount": 0,
+    "unknownByteCount": 0,
+    "totalBytes": 108264654
+  },
+  "mediaAssetRecords": {
+    "count": 627,
+    "uniqueAssetIds": 627,
+    "wrongUrlBaseCount": 0,
+    "emptyBlobPathCount": 0
+  },
+  "requiredRecords": {
+    "formDefinition": "party-pros-quote-request",
+    "theme": "party-pros-orange-slate-v1",
+    "pages": ["home", "contact", "service-areas"],
+    "allPagesUnpublished": true
+  },
+  "superAdminAdminReview": {
+    "status": "passed",
+    "sourceSupportedReadOnlySurfaces": 8
+  },
+  "tenantAdminScope": {
+    "status": "reproved",
+    "tenantAdminCanReadOwnPages": true,
+    "tenantAdminIcePagesForbidden": true,
+    "tenantAdminUsersForbidden": true,
+    "tenantAdminOtherTenantForbidden": true
+  },
+  "backup": {
+    "backupPerformed": false,
+    "result": "gap_documented",
+    "reason": "Current live complete Backup Center generator is Ice-specific and not tenant-parameterized for Party Pros."
+  },
+  "runtimeNoRegression": {
+    "method": "GET only",
+    "passed": 13,
+    "total": 13
+  },
+  "boundaries": {
+    "deploy": false,
+    "dns": false,
+    "customDomain": false,
+    "nameserver": false,
+    "pagePublish": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "mediaUploadDelete": false,
+    "iceMutation": false,
+    "airstripProbeOrMutation": false,
+    "storageKeysListKeysSas": false,
+    "protectedConfigRead": false,
+    "authValuesPrinted": false
+  }
+}
+
