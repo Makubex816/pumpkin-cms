@@ -1,0 +1,83 @@
+{
+  "phase": "V2.8.61OB",
+  "tenantCandidate": "Party Pros",
+  "tenantId": "party-pros-philadelphia",
+  "tenantName": "Party Pros East Coast Philadelphia",
+  "businessName": "Party Pros East Coast",
+  "status": "completed_validator_passed_after_output_normalization",
+  "lane": "party_pros_package_compiler_proof",
+  "classification": "party_pros_package_compiler_proof_no_tenant_creation_no_deploy_no_post",
+  "v2_8_61oaCarryforward": {
+    "verified": true,
+    "commit": "e22e9582",
+    "subject": "Add V2.8.61OA Party Pros wizard-first proof"
+  },
+  "ownerValues": {
+    "templatePath": ".tmp/v2-8-61o/owner-input/new-tenant-intake-owner-values.json",
+    "templateExists": true,
+    "templateStatus": "present_blank",
+    "taskConfirmedOwnerValuesUsed": true,
+    "targetDomain": "partyrentalphiladelphia.com",
+    "wwwDomain": "www.partyrentalphiladelphia.com",
+    "primaryContactEmail": "info@partyproseastcoast.com",
+    "phone": "+1-844-727-8947",
+    "dnsStrategy": "registrar-managed-records",
+    "nameserverChangeRequiredBoolean": false,
+    "customDomainCutoverRequestedBoolean": false,
+    "mediaContainerPreference": "tenant-specific"
+  },
+  "sourcePackage": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\PartyPros\\source-upload\\pp_next_pumpkin_ready_2026-07-08 1.zip",
+    "exists": true,
+    "outsideRepo": true,
+    "bytes": 114102368,
+    "sha256": "158fbbdc12664ec258d75a021bfe198ce4169e35bfc9bccdea2e6a5bb810e5f8",
+    "expectedHashMatch": true,
+    "notCopiedIntoRepo": true
+  },
+  "compilerInput": {
+    "intakeProofFolder": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\PartyPros\\v2-8-61oa-wizard-first-proof",
+    "analyzerReplayUsed": true,
+    "analyzerRerun": false,
+    "framework": "nextjs",
+    "renderingMode": "hybrid_next_server_required",
+    "protectedConfigFindings": 0
+  },
+  "compilerOutput": {
+    "outputRoot": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\PartyPros\\v2-8-61ob-compiled-package-proof",
+    "packageRoot": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\PartyPros\\v2-8-61ob-compiled-package-proof\\compiled-package",
+    "fileCount": 29,
+    "jsonCount": 27,
+    "routeClassifications": 400,
+    "sourceRoutesPreserved": 398,
+    "expectedRoutes": 397,
+    "responsiveRoutes": 10,
+    "pages": 4,
+    "mediaAssets": 627,
+    "formDefinition": "party-pros-quote-request",
+    "outputOnlyNormalizationApplied": true
+  },
+  "validator": {
+    "initialValid": false,
+    "initialGap": "TenantId mismatch in conversion/source-map.json: party-pros",
+    "finalValid": true,
+    "finalErrors": 0,
+    "finalWarnings": 0
+  },
+  "runtimeNoRegression": {
+    "status": "passed",
+    "method": "GET only",
+    "probes": 13,
+    "airstripTouched": false
+  },
+  "prohibitedActions": {
+    "tenantCreate": false,
+    "recordImport": false,
+    "mediaUploadDelete": false,
+    "deployment": false,
+    "livePost": false,
+    "airstripMutation": false,
+    "keysListKeysSas": false,
+    "secretPrinted": false
+  }
+}
