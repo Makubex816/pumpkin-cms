@@ -1,0 +1,52 @@
+{
+  "taskId": "v2-8-61ol-universal-tenant-form-pipeline-dns-nameserver-packet",
+  "generatedDate": "2026-07-09",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "universal_tenant_form_pipeline_dns_nameserver_manual_packet_controlled_post_no_dns_mutation",
+  "status": "complete_with_authenticated_submit_readback_blocker_documented",
+  "okCarryforwardCommit": "cbc2516c",
+  "liveActions": {
+    "controlledUnauthenticatedSyntheticSubmitBoundaryChecks": true,
+    "adminReadbackUnauthenticatedBoundaryChecks": true,
+    "dnsReadOnly": true,
+    "azureDnsZoneReadOnly": true,
+    "runtimeGetOnlyNoRegression": true,
+    "deploys": 0,
+    "dnsMutations": 0,
+    "nameserverChanges": 0,
+    "customerFacingPosts": 0,
+    "airstripLivePosts": 0
+  },
+  "blockers": [
+    "Authenticated live FormEntry creation/readback requires an owner-approved tenant API key/Admin JWT handoff.",
+    "Static/contact endpoint live POST remains blocked until external email suppression or an approved test recipient is confirmed."
+  ],
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61ok-carryforward.md",
+    "tenant-form-surface-inventory.md",
+    "ice-form-pipeline-proof.md",
+    "party-pros-form-pipeline-proof.md",
+    "airstrip-form-hold-or-proof.md",
+    "formentry-readback-and-isolation-proof.md",
+    "form-pipeline-repair-result.md",
+    "admin-ui-formentry-readback-proof.md",
+    "preview-form-no-post-recheck.md",
+    "universal-tenant-form-standard.md",
+    "party-pros-dns-nameserver-manual-packet.md",
+    "nameserver-readback-and-targets.md",
+    "future-azure-dns-delegation-readiness.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_UNIVERSAL_TENANT_FORM_PIPELINE_V2_8_61OL.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_FORM_E2E_PROOF_V2_8_61OL.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_PARTY_PROS_DNS_NAMESERVER_PACKET_V2_8_61OL.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_MANUAL_DNS_PACKET_STANDARD_V2_8_61OL.md"
+  ]
+}
