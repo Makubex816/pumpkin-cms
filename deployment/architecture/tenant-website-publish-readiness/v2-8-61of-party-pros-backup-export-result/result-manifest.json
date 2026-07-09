@@ -1,0 +1,63 @@
+{
+  "phase": "V2.8.61OF",
+  "status": "passed",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_tenant_parameterized_backup_export_no_mutation_no_deploy_no_dns_no_post",
+  "tenantId": "party-pros-philadelphia",
+  "outsideBackupPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-backups\\v2-8-61of-party-pros-full-backup-proof",
+  "outsideBackupFileCount": 680,
+  "outsideBackupTotalBytes": 112739150,
+  "checksumEntries": 678,
+  "runtimeNoRegression": {
+    "method": "GET-only",
+    "passed": 13,
+    "checked": 13,
+    "airstripProbed": false
+  },
+  "counts": {
+    "pages": 3,
+    "unpublishedPages": 3,
+    "sitemapPages": 0,
+    "themes": 1,
+    "formDefinitions": 1,
+    "formEntries": 0,
+    "mediaAssets": 627,
+    "mediaBlobsDownloaded": 627,
+    "usersSanitized": 1,
+    "importRuns": 0,
+    "publishRuns": 0,
+    "domainBindings": 0
+  },
+  "media": {
+    "storageAccount": "iceskatingmedia",
+    "container": "party-pros-philadelphia-media",
+    "prefix": "party-pros-philadelphia/",
+    "totalBytes": 108264654,
+    "zeroByteCount": 0,
+    "uniqueBlobPaths": 627
+  },
+  "hashes": {
+    "exporterSha256": "2d51603689065d90a9f35bf4627ffd711b41e77132e23acf38861c5214a951ed",
+    "manifestJsonSha256": "b97153839a8ebe1dc171b6c03ef7b3baab11af84ad3d097baa46c04efbd5a6b1",
+    "checksumsSha256Sha256": "162aae8d38039804221ee8644703f561642c5f5f3e026f3ed15925114707844d",
+    "tenantSummaryJsonSha256": "71745ddddf698811424f67e932c20ccf26b10868e7bb931c819f7439fe29a2ad",
+    "validationReportJsonSha256": "b8f5b3bf2fb5330d10b05e114a19f7064fa2cf87b6ad69e9a412ac27cb1a01c1",
+    "mediaManifestJsonSha256": "935512f91160a48c0d4102cad2cae85a2d28291be1a6be0f869c32b21d41c499",
+    "sourceZipSha256": "158fbbdc12664ec258d75a021bfe198ce4169e35bfc9bccdea2e6a5bb810e5f8",
+    "compiledPackageManifestSha256": "250fd60f38dee8c85cd2de49c7fc864e8285ae126ba3154da199c268c3321c0c",
+    "hardcopyPathSha256Only": "827d36c525c1733ce09fb1fe75f606141185020ef39ad16b48aa7c3092a124cb"
+  },
+  "boundaries": {
+    "deploy": false,
+    "dnsCustomDomain": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "airstripProbeOrMutation": false,
+    "storageKeysListKeysSas": false,
+    "iceMutation": false,
+    "backupBundleStaged": false,
+    "secureFileStaged": false,
+    "gitAddAllUsed": false
+  }
+}
