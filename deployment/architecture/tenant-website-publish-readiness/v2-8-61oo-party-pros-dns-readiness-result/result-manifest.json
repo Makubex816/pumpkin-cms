@@ -1,0 +1,36 @@
+{
+  "taskId": "v2-8-61oo-party-pros-final-dns-delegation-readiness-apex-a",
+  "generatedDate": "2026-07-09",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_final_dns_delegation_readiness_apex_a_resolution_no_registrar_mutation_no_binding_no_post",
+  "status": "complete_held_pending_email_dns_export",
+  "carryforwardCommit": "d395f4bb",
+  "currentPublicNameservers": [
+    "ns1.afternic.com",
+    "ns2.afternic.com"
+  ],
+  "targetAzureNameservers": [
+    "ns1-03.azure-dns.com.",
+    "ns2-03.azure-dns.net.",
+    "ns3-03.azure-dns.org.",
+    "ns4-03.azure-dns.info."
+  ],
+  "apexA": {
+    "status": "staged",
+    "value": "20.118.48.17",
+    "source": "az webapp config hostname get-external-ip"
+  },
+  "delegationReadiness": "held_pending_email_dns_export",
+  "notPerformed": [
+    "bluehostLogin",
+    "registrarDnsMutation",
+    "registrarNameserverChange",
+    "azureHostnameBinding",
+    "managedTls",
+    "deploy",
+    "publish",
+    "contactPost",
+    "formSubmission",
+    "airstripAction"
+  ]
+}
