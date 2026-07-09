@@ -1,0 +1,88 @@
+{
+  "phase": "V2.8.61O",
+  "status": "completed_with_validation_gaps",
+  "date": "2026-07-08",
+  "generatedAtLocal": "2026-07-08T20:08:29-04:00",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "platform_state_admin_ui_gap_new_tenant_intake_readiness_no_deploy_no_mutation",
+  "carryforward": {
+    "v2_8_61mCommitted": true,
+    "v2_8_61nCommitted": true,
+    "v2_8_61mCommit": "f6d5eb26",
+    "v2_8_61nCommit": "ef2c39b1"
+  },
+  "adminUiGapClosure": {
+    "formsRouteCanonical": "/dashboard/forms",
+    "leadsAliasAdded": true,
+    "leadsAliasSource": "apps/admin/src/app/dashboard/leads/page.tsx",
+    "leadsAliasBehavior": "redirect_to_dashboard_forms",
+    "apiBehaviorChanged": false,
+    "writeControlsAdded": false
+  },
+  "newTenantReadiness": {
+    "ownerValuesTemplate": ".tmp/v2-8-61o/owner-input/new-tenant-intake-owner-values.json",
+    "ownerValuesTemplateIgnored": true,
+    "tenantCreationApproved": false,
+    "mediaUploadApproved": false,
+    "recordImportApproved": false,
+    "customDomainCutoverApproved": false,
+    "nameserverChangeApproved": false,
+    "contactPostApproved": false,
+    "formSubmitApproved": false
+  },
+  "runtimeNoRegression": {
+    "method": "GET-only",
+    "airstripProbed": false,
+    "passed": 13,
+    "total": 13
+  },
+  "validation": {
+    "requiredFilesExist": true,
+    "durableDocsExist": true,
+    "ownerValuesTemplateIgnored": true,
+    "jsonParsePassed": true,
+    "scopedDiffCheckPassed": true,
+    "trailingWhitespaceScanPassed": true,
+    "secretLikeScanPassed": true,
+    "disallowedCommandScanPassed": true,
+    "protectedPathGuardPassed": true,
+    "nodeCheck": "not_applicable_no_changed_js_mjs",
+    "adminTypeCheck": "failed_existing_type_drift_outside_leads_alias",
+    "adminBuild": "failed_existing_type_and_bundle_gap_outside_leads_alias",
+    "stagedFilesAtEnd": false
+  },
+  "security": {
+    "deployOccurred": false,
+    "liveMutationOccurred": false,
+    "cleanupExecutionOccurred": false,
+    "dnsMutationOccurred": false,
+    "contactPostOccurred": false,
+    "formSubmissionOccurred": false,
+    "customerFacingPostOccurred": false,
+    "airstripDisturbanceOccurred": false,
+    "protectedConfigReadOccurred": false,
+    "storageKeysListKeysSasOccurred": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61m-n-carryforward.md",
+    "platform-state-reanalysis.md",
+    "admin-ui-route-map.md",
+    "admin-ui-gap-review.md",
+    "admin-ui-gap-closure-result.md",
+    "forms-leads-route-decision.md",
+    "superadmin-tenantadmin-boundary-review.md",
+    "starter-admin-boundary-carryforward.md",
+    "new-tenant-intake-readiness.md",
+    "new-tenant-owner-values-template-summary.md",
+    "new-tenant-safe-onboarding-flow.md",
+    "remaining-gap-register.md",
+    "safe-next-phase-map.md",
+    "non-airstrip-runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
