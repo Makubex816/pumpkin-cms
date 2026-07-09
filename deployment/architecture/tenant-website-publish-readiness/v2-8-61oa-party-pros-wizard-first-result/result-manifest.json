@@ -1,0 +1,91 @@
+{
+  "phase": "V2.8.61OA",
+  "tenantCandidate": "Party Pros",
+  "status": "completed_with_wizard_backend_gap",
+  "lane": "wizard_first_package_intake_proof",
+  "classification": "admin_wizard_operator_summary_only_secondary_analyzer_reference_passed",
+  "v2_8_61oCarryforward": {
+    "verified": true,
+    "commit": "8fc0edda",
+    "subject": "Add V2.8.61O platform admin readiness packet"
+  },
+  "sourcePackage": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\PartyPros\\source-upload\\pp_next_pumpkin_ready_2026-07-08 1.zip",
+    "exists": true,
+    "outsideRepo": true,
+    "bytes": 114102368,
+    "sha256": "158fbbdc12664ec258d75a021bfe198ce4169e35bfc9bccdea2e6a5bb810e5f8",
+    "notCopiedIntoRepo": true
+  },
+  "ownerValues": {
+    "path": ".tmp/v2-8-61o/owner-input/new-tenant-intake-owner-values.json",
+    "exists": true,
+    "status": "present_incomplete",
+    "sourcePackagePathField": "blank",
+    "proofUsedTaskProvidedPackagePath": true,
+    "notStaged": true
+  },
+  "wizard": {
+    "route": "/dashboard/onboarding/packages",
+    "sourceFile": "apps/admin/src/app/dashboard/onboarding/packages/page.tsx",
+    "superAdminGated": true,
+    "browserUploadControl": false,
+    "packageExecutionControl": false,
+    "backendAnalysisAction": false,
+    "classification": "operator_assisted_checklist_only"
+  },
+  "secondaryAnalyzer": {
+    "status": "passed",
+    "outputPath": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\PartyPros\\v2-8-61oa-wizard-first-proof",
+    "framework": "nextjs",
+    "renderingMode": "hybrid_next_server_required",
+    "readyForCompiler": true,
+    "routes": 398,
+    "dynamicRoutes": 3,
+    "media": 627,
+    "forms": 397,
+    "protectedConfigFindings": 0,
+    "tempCleaned": true
+  },
+  "runtimeNoRegression": {
+    "status": "passed",
+    "method": "GET only",
+    "probes": 13,
+    "airstripTouched": false
+  },
+  "prohibitedActions": {
+    "tenantCreate": false,
+    "recordImport": false,
+    "mediaUploadDelete": false,
+    "deployment": false,
+    "livePost": false,
+    "airstripMutation": false,
+    "keysListKeysSas": false,
+    "secretPrinted": false
+  },
+  "resultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61o-carryforward.md",
+    "owner-values-readiness.md",
+    "package-path-readiness.md",
+    "wizard-route-readiness.md",
+    "wizard-capability-classification.md",
+    "wizard-first-proof-result.md",
+    "package-shape-summary.md",
+    "secondary-analyzer-result.md",
+    "framework-detection-proof.md",
+    "route-discovery-proof.md",
+    "media-discovery-proof.md",
+    "form-discovery-proof.md",
+    "theme-brand-discovery-proof.md",
+    "protected-config-findings-redacted.md",
+    "owner-action-packet-summary.md",
+    "v2-8-61ob-compiler-readiness.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
