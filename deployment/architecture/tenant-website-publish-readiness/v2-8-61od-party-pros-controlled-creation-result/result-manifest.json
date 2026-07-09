@@ -1,0 +1,25 @@
+{
+  "phase": "V2.8.61OD",
+  "status": "partial_live_state_after_compiled_record_import_hard_stop",
+  "tenantId": "party-pros-philadelphia",
+  "generatedAt": "2026-07-09T03:04:10.270Z",
+  "mediaReadbackAccepted": true,
+  "tenantCreated": true,
+  "tenantAdminCreated": true,
+  "formDefinitionCreated": true,
+  "themeCreated": true,
+  "homePageCreated": true,
+  "contactPageCreated": false,
+  "serviceAreasPageCreated": false,
+  "mediaAssetRecordsCreated": false,
+  "tenantAdminLoginProofRun": false,
+  "iceAfterCountsProofRun": false,
+  "runtimeNoRegressionRun": false,
+  "hardcopyCreated": true,
+  "rollback": "not_attempted_destructive_rollback_requires_separate_owner_approval",
+  "evidence": {
+    "operationsPath": ".tmp/v2-8-61od/live-mutation/remaining-od-live-mutation-operations.json",
+    "resultPath": ".tmp/v2-8-61od/live-mutation/remaining-od-live-mutation-result.json",
+    "mediaReadbackPath": ".tmp/v2-8-61od/media-readback-accounting/party-pros-media-readback-result.json"
+  }
+}
