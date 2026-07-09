@@ -1,0 +1,126 @@
+{
+  "phase": "v2-8-61oi",
+  "status": "passed_with_preview_blocker",
+  "classification": "party_pros_starter_preview_blocked_source_gap_no_mutation_no_deploy_no_dns_no_post",
+  "generatedOn": "2026-07-09",
+  "ownerException": {
+    "ohCommitGate": "overridden_by_owner",
+    "note": "Owner instructed continue despite no git commit after the initial OH hard stop; final readback showed OH committed at f1d92953."
+  },
+  "latestCommittedCarryforward": {
+    "phase": "v2-8-61oh",
+    "commit": "f1d92953",
+    "summary": "Starter shared live host deployment passed; default host is live, starter admin remains tenant-local, Party Pros preview was not enabled, and runtime no-regression passed."
+  },
+  "partyProsCommittedBaseline": {
+    "phase": "v2-8-61of",
+    "commit": "9bcfc8e8",
+    "summary": "Party Pros backup export passed; Party Pros tenant exists, pages are unpublished, 627 media blobs and MediaAsset records exist, FormDefinition party-pros-quote-request exists, and runtime no-regression passed."
+  },
+  "starterHost": {
+    "url": "https://app-pumpkin-starter-preview-centralus-001.azurewebsites.net",
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "appService": "app-pumpkin-starter-preview-centralus-001",
+    "state": "Running",
+    "kind": "app,linux",
+    "defaultHostName": "app-pumpkin-starter-preview-centralus-001.azurewebsites.net",
+    "hostNames": [
+      "app-pumpkin-starter-preview-centralus-001.azurewebsites.net"
+    ],
+    "tenantBinding": "not_configured",
+    "appsettingNamesReadBack": [
+      "NEXT_PUBLIC_PUMPKIN_API_URL",
+      "PUMPKIN_API_URL",
+      "PUMPKIN_SITE_NAME",
+      "NEXT_TELEMETRY_DISABLED",
+      "PORT",
+      "WEBSITES_PORT"
+    ]
+  },
+  "starterRoutes": [
+    {
+      "path": "/",
+      "method": "GET",
+      "status": 200,
+      "bytes": 32616
+    },
+    {
+      "path": "/admin/login",
+      "method": "GET",
+      "status": 200,
+      "bytes": 6367
+    },
+    {
+      "path": "/admin",
+      "method": "GET",
+      "status": 307,
+      "location": "/admin/login",
+      "bytes": 12024
+    }
+  ],
+  "previewCapability": {
+    "liveCmsPublishedRuntime": "source_supported_only_when_tenant_env_and_api_key_are_configured",
+    "liveCmsUnpublishedPreview": "not_source_supported",
+    "compiledPackageFixturePreview": "not_source_supported",
+    "staticPartyProsPreviewRoute": "not_source_supported",
+    "currentSharedHostPartyProsPreview": "blocked"
+  },
+  "partyProsCarryforward": {
+    "tenantId": "party-pros-philadelphia",
+    "tenantStatus": "active",
+    "pages": [
+      "home",
+      "contact",
+      "service-areas"
+    ],
+    "pagePublishState": "all_unpublished",
+    "mediaBlobs": 627,
+    "mediaAssetRecords": 627,
+    "formDefinition": "party-pros-quote-request",
+    "theme": "party-pros-orange-slate-v1"
+  },
+  "runtimeNoRegression": {
+    "method": "GET",
+    "airstripIncluded": false,
+    "passed": 14,
+    "total": 14
+  },
+  "mutations": {
+    "deploy": false,
+    "dns": false,
+    "appsettings": false,
+    "partyProsPublish": false,
+    "partyProsContent": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "airstrip": false,
+    "storageKeysOrSas": false,
+    "azureResourceCreation": false,
+    "gitStaging": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61oh-carryforward.md",
+    "starter-live-host-runtime-proof.md",
+    "starter-admin-boundary-recheck.md",
+    "party-pros-preview-route-discovery.md",
+    "party-pros-preview-capability-classification.md",
+    "party-pros-preview-proof-or-blocker.md",
+    "unpublished-page-preview-gap.md",
+    "form-rendering-no-post-proof.md",
+    "v2-8-61oj-preview-repair-readiness.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STARTER_LIVE_HOST_RUNTIME_PROOF_V2_8_61OI.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_PARTY_PROS_STARTER_PREVIEW_CAPABILITY_V2_8_61OI.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STARTER_PREVIEW_GAP_MAP_V2_8_61OI.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_61OI_STARTER_PARTY_PROS_PREVIEW_REPORT.md"
+}
