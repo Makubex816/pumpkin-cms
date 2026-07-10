@@ -1,11 +1,16 @@
 import type { FooterClassNames, HeaderClassNames } from 'pumpkin-block-views';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { getHostTenantPreviewSite } from '@/lib/host-tenant-routing';
 import { getSiteTheme } from '@/lib/pumpkin-api';
 import { getThemeCssPath } from '@/themes/registry';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const theme = await getSiteTheme();
+  const hostTenantSite = await getHostTenantPreviewSite();
+  const theme = hostTenantSite?.site?.theme ?? await getSiteTheme();
 
   return (
     <>
@@ -15,7 +20,13 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         menu={theme.menu}
         classNames={theme.header.classNames as HeaderClassNames}
       />
-      <main>{children}</main>
+      <main
+        data-host-tenant={hostTenantSite?.route.tenantId}
+        data-host-tenant-source={hostTenantSite?.route.source}
+        data-form-mode={hostTenantSite?.route.formsMode}
+      >
+        {children}
+      </main>
       <SiteFooter
         footer={theme.footer}
         menu={theme.menu}

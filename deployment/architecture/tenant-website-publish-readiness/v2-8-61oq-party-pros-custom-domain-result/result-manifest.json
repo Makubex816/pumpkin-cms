@@ -1,0 +1,102 @@
+{
+  "phase": "v2-8-61oq",
+  "status": "partial_success_tls_not_bound",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_custom_domain_binding_host_routing_tls_no_form_post_no_airstrip",
+  "generatedOn": "2026-07-10",
+  "carryforward": {
+    "opCommit": "570f68e1",
+    "nameserverPropagationComplete": true
+  },
+  "sourceChanges": {
+    "implemented": true,
+    "files": [
+      "apps/starter-app/src/lib/host-tenant-routing.ts",
+      "apps/starter-app/src/lib/preview-fixtures.ts",
+      "apps/starter-app/src/app/(site)/layout.tsx",
+      "apps/starter-app/src/app/(site)/page.tsx",
+      "apps/starter-app/src/app/(site)/[...slug]/page.tsx"
+    ],
+    "genericHostRouting": true,
+    "formsMode": "disabled-preview"
+  },
+  "build": {
+    "typeCheck": "passed",
+    "build": "passed_with_known_pumpkin_ts_models_fs_warning"
+  },
+  "redeploy": {
+    "attemptedCount": 1,
+    "successfulCount": 1,
+    "deploymentId": "b15e7fae-e4b7-4853-a3b5-e9b474a09d89",
+    "status": "RuntimeSuccessful",
+    "successfulInstances": 1,
+    "failedInstances": 0
+  },
+  "deploymentPackage": {
+    "tempZipDuringRun": "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-v2-8-61oq\\deploy\\starter-preview-v2-8-61oq.zip",
+    "bytes": 5835000,
+    "sha256": "36a7dd137c2111462435fe76aac13354d80d004ff63e19d64ae0729d81c8bbbb",
+    "entries": 1822,
+    "hasServer": true,
+    "hasStatic": true,
+    "hasPublic": true,
+    "hasPartyProsFixture": true,
+    "badBackslash": false
+  },
+  "hostnameBinding": {
+    "partyrentalphiladelphia.com": "bound",
+    "www.partyrentalphiladelphia.com": "bound"
+  },
+  "managedTls": {
+    "attempted": true,
+    "result": "not_bound",
+    "readback": {
+      "certificateListForPartyProsHosts": [],
+      "apexSslState": "Disabled",
+      "wwwSslState": "Disabled",
+      "httpsOnly": false
+    }
+  },
+  "runtimeProof": {
+    "defaultStarterHost": "passed",
+    "customDomainHttp": "passed",
+    "customDomainHttps": "skipped_tls_not_active",
+    "formNoPost": "passed",
+    "nonAirstripNoRegression": "passed"
+  },
+  "mutations": {
+    "starterRedeploy": true,
+    "customHostnameBinding": true,
+    "managedCertificateCreated": false,
+    "httpsOnlyChanged": false,
+    "registrarDns": false,
+    "pumpkinApiDeploy": false,
+    "adminUiDeploy": false,
+    "iceDeployOrMutation": false,
+    "airstrip": false,
+    "partyProsCmsMutation": false,
+    "partyProsPublish": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "storageKeysListKeysSas": false,
+    "gitStaging": false
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61op-carryforward.md",
+    "dns-propagation-prebinding-proof.md",
+    "host-routing-source-result.md",
+    "starter-build-redeploy-result.md",
+    "custom-hostname-binding-result.md",
+    "managed-tls-result.md",
+    "custom-domain-runtime-proof.md",
+    "form-no-post-proof.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}

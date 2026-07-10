@@ -26,7 +26,23 @@ export interface PreviewPageResult {
   formDefinitions: Record<string, FormDefinition>;
 }
 
-export async function getPreviewPage(tenantId: string, slugParts: string[] = []): Promise<PreviewPageResult | null> {
+export type PreviewUrlMode = 'preview' | 'site';
+
+export interface PreviewFixtureOptions {
+  urlMode?: PreviewUrlMode;
+}
+
+export interface PreviewSiteResult {
+  fixture: PreviewFixture;
+  theme: Theme;
+  formDefinitions: Record<string, FormDefinition>;
+}
+
+export async function getPreviewPage(
+  tenantId: string,
+  slugParts: string[] = [],
+  options: PreviewFixtureOptions = {},
+): Promise<PreviewPageResult | null> {
   const fixture = await readPreviewFixture(tenantId);
   if (!fixture) return null;
 
@@ -37,7 +53,21 @@ export async function getPreviewPage(tenantId: string, slugParts: string[] = [])
   return {
     fixture,
     page,
-    theme: resolvePreviewTheme(fixture),
+    theme: resolvePreviewTheme(fixture, options.urlMode ?? 'preview'),
+    formDefinitions: mapFormDefinitions(fixture.formDefinitions ?? []),
+  };
+}
+
+export async function getPreviewSite(
+  tenantId: string,
+  options: PreviewFixtureOptions = {},
+): Promise<PreviewSiteResult | null> {
+  const fixture = await readPreviewFixture(tenantId);
+  if (!fixture) return null;
+
+  return {
+    fixture,
+    theme: resolvePreviewTheme(fixture, options.urlMode ?? 'preview'),
     formDefinitions: mapFormDefinitions(fixture.formDefinitions ?? []),
   };
 }
@@ -57,7 +87,8 @@ async function readPreviewFixture(tenantId: string): Promise<PreviewFixture | nu
   for (const fixturePath of getFixturePaths(tenantId)) {
     if (!existsSync(fixturePath)) continue;
 
-    const fixture = JSON.parse(await readFile(fixturePath, 'utf8')) as PreviewFixture;
+    const fixtureText = (await readFile(fixturePath, 'utf8')).replace(/^\uFEFF/, '');
+    const fixture = JSON.parse(fixtureText) as PreviewFixture;
     if (fixture.tenantId !== tenantId) return null;
     return fixture;
   }
@@ -66,18 +97,31 @@ async function readPreviewFixture(tenantId: string): Promise<PreviewFixture | nu
 }
 
 function getFixturePaths(tenantId: string) {
-  return [
-    path.join(process.cwd(), FIXTURE_ROOT, tenantId, 'preview.json'),
-    path.join(process.cwd(), 'apps', 'starter-app', FIXTURE_ROOT, tenantId, 'preview.json'),
-  ];
+  return getFixtureRoots().map((root) => path.join(root, tenantId, 'preview.json'));
 }
 
-function resolvePreviewTheme(fixture: PreviewFixture): Theme {
+function getFixtureRoots() {
+  const configuredRoot = process.env.PUMPKIN_PREVIEW_FIXTURE_ROOT;
+  const roots = [
+    configuredRoot ? resolveFixtureRoot(configuredRoot) : null,
+    path.join(process.cwd(), FIXTURE_ROOT),
+    path.join(process.cwd(), 'apps', 'starter-app', FIXTURE_ROOT),
+  ];
+
+  return roots.filter((root): root is string => Boolean(root));
+}
+
+function resolveFixtureRoot(root: string) {
+  return path.isAbsolute(root) ? root : path.join(process.cwd(), root);
+}
+
+function resolvePreviewTheme(fixture: PreviewFixture, urlMode: PreviewUrlMode): Theme {
   const partialTheme = fixture.theme ?? {};
   const themeId = partialTheme.themeId || `${fixture.tenantId}-preview`;
   const menu = prefixMenuUrls(
     partialTheme.menu?.length ? partialTheme.menu : fallbackTheme.menu,
     fixture.tenantId,
+    urlMode,
   );
 
   return resolveThemePlugin({
@@ -114,19 +158,24 @@ function resolvePreviewTheme(fixture: PreviewFixture): Theme {
   } as Theme & { themeCssPath: string });
 }
 
-function prefixMenuUrls(menu: MenuItem[], tenantId: string): MenuItem[] {
+function prefixMenuUrls(menu: MenuItem[], tenantId: string, urlMode: PreviewUrlMode): MenuItem[] {
   return menu.map((item) => ({
     ...item,
-    url: prefixPreviewUrl(item.url, tenantId),
-    children: item.children ? prefixMenuUrls(item.children, tenantId) : [],
+    url: prefixPreviewUrl(item.url, tenantId, urlMode),
+    children: item.children ? prefixMenuUrls(item.children, tenantId, urlMode) : [],
   }));
 }
 
-function prefixPreviewUrl(url: string, tenantId: string) {
+function prefixPreviewUrl(url: string, tenantId: string, urlMode: PreviewUrlMode) {
   if (!url || url === '#') return url;
   if (/^(https?:|mailto:|tel:|#)/i.test(url)) return url;
 
   const normalized = url.replace(/^\/+|\/+$/g, '').toLowerCase();
+  if (urlMode === 'site') {
+    if (!normalized || normalized === 'home') return '/';
+    return `/${normalized}`;
+  }
+
   if (!normalized || normalized === 'home') return `/preview/${tenantId}`;
   return `/preview/${tenantId}/${normalized}`;
 }
@@ -137,4 +186,3 @@ function mapFormDefinitions(definitions: FormDefinition[]): Record<string, FormD
     return map;
   }, {});
 }
-
