@@ -1,0 +1,89 @@
+{
+  "phase": "V2.8.61OSI",
+  "status": "complete_ready_for_next_tenant_cms_persistence_deferred",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_final_form_reproof_cms_persistence_decision_no_deploy_no_airstrip",
+  "branch": "feature/admin-page-editor-import-export",
+  "completedAtUtc": "2026-07-10T19:12:37Z",
+  "carryforwardCommits": {
+    "oshr": "d4142dda8d5dc036cf515355250950c8a9c88321",
+    "osf": "6d5f89cdd2bc2221dc621e99939b094a372cb1dd"
+  },
+  "secureHandoff": {
+    "presentAtStart": true,
+    "gitIgnored": true,
+    "jsonValid": true,
+    "hardcopyHashMatched": true,
+    "secretValuesPrinted": false,
+    "secureFolderRemovedAfterSuccessfulCloseout": true
+  },
+  "catalogConsentPrerecheck": {
+    "routesChecked": 16,
+    "routesPassed": 16,
+    "missingCatalogNavigation": 0,
+    "contactFallbackLinks": 0,
+    "liveConsentPresent": true,
+    "postRequests": 0
+  },
+  "preview": {
+    "routesChecked": 3,
+    "routesPassed": 3,
+    "postForms": 0,
+    "enabledSubmitControls": 0,
+    "contactConsentPresent": true
+  },
+  "authentication": {
+    "loginStatus": 200,
+    "role": "SuperAdmin",
+    "verifyStatus": 200,
+    "partyProsListStatus": 200,
+    "formDefinitionStatus": 200,
+    "formDefinitionFieldCount": 9,
+    "consentRequired": true
+  },
+  "controlledSubmission": {
+    "attempts": 1,
+    "submittedAtUtc": "2026-07-10T19:10:57.611Z",
+    "status": 201,
+    "entryId": "92f04673-9427-401a-b569-eca3b5b8089f",
+    "tenantId": "party-pros-philadelphia",
+    "formKey": "party-pros-quote-request",
+    "requiredMarkersPresent": true,
+    "consentAccepted": true,
+    "honeypotFilled": false,
+    "spamStatus": "clean"
+  },
+  "readback": {
+    "partyProsStatus": 200,
+    "partyProsIdentityMatched": true,
+    "iceSameIdStatus": 404,
+    "tenantIsolationPassed": true
+  },
+  "emailSafety": {
+    "activeSenderPatternMatches": 0,
+    "externalEmailActions": 0,
+    "realCustomerInquiries": 0
+  },
+  "runtime": {
+    "method": "GET only",
+    "checked": 33,
+    "passed": 33,
+    "failed": 0,
+    "airstripRoutes": 0
+  },
+  "cmsPersistence": {
+    "decision": "retain_runtime_fixture_and_persist_later_under_separate_approval",
+    "cmsMutations": 0,
+    "blocksNextTenant": false
+  },
+  "mutations": {
+    "deployments": 0,
+    "appsettings": 0,
+    "cms": 0,
+    "media": 0,
+    "ice": 0,
+    "dnsTlsRegistrar": 0,
+    "airstrip": 0,
+    "formSubmissions": 1
+  }
+}
