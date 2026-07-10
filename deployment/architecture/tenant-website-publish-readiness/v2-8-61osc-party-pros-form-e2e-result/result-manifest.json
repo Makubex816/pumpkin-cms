@@ -1,0 +1,67 @@
+{
+  "phase": "v2-8-61osc",
+  "status": "blocked_before_live_mutation",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_form_e2e_corrected_secure_submit_proof_no_airstrip",
+  "generatedAt": "2026-07-10T01:18:47.3402700-04:00",
+  "carryforward": {
+    "osbCommit": "d3b1eb8d",
+    "osraCommit": "fd13e767",
+    "osbMediaRenderingAccepted": true,
+    "osraBlockedHandoffAccepted": true
+  },
+  "secureHandoff": {
+    "path": ".tmp/v2-8-61osc/secure/party-pros-form-e2e-handoff.json",
+    "exists": true,
+    "gitIgnored": true,
+    "requiredFieldsPresent": true,
+    "secretValuesPrinted": false
+  },
+  "sourceReadiness": {
+    "starterSubmitRoute": "/api/forms/submit/[type]",
+    "apiSubmitRoute": "/api/forms/{tenantId}/submit/{type}",
+    "starterRequiredAppsettings": [
+      "PUMPKIN_TENANT_ID",
+      "PUMPKIN_API_KEY",
+      "PUMPKIN_API_URL or NEXT_PUBLIC_PUMPKIN_API_URL",
+      "PUMPKIN_HOST_TENANT_ROUTES_JSON for custom-host live-submit override"
+    ],
+    "apiKeyValidation": "Tenant apiKeyHash bcrypt verification",
+    "adminReadbackAuth": "JWT-authenticated Admin API"
+  },
+  "blockers": [
+    "Corrected secure handoff submit key returned 401 against Party Pros public FormDefinition readback.",
+    "Corrected operator/readback custom header returned 401 against Admin API readback paths.",
+    "Visible PUMPKIN_ADMIN_JWT was present but returned 401 against Admin API.",
+    "No authenticated source-supported API-side key setup path was available, so OSC stopped before appsetting mutation."
+  ],
+  "prechecks": {
+    "customDomainRoutes": 6,
+    "customDomainRoutes200": 6,
+    "customHomeImages": 9,
+    "customContactImages": 6,
+    "customServiceAreasImages": 6,
+    "previewRoutes": 3,
+    "previewRoutes200": 3,
+    "previewContactMethodPost": 0,
+    "runtimeNoRegression": "23/23 GET-only"
+  },
+  "mutations": {
+    "starterAppsettings": false,
+    "pumpkinApiAppsettings": false,
+    "starterDeploy": false,
+    "pumpkinApiDeploy": false,
+    "adminUiDeploy": false,
+    "iceDeploy": false,
+    "formSubmission": false,
+    "formEntryCreated": false,
+    "customerFacingPost": false,
+    "realCustomerInquiry": false,
+    "externalClientEmail": false,
+    "dns": false,
+    "tls": false,
+    "airstrip": false,
+    "storageKeysOrSas": false,
+    "gitStaging": false
+  }
+}
