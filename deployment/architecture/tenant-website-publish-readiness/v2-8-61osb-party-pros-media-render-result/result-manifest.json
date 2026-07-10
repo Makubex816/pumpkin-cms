@@ -1,0 +1,82 @@
+{
+  "phase": "v2-8-61osb",
+  "status": "complete",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_image_media_rendering_repair_no_form_post_no_airstrip",
+  "osraCommit": "fd13e767",
+  "rootCause": "fixture_and_page_media_slot_omission",
+  "sourceChanges": [
+    "apps/starter-app/src/components/PageRenderer.tsx",
+    "apps/starter-app/src/lib/host-tenant-routing.ts"
+  ],
+  "baseline": {
+    "customDomainRoutes": 6,
+    "http200": 6,
+    "imageTags": 0,
+    "blobRefs": 0
+  },
+  "mediaCarryforward": {
+    "mediaBlobs": 627,
+    "mediaAssetRecords": 627,
+    "source": "V2.8.61OF backup and V2.8.61ODR/OF docs",
+    "freshRepresentativeBlobHeadChecks": 6,
+    "freshRepresentativeBlobHeadChecksPassed": 6
+  },
+  "fixture": {
+    "repoStaged": false,
+    "repoCommitted": false,
+    "path": "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-v2-8-61osb\\preview-fixtures\\party-pros-philadelphia\\preview.json",
+    "bytes": 37278,
+    "sha256": "cb45b0e9af963299975781d7ce874f621c283749cdcd0e6096106f7d8dbbf383",
+    "configuredMediaReferences": 18
+  },
+  "build": {
+    "typeCheck": "passed",
+    "build": "passed_with_known_pumpkin_ts_models_fs_warning"
+  },
+  "redeploy": {
+    "approvedCount": 1,
+    "attemptedCount": 1,
+    "successfulCount": 1,
+    "targetAppService": "app-pumpkin-starter-preview-centralus-001",
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "deploymentId": "1e01000c-4c7e-4b8a-b86c-8b29c95fe9c1",
+    "result": "RuntimeSuccessful",
+    "successfulInstances": 1,
+    "failedInstances": 0
+  },
+  "postDeployProof": {
+    "customDomainRoutes200": 6,
+    "customDomainImageTags": {
+      "home": 9,
+      "contact": 6,
+      "serviceAreas": 6
+    },
+    "representativeImageUrls200": 6,
+    "browserResponsiveChecks": 24,
+    "brokenImageChecks": 0,
+    "horizontalOverflowChecks": 0,
+    "failedBrowserRequestChecks": 0,
+    "postMethodChecks": 0,
+    "runtimeNoRegression": "23/23"
+  },
+  "mutations": {
+    "starterSourceRepair": true,
+    "starterRedeploy": true,
+    "partyProsCmsMutation": false,
+    "mediaUpload": false,
+    "mediaDelete": false,
+    "formSubmission": false,
+    "contactPost": false,
+    "customerFacingPost": false,
+    "formEntryMutation": false,
+    "pumpkinApiDeploy": false,
+    "adminUiDeploy": false,
+    "iceDeploy": false,
+    "dns": false,
+    "tls": false,
+    "airstrip": false,
+    "storageKeysOrSas": false,
+    "gitStaging": false
+  }
+}

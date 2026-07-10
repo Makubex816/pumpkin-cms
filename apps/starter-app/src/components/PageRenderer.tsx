@@ -27,9 +27,9 @@ export function PageRenderer({
   tenantId = page.tenantId,
   siteKey = tenantId,
 }: PageRendererProps) {
-  const blocks = (page.ContentData.ContentBlocks as CmsBlock[]).filter(
-    (block) => block.enabled !== false,
-  );
+  const blocks = (page.ContentData.ContentBlocks as CmsBlock[])
+    .filter((block) => block.enabled !== false)
+    .map(withRenderableMedia);
   const classNames = normalizeClassNames(blockStyles ?? {});
 
   return (
@@ -73,6 +73,127 @@ export function PageRenderer({
       ))}
     </>
   );
+}
+
+interface MediaReference {
+  publicUrl?: unknown;
+  url?: unknown;
+  alt?: unknown;
+  title?: unknown;
+  caption?: unknown;
+  description?: unknown;
+}
+
+function withRenderableMedia(block: CmsBlock): CmsBlock {
+  if (!block.content || typeof block.content !== 'object') return block;
+
+  const content = block.content as Record<string, unknown>;
+
+  if (block.type === 'Hero' || block.type === 'PrimaryCTA') {
+    const media = getMediaReference(content.media);
+    const url = getSafeImageUrl(media);
+    if (!url || hasText(content.mainImage)) return block;
+
+    return {
+      ...block,
+      content: {
+        ...content,
+        mainImage: url,
+        mainImageAltText: hasText(content.mainImageAltText)
+          ? content.mainImageAltText
+          : getMediaAlt(media),
+      },
+    };
+  }
+
+  if (block.type === 'CardGrid' && Array.isArray(content.cards)) {
+    return {
+      ...block,
+      content: {
+        ...content,
+        cards: content.cards.map((card) => withCardMedia(card)),
+      },
+    };
+  }
+
+  if (block.type === 'HowItWorks' && Array.isArray(content.steps)) {
+    return {
+      ...block,
+      content: {
+        ...content,
+        steps: content.steps.map((step) => withStepMedia(step)),
+      },
+    };
+  }
+
+  return block;
+}
+
+function withCardMedia(card: unknown) {
+  if (!card || typeof card !== 'object') return card;
+
+  const record = card as Record<string, unknown>;
+  const media = getMediaReference(record.media);
+  const url = getSafeImageUrl(media);
+  if (!url || hasText(record.image)) return card;
+
+  return {
+    ...record,
+    image: url,
+    'image-alt': hasText(record['image-alt']) ? record['image-alt'] : getMediaAlt(media),
+  };
+}
+
+function withStepMedia(step: unknown) {
+  if (!step || typeof step !== 'object') return step;
+
+  const record = step as Record<string, unknown>;
+  const media = getMediaReference(record.media);
+  const url = getSafeImageUrl(media);
+  if (!url || hasText(record.image)) return step;
+
+  return {
+    ...record,
+    image: url,
+    alt: hasText(record.alt) ? record.alt : getMediaAlt(media),
+  };
+}
+
+function getMediaReference(value: unknown): MediaReference | null {
+  if (!value || typeof value !== 'object') return null;
+  return value as MediaReference;
+}
+
+function getSafeImageUrl(media: MediaReference | null) {
+  if (!media) return '';
+
+  const candidate = pickText(media.publicUrl) || pickText(media.url);
+  if (!candidate) return '';
+
+  if (/^(https?:)?\/\//i.test(candidate) || candidate.startsWith('/')) {
+    return candidate;
+  }
+
+  return '';
+}
+
+function getMediaAlt(media: MediaReference | null) {
+  if (!media) return '';
+
+  return (
+    pickText(media.alt)
+    || pickText(media.title)
+    || pickText(media.caption)
+    || pickText(media.description)
+  );
+}
+
+function hasText(value: unknown) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function pickText(value: unknown) {
+  return typeof value === 'string' ? value.trim() : '';
 }
 
 function normalizeClassNames(blockStyles: BlockStyleMap): BlockClassNamesMap {

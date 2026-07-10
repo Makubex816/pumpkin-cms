@@ -18,7 +18,7 @@ const BUILT_IN_HOST_TENANT_ROUTES: HostTenantRoute[] = [
     tenantId: 'party-pros-philadelphia',
     hosts: ['partyrentalphiladelphia.com', 'www.partyrentalphiladelphia.com'],
     source: 'preview-fixture',
-    formsMode: 'live-submit',
+    formsMode: 'disabled-preview',
   },
 ];
 
@@ -70,7 +70,7 @@ export async function getHostTenantPreviewSite() {
 }
 
 function getHostTenantRoutes(): HostTenantRoute[] {
-  return [...BUILT_IN_HOST_TENANT_ROUTES, ...readConfiguredRoutes()];
+  return [...readConfiguredRoutes(), ...BUILT_IN_HOST_TENANT_ROUTES];
 }
 
 function readConfiguredRoutes(): HostTenantRoute[] {
