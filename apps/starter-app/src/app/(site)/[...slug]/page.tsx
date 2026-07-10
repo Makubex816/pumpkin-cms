@@ -44,7 +44,7 @@ export default async function SlugPage({ params }: SlugPageProps) {
         page={page}
         blockStyles={theme.blockStyles}
         formDefinitions={formDefinitions}
-        previewMode
+        previewMode={hostTenantPreview.route.formsMode !== 'live-submit'}
         tenantId={fixture.tenantId}
         siteKey={fixture.siteKey || fixture.tenantId}
       />

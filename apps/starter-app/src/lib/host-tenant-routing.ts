@@ -2,7 +2,7 @@ import { headers } from 'next/headers';
 import { getPreviewPage, getPreviewSite } from '@/lib/preview-fixtures';
 
 type HostTenantSource = 'preview-fixture';
-type HostTenantFormsMode = 'disabled-preview';
+type HostTenantFormsMode = 'disabled-preview' | 'live-submit';
 
 export interface HostTenantRoute {
   tenantId: string;
@@ -18,7 +18,7 @@ const BUILT_IN_HOST_TENANT_ROUTES: HostTenantRoute[] = [
     tenantId: 'party-pros-philadelphia',
     hosts: ['partyrentalphiladelphia.com', 'www.partyrentalphiladelphia.com'],
     source: 'preview-fixture',
-    formsMode: 'disabled-preview',
+    formsMode: 'live-submit',
   },
 ];
 
@@ -110,7 +110,7 @@ function normalizeConfiguredRoute(route: unknown): HostTenantRoute[] {
       tenantId,
       hosts,
       source: record.source === 'preview-fixture' ? record.source : 'preview-fixture',
-      formsMode: record.formsMode === 'disabled-preview' ? record.formsMode : 'disabled-preview',
+      formsMode: record.formsMode === 'live-submit' ? record.formsMode : 'disabled-preview',
     },
   ];
 }

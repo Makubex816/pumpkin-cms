@@ -1,0 +1,41 @@
+{
+  "phase": "v2-8-61os",
+  "title": "Party Pros controlled form/contact E2E proof",
+  "status": "blocked_before_submit",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_controlled_form_contact_e2e_proof_limited_post_no_airstrip",
+  "startedFromCommit": "fb03dd3d",
+  "blockedReason": "PUMPKIN_FORMENTRY_READBACK_AUTH_MODE was custom-header, but PUMPKIN_FORMENTRY_READBACK_AUTH_HEADER_NAME and PUMPKIN_FORMENTRY_READBACK_AUTH_VALUE were not present in the shell environment.",
+  "liveMutations": {
+    "tenantApiKeyRegenerated": false,
+    "starterAppsettingsMutated": false,
+    "starterDeployed": false,
+    "pumpkinApiDeployed": false,
+    "controlledSyntheticSubmissionSent": false,
+    "formEntryCreated": false
+  },
+  "localSourceChanges": [
+    "apps/starter-app/src/lib/host-tenant-routing.ts",
+    "apps/starter-app/src/app/(site)/page.tsx",
+    "apps/starter-app/src/app/(site)/[...slug]/page.tsx"
+  ],
+  "resultFiles": [
+    "README.md",
+    "current-state-summary.md",
+    "v2-8-61or-carryforward.md",
+    "https-custom-domain-prerecheck.md",
+    "form-submit-source-readiness.md",
+    "party-pros-submit-key-setup-result.md",
+    "starter-form-enable-result.md",
+    "controlled-form-submit-result.md",
+    "formentry-readback-proof.md",
+    "admin-ui-form-inbox-proof.md",
+    "tenant-isolation-proof.md",
+    "preview-form-no-post-reproof.md",
+    "email-notification-safety-result.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
