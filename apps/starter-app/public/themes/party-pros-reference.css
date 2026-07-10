@@ -491,6 +491,67 @@ textarea:focus-visible {
   font-size: 0.94rem;
 }
 
+.catalog-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(14rem, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--pp-line);
+  border-radius: var(--pp-radius);
+  background: var(--pp-soft);
+}
+
+.catalog-control {
+  min-width: 0;
+}
+
+.catalog-control-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
+  color: var(--pp-navy);
+  font-size: 0.84rem;
+  font-weight: 850;
+}
+
+.catalog-control input,
+.catalog-control select {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid var(--pp-line);
+  border-radius: 12px;
+  background: var(--pp-white);
+  color: var(--pp-navy);
+  font: inherit;
+}
+
+.catalog-results-count {
+  margin: 1rem 0 0;
+  color: var(--pp-muted);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.catalog-card-link {
+  margin-top: auto;
+  color: var(--pp-orange-dark);
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+.catalog-empty {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--pp-line);
+  border-radius: var(--pp-radius);
+  background: var(--pp-soft);
+  color: var(--pp-slate);
+  text-align: center;
+}
+
 .content-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -675,6 +736,32 @@ textarea:focus-visible {
   border: 0;
 }
 
+.site-consent-field {
+  grid-column: 1 / -1;
+}
+
+.site-consent-control {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem;
+  border: 1px solid var(--pp-line);
+  border-radius: 14px;
+  background: var(--pp-soft);
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.site-consent-control input {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.1rem;
+  flex: 0 0 auto;
+  accent-color: var(--pp-orange-dark);
+}
+
 .pk-contact__field-help,
 .pk-contact__status {
   margin: 0.4rem 0 0;
@@ -801,6 +888,10 @@ textarea:focus-visible {
 
   .brand-strip .container {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalog-controls {
+    grid-template-columns: 1fr;
   }
 
   .footer-grid {

@@ -1,0 +1,77 @@
+{
+  "phase": "V2.8.61OSHR",
+  "status": "complete_with_form_reproof_held_auth_env_unavailable",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_catalog_navigation_item_pages_consent_repair_form_reproof_no_airstrip",
+  "branch": "feature/admin-page-editor-import-export",
+  "completedAtUtc": "2026-07-10T17:50:13Z",
+  "carryforwardCommits": {
+    "osh": "1252bffcea4b3f22771b024290fdb1a3912f5846",
+    "osg": "ae5e2c8a81678a0143734343a6bbbbf726dcd3f2",
+    "osf": "6d5f89cdd2bc2221dc621e99939b094a372cb1dd"
+  },
+  "reference": {
+    "bytes": 100009111,
+    "sha256": "55677620a7b97e9a3801ef8b42b7bae3dde59afc045f27b007ebd8c362b15051",
+    "files": 975,
+    "htmlFiles": 388,
+    "cssFiles": 1,
+    "imageFiles": 581,
+    "quarantinedJavascriptFiles": 3,
+    "javascriptExecuted": false,
+    "internalLinks": 20515,
+    "uniqueInternalTargets": 382,
+    "brokenInternalLinks": 0,
+    "imageReferences": 3599,
+    "uniqueImageTargets": 518,
+    "missingImageReferences": 0
+  },
+  "compiledRuntime": {
+    "pages": 242,
+    "categoryPages": 12,
+    "eventPages": 12,
+    "itemPages": 214,
+    "catalogItems": 214,
+    "homeCards": 24,
+    "homeContactFallbacks": 0,
+    "cmsAuthoritative": false
+  },
+  "deployment": {
+    "starterAttemptsApproved": 1,
+    "starterAttemptsUsed": 1,
+    "status": "succeeded",
+    "deploymentId": "7d24faa3-8812-4fbf-befc-017a448858f3",
+    "packageBytes": 6158523,
+    "packageSha256": "42be5b21d59fffa7c7b90326e0a917db9ae0670b506d060ee40635a0e7c00359"
+  },
+  "proof": {
+    "localPagesPassed": 242,
+    "localPagesChecked": 242,
+    "localMediaPassed": 203,
+    "localMediaChecked": 203,
+    "liveResponsivePassed": 30,
+    "liveResponsiveChecked": 30,
+    "liveOverflows": 0,
+    "liveBrokenImageChecks": 0,
+    "livePostRequestChecks": 0,
+    "runtimePassed": 33,
+    "runtimeChecked": 33,
+    "airstripRoutesChecked": 0
+  },
+  "formReproof": {
+    "authMode": "custom-header",
+    "authEnvironmentAvailable": false,
+    "authValuePrinted": false,
+    "submissionCount": 0,
+    "status": "held_before_post",
+    "carryforwardFormEntryId": "43dcad71-0f9c-47b2-97db-69374ee9560f"
+  },
+  "mutations": {
+    "partyProsCms": 0,
+    "media": 0,
+    "ice": 0,
+    "airstrip": 0,
+    "dnsTlsRegistrar": 0,
+    "formPosts": 0
+  }
+}

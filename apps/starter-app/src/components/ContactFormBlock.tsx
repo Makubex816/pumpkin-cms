@@ -39,6 +39,10 @@ export function ContactFormBlock({
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [message, setMessage] = useState('');
   const fields = getFields(content, formDefinition);
+  const consent = getConsent(formDefinition);
+  const visibleFields = consent
+    ? fields.filter((field) => field.name !== consent.name && field.id !== consent.name)
+    : fields;
   const formType = content.formType?.trim().toLowerCase();
   const submitButtonText = formDefinition?.submitButtonText || content.submitButtonText || 'Submit';
 
@@ -131,13 +135,31 @@ export function ContactFormBlock({
                 {content.formDescription && <p>{content.formDescription}</p>}
               </div>
             )}
-            {fields.map((field) => (
+            {visibleFields.map((field) => (
               <FormField
                 key={field.name}
                 field={field}
                 classNames={cx}
               />
             ))}
+            {consent && (
+              <div className={`${cx.fieldWrapper} site-form-field--full site-consent-field`.trim()}>
+                <label className="site-consent-control" htmlFor={consent.name}>
+                  <input
+                    id={consent.name}
+                    name={consent.name}
+                    type="checkbox"
+                    value="true"
+                    required={consent.required}
+                    disabled={previewMode}
+                  />
+                  <span>
+                    {consent.text}
+                    {consent.required && ' *'}
+                  </span>
+                </label>
+              </div>
+            )}
             <input type="hidden" name="pageSlug" value={pageSlug} />
             <button
               type={previewMode ? 'button' : 'submit'}
@@ -271,6 +293,18 @@ function getFieldWidthClass(width: FormFieldDefinition['width']) {
   if (width === 'third') return 'site-form-field--third';
   if (width === 'two-thirds') return 'site-form-field--two-thirds';
   return 'site-form-field--full';
+}
+
+function getConsent(formDefinition?: FormDefinition) {
+  const consent = formDefinition?.consent;
+  const text = consent?.text?.trim();
+  if (!consent || !text) return null;
+
+  return {
+    name: consent.fieldName?.trim() || 'consent',
+    text,
+    required: consent.required,
+  };
 }
 
 function getOptionValue(option: string | { value: string; label: string }) {

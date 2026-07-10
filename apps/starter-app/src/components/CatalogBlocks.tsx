@@ -1,8 +1,10 @@
 import type { IHtmlBlock } from 'pumpkin-ts-models';
+import { CatalogIndexBlock } from '@/components/CatalogIndexBlock';
 import { getSafeSiteHref } from '@/lib/site-chrome';
 
 const CATALOG_BLOCK_TYPES = new Set([
   'CatalogHero',
+  'CatalogIndex',
   'PillStrip',
   'Callout',
   'CatalogGrid',
@@ -45,6 +47,8 @@ export function CatalogBlockRenderer({ block }: { block: IHtmlBlock }) {
   switch (catalogBlock.type) {
     case 'CatalogHero':
       return <CatalogHero content={catalogBlock.content} />;
+    case 'CatalogIndex':
+      return <CatalogIndexBlock content={catalogBlock.content} />;
     case 'PillStrip':
       return <PillStrip content={catalogBlock.content} />;
     case 'Callout':

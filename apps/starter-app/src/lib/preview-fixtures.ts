@@ -47,7 +47,9 @@ export async function getPreviewPage(
   if (!fixture) return null;
 
   const slug = normalizePreviewSlug(slugParts);
-  const page = fixture.pages[slug] ?? fixture.pages[slug.replace(/^\/+/, '')];
+  const page = getPageCandidates(slug)
+    .map((candidate) => fixture.pages[candidate])
+    .find((candidate): candidate is Page => Boolean(candidate));
   if (!page) return null;
 
   return {
@@ -118,8 +120,9 @@ function resolveFixtureRoot(root: string) {
 function resolvePreviewTheme(fixture: PreviewFixture, urlMode: PreviewUrlMode): Theme {
   const partialTheme = fixture.theme ?? {};
   const themeId = partialTheme.themeId || `${fixture.tenantId}-preview`;
+  const sourceMenu = partialTheme.menu?.length ? partialTheme.menu : fallbackTheme.menu;
   const menu = prefixMenuUrls(
-    partialTheme.menu?.length ? partialTheme.menu : fallbackTheme.menu,
+    ensureCatalogMenuItem(sourceMenu, fixture.pages),
     fixture.tenantId,
     urlMode,
   );
@@ -172,6 +175,35 @@ function getFixtureThemeCssPath(partialTheme: Partial<Theme>) {
   return /^\/themes\/[a-z0-9][a-z0-9._-]*\.css$/i.test(candidate)
     ? candidate
     : '/themes/pumpkin-default.css';
+}
+
+function getPageCandidates(slug: string) {
+  const normalized = slug.replace(/^\/+/, '');
+  const withoutHtml = normalized.replace(/\.html$/i, '');
+  const aliases = normalized === 'index.html' || normalized === 'index' ? ['home'] : [];
+  return Array.from(new Set([normalized, withoutHtml, ...aliases]));
+}
+
+function ensureCatalogMenuItem(menu: MenuItem[], pages: Record<string, Page>) {
+  const hasCatalogPage = Boolean(pages.catalog ?? pages['catalog.html']);
+  const hasCatalogMenuItem = menu.some((item) =>
+    item.url.replace(/^\/+|\/+$/g, '').replace(/\.html$/i, '') === 'catalog',
+  );
+  if (!hasCatalogPage || hasCatalogMenuItem) return menu;
+
+  const homeOrder = menu.find((item) => item.url === '/' || item.url === 'home')?.order ?? 0;
+  return [
+    ...menu.map((item) => item.order > homeOrder ? { ...item, order: item.order + 1 } : item),
+    {
+      label: 'Catalog',
+      url: '/catalog',
+      target: '_self',
+      icon: '',
+      order: homeOrder + 1,
+      isVisible: true,
+      children: [],
+    },
+  ];
 }
 
 function prefixMenuUrls(menu: MenuItem[], tenantId: string, urlMode: PreviewUrlMode): MenuItem[] {
