@@ -1,0 +1,37 @@
+{
+  "taskId": "v2-8-61op-party-pros-nameserver-delegation-validation-email-dns",
+  "generatedDate": "2026-07-10",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_nameserver_delegation_validation_no_email_dns_no_registrar_mutation_no_binding_no_post",
+  "status": "complete",
+  "carryforwardCommit": "8e414e09",
+  "nameserverPropagation": "complete",
+  "decision": "ready_for_custom_domain_binding_preflight",
+  "targetAzureNameservers": [
+    "ns1-03.azure-dns.com",
+    "ns2-03.azure-dns.net",
+    "ns3-03.azure-dns.org",
+    "ns4-03.azure-dns.info"
+  ],
+  "publicRecords": {
+    "apexA": "20.118.48.17",
+    "wwwCname": "app-pumpkin-starter-preview-centralus-001.azurewebsites.net",
+    "asuidTxt": "17FA81D26688CC438E7CF3402F33A438B12FDB881933AB1322B14006013C1FCD",
+    "asuidWwwTxt": "17FA81D26688CC438E7CF3402F33A438B12FDB881933AB1322B14006013C1FCD",
+    "mx": ".",
+    "spf": "v=spf1 -all",
+    "dmarc": "absent"
+  },
+  "notPerformed": [
+    "bluehostLogin",
+    "registrarDnsMutation",
+    "registrarNameserverChangeByCodex",
+    "azureHostnameBinding",
+    "managedTls",
+    "deploy",
+    "partyProsPublish",
+    "contactPost",
+    "formSubmission",
+    "airstripAction"
+  ]
+}
