@@ -1,0 +1,28 @@
+{
+  "phase": "v2-8-61osr",
+  "title": "Party Pros form E2E auth unblock live proof",
+  "status": "blocked_before_live_action",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_form_e2e_auth_unblock_controlled_submit_no_airstrip",
+  "osCommit": "8597a05e",
+  "blockedReasons": [
+    "Approved secure handoff did not include a non-empty readbackAuth.headerValue and PUMPKIN_FORMENTRY_READBACK_AUTH_VALUE was absent from the shell.",
+    "Starter live submit requires PUMPKIN_TENANT_ID and PUMPKIN_API_KEY, but the deployed starter app did not have them and the secure handoff submit key candidate was empty."
+  ],
+  "liveMutations": {
+    "readbackAuthAppsettingsSet": false,
+    "partyProsSubmitKeySet": false,
+    "tenantApiKeyRegenerated": false,
+    "starterDeployed": false,
+    "pumpkinApiDeployed": false,
+    "controlledSyntheticSubmissionSent": false,
+    "formEntryCreated": false
+  },
+  "safeProofs": {
+    "httpsCustomDomainPrerecheck": "passed",
+    "previewNoPost": "passed",
+    "starterTypeCheck": "passed",
+    "starterBuild": "passed_with_existing_warning",
+    "runtimeNoRegression": "passed_23_of_23_get_only"
+  }
+}
