@@ -18,7 +18,7 @@ const BUILT_IN_HOST_TENANT_ROUTES: HostTenantRoute[] = [
     tenantId: 'party-pros-philadelphia',
     hosts: ['partyrentalphiladelphia.com', 'www.partyrentalphiladelphia.com'],
     source: 'preview-fixture',
-    formsMode: 'disabled-preview',
+    formsMode: 'live-submit',
   },
 ];
 

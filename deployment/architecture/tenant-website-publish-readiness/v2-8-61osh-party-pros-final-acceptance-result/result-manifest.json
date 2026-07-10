@@ -1,0 +1,58 @@
+{
+  "phase": "v2-8-61osh",
+  "title": "Party Pros owner visual acceptance, form mode repair, and CMS persistence decision",
+  "generatedAtUtc": "2026-07-10T16:40:00Z",
+  "status": "blocked_before_controlled_submit_reproof",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_owner_visual_acceptance_form_reproof_cms_persistence_decision_no_airstrip",
+  "tenantId": "party-pros-philadelphia",
+  "osgCommit": "ae5e2c8a81678a0143734343a6bbbbf726dcd3f2",
+  "osfCommit": "6d5f89cdd2bc2221dc621e99939b094a372cb1dd",
+  "ownerVisualAcceptance": "accepted",
+  "customDomainFormMode": "live-submit",
+  "previewFormMode": "disabled-no-post",
+  "starterDeploymentsUsed": 1,
+  "starterDeploymentId": "d8988e70-ffcb-4cdd-a798-193d4c6c273e",
+  "controlledFormPosts": 0,
+  "newFormEntryId": null,
+  "carriedForwardFormEntryId": "43dcad71-0f9c-47b2-97db-69374ee9560f",
+  "runtimeRoutes200": 24,
+  "runtimeRoutesChecked": 24,
+  "airstripRoutesChecked": 0,
+  "blockedReasons": [
+    "The required custom-header Admin readback preflight returned HTTP 401.",
+    "The custom ContactFormBlock does not render the FormDefinition consent control even though Party Pros consent is required."
+  ],
+  "liveMutationSummary": {
+    "starterSourceRepairs": 1,
+    "starterDeployments": 1,
+    "formSubmissions": 0,
+    "formEntriesCreated": 0,
+    "cmsMutations": 0,
+    "apiDeployments": 0,
+    "adminDeployments": 0,
+    "iceDeployments": 0,
+    "airstripActions": 0,
+    "dnsOrTlsActions": 0,
+    "mediaMutations": 0
+  },
+  "resultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61osg-carryforward.md",
+    "v2-8-61osf-carryforward.md",
+    "owner-visual-acceptance-result.md",
+    "current-live-form-mode-recheck.md",
+    "starter-form-mode-repair-result.md",
+    "form-e2e-reproof-or-carryforward.md",
+    "tenant-isolation-carryforward-or-reproof.md",
+    "cms-persistence-decision-packet.md",
+    "tenant-visual-fidelity-standard-update.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}
+
