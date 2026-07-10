@@ -1,0 +1,76 @@
+{
+  "phase": "v2-8-61or",
+  "status": "complete",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_managed_tls_https_proof_no_deploy_no_form_post_no_airstrip",
+  "generatedOn": "2026-07-10",
+  "carryforward": {
+    "oqCommit": "006d586b",
+    "oqStarterRedeployId": "b15e7fae-e4b7-4853-a3b5-e9b474a09d89",
+    "customHostnamesBound": true,
+    "httpRoutingPassed": true,
+    "formsNoPost": true
+  },
+  "dnsPrerecheck": {
+    "publicDnsMatchesOq": true,
+    "resolvers": [
+      "1.1.1.1",
+      "8.8.8.8",
+      "9.9.9.9"
+    ]
+  },
+  "managedCertificates": {
+    "partyrentalphiladelphia.com": {
+      "resourceName": "partyrentalphiladelphia.com",
+      "subjectName": "partyrentalphiladelphia.com",
+      "thumbprint": "CF1195799725228D4A756311236C114CABE337E3",
+      "issuer": "GeoTrust TLS RSA CA G1",
+      "issueDate": "2026-07-10T00:00:00+00:00",
+      "expirationDate": "2027-01-10T23:59:59+00:00",
+      "createResult": "existing_duplicate_certificate_found"
+    },
+    "www.partyrentalphiladelphia.com": {
+      "resourceName": "www.partyrentalphiladelphia.com",
+      "subjectName": "www.partyrentalphiladelphia.com",
+      "thumbprint": "228732A6AFB094A99BE9128824445EB82174841E",
+      "issuer": "GeoTrust TLS RSA CA G1",
+      "issueDate": "2026-07-10T00:00:00+00:00",
+      "expirationDate": "2027-01-10T23:59:59+00:00",
+      "createResult": "existing_duplicate_certificate_found"
+    }
+  },
+  "sslBinding": {
+    "partyrentalphiladelphia.com": "SniEnabled",
+    "www.partyrentalphiladelphia.com": "SniEnabled"
+  },
+  "httpsOnly": true,
+  "proof": {
+    "customHttpsRoutes": "passed",
+    "httpRedirectsToHttps": "passed",
+    "defaultHost": "passed",
+    "previewRoutes": "passed",
+    "formNoPost": "passed",
+    "runtimeNoRegression": "passed_23_of_23"
+  },
+  "mutations": {
+    "managedCertificateCreateRetry": true,
+    "sslSniBinding": true,
+    "httpsOnlyEnabled": true,
+    "deployOrRedeploy": false,
+    "registrarDns": false,
+    "nameserverChange": false,
+    "pumpkinApiDeploy": false,
+    "adminUiDeploy": false,
+    "iceDeployOrMutation": false,
+    "airstrip": false,
+    "partyProsCmsMutation": false,
+    "partyProsPublish": false,
+    "contactPost": false,
+    "formSubmission": false,
+    "customerFacingPost": false,
+    "storageKeysListKeysSas": false,
+    "externalCertificateUpload": false,
+    "keyVaultCertificateAction": false,
+    "gitStaging": false
+  }
+}
