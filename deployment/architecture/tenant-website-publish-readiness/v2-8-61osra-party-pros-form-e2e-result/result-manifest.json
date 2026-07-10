@@ -1,0 +1,32 @@
+{
+  "phase": "v2-8-61osra",
+  "title": "Party Pros form E2E corrected auth unblock",
+  "status": "blocked_secure_handoff_values_missing",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_form_e2e_corrected_auth_unblock_controlled_submit_no_airstrip",
+  "osrCommit": "123a2beb",
+  "secureHandoff": {
+    "path": ".tmp/v2-8-61osra/secure/party-pros-form-e2e-corrected-handoff.json",
+    "exists": true,
+    "gitIgnored": true,
+    "operatorReadbackHeaderNamePresent": true,
+    "operatorReadbackHeaderValuePresent": false,
+    "runtimeTenantIdAppSettingNamePresent": true,
+    "runtimeTenantIdAppSettingValuePresent": true,
+    "runtimeApiKeyAppSettingNamePresent": true,
+    "runtimeApiKeyValuePresent": false
+  },
+  "liveMutations": {
+    "starterAppsettingsSet": false,
+    "apiSideKeySetup": false,
+    "tenantApiKeyRegenerated": false,
+    "starterDeployed": false,
+    "pumpkinApiDeployed": false,
+    "controlledSyntheticSubmissionSent": false,
+    "formEntryCreated": false
+  },
+  "blockedReasons": [
+    "operatorReadbackAuth.headerValue was absent/null in the corrected secure handoff.",
+    "runtimeSubmitAuth.apiKeyValue was absent/null in the corrected secure handoff."
+  ]
+}
