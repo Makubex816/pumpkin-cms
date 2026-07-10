@@ -3,72 +3,45 @@ using pumpkin_net_models.Models;
 
 namespace pumpkin_api.Tests;
 
-public static class TenantAdminProvisioningSourceTestRunner
+public static class TenantSubmitKeyProvisioningSourceTestRunner
 {
     public static async Task RunAsync()
     {
-        Console.WriteLine("V2.8.58A TenantAdmin provisioning source tests");
+        Console.WriteLine("V2.8.61OSD tenant submit-key provisioning source tests");
 
-        Assert(TenantAdminUserProvisioningService.IsSuperAdminRole("SuperAdmin"), "SuperAdmin role is accepted");
-        Assert(!TenantAdminUserProvisioningService.IsSuperAdminRole("TenantAdmin"), "TenantAdmin role is rejected");
-        Assert(!TenantAdminUserProvisioningService.IsSuperAdminRole(null), "missing role is rejected");
+        Assert(TenantSubmitKeyProvisioningService.IsSuperAdminRole("SuperAdmin"), "SuperAdmin role is accepted");
+        Assert(!TenantSubmitKeyProvisioningService.IsSuperAdminRole("TenantAdmin"), "TenantAdmin role is rejected");
+        Assert(!TenantSubmitKeyProvisioningService.IsSuperAdminRole(null), "missing role is rejected");
 
-        var request = new CreateTenantAdminUserRequest
-        {
-            Email = "  Admin@Example.Test ",
-            Password = "Correct-Horse-58A",
-            Username = " airstrip-admin ",
-            FirstName = " Airstrip ",
-            LastName = " Admin "
-        };
+        Assert(TenantSubmitKeyProvisioningService.ValidateSubmitKey(null) != null, "missing submit key is rejected");
+        Assert(TenantSubmitKeyProvisioningService.ValidateSubmitKey("   ") != null, "blank submit key is rejected");
+        Assert(TenantSubmitKeyProvisioningService.ValidateSubmitKey("Owner-Provided-Submit-Key-OSD") == null, "nonblank submit key is accepted");
 
-        var built = TenantAdminUserProvisioningService.BuildTenantAdminUser("Airstrip-Club-Las-Vegas", request);
-        Assert(built.TenantId == "airstrip-club-las-vegas", "tenantId is normalized for partition safety");
-        Assert(built.Email == "admin@example.test", "email is normalized");
-        Assert(built.Username == "airstrip-admin", "username is trimmed");
-        Assert(built.Role == UserRole.TenantAdmin, "role is TenantAdmin");
-        Assert(built.IsActive, "created user is active");
-        Assert(built.PasswordHash != request.Password, "password hash does not disclose plaintext");
-        Assert(BCrypt.Net.BCrypt.Verify(request.Password, built.PasswordHash), "password hash verifies with BCrypt");
+        var submitKey = "  Owner-Provided-Submit-Key-OSD  ";
+        var normalizedSubmitKey = TenantSubmitKeyProvisioningService.NormalizeSubmitKey(submitKey);
+        var hash = TenantSubmitKeyProvisioningService.HashSubmitKey(normalizedSubmitKey);
+        Assert(hash != normalizedSubmitKey, "submit key hash does not disclose plaintext");
+        Assert(TenantSubmitKeyProvisioningService.VerifySubmitKey(normalizedSubmitKey, hash), "submit key hash verifies");
+        Assert(!TenantSubmitKeyProvisioningService.VerifySubmitKey("wrong-key", hash), "wrong submit key does not verify");
 
-        var response = TenantAdminUserProvisioningService.ToResponse(built);
-        Assert(response.Role == "TenantAdmin", "response role is TenantAdmin");
-        Assert(response.GetType().GetProperty("PasswordHash") == null, "response omits password hash");
-        Assert(response.GetType().GetProperty("Password") == null, "response omits password");
+        var database = new SubmitKeyProvisioningFakeDatabase();
+        var response = await TenantSubmitKeyProvisioningService.ProvisionSubmitKeyAsync(
+            database,
+            "party-pros-philadelphia",
+            submitKey);
 
-        var successDb = new TenantAdminProvisioningFakeDatabase(hasTenant: true);
-        var success = await TenantAdminUserProvisioningService.CreateTenantAdminAsync(
-            successDb,
-            "airstrip-club-las-vegas",
-            request);
-        Assert(success.Status == TenantAdminUserProvisioningStatus.Created, "create path can create a TenantAdmin");
-        Assert(success.User?.TenantId == "airstrip-club-las-vegas", "created response is tenant-scoped");
-        Assert(successDb.CreatedUser?.TenantId == "airstrip-club-las-vegas", "created user uses tenant partition");
-        Assert(successDb.CreatedUser?.Role == UserRole.TenantAdmin, "created user is not privileged above TenantAdmin");
+        Assert(database.StoredTenant?.TenantId == "party-pros-philadelphia", "provisioning targets the requested tenant");
+        Assert(database.StoredTenant?.ApiKey == string.Empty, "stored tenant omits plaintext api key");
+        Assert(!string.IsNullOrWhiteSpace(database.StoredTenant?.ApiKeyHash), "stored tenant has api key hash");
+        Assert(database.ReceivedHash != normalizedSubmitKey, "database receives hash instead of plaintext");
+        Assert(TenantSubmitKeyProvisioningService.VerifySubmitKey(normalizedSubmitKey, database.ReceivedHash!), "database hash verifies against submit key");
+        Assert(response.TenantId == "party-pros-philadelphia", "response is tenant-scoped");
+        Assert(response.KeyHashStored, "response confirms a hash is stored");
+        Assert(!response.PlaintextReturned, "response says plaintext was not returned");
+        Assert(response.GetType().GetProperty("ApiKey") == null, "response omits api key");
+        Assert(response.GetType().GetProperty("ApiKeyHash") == null, "response omits api key hash");
 
-        var conflictDb = new TenantAdminProvisioningFakeDatabase(hasTenant: true, existingEmail: "admin@example.test");
-        var conflict = await TenantAdminUserProvisioningService.CreateTenantAdminAsync(
-            conflictDb,
-            "airstrip-club-las-vegas",
-            request);
-        Assert(conflict.Status == TenantAdminUserProvisioningStatus.Conflict, "duplicate email returns conflict");
-        Assert(conflictDb.CreatedUser == null, "conflict does not create user");
-
-        var missingTenantDb = new TenantAdminProvisioningFakeDatabase(hasTenant: false);
-        var missingTenant = await TenantAdminUserProvisioningService.CreateTenantAdminAsync(
-            missingTenantDb,
-            "airstrip-club-las-vegas",
-            request);
-        Assert(missingTenant.Status == TenantAdminUserProvisioningStatus.TenantNotFound, "missing tenant is rejected");
-        Assert(missingTenantDb.CreatedUser == null, "missing tenant does not create user");
-
-        var invalid = await TenantAdminUserProvisioningService.CreateTenantAdminAsync(
-            successDb,
-            "airstrip-club-las-vegas",
-            new CreateTenantAdminUserRequest { Email = "bad", Password = "short" });
-        Assert(invalid.Status == TenantAdminUserProvisioningStatus.BadRequest, "invalid request is rejected");
-
-        Console.WriteLine("V2.8.58A TenantAdmin provisioning source tests passed.");
+        Console.WriteLine("V2.8.61OSD tenant submit-key provisioning source tests passed.");
     }
 
     private static void Assert(bool condition, string message)
@@ -81,51 +54,34 @@ public static class TenantAdminProvisioningSourceTestRunner
         Console.WriteLine($"pass: {message}");
     }
 
-    private sealed class TenantAdminProvisioningFakeDatabase : IDatabaseService
+    private sealed class SubmitKeyProvisioningFakeDatabase : IDatabaseService
     {
-        private readonly bool _hasTenant;
-        private readonly string? _existingEmail;
+        public string? ReceivedHash { get; private set; }
+        public Tenant? StoredTenant { get; private set; }
 
-        public TenantAdminProvisioningFakeDatabase(bool hasTenant, string? existingEmail = null)
+        public Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash)
         {
-            _hasTenant = hasTenant;
-            _existingEmail = existingEmail;
-        }
-
-        public User? CreatedUser { get; private set; }
-
-        public Task<Tenant?> GetTenantAsync(string tenantId)
-        {
-            return Task.FromResult<Tenant?>(_hasTenant
-                ? new Tenant { TenantId = tenantId, Id = tenantId, Name = "Fixture", Status = "active", Plan = "standard" }
-                : null);
-        }
-
-        public Task<User?> GetUserByEmailAsync(string email)
-        {
-            if (!string.Equals(email, _existingEmail, StringComparison.OrdinalIgnoreCase))
+            ReceivedHash = apiKeyHash;
+            StoredTenant = new Tenant
             {
-                return Task.FromResult<User?>(null);
-            }
+                Id = tenantId,
+                TenantId = tenantId,
+                Name = "Party Pros East Coast Philadelphia",
+                Plan = "standard",
+                Status = "active",
+                ApiKey = string.Empty,
+                ApiKeyHash = apiKeyHash,
+                ApiKeyMeta = new ApiKeyMeta
+                {
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
+                },
+                CreatedAt = DateTime.UtcNow.AddDays(-1),
+                UpdatedAt = DateTime.UtcNow
+            };
 
-            return Task.FromResult<User?>(new User
-            {
-                TenantId = "existing-tenant",
-                Email = email,
-                Username = email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Existing-Password-58A")
-            });
+            return Task.FromResult(StoredTenant);
         }
-
-        public Task<User> CreateUserAsync(User user)
-        {
-            CreatedUser = user;
-            return Task.FromResult(user);
-        }
-
-        public Task<List<User>> GetUsersAsync(string? tenantId = null) => throw NotUsed();
-        public Task<User?> GetUserByIdAsync(string tenantId, string userId) => throw NotUsed();
-        public Task<User> UpdateUserAsync(User user) => throw NotUsed();
 
         public Task<Page?> GetPageAsync(string apiKey, string tenantId, string pageSlug) => throw NotUsed();
         public Task<Page> SavePageAsync(string apiKey, string tenantId, Page page) => throw NotUsed();
@@ -142,9 +98,9 @@ public static class TenantAdminProvisioningSourceTestRunner
         public Task<FormDefinition> UpdateFormDefinitionAsync(string tenantId, string id, FormDefinition definition) => throw NotUsed();
         public Task<bool> DeleteFormDefinitionAsync(string tenantId, string id) => throw NotUsed();
         public Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId) => throw NotUsed();
+        public Task<Tenant?> GetTenantAsync(string tenantId) => throw NotUsed();
         public Task<Tenant> CreateTenantAsync(Tenant tenant) => throw NotUsed();
         public Task<Tenant> UpdateTenantAsync(string tenantId, Tenant tenant) => throw NotUsed();
-        public Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash) => throw NotUsed();
         public Task<bool> DeleteTenantAsync(string tenantId) => throw NotUsed();
         public Task<List<Tenant>> GetAllTenantsAsync() => throw NotUsed();
         public Task<List<Page>> GetAllPagesAsync(string? tenantId = null) => throw NotUsed();
@@ -181,6 +137,11 @@ public static class TenantAdminProvisioningSourceTestRunner
         public Task<Theme> CreateThemeAsync(string tenantId, Theme theme) => throw NotUsed();
         public Task<Theme> UpdateThemeAsync(string tenantId, string themeId, Theme theme) => throw NotUsed();
         public Task<bool> DeleteThemeAsync(string tenantId, string themeId) => throw NotUsed();
+        public Task<List<User>> GetUsersAsync(string? tenantId = null) => throw NotUsed();
+        public Task<User?> GetUserByIdAsync(string tenantId, string userId) => throw NotUsed();
+        public Task<User?> GetUserByEmailAsync(string email) => throw NotUsed();
+        public Task<User> CreateUserAsync(User user) => throw NotUsed();
+        public Task<User> UpdateUserAsync(User user) => throw NotUsed();
         public Task UpdateUserLastLoginAsync(string userId, string tenantId) => throw NotUsed();
 
         private static NotSupportedException NotUsed() => new("This test fake method is not used.");

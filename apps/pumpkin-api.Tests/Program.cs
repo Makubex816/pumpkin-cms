@@ -90,6 +90,12 @@ if (args.Contains("--v2-8-60t-domainbinding", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-8-61osd-submit-key", StringComparer.OrdinalIgnoreCase))
+{
+    await TenantSubmitKeyProvisioningSourceTestRunner.RunAsync();
+    return;
+}
+
 // ============================================================================
 // 🔐 PUMPKIN CMS - API KEY & USER GENERATOR (TEST UTILITY)
 // ============================================================================
@@ -675,6 +681,9 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
 
     public Task<Tenant> UpdateTenantAsync(string tenantId, Tenant tenant)
         => _connection.UpdateTenantAsync(tenantId, tenant);
+
+    public Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash)
+        => _connection.ProvisionTenantApiKeyHashAsync(tenantId, apiKeyHash);
 
     public Task<bool> DeleteTenantAsync(string tenantId)
         => _connection.DeleteTenantAsync(tenantId);

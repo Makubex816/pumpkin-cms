@@ -989,6 +989,57 @@ app.MapPost("/api/admin/tenants/{tenantId}/regenerate-api-key",
     .WithName("RegenerateTenantApiKey")
     .WithSummary("Regenerate tenant API key (SuperAdmin only)")
     .WithDescription("Generates a new API key for an existing tenant. The plain-text key is returned once for immediate capture. Requires SuperAdmin role and JWT authentication.");
+
+// Admin: Provision tenant submit key from secure owner handoff (JWT-authenticated)
+app.MapPost("/api/admin/tenants/{tenantId}/submit-key",
+    async (IDatabaseService databaseService, HttpContext context, string tenantId, TenantSubmitKeyProvisionRequest? request) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Results.Unauthorized();
+        }
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userTenantId))
+        {
+            return Results.BadRequest("User tenant ID not found in token");
+        }
+
+        if (!TenantSubmitKeyProvisioningService.IsSuperAdminRole(userRole))
+        {
+            return Results.Forbid();
+        }
+
+        var validationError = TenantSubmitKeyProvisioningService.ValidateSubmitKey(request?.SubmitKey);
+        if (validationError != null)
+        {
+            return Results.BadRequest(validationError);
+        }
+
+        try
+        {
+            var submitKey = TenantSubmitKeyProvisioningService.NormalizeSubmitKey(request?.SubmitKey);
+            var response = await TenantSubmitKeyProvisioningService.ProvisionSubmitKeyAsync(databaseService, tenantId, submitKey);
+
+            return Results.Ok(response);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error provisioning tenant submit key: {ex.Message}");
+        }
+    })
+    .RequireAuthorization()
+    .WithTags("Admin")
+    .WithName("ProvisionTenantSubmitKey")
+    .WithSummary("Provision tenant submit key (SuperAdmin only)")
+    .WithDescription("Hashes an owner-provided tenant submit key server-side and stores only the hash. Does not return the key or hash.");
+
 // Admin: Delete tenant (JWT-authenticated)
 app.MapDelete("/api/admin/tenants/{tenantId}",
     async (IDatabaseService databaseService, HttpContext context, string tenantId) =>

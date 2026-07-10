@@ -124,6 +124,11 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.UpdateTenantAsync(tenantId, tenant);
     }
 
+    public Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash)
+    {
+        return _dataConnection.ProvisionTenantApiKeyHashAsync(tenantId, apiKeyHash);
+    }
+
     public Task<bool> DeleteTenantAsync(string tenantId)
     {
         return _dataConnection.DeleteTenantAsync(tenantId);

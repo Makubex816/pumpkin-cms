@@ -1,0 +1,61 @@
+{
+  "phase": "V2.8.61OSE",
+  "classification": "api_deployment_substrate_cleanup_submit_key_route_activation_no_form_post_no_airstrip",
+  "status": "route_activated_after_posix_package_deploy",
+  "targetApiApp": {
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "appServiceName": "app-pumpkin-api-prod-centralus-001",
+    "route": "/api/admin/tenants/party-pros-philadelphia/submit-key"
+  },
+  "package": {
+    "pathOutsideRepo": "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-v2-8-61ose\\api-v2-8-61ose-posix.zip",
+    "sha256": "B1FDB8ECD6A37399F2079CA79832A101FAF9B603DCAEC021A79D3DD7A13467D2",
+    "bytes": 11816252,
+    "entryCount": 56,
+    "appsettingsEntries": 0,
+    "backslashEntries": 0,
+    "protectedEntries": 0
+  },
+  "kuduBackup": {
+    "pathOutsideRepo": "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-v2-8-61ose\\kudu-wwwroot-pre-cleanup-backup.zip",
+    "sha256": "79ABE0A30A1EDDBE55B58812291B6C5AC40EDB992A9E3D61D26DEA68C571C5DF",
+    "bytes": 13304624,
+    "entryCount": 59,
+    "backslashEntryCount": 0
+  },
+  "cleanup": {
+    "confirmedMalformedBackslashPaths": 0,
+    "deletedPaths": 0,
+    "result": "no_deletion_targets_confirmed"
+  },
+  "deploy": {
+    "attemptsAfterCleanup": 1,
+    "commandType": "az webapp deploy / OneDeploy zip",
+    "deploymentId": "6f048653-3bc4-4dba-8cf5-f1f8fbff4386",
+    "status": "RuntimeSuccessful",
+    "kuduDeploymentStatus": 4
+  },
+  "routeProbe": {
+    "method": "POST",
+    "auth": "none",
+    "secretBody": false,
+    "status": 401,
+    "routeLive": true
+  },
+  "runtimeNoRegression": {
+    "airstripProbed": false,
+    "totalGetChecks": 23,
+    "http200": 23
+  },
+  "mutationsNotPerformed": [
+    "submit-key provisioning",
+    "starter appsetting mutation",
+    "starter redeploy",
+    "form POST",
+    "contact POST",
+    "DNS/TLS/registrar action",
+    "Ice mutation",
+    "Airstrip action"
+  ]
+}
+

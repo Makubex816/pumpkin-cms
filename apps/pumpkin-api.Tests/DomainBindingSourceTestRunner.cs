@@ -189,6 +189,7 @@ public static class DomainBindingSourceTestRunner
         public Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId) => throw NotUsed();
         public Task<Tenant> CreateTenantAsync(Tenant tenant) => throw NotUsed();
         public Task<Tenant> UpdateTenantAsync(string tenantId, Tenant tenant) => throw NotUsed();
+        public Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash) => throw NotUsed();
         public Task<bool> DeleteTenantAsync(string tenantId) => throw NotUsed();
         public Task<List<Tenant>> GetAllTenantsAsync() => throw NotUsed();
         public Task<List<Page>> GetAllPagesAsync(string? tenantId = null) => throw NotUsed();

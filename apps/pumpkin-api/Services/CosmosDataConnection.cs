@@ -90,11 +90,11 @@ public class CosmosDataConnection : IDataConnection, IDisposable
                 }
                 else
                 {
-                    _logger.LogInformation("Page not found in results - Slug: '{Slug}', TenantId: {TenantId}, Results count: {Count}", 
+                    _logger.LogInformation("Page not found in results - Slug: '{Slug}', TenantId: {TenantId}, Results count: {Count}",
                         normalizedSlug, tenantId, response.Count());
                 }
             }
-            
+
             _logger.LogInformation("No results from iterator - Slug: '{Slug}', TenantId: {TenantId}", normalizedSlug, tenantId);
             var redirectPage = await ResolvePublishedRedirectAsync(pagesContainer, tenantId, normalizedSlug);
             if (redirectPage != null)
@@ -1028,6 +1028,46 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         catch (CosmosException ex)
         {
             _logger.LogError(ex, "Error updating tenant - TenantId: {TenantId}", tenantId);
+            throw;
+        }
+    }
+
+    public async Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash)
+    {
+        try
+        {
+            var tenantContainer = _database.GetContainer("Tenant");
+            var tenant = await GetTenantAsync(tenantId);
+            if (tenant == null)
+            {
+                throw new InvalidOperationException($"Tenant with ID '{tenantId}' not found");
+            }
+
+            tenant.Id = tenantId;
+            tenant.TenantId = tenantId;
+            tenant.ApiKey = string.Empty;
+            tenant.ApiKeyHash = apiKeyHash;
+            tenant.ApiKeyMeta = new ApiKeyMeta
+            {
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true
+            };
+            tenant.UpdatedAt = DateTime.UtcNow;
+
+            var replaceResponse = await tenantContainer.ReplaceItemAsync(tenant, tenant.Id, new PartitionKey(tenantId));
+
+            _logger.LogInformation("Tenant submit key hash provisioned - TenantId: {TenantId}, RU Cost: {RequestCharge}",
+                tenantId, replaceResponse.RequestCharge);
+
+            return replaceResponse.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            throw new InvalidOperationException($"Tenant with ID '{tenantId}' not found");
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "Error provisioning tenant submit key hash - TenantId: {TenantId}", tenantId);
             throw;
         }
     }

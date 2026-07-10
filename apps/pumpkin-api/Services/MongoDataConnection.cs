@@ -642,7 +642,7 @@ public class MongoDataConnection : IDataConnection, IDisposable
         tenant.UpdatedAt = DateTime.UtcNow;
         tenant.Id = tenantId;
         tenant.TenantId = tenantId;
-        
+
         if (string.IsNullOrEmpty(tenant.ApiKey))
         {
             tenant.ApiKey = existing.ApiKey;
@@ -652,7 +652,35 @@ public class MongoDataConnection : IDataConnection, IDisposable
 
         await tenantCollection.ReplaceOneAsync(filter, tenant);
         _logger.LogInformation("Tenant updated - TenantId: {TenantId}", tenantId);
-        
+
+        return tenant;
+    }
+
+    public async Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash)
+    {
+        var tenantCollection = _database.GetCollection<Tenant>("Tenant");
+        var filter = Builders<Tenant>.Filter.Eq(t => t.TenantId, tenantId);
+        var tenant = await tenantCollection.Find(filter).FirstOrDefaultAsync();
+
+        if (tenant == null)
+        {
+            throw new InvalidOperationException($"Tenant with ID '{tenantId}' not found");
+        }
+
+        tenant.Id = tenantId;
+        tenant.TenantId = tenantId;
+        tenant.ApiKey = string.Empty;
+        tenant.ApiKeyHash = apiKeyHash;
+        tenant.ApiKeyMeta = new ApiKeyMeta
+        {
+            CreatedAt = DateTime.UtcNow,
+            IsActive = true
+        };
+        tenant.UpdatedAt = DateTime.UtcNow;
+
+        await tenantCollection.ReplaceOneAsync(filter, tenant);
+        _logger.LogInformation("Tenant submit key hash provisioned - TenantId: {TenantId}", tenantId);
+
         return tenant;
     }
 
@@ -1260,11 +1288,11 @@ public class MongoDataConnection : IDataConnection, IDisposable
         var filter = Builders<User>.Filter.And(
             Builders<User>.Filter.Eq(u => u.Id, userId),
             Builders<User>.Filter.Eq(u => u.TenantId, tenantId));
-        
+
         var update = Builders<User>.Update.Set(u => u.LastLogin, DateTime.UtcNow);
         await collection.UpdateOneAsync(filter, update);
-        
-        _logger.LogInformation("UpdateUserLastLogin - UserId: {UserId}, TenantId: {TenantId}", 
+
+        _logger.LogInformation("UpdateUserLastLogin - UserId: {UserId}, TenantId: {TenantId}",
             userId, tenantId);
     }
 
@@ -1482,6 +1510,11 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<Tenant> UpdateTenantAsync(string tenantId, Tenant tenant)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

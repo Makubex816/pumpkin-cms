@@ -29,6 +29,7 @@ public interface IDatabaseService
     Task<Tenant?> GetTenantAsync(string tenantId);
     Task<Tenant> CreateTenantAsync(Tenant tenant);
     Task<Tenant> UpdateTenantAsync(string tenantId, Tenant tenant);
+    Task<Tenant> ProvisionTenantApiKeyHashAsync(string tenantId, string apiKeyHash);
     Task<bool> DeleteTenantAsync(string tenantId);
     Task<List<Tenant>> GetAllTenantsAsync();
     Task<List<Page>> GetAllPagesAsync(string? tenantId = null);
@@ -67,7 +68,7 @@ public interface IDatabaseService
     Task<DomainBinding?> GetDomainBindingAsync(string tenantId, string id);
     Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding);
     Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding);
-    
+
     // Theme methods (content serving - API key required)
     Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId);
     Task<Theme?> GetActiveThemeAsync(string apiKey, string tenantId);
