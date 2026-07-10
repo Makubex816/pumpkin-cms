@@ -1,0 +1,51 @@
+{
+  "phase": "v2-8-61osf",
+  "title": "Party Pros submit-key provisioning and controlled form E2E",
+  "generatedAtUtc": "2026-07-10T07:05:00Z",
+  "status": "complete",
+  "tenantId": "party-pros-philadelphia",
+  "customDomains": [
+    "https://partyrentalphiladelphia.com",
+    "https://www.partyrentalphiladelphia.com"
+  ],
+  "formDefinitionId": "party-pros-quote-request",
+  "formEntryId": "43dcad71-0f9c-47b2-97db-69374ee9560f",
+  "submitCount": 1,
+  "starterApp": "app-pumpkin-starter-preview-centralus-001",
+  "pumpkinApi": "app-pumpkin-api-prod-centralus-001",
+  "resultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-61ose-carryforward.md",
+    "v2-8-61osb-carryforward.md",
+    "secure-handoff-readiness.md",
+    "submit-key-route-readiness.md",
+    "submit-key-registration-result.md",
+    "starter-appsetting-result.md",
+    "starter-restart-redeploy-result.md",
+    "https-media-prerecheck.md",
+    "controlled-form-submit-result.md",
+    "formentry-readback-proof.md",
+    "admin-ui-form-inbox-proof.md",
+    "tenant-isolation-proof.md",
+    "preview-form-no-post-reproof.md",
+    "email-notification-safety-result.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "liveMutationSummary": {
+    "submitKeyRegistered": true,
+    "starterAppsettingsSet": true,
+    "starterRestartCount": 1,
+    "starterRedeployCount": 0,
+    "controlledFormPostCount": 1,
+    "apiDeployCount": 0,
+    "dnsMutationCount": 0,
+    "airstripActionCount": 0,
+    "iceMutationCount": 0
+  }
+}
+
