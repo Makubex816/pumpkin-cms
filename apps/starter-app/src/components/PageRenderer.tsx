@@ -5,6 +5,7 @@ import { BlockViewRenderer } from 'pumpkin-block-views';
 import type { BlockStyleMap, ContactBlock, FormDefinition, IHtmlBlock, Page } from 'pumpkin-ts-models';
 import { CatalogBlockRenderer, isCatalogBlock } from '@/components/CatalogBlocks';
 import { ContactFormBlock } from '@/components/ContactFormBlock';
+import { QuoteCartProvider } from '@/components/QuoteCart';
 
 interface CmsBlock extends IHtmlBlock {
   id?: string;
@@ -34,7 +35,7 @@ export function PageRenderer({
   const classNames = normalizeClassNames(blockStyles ?? {});
 
   return (
-    <>
+    <QuoteCartProvider tenantId={tenantId}>
       {blocks.map((block, index) => (
         <div
           data-block-type={block.type}
@@ -78,7 +79,7 @@ export function PageRenderer({
           )}
         </div>
       ))}
-    </>
+    </QuoteCartProvider>
   );
 }
 

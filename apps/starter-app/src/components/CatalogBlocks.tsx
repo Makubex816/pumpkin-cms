@@ -1,10 +1,17 @@
 import type { IHtmlBlock } from 'pumpkin-ts-models';
+import { BlogArticleBlock, BlogIndexBlock } from '@/components/BlogBlocks';
 import { CatalogIndexBlock } from '@/components/CatalogIndexBlock';
+import { ItemDetailBlock } from '@/components/ItemDetailBlock';
+import { QuoteCartButton, QuoteCartTrayBlock } from '@/components/QuoteCart';
 import { getSafeSiteHref } from '@/lib/site-chrome';
 
 const CATALOG_BLOCK_TYPES = new Set([
   'CatalogHero',
   'CatalogIndex',
+  'ItemDetail',
+  'BlogIndex',
+  'BlogArticle',
+  'QuoteCartTray',
   'PillStrip',
   'Callout',
   'CatalogGrid',
@@ -30,6 +37,8 @@ interface CardItem {
   imageAlt?: unknown;
   link?: unknown;
   media?: unknown;
+  quoteId?: unknown;
+  category?: unknown;
 }
 
 interface LinkItem {
@@ -49,6 +58,14 @@ export function CatalogBlockRenderer({ block }: { block: IHtmlBlock }) {
       return <CatalogHero content={catalogBlock.content} />;
     case 'CatalogIndex':
       return <CatalogIndexBlock content={catalogBlock.content} />;
+    case 'ItemDetail':
+      return <ItemDetailBlock content={catalogBlock.content} />;
+    case 'BlogIndex':
+      return <BlogIndexBlock content={catalogBlock.content} />;
+    case 'BlogArticle':
+      return <BlogArticleBlock content={catalogBlock.content} />;
+    case 'QuoteCartTray':
+      return <QuoteCartTrayBlock content={catalogBlock.content} />;
     case 'PillStrip':
       return <PillStrip content={catalogBlock.content} />;
     case 'Callout':
@@ -130,6 +147,7 @@ function Callout({ content }: { content: Record<string, unknown> }) {
 
 function CatalogGrid({ content }: { content: Record<string, unknown> }) {
   const cards = getRecords<CardItem>(content.cards);
+  const quoteEnabled = content.quoteEnabled === true;
 
   return (
     <section className={`section ${getToneClass(content.tone)}`}>
@@ -138,18 +156,36 @@ function CatalogGrid({ content }: { content: Record<string, unknown> }) {
         <div className="item-grid">
           {cards.map((card, index) => {
             const media = getMedia(card.media, card.image, card.imageAlt);
+            const title = getText(card.title);
+            const link = getText(card.link);
+            const quoteId = getText(card.quoteId) || link.replace(/^\/+/, '') || `catalog-card-${index + 1}`;
             return (
-              <a
+              <article
                 className="item-card"
-                href={getSafeSiteHref(getText(card.link), '/contact')}
-                key={`${getText(card.title)}-${index}`}
+                data-item-route={link}
+                key={`${title}-${index}`}
               >
-                {media.url && <img src={media.url} alt={media.alt} loading="lazy" />}
-                <div className="item-card-body">
-                  <h3>{getText(card.title)}</h3>
-                  {getText(card.description) && <p>{getText(card.description)}</p>}
-                </div>
-              </a>
+                <a className="catalog-card-main" href={getSafeSiteHref(link, '/catalog')}>
+                  {media.url && <img src={media.url} alt={media.alt} loading="lazy" />}
+                  <div className="item-card-body">
+                    <h3>{title}</h3>
+                    {getText(card.description) && <p>{getText(card.description)}</p>}
+                    <span className="catalog-card-link">View details</span>
+                  </div>
+                </a>
+                {quoteEnabled && (
+                  <div className="quote-cart-card-action">
+                    <QuoteCartButton item={{
+                      id: quoteId,
+                      title,
+                      image: media.url,
+                      imageAlt: media.alt,
+                      category: getText(card.category),
+                      link,
+                    }} />
+                  </div>
+                )}
+              </article>
             );
           })}
         </div>

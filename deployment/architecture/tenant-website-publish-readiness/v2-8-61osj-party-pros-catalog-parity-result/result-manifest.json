@@ -1,0 +1,103 @@
+{
+  "phase": "V2.8.61OSJ",
+  "status": "complete_ready_for_owner_acceptance_next_tenant_held",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_catalog_item_blog_cart_parity_repair_no_form_post_no_airstrip",
+  "branch": "feature/admin-page-editor-import-export",
+  "completedAtUtc": "2026-07-10T23:39:12Z",
+  "carryforwardCommits": {
+    "osi": "2c7ea5b1eed9c690a471e61d24ab88be37adfcbd",
+    "oshr": "d4142dda8d5dc036cf515355250950c8a9c88321",
+    "osg": "ae5e2c8a81678a0143734343a6bbbbf726dcd3f2",
+    "osf": "6d5f89cdd2bc2221dc621e99939b094a372cb1dd"
+  },
+  "reference": {
+    "zipBytes": 100009111,
+    "zipSha256": "55677620a7b97e9a3801ef8b42b7bae3dde59afc045f27b007ebd8c362b15051",
+    "files": 975,
+    "htmlFiles": 388,
+    "cssFiles": 1,
+    "imageFiles": 581,
+    "quarantinedJavascriptFiles": 3,
+    "javascriptExecuted": false,
+    "internalLinks": 20515,
+    "uniqueInternalTargets": 382,
+    "brokenInternalLinks": 0,
+    "imageReferences": 3599,
+    "uniqueImageTargets": 518,
+    "missingImageReferences": 0
+  },
+  "compiledRuntime": {
+    "pages": 301,
+    "itemPages": 214,
+    "blogIndexes": 1,
+    "blogArticles": 58,
+    "catalogItems": 214,
+    "cmsAuthoritative": false,
+    "serviceAreasBehavior": "hidden_direct_route_http_200_excluded_from_sitemap"
+  },
+  "build": {
+    "typeCheck": "passed",
+    "productionBuild": "passed",
+    "knownNonFatalWarning": "existing pumpkin-ts-models browser-side fs resolution warning"
+  },
+  "deployment": {
+    "starterAttemptsApproved": 1,
+    "starterAttemptsUsed": 1,
+    "status": "RuntimeSuccessful",
+    "deploymentId": "12558d4a-6bc5-4cb9-a7cc-ad33ff92955d",
+    "packageBytes": 6398673,
+    "packageSha256": "f18e5e949cc276d12705b5791eb2e1fc33b0df646ea5a3e2f2339ad584934056",
+    "packageEntries": 2212,
+    "unsafeEntries": 0,
+    "protectedConfigEntries": 0
+  },
+  "proof": {
+    "localPagesPassed": 301,
+    "localPagesChecked": 301,
+    "livePagesPassed": 301,
+    "livePagesChecked": 301,
+    "liveItemPagesPassed": 214,
+    "liveItemPagesChecked": 214,
+    "localMediaPassed": 509,
+    "localMediaChecked": 509,
+    "liveMediaPassed": 509,
+    "liveMediaChecked": 509,
+    "localResponsivePassed": 35,
+    "localResponsiveChecked": 35,
+    "liveResponsivePassed": 35,
+    "liveResponsiveChecked": 35,
+    "localCartPassed": 15,
+    "localCartChecked": 15,
+    "liveCartPassed": 15,
+    "liveCartChecked": 15,
+    "runtimePassed": 39,
+    "runtimeChecked": 39,
+    "postRequests": 0,
+    "airstripRoutes": 0
+  },
+  "formCarryforward": {
+    "sourcePhase": "V2.8.61OSI",
+    "priorControlledSubmissionStatus": 201,
+    "priorTenantIsolation": "passed",
+    "osjSubmissions": 0,
+    "osjFormEntriesCreated": 0
+  },
+  "mutations": {
+    "starterDeployments": 1,
+    "cms": 0,
+    "media": 0,
+    "forms": 0,
+    "appSettings": 0,
+    "api": 0,
+    "adminUi": 0,
+    "ice": 0,
+    "airstrip": 0,
+    "dnsTlsRegistrar": 0
+  },
+  "readiness": {
+    "technicalRepair": "complete",
+    "ownerAcceptance": "pending",
+    "nextTenant": "held_until_owner_acceptance"
+  }
+}

@@ -2,6 +2,7 @@
 
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { useId, useMemo, useState } from 'react';
+import { QuoteCartButton } from '@/components/QuoteCart';
 import { getSafeSiteHref } from '@/lib/site-chrome';
 
 interface CatalogItem {
@@ -11,6 +12,7 @@ interface CatalogItem {
   imageAlt?: unknown;
   link?: unknown;
   category?: unknown;
+  quoteId?: unknown;
 }
 
 interface CatalogIndexContent {
@@ -20,6 +22,7 @@ interface CatalogIndexContent {
   searchPlaceholder?: unknown;
   categoryLabels?: unknown;
   items?: unknown;
+  quoteEnabled?: unknown;
 }
 
 export function CatalogIndexBlock({ content }: { content: Record<string, unknown> }) {
@@ -78,20 +81,33 @@ export function CatalogIndexBlock({ content }: { content: Record<string, unknown
         {visibleItems.length > 0 ? (
           <div className="item-grid catalog-item-grid">
             {visibleItems.map((item) => (
-              <a
+              <article
                 className="item-card"
                 data-catalog-item={item.title}
                 data-item-route={item.link}
-                href={getSafeSiteHref(item.link, '/catalog')}
                 key={`${item.link}-${item.title}`}
               >
-                {item.image && <img alt={item.imageAlt || item.title} loading="lazy" src={item.image} />}
-                <div className="item-card-body">
-                  <h3>{item.title}</h3>
-                  {item.description && <p>{item.description}</p>}
-                  <span className="catalog-card-link">View details</span>
-                </div>
-              </a>
+                <a className="catalog-card-main" href={getSafeSiteHref(item.link, '/catalog')}>
+                  {item.image && <img alt={item.imageAlt || item.title} loading="lazy" src={item.image} />}
+                  <div className="item-card-body">
+                    <h3>{item.title}</h3>
+                    {item.description && <p>{item.description}</p>}
+                    <span className="catalog-card-link">View details</span>
+                  </div>
+                </a>
+                {catalog.quoteEnabled === true && (
+                  <div className="quote-cart-card-action">
+                    <QuoteCartButton item={{
+                      id: item.quoteId,
+                      title: item.title,
+                      image: item.image,
+                      imageAlt: item.imageAlt,
+                      category: item.categories.map((value) => categoryLabels[value] || titleCase(value)).join(', '),
+                      link: item.link,
+                    }} />
+                  </div>
+                )}
+              </article>
             ))}
           </div>
         ) : (
@@ -118,6 +134,7 @@ function getItems(value: unknown) {
       image: getSafeImageUrl(item.image),
       imageAlt: getText(item.imageAlt),
       link,
+      quoteId: getText(item.quoteId) || link.replace(/^\/+/, ''),
       categories: getText(item.category).split(/\s+/).filter(Boolean),
     }];
   });
