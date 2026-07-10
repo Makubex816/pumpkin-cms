@@ -3,6 +3,7 @@
 import type { BlockClassNamesMap, FormBlockSubmitPayload } from 'pumpkin-block-views';
 import { BlockViewRenderer } from 'pumpkin-block-views';
 import type { BlockStyleMap, ContactBlock, FormDefinition, IHtmlBlock, Page } from 'pumpkin-ts-models';
+import { CatalogBlockRenderer, isCatalogBlock } from '@/components/CatalogBlocks';
 import { ContactFormBlock } from '@/components/ContactFormBlock';
 
 interface CmsBlock extends IHtmlBlock {
@@ -35,8 +36,14 @@ export function PageRenderer({
   return (
     <>
       {blocks.map((block, index) => (
-        <section key={block.id ?? `${block.type}-${index}`} id={getSectionId(block)}>
-          {block.type === 'Contact' ? (
+        <div
+          data-block-type={block.type}
+          key={block.id ?? `${block.type}-${index}`}
+          id={getSectionId(block)}
+        >
+          {isCatalogBlock(block) ? (
+            <CatalogBlockRenderer block={block} />
+          ) : block.type === 'Contact' ? (
             <ContactFormBlock
               block={block as ContactBlock}
               classNames={classNames.Contact}
@@ -69,7 +76,7 @@ export function PageRenderer({
               }
             />
           )}
-        </section>
+        </div>
       ))}
     </>
   );
@@ -227,7 +234,7 @@ function getSectionId(block: CmsBlock) {
     Gallery: 'gallery',
   };
 
-  return ids[block.type] ?? block.id ?? block.type.toLowerCase();
+  return block.id ?? ids[block.type] ?? block.type.toLowerCase();
 }
 
 async function submitForm(payload: FormBlockSubmitPayload) {

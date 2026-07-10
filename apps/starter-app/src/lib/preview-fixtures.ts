@@ -154,8 +154,24 @@ function resolvePreviewTheme(fixture: PreviewFixture, urlMode: PreviewUrlMode): 
       ...partialTheme.blockStyles,
     },
     menu,
-    themeCssPath: '/themes/pumpkin-default.css',
+    themeCssPath: getFixtureThemeCssPath(partialTheme),
   } as Theme & { themeCssPath: string });
+}
+
+function getFixtureThemeCssPath(partialTheme: Partial<Theme>) {
+  const extendedTheme = partialTheme as Partial<Theme> & {
+    themeCssPath?: unknown;
+    cssPath?: unknown;
+  };
+  const candidate = typeof extendedTheme.themeCssPath === 'string'
+    ? extendedTheme.themeCssPath.trim()
+    : typeof extendedTheme.cssPath === 'string'
+      ? extendedTheme.cssPath.trim()
+      : '';
+
+  return /^\/themes\/[a-z0-9][a-z0-9._-]*\.css$/i.test(candidate)
+    ? candidate
+    : '/themes/pumpkin-default.css';
 }
 
 function prefixMenuUrls(menu: MenuItem[], tenantId: string, urlMode: PreviewUrlMode): MenuItem[] {

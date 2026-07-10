@@ -1,0 +1,56 @@
+{
+  "phase": "v2-8-61osg",
+  "status": "complete",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_static_reference_visual_fidelity_repair_no_form_post_no_airstrip",
+  "sourceCommit": "6d5f89cdd2bc2221dc621e99939b094a372cb1dd",
+  "reference": {
+    "file": "Philadelphia Party Rentals DEPLOY_READY_2026-07-08 (2).zip",
+    "sha256": "55677620a7b97e9a3801ef8b42b7bae3dde59afc045f27b007ebd8c362b15051",
+    "bytes": 100009111,
+    "entries": 1037,
+    "files": 975,
+    "images": 581
+  },
+  "deployment": {
+    "target": "app-pumpkin-starter-preview-centralus-001",
+    "attemptsApproved": 1,
+    "attemptsUsed": 1,
+    "result": "RuntimeSuccessful",
+    "deploymentId": "7bcca84d-9493-4d82-b7c4-705b0d88cd22",
+    "packageSha256": "e682b3b112eb495602ad8fbcb398aa7427d71d1be0669dcef939734c74285d80",
+    "packageBytes": 5844530,
+    "packageEntries": 1824
+  },
+  "proof": {
+    "customDomainRoutes200": 6,
+    "responsiveChecks": 27,
+    "responsiveOverflows": 0,
+    "brokenImageChecks": 0,
+    "pendingImageChecks": 0,
+    "postRequestChecks": 0,
+    "failedRequestChecks": 0,
+    "runtimeRoutes200": 24,
+    "airstripRoutes": 0
+  },
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "party-pros-functional-carryforward.md",
+    "static-reference-inventory.md",
+    "visual-baseline-current-live.md",
+    "source-reference-comparison.md",
+    "visual-gap-diagnosis.md",
+    "starter-visual-repair-result.md",
+    "starter-build-redeploy-result.md",
+    "custom-domain-visual-proof.md",
+    "responsive-visual-proof.md",
+    "owner-visual-acceptance-packet.md",
+    "form-e2e-carryforward-no-post.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ]
+}

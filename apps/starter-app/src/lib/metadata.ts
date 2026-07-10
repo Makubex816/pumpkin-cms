@@ -3,9 +3,10 @@ import type { OpenGraphData, Page, SeoData, TwitterCardData } from 'pumpkin-ts-m
 
 export function buildMetadata(page: Page): Metadata {
   const { seo, MetaData: meta } = page;
+  const title = seo.metaTitle || meta.title;
 
   return {
-    title: seo.metaTitle || meta.title,
+    title: title ? { absolute: title } : undefined,
     description: seo.metaDescription || meta.description,
     keywords: seo.keywords,
     authors: meta.author ? [{ name: meta.author }] : undefined,

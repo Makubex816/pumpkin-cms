@@ -10,6 +10,8 @@ type BaseContactContent = ContactBlock['content'];
 interface ContactBlockContent extends BaseContactContent {
   formType?: string;
   successMessage?: string;
+  formTitle?: string;
+  formDescription?: string;
 }
 
 interface ContactFormBlockProps {
@@ -123,6 +125,12 @@ export function ContactFormBlock({
 
         {fields.length > 0 && (
           <form ref={formRef} className={cx.form} onSubmit={handleSubmit}>
+            {(content.formTitle || content.formDescription) && (
+              <div className="site-contact-form-heading">
+                {content.formTitle && <h2>{content.formTitle}</h2>}
+                {content.formDescription && <p>{content.formDescription}</p>}
+              </div>
+            )}
             {fields.map((field) => (
               <FormField
                 key={field.name}
@@ -167,7 +175,7 @@ function FormField({
   }
 
   return (
-    <div className={classNames.fieldWrapper}>
+    <div className={`${classNames.fieldWrapper} ${getFieldWidthClass(field.width)}`.trim()}>
       <label className={classNames.fieldLabel} htmlFor={field.name}>
         {field.label}
         {field.required && ' *'}
@@ -256,6 +264,13 @@ function getFields(content: ContactBlockContent, formDefinition?: FormDefinition
     },
     attributes: {},
   }));
+}
+
+function getFieldWidthClass(width: FormFieldDefinition['width']) {
+  if (width === 'half') return 'site-form-field--half';
+  if (width === 'third') return 'site-form-field--third';
+  if (width === 'two-thirds') return 'site-form-field--two-thirds';
+  return 'site-form-field--full';
 }
 
 function getOptionValue(option: string | { value: string; label: string }) {

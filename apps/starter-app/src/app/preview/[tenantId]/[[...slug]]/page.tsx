@@ -6,6 +6,7 @@ import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { buildMetadata } from '@/lib/metadata';
 import { getPreviewPage, normalizePreviewSlug } from '@/lib/preview-fixtures';
+import { getSiteChrome } from '@/lib/site-chrome';
 import { getThemeCssPath } from '@/themes/registry';
 
 export const dynamic = 'force-dynamic';
@@ -34,10 +35,12 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
 
   const { fixture, formDefinitions, page, theme } = preview;
   const slug = normalizePreviewSlug(params.slug ?? []);
+  const chrome = getSiteChrome(theme);
 
   return (
     <>
       <link rel="stylesheet" href={getThemeCssPath(theme)} />
+      {theme.header.logoUrl && <link rel="icon" href={theme.header.logoUrl} />}
       <div className="bg-orange-50 px-4 py-2 text-center text-sm font-semibold text-orange-950">
         Preview mode for {fixture.siteName || fixture.tenantId}: unpublished fixture content, forms disabled.
       </div>
@@ -45,6 +48,7 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
         header={theme.header}
         menu={theme.menu}
         classNames={theme.header.classNames as HeaderClassNames}
+        chrome={chrome}
       />
       <main data-preview-mode="compiled-fixture" data-preview-tenant={fixture.tenantId} data-preview-slug={slug}>
         <PageRenderer
@@ -62,8 +66,8 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
         logoUrl={theme.header.logoUrl}
         logoAlt={theme.header.logoAlt}
         classNames={theme.footer.classNames as FooterClassNames}
+        chrome={chrome}
       />
     </>
   );
 }
-
