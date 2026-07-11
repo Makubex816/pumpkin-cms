@@ -1,0 +1,166 @@
+{
+  "phase": "V2.8.62A",
+  "status": "complete_read_only_intake_ready_for_local_compiler_with_gaps",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "new_tenant_source_package_intake_visual_dns_form_readiness_no_live_mutation",
+  "branch": "feature/admin-page-editor-import-export",
+  "completedAtUtc": "2026-07-11T01:58:21Z",
+  "carryforward": {
+    "phase": "V2.8.61OSK",
+    "commit": "79879327036b698d1f91859a6937873bef6779e9",
+    "partyProsStatus": "provisional_owner_accepted_pending_partner_review",
+    "nextTenantUnlocked": true,
+    "airstripFrozen": true
+  },
+  "ownerInputs": {
+    "displayName": "Strip Club Near Me Vegas",
+    "tenantId": "strip-club-near-me-vegas",
+    "primaryDomain": "stripclubnearmevegas.com",
+    "wwwDomain": "www.stripclubnearmevegas.com",
+    "tenantAdminEmail": "steviedog2002@gmail.com",
+    "tenantAdminEmailSource": "owner_default_used_package_contains_no_email"
+  },
+  "sourceZip": {
+    "name": "stripclubnearmevegas-final-menu-restored (2).zip",
+    "bytes": 79974507,
+    "sha256": "c1612b09fa9d0e2629382957a8f943c7f43256e17b25bbb6b89eaf116e43c0f4",
+    "entries": 623,
+    "files": 553,
+    "directoryEntries": 70,
+    "uncompressedBytes": 80854726,
+    "unsafeEntries": 0,
+    "backslashEntries": 0,
+    "duplicateEntries": 0,
+    "protectedConfigFilenames": 0
+  },
+  "nestedSiteArchive": {
+    "name": "stripclubnearmevegas-local-site.zip",
+    "bytes": 40004939,
+    "sha256": "e0c6e519f1dfec3d2d36569a6e6c4434ebb2e917fb4cda82d6738d4f9e491e95",
+    "entries": 621,
+    "files": 552,
+    "unsafeEntries": 0,
+    "backslashEntries": 0
+  },
+  "rendering": {
+    "primaryMode": "static HTML",
+    "subtype": "compiled deployment output",
+    "dynamicRoutes": 0,
+    "packageJsonPresent": false,
+    "frameworkSourcePresent": false,
+    "uploadedJavascriptExecuted": false
+  },
+  "package": {
+    "files": 552,
+    "directories": 68,
+    "htmlPages": 43,
+    "cssFiles": 2,
+    "javascriptFiles": 1,
+    "jsonFiles": 13,
+    "clubRecords": 10,
+    "protectedConfigFilenames": 0
+  },
+  "routes": {
+    "home": 1,
+    "clubDirectory": 1,
+    "clubDetails": 10,
+    "guideHub": 1,
+    "guideArticles": 19,
+    "seoLandingPages": 7,
+    "policyPages": 2,
+    "contactPages": 1,
+    "systemPages": 1,
+    "localReferencesChecked": 2208,
+    "brokenLocalReferences": 45,
+    "brokenReferenceOwnerRoute": "/24-hour-late-night-strip-clubs-las-vegas"
+  },
+  "media": {
+    "files": 473,
+    "bytes": 39521491,
+    "webp": 446,
+    "jpg": 23,
+    "png": 2,
+    "svg": 2,
+    "uniqueContentHashes": 302,
+    "duplicateContentGroups": 157,
+    "confirmedReferencedPhysicalImages": 154,
+    "unreferencedPhysicalImages": 319,
+    "brokenImageReferenceOccurrences": 12,
+    "mediaRightsReview": "pending"
+  },
+  "forms": {
+    "pagesWithForms": 38,
+    "forms": 65,
+    "getMethodForms": 65,
+    "clientLocalStorageForms": 29,
+    "hiddenFields": 14,
+    "consentFields": 0,
+    "honeypotFields": 0,
+    "packageEmails": 0,
+    "backendSubmitEndpoint": "absent",
+    "pumpkinFormPipelineReady": false
+  },
+  "visualSource": {
+    "packageIsVisualSourceOfTruth": true,
+    "separateVisualReferenceRequired": false,
+    "pumpkinConversionRequired": true
+  },
+  "compliance": {
+    "adultVenueLanguagePages": 38,
+    "age21SignalPages": 35,
+    "age18SignalPages": 30,
+    "ageGateMarkupPages": 0,
+    "prohibitedServiceRiskTermPages": 0,
+    "graphicTextRiskTermPages": 0,
+    "mediaExplicitContentReview": "pending_human_review",
+    "publicLaunchApproved": false,
+    "indexingApproved": false
+  },
+  "dns": {
+    "resolver": "1.1.1.1",
+    "nameservers": [
+      "ns49.domaincontrol.com",
+      "ns50.domaincontrol.com"
+    ],
+    "apexA": [
+      "3.33.130.190",
+      "15.197.148.33"
+    ],
+    "wwwCname": "stripclubnearmevegas.com",
+    "txtRecords": 0,
+    "mxRecords": 0,
+    "pumpkinTargeted": false,
+    "mutationCount": 0
+  },
+  "sharedResourcePlan": {
+    "pumpkinApi": "shared_existing",
+    "cosmos": "shared_existing_tenant_scoped",
+    "starterHost": "shared_existing",
+    "mediaStorage": "shared_existing",
+    "mediaContainer": "strip-club-near-me-vegas-media",
+    "resourcesCreated": 0
+  },
+  "runtimeNoRegression": {
+    "method": "GET only",
+    "passed": 39,
+    "checked": 39,
+    "failed": 0,
+    "postRequests": 0,
+    "airstripRoutes": 0
+  },
+  "mutations": {
+    "tenant": 0,
+    "tenantAdmin": 0,
+    "cosmos": 0,
+    "media": 0,
+    "deployments": 0,
+    "dnsTlsRegistrar": 0,
+    "forms": 0,
+    "partyPros": 0,
+    "ice": 0,
+    "admin": 0,
+    "api": 0,
+    "airstrip": 0
+  },
+  "nextPhase": "V2.8.62B_local_package_compiler_and_compliance_remediation_proof_no_live_mutation"
+}
