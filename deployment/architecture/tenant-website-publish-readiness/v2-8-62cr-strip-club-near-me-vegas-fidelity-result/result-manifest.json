@@ -1,0 +1,113 @@
+{
+  "phase": "V2.8.62CR",
+  "status": "passed_with_explicit_owner_accepted_deviations",
+  "tenantId": "strip-club-near-me-vegas",
+  "resultPath": "deployment/architecture/tenant-website-publish-readiness/v2-8-62cr-strip-club-near-me-vegas-fidelity-result",
+  "requiredFileCount": 29,
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62c-carryforward.md",
+    "failed-fidelity-items-input.md",
+    "source-element-complete-inventory.md",
+    "full-route-parity-result.md",
+    "full-link-target-parity-result.md",
+    "anchor-and-download-parity-result.md",
+    "airstrip-link-preservation-proof.md",
+    "quarantined-route-reconstruction-result.md",
+    "full-media-dependency-result.md",
+    "source-path-alias-result.md",
+    "page-detail-article-content-parity.md",
+    "form-instance-parity-result.md",
+    "interactive-control-parity-result.md",
+    "source-code-behavior-adaptation-result.md",
+    "age-gate-local-proof.md",
+    "full-local-browser-proof.md",
+    "responsive-template-proof.md",
+    "validator-replay-result.md",
+    "package-fidelity-scorecard.md",
+    "owner-accepted-deviation-packet.md",
+    "package-fidelity-final-gate.md",
+    "live-creation-hold-or-unlock.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_PACKAGE_FIDELITY_CLOSURE_V2_8_62CR.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_LINK_AND_CONTROL_PARITY_RUNBOOK_V2_8_62CR.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_MEDIA_DEPENDENCY_RUNBOOK_V2_8_62CR.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_SOURCE_BEHAVIOR_ADAPTATION_RUNBOOK_V2_8_62CR.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62CR_STRIP_CLUB_NEAR_ME_VEGAS_FIDELITY_REPORT.md",
+  "source": {
+    "zipSha256": "c1612b09fa9d0e2629382957a8f943c7f43256e17b25bbb6b89eaf116e43c0f4",
+    "files": 552,
+    "routes": 43
+  },
+  "counts": {
+    "sourceFiles": 552,
+    "sourceRoutes": 43,
+    "physicalLinks": 1747,
+    "effectiveLinks": 1797,
+    "physicalAirstripLinks": 39,
+    "effectiveAirstripLinks": 45,
+    "physicalControls": 1057,
+    "effectiveControls": 1108,
+    "physicalForms": 57,
+    "effectiveForms": 65,
+    "formDefinitions": 32,
+    "physicalMediaFiles": 473,
+    "uniqueMediaHashes": 302,
+    "mediaAliases": 473,
+    "metadataReferencesResolvedByAliasHash": 12,
+    "sourceScriptOccurrences": 102,
+    "inlineImageFallbacks": 30,
+    "catalogItems": 10,
+    "blogArticles": 19,
+    "responsiveRenders": 172,
+    "screenshots": 174,
+    "runtimeChecksPassed": 39
+  },
+  "dispositions": {
+    "preserved": 3551,
+    "safely_adapted_equivalent": 369,
+    "owner_approved_change": 5,
+    "blocked": 0
+  },
+  "ownerAcceptedDeviationIds": [
+    "local-age-acknowledgement",
+    "no-local-pii-persistence"
+  ],
+  "validation": {
+    "staticProof": "passed",
+    "browserProof": "passed",
+    "validatorErrors": 0,
+    "validatorWarnings": 0,
+    "runtimePassed": 39,
+    "runtimeFailed": 0,
+    "requiredResultFiles": 29,
+    "durableDocsAndRootReport": 5,
+    "nodeCheckFailures": 0,
+    "jsonParseFailures": 0,
+    "whitespaceFindings": 0,
+    "secretLikeFindings": 0,
+    "commandShapedMutationFindings": 0,
+    "carryforwardDiffFiles": 0,
+    "stagedFiles": 0
+  },
+  "boundaries": {
+    "liveCreationApproved": false,
+    "publicLaunchApproved": false,
+    "liveMutationPerformed": false,
+    "formSubmissionPerformed": false,
+    "airstripRequestPerformed": false
+  },
+  "externalArtifacts": {
+    "proofRoot": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\StripClubNearMeVegas\\v2-8-62cr-fidelity-proof",
+    "compiledPackage": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\StripClubNearMeVegas\\v2-8-62cr-fidelity-proof\\compiled-package",
+    "screenshots": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\StripClubNearMeVegas\\v2-8-62cr-fidelity-proof\\browser-proof\\screenshots"
+  }
+}
