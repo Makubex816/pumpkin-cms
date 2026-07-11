@@ -1,0 +1,86 @@
+{
+  "phase": "V2.8.61OSK",
+  "phaseStatus": "complete_provisional_owner_accepted_pending_partner_review_next_tenant_unlocked",
+  "acceptanceStatus": "provisional_owner_accepted_pending_partner_review",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "party_pros_provisional_owner_acceptance_partner_review_caveat_next_tenant_unlock_no_mutation",
+  "branch": "feature/admin-page-editor-import-export",
+  "completedAtUtc": "2026-07-11T01:01:44Z",
+  "carryforward": {
+    "phase": "V2.8.61OSJ",
+    "commit": "d5a3eec18c9d57ebbc4b4111c2a6ae87d48d4cf1",
+    "deploymentId": "12558d4a-6bc5-4cb9-a7cc-ad33ff92955d",
+    "pagesPassed": 301,
+    "pagesChecked": 301,
+    "itemPagesPassed": 214,
+    "itemPagesChecked": 214,
+    "mediaPassed": 509,
+    "mediaChecked": 509,
+    "responsivePassed": 35,
+    "responsiveChecked": 35,
+    "cartPassed": 15,
+    "cartChecked": 15
+  },
+  "ownerAcceptance": {
+    "ownerReviewed": true,
+    "acceptedForCurrentScope": true,
+    "partnerReviewComplete": false,
+    "status": "provisional_owner_accepted_pending_partner_review"
+  },
+  "representativeProof": {
+    "method": "GET only",
+    "routesPassed": 12,
+    "routesChecked": 12,
+    "catalogAddToCartControls": 214,
+    "itemDetailMarker": true,
+    "blogIndexMarker": true,
+    "blogArticleMarker": true,
+    "visibleServiceAreaLinks": 0,
+    "postFormMarkers": 0,
+    "checkoutPaymentActions": 0
+  },
+  "hydratedCartProof": {
+    "viewport": "390x844",
+    "documentStatus": 200,
+    "addControls": 214,
+    "trayCount": 1,
+    "selectedItems": 1,
+    "visibleRows": 1,
+    "postRequests": 0,
+    "failedRequests": 0,
+    "httpErrors": 0,
+    "horizontalOverflow": false
+  },
+  "runtimeNoRegression": {
+    "method": "GET only",
+    "passed": 39,
+    "checked": 39,
+    "failed": 0,
+    "postRequests": 0,
+    "postFormMarkers": 0,
+    "airstripRoutes": 0
+  },
+  "deferredWork": [
+    "partner final review",
+    "CMS visual persistence",
+    "optional final visual polish",
+    "optional quote-cart persistence",
+    "optional indexing and sitemap strategy"
+  ],
+  "nextTenant": {
+    "intakeUnlocked": true,
+    "blockedByPendingPartnerReview": false,
+    "criticalIssueException": true
+  },
+  "mutations": {
+    "deployments": 0,
+    "cms": 0,
+    "forms": 0,
+    "contactPosts": 0,
+    "customerFacingPosts": 0,
+    "media": 0,
+    "dnsTlsRegistrar": 0,
+    "ice": 0,
+    "airstrip": 0
+  }
+}
