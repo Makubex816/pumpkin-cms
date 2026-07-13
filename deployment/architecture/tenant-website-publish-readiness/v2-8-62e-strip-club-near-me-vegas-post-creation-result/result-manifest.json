@@ -1,0 +1,204 @@
+{
+  "phase": "V2.8.62E",
+  "status": "passed_full_backup_restore_readiness_admin_isolation_fidelity_and_preview_plan_launch_held",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "post_creation_backup_admin_isolation_fidelity_preview_readiness_no_deploy_no_dns_no_post",
+  "generatedAt": "2026-07-13T19:05:48.083Z",
+  "tenantId": "strip-club-near-me-vegas",
+  "branch": "feature/admin-page-editor-import-export",
+  "source": {
+    "committedBaselinePhase": "V2.8.62DRU",
+    "committedBaseline": "f5a69f340423c86f09523749082ec6f80596e1a0",
+    "drtSourceCommit": "7aa6c4f8669f09d4a3107e61576b6557565e6cca",
+    "apiDeploymentId": "48cad824-555f-4e21-972f-9691c01a911c"
+  },
+  "backup": {
+    "path": "C:/Users/User/Desktop/PumpkinCMS/secure-operator-handoff/tenant-backups/v2-8-62e-strip-club-near-me-vegas-full-backup",
+    "status": "passed_complete_database_and_rbac_media_backup",
+    "databaseObjectFiles": 20,
+    "media": {
+      "count": 302,
+      "bytes": 28343976,
+      "zeroByteCount": 0,
+      "hashes": 302
+    },
+    "checksumEntries": 329,
+    "checksumsVerified": true,
+    "manifestSha256": "3EBD697BF3588DEDA8E81D4607CE72DEEBD35F196153E4E9B2ADC8AE2B4602A9",
+    "checksumManifestSha256": "F2209C9A39DADA11BB7B80161D4097D4BDA91482FADCE61087BE608D4B1A4932",
+    "secretsIncluded": false,
+    "liveRestorePerformed": false
+  },
+  "credentialMetadata": {
+    "tenantAdmin": {
+      "email": "klavier91@proton.me",
+      "status": "provisional_bootstrap_tenantadmin",
+      "hardcopies": [
+        {
+          "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dr\\strip-club-near-me-vegas-tenantadmin-active.json",
+          "sha256": "82c97e3edb55fdbc04f869991c0906e4fe986add6ef6a8517347ec1171e4714e"
+        },
+        {
+          "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dr\\strip-club-near-me-vegas-tenantadmin-active.txt",
+          "sha256": "b341988bb340c6da2ea2923872d2d49bfc2415f57a5ae7bffeab3bb4c570fe9d"
+        }
+      ]
+    },
+    "runtimeKey": {
+      "provisioned": true,
+      "dormant": true,
+      "hardcopies": [
+        {
+          "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dru\\strip-club-near-me-vegas-runtime-key-active.json",
+          "sha256": "87A483C5B636B76E16EDE1D4014F7F6AC9D90BDCEA1C9C5CD672079BD3E7A9E3"
+        },
+        {
+          "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dru\\strip-club-near-me-vegas-runtime-key-active.txt",
+          "sha256": "0AB26EB5265C405D9D9A04F6ADE6A43A2BCC10B78AEFB60A5D0116D3799DB6BC"
+        },
+        {
+          "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dru\\runtime-key-update-log.jsonl",
+          "sha256": "4A0A05790A0E0038BCBAD8DAE0C38D796C292C2B0800058F840F2986ACA3F5D1"
+        }
+      ]
+    },
+    "masterRegister": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\PUMPKIN_TENANT_SECRET_REGISTER.json",
+      "sha256": "2C50936F2D0D1193C3875B91163FB9500E09A8374E99DBF06FD1984EC7FAFC61"
+    },
+    "valuesIncluded": false
+  },
+  "readOnlyReview": {
+    "superAdminRoutes": 11,
+    "tenantAdminOwnRoutes": 8,
+    "denials": 14,
+    "fidelityChecks": 20,
+    "targetContentUnchangedDuringProof": true
+  },
+  "counts": {
+    "pages": 43,
+    "uniquePageIds": 43,
+    "uniquePageSlugs": 43,
+    "themes": 1,
+    "tenantAdmins": 1,
+    "pageOwnedRedirects": 1,
+    "genericRedirects": 2,
+    "semanticRedirects": 3,
+    "clubs": 10,
+    "articles": 19,
+    "mediaAssets": 302,
+    "sourceAliases": 473,
+    "formDefinitions": 32,
+    "formMappings": 65,
+    "formEntries": 0,
+    "heldDomains": 1,
+    "heldImports": 1,
+    "heldPublishes": 1
+  },
+  "fidelity": {
+    "status": "passed_with_explicit_owner_accepted_deviations",
+    "acceptedDeviationIds": [
+      "local-age-acknowledgement",
+      "no-local-pii-persistence"
+    ],
+    "pageDefects": 0,
+    "physicalAirstripRows": 39,
+    "effectiveAirstripLinks": 45
+  },
+  "preview": {
+    "decision": "package-derived immutable preview fixture",
+    "runtimeKeyActivationRequired": false,
+    "appsettingMutationRequired": false,
+    "customHostIncluded": false,
+    "nextPhase": "V2.8.62F"
+  },
+  "runtimeNoRegression": {
+    "targets": 39,
+    "passed": 39,
+    "failed": 0
+  },
+  "requiredFileCount": 26,
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62dru-carryforward.md",
+    "credential-hardcopy-metadata-proof.md",
+    "runtime-key-hardcopy-metadata-proof.md",
+    "full-tenant-database-backup-result.md",
+    "full-media-backup-result.md",
+    "backup-manifest-result.md",
+    "backup-checksum-validation.md",
+    "restore-readiness-plan.md",
+    "superadmin-admin-readonly-review.md",
+    "tenantadmin-scope-reproof.md",
+    "tenant-isolation-reproof.md",
+    "package-fidelity-database-readback.md",
+    "redirect-fidelity-readback.md",
+    "media-and-alias-fidelity-readback.md",
+    "form-fidelity-readback.md",
+    "runtime-key-dormant-state-proof.md",
+    "shared-starter-preview-host-readiness.md",
+    "v2-8-62f-preview-implementation-plan.md",
+    "adult-nightlife-launch-hold.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_FULL_BACKUP_PROOF_V2_8_62E.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_RESTORE_READINESS_V2_8_62E.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_POST_CREATION_REVIEW_V2_8_62E.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_PREVIEW_HOST_READINESS_V2_8_62E.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62E_STRIP_CLUB_NEAR_ME_VEGAS_POST_CREATION_REPORT.md",
+  "boundaries": {
+    "tenantMutations": 0,
+    "credentialMutations": 0,
+    "runtimeKeyMutations": 0,
+    "mediaMutations": 0,
+    "deploys": 0,
+    "appsettingMutations": 0,
+    "dnsTlsMutations": 0,
+    "publications": 0,
+    "indexingEnables": 0,
+    "formPosts": 0,
+    "formEntriesCreated": 0,
+    "airstripRequests": 0,
+    "storageKeysUsed": false,
+    "listKeysUsed": false,
+    "sasUsed": false,
+    "secretsPrinted": false
+  },
+  "validation": {
+    "status": "passed",
+    "checkedAt": "2026-07-13T19:08:25.607Z",
+    "checks": [
+      "required-result-files",
+      "durable-and-root-files",
+      "result-manifest-contract",
+      "evidence-statuses",
+      "backup-manifest-hashes",
+      "backup-checksums",
+      "backup-json-parse",
+      "backup-media-accounting",
+      "backup-acl-metadata",
+      "repo-json-parse",
+      "exporter-syntax",
+      "ascii-and-whitespace",
+      "exact-secret-absence",
+      "secret-like-and-payload-scan",
+      "local-path-scan",
+      "command-shaped-scan",
+      "scoped-git-diff-check",
+      "staging-clean",
+      "protected-files-not-staged"
+    ],
+    "requiredResultFiles": 26,
+    "durableDocs": 4,
+    "backupChecksumEntries": 329,
+    "runtimeTargets": 39,
+    "stagedFiles": 0
+  }
+}
