@@ -1,0 +1,27 @@
+# Validation Summary
+
+- V2.8.62D and V2.8.62CR commits: present
+- Start staging area: empty
+- Source ZIP/proof hashes: matched
+- Package preflight: `passed-pre-mutation-package-gate`
+- V1 validator: valid true, 0 errors, 0 warnings
+- Tenant/media readiness: passed
+- Replacement email uniqueness before creation: passed
+- TenantAdmin creation/login/initial scope: passed
+- Persisted partial-state readback: 1 admin, 1 theme, 17 pages, 32 forms/65 mappings, 302 MediaAssets/473 aliases
+- Held flags: passed
+- Ice/Party Pros protected content: unchanged
+- Airstrip safe identity digest: unchanged; runtime requests 0
+- Hardcopy/register closeout: passed
+- Runtime no-regression: not run because import completion gate failed
+- Destructive rollback: not performed
+- Secrets printed or staged: no
+- Required result files: 31 / 31, no missing or extra files
+- Durable platform documents: 9 / 9
+- Changed/new repo JSON parse: passed
+- Trailing whitespace scan: 0 hits
+- Secret-signature scan: 0 hits
+- Full-payload scan: 0 hits
+- Command-shaped scan: 0 hits
+- Scoped `git diff --check`: passed
+- End staging area: empty; protected/generated staged files: 0

@@ -1,0 +1,161 @@
+{
+  "phase": "V2.8.62DR",
+  "status": "partial_live_state_stopped_no_rollback_page_contact_http_400",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "controlled_creation_resume_partial_import_hard_stop_no_rollback_hardcopy_closed",
+  "generatedAt": "2026-07-13T03:54:51.707Z",
+  "carryforward": {
+    "v2_8_62dCommit": "e4d9702b7462ae02092096466b98a216b5fa8a93",
+    "v2_8_62crCommit": "0d0dfd8f9c8e7b994e1140495f5b78d414f3f6d2",
+    "fidelityStatus": "passed_with_explicit_owner_accepted_deviations"
+  },
+  "package": {
+    "sourceSha256Matched": true,
+    "packagePreflightStatus": "passed-pre-mutation-package-gate",
+    "validatorValid": true,
+    "validatorErrors": 0,
+    "validatorWarnings": 0
+  },
+  "liveState": {
+    "tenantCreatedIn62dr": false,
+    "tenantAdminCreated": true,
+    "tenantAdminLoginProved": true,
+    "tenantAdminIdentityStatus": "provisional_bootstrap_tenantadmin",
+    "themeCount": 1,
+    "pageCount": 17,
+    "expectedPages": 43,
+    "failedPageSlug": "contact",
+    "failedPageHttpStatus": 400,
+    "formDefinitionCount": 32,
+    "formInstanceCount": 65,
+    "mediaAssetCount": 302,
+    "sourcePathAliasCount": 473,
+    "domainBindingCount": 0,
+    "importRunCount": 0,
+    "publishRunCount": 0,
+    "destructiveRollbackPerformed": false
+  },
+  "media": {
+    "blobs": 302,
+    "uniqueNames": 302,
+    "bytes": 28343976,
+    "missing": 0,
+    "zeroByte": 0,
+    "uploadPerformedIn62dr": false
+  },
+  "hardcopies": {
+    "activeJson": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dr\\strip-club-near-me-vegas-tenantadmin-active.json",
+      "sha256": "82c97e3edb55fdbc04f869991c0906e4fe986add6ef6a8517347ec1171e4714e",
+      "exists": true
+    },
+    "activeText": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dr\\strip-club-near-me-vegas-tenantadmin-active.txt",
+      "sha256": "b341988bb340c6da2ea2923872d2d49bfc2415f57a5ae7bffeab3bb4c570fe9d",
+      "exists": true
+    },
+    "masterRegister": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\PUMPKIN_TENANT_SECRET_REGISTER.json",
+      "sha256": "2c50936f2d0d1193c3875b91163fb9500e09a8374e99dbf06fd1984ec7fafc61",
+      "parsed": true,
+      "metadataOnly": true,
+      "plaintextPasswordPresent": false,
+      "exactActiveVegasEntries": 1
+    },
+    "backup": {
+      "created": false,
+      "path": null,
+      "sha256": null
+    },
+    "permissions": {
+      "activeJson": {
+        "attempted": true,
+        "succeeded": true,
+        "exitCode": 0
+      },
+      "activeText": {
+        "attempted": true,
+        "succeeded": true,
+        "exitCode": 0
+      },
+      "masterRegister": {
+        "attempted": true,
+        "succeeded": true,
+        "exitCode": 0
+      }
+    },
+    "priorInactiveHandoff": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\StripClubNearMeVegas\\v2-8-62d-controlled-creation-proof\\tenantadmin-operator-handoff.txt",
+      "sha256": "33c40641d54175aa560c3968dc10de96adb350566f3d486fc76cec6ddb53afa3",
+      "retained": true,
+      "status": "inactive_superseded_before_account_creation"
+    }
+  },
+  "protectedState": {
+    "iceAndPartyProsUnchanged": true,
+    "airstripIdentityUnchanged": true,
+    "airstripRuntimeRequests": 0
+  },
+  "boundaries": {
+    "deploys": 0,
+    "dnsMutations": 0,
+    "tlsMutations": 0,
+    "publications": 0,
+    "indexingEnables": 0,
+    "formPosts": 0,
+    "contactPosts": 0,
+    "formEntriesCreated": 0,
+    "iceMutations": 0,
+    "partyProsMutations": 0,
+    "airstripActions": 0,
+    "storageKeysUsed": false,
+    "listKeysUsed": false,
+    "sasUsed": false,
+    "secretsPrinted": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62d-partial-state-carryforward.md",
+    "v2-8-62cr-fidelity-carryforward.md",
+    "superadmin-auth-readiness.md",
+    "replacement-tenantadmin-email-readiness.md",
+    "secure-handoff-creation-and-validation.md",
+    "existing-tenant-media-reconciliation.md",
+    "tenantadmin-creation-and-scope-proof.md",
+    "tenant-secret-hardcopy-update-result.md",
+    "master-tenant-secret-register-update.md",
+    "credential-history-and-supersession-proof.md",
+    "mediaasset-and-alias-import-result.md",
+    "theme-content-route-import-result.md",
+    "club-detail-guide-import-result.md",
+    "formdefinition-instance-import-result.md",
+    "domain-metadata-result.md",
+    "import-publish-audit-result.md",
+    "tenant-isolation-proof.md",
+    "ice-party-pros-no-mutation-proof.md",
+    "airstrip-identity-and-runtime-no-action-proof.md",
+    "adult-nightlife-launch-hold.md",
+    "tenant-admin-email-change-and-transfer-requirement.md",
+    "multi-tenant-identity-future-architecture.md",
+    "identity-membership-build-map.md",
+    "runtime-no-regression-proof.md",
+    "outside-hardcopy-result.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableFiles": [
+    "PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_CREATION_RESUME_V2_8_62DR.md",
+    "PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_TENANTADMIN_RESOLUTION_V2_8_62DR.md",
+    "PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_IMPORT_COMPLETION_V2_8_62DR.md",
+    "PUMPKIN_GLOBAL_EMAIL_IDENTITY_CONFLICT_REGISTER_V2_8_62DR.md",
+    "PUMPKIN_TENANT_ADMIN_EMAIL_CHANGE_AND_TRANSFER_REQUIREMENT_V2_8_62DR.md",
+    "PUMPKIN_MULTI_TENANT_IDENTITY_MEMBERSHIP_ARCHITECTURE_V2_8_62DR.md",
+    "PUMPKIN_MULTI_TENANT_IDENTITY_FUTURE_BUILD_MAP_V2_8_62DR.md",
+    "PUMPKIN_TENANT_SECRET_HARDCOPY_STANDARD_V2_8_62DR.md",
+    "PUMPKIN_TENANT_CREDENTIAL_CHANGE_AND_TRANSFER_STANDARD_V2_8_62DR.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62DR_STRIP_CLUB_NEAR_ME_VEGAS_CREATION_RESUME_REPORT.md"
+}
