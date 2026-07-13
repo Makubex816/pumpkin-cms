@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pumpkincms.io/schemas/preview-fixture/v1.json",
+  "title": "Pumpkin deterministic tenant preview fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "fixtureSchemaVersion",
+    "compilerVersion",
+    "tenantId",
+    "siteName",
+    "renderMode",
+    "previewOnly",
+    "immutable",
+    "source",
+    "theme",
+    "counts",
+    "routes",
+    "redirects",
+    "media",
+    "forms",
+    "links",
+    "controls",
+    "behaviors",
+    "acceptedDeviations",
+    "launchHold",
+    "integrity"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "pumpkin-preview-fixture/v1" },
+    "fixtureSchemaVersion": { "const": "1.0.0" },
+    "compilerVersion": { "type": "string", "minLength": 1 },
+    "tenantId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,80}$" },
+    "siteName": { "type": "string", "minLength": 1 },
+    "renderMode": { "const": "package-static" },
+    "previewOnly": { "const": true },
+    "immutable": { "const": true },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourcePackageSha256",
+        "normalizedPackageSha256",
+        "referencePreviewSha256",
+        "backupManifestSha256",
+        "backupChecksumManifestSha256",
+        "compilerSourceSha256",
+        "fidelityStatus"
+      ],
+      "properties": {
+        "sourcePackageSha256": { "$ref": "#/$defs/sha256" },
+        "normalizedPackageSha256": { "$ref": "#/$defs/sha256" },
+        "referencePreviewSha256": { "$ref": "#/$defs/sha256" },
+        "backupManifestSha256": { "$ref": "#/$defs/sha256" },
+        "backupChecksumManifestSha256": { "$ref": "#/$defs/sha256" },
+        "compilerSourceSha256": { "$ref": "#/$defs/sha256" },
+        "fidelityStatus": {
+          "enum": [
+            "passed_full_parity",
+            "passed_with_explicit_owner_accepted_deviations"
+          ]
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stylesheets"],
+      "properties": {
+        "stylesheets": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256"],
+            "properties": {
+              "path": { "type": "string", "pattern": "^/themes/[a-z0-9._/-]+\\.css$" },
+              "sha256": { "$ref": "#/$defs/sha256" }
+            }
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "routes",
+        "pageOwnedRedirects",
+        "genericRedirects",
+        "semanticRedirects",
+        "clubDetails",
+        "guideArticles",
+        "canonicalMedia",
+        "sourcePathAliases",
+        "formDefinitions",
+        "physicalFormInstances",
+        "effectiveFormInstances",
+        "physicalLinks",
+        "effectiveLinks",
+        "physicalAirstripLinks",
+        "effectiveAirstripLinks",
+        "physicalControls",
+        "effectiveControls"
+      ],
+      "properties": {
+        "routes": { "type": "integer", "minimum": 1 },
+        "pageOwnedRedirects": { "type": "integer", "minimum": 0 },
+        "genericRedirects": { "type": "integer", "minimum": 0 },
+        "semanticRedirects": { "type": "integer", "minimum": 0 },
+        "clubDetails": { "type": "integer", "minimum": 0 },
+        "guideArticles": { "type": "integer", "minimum": 0 },
+        "canonicalMedia": { "type": "integer", "minimum": 0 },
+        "sourcePathAliases": { "type": "integer", "minimum": 0 },
+        "formDefinitions": { "type": "integer", "minimum": 0 },
+        "physicalFormInstances": { "type": "integer", "minimum": 0 },
+        "effectiveFormInstances": { "type": "integer", "minimum": 0 },
+        "physicalLinks": { "type": "integer", "minimum": 0 },
+        "effectiveLinks": { "type": "integer", "minimum": 0 },
+        "physicalAirstripLinks": { "type": "integer", "minimum": 0 },
+        "effectiveAirstripLinks": { "type": "integer", "minimum": 0 },
+        "physicalControls": { "type": "integer", "minimum": 0 },
+        "effectiveControls": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "routes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/route" }
+    },
+    "redirects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/redirect" }
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical", "aliases"],
+      "properties": {
+        "canonical": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "sha256", "bytes", "url"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "sha256": { "$ref": "#/$defs/sha256" },
+              "bytes": { "type": "integer", "minimum": 1 },
+              "url": { "type": "string", "pattern": "^https://" }
+            }
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sourcePath", "sha256", "url", "disposition"],
+            "properties": {
+              "sourcePath": { "type": "string", "minLength": 1 },
+              "sha256": { "$ref": "#/$defs/sha256" },
+              "url": { "type": "string", "pattern": "^https://" },
+              "disposition": { "$ref": "#/$defs/disposition" }
+            }
+          }
+        }
+      }
+    },
+    "forms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["definitions", "instances", "submissionMode"],
+      "properties": {
+        "definitions": { "type": "array", "items": { "type": "object" } },
+        "instances": { "type": "array", "items": { "type": "object" } },
+        "submissionMode": { "const": "disabled-no-post" }
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rows", "unresolvedTargets", "missingAnchors"],
+      "properties": {
+        "rows": { "type": "array", "items": { "type": "object" } },
+        "unresolvedTargets": { "const": 0 },
+        "missingAnchors": { "const": 0 }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rows", "unmapped"],
+      "properties": {
+        "rows": { "type": "array", "items": { "type": "object" } },
+        "unmapped": { "const": 0 }
+      }
+    },
+    "behaviors": { "type": "array", "items": { "type": "object" } },
+    "acceptedDeviations": { "type": "array", "items": { "type": "object" } },
+    "launchHold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publicLaunchApproved", "indexingApproved", "formPostApproved", "mediaRightsReviewRequired", "adultComplianceReviewRequired"],
+      "properties": {
+        "publicLaunchApproved": { "const": false },
+        "indexingApproved": { "const": false },
+        "formPostApproved": { "const": false },
+        "mediaRightsReviewRequired": { "const": true },
+        "adultComplianceReviewRequired": { "const": true }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixtureSha256"],
+      "properties": {
+        "fixtureSha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "disposition": {
+      "enum": [
+        "preserved",
+        "safely_adapted_equivalent",
+        "owner_approved_change",
+        "blocked"
+      ]
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route",
+        "sourceFile",
+        "sourceSha256",
+        "title",
+        "h1",
+        "description",
+        "canonicalUrl",
+        "bodyClass",
+        "html",
+        "inlineCss",
+        "stylesheets",
+        "structuredData",
+        "anchorIds",
+        "counts",
+        "disposition"
+      ],
+      "properties": {
+        "route": { "type": "string", "pattern": "^/" },
+        "sourceFile": { "type": "string", "minLength": 1 },
+        "sourceSha256": { "$ref": "#/$defs/sha256" },
+        "title": { "type": "string", "minLength": 1 },
+        "h1": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "canonicalUrl": { "type": "string" },
+        "bodyClass": { "type": "string" },
+        "html": { "type": "string", "minLength": 1 },
+        "inlineCss": { "type": "string" },
+        "stylesheets": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "structuredData": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "type": "object" },
+              { "type": "array" }
+            ]
+          }
+        },
+        "anchorIds": { "type": "array", "items": { "type": "string" } },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["links", "forms", "controls", "images", "airstripLinks"],
+          "properties": {
+            "links": { "type": "integer", "minimum": 0 },
+            "forms": { "type": "integer", "minimum": 0 },
+            "controls": { "type": "integer", "minimum": 0 },
+            "images": { "type": "integer", "minimum": 0 },
+            "airstripLinks": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "disposition": { "$ref": "#/$defs/disposition" }
+      }
+    },
+    "redirect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourcePath", "targetPath", "statusCode", "preserveQueryString", "source"],
+      "properties": {
+        "sourcePath": { "type": "string", "pattern": "^/" },
+        "targetPath": { "type": "string", "pattern": "^/" },
+        "statusCode": { "enum": [301, 302, 307, 308] },
+        "preserveQueryString": { "type": "boolean" },
+        "source": { "enum": ["page-owned", "tenant-generic"] }
+      }
+    }
+  }
+}

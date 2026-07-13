@@ -1,0 +1,31 @@
+{
+  "counts": {
+    "canonicalMedia": 302,
+    "clubDetails": 10,
+    "effectiveAirstripLinks": 45,
+    "effectiveControls": 1108,
+    "effectiveFormInstances": 65,
+    "effectiveLinks": 1797,
+    "formDefinitions": 32,
+    "genericRedirects": 2,
+    "guideArticles": 19,
+    "pageOwnedRedirects": 1,
+    "physicalAirstripLinks": 39,
+    "physicalControls": 1057,
+    "physicalFormInstances": 57,
+    "physicalLinks": 1747,
+    "routes": 43,
+    "semanticRedirects": 3,
+    "sourcePathAliases": 473
+  },
+  "dispositions": {
+    "blocked": 0,
+    "ownerApprovedChanges": 2,
+    "preserved": true,
+    "safelyAdaptedEquivalent": true
+  },
+  "launchApproved": false,
+  "schemaVersion": "pumpkin-preview-parity-scorecard/v1",
+  "status": "passed_with_explicit_owner_accepted_deviations",
+  "tenantId": "strip-club-near-me-vegas"
+}

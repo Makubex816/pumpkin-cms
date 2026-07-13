@@ -1,11 +1,16 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { FooterClassNames, HeaderClassNames } from 'pumpkin-block-views';
+import { PackageStaticPreview } from '@/components/PackageStaticPreview';
 import { PageRenderer } from '@/components/PageRenderer';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { buildMetadata } from '@/lib/metadata';
-import { getPreviewPage, normalizePreviewSlug } from '@/lib/preview-fixtures';
+import {
+  getPackageStaticPreviewPage,
+  getPreviewPage,
+  normalizePreviewSlug,
+} from '@/lib/preview-fixtures';
 import { getSiteChrome } from '@/lib/site-chrome';
 import { getThemeCssPath } from '@/themes/registry';
 
@@ -20,6 +25,20 @@ interface PreviewPageProps {
 }
 
 export async function generateMetadata({ params }: PreviewPageProps): Promise<Metadata> {
+  const packagePreview = await getPackageStaticPreviewPage(params.tenantId, params.slug ?? []);
+  if (packagePreview) {
+    return {
+      title: packagePreview.page.title,
+      description: packagePreview.page.description,
+      robots: {
+        index: false,
+        follow: false,
+        nocache: true,
+        googleBot: { index: false, follow: false, noimageindex: true },
+      },
+    };
+  }
+
   const preview = await getPreviewPage(params.tenantId, params.slug ?? []);
   if (!preview) return { title: 'Preview Not Found', robots: 'noindex, nofollow' };
 
@@ -30,6 +49,11 @@ export async function generateMetadata({ params }: PreviewPageProps): Promise<Me
 }
 
 export default async function PreviewPage({ params }: PreviewPageProps) {
+  const packagePreview = await getPackageStaticPreviewPage(params.tenantId, params.slug ?? []);
+  if (packagePreview) {
+    return <PackageStaticPreview fixture={packagePreview.fixture} page={packagePreview.page} />;
+  }
+
   const preview = await getPreviewPage(params.tenantId, params.slug ?? []);
   if (!preview) notFound();
 

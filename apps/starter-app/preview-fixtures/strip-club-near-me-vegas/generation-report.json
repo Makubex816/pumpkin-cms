@@ -1,0 +1,51 @@
+{
+  "checks": {
+    "blockedItems": 0,
+    "deterministicPayload": true,
+    "enabledSubmitControls": 0,
+    "formActions": 0,
+    "inlineEventHandlers": 0,
+    "missingAnchors": 0,
+    "missingMediaAliases": 0,
+    "postMethods": 0,
+    "schemaValid": true,
+    "scriptsInFixtureHtml": 0,
+    "secretPrivateFindings": 0,
+    "unmappedControls": 0,
+    "unresolvedLinks": 0,
+    "unresolvedRoutes": 0
+  },
+  "compilerVersion": "2.8.62f.1",
+  "counts": {
+    "canonicalMedia": 302,
+    "clubDetails": 10,
+    "effectiveAirstripLinks": 45,
+    "effectiveControls": 1108,
+    "effectiveFormInstances": 65,
+    "effectiveLinks": 1797,
+    "formDefinitions": 32,
+    "genericRedirects": 2,
+    "guideArticles": 19,
+    "pageOwnedRedirects": 1,
+    "physicalAirstripLinks": 39,
+    "physicalControls": 1057,
+    "physicalFormInstances": 57,
+    "physicalLinks": 1747,
+    "routes": 43,
+    "semanticRedirects": 3,
+    "sourcePathAliases": 473
+  },
+  "fixtureSha256": "843606019ed622fe9653c5ea6964c037896b62c0045bf6a11ea2db6f51e11484",
+  "schemaVersion": "pumpkin-preview-generation-report/v1",
+  "source": {
+    "backupChecksumManifestSha256": "f2209c9a39dada11bb7b80161d4097d4bda91482fadce61087be608d4b1a4932",
+    "backupManifestSha256": "3ebd697bf3588deda8e81d4607ce72deebd35f196153e4e9b2adc8ae2b4602a9",
+    "compilerSourceSha256": "4b4b868346ae382ce4dc2f05ac778649f2dc6a05a107e0bc5ce443ff55cad720",
+    "fidelityStatus": "passed_with_explicit_owner_accepted_deviations",
+    "normalizedPackageSha256": "46ec04c80be6d7d5340bf6158dce78b390a7d7f4f19bb3be35c7419f6718bb34",
+    "referencePreviewSha256": "35e4e5d68a9813e292ce30c4b548da9be745287a0db6523bba3385cdaec02cc6",
+    "sourcePackageSha256": "c1612b09fa9d0e2629382957a8f943c7f43256e17b25bbb6b89eaf116e43c0f4"
+  },
+  "status": "passed",
+  "tenantId": "strip-club-near-me-vegas"
+}

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "pumpkin-preview-registry/v1",
+  "tenants": {
+    "strip-club-near-me-vegas": {
+      "fixturePath": "preview-fixtures/strip-club-near-me-vegas/preview.json",
+      "noindex": true,
+      "publicIndexVisible": false,
+      "redirects": [
+        {
+          "preserveQueryString": true,
+          "source": "page-owned",
+          "sourcePath": "/24-hour-late-night-strip-clubs-las-vegas",
+          "statusCode": 301,
+          "targetPath": "/guides/24-hour-late-night-strip-clubs-las-vegas"
+        },
+        {
+          "preserveQueryString": true,
+          "source": "tenant-generic",
+          "sourcePath": "/guides/couples-night",
+          "statusCode": 301,
+          "targetPath": "/guides/couples-guide-vegas"
+        },
+        {
+          "preserveQueryString": true,
+          "source": "tenant-generic",
+          "sourcePath": "/guides/dress-code-what-to-expect",
+          "statusCode": 301,
+          "targetPath": "/guides/dress-code"
+        }
+      ],
+      "renderMode": "package-static",
+      "routeCount": 43
+    }
+  }
+}

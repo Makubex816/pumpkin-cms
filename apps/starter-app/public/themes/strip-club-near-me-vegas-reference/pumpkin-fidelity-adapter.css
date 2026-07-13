@@ -1,0 +1,76 @@
+/* Pumpkin immutable preview stylesheet: pumpkin-fidelity-adapter.css */
+.pumpkin-age-gate {
+  align-items: center;
+  background: rgba(5, 5, 7, 0.96);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 20px;
+  position: fixed;
+  z-index: 10000;
+}
+
+.pumpkin-age-gate[hidden] {
+  display: none;
+}
+
+.pumpkin-age-panel {
+  background: #111119;
+  border: 1px solid #f4c95d;
+  border-radius: 8px;
+  color: #fff8ee;
+  max-width: 520px;
+  padding: 28px;
+  width: 100%;
+}
+
+.pumpkin-age-panel h2 {
+  font-size: 28px;
+  line-height: 1.15;
+  margin: 6px 0 12px;
+}
+
+.pumpkin-age-panel p {
+  line-height: 1.6;
+}
+
+.pumpkin-age-kicker {
+  color: #f4c95d;
+  font-size: 12px;
+  font-weight: 800;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.pumpkin-age-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pumpkin-age-actions button {
+  min-height: 44px;
+}
+
+.pumpkin-age-status,
+.pumpkin-preview-form-message {
+  color: #68f2c6;
+  margin-top: 12px;
+}
+
+[data-quiz-selected="true"] {
+  outline: 2px solid #f4c95d;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .pumpkin-age-panel {
+    padding: 22px;
+  }
+
+  .pumpkin-age-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

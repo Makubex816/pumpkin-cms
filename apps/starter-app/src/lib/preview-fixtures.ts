@@ -19,6 +19,62 @@ export interface PreviewFixture {
   pages: Record<string, Page>;
 }
 
+export interface PackageStaticPreviewRoute {
+  route: string;
+  sourceFile: string;
+  sourceSha256: string;
+  title: string;
+  h1: string;
+  description: string;
+  canonicalUrl: string;
+  bodyClass: string;
+  html: string;
+  inlineCss: string;
+  stylesheets: string[];
+  structuredData: Array<Record<string, unknown> | unknown[]>;
+  anchorIds: string[];
+  counts: {
+    links: number;
+    forms: number;
+    controls: number;
+    images: number;
+    airstripLinks: number;
+  };
+  disposition: 'preserved' | 'safely_adapted_equivalent' | 'owner_approved_change';
+}
+
+export interface PackageStaticPreviewFixture {
+  schemaVersion: 'pumpkin-preview-fixture/v1';
+  fixtureSchemaVersion: string;
+  compilerVersion: string;
+  tenantId: string;
+  siteName: string;
+  renderMode: 'package-static';
+  previewOnly: true;
+  immutable: true;
+  source: {
+    sourcePackageSha256: string;
+    normalizedPackageSha256: string;
+    referencePreviewSha256: string;
+    backupManifestSha256: string;
+    backupChecksumManifestSha256: string;
+    compilerSourceSha256: string;
+    fidelityStatus: string;
+  };
+  routes: Record<string, PackageStaticPreviewRoute>;
+  redirects: Array<{
+    sourcePath: string;
+    targetPath: string;
+    statusCode: 301 | 302 | 307 | 308;
+    preserveQueryString: boolean;
+    source: 'page-owned' | 'tenant-generic';
+  }>;
+  counts: Record<string, number>;
+  integrity: { fixtureSha256: string };
+}
+
+type AnyPreviewFixture = PreviewFixture | PackageStaticPreviewFixture;
+
 export interface PreviewPageResult {
   fixture: PreviewFixture;
   page: Page;
@@ -38,13 +94,21 @@ export interface PreviewSiteResult {
   formDefinitions: Record<string, FormDefinition>;
 }
 
+export interface PackageStaticPreviewPageResult {
+  fixture: PackageStaticPreviewFixture;
+  page: PackageStaticPreviewRoute;
+  slug: string;
+}
+
+const fixtureCache = new Map<string, Promise<AnyPreviewFixture | null>>();
+
 export async function getPreviewPage(
   tenantId: string,
   slugParts: string[] = [],
   options: PreviewFixtureOptions = {},
 ): Promise<PreviewPageResult | null> {
   const fixture = await readPreviewFixture(tenantId);
-  if (!fixture) return null;
+  if (!fixture || isPackageStaticFixture(fixture)) return null;
 
   const slug = normalizePreviewSlug(slugParts);
   const page = getPageCandidates(slug)
@@ -65,13 +129,29 @@ export async function getPreviewSite(
   options: PreviewFixtureOptions = {},
 ): Promise<PreviewSiteResult | null> {
   const fixture = await readPreviewFixture(tenantId);
-  if (!fixture) return null;
+  if (!fixture || isPackageStaticFixture(fixture)) return null;
 
   return {
     fixture,
     theme: resolvePreviewTheme(fixture, options.urlMode ?? 'preview'),
     formDefinitions: mapFormDefinitions(fixture.formDefinitions ?? []),
   };
+}
+
+export async function getPackageStaticPreviewPage(
+  tenantId: string,
+  slugParts: string[] = [],
+): Promise<PackageStaticPreviewPageResult | null> {
+  const fixture = await readPreviewFixture(tenantId);
+  if (!fixture || !isPackageStaticFixture(fixture)) return null;
+
+  const slug = normalizePreviewSlug(slugParts);
+  const page = getPageCandidates(slug)
+    .map((candidate) => fixture.routes[candidate])
+    .find((candidate): candidate is PackageStaticPreviewRoute => Boolean(candidate));
+  if (!page) return null;
+
+  return { fixture, page, slug };
 }
 
 export function normalizePreviewSlug(slugParts: string[] = []) {
@@ -83,19 +163,36 @@ export function normalizePreviewSlug(slugParts: string[] = []) {
   return slug || 'home';
 }
 
-async function readPreviewFixture(tenantId: string): Promise<PreviewFixture | null> {
+async function readPreviewFixture(tenantId: string): Promise<AnyPreviewFixture | null> {
   if (!SAFE_TENANT_ID.test(tenantId)) return null;
+
+  const cached = fixtureCache.get(tenantId);
+  if (cached) return cached;
+
+  const pending = readPreviewFixtureUncached(tenantId);
+  fixtureCache.set(tenantId, pending);
+  return pending;
+}
+
+async function readPreviewFixtureUncached(tenantId: string): Promise<AnyPreviewFixture | null> {
 
   for (const fixturePath of getFixturePaths(tenantId)) {
     if (!existsSync(fixturePath)) continue;
 
     const fixtureText = (await readFile(fixturePath, 'utf8')).replace(/^\uFEFF/, '');
-    const fixture = JSON.parse(fixtureText) as PreviewFixture;
+    const fixture = JSON.parse(fixtureText) as AnyPreviewFixture;
     if (fixture.tenantId !== tenantId) return null;
     return fixture;
   }
 
   return null;
+}
+
+function isPackageStaticFixture(fixture: AnyPreviewFixture): fixture is PackageStaticPreviewFixture {
+  return 'renderMode' in fixture
+    && fixture.renderMode === 'package-static'
+    && 'schemaVersion' in fixture
+    && fixture.schemaVersion === 'pumpkin-preview-fixture/v1';
 }
 
 function getFixturePaths(tenantId: string) {
