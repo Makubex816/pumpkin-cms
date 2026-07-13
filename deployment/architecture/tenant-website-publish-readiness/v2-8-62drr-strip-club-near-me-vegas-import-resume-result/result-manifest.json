@@ -1,0 +1,201 @@
+{
+  "phase": "V2.8.62DRR",
+  "status": "blocked_after_pages_complete_redirect_update_contract_cannot_persist_self_route",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "contact_page_repaired_pages_complete_redirect_update_contract_blocked_no_rollback",
+  "generatedAt": "2026-07-13T12:31:25.498Z",
+  "carryforward": {
+    "v2_8_62drCommit": "445246881fd896a4add8d7d4fc12a71c690db0cf",
+    "v2_8_62dCommit": "e4d9702b7462ae02092096466b98a216b5fa8a93",
+    "v2_8_62crCommit": "0d0dfd8f9c8e7b994e1140495f5b78d414f3f6d2",
+    "fidelityStatus": "passed_with_explicit_owner_accepted_deviations"
+  },
+  "package": {
+    "sourceSha256Matched": true,
+    "immutablePackageDigest": "a9c64edfc145f918017133e28586a28b1b3f2c748eca89928372120b4eb349e9",
+    "immutablePackageFiles": 411,
+    "immutablePackageBytes": 35047616,
+    "repairedPackageDigest": "bff1ae24b97f59a0128768f5144e46b0696c7a8f4212e46544740d4eb5ab0b5d",
+    "repairedPackageFiles": 413,
+    "repairedPackageBytes": 43111178,
+    "v1ValidatorValid": true,
+    "v1Errors": 0,
+    "v1Warnings": 0
+  },
+  "diagnosis": {
+    "rootCauseCode": "contact.formBlock.missing",
+    "rootCauseMessage": "Contact pages must include a visible formBlock section.",
+    "repair": "disabled contract bridge referencing existing canonical FormDefinition",
+    "fidelityChanged": false
+  },
+  "validation": {
+    "pageCreateContract": {
+      "pages": 43,
+      "existing": 17,
+      "remaining": 26,
+      "repairedContact": 1,
+      "pending": 25,
+      "redirects": 3,
+      "globalFormDefinitions": 32,
+      "errors": 0,
+      "warnings": 0
+    },
+    "createStageContract": {
+      "pages": 43,
+      "existing": 17,
+      "remaining": 26,
+      "repairedContact": 1,
+      "pending": 25,
+      "redirects": 1,
+      "globalFormDefinitions": 32,
+      "errors": 0,
+      "warnings": 0
+    },
+    "pendingRedirectUpdateContract": {
+      "valid": false,
+      "errors": 2,
+      "warnings": 0,
+      "expectedBlockedPages": [
+        "guides-couples-night",
+        "guides-dress-code-what-to-expect"
+      ]
+    },
+    "contactPreviewStatus": "passed-local-contact-preview-no-post",
+    "validatorBuild": "passed_0_errors_0_warnings",
+    "focusedTests": "passed_6_checks",
+    "runtimeNoRegression": "not_run_import_completion_gate_not_met",
+    "repository": {
+      "requiredResultFiles": 30,
+      "missingResultFiles": 0,
+      "durableFiles": 4,
+      "missingDurableFiles": 0,
+      "rootReportExists": true,
+      "jsonParse": "passed",
+      "xmlParse": "passed",
+      "nodeSyntax": "passed",
+      "scopedDiffCheck": "passed",
+      "whitespaceFilesChecked": 38,
+      "whitespaceIssues": 0,
+      "secretLikeHits": 0,
+      "commandShapedHits": 0,
+      "validatorBuildOutputPresent": false,
+      "stagedFiles": 0
+    }
+  },
+  "liveState": {
+    "tenantCount": 1,
+    "tenantAdminCount": 1,
+    "themeCount": 1,
+    "pageCount": 43,
+    "uniquePageIds": 43,
+    "uniquePageSlugs": 43,
+    "contactCount": 1,
+    "redirectCount": 1,
+    "expectedRedirectCount": 3,
+    "missingRedirects": [
+      {
+        "pageSlug": "guides-couples-night",
+        "from": "/guides/couples-night",
+        "to": "/guides/couples-guide-vegas",
+        "type": 301,
+        "active": true
+      },
+      {
+        "pageSlug": "guides-dress-code-what-to-expect",
+        "from": "/guides/dress-code-what-to-expect",
+        "to": "/guides/dress-code",
+        "type": 301,
+        "active": true
+      }
+    ],
+    "clubDetailCount": 10,
+    "guideArticleCount": 19,
+    "mediaAssetCount": 302,
+    "sourcePathAliasCount": 473,
+    "formDefinitionCount": 32,
+    "formInstanceMappingCount": 65,
+    "domainBindingCount": 0,
+    "importRunCount": 0,
+    "publishRunCount": 0,
+    "allPagesHeld": true,
+    "allFormsNoPost": true
+  },
+  "writes": {
+    "contactRetryAttempts": 1,
+    "pageCreates": 26,
+    "redirectUpdateAttempts": 1,
+    "redirectsPersistedInPhase": 0,
+    "domainWrites": 0,
+    "importWrites": 0,
+    "publishWrites": 0,
+    "destructiveRollbackPerformed": false
+  },
+  "protectedState": {
+    "iceUnchanged": true,
+    "partyProsUnchanged": true,
+    "airstripRequests": 0
+  },
+  "boundaries": {
+    "deployments": 0,
+    "dnsMutations": 0,
+    "tlsMutations": 0,
+    "publications": 0,
+    "indexingEnables": 0,
+    "formPosts": 0,
+    "contactPosts": 0,
+    "formEntriesCreated": 0,
+    "submitKeysConfigured": 0,
+    "airstripActions": 0,
+    "iceMutations": 0,
+    "partyProsMutations": 0,
+    "storageKeysUsed": false,
+    "listKeysUsed": false,
+    "sasUsed": false,
+    "secretsPrinted": false,
+    "apiSourceChanged": false
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62dr-partial-state-carryforward.md",
+    "v2-8-62cr-fidelity-carryforward.md",
+    "active-credential-readiness.md",
+    "source-and-package-revalidation.md",
+    "existing-live-state-idempotency-proof.md",
+    "contact-page-http-400-diagnosis.md",
+    "contact-page-payload-contract-comparison.md",
+    "remaining-page-api-contract-validation.md",
+    "normalized-package-or-compiler-repair-result.md",
+    "contact-page-local-preview-proof.md",
+    "validator-replay-result.md",
+    "contact-page-single-retry-result.md",
+    "remaining-page-import-result.md",
+    "redirect-import-result.md",
+    "domain-metadata-result.md",
+    "import-publish-audit-result.md",
+    "final-content-count-reconciliation.md",
+    "tenant-isolation-proof.md",
+    "ice-party-pros-no-mutation-proof.md",
+    "airstrip-no-request-proof.md",
+    "preimport-api-contract-validation-standard-result.md",
+    "idempotent-import-resume-standard-result.md",
+    "adult-nightlife-launch-hold.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableFiles": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_CONTACT_PAGE_IMPORT_REPAIR_V2_8_62DRR.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_IMPORT_COMPLETION_V2_8_62DRR.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_PREIMPORT_API_CONTRACT_VALIDATION_STANDARD_V2_8_62DRR.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_IDEMPOTENT_TENANT_IMPORT_RESUME_STANDARD_V2_8_62DRR.md"
+  ],
+  "scopedSourceFiles": [
+    "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/page-contract-validator/page-contract-validator.csproj",
+    "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/page-contract-validator/Program.cs",
+    "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/page-contract-validator/test-page-contract-validator.mjs"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62DRR_STRIP_CLUB_NEAR_ME_VEGAS_IMPORT_RESUME_REPORT.md"
+}

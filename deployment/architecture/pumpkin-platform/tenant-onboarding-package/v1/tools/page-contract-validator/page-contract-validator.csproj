@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../../../../../apps/pumpkin-net-models/pumpkin-net-models.csproj" />
+    <Compile Include="../../../../../../../apps/pumpkin-api/Services/DesignSystemGuard.cs" Link="DesignSystemGuard.cs" />
+    <Compile Include="../../../../../../../apps/pumpkin-api/Services/PageRedirectGuard.cs" Link="PageRedirectGuard.cs" />
+  </ItemGroup>
+</Project>
