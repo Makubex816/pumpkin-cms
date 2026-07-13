@@ -1,0 +1,69 @@
+{
+  "application": "pumpkin-starter-app",
+  "hostRouting": {
+    "packagePath": "deployment-artifacts/host-tenant-routes.json",
+    "sourcePath": "src/generated/host-tenant-routes.json"
+  },
+  "registry": {
+    "packagePath": "deployment-artifacts/preview-fixture-registry.json",
+    "sourcePath": "src/generated/preview-fixture-registry.json"
+  },
+  "schemaVersion": "pumpkin-starter-deployment-artifacts/v1",
+  "sharedAssets": [
+    {
+      "path": "public/themes/pumpkin-default.css",
+      "sha256": "e690512f6c01d5734b8d96f352067773153fe42873c8da9415f2ba61cdc5016f"
+    }
+  ],
+  "tenants": [
+    {
+      "fixtureFormat": "structured-fixture",
+      "fixturePath": "preview-fixtures/party-pros-philadelphia/preview.json",
+      "fixtureSha256": "2e19d8c084a9cbcb6d5897e1ed7da0380274e96ee7e2662e4210a0c28459dd26",
+      "formsMode": "live-submit",
+      "hosts": [
+        "partyrentalphiladelphia.com",
+        "www.partyrentalphiladelphia.com"
+      ],
+      "routeCount": 301,
+      "tenantId": "party-pros-philadelphia",
+      "themeAssets": [
+        {
+          "path": "public/themes/party-pros-reference.css",
+          "sha256": "e6411f3e47387bf2eddf35c782f9192b3c85285260ea72b359041515d9725770"
+        },
+        {
+          "path": "public/themes/party-pros-orange-slate-v1.css",
+          "sha256": "e6411f3e47387bf2eddf35c782f9192b3c85285260ea72b359041515d9725770"
+        }
+      ]
+    },
+    {
+      "fixtureFormat": "package-static",
+      "fixturePath": "preview-fixtures/strip-club-near-me-vegas/preview.json",
+      "fixtureSha256": "2cb1656a4c46f3c496db48375d51244439ac1f217305a859fd80a15520a4a986",
+      "formsMode": "disabled-preview",
+      "hosts": [],
+      "routeCount": 43,
+      "tenantId": "strip-club-near-me-vegas",
+      "themeAssets": [
+        {
+          "path": "public/themes/strip-club-near-me-vegas-reference/header.css",
+          "sha256": "7f7e23715bcb014809b8b53c4d2c167f28a08e8d5ce2c1bf31bdce52529486f3"
+        },
+        {
+          "path": "public/themes/strip-club-near-me-vegas-reference/pumpkin-fidelity-adapter.css",
+          "sha256": "bb423109ea28c7f539c07a7af703245349bb09cd48de1995605a4952bc011a97"
+        },
+        {
+          "path": "public/themes/strip-club-near-me-vegas-reference/styles.css",
+          "sha256": "3ff119d64c9c859c10bcebfa8151d27575d06b768cbfdcd6cc42b21933ce4a0d"
+        },
+        {
+          "path": "public/themes/strip-club-near-me-vegas-reference/tailwind-compiled.css",
+          "sha256": "ce524f5146c1908a6badbaf016a2aac8627ce2ea8ee1f99ceb44c16a1594f3c8"
+        }
+      ]
+    }
+  ]
+}

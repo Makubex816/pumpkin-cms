@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import hostTenantRoutes from '@/generated/host-tenant-routes.json';
 import { getPreviewPage, getPreviewSite } from '@/lib/preview-fixtures';
 
 type HostTenantSource = 'preview-fixture';
@@ -13,14 +14,9 @@ export interface HostTenantRoute {
 
 const SAFE_TENANT_ID = /^[a-z0-9][a-z0-9-]{1,80}$/;
 
-const BUILT_IN_HOST_TENANT_ROUTES: HostTenantRoute[] = [
-  {
-    tenantId: 'party-pros-philadelphia',
-    hosts: ['partyrentalphiladelphia.com', 'www.partyrentalphiladelphia.com'],
-    source: 'preview-fixture',
-    formsMode: 'live-submit',
-  },
-];
+const COMMITTED_HOST_TENANT_ROUTES = hostTenantRoutes.routes.flatMap((route) =>
+  normalizeConfiguredRoute(route),
+);
 
 export function getCurrentRequestHost() {
   const requestHeaders = headers();
@@ -70,7 +66,7 @@ export async function getHostTenantPreviewSite() {
 }
 
 function getHostTenantRoutes(): HostTenantRoute[] {
-  return [...readConfiguredRoutes(), ...BUILT_IN_HOST_TENANT_ROUTES];
+  return [...readConfiguredRoutes(), ...COMMITTED_HOST_TENANT_ROUTES];
 }
 
 function readConfiguredRoutes(): HostTenantRoute[] {

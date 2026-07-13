@@ -1,6 +1,14 @@
 {
   "schemaVersion": "pumpkin-preview-registry/v1",
   "tenants": {
+    "party-pros-philadelphia": {
+      "fixturePath": "preview-fixtures/party-pros-philadelphia/preview.json",
+      "noindex": true,
+      "publicIndexVisible": false,
+      "redirects": [],
+      "renderMode": "structured-fixture",
+      "routeCount": 301
+    },
     "strip-club-near-me-vegas": {
       "fixturePath": "preview-fixtures/strip-club-near-me-vegas/preview.json",
       "noindex": true,

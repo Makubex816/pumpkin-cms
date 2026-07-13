@@ -9,7 +9,11 @@
     "start": "next start --port 3003",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "test:preview-fixtures": "node test/preview-fixtures.test.mjs && node test/vegas-preview-contract.test.mjs"
+    "test:preview-fixtures": "node test/preview-fixtures.test.mjs && node test/vegas-preview-contract.test.mjs",
+    "test:party-pros-recovery": "node test/party-pros-preview-contract.test.mjs",
+    "test:deployment-artifacts": "node test/deployment-artifact-completeness.test.mjs",
+    "proof:party-pros-recovery": "node test/party-pros-recovery-browser-proof.mjs",
+    "prepare:standalone": "node scripts/prepare-standalone-deployment.mjs"
   },
   "dependencies": {
     "@dagrejs/dagre": "^3.0.0",

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "pumpkin-host-tenant-routes/v1",
+  "routes": [
+    {
+      "formsMode": "live-submit",
+      "hosts": [
+        "partyrentalphiladelphia.com",
+        "www.partyrentalphiladelphia.com"
+      ],
+      "source": "preview-fixture",
+      "tenantId": "party-pros-philadelphia"
+    }
+  ]
+}
