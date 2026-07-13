@@ -1,0 +1,162 @@
+{
+  "phase": "V2.8.62D",
+  "status": "partial_live_state_stopped_no_rollback_tenantadmin_email_conflict",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "controlled_tenant_creation_partial_state_tenantadmin_email_conflict_no_rollback_no_import",
+  "tenantId": "strip-club-near-me-vegas",
+  "generatedAt": "2026-07-12T00:17:08.015Z",
+  "resultPath": "deployment/architecture/tenant-website-publish-readiness/v2-8-62d-strip-club-near-me-vegas-controlled-creation-result",
+  "requiredFileCount": 27,
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62cr-carryforward.md",
+    "secure-auth-readiness.md",
+    "source-and-package-revalidation.md",
+    "tenant-absence-proof.md",
+    "media-container-creation-result.md",
+    "canonical-media-upload-result.md",
+    "source-path-alias-import-result.md",
+    "tenant-creation-result.md",
+    "tenantadmin-creation-and-scope-proof.md",
+    "theme-and-content-import-result.md",
+    "route-and-redirect-import-result.md",
+    "club-detail-and-guide-import-result.md",
+    "formdefinition-and-instance-import-result.md",
+    "domain-metadata-result.md",
+    "import-publish-audit-result.md",
+    "tenant-isolation-proof.md",
+    "ice-party-pros-no-mutation-proof.md",
+    "airstrip-no-request-proof.md",
+    "adult-nightlife-launch-hold.md",
+    "runtime-no-regression-proof.md",
+    "outside-hardcopy-result.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_CONTROLLED_CREATION_V2_8_62D.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_MEDIA_IMPORT_V2_8_62D.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_TENANT_ISOLATION_V2_8_62D.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_LAUNCH_HOLD_V2_8_62D.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62D_STRIP_CLUB_NEAR_ME_VEGAS_CONTROLLED_CREATION_REPORT.md",
+  "entryGate": {
+    "head": "0d0dfd8f9c8e7b994e1140495f5b78d414f3f6d2",
+    "headSubject": "Close V2.8.62CR package fidelity parity",
+    "stagedFilesAtStart": 0,
+    "fidelityStatus": "passed_with_explicit_owner_accepted_deviations",
+    "sourceZipSha256Matched": true,
+    "v1Validator": {
+      "valid": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "liveState": {
+    "tenantCreated": true,
+    "tenantAdminCreated": false,
+    "tenantAdminConflict": {
+      "httpStatus": 409,
+      "code": "global_email_uniqueness_conflict",
+      "existingTenantId": "airstrip-club-las-vegas",
+      "existingRole": "TenantAdmin"
+    },
+    "media": {
+      "account": "iceskatingmedia",
+      "container": "strip-club-near-me-vegas-media",
+      "blobs": 302,
+      "uniqueNames": 302,
+      "bytes": 28343976,
+      "zeroByte": 0
+    },
+    "records": {
+      "themes": 0,
+      "pages": 0,
+      "redirects": 0,
+      "clubs": 0,
+      "guides": 0,
+      "formDefinitions": 0,
+      "formInstances": 0,
+      "mediaAssets": 0,
+      "sourceAliases": 0,
+      "domainBindings": 0,
+      "importRuns": 0,
+      "publishRuns": 0
+    },
+    "liveSubmitKeyActive": false,
+    "destructiveRollbackPerformed": false
+  },
+  "packagePendingCounts": {
+    "routes": 43,
+    "redirects": 3,
+    "clubs": 10,
+    "articles": 19,
+    "physicalLinks": 1747,
+    "effectiveLinks": 1797,
+    "physicalAirstripLinks": 39,
+    "effectiveAirstripLinks": 45,
+    "physicalControls": 1057,
+    "effectiveControls": 1108,
+    "formDefinitions": 32,
+    "effectiveFormInstances": 65,
+    "canonicalMediaAssets": 302,
+    "sourcePathAliases": 473,
+    "mediaBytes": 28343976,
+    "pageMediaReferences": 320
+  },
+  "baselines": {
+    "iceCountsUnchanged": true,
+    "partyProsCountsUnchanged": true,
+    "contentResourceDigestsUnchanged": true,
+    "strictAllSanitizedDigestsUnchanged": false,
+    "authenticationAccountingSideEffect": "Ice user count stayed unchanged; the approved SuperAdmin login updated source-supported lastLogin accounting. No Ice content, role, profile, or tenant mutation endpoint was called."
+  },
+  "hardcopies": {
+    "operator": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\StripClubNearMeVegas\\v2-8-62d-controlled-creation-proof\\tenantadmin-operator-handoff.txt",
+      "sha256": "33c40641d54175aa560c3968dc10de96adb350566f3d486fc76cec6ddb53afa3",
+      "credentialActive": false
+    },
+    "partialState": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\StripClubNearMeVegas\\v2-8-62d-controlled-creation-proof\\controlled-creation-partial-state-hardcopy.md",
+      "sha256": "17940e0acad3994e8b750024d9e221a30c31b7ecbf5f3a5eea0451e54427e0d7"
+    }
+  },
+  "boundaries": {
+    "destructiveRollbackPerformed": false,
+    "importsContinuedAfterHardStop": false,
+    "deploys": 0,
+    "dnsMutations": 0,
+    "tlsMutations": 0,
+    "pagePublications": 0,
+    "indexingEnables": 0,
+    "formPosts": 0,
+    "formEntriesCreated": 0,
+    "liveSubmitKeysConfigured": 0,
+    "airstripRequests": 0,
+    "storageKeysUsed": false,
+    "listKeysUsed": false,
+    "sasUsed": false,
+    "secretsPrinted": false
+  },
+  "validation": {
+    "requiredResultFiles": 27,
+    "durableDocsAndRootReport": 5,
+    "finalRepositoryChecks": "passed",
+    "jsonFilesParsed": 1,
+    "trailingWhitespaceFindings": 0,
+    "nonAsciiFindings": 0,
+    "secretLikeFindings": 0,
+    "unapprovedCommandShapedFindings": 0,
+    "outsideHardcopyChecksumsMatched": true,
+    "gitDiffCheckPassed": true,
+    "ignoredWorkspaceChecksPassed": true,
+    "protectedOrGeneratedFilesStaged": 0,
+    "stagedFilesAtEnd": 0,
+    "runtimeNoRegression": "not_run_after_owner_defined_hard_stop"
+  },
+  "nextPhase": "V2.8.62DR"
+}
