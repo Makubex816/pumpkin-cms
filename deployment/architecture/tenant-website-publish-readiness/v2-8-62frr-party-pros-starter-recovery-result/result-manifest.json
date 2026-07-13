@@ -1,0 +1,93 @@
+{
+  "phase": "V2.8.62FRR",
+  "status": "complete_party_pros_recovered_vegas_preserved_shared_runtime_85_of_85",
+  "lane": "V2.8 Tenant Website / Shared Starter Runtime Recovery",
+  "classification": "shared_starter_party_pros_fixture_recovery_clean_room_package_completeness_single_deploy_no_dns_no_post",
+  "generatedAt": "2026-07-13T23:01:13Z",
+  "branch": "feature/admin-page-editor-import-export",
+  "baseline": {
+    "v2_8_62fr": "7ea6365d9c5fa79543463530d944997e9021e920",
+    "v2_8_62f": "ac620959c49fc920d6e33d8bec2ccef759450faf",
+    "v2_8_62e": "4f68adb9dbcc6f9e43aa4617fb87fee8e7d51ae6",
+    "v2_8_62dru": "f5a69f340423c86f09523749082ec6f80596e1a0"
+  },
+  "sourceCommit": {
+    "id": "ad197480817ba80d540708f7e847ae90a116b0af",
+    "message": "Restore Party Pros fixture to shared starter deployment",
+    "paths": 12,
+    "commitsCreated": 1,
+    "stagedAfterCommit": 0
+  },
+  "partyProsFixture": {
+    "sha256": "2e19d8c084a9cbcb6d5897e1ed7da0380274e96ee7e2662e4210a0c28459dd26",
+    "bytes": 5171308,
+    "pages": 301,
+    "catalogItems": 214,
+    "itemPages": 214,
+    "blogArticles": 58,
+    "formDefinitions": 1
+  },
+  "package": {
+    "sha256": "fd60a5c6de86feb49e222b05379dc5f176f38bc49c2666972db64189275a06d0",
+    "bytes": 6590257,
+    "entries": 1838,
+    "staticEntries": 44,
+    "backslashEntries": 0,
+    "unsafeEntries": 0,
+    "duplicateEntries": 0,
+    "protectedConfigEntries": 0,
+    "strongSecretFindings": 0,
+    "partyProsIncluded": true,
+    "vegasIncluded": true
+  },
+  "deployment": {
+    "target": "app-pumpkin-starter-preview-centralus-001",
+    "resourceGroup": "rg-pumpkin-api-prod-centralus",
+    "approvedAttempts": 1,
+    "attemptsUsed": 1,
+    "deploymentId": "a7b5cff8-a14e-4301-b239-e28e0339b184",
+    "kuduStatus": 4,
+    "armStatus": "RuntimeSuccessful",
+    "successfulInstances": 1,
+    "failedInstances": 0
+  },
+  "partyProsLiveProof": {
+    "publicRoutes": "16/16",
+    "previewRoutes": "8/8",
+    "themeAsset": "1/1",
+    "responsiveRenders": "24/24",
+    "cartInteractions": "15/15",
+    "catalogItems": 214,
+    "blogArticles": 58,
+    "postRequests": 0,
+    "airstripRequests": 0
+  },
+  "vegasLiveProof": {
+    "routeRenders": "172/172",
+    "redirectProofs": "12/12",
+    "canonicalMedia": "302/302",
+    "aliases": "473/473",
+    "effectiveFormsPerViewport": 65,
+    "postRequests": 0,
+    "airstripRequests": 0
+  },
+  "runtime": {
+    "targets": 85,
+    "passed": 85,
+    "failed": 0
+  },
+  "boundaries": {
+    "tenantCmsMutations": 0,
+    "mediaContentMutations": 0,
+    "storagePermissionMutations": 0,
+    "credentialOrRuntimeKeyMutations": 0,
+    "starterAppsettingMutations": 0,
+    "apiAdminIceAirstripDeployments": 0,
+    "dnsTlsPublicationIndexingActions": 0,
+    "postsOrFormEntries": 0,
+    "airstripRequests": 0,
+    "storageKeyListKeysSasActions": 0
+  },
+  "requiredFileCount": 33,
+  "durableDocCount": 4
+}
