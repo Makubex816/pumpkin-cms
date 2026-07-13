@@ -75,7 +75,7 @@ assert.ok(referenceResult.json.pages.find((page) => page.PageSlug === "contact")
 
 const redirectUpdateResult = run("pending-redirect-update", pages, ["--redirect-application", "update-pending-pages"]);
 assert.equal(redirectUpdateResult.status, 1);
-assert.equal(redirectUpdateResult.json.pages.filter((page) => page.Issues.some((issue) => issue.Code === "redirect.update.selfRouteDropped")).length, 2);
+assert.equal(redirectUpdateResult.json.pages.filter((page) => page.Issues.some((issue) => issue.Code === "redirect.update.currentPageSourceUnsupported")).length, 2);
 
 fs.rmSync(temp, { recursive: true, force: true });
-process.stdout.write(`${JSON.stringify({ validBundle: true, missingContactRejected: true, duplicateIdRejected: true, unsupportedBlockRejected: true, badCanonicalReferenceRejected: true, pendingRedirectUpdateContractRejected: true })}\n`);
+process.stdout.write(`${JSON.stringify({ validBundle: true, missingContactRejected: true, duplicateIdRejected: true, unsupportedBlockRejected: true, badCanonicalReferenceRejected: true, pendingMeaningfulRedirectUpdateRejected: true })}\n`);

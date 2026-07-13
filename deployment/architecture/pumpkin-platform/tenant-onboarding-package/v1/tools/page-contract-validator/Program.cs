@@ -258,12 +258,14 @@ static void ValidatePendingRedirectUpdatePersistence(Page page, ICollection<Cont
     foreach (var redirect in page.Redirects ?? new List<PageRedirect>())
     {
         var from = PageRedirectGuard.NormalizeSlug(redirect.From);
-        if (string.Equals(from, currentSlug, StringComparison.Ordinal))
+        var to = PageRedirectGuard.NormalizeSlug(redirect.To);
+        if (string.Equals(from, currentSlug, StringComparison.Ordinal) &&
+            !string.Equals(from, to, StringComparison.Ordinal))
         {
             issues.Add(new(
                 "error",
-                "redirect.update.selfRouteDropped",
-                $"Redirect from '{from}' cannot be applied after page creation because PageRevisionHelper drops redirects whose source equals the current page slug.",
+                "redirect.update.currentPageSourceUnsupported",
+                $"Meaningful redirect from current page route '{from}' to distinct route '{to}' cannot be applied after page creation because PageRevisionHelper drops redirects whose source equals the current page slug.",
                 "redirects"));
         }
     }

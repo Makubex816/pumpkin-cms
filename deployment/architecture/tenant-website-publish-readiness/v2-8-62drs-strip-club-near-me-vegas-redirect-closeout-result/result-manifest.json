@@ -1,0 +1,181 @@
+{
+  "phase": "V2.8.62DRS",
+  "status": "blocked_meaningful_redirect_requires_separate_api_support",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "redirect_semantics_reconciliation_meaningful_behavior_failed_closed_no_live_closeout_mutation",
+  "generatedAt": "2026-07-13T14:54:26.304Z",
+  "carryforward": {
+    "v2_8_62drrCommit": "5c2338e4f16844731ed5cb75c8322fb989800292",
+    "v2_8_62crCommit": "0d0dfd8f9c8e7b994e1140495f5b78d414f3f6d2",
+    "fidelityStatus": "passed_with_explicit_owner_accepted_deviations",
+    "existingAcceptedDeviationCount": 2
+  },
+  "redirectSemantics": {
+    "sourceDeclarations": 3,
+    "persistedRedirects": 1,
+    "canonicalNoOps": 0,
+    "clientAnchors": 0,
+    "externalRedirects": 0,
+    "blockedMeaningfulRedirects": 2,
+    "cycleInvalidRedirects": 0,
+    "graphCycles": 0,
+    "semanticDispositions": 3,
+    "effectiveBehaviorAccounted": 1,
+    "proposedThirdDeviationAccepted": false,
+    "declarations": [
+      {
+        "sourceFile": "24-hour-late-night-strip-clubs-las-vegas/index.html",
+        "source": "/24-hour-late-night-strip-clubs-las-vegas",
+        "target": "/guides/24-hour-late-night-strip-clubs-las-vegas",
+        "disposition": "persisted_redirect",
+        "noOpProofPassed": false
+      },
+      {
+        "sourceFile": "guides/couples-night/index.html",
+        "source": "/guides/couples-night",
+        "target": "/guides/couples-guide-vegas",
+        "disposition": "blocked_meaningful_redirect",
+        "noOpProofPassed": false
+      },
+      {
+        "sourceFile": "guides/dress-code-what-to-expect/index.html",
+        "source": "/guides/dress-code-what-to-expect",
+        "target": "/guides/dress-code",
+        "disposition": "blocked_meaningful_redirect",
+        "noOpProofPassed": false
+      }
+    ]
+  },
+  "liveState": {
+    "tenantCount": 1,
+    "tenantAdminCount": 1,
+    "themeCount": 1,
+    "pageCount": 43,
+    "uniquePageIds": 43,
+    "uniquePageSlugs": 43,
+    "contactCount": 1,
+    "persistedRedirectCount": 1,
+    "clubDetailCount": 10,
+    "guideArticleCount": 19,
+    "mediaAssetCount": 302,
+    "sourcePathAliasCount": 473,
+    "formDefinitionCount": 32,
+    "formInstanceMappingCount": 65,
+    "domainBindingCount": 0,
+    "importRunCount": 0,
+    "publishRunCount": 0,
+    "allPagesHeld": true,
+    "allFormsNoPost": true
+  },
+  "validators": {
+    "v1": {
+      "valid": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "pageUpdateContract": {
+      "valid": false,
+      "errors": 2,
+      "warnings": 0,
+      "code": "redirect.update.currentPageSourceUnsupported"
+    },
+    "semanticReplay": {
+      "valid": false,
+      "status": "blocked_meaningful_redirect_requires_separate_api_support"
+    },
+    "pageFocusedTests": "passed_6_checks",
+    "redirectFocusedTests": "passed_7_checks",
+    "build": "passed_0_errors_0_warnings"
+  },
+  "writes": {
+    "pages": 0,
+    "redirects": 0,
+    "domainMetadata": 0,
+    "importRuns": 0,
+    "publishRuns": 0,
+    "directDataRepairs": 0,
+    "apiSourceChanges": 0,
+    "deployments": 0
+  },
+  "boundaries": {
+    "dnsMutations": 0,
+    "tlsMutations": 0,
+    "publications": 0,
+    "indexingEnables": 0,
+    "formPosts": 0,
+    "contactPosts": 0,
+    "formEntriesCreated": 0,
+    "credentialChanges": 0,
+    "airstripRequests": 0,
+    "iceMutations": 0,
+    "partyProsMutations": 0,
+    "storageKeysUsed": false,
+    "listKeysUsed": false,
+    "sasUsed": false,
+    "secretsPrinted": false
+  },
+  "runtimeNoRegression": "not_run_redirect_semantics_closeout_failed",
+  "repositoryValidation": {
+    "requiredResultFiles": 29,
+    "missingResultFiles": 0,
+    "durableFiles": 4,
+    "missingDurableFiles": 0,
+    "validatorFiles": 4,
+    "missingValidatorFiles": 0,
+    "rootReportExists": true,
+    "jsonParse": "passed",
+    "nodeSyntax": "passed",
+    "scopedDiffCheck": "passed",
+    "filesScanned": 38,
+    "whitespaceIssues": 0,
+    "nonAsciiFiles": 0,
+    "secretLikeHits": 0,
+    "commandShapedHits": 0,
+    "validatorBuildOutputPresent": false,
+    "stagedFiles": 0
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62drr-carryforward.md",
+    "v2-8-62cr-fidelity-carryforward.md",
+    "credential-state-no-change-proof.md",
+    "source-redirect-declaration-inventory.md",
+    "redirect-source-target-normalization.md",
+    "self-route-noop-proof.md",
+    "redirect-cycle-analysis.md",
+    "persisted-redirect-readback.md",
+    "canonical-route-behavior-proof.md",
+    "owner-accepted-redirect-deviation.md",
+    "normalized-package-redirect-accounting-result.md",
+    "redirect-contract-validator-result.md",
+    "validator-replay-result.md",
+    "domain-metadata-result.md",
+    "import-publish-audit-result.md",
+    "final-content-count-reconciliation.md",
+    "tenant-isolation-proof.md",
+    "ice-party-pros-no-mutation-proof.md",
+    "airstrip-no-request-proof.md",
+    "tenant-redirect-semantics-standard-result.md",
+    "direct-data-repair-prohibition.md",
+    "adult-nightlife-launch-hold.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableFiles": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_REDIRECT_RECONCILIATION_V2_8_62DRS.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_IMPORT_CLOSEOUT_V2_8_62DRS.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_REDIRECT_SEMANTICS_STANDARD_V2_8_62DRS.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_REDIRECT_CONTRACT_VALIDATION_STANDARD_V2_8_62DRS.md"
+  ],
+  "validatorFiles": [
+    "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/page-contract-validator/Program.cs",
+    "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/page-contract-validator/test-page-contract-validator.mjs",
+    "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/page-contract-validator/redirect-semantics-validator.mjs",
+    "deployment/architecture/pumpkin-platform/tenant-onboarding-package/v1/tools/page-contract-validator/test-redirect-semantics-validator.mjs"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62DRS_STRIP_CLUB_NEAR_ME_VEGAS_REDIRECT_CLOSEOUT_REPORT.md"
+}
