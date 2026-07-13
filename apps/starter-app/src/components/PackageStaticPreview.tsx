@@ -4,6 +4,7 @@ import type {
   PackageStaticPreviewFixture,
   PackageStaticPreviewRoute,
 } from '@/lib/preview-fixtures';
+import styles from './PackageStaticPreview.module.css';
 
 interface PackageStaticPreviewProps {
   fixture: PackageStaticPreviewFixture;
@@ -21,6 +22,7 @@ export function PackageStaticPreview({ fixture, page }: PackageStaticPreviewProp
       {page.inlineCss && <style dangerouslySetInnerHTML={{ __html: page.inlineCss }} />}
       <div
         aria-hidden="true"
+        className={styles.previewRoot}
         data-fixture-hash={fixture.integrity.fixtureSha256}
         data-preview-airstrip-links={page.counts.airstripLinks}
         data-preview-controls={page.counts.controls}

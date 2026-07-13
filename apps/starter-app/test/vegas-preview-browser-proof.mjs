@@ -23,11 +23,13 @@ const viewports = [
 const routes = Object.values(fixture.routes).sort((left, right) => left.route.localeCompare(right.route));
 const redirects = new Map(fixture.redirects.map((redirect) => [redirect.sourcePath, redirect]));
 const storageKey = `pumpkin_preview_age_${fixture.tenantId}`;
+const allowedPlatformCookieNames = new Set(['ARRAffinity', 'ARRAffinitySameSite']);
 const browser = await chromium.launch({ executablePath, headless: true });
 const globalNetwork = { posts: [], airstrip: [], failures: [], httpErrors: [] };
 const routeResults = [];
 const redirectResults = [];
 const interactionResults = [];
+const observedPlatformCookieNames = new Set();
 let ageGateResult;
 
 try {
@@ -37,30 +39,46 @@ try {
   await proveResponsiveRoutes();
   await proveInteractionClasses();
 
-  assert.equal(globalNetwork.posts.length, 0, `POST requests occurred: ${globalNetwork.posts.join(', ')}`);
-  assert.equal(globalNetwork.airstrip.length, 0, `Airstrip requests occurred: ${globalNetwork.airstrip.join(', ')}`);
-  assert.equal(globalNetwork.failures.length, 0, `Required network failures occurred: ${globalNetwork.failures.join(', ')}`);
-  assert.equal(globalNetwork.httpErrors.length, 0, `Required HTTP errors occurred: ${globalNetwork.httpErrors.join(', ')}`);
-  assert.equal(routeResults.length, routes.length * viewports.length);
-  assert.equal(redirectResults.length, fixture.redirects.length * viewports.length);
-  assert.equal(routeResults.filter((item) => item.horizontalOverflow).length, 0);
-  assert.equal(routeResults.reduce((sum, item) => sum + item.brokenImages, 0), 0);
-  assert.equal(routeResults.reduce((sum, item) => sum + item.pendingImages, 0), 0);
-  assert.equal(routeResults.reduce((sum, item) => sum + item.forms, 0), fixture.counts.effectiveFormInstances * viewports.length);
-  assert.equal(routeResults.reduce((sum, item) => sum + item.controls, 0), fixture.counts.effectiveControls * viewports.length);
-  assert.equal(routeResults.reduce((sum, item) => sum + item.links, 0), fixture.counts.effectiveLinks * viewports.length);
-  assert.equal(routeResults.reduce((sum, item) => sum + item.airstripLinks, 0), fixture.counts.effectiveAirstripLinks * viewports.length);
+  process.stdout.write(`${JSON.stringify({
+    stage: 'network-summary',
+    posts: globalNetwork.posts,
+    airstrip: globalNetwork.airstrip,
+    failures: globalNetwork.failures,
+    httpErrors: globalNetwork.httpErrors,
+  })}\n`);
+  const routeRenderCount = routeResults.length;
+  const redirectProofCount = redirectResults.length;
+  const overflowFailures = routeResults.filter((item) => item.horizontalOverflow).length;
+  const brokenImages = routeResults.reduce((sum, item) => sum + item.brokenImages, 0);
+  const pendingImages = routeResults.reduce((sum, item) => sum + item.pendingImages, 0);
+  const formInstances = routeResults.reduce((sum, item) => sum + item.forms, 0);
+  const controls = routeResults.reduce((sum, item) => sum + item.controls, 0);
+  const links = routeResults.reduce((sum, item) => sum + item.links, 0);
+  const airstripLinks = routeResults.reduce((sum, item) => sum + item.airstripLinks, 0);
+  const passed = globalNetwork.posts.length === 0
+    && globalNetwork.airstrip.length === 0
+    && globalNetwork.failures.length === 0
+    && globalNetwork.httpErrors.length === 0
+    && routeRenderCount === routes.length * viewports.length
+    && redirectProofCount === fixture.redirects.length * viewports.length
+    && overflowFailures === 0
+    && brokenImages === 0
+    && pendingImages === 0
+    && formInstances === fixture.counts.effectiveFormInstances * viewports.length
+    && controls === fixture.counts.effectiveControls * viewports.length
+    && links === fixture.counts.effectiveLinks * viewports.length
+    && airstripLinks === fixture.counts.effectiveAirstripLinks * viewports.length;
 
   const report = {
     schemaVersion: 'pumpkin-preview-browser-proof/v1',
-    status: 'passed',
+    status: passed ? 'passed' : 'failed',
     tenantId: fixture.tenantId,
     fixtureSha256: fixture.integrity.fixtureSha256,
     baseUrl,
     counts: {
-      routeRenders: routeResults.length,
-      redirectProofs: redirectResults.length,
-      screenshots: routeResults.length,
+      routeRenders: routeRenderCount,
+      redirectProofs: redirectProofCount,
+      screenshots: routeRenderCount,
       canonicalMediaGets: fixture.media.canonical.length,
       aliasesValidated: fixture.media.aliases.length,
       effectiveFormsPerViewport: fixture.counts.effectiveFormInstances,
@@ -71,10 +89,11 @@ try {
       airstripRequests: globalNetwork.airstrip.length,
       failedRequests: globalNetwork.failures.length,
       httpErrors: globalNetwork.httpErrors.length,
-      overflowFailures: 0,
-      brokenImages: 0,
-      pendingImages: 0,
+      overflowFailures,
+      brokenImages,
+      pendingImages,
     },
+    network: globalNetwork,
     ageGate: ageGateResult,
     interactions: interactionResults,
     redirects: redirectResults,
@@ -83,6 +102,19 @@ try {
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
   process.stdout.write(`${JSON.stringify({ status: report.status, counts: report.counts, outputPath })}\n`);
+  assert.equal(globalNetwork.posts.length, 0, `POST requests occurred: ${globalNetwork.posts.join(', ')}`);
+  assert.equal(globalNetwork.airstrip.length, 0, `Airstrip requests occurred: ${globalNetwork.airstrip.join(', ')}`);
+  assert.equal(globalNetwork.failures.length, 0, `Required network failures occurred: ${globalNetwork.failures.join(', ')}`);
+  assert.equal(globalNetwork.httpErrors.length, 0, `Required HTTP errors occurred: ${globalNetwork.httpErrors.join(', ')}`);
+  assert.equal(routeRenderCount, routes.length * viewports.length);
+  assert.equal(redirectProofCount, fixture.redirects.length * viewports.length);
+  assert.equal(overflowFailures, 0);
+  assert.equal(brokenImages, 0);
+  assert.equal(pendingImages, 0);
+  assert.equal(formInstances, fixture.counts.effectiveFormInstances * viewports.length);
+  assert.equal(controls, fixture.counts.effectiveControls * viewports.length);
+  assert.equal(links, fixture.counts.effectiveLinks * viewports.length);
+  assert.equal(airstripLinks, fixture.counts.effectiveAirstripLinks * viewports.length);
 } finally {
   await browser.close();
 }
@@ -97,13 +129,14 @@ async function proveAgeGate() {
   assert.equal(await page.locator(`#package-preview-${fixture.tenantId}`).getAttribute('inert'), '');
   assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), 'I am 21 or older');
   assert.equal(await page.evaluate(() => localStorage.length), 0);
-  assert.equal((await context.cookies()).length, 0);
+  await assertCookieBoundary(context);
   await gate.locator('button', { hasText: 'I am 21 or older' }).click();
   await gate.waitFor({ state: 'detached' });
   assert.equal(await page.locator(`#package-preview-${fixture.tenantId}`).getAttribute('inert'), null);
   assert.equal(await page.evaluate((key) => sessionStorage.getItem(key), storageKey), '1');
   await page.goto(`${baseUrl}${previewBasePath}/clubs`, { waitUntil: 'networkidle' });
   assert.equal(await page.locator('[data-pumpkin-age-gate]').count(), 0);
+  await assertCookieBoundary(context);
   await context.close();
 
   const newSession = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -114,6 +147,7 @@ async function proveAgeGate() {
   await newPage.locator('[data-pumpkin-age-gate] button', { hasText: 'Leave preview' }).click();
   await newPage.waitForURL((url) => url.pathname === '/');
   assert.equal(new URL(newPage.url()).pathname, '/');
+  await assertCookieBoundary(newSession);
   await newSession.close();
 
   ageGateResult = {
@@ -125,9 +159,24 @@ async function proveAgeGate() {
     newSessionLockedAgain: true,
     exitActionReturnedToStarterRoot: true,
     localStorageEntries: 0,
-    cookies: 0,
+    applicationCookies: 0,
+    allowedPlatformCookieNames: [...observedPlatformCookieNames].sort(),
     personalDataPersisted: false,
   };
+}
+
+async function assertCookieBoundary(context) {
+  const cookies = await context.cookies();
+  const applicationCookies = cookies.filter((cookie) => {
+    const allowed = allowedPlatformCookieNames.has(cookie.name) && cookie.httpOnly && cookie.secure;
+    if (allowed) observedPlatformCookieNames.add(cookie.name);
+    return !allowed;
+  });
+  assert.deepEqual(
+    applicationCookies.map((cookie) => cookie.name),
+    [],
+    'The preview must not set application or age-gate cookies.',
+  );
 }
 
 async function proveRedirects() {
@@ -184,7 +233,7 @@ async function proveResponsiveRoutes() {
       assert(response, `No response for ${requestedPath}`);
       assert.equal(response.status(), 200);
       await autoScroll(page);
-      await page.waitForTimeout(50);
+      await waitForImages(page, requestedPath);
 
       const dom = await page.evaluate(() => {
         const images = Array.from(document.images);
@@ -202,7 +251,7 @@ async function proveResponsiveRoutes() {
           submitControls: document.querySelectorAll('button[type="submit"], input[type="submit"], input[type="image"]').length,
           notices: document.querySelectorAll('.pumpkin-preview-form-notice').length,
           controls: sourceControls.size,
-          links: document.querySelectorAll('a[href], area[href]').length,
+          links: document.querySelectorAll('a[href]:not([data-preview-derived-control]), area[href]').length,
           airstripLinks: Array.from(document.querySelectorAll('a[href]')).filter((link) => /(^|\.)airstrip(?:lasvegas|lv)\.com$/i.test(new URL(link.href).hostname)).length,
           localPaths: /(?:[A-Za-z]:\\\\|C:\/Users\/|\/Users\/|\/home\/site\/)/i.test(document.documentElement.innerHTML),
           genericFallback: /Unknown block type|Preview Not Found|generic starter/i.test(document.body.innerText),
@@ -331,6 +380,40 @@ async function autoScroll(page) {
       await delay(8);
     }
     window.scrollTo(0, 0);
+  });
+}
+
+async function waitForImages(page, requestedPath) {
+  await page.evaluate(() => {
+    for (const image of Array.from(document.images)) {
+      if (image.complete || !image.src) continue;
+      image.loading = 'eager';
+      image.src = image.currentSrc || image.src;
+    }
+  });
+  try {
+    await page.waitForFunction(
+      () => Array.from(document.images).every((image) => image.complete),
+      undefined,
+      { timeout: 15000 },
+    );
+  } catch (error) {
+    const pending = await page.evaluate(() => Array.from(document.images)
+      .filter((image) => !image.complete)
+      .map((image) => ({
+        src: image.currentSrc || image.src,
+        loading: image.loading,
+        hidden: image.hidden,
+        width: image.getBoundingClientRect().width,
+        height: image.getBoundingClientRect().height,
+      })));
+    process.stderr.write(`${JSON.stringify({ stage: 'pending-images', requestedPath, pending })}\n`);
+    throw error;
+  }
+  await page.evaluate(async () => {
+    await Promise.all(Array.from(document.images)
+      .filter((image) => image.naturalWidth > 0)
+      .map((image) => image.decode().catch(() => undefined)));
   });
 }
 

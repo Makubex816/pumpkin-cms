@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PreviewPageProps): Promise<Me
   const packagePreview = await getPackageStaticPreviewPage(params.tenantId, params.slug ?? []);
   if (packagePreview) {
     return {
-      title: packagePreview.page.title,
+      title: { absolute: packagePreview.page.title },
       description: packagePreview.page.description,
       robots: {
         index: false,

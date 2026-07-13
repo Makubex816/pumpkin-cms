@@ -1,0 +1,21 @@
+.previewRoot {
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .previewRoot :global(*) {
+    min-width: 0 !important;
+  }
+
+  .previewRoot :global(table) {
+    display: block;
+    max-width: 100%;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    overscroll-behavior-inline: contain;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+}
