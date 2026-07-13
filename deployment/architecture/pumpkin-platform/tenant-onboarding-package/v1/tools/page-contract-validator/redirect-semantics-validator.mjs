@@ -34,14 +34,15 @@ const counts = {
   canonicalNoOps: redirects.filter((item) => item.disposition === "canonical_noop").length,
   clientAnchors: redirects.filter((item) => item.disposition === "client_anchor").length,
   externalRedirects: redirects.filter((item) => item.disposition === "external_redirect").length,
-  blockedRedirects: redirects.filter((item) => item.disposition === "blocked_meaningful_redirect").length,
+  persistableTenantRedirects: redirects.filter((item) => item.disposition === "persistable_tenant_redirect").length,
+  blockedRedirects: redirects.filter((item) => item.disposition === "blocked_unresolved_redirect").length,
   cycleInvalidRedirects: redirects.filter((item) => item.disposition === "cycle_invalid_redirect").length,
   semanticDispositions: redirects.length,
 };
 const valid = counts.blockedRedirects === 0 && counts.cycleInvalidRedirects === 0;
 const result = {
   valid,
-  status: valid ? "passed_redirect_semantic_accounting" : "blocked_meaningful_redirect_requires_separate_api_support",
+  status: valid ? "passed_redirect_semantic_accounting" : "blocked_redirect_semantics",
   routeMap: routeMapPath,
   sourceRoot: sourceRoot || null,
   counts,
@@ -179,7 +180,8 @@ function classifyDisposition(declaration, persisted, cycleSources) {
   if (!sameOrigin) return "external_redirect";
   if (cycleSources.has(source.path)) return "cycle_invalid_redirect";
   if (persisted.has(source.path)) return "persisted_redirect";
-  return "blocked_meaningful_redirect";
+  if (declaration.targetExists) return "persistable_tenant_redirect";
+  return "blocked_unresolved_redirect";
 }
 
 function buildNoOpProof(declaration) {

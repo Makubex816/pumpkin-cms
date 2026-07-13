@@ -69,6 +69,13 @@ public interface IDataConnection
     Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding);
     Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding);
 
+    // Tenant redirect registry methods
+    Task<List<TenantRedirect>> GetTenantRedirectsAsync(string tenantId, bool includeInactive = false);
+    Task<TenantRedirect?> GetTenantRedirectAsync(string tenantId, string id);
+    Task<TenantRedirect> CreateTenantRedirectAsync(string tenantId, TenantRedirect redirect);
+    Task<TenantRedirect> UpdateTenantRedirectAsync(string tenantId, string id, TenantRedirect redirect);
+    Task<TenantRedirect?> ResolveTenantRedirectAsync(string apiKey, string tenantId, string sourcePath);
+
     // Theme methods (content serving - API key required)
     Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId);
     Task<Theme?> GetActiveThemeAsync(string apiKey, string tenantId);

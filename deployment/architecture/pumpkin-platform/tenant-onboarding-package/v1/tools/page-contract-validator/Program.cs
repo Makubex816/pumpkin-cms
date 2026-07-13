@@ -13,7 +13,7 @@ if (!arguments.TryGetValue("pages", out var pagesPath) ||
     !arguments.TryGetValue("existing-slugs", out var existingSlugsPath) ||
     !arguments.TryGetValue("expected-tenant", out var expectedTenant))
 {
-    Console.Error.WriteLine("Usage: page-contract-validator --pages <json> --definitions <json> --existing-slugs <json> --expected-tenant <tenant> [--expected-pages <n>] [--expected-remaining <n>] [--redirect-application create-with-page|update-pending-pages]");
+    Console.Error.WriteLine("Usage: page-contract-validator --pages <json> --definitions <json> --existing-slugs <json> --expected-tenant <tenant> [--expected-pages <n>] [--expected-remaining <n>] [--redirect-application create-with-page|update-pending-pages] [--tenant-redirect-plan <json>]");
     return 2;
 }
 
@@ -32,6 +32,9 @@ var expectedPageCount = ReadInteger(arguments, "expected-pages", pages.Count);
 var expectedRemainingCount = ReadInteger(arguments, "expected-remaining", pages.Count - existingSlugs.Count);
 var expectedRedirectCount = ReadInteger(arguments, "expected-redirects", 3);
 var redirectApplication = arguments.GetValueOrDefault("redirect-application", "create-with-page");
+var tenantRedirectPlanKeys = arguments.TryGetValue("tenant-redirect-plan", out var tenantRedirectPlanPath)
+    ? await ReadTenantRedirectPlanKeysAsync(tenantRedirectPlanPath, expectedTenant)
+    : new HashSet<string>(StringComparer.Ordinal);
 var globalIssues = new List<ContractIssue>();
 var rows = new List<PageContractResult>();
 var definitionByKey = definitions
@@ -94,7 +97,7 @@ for (var index = 0; index < pages.Count; index++)
 
     if (redirectApplication == "update-pending-pages" && classification == "pending")
     {
-        ValidatePendingRedirectUpdatePersistence(page, issues);
+        ValidatePendingRedirectUpdatePersistence(page, tenantRedirectPlanKeys, issues);
     }
 
     ValidateReferencedDefinitions(rawPage, definitionByKey, issues);
@@ -135,7 +138,7 @@ var result = new
 {
     valid = errorCount == 0 && warningCount == 0,
     contractSources = redirectApplication == "update-pending-pages"
-        ? new[] { "Program.cs create-page route", "DesignSystemGuard.cs", "PageRedirectGuard.cs", "PageRevisionHelper.cs", "Page.cs request model" }
+        ? new[] { "Program.cs create-page route", "DesignSystemGuard.cs", "PageRedirectGuard.cs", "PageRevisionHelper.cs", "TenantRedirect import plan", "Page.cs request model" }
         : new[] { "Program.cs create-page route", "DesignSystemGuard.cs", "PageRedirectGuard.cs", "Page.cs request model" },
     expectedTenant,
     redirectApplication,
@@ -252,7 +255,7 @@ static void ValidateContactPage(Page page, JsonElement rawPage, IReadOnlyDiction
     Require(GetBoolean(content, "emailSendingEnabled") == false, "contact.form.email", "Contact email sending must remain disabled.", "ContentData.ContentBlocks.formBlock.content.emailSendingEnabled", issues);
 }
 
-static void ValidatePendingRedirectUpdatePersistence(Page page, ICollection<ContractIssue> issues)
+static void ValidatePendingRedirectUpdatePersistence(Page page, IReadOnlySet<string> tenantRedirectPlanKeys, ICollection<ContractIssue> issues)
 {
     var currentSlug = PageRedirectGuard.NormalizeSlug(page.PageSlug);
     foreach (var redirect in page.Redirects ?? new List<PageRedirect>())
@@ -262,13 +265,97 @@ static void ValidatePendingRedirectUpdatePersistence(Page page, ICollection<Cont
         if (string.Equals(from, currentSlug, StringComparison.Ordinal) &&
             !string.Equals(from, to, StringComparison.Ordinal))
         {
+            if (tenantRedirectPlanKeys.Contains($"{from}|{to}"))
+            {
+                continue;
+            }
+
             issues.Add(new(
                 "error",
                 "redirect.update.currentPageSourceUnsupported",
-                $"Meaningful redirect from current page route '{from}' to distinct route '{to}' cannot be applied after page creation because PageRevisionHelper drops redirects whose source equals the current page slug.",
+                $"Meaningful redirect from current page route '{from}' to distinct route '{to}' requires a matching validated tenant redirect import-plan action because PageRevisionHelper cannot persist it on the current page.",
                 "redirects"));
         }
     }
+}
+
+static async Task<HashSet<string>> ReadTenantRedirectPlanKeysAsync(string planPath, string expectedTenant)
+{
+    using var document = JsonDocument.Parse(await File.ReadAllTextAsync(planPath));
+    var keys = new HashSet<string>(StringComparer.Ordinal);
+    var root = document.RootElement;
+    if (!string.Equals(GetString(root, "schemaVersion"), "1.0.0", StringComparison.Ordinal) ||
+        GetBoolean(root, "valid") != true ||
+        !string.Equals(GetString(root, "status"), "persistable_idempotent_plan", StringComparison.Ordinal) ||
+        !string.Equals(GetString(root, "tenantId"), expectedTenant, StringComparison.Ordinal) ||
+        !root.TryGetProperty("counts", out var counts) || counts.ValueKind != JsonValueKind.Object ||
+        GetInteger(counts, "blocked") != 0 ||
+        !root.TryGetProperty("cycles", out var cycles) || cycles.ValueKind != JsonValueKind.Array || cycles.GetArrayLength() != 0 ||
+        !root.TryGetProperty("actions", out var actions) || actions.ValueKind != JsonValueKind.Array)
+    {
+        return keys;
+    }
+
+    var expectedActionCount = GetInteger(counts, "createActions");
+    if (expectedActionCount is null || expectedActionCount.Value != actions.GetArrayLength())
+    {
+        return keys;
+    }
+
+    var expectedEndpoint = $"/api/admin/tenants/{Uri.EscapeDataString(expectedTenant)}/redirects";
+    foreach (var action in actions.EnumerateArray())
+    {
+        var statusCode = action.TryGetProperty("payload", out var candidatePayload) && candidatePayload.ValueKind == JsonValueKind.Object
+            ? GetInteger(candidatePayload, "statusCode")
+            : null;
+        if (!string.Equals(GetString(action, "action"), "create", StringComparison.Ordinal) ||
+            string.IsNullOrWhiteSpace(GetString(action, "idempotencyKey")) ||
+            !string.Equals(GetString(action, "endpoint"), expectedEndpoint, StringComparison.Ordinal) ||
+            !action.TryGetProperty("payload", out var payload) || payload.ValueKind != JsonValueKind.Object ||
+            GetBoolean(payload, "active") != true ||
+            GetBoolean(payload, "preserveQueryString") is null ||
+            !string.Equals(GetString(payload, "targetStatus"), "resolved", StringComparison.Ordinal) ||
+            GetString(payload, "pageShadowMode") is not ("none" or "redirect_precedes_page") ||
+            string.IsNullOrWhiteSpace(GetString(payload, "sourcePackagePath")) ||
+            string.IsNullOrWhiteSpace(GetString(payload, "sourceDeclaration")) ||
+            string.IsNullOrWhiteSpace(GetString(payload, "auditCorrelationId")) ||
+            statusCode is null ||
+            !new[] { 301, 302, 307, 308 }.Contains(statusCode.Value))
+        {
+            return new HashSet<string>(StringComparer.Ordinal);
+        }
+
+        var source = PageRedirectGuard.NormalizeSlug(GetString(payload, "sourcePath"));
+        var rawTarget = GetString(payload, "target");
+        var targetKind = GetString(payload, "targetKind");
+        string target;
+        if (targetKind == "internal")
+        {
+            target = PageRedirectGuard.NormalizeSlug(rawTarget);
+        }
+        else if (targetKind == "external" &&
+            Uri.TryCreate(rawTarget, UriKind.Absolute, out var externalTarget) &&
+            externalTarget.Scheme is "http" or "https" &&
+            string.IsNullOrWhiteSpace(externalTarget.UserInfo))
+        {
+            target = PageRedirectGuard.NormalizeSlug(externalTarget.AbsolutePath);
+        }
+        else
+        {
+            return new HashSet<string>(StringComparer.Ordinal);
+        }
+
+        if (string.IsNullOrWhiteSpace(source) ||
+            string.IsNullOrWhiteSpace(target) ||
+            string.Equals(source, target, StringComparison.Ordinal))
+        {
+            return new HashSet<string>(StringComparer.Ordinal);
+        }
+
+        keys.Add($"{source}|{target}");
+    }
+
+    return keys;
 }
 
 static bool TryGetBlogContent(JsonElement rawPage, out JsonElement content)
@@ -302,6 +389,16 @@ static bool? GetBoolean(JsonElement element, string property)
         JsonValueKind.False => false,
         _ => null
     };
+}
+
+static int? GetInteger(JsonElement element, string property)
+{
+    return element.ValueKind == JsonValueKind.Object &&
+        element.TryGetProperty(property, out var value) &&
+        value.ValueKind == JsonValueKind.Number &&
+        value.TryGetInt32(out var parsed)
+            ? parsed
+            : null;
 }
 
 record ContractIssue(string Severity, string Code, string Message, string Path);

@@ -90,6 +90,12 @@ if (args.Contains("--v2-8-60t-domainbinding", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
+if (args.Contains("--v2-8-62drt-redirects", StringComparer.OrdinalIgnoreCase))
+{
+    await TenantRedirectSourceTestRunner.RunAsync();
+    return;
+}
+
 if (args.Contains("--v2-8-61osd-submit-key", StringComparer.OrdinalIgnoreCase))
 {
     await TenantSubmitKeyProvisioningSourceTestRunner.RunAsync();

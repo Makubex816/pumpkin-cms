@@ -1,5 +1,6 @@
 using pumpkin_api.Services;
 using pumpkin_api.Services.DomainBindings;
+using pumpkin_api.Services.TenantRedirects;
 using pumpkin_api.Managers;
 using pumpkin_net_models.Models;
 using System.Text.Json;
@@ -736,6 +737,7 @@ app.MapImportIntakeReadOnlyEndpoints();
 app.MapImportExecutionProjectionReadOnlyEndpoints();
 app.MapOperatorHandoffReadOnlyEndpoints();
 app.MapDomainBindingEndpoints();
+app.MapTenantRedirectEndpoints();
 
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using pumpkin_api.Services.TenantRedirects;
 using pumpkin_net_models.Models;
 using System.Security.Cryptography;
 
@@ -1296,6 +1297,154 @@ public class MongoDataConnection : IDataConnection, IDisposable
             userId, tenantId);
     }
 
+    public async Task<List<TenantRedirect>> GetTenantRedirectsAsync(string tenantId, bool includeInactive = false)
+    {
+        var collection = _database.GetCollection<TenantRedirect>("TenantRedirect");
+        var normalizedTenantId = TenantRedirectNormalizer.NormalizeTenantId(tenantId);
+        var filter = Builders<TenantRedirect>.Filter.Eq(item => item.TenantId, normalizedTenantId);
+        if (!includeInactive)
+        {
+            filter &= Builders<TenantRedirect>.Filter.Eq(item => item.Active, true);
+        }
+
+        return await collection.Find(filter).SortByDescending(item => item.UpdatedAt).ToListAsync();
+    }
+
+    public async Task<TenantRedirect?> GetTenantRedirectAsync(string tenantId, string id)
+    {
+        var collection = _database.GetCollection<TenantRedirect>("TenantRedirect");
+        var filter = Builders<TenantRedirect>.Filter.And(
+            Builders<TenantRedirect>.Filter.Eq(item => item.TenantId, TenantRedirectNormalizer.NormalizeTenantId(tenantId)),
+            Builders<TenantRedirect>.Filter.Eq(item => item.Id, id));
+        return await collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<TenantRedirect> CreateTenantRedirectAsync(string tenantId, TenantRedirect redirect)
+    {
+        var collection = _database.GetCollection<TenantRedirect>("TenantRedirect");
+        await EnsureTenantRedirectIndexAsync(collection);
+        PrepareTenantRedirectForSave(tenantId, redirect, isCreate: true);
+        await ThrowIfDuplicateTenantRedirectSourceAsync(collection, redirect, existingId: null);
+        try
+        {
+            await collection.InsertOneAsync(redirect);
+            return redirect;
+        }
+        catch (MongoWriteException ex) when (ex.WriteError?.Category == ServerErrorCategory.DuplicateKey)
+        {
+            throw new InvalidOperationException($"Tenant redirect source '{redirect.SourcePath}' already exists for tenant '{redirect.TenantId}'.", ex);
+        }
+    }
+
+    public async Task<TenantRedirect> UpdateTenantRedirectAsync(string tenantId, string id, TenantRedirect redirect)
+    {
+        var existing = await GetTenantRedirectAsync(tenantId, id);
+        if (existing == null)
+        {
+            throw new KeyNotFoundException($"Tenant redirect '{id}' was not found for tenant '{tenantId}'.");
+        }
+
+        var collection = _database.GetCollection<TenantRedirect>("TenantRedirect");
+        PrepareTenantRedirectForSave(tenantId, redirect, isCreate: false);
+        if (!string.Equals(existing.SourcePath, redirect.SourcePath, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException("A redirect source path is immutable.");
+        }
+        redirect.Id = id;
+        redirect.CreatedAt = existing.CreatedAt;
+        redirect.CreatedBy = existing.CreatedBy;
+        await ThrowIfDuplicateTenantRedirectSourceAsync(collection, redirect, existingId: id);
+        var filter = Builders<TenantRedirect>.Filter.And(
+            Builders<TenantRedirect>.Filter.Eq(item => item.TenantId, redirect.TenantId),
+            Builders<TenantRedirect>.Filter.Eq(item => item.Id, id));
+        var result = await collection.ReplaceOneAsync(filter, redirect);
+        if (result.MatchedCount == 0)
+        {
+            throw new KeyNotFoundException($"Tenant redirect '{id}' was not found for tenant '{tenantId}'.");
+        }
+
+        return redirect;
+    }
+
+    public async Task<TenantRedirect?> ResolveTenantRedirectAsync(string apiKey, string tenantId, string sourcePath)
+    {
+        var normalizedTenantId = TenantRedirectNormalizer.NormalizeTenantId(tenantId);
+        if (!await ValidateTenantApiKeyAsync(apiKey, normalizedTenantId) ||
+            !TenantRedirectNormalizer.TryNormalizeSourcePath(sourcePath, out var normalizedSource, out _))
+        {
+            return null;
+        }
+
+        var collection = _database.GetCollection<TenantRedirect>("TenantRedirect");
+        var filter = Builders<TenantRedirect>.Filter.And(
+            Builders<TenantRedirect>.Filter.Eq(item => item.TenantId, normalizedTenantId),
+            Builders<TenantRedirect>.Filter.Eq(item => item.SourcePath, normalizedSource),
+            Builders<TenantRedirect>.Filter.Eq(item => item.Active, true),
+            Builders<TenantRedirect>.Filter.Eq(item => item.TargetStatus, "resolved"));
+        return await collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    private static async Task EnsureTenantRedirectIndexAsync(IMongoCollection<TenantRedirect> collection)
+    {
+        var keys = Builders<TenantRedirect>.IndexKeys
+            .Ascending(item => item.TenantId)
+            .Ascending(item => item.SourcePath)
+            .Ascending(item => item.Active);
+        await collection.Indexes.CreateOneAsync(new CreateIndexModel<TenantRedirect>(
+            keys,
+            new CreateIndexOptions { Unique = true, Name = "tenant_source_active_unique" }));
+    }
+
+    private static void PrepareTenantRedirectForSave(string tenantId, TenantRedirect redirect, bool isCreate)
+    {
+        redirect.TenantId = TenantRedirectNormalizer.NormalizeTenantId(tenantId);
+        if (!TenantRedirectNormalizer.TryNormalizeSourcePath(redirect.SourcePath, out var sourcePath, out var sourceError))
+        {
+            throw new InvalidOperationException(sourceError);
+        }
+
+        if (!TenantRedirectNormalizer.TryNormalizeTarget(
+                redirect.Target,
+                redirect.TargetKind,
+                out var target,
+                out _,
+                out var targetKind,
+                out var targetError))
+        {
+            throw new InvalidOperationException(targetError);
+        }
+
+        redirect.SourcePath = sourcePath;
+        redirect.Target = target;
+        redirect.TargetKind = targetKind;
+        redirect.RoutePrecedence = "redirect_before_page";
+        redirect.UpdatedAt = DateTime.UtcNow;
+        if (isCreate)
+        {
+            redirect.CreatedAt = redirect.CreatedAt == default ? redirect.UpdatedAt : redirect.CreatedAt;
+            redirect.Id = string.IsNullOrWhiteSpace(redirect.Id)
+                ? TenantRedirectMutation.BuildId(redirect.TenantId, redirect.SourcePath)
+                : redirect.Id;
+        }
+    }
+
+    private static async Task ThrowIfDuplicateTenantRedirectSourceAsync(
+        IMongoCollection<TenantRedirect> collection,
+        TenantRedirect redirect,
+        string? existingId)
+    {
+        if (!redirect.Active) return;
+        var filter = Builders<TenantRedirect>.Filter.And(
+            Builders<TenantRedirect>.Filter.Eq(item => item.TenantId, redirect.TenantId),
+            Builders<TenantRedirect>.Filter.Eq(item => item.SourcePath, redirect.SourcePath),
+            Builders<TenantRedirect>.Filter.Eq(item => item.Active, true));
+        var duplicate = await collection.Find(filter).FirstOrDefaultAsync();
+        if (duplicate != null && !string.Equals(duplicate.Id, existingId, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException($"Active tenant redirect source '{redirect.SourcePath}' already exists for tenant '{redirect.TenantId}'.");
+        }
+    }
+
     public Task EnsureDomainBindingContainerAsync()
     {
         return Task.CompletedTask;
@@ -1725,6 +1874,31 @@ public class MongoDataConnection : IDataConnection, IDisposable
     }
 
     public Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<List<TenantRedirect>> GetTenantRedirectsAsync(string tenantId, bool includeInactive = false)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<TenantRedirect?> GetTenantRedirectAsync(string tenantId, string id)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<TenantRedirect> CreateTenantRedirectAsync(string tenantId, TenantRedirect redirect)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<TenantRedirect> UpdateTenantRedirectAsync(string tenantId, string id, TenantRedirect redirect)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task<TenantRedirect?> ResolveTenantRedirectAsync(string apiKey, string tenantId, string sourcePath)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

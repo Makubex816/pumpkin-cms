@@ -270,6 +270,31 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.UpdateDomainBindingAsync(tenantId, id, domainBinding);
     }
 
+    public Task<List<TenantRedirect>> GetTenantRedirectsAsync(string tenantId, bool includeInactive = false)
+    {
+        return _dataConnection.GetTenantRedirectsAsync(tenantId, includeInactive);
+    }
+
+    public Task<TenantRedirect?> GetTenantRedirectAsync(string tenantId, string id)
+    {
+        return _dataConnection.GetTenantRedirectAsync(tenantId, id);
+    }
+
+    public Task<TenantRedirect> CreateTenantRedirectAsync(string tenantId, TenantRedirect redirect)
+    {
+        return _dataConnection.CreateTenantRedirectAsync(tenantId, redirect);
+    }
+
+    public Task<TenantRedirect> UpdateTenantRedirectAsync(string tenantId, string id, TenantRedirect redirect)
+    {
+        return _dataConnection.UpdateTenantRedirectAsync(tenantId, id, redirect);
+    }
+
+    public Task<TenantRedirect?> ResolveTenantRedirectAsync(string apiKey, string tenantId, string sourcePath)
+    {
+        return _dataConnection.ResolveTenantRedirectAsync(apiKey, tenantId, sourcePath);
+    }
+
     // Theme methods (content serving - API key required)
     public Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId)
     {

@@ -1,5 +1,6 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
+using pumpkin_api.Services.TenantRedirects;
 using pumpkin_net_models.Models;
 using System.Net;
 using System.Security.Cryptography;
@@ -2357,6 +2358,183 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             _logger.LogError(ex, "Error updating user last login - UserId: {UserId}, TenantId: {TenantId}", 
                 userId, tenantId);
             throw;
+        }
+    }
+
+    public async Task<List<TenantRedirect>> GetTenantRedirectsAsync(string tenantId, bool includeInactive = false)
+    {
+        var normalizedTenantId = TenantRedirectNormalizer.NormalizeTenantId(tenantId);
+        try
+        {
+            var container = _database.GetContainer("TenantRedirect");
+            var queryText = includeInactive
+                ? "SELECT * FROM c WHERE c.tenantId = @tenantId ORDER BY c.updatedAt DESC"
+                : "SELECT * FROM c WHERE c.tenantId = @tenantId AND c.active = true ORDER BY c.updatedAt DESC";
+            var query = new QueryDefinition(queryText).WithParameter("@tenantId", normalizedTenantId);
+            var results = new List<TenantRedirect>();
+            using var iterator = container.GetItemQueryIterator<TenantRedirect>(
+                query,
+                requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(normalizedTenantId) });
+            while (iterator.HasMoreResults)
+            {
+                results.AddRange(await iterator.ReadNextAsync());
+            }
+
+            return results;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return new List<TenantRedirect>();
+        }
+    }
+
+    public async Task<TenantRedirect?> GetTenantRedirectAsync(string tenantId, string id)
+    {
+        var normalizedTenantId = TenantRedirectNormalizer.NormalizeTenantId(tenantId);
+        try
+        {
+            var container = _database.GetContainer("TenantRedirect");
+            var response = await container.ReadItemAsync<TenantRedirect>(id, new PartitionKey(normalizedTenantId));
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+    }
+
+    public async Task<TenantRedirect> CreateTenantRedirectAsync(string tenantId, TenantRedirect redirect)
+    {
+        await EnsureTenantRedirectContainerAsync();
+        PrepareTenantRedirectForSave(tenantId, redirect, isCreate: true);
+        var container = _database.GetContainer("TenantRedirect");
+        await ThrowIfDuplicateTenantRedirectSourceAsync(container, redirect, existingId: null);
+
+        try
+        {
+            var response = await container.CreateItemAsync(redirect, new PartitionKey(redirect.TenantId));
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
+        {
+            throw new InvalidOperationException($"Tenant redirect source '{redirect.SourcePath}' already exists for tenant '{redirect.TenantId}'.", ex);
+        }
+    }
+
+    public async Task<TenantRedirect> UpdateTenantRedirectAsync(string tenantId, string id, TenantRedirect redirect)
+    {
+        var existing = await GetTenantRedirectAsync(tenantId, id);
+        if (existing == null)
+        {
+            throw new KeyNotFoundException($"Tenant redirect '{id}' was not found for tenant '{tenantId}'.");
+        }
+
+        PrepareTenantRedirectForSave(tenantId, redirect, isCreate: false);
+        if (!string.Equals(existing.SourcePath, redirect.SourcePath, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException("A redirect source path is immutable.");
+        }
+        redirect.Id = id;
+        redirect.CreatedAt = existing.CreatedAt;
+        redirect.CreatedBy = existing.CreatedBy;
+        var container = _database.GetContainer("TenantRedirect");
+        await ThrowIfDuplicateTenantRedirectSourceAsync(container, redirect, existingId: id);
+        var response = await container.ReplaceItemAsync(redirect, id, new PartitionKey(redirect.TenantId));
+        return response.Resource;
+    }
+
+    public async Task<TenantRedirect?> ResolveTenantRedirectAsync(string apiKey, string tenantId, string sourcePath)
+    {
+        var normalizedTenantId = TenantRedirectNormalizer.NormalizeTenantId(tenantId);
+        if (!await ValidateTenantApiKeyAsync(apiKey, normalizedTenantId) ||
+            !TenantRedirectNormalizer.TryNormalizeSourcePath(sourcePath, out var normalizedSource, out _))
+        {
+            return null;
+        }
+
+        try
+        {
+            var container = _database.GetContainer("TenantRedirect");
+            var query = new QueryDefinition(
+                    "SELECT * FROM c WHERE c.tenantId = @tenantId AND c.sourcePath = @sourcePath AND c.active = true AND c.targetStatus = 'resolved'")
+                .WithParameter("@tenantId", normalizedTenantId)
+                .WithParameter("@sourcePath", normalizedSource);
+            using var iterator = container.GetItemQueryIterator<TenantRedirect>(
+                query,
+                requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(normalizedTenantId), MaxItemCount = 1 });
+            if (!iterator.HasMoreResults) return null;
+            return (await iterator.ReadNextAsync()).FirstOrDefault();
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+    }
+
+    private async Task EnsureTenantRedirectContainerAsync()
+    {
+        var properties = new ContainerProperties("TenantRedirect", "/tenantId");
+        var uniqueKey = new UniqueKey();
+        uniqueKey.Paths.Add("/sourcePath");
+        uniqueKey.Paths.Add("/active");
+        properties.UniqueKeyPolicy.UniqueKeys.Add(uniqueKey);
+        await _database.CreateContainerIfNotExistsAsync(properties);
+    }
+
+    private static void PrepareTenantRedirectForSave(string tenantId, TenantRedirect redirect, bool isCreate)
+    {
+        redirect.TenantId = TenantRedirectNormalizer.NormalizeTenantId(tenantId);
+        if (!TenantRedirectNormalizer.TryNormalizeSourcePath(redirect.SourcePath, out var sourcePath, out var sourceError))
+        {
+            throw new InvalidOperationException(sourceError);
+        }
+
+        if (!TenantRedirectNormalizer.TryNormalizeTarget(
+                redirect.Target,
+                redirect.TargetKind,
+                out var target,
+                out _,
+                out var targetKind,
+                out var targetError))
+        {
+            throw new InvalidOperationException(targetError);
+        }
+
+        redirect.SourcePath = sourcePath;
+        redirect.Target = target;
+        redirect.TargetKind = targetKind;
+        redirect.RoutePrecedence = "redirect_before_page";
+        redirect.UpdatedAt = DateTime.UtcNow;
+        if (isCreate)
+        {
+            redirect.CreatedAt = redirect.CreatedAt == default ? redirect.UpdatedAt : redirect.CreatedAt;
+            redirect.Id = string.IsNullOrWhiteSpace(redirect.Id)
+                ? TenantRedirectMutation.BuildId(redirect.TenantId, redirect.SourcePath)
+                : redirect.Id;
+        }
+    }
+
+    private static async Task ThrowIfDuplicateTenantRedirectSourceAsync(
+        Container container,
+        TenantRedirect redirect,
+        string? existingId)
+    {
+        if (!redirect.Active) return;
+        var query = new QueryDefinition(
+                "SELECT * FROM c WHERE c.tenantId = @tenantId AND c.sourcePath = @sourcePath AND c.active = true")
+            .WithParameter("@tenantId", redirect.TenantId)
+            .WithParameter("@sourcePath", redirect.SourcePath);
+        using var iterator = container.GetItemQueryIterator<TenantRedirect>(
+            query,
+            requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(redirect.TenantId) });
+        while (iterator.HasMoreResults)
+        {
+            var duplicate = (await iterator.ReadNextAsync()).FirstOrDefault(item =>
+                !string.Equals(item.Id, existingId, StringComparison.Ordinal));
+            if (duplicate != null)
+            {
+                throw new InvalidOperationException($"Active tenant redirect source '{redirect.SourcePath}' already exists for tenant '{redirect.TenantId}'.");
+            }
         }
     }
 

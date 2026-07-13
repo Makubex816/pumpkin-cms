@@ -48,12 +48,12 @@ const run = spawnSync(process.execPath, [
 assert.equal(run.status, 1);
 const result = JSON.parse(run.stdout);
 assert.equal(result.valid, false);
-assert.equal(result.status, "blocked_meaningful_redirect_requires_separate_api_support");
+assert.equal(result.status, "blocked_redirect_semantics");
 assert.equal(disposition(result, "/legacy"), "persisted_redirect");
 assert.equal(disposition(result, "/same"), "canonical_noop");
 assert.equal(disposition(result, "/anchor"), "client_anchor");
 assert.equal(disposition(result, "/external"), "external_redirect");
-assert.equal(disposition(result, "/blocked"), "blocked_meaningful_redirect");
+assert.equal(disposition(result, "/blocked"), "persistable_tenant_redirect");
 assert.equal(disposition(result, "/cycle-a"), "cycle_invalid_redirect");
 assert.equal(disposition(result, "/cycle-b"), "cycle_invalid_redirect");
 assert.equal(result.cycles.filter((cycle) => cycle.type === "direct_self_loop").length, 1);
@@ -66,7 +66,7 @@ process.stdout.write(`${JSON.stringify({
   canonicalNoOp: true,
   clientAnchor: true,
   externalRedirect: true,
-  blockedMeaningfulRedirect: true,
+  persistableTenantRedirect: true,
   directSelfLoopDetected: true,
   multiNodeCycleRejected: true,
 })}\n`);

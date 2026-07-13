@@ -69,6 +69,18 @@ public interface IDatabaseService
     Task<DomainBinding> CreateDomainBindingAsync(string tenantId, DomainBinding domainBinding);
     Task<DomainBinding> UpdateDomainBindingAsync(string tenantId, string id, DomainBinding domainBinding);
 
+    // Tenant redirect registry methods (JWT authorization required at endpoint level)
+    Task<List<TenantRedirect>> GetTenantRedirectsAsync(string tenantId, bool includeInactive = false) =>
+        Task.FromException<List<TenantRedirect>>(new NotSupportedException("Tenant redirects are not supported by this test double."));
+    Task<TenantRedirect?> GetTenantRedirectAsync(string tenantId, string id) =>
+        Task.FromException<TenantRedirect?>(new NotSupportedException("Tenant redirects are not supported by this test double."));
+    Task<TenantRedirect> CreateTenantRedirectAsync(string tenantId, TenantRedirect redirect) =>
+        Task.FromException<TenantRedirect>(new NotSupportedException("Tenant redirects are not supported by this test double."));
+    Task<TenantRedirect> UpdateTenantRedirectAsync(string tenantId, string id, TenantRedirect redirect) =>
+        Task.FromException<TenantRedirect>(new NotSupportedException("Tenant redirects are not supported by this test double."));
+    Task<TenantRedirect?> ResolveTenantRedirectAsync(string apiKey, string tenantId, string sourcePath) =>
+        Task.FromException<TenantRedirect?>(new NotSupportedException("Tenant redirects are not supported by this test double."));
+
     // Theme methods (content serving - API key required)
     Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId);
     Task<Theme?> GetActiveThemeAsync(string apiKey, string tenantId);
