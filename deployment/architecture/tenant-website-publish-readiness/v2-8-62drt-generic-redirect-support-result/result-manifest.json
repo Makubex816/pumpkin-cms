@@ -1,0 +1,169 @@
+{
+  "phase": "V2.8.62DRT",
+  "lane": "Pumpkin Platform Routing And Tenant Import Contracts",
+  "classification": "generic_tenant_redirect_contract_support_single_api_deploy_no_tenant_data_mutation_no_airstrip",
+  "status": "blocked_after_single_api_deploy_live_internal_redirect_validation_cross_platform_path_detection",
+  "generatedAtUtc": "2026-07-13T15:57:09Z",
+  "entryGate": {
+    "commit": "afca3b26fb4de5ccb53d369ccbcb9f45c2bee878",
+    "commitSubject": "Document V2.8.62DRS meaningful redirect blocker",
+    "stagedFileCount": 0,
+    "drsResultFileCount": 29
+  },
+  "implementation": {
+    "model": "TenantRedirect",
+    "tenantScoped": true,
+    "tenantSpecificHardcoding": false,
+    "cosmosSupported": true,
+    "mongoSupported": true,
+    "backupSchemaVersion": "1.0.0",
+    "backupKind": "pumpkin.tenant-redirects",
+    "starterRuntimeLocalOnly": true,
+    "adminRoutes": [
+      "GET /api/admin/tenants/{tenantId}/redirects",
+      "POST /api/admin/tenants/{tenantId}/redirects",
+      "PUT /api/admin/tenants/{tenantId}/redirects/{redirectId}",
+      "DELETE /api/admin/tenants/{tenantId}/redirects/{redirectId}",
+      "POST /api/admin/tenants/{tenantId}/redirects/validate"
+    ],
+    "runtimeRoute": "GET /api/redirects/{tenantId}/resolve"
+  },
+  "localValidation": {
+    "focusedApiAssertionsPassed": 53,
+    "focusedApiAssertionsFailed": 0,
+    "importPlannerDeclarations": 3,
+    "importPlannerCreateActions": 2,
+    "importPlannerResumeDuplicates": 0,
+    "importPlannerSafetyClassesPassed": 7,
+    "semanticValidatorPassed": 7,
+    "semanticValidatorTotal": 7,
+    "pageContractRegressionPassed": 6,
+    "pageContractRegressionTotal": 6,
+    "starterRuntimeTestsPassed": true,
+    "starterTypeCheckPassed": true,
+    "starterProductionBuildPassed": true,
+    "apiReleaseBuildWarnings": 0,
+    "apiReleaseBuildErrors": 0
+  },
+  "vegasDryRun": {
+    "status": "persistable_idempotent_plan",
+    "sourceDeclarations": 3,
+    "existingNoopActions": 1,
+    "futureCreateActions": 2,
+    "blockedActions": 0,
+    "cycles": 0,
+    "persisted": false,
+    "plannedMappings": [
+      {
+        "source": "/guides/couples-night",
+        "target": "/guides/couples-guide-vegas",
+        "statusCode": 301
+      },
+      {
+        "source": "/guides/dress-code-what-to-expect",
+        "target": "/guides/dress-code",
+        "statusCode": 301
+      }
+    ]
+  },
+  "deployment": {
+    "approvedAttempts": 1,
+    "attemptsUsed": 1,
+    "deploymentId": "0facfa2a-b9fd-4a98-9597-528219c84f00",
+    "status": "RuntimeSuccessful",
+    "deployedPackageSha256": "4B7FAE59FD03E5F3047E05C45CE6BEB220200A6A2F50913E87DEF422457992E0",
+    "deployedPackageBytes": 11842065,
+    "correctedPackageSha256": "86E1E804DAA0204599C94F07371CBE95B3C34B13128DF11BB6DD317ED0286A3D",
+    "correctedPackageBytes": 11842252,
+    "correctedPackageDeployed": false,
+    "starterDeploys": 0,
+    "adminDeploys": 0
+  },
+  "liveCapabilityProof": {
+    "apiHealthStatus": 200,
+    "adminListNoAuthStatus": 401,
+    "adminValidateNoAuthStatus": 401,
+    "authenticatedVegasListStatus": 200,
+    "authenticatedVegasRedirectCount": 0,
+    "authenticatedValidationStatuses": [400, 400],
+    "blocker": "deployed Linux build classified leading-slash internal routes as absolute file URIs",
+    "localCorrectionBuilt": true,
+    "localCorrectionDeployed": false,
+    "mutationRequests": 0,
+    "airstripRequests": 0
+  },
+  "liveState": {
+    "vegasPages": 43,
+    "vegasUniquePageIds": 43,
+    "vegasUniquePageSlugs": 43,
+    "vegasTenantAdmins": 1,
+    "vegasThemes": 1,
+    "vegasPageOwnedRedirects": 1,
+    "vegasGenericRedirects": 0,
+    "vegasMediaAssets": 302,
+    "vegasSourcePathAliases": 473,
+    "vegasFormDefinitions": 32,
+    "vegasFormMappings": 65,
+    "vegasDomainMetadata": 0,
+    "vegasImportAudits": 0,
+    "vegasPublishAudits": 0,
+    "iceUnchanged": true,
+    "partyProsUnchanged": true
+  },
+  "runtimeNoRegression": {
+    "getChecksPassed": 39,
+    "getChecksTotal": 39,
+    "postRequests": 0,
+    "formPostMarkers": 0,
+    "airstripRequests": 0
+  },
+  "prohibitedActions": {
+    "tenantDataMutations": 0,
+    "dnsActions": 0,
+    "tlsActions": 0,
+    "publicationActions": 0,
+    "indexingActions": 0,
+    "formSubmissions": 0,
+    "contactPosts": 0,
+    "formEntriesCreated": 0,
+    "airstripRequests": 0,
+    "storageKeyOrSasActions": 0
+  },
+  "requiredResultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62drs-carryforward.md",
+    "vegas-live-state-no-mutation-baseline.md",
+    "existing-redirect-model-audit.md",
+    "redirect-support-model-decision.md",
+    "redirect-api-contract-result.md",
+    "redirect-data-layer-result.md",
+    "redirect-authorization-result.md",
+    "route-precedence-and-conflict-policy.md",
+    "redirect-normalization-and-cycle-validation.md",
+    "redirect-import-validator-integration.md",
+    "starter-local-redirect-runtime-result.md",
+    "vegas-redirect-dry-run-validation.md",
+    "focused-test-result.md",
+    "api-build-result.md",
+    "api-deployment-package-verification.md",
+    "api-deploy-result.md",
+    "redirect-endpoint-readiness-proof.md",
+    "vegas-no-data-mutation-proof.md",
+    "ice-party-pros-no-mutation-proof.md",
+    "airstrip-no-request-proof.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocuments": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_REDIRECT_API_CONTRACT_V2_8_62DRT.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_REDIRECT_RUNTIME_RESOLUTION_STANDARD_V2_8_62DRT.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_REDIRECT_IMPORT_VALIDATION_STANDARD_V2_8_62DRT.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_MEANINGFUL_REDIRECT_SUPPORT_V2_8_62DRT.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62DRT_GENERIC_REDIRECT_SUPPORT_REPORT.md",
+  "nextPhase": "V2.8.62DRU - Targeted Vegas Redirect Reconciliation and Import Closeout"
+}
