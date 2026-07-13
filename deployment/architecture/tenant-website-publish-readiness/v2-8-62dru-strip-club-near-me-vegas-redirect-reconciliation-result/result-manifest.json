@@ -1,0 +1,542 @@
+{
+  "phase": "V2.8.62DRU",
+  "lane": "Pumpkin Platform Routing And Tenant Import Contracts",
+  "classification": "drt_source_baseline_commit_corrected_redirect_api_deploy_targeted_vegas_redirect_creation_import_closeout_no_dns_no_post_no_airstrip",
+  "status": "complete_drt_source_committed_corrected_api_deployed_vegas_redirects_reconciled_import_closed",
+  "generatedAt": "2026-07-13T18:17:15.453Z",
+  "branch": "feature/admin-page-editor-import-export",
+  "entryAndSourceBaseline": {
+    "committedDrtDocs": "ef54c55e90648b570c987cf20c9fee7a16ae35b1",
+    "sourceCommit": "7aa6c4f8669f09d4a3107e61576b6557565e6cca",
+    "sourceCommitSubject": "Commit V2.8.62DRT redirect implementation source",
+    "sourcePathCount": 24,
+    "expectedNewSourcePathCount": 14,
+    "stagedCountAfterSourceCommit": 0
+  },
+  "validationAndBuild": {
+    "focusedApiAssertionsPassed": 57,
+    "semanticValidatorCategoriesPassed": 7,
+    "importPlannerDeclarations": 3,
+    "importPlannerCreates": 2,
+    "importPlannerSafetyClassesPassed": 7,
+    "pageContractCasesPassed": 6,
+    "liveVegasPagesValidated": 43,
+    "liveVegasRedirectsValidated": 3,
+    "starterRuntimeTestsPassed": true,
+    "starterTypeCheckPassed": true,
+    "starterBuildPassed": true,
+    "apiReleaseBuildWarnings": 0,
+    "apiReleaseBuildErrors": 0
+  },
+  "deployment": {
+    "packagePath": "C:\\Users\\User\\AppData\\Local\\Temp\\pumpkin-v2-8-62dru\\pumpkin-api-v2-8-62dru-corrected-posix.zip",
+    "packageSha256": "5904B2501F060D8A01290F27D890DE92C63A9CC9B3DD75BD6BD05E0281FE9483",
+    "packageBytes": 11842277,
+    "packageEntries": 56,
+    "protectedEntries": 0,
+    "appsettingsEntries": 0,
+    "correctedApiDeployAttempts": 1,
+    "deploymentId": "48cad824-555f-4e21-972f-9691c01a911c",
+    "status": "RuntimeSuccessful",
+    "starterDeploys": 0,
+    "adminDeploys": 0,
+    "iceDeploys": 0,
+    "airstripDeploys": 0
+  },
+  "redirectReconciliation": {
+    "validationsPassed": true,
+    "precreationGenericCount": 0,
+    "genericCreated": 2,
+    "genericReadback": 2,
+    "pageOwnedReadback": 1,
+    "semanticRedirectCount": 3,
+    "semanticParity": "3/3",
+    "runtimeProofStatus": "passed_runtime_key_provisioned_and_redirect_resolution_proved",
+    "tenantIsolationPassed": true
+  },
+  "ownerApprovedRuntimeKey": {
+    "originalInactiveRequirementSuperseded": true,
+    "provisioningAttempts": 1,
+    "active": true,
+    "serverStoredHash": true,
+    "plaintextReturnedByApi": false,
+    "starterSettingsChanged": false,
+    "starterRedeployed": false,
+    "formPostPerformed": false,
+    "secureHandoffFiles": [
+      {
+        "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dru\\strip-club-near-me-vegas-runtime-key-active.json",
+        "sha256": "87A483C5B636B76E16EDE1D4014F7F6AC9D90BDCEA1C9C5CD672079BD3E7A9E3"
+      },
+      {
+        "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dru\\strip-club-near-me-vegas-runtime-key-active.txt",
+        "sha256": "0AB26EB5265C405D9D9A04F6ADE6A43A2BCC10B78AEFB60A5D0116D3799DB6BC"
+      },
+      {
+        "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-credentials\\strip-club-near-me-vegas\\v2-8-62dru\\runtime-key-update-log.jsonl",
+        "sha256": "4A0A05790A0E0038BCBAD8DAE0C38D796C292C2B0800058F840F2986ACA3F5D1"
+      }
+    ]
+  },
+  "finalTenantState": {
+    "counts": {
+      "pages": 43,
+      "formDefinitions": 32,
+      "formEntries": 0,
+      "mediaAssets": 302,
+      "themes": 1,
+      "tenantRedirects": 2,
+      "importRuns": 1,
+      "publishRuns": 1,
+      "domainBindings": 1,
+      "users": 1
+    },
+    "pageCount": 43,
+    "uniquePageIds": 43,
+    "uniquePageSlugs": 43,
+    "contactCount": 1,
+    "pageDefects": [],
+    "pageOwnedRedirectCount": 1,
+    "genericRedirectCount": 2,
+    "semanticRedirectCount": 3,
+    "genericRedirects": [
+      {
+        "id": "redirect-strip-club-near-me-vegas-be57bf29f6c3d72b",
+        "tenantId": "strip-club-near-me-vegas",
+        "sourcePath": "/guides/dress-code-what-to-expect",
+        "target": "/guides/dress-code",
+        "statusCode": 301,
+        "active": true
+      },
+      {
+        "id": "redirect-strip-club-near-me-vegas-83fc5a9a0f8a39af",
+        "tenantId": "strip-club-near-me-vegas",
+        "sourcePath": "/guides/couples-night",
+        "target": "/guides/couples-guide-vegas",
+        "statusCode": 301,
+        "active": true
+      }
+    ],
+    "clubDetailCount": 10,
+    "guideArticleCount": 19,
+    "mediaAssetCount": 302,
+    "aliasCount": 473,
+    "formDefinitionCount": 32,
+    "formInstanceMappingCount": 65,
+    "formEntryCount": 0,
+    "acceptedDeviationCount": 2,
+    "acceptedDeviationSummaries": [
+      "local-age-acknowledgement",
+      "no-local-pii-persistence"
+    ],
+    "packageFidelityStatus": "passed_with_explicit_owner_accepted_deviations",
+    "redirectRelatedDeviationCount": 0,
+    "domain": {
+      "count": 1,
+      "domain": "stripclubnearmevegas.com",
+      "wwwDomain": "www.stripclubnearmevegas.com",
+      "status": "pending_manual_launch_held",
+      "dnsRecordCount": 0,
+      "tlsStatus": "not_started",
+      "promotionStatus": "not_promoted"
+    },
+    "importAudit": {
+      "count": 1,
+      "id": "strip-club-near-me-vegas-v2-8-62dru-import-closeout",
+      "importRunId": "v2-8-62dru-import-closeout",
+      "pageCount": 43,
+      "deploymentTriggered": false
+    },
+    "publishAudit": {
+      "count": 1,
+      "id": "strip-club-near-me-vegas-v2-8-62dru-launch-hold",
+      "runId": "v2-8-62dru-launch-hold",
+      "pageCount": 43,
+      "redirectCount": 3,
+      "readyForManualUpload": false,
+      "deploymentStatus": "not_deployed",
+      "deploymentAttempted": false
+    },
+    "submitKeyState": {
+      "active": true,
+      "ownerApprovedDuringDru": true,
+      "plaintextWrittenToRepo": false
+    },
+    "safeDigests": {
+      "tenant": "3a3bcc361de07a797ac6d3bba498adf0d8d6822ae62071395d9fda14063f732b",
+      "pages": "4f22fd4be227f283d758a79ca51480223d19ce18767335bf6fe950f8712571fe",
+      "formDefinitions": "4d813df9d57762f1619207a52bddd9e569c6c5a6d0bdabef3fc20cc633c9c481",
+      "formEntries": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "mediaAssets": "8e6665955a238da9a9420f9d88cb140e9a2ee3054e5773745281d6ca39dd2f6c",
+      "themes": "ceeaf8d0da09f545648b3b8bd4928395273ef25be8109f0a5d3f9b22c4eadf95",
+      "tenantRedirects": "829b41cdadada7ed2126f4ac7be7f5ac3cfef50976dd1cd89c48507b26b15f96",
+      "importRuns": "67213652936aae49d5bd71bcec584033a6076f3721876e6f4e0bbe20a8bb8e41",
+      "publishRuns": "a662699d6cd7a056bf79fb1726fab295426ccffc0f4cdd843b83c50af812fac8",
+      "domainBindings": "d99f3141d25d884668e67346a209dbf8284286a9892d6ccfc8189b7b9f4fd0dc",
+      "users": "17b585cc393711909b47fb27918e4865aa6ef9ab2d1e7ca01fc1a3d614b25c4b"
+    }
+  },
+  "metadata": {
+    "writes": {
+      "domainBindings": 1,
+      "importRuns": 1,
+      "publishRuns": 1
+    },
+    "domain": {
+      "id": "domainbinding-strip-club-near-me-vegas-stripclubnearmevegas-com",
+      "tenantId": "strip-club-near-me-vegas",
+      "domain": "stripclubnearmevegas.com",
+      "wwwDomain": "www.stripclubnearmevegas.com",
+      "canonical": true,
+      "provider": "manual",
+      "status": "pending_manual_launch_held",
+      "dnsRecordCount": 0,
+      "dnsValidationStatus": "pending",
+      "azureHostnameStatus": "not_started",
+      "tlsStatus": "not_started",
+      "runtimeStatus": "preview_unpublished",
+      "promotionStatus": "not_promoted",
+      "hostingTargetType": "held-no-binding"
+    },
+    "importRun": {
+      "id": "strip-club-near-me-vegas-v2-8-62dru-import-closeout",
+      "tenantId": "strip-club-near-me-vegas",
+      "importRunId": "v2-8-62dru-import-closeout",
+      "status": "completed_with_warnings",
+      "pageCount": 43,
+      "createCount": 43,
+      "errorCount": 0,
+      "warningCount": 4,
+      "deploymentTriggered": false,
+      "protectedConfigChanged": "false",
+      "riskCategories": [
+        "adult-nightlife-launch-hold",
+        "indexing-held",
+        "dns-tls-held",
+        "forms-no-post",
+        "accepted-deviation-session-only-21-plus",
+        "accepted-deviation-no-local-personal-data-persistence",
+        "redirect-parity-page-owned-1-generic-2-semantic-3-of-3"
+      ]
+    },
+    "publishRun": {
+      "id": "strip-club-near-me-vegas-v2-8-62dru-launch-hold",
+      "tenantId": "strip-club-near-me-vegas",
+      "runId": "v2-8-62dru-launch-hold",
+      "status": "imported",
+      "pageCount": 43,
+      "redirectCount": 3,
+      "readyForManualUpload": false,
+      "deploymentTarget": "none",
+      "deploymentStatus": "not_deployed",
+      "deploymentAttempted": false,
+      "siteCount": 1,
+      "siteRedirectCount": 3,
+      "warnings": [
+        "Public launch held",
+        "Indexing held",
+        "DNS and TLS held",
+        "Live form submission held",
+        "Accepted deviation: session-only 21+ acknowledgement",
+        "Accepted deviation: removal of local personal-data persistence",
+        "Redirect parity: page-owned 1, generic 2, semantic 3/3"
+      ]
+    }
+  },
+  "isolation": {
+    "ice": {
+      "unchanged": true,
+      "differences": [],
+      "excludedDigests": [
+        "users"
+      ],
+      "beforeCounts": {
+        "pages": 3,
+        "formDefinitions": 1,
+        "mediaAssets": 9,
+        "themes": 1,
+        "importRuns": 1,
+        "publishRuns": 1,
+        "domainBindings": 0,
+        "users": 2
+      },
+      "afterCounts": {
+        "pages": 3,
+        "formDefinitions": 1,
+        "formEntries": 5,
+        "mediaAssets": 9,
+        "themes": 1,
+        "tenantRedirects": 0,
+        "importRuns": 1,
+        "publishRuns": 1,
+        "domainBindings": 0,
+        "users": 2
+      },
+      "userDigestExcludedBecauseSuperAdminAuthenticationUpdatesLastLogin": true
+    },
+    "partyPros": {
+      "unchanged": true,
+      "differences": [],
+      "excludedDigests": [],
+      "beforeCounts": {
+        "pages": 3,
+        "formDefinitions": 1,
+        "mediaAssets": 627,
+        "themes": 1,
+        "importRuns": 0,
+        "publishRuns": 0,
+        "domainBindings": 0,
+        "users": 1
+      },
+      "afterCounts": {
+        "pages": 3,
+        "formDefinitions": 1,
+        "formEntries": 4,
+        "mediaAssets": 627,
+        "themes": 1,
+        "tenantRedirects": 0,
+        "importRuns": 0,
+        "publishRuns": 0,
+        "domainBindings": 0,
+        "users": 1
+      }
+    }
+  },
+  "runtimeNoRegression": {
+    "total": 39,
+    "passed": 39,
+    "failed": 0,
+    "postRequests": 0,
+    "postFormMarkers": 0,
+    "airstripRequests": 0,
+    "surfaceCounts": {
+      "ice": 8,
+      "pumpkin-api": 2,
+      "admin": 4,
+      "starter-default": 1,
+      "party-pros": 16,
+      "party-pros-preview": 8
+    }
+  },
+  "boundaries": {
+    "directDataRepair": false,
+    "pageMutationAfterEntry": false,
+    "themeMutation": false,
+    "mediaMutation": false,
+    "formDefinitionMutation": false,
+    "formPost": false,
+    "formEntryCreated": false,
+    "dnsMutation": false,
+    "tlsMutation": false,
+    "publication": false,
+    "indexing": false,
+    "airstripRequests": 0,
+    "secretPrinted": false,
+    "stagedFilesAtGeneration": 0
+  },
+  "requiredResultFileCount": 35,
+  "requiredResultFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62drt-carryforward.md",
+    "v2-8-62drs-meaningful-redirect-carryforward.md",
+    "drt-uncommitted-source-inventory.md",
+    "drt-source-diff-scope-review.md",
+    "drt-source-test-build-proof.md",
+    "drt-source-baseline-commit-proof.md",
+    "credential-state-no-change-proof.md",
+    "vegas-live-state-predeployment-baseline.md",
+    "cross-platform-url-path-fix-reproof.md",
+    "corrected-api-package-verification.md",
+    "corrected-api-deploy-result.md",
+    "redirect-endpoint-readiness-proof.md",
+    "couples-night-live-validation.md",
+    "dress-code-live-validation.md",
+    "both-validations-gate-result.md",
+    "precreation-redirect-absence-proof.md",
+    "couples-night-redirect-creation-result.md",
+    "dress-code-redirect-creation-result.md",
+    "generic-redirect-readback-proof.md",
+    "runtime-redirect-resolution-proof.md",
+    "redirect-tenant-isolation-proof.md",
+    "package-fidelity-restoration.md",
+    "domain-metadata-result.md",
+    "import-publish-audit-result.md",
+    "final-tenant-count-reconciliation.md",
+    "ice-party-pros-no-mutation-proof.md",
+    "airstrip-no-request-proof.md",
+    "adult-nightlife-launch-hold.md",
+    "runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "resultFileHashes": [
+    {
+      "name": "README.md",
+      "sha256": "3195DF668C6664D7FF495155459AAC0AC40234A88720004B9BC945C4BAEC7EBB"
+    },
+    {
+      "name": "current-state-summary.md",
+      "sha256": "DAB25B99A9A644110846DB60F2590AFA905448E08CA62CEF6088C25733B5BBA3"
+    },
+    {
+      "name": "v2-8-62drt-carryforward.md",
+      "sha256": "DCF43C7885E0D783413877CC0FA953F812EB29DECDEA5B28227E06BEA958C8EB"
+    },
+    {
+      "name": "v2-8-62drs-meaningful-redirect-carryforward.md",
+      "sha256": "50BB096E3D872A6C253CFC9705CC7D6B54FA92566F86F0E0C22C6A2A0E176697"
+    },
+    {
+      "name": "drt-uncommitted-source-inventory.md",
+      "sha256": "A6D3F622BFABAD0D7B89FB37F66DD35BDAA3600A932B143DBC76B0B93394A826"
+    },
+    {
+      "name": "drt-source-diff-scope-review.md",
+      "sha256": "77B245199839F3266007D8FE2FA6198C0AAF9CE3E160ED051A6084CC013155C6"
+    },
+    {
+      "name": "drt-source-test-build-proof.md",
+      "sha256": "B64EABEF0912F4F4E22B86E6915D538A7AF023BCCA40B23579A8AE69CC8A8E61"
+    },
+    {
+      "name": "drt-source-baseline-commit-proof.md",
+      "sha256": "2D02297BAD7224121E821151D451743372DFF704C9161AE9381302C35591F467"
+    },
+    {
+      "name": "credential-state-no-change-proof.md",
+      "sha256": "F3827C9EECD0871FAB24452D583758060B328524948EA84D628CC14AFA2DD911"
+    },
+    {
+      "name": "vegas-live-state-predeployment-baseline.md",
+      "sha256": "30836C485E1CE0D845D0D372649536CAB28D49D491A78C0B549F197D64FA3464"
+    },
+    {
+      "name": "cross-platform-url-path-fix-reproof.md",
+      "sha256": "F49F262CD49AAD9AE2CD825F59326D87C543B00C9966BB3C0CD901D7ACA52209"
+    },
+    {
+      "name": "corrected-api-package-verification.md",
+      "sha256": "E973157996139448E27A3C7F21FA9311F7C3C55EEF09B442801F2CF20F219BF6"
+    },
+    {
+      "name": "corrected-api-deploy-result.md",
+      "sha256": "24D9C66D99542845C3C44AA63F6435804B480F0CD0DAD88B658D69086E376D91"
+    },
+    {
+      "name": "redirect-endpoint-readiness-proof.md",
+      "sha256": "825447A31263FD41F3F609D1DB8162D8823B2665FECEC260106841529AAE60BD"
+    },
+    {
+      "name": "couples-night-live-validation.md",
+      "sha256": "7BAD2F95C7DAC20A7D1563795A2360E6AD7469BFEEC68A31B718840F9DDBF886"
+    },
+    {
+      "name": "dress-code-live-validation.md",
+      "sha256": "05A28EC132A5228006A2267DE094C5B99DED7B557DC23565669398EF075B6D1E"
+    },
+    {
+      "name": "both-validations-gate-result.md",
+      "sha256": "93890D21E1887B00888186FEF5166EACBF95C63E9C297215C73F22B4FCD4A5F4"
+    },
+    {
+      "name": "precreation-redirect-absence-proof.md",
+      "sha256": "C1A470BB23EB6F446092FDDDF97F9AFDF9EECE8C89F3DB59AB3730218F2D32B1"
+    },
+    {
+      "name": "couples-night-redirect-creation-result.md",
+      "sha256": "E47E1CB67D021C5EA6CBDCD22571B28EE558AD22D23CDBA1C6E3FC391B493035"
+    },
+    {
+      "name": "dress-code-redirect-creation-result.md",
+      "sha256": "4F4DDE240D511FB8B861CF2FF1CCE6E340EC770426329EAE9A1FA5B14250DD07"
+    },
+    {
+      "name": "generic-redirect-readback-proof.md",
+      "sha256": "A482BBBA4164AB26907D6C0D4F6420ECAC252FDDF773B64F8E3CAF2DFC5A3A63"
+    },
+    {
+      "name": "runtime-redirect-resolution-proof.md",
+      "sha256": "E98A8E144B227414FEFB5A2CD938A312CF1140B3F07E14F824415DE80FECFCFA"
+    },
+    {
+      "name": "redirect-tenant-isolation-proof.md",
+      "sha256": "45F2D1B6B91CACA9275D3B3F402C68860889E61DFB373C86EE853CCEB9B8F521"
+    },
+    {
+      "name": "package-fidelity-restoration.md",
+      "sha256": "0A25E816A5F55437F94F6038AC82F27148A35E73D62D36717B7F7E24FD99C7B7"
+    },
+    {
+      "name": "domain-metadata-result.md",
+      "sha256": "28185FCE33F5C5DD96881F3ECC79A6B0E7A86ACF672A88C841070C728FC506BD"
+    },
+    {
+      "name": "import-publish-audit-result.md",
+      "sha256": "E67B9930B419654879190CDCB33F541EA9851CDCF0563B78B49FD6EE65F5864C"
+    },
+    {
+      "name": "final-tenant-count-reconciliation.md",
+      "sha256": "973E78F8C6C39A6DF7017038C76B1138C808B8F11C3B8AF21F677DF32E765CAE"
+    },
+    {
+      "name": "ice-party-pros-no-mutation-proof.md",
+      "sha256": "292A81299007D90A03CDD5E3DE7181CBF27A53B26A2F3DE28A85E4C85CB0CE82"
+    },
+    {
+      "name": "airstrip-no-request-proof.md",
+      "sha256": "58CF41B6650237B7B29B02695471DCA15A0265D41FC290DA640117A9177779DA"
+    },
+    {
+      "name": "adult-nightlife-launch-hold.md",
+      "sha256": "0E3A3D58A9CC6ACA7C3D9D24C9BA080A80890F4833A367ABED38102DAC60B6DD"
+    },
+    {
+      "name": "runtime-no-regression-proof.md",
+      "sha256": "62F151C5130C4FB6D79BF23B5FB43E70CA093EF1DD7AD1E49CB8AD5740ED654B"
+    },
+    {
+      "name": "security-boundary-result.md",
+      "sha256": "ACF1F7FE99FAD606F1C75F87440B0FB16ED2B6F4E54335C626446F25FD20204D"
+    },
+    {
+      "name": "validation-summary.md",
+      "sha256": "9C2FCC0C1FBD468CF59294CC76FCF394C37256654EC6318CEDAD329AFE1D6C84"
+    },
+    {
+      "name": "next-phase-prompt.md",
+      "sha256": "EFAD2D619F8E68AB688B48A10A2FBD14C05C49250D017FF09BFDCFB9A365380E"
+    },
+    {
+      "name": "result-manifest.json",
+      "sha256": null,
+      "note": "self-manifest not self-hashed"
+    }
+  ],
+  "durableDocs": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_DRT_SOURCE_BASELINE_RECONCILIATION_V2_8_62DRU.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_CROSS_PLATFORM_URL_PATH_VALIDATION_STANDARD_V2_8_62DRU.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_REDIRECT_RECONCILIATION_V2_8_62DRU.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_IMPORT_CLOSEOUT_V2_8_62DRU.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_FIDELITY_RESTORATION_V2_8_62DRU.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62DRU_STRIP_CLUB_NEAR_ME_VEGAS_REDIRECT_RECONCILIATION_REPORT.md",
+  "exactPathCommitInstructions": {
+    "executed": false,
+    "paths": [
+      "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62DRU_STRIP_CLUB_NEAR_ME_VEGAS_REDIRECT_RECONCILIATION_REPORT.md",
+      "deployment/architecture/pumpkin-platform/PUMPKIN_DRT_SOURCE_BASELINE_RECONCILIATION_V2_8_62DRU.md",
+      "deployment/architecture/pumpkin-platform/PUMPKIN_CROSS_PLATFORM_URL_PATH_VALIDATION_STANDARD_V2_8_62DRU.md",
+      "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_REDIRECT_RECONCILIATION_V2_8_62DRU.md",
+      "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_IMPORT_CLOSEOUT_V2_8_62DRU.md",
+      "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_FIDELITY_RESTORATION_V2_8_62DRU.md",
+      "deployment/architecture/tenant-website-publish-readiness/v2-8-62dru-strip-club-near-me-vegas-redirect-reconciliation-result"
+    ],
+    "suggestedSubject": "Close V2.8.62DRU Vegas redirect reconciliation",
+    "gitAddAllProhibited": true
+  },
+  "nextPhase": "V2.8.62E Post-Creation Backup/Admin/Preview Readiness - separate approval required",
+  "futureIdentityPhase": "V2.8.63A"
+}
