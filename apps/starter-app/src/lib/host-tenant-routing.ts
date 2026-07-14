@@ -1,22 +1,20 @@
 import { headers } from 'next/headers';
-import hostTenantRoutes from '@/generated/host-tenant-routes.json';
-import { getPreviewPage, getPreviewSite } from '@/lib/preview-fixtures';
+import {
+  getRegisteredHostTenantIds,
+  isStarterFallbackHost,
+  normalizeRequestHost,
+  resolveHostTenantRouteForHost,
+} from '@/lib/host-tenant-registry';
+import type { HostTenantRoute } from '@/lib/host-tenant-registry';
+import {
+  getPackageStaticPreviewPage,
+  getPreviewPage,
+  getPreviewSite,
+} from '@/lib/preview-fixtures';
+import { resolveTenantRuntimeConfig } from '@/lib/tenant-runtime-config';
 
-type HostTenantSource = 'preview-fixture';
-type HostTenantFormsMode = 'disabled-preview' | 'live-submit';
-
-export interface HostTenantRoute {
-  tenantId: string;
-  hosts: string[];
-  source: HostTenantSource;
-  formsMode: HostTenantFormsMode;
-}
-
-const SAFE_TENANT_ID = /^[a-z0-9][a-z0-9-]{1,80}$/;
-
-const COMMITTED_HOST_TENANT_ROUTES = hostTenantRoutes.routes.flatMap((route) =>
-  normalizeConfiguredRoute(route),
-);
+export type { HostTenantRoute } from '@/lib/host-tenant-registry';
+export { normalizeRequestHost } from '@/lib/host-tenant-registry';
 
 export function getCurrentRequestHost() {
   const requestHeaders = headers();
@@ -25,24 +23,12 @@ export function getCurrentRequestHost() {
   );
 }
 
-export function normalizeRequestHost(host: string | null | undefined) {
-  if (!host) return '';
-
-  const firstHost = host.split(',')[0]?.trim().toLowerCase() ?? '';
-  if (firstHost.startsWith('[')) {
-    return firstHost.replace(/\]:(\d+)$/, ']');
-  }
-
-  return firstHost.replace(/:\d+$/, '');
+export function resolveHostTenantRoute(host = getCurrentRequestHost()): HostTenantRoute | null {
+  return resolveHostTenantRouteForHost(host);
 }
 
-export function resolveHostTenantRoute(host = getCurrentRequestHost()): HostTenantRoute | null {
-  const normalizedHost = normalizeRequestHost(host);
-  if (!normalizedHost) return null;
-
-  return getHostTenantRoutes().find((route) =>
-    route.hosts.some((routeHost) => normalizeRequestHost(routeHost) === normalizedHost),
-  ) ?? null;
+export function isCurrentRequestStarterFallbackHost() {
+  return isStarterFallbackHost(getCurrentRequestHost());
 }
 
 export async function getHostTenantPreviewPage(slugParts: string[] = []) {
@@ -65,48 +51,25 @@ export async function getHostTenantPreviewSite() {
   };
 }
 
-function getHostTenantRoutes(): HostTenantRoute[] {
-  return [...readConfiguredRoutes(), ...COMMITTED_HOST_TENANT_ROUTES];
-}
+export async function getHostTenantPackagePage(slugParts: string[] = []) {
+  const route = resolveHostTenantRoute();
+  if (!route) return null;
 
-function readConfiguredRoutes(): HostTenantRoute[] {
-  const rawRoutes = process.env.PUMPKIN_HOST_TENANT_ROUTES_JSON;
-  if (!rawRoutes) return [];
+  const packagePreview = await getPackageStaticPreviewPage(route.tenantId, slugParts);
+  if (!packagePreview) return null;
 
-  try {
-    const parsed = JSON.parse(rawRoutes) as unknown;
-    if (!Array.isArray(parsed)) return [];
-
-    return parsed.flatMap((route) => normalizeConfiguredRoute(route));
-  } catch {
-    console.warn('[host-tenant-routing] Ignoring invalid PUMPKIN_HOST_TENANT_ROUTES_JSON.');
-    return [];
-  }
-}
-
-function normalizeConfiguredRoute(route: unknown): HostTenantRoute[] {
-  if (!route || typeof route !== 'object') return [];
-
-  const record = route as {
-    tenantId?: unknown;
-    hosts?: unknown;
-    source?: unknown;
-    formsMode?: unknown;
+  const runtimeConfig = resolveTenantRuntimeConfig(
+    route.tenantId,
+    process.env,
+    getRegisteredHostTenantIds(),
+  );
+  return {
+    route,
+    packagePreview,
+    formsEnabled: route.formsMode === 'live-submit' && Boolean(runtimeConfig),
   };
+}
 
-  const tenantId = typeof record.tenantId === 'string' ? record.tenantId.trim() : '';
-  const hosts = Array.isArray(record.hosts)
-    ? record.hosts.filter((host): host is string => typeof host === 'string')
-    : [];
-
-  if (!SAFE_TENANT_ID.test(tenantId) || hosts.length === 0) return [];
-
-  return [
-    {
-      tenantId,
-      hosts,
-      source: record.source === 'preview-fixture' ? record.source : 'preview-fixture',
-      formsMode: record.formsMode === 'live-submit' ? record.formsMode : 'disabled-preview',
-    },
-  ];
+export async function getHostTenantPackageSite() {
+  return getHostTenantPackagePage([]);
 }

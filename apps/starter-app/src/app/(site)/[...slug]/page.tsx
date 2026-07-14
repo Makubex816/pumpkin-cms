@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { PackageStaticPreview } from '@/components/PackageStaticPreview';
 import { PageRenderer } from '@/components/PageRenderer';
 import { buildMetadata } from '@/lib/metadata';
-import { getHostTenantPreviewPage } from '@/lib/host-tenant-routing';
+import {
+  getHostTenantPackagePage,
+  getHostTenantPreviewPage,
+  isCurrentRequestStarterFallbackHost,
+} from '@/lib/host-tenant-routing';
 import { fetchPumpkinPage, getFormDefinitionsForPage, getSiteTheme } from '@/lib/pumpkin-api';
 
 export const dynamic = 'force-dynamic';
@@ -19,6 +24,9 @@ function normalizeSlug(slugParts: string[]) {
 }
 
 export async function generateMetadata({ params }: SlugPageProps): Promise<Metadata> {
+  const hostTenantPackage = await getHostTenantPackagePage(params.slug);
+  if (hostTenantPackage) return buildPackageMetadata(hostTenantPackage.packagePreview.page);
+
   const hostTenantPreview = await getHostTenantPreviewPage(params.slug);
   if (hostTenantPreview?.preview) {
     return buildMetadata(hostTenantPreview.preview.page);
@@ -28,12 +36,28 @@ export async function generateMetadata({ params }: SlugPageProps): Promise<Metad
     return { title: 'Page Not Found' };
   }
 
+  if (!isCurrentRequestStarterFallbackHost()) {
+    return { title: 'Page Not Found', robots: { index: false, follow: false } };
+  }
+
   const page = await fetchPumpkinPage(normalizeSlug(params.slug));
   if (!page) return { title: 'Page Not Found' };
   return buildMetadata(page);
 }
 
 export default async function SlugPage({ params }: SlugPageProps) {
+  const hostTenantPackage = await getHostTenantPackagePage(params.slug);
+  if (hostTenantPackage) {
+    return (
+      <PackageStaticPreview
+        fixture={hostTenantPackage.packagePreview.fixture}
+        formsEnabled={hostTenantPackage.formsEnabled}
+        mode="site"
+        page={hostTenantPackage.packagePreview.page}
+      />
+    );
+  }
+
   const hostTenantPreview = await getHostTenantPreviewPage(params.slug);
   if (hostTenantPreview) {
     if (!hostTenantPreview.preview) notFound();
@@ -50,6 +74,8 @@ export default async function SlugPage({ params }: SlugPageProps) {
       />
     );
   }
+
+  if (!isCurrentRequestStarterFallbackHost()) notFound();
 
   const [page, theme] = await Promise.all([
     fetchPumpkinPage(normalizeSlug(params.slug)),
@@ -69,4 +95,18 @@ export default async function SlugPage({ params }: SlugPageProps) {
       formDefinitions={formDefinitions}
     />
   );
+}
+
+function buildPackageMetadata(page: { title: string; description: string; canonicalUrl: string }): Metadata {
+  return {
+    title: { absolute: page.title },
+    description: page.description,
+    alternates: { canonical: page.canonicalUrl || undefined },
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      googleBot: { index: false, follow: false, noimageindex: true },
+    },
+  };
 }

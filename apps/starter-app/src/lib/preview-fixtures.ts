@@ -69,6 +69,24 @@ export interface PackageStaticPreviewFixture {
     preserveQueryString: boolean;
     source: 'page-owned' | 'tenant-generic';
   }>;
+  forms: {
+    definitions: Array<{
+      formKey: string;
+      status: string;
+      fields: Array<{
+        name: string;
+        type: string;
+        required: boolean;
+        label?: string;
+      }>;
+    }>;
+    instances: Array<{
+      id: string;
+      route: string;
+      normalizedFormKey: string;
+    }>;
+    submissionMode: string;
+  };
   counts: Record<string, number>;
   integrity: { fixtureSha256: string };
 }

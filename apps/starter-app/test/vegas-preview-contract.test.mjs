@@ -55,6 +55,10 @@ resolverSource = resolverSource.replace(
   /import previewRegistry from '@\/generated\/preview-fixture-registry\.json';/,
   `const previewRegistry = ${JSON.stringify({ schemaVersion: 'pumpkin-preview-registry/v1', tenants: { [fixture.tenantId]: { redirects: fixture.redirects } } })};`,
 );
+resolverSource = resolverSource.replace(
+  /import \{ resolveHostTenantRouteForHost \} from '@\/lib\/host-tenant-registry';/,
+  'const resolveHostTenantRouteForHost = () => null;',
+);
 const compiled = ts.transpileModule(resolverSource, {
   compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
 }).outputText;

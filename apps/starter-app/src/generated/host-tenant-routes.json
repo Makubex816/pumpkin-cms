@@ -9,6 +9,15 @@
       ],
       "source": "preview-fixture",
       "tenantId": "party-pros-philadelphia"
+    },
+    {
+      "formsMode": "live-submit",
+      "hosts": [
+        "stripclubnearmevegas.com",
+        "www.stripclubnearmevegas.com"
+      ],
+      "source": "preview-fixture",
+      "tenantId": "strip-club-near-me-vegas"
     }
   ]
 }

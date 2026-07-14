@@ -11,6 +11,7 @@
     "type-check": "tsc --noEmit",
     "test:preview-fixtures": "node test/preview-fixtures.test.mjs && node test/vegas-preview-contract.test.mjs",
     "test:party-pros-recovery": "node test/party-pros-preview-contract.test.mjs",
+    "test:host-tenant-runtime": "node test/tenant-runtime-config.test.mjs && node test/host-tenant-public-contract.test.mjs",
     "test:deployment-artifacts": "node test/deployment-artifact-completeness.test.mjs",
     "proof:party-pros-recovery": "node test/party-pros-recovery-browser-proof.mjs",
     "prepare:standalone": "node scripts/prepare-standalone-deployment.mjs"

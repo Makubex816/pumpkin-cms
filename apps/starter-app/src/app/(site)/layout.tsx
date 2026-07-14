@@ -1,7 +1,12 @@
 import type { FooterClassNames, HeaderClassNames } from 'pumpkin-block-views';
+import { notFound } from 'next/navigation';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
-import { getHostTenantPreviewSite } from '@/lib/host-tenant-routing';
+import {
+  getHostTenantPackageSite,
+  getHostTenantPreviewSite,
+  isCurrentRequestStarterFallbackHost,
+} from '@/lib/host-tenant-routing';
 import { getSiteTheme } from '@/lib/pumpkin-api';
 import { getSiteChrome } from '@/lib/site-chrome';
 import { getThemeCssPath } from '@/themes/registry';
@@ -10,7 +15,22 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+  const hostTenantPackage = await getHostTenantPackageSite();
+  if (hostTenantPackage) {
+    return (
+      <main
+        data-form-mode={hostTenantPackage.formsEnabled ? 'live-submit' : 'disabled-preview'}
+        data-host-tenant={hostTenantPackage.route.tenantId}
+        data-host-tenant-source={hostTenantPackage.route.source}
+      >
+        {children}
+      </main>
+    );
+  }
+
   const hostTenantSite = await getHostTenantPreviewSite();
+  if (!hostTenantSite && !isCurrentRequestStarterFallbackHost()) notFound();
+
   const theme = hostTenantSite?.site?.theme ?? await getSiteTheme();
   const chrome = getSiteChrome(theme);
 

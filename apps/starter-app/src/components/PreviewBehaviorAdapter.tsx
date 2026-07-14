@@ -6,6 +6,13 @@ interface PreviewBehaviorAdapterProps {
   tenantId: string;
   contentId: string;
   bodyClass: string;
+  mode?: 'preview' | 'site';
+  formsEnabled?: boolean;
+  formMappings?: Array<{
+    sourceFormId: string;
+    formKey: string;
+    pageSlug: string;
+  }>;
 }
 
 interface PreviewProofState {
@@ -17,9 +24,17 @@ interface PreviewProofState {
   airstripRequests: number;
   postRequests: number;
   personalDataStored: false;
+  formsEnabled: boolean;
 }
 
-export function PreviewBehaviorAdapter({ tenantId, contentId, bodyClass }: PreviewBehaviorAdapterProps) {
+export function PreviewBehaviorAdapter({
+  tenantId,
+  contentId,
+  bodyClass,
+  mode = 'preview',
+  formsEnabled = false,
+  formMappings = [],
+}: PreviewBehaviorAdapterProps) {
   useEffect(() => {
     const root = document.getElementById(contentId);
     if (!root) return;
@@ -35,15 +50,49 @@ export function PreviewBehaviorAdapter({ tenantId, contentId, bodyClass }: Previ
       airstripRequests: 0,
       postRequests: 0,
       personalDataStored: false,
+      formsEnabled,
     };
-    const proofWindow = window as typeof window & { __PUMPKIN_PREVIEW_PROOF__?: PreviewProofState };
-    proofWindow.__PUMPKIN_PREVIEW_PROOF__ = state;
+    const proofWindow = window as typeof window & {
+      __PUMPKIN_PREVIEW_PROOF__?: PreviewProofState;
+      __PUMPKIN_SITE_PROOF__?: PreviewProofState;
+    };
+    if (mode === 'preview') proofWindow.__PUMPKIN_PREVIEW_PROOF__ = state;
+    if (mode === 'site') proofWindow.__PUMPKIN_SITE_PROOF__ = state;
     const record = (type: string, detail: Record<string, unknown> = {}) => state.events.push({ type, detail });
     const one = <T extends Element>(selector: string, scope: ParentNode = root) => scope.querySelector<T>(selector);
     const all = <T extends Element>(selector: string, scope: ParentNode = root) => Array.from(scope.querySelectorAll<T>(selector));
 
     const appliedBodyClasses = bodyClass.split(/\s+/).filter(Boolean);
     document.body.classList.add(...appliedBodyClasses);
+
+    const formMappingById = new Map(formMappings.map((mapping) => [mapping.sourceFormId, mapping]));
+    const liveForms = all<HTMLFormElement>('form[data-source-form-id]');
+    for (const form of liveForms) {
+      const mapping = formMappingById.get(form.dataset.sourceFormId || '');
+      if (!mapping) continue;
+
+      form.dataset.pumpkinFormKey = mapping.formKey;
+      form.dataset.pumpkinPageSlug = mapping.pageSlug;
+      ensureHiddenInput(form, 'tenantId', tenantId);
+      ensureHiddenInput(form, 'pageSlug', mapping.pageSlug);
+      ensureHiddenInput(form, 'formKey', mapping.formKey);
+      ensureHoneypot(form);
+      ensureConsent(form);
+
+      const submit = form.querySelector<HTMLButtonElement | HTMLInputElement>('[data-preview-submit="true"]');
+      const notice = form.querySelector<HTMLElement>('.pumpkin-preview-form-notice');
+      if (mode === 'site' && formsEnabled) {
+        form.removeAttribute('data-pumpkin-no-post');
+        notice?.remove();
+        if (submit) {
+          submit.setAttribute('type', 'submit');
+          submit.removeAttribute('data-preview-submit');
+          submit.setAttribute('data-live-submit', 'true');
+        }
+      } else if (mode === 'site' && notice) {
+        notice.textContent = 'This form is temporarily unavailable.';
+      }
+    }
 
     const header = one<HTMLElement>('[data-header]');
     const nav = one<HTMLElement>('[data-nav]');
@@ -133,7 +182,7 @@ export function PreviewBehaviorAdapter({ tenantId, contentId, bodyClass }: Previ
     root.addEventListener('click', (event) => {
       const target = event.target as Element;
       const externalLink = target.closest<HTMLAnchorElement>('a[data-preview-external="held"]');
-      if (externalLink) {
+      if (externalLink && mode === 'preview') {
         event.preventDefault();
         externalLink.setAttribute('data-preview-external-held', 'true');
         state.externalNavigationsHeld += 1;
@@ -192,7 +241,7 @@ export function PreviewBehaviorAdapter({ tenantId, contentId, bodyClass }: Previ
       }
 
       const previewSubmit = target.closest<HTMLElement>('[data-preview-submit="true"]');
-      if (previewSubmit) {
+      if (previewSubmit && !formsEnabled) {
         event.preventDefault();
         const form = previewSubmit.closest('form');
         if (!form) return;
@@ -216,10 +265,64 @@ export function PreviewBehaviorAdapter({ tenantId, contentId, bodyClass }: Previ
       }
     }, options);
 
-    root.addEventListener('submit', (event) => {
+    root.addEventListener('submit', async (event) => {
       event.preventDefault();
-      state.formActionsHeld += 1;
-      record('defense-in-depth-submit-held');
+      const form = event.target instanceof HTMLFormElement ? event.target : null;
+      if (!form || mode !== 'site' || !formsEnabled) {
+        state.formActionsHeld += 1;
+        record('defense-in-depth-submit-held');
+        return;
+      }
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        record('form-validation-held', { id: form.dataset.sourceFormId || '' });
+        return;
+      }
+
+      const formKey = form.dataset.pumpkinFormKey || '';
+      const pageSlug = form.dataset.pumpkinPageSlug || window.location.pathname;
+      if (!formKey) {
+        showFormMessage(form, 'This form is not configured.', true);
+        return;
+      }
+
+      const submit = form.querySelector<HTMLButtonElement | HTMLInputElement>('[data-live-submit="true"]');
+      if (submit) submit.disabled = true;
+      state.postRequests += 1;
+      record('form-submit-started', { formKey, pageSlug });
+
+      try {
+        const formData: Record<string, FormDataEntryValue | boolean> = Object.fromEntries(
+          new FormData(form).entries(),
+        );
+        formData.privacyConsent = form.querySelector<HTMLInputElement>('input[name="privacyConsent"]')?.checked === true;
+        const response = await fetch(`/api/forms/submit/${encodeURIComponent(formKey)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...formData,
+            tenantId,
+            pageSlug,
+            sourcePage: window.location.pathname,
+            formKey,
+          }),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const body = await response.json().catch(() => null) as { id?: string } | null;
+        showFormMessage(form, 'Thank you. Your request has been received.', false);
+        form.reset();
+        ensureHiddenInput(form, 'tenantId', tenantId);
+        ensureHiddenInput(form, 'pageSlug', pageSlug);
+        ensureHiddenInput(form, 'formKey', formKey);
+        record('form-submit-succeeded', { formKey, pageSlug, entryId: body?.id || null, status: response.status });
+      } catch (error) {
+        showFormMessage(form, 'The form could not be submitted. Please try again later.', true);
+        record('form-submit-failed', { formKey, pageSlug, error: error instanceof Error ? error.message : 'unknown' });
+      } finally {
+        if (submit) submit.disabled = false;
+      }
     }, options);
 
     for (const image of all<HTMLImageElement>('img[data-pumpkin-image-fallback]')) {
@@ -250,8 +353,64 @@ export function PreviewBehaviorAdapter({ tenantId, contentId, bodyClass }: Previ
       controller.abort();
       document.body.classList.remove(...appliedBodyClasses);
       if (proofWindow.__PUMPKIN_PREVIEW_PROOF__ === state) delete proofWindow.__PUMPKIN_PREVIEW_PROOF__;
+      if (proofWindow.__PUMPKIN_SITE_PROOF__ === state) delete proofWindow.__PUMPKIN_SITE_PROOF__;
     };
-  }, [bodyClass, contentId, tenantId]);
+  }, [bodyClass, contentId, formMappings, formsEnabled, mode, tenantId]);
 
   return null;
+}
+
+function ensureHiddenInput(form: HTMLFormElement, name: string, value: string) {
+  let input = form.querySelector<HTMLInputElement>(`input[type="hidden"][name="${name}"]`);
+  if (!input) {
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    form.appendChild(input);
+  }
+  input.value = value;
+}
+
+function ensureHoneypot(form: HTMLFormElement) {
+  if (form.querySelector('[name="companyWebsite"]')) return;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'pumpkin-form-honeypot';
+  wrapper.setAttribute('aria-hidden', 'true');
+  const label = document.createElement('label');
+  label.textContent = 'Company website';
+  const input = document.createElement('input');
+  input.name = 'companyWebsite';
+  input.type = 'text';
+  input.tabIndex = -1;
+  input.autocomplete = 'off';
+  label.appendChild(input);
+  wrapper.appendChild(label);
+  form.appendChild(wrapper);
+}
+
+function ensureConsent(form: HTMLFormElement) {
+  if (form.querySelector('[name="privacyConsent"]')) return;
+  const label = document.createElement('label');
+  label.className = 'pumpkin-live-form-consent';
+  const input = document.createElement('input');
+  input.name = 'privacyConsent';
+  input.type = 'checkbox';
+  input.required = true;
+  const text = document.createElement('span');
+  text.textContent = 'I agree to the privacy notice and to be contacted about this request.';
+  label.append(input, text);
+  const submit = form.querySelector('[data-preview-submit="true"], [data-live-submit="true"]');
+  form.insertBefore(label, submit);
+}
+
+function showFormMessage(form: HTMLFormElement, message: string, isError: boolean) {
+  let target = form.querySelector<HTMLElement>('[data-form-message], .form-message, .pumpkin-preview-form-message');
+  if (!target) {
+    target = document.createElement('p');
+    target.className = 'pumpkin-preview-form-message';
+    target.setAttribute('aria-live', 'polite');
+    form.appendChild(target);
+  }
+  target.textContent = message;
+  target.dataset.formStatus = isError ? 'error' : 'success';
 }

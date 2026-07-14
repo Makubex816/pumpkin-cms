@@ -42,8 +42,11 @@
       "fixtureFormat": "package-static",
       "fixturePath": "preview-fixtures/strip-club-near-me-vegas/preview.json",
       "fixtureSha256": "2cb1656a4c46f3c496db48375d51244439ac1f217305a859fd80a15520a4a986",
-      "formsMode": "disabled-preview",
-      "hosts": [],
+      "formsMode": "live-submit",
+      "hosts": [
+        "stripclubnearmevegas.com",
+        "www.stripclubnearmevegas.com"
+      ],
       "routeCount": 43,
       "tenantId": "strip-club-near-me-vegas",
       "themeAssets": [

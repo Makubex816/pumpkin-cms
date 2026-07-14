@@ -4,6 +4,27 @@
   width: 100%;
 }
 
+.previewRoot :global(.pumpkin-live-form-consent) {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.65rem;
+  margin-block: 1rem;
+}
+
+.previewRoot :global(.pumpkin-live-form-consent input) {
+  flex: 0 0 auto;
+  margin-top: 0.25rem;
+}
+
+.previewRoot :global(.pumpkin-form-honeypot) {
+  height: 1px;
+  left: -10000px;
+  overflow: hidden;
+  position: absolute;
+  top: auto;
+  width: 1px;
+}
+
 @media (max-width: 800px) {
   .previewRoot :global(*) {
     min-width: 0 !important;

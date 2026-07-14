@@ -1,4 +1,5 @@
 import previewRegistry from '@/generated/preview-fixture-registry.json';
+import { resolveHostTenantRouteForHost } from '@/lib/host-tenant-registry';
 
 export interface PreviewFixtureRedirectResolution {
   location: string;
@@ -48,6 +49,28 @@ export function resolvePreviewFixtureRedirect(
 
 export function isTenantPreviewPath(pathname: string) {
   return /^\/preview\/[a-z0-9][a-z0-9-]{1,80}(?:\/|$)/i.test(pathname);
+}
+
+export function resolveHostFixtureRedirect(
+  host: string | null | undefined,
+  pathname: string,
+  rawQuery = '',
+): PreviewFixtureRedirectResolution | null {
+  const hostRoute = resolveHostTenantRouteForHost(host);
+  if (!hostRoute) return null;
+
+  const tenant = registry.tenants[hostRoute.tenantId];
+  if (!tenant?.redirects?.length) return null;
+  const sourcePath = normalizePath(pathname);
+  const redirect = tenant.redirects.find((candidate) => normalizePath(candidate.sourcePath) === sourcePath);
+  if (!redirect || ![301, 302, 307, 308].includes(redirect.statusCode)) return null;
+
+  const targetPath = normalizePath(redirect.targetPath);
+  const location = redirect.preserveQueryString && rawQuery
+    ? `${targetPath}?${rawQuery.replace(/^\?/, '')}`
+    : targetPath;
+  if (location === `${pathname}${rawQuery ? `?${rawQuery.replace(/^\?/, '')}` : ''}`) return null;
+  return { location, statusCode: redirect.statusCode };
 }
 
 function normalizePath(value: string) {
