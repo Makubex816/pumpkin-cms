@@ -1,0 +1,43 @@
+{
+  "associationId": "strip-club-near-me-vegas--stripclubnearmevegas-com",
+  "displayName": "Strip Club Near Me Vegas",
+  "tenantId": "strip-club-near-me-vegas",
+  "primaryDomain": "stripclubnearmevegas.com",
+  "wwwDomain": "www.stripclubnearmevegas.com",
+  "azureDnsZoneName": "stripclubnearmevegas.com",
+  "azureResourceGroup": "rg-pumpkin-api-prod-centralus",
+  "azureResourceRole": "tenant-public-dns-zone",
+  "azureResourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Network/dnszones/stripclubnearmevegas.com",
+  "registrar": "GoDaddy",
+  "delegationState": "preprovisioned-not-delegated",
+  "nameserverChangePerformed": false,
+  "zoneState": "created",
+  "pumpkinDomainBinding": {
+    "id": "domainbinding-strip-club-near-me-vegas-stripclubnearmevegas-com",
+    "status": "pending_manual_launch_held",
+    "dnsRecordCount": 0
+  },
+  "assignedNameservers": [
+    {
+      "exactFqdn": "ns1-03.azure-dns.com.",
+      "registrarEntry": "ns1-03.azure-dns.com"
+    },
+    {
+      "exactFqdn": "ns2-03.azure-dns.net.",
+      "registrarEntry": "ns2-03.azure-dns.net"
+    },
+    {
+      "exactFqdn": "ns3-03.azure-dns.org.",
+      "registrarEntry": "ns3-03.azure-dns.org"
+    },
+    {
+      "exactFqdn": "ns4-03.azure-dns.info.",
+      "registrarEntry": "ns4-03.azure-dns.info"
+    }
+  ],
+  "timestampsUtc": {
+    "pumpkinReadback": "2026-07-14T00:01:37Z",
+    "azureZoneCreated": "2026-07-14T00:07:24Z",
+    "azureFinalReadback": "2026-07-14T00:16:10Z"
+  }
+}

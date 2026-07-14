@@ -1,0 +1,124 @@
+{
+  "taskId": "V2.8.62H",
+  "status": "complete_tenant_domain_associated_zone_created_nameservers_captured_records_staged_delegation_held",
+  "lane": "V2.8 Tenant Website / Pumpkin Live Platform Readiness",
+  "classification": "tenant_domain_associated_azure_dns_zone_preprovision_target_nameserver_packet_no_registrar_mutation_no_binding_no_tls_no_post",
+  "association": {
+    "associationId": "strip-club-near-me-vegas--stripclubnearmevegas-com",
+    "tenantId": "strip-club-near-me-vegas",
+    "primaryDomain": "stripclubnearmevegas.com",
+    "wwwDomain": "www.stripclubnearmevegas.com",
+    "azureDnsZoneName": "stripclubnearmevegas.com",
+    "azureResourceGroup": "rg-pumpkin-api-prod-centralus"
+  },
+  "git": {
+    "branch": "feature/admin-page-editor-import-export",
+    "frrCloseoutCommit": "38ac46d24fb63a93b3f639e5baa08e3acd700266",
+    "frrSourceCommit": "ad197480817ba80d540708f7e847ae90a116b0af",
+    "stagedFilesAtEntry": 0
+  },
+  "azure": {
+    "subscriptionId": "ff887def-fd83-4a19-9298-13d4b1687873",
+    "zoneState": "created",
+    "zoneResourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Network/dnszones/stripclubnearmevegas.com",
+    "matchingZoneCount": 1,
+    "assignedNameserverCount": 4,
+    "recordSetCount": 6,
+    "authoritativeServersPassed": 4,
+    "authoritativeServersFailed": 0
+  },
+  "dns": {
+    "publicNameservers": [
+      "ns49.domaincontrol.com",
+      "ns50.domaincontrol.com"
+    ],
+    "targetAzureNameservers": [
+      "ns1-03.azure-dns.com.",
+      "ns2-03.azure-dns.net.",
+      "ns3-03.azure-dns.org.",
+      "ns4-03.azure-dns.info."
+    ],
+    "safeRecordSetsStaged": 4,
+    "emailStatus": "no_email_records_detected",
+    "parentDsStatus": "no_current_parent_ds_blocker_detected",
+    "delegationReadiness": "ready_for_manual_delegation_when_owner_approves",
+    "delegationState": "preprovisioned-not-delegated"
+  },
+  "runtime": {
+    "deploymentId": "a7b5cff8-a14e-4301-b239-e28e0339b184",
+    "checksPassed": 85,
+    "checksFailed": 0,
+    "runtimePostRequests": 0,
+    "airstripRequests": 0
+  },
+  "validation": {
+    "resultFiles": 22,
+    "durableDocuments": 5,
+    "rootReports": 1,
+    "hScopedWhitespaceFindings": 0,
+    "hScopedSecretFindings": 0,
+    "hScopedMutationCommandFindings": 0,
+    "repositoryWideDiffCheckStatus": "preexisting_unrelated_findings",
+    "repositoryWideDiffCheckFindingCount": 59,
+    "repositoryWideDiffCheckFiles": [
+      "apps/admin/package.json",
+      "apps/ice-rink-web/.gitignore"
+    ],
+    "stagedFilesAtCloseout": 0
+  },
+  "boundaries": {
+    "godaddyLogin": false,
+    "registrarMutation": false,
+    "nameserverChange": false,
+    "hostnameBinding": false,
+    "tlsAction": false,
+    "deployment": false,
+    "cmsMutation": false,
+    "runtimeKeyUse": false,
+    "formSubmission": false,
+    "publication": false,
+    "indexing": false,
+    "airstripAction": false
+  },
+  "timestampsUtc": {
+    "pumpkinMetadataReadback": "2026-07-14T00:01:37Z",
+    "publicDnsInventory": "2026-07-14T00:06:24Z",
+    "zoneCreated": "2026-07-14T00:07:24Z",
+    "recordsFinalReadback": "2026-07-14T00:16:10Z",
+    "authoritativeProof": "2026-07-14T00:15:09Z",
+    "publicDelegationFinalReadback": "2026-07-14T00:16:21Z",
+    "runtimeFinalReadback": "2026-07-14T00:17:43Z"
+  },
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "current-state-summary.md",
+    "v2-8-62frr-carryforward.md",
+    "tenant-domain-zone-association.json",
+    "pumpkin-domain-metadata-association-proof.md",
+    "current-public-dns-inventory.md",
+    "existing-azure-zone-absence-or-adoption-proof.md",
+    "azure-dns-zone-creation-result.md",
+    "azure-zone-tags-readback.md",
+    "azure-assigned-target-nameservers.md",
+    "app-service-dns-target-readback.md",
+    "safe-web-record-staging-result.md",
+    "authoritative-azure-nameserver-proof.md",
+    "email-dns-inventory-and-hold.md",
+    "dnssec-ds-readiness.md",
+    "manual-godaddy-nameserver-packet.md",
+    "delegation-readiness-or-hold.md",
+    "shared-runtime-no-regression-proof.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "durableDocuments": [
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_STRIPCLUBNEARMEVEGAS_COM_AZURE_DNS_ZONE_V2_8_62H.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_STRIPCLUBNEARMEVEGAS_COM_TARGET_NAMESERVERS_V2_8_62H.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_STRIP_CLUB_NEAR_ME_VEGAS_STRIPCLUBNEARMEVEGAS_COM_MANUAL_GODADDY_PACKET_V2_8_62H.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_TENANT_DOMAIN_AZURE_DNS_ASSOCIATION_STANDARD_V2_8_62H.md",
+    "deployment/architecture/pumpkin-platform/PUMPKIN_AZURE_DNS_PREDELEGATION_READINESS_STANDARD_V2_8_62H.md"
+  ],
+  "rootReport": "PUMPKIN_TENANT_WEBSITE_PUBLISH_READINESS_V2_8_62H_STRIP_CLUB_NEAR_ME_VEGAS_STRIPCLUBNEARMEVEGAS_COM_AZURE_DNS_REPORT.md"
+}
