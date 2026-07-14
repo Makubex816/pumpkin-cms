@@ -36,6 +36,8 @@ const adapterSource = fs.readFileSync(path.resolve('src/components/PreviewBehavi
 for (const requirement of ['privacyConsent', 'companyWebsite', 'tenantId', 'pageSlug', 'formKey', 'data-live-submit', "method: 'POST'"]) {
   assert(adapterSource.includes(requirement), `Missing live form adaptation: ${requirement}`);
 }
+assert.match(adapterSource, /submit\?\.parentNode\) submit\.parentNode\.insertBefore\(label, submit\)/);
+assert.equal(adapterSource.includes('form.insertBefore(label, submit)'), false);
 const submitSource = fs.readFileSync(path.resolve('src/app/api/forms/submit/[type]/route.ts'), 'utf8');
 assert(submitSource.includes('resolveHostTenantRouteForHost'));
 assert(submitSource.includes('resolveTenantRuntimeConfig'));

@@ -400,7 +400,8 @@ function ensureConsent(form: HTMLFormElement) {
   text.textContent = 'I agree to the privacy notice and to be contacted about this request.';
   label.append(input, text);
   const submit = form.querySelector('[data-preview-submit="true"], [data-live-submit="true"]');
-  form.insertBefore(label, submit);
+  if (submit?.parentNode) submit.parentNode.insertBefore(label, submit);
+  else form.appendChild(label);
 }
 
 function showFormMessage(form: HTMLFormElement, message: string, isError: boolean) {
