@@ -159,6 +159,10 @@ public static class IdentityFoundationSourceTestRunner
                cosmos.Contains("legacy_login_locator_missing") &&
                cosmos.Contains("ReadItemAsync<pumpkin_net_models.Models.User>"),
             "legacy login does not use the single-partition locator and point read");
+        Assert(cosmos.Contains("attempt <= 2") &&
+               cosmos.Contains("catch (OperationCanceledException) when (attempt == 1)") &&
+               cosmos.Contains("legacy_login_locator_retry_exhausted"),
+            "legacy login does not provide one bounded retry for a cold worker timeout");
         Assert(cosmos.Contains("LimitToEndpoint = true") && cosmos.Contains("RequestTimeout = TimeSpan.FromSeconds(10)"),
             "Cosmos endpoint discovery is not bounded to the configured account endpoint");
     }

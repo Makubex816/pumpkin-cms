@@ -2239,6 +2239,23 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     /// </summary>
     public async Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(string email)
     {
+        for (var attempt = 1; attempt <= 2; attempt++)
+        {
+            try
+            {
+                return await GetUserByEmailOnceAsync(email);
+            }
+            catch (OperationCanceledException) when (attempt == 1)
+            {
+                _logger.LogWarning("Legacy login locator attempt timed out; retrying once - Attempt: {Attempt}", attempt);
+            }
+        }
+
+        throw new TimeoutException("legacy_login_locator_retry_exhausted");
+    }
+
+    private async Task<pumpkin_net_models.Models.User?> GetUserByEmailOnceAsync(string email)
+    {
         try
         {
             var normalizedEmail = Identity.IdentitySecurityService.NormalizeEmail(email);
@@ -2274,12 +2291,12 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            _logger.LogWarning("User not found - Email: {Email}", email);
+            _logger.LogWarning("User not found during legacy login lookup");
             return null;
         }
         catch (CosmosException ex)
         {
-            _logger.LogError(ex, "Error retrieving user - Email: {Email}", email);
+            _logger.LogError(ex, "Error retrieving user during legacy login lookup");
             throw;
         }
     }
