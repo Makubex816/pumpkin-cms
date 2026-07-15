@@ -163,13 +163,16 @@ public static class FormSubmissionGuard
         var sanitized = new Dictionary<string, object>(StringComparer.Ordinal);
         foreach (var item in entry.FormData ?? new Dictionary<string, object>())
         {
-            if (!allowed.Contains(item.Key))
+            var canonicalKey = allowed.Contains(item.Key)
+                ? item.Key
+                : allowed.FirstOrDefault(candidate => NormalizeFieldIdentity(candidate) == NormalizeFieldIdentity(item.Key));
+            if (string.IsNullOrWhiteSpace(canonicalKey))
             {
                 Warn(result, "submission.unknownField", $"Unknown field \"{item.Key}\" was ignored.", $"formData.{item.Key}");
                 continue;
             }
 
-            sanitized[item.Key] = SanitizeString(item.Value, maxFieldLength);
+            sanitized[canonicalKey] = SanitizeString(item.Value, maxFieldLength);
         }
 
         foreach (var field in fields.Where(field => field.Required))
@@ -200,13 +203,15 @@ public static class FormSubmissionGuard
             }
         }
 
-        var honeypot = sanitized.TryGetValue(honeypotFieldName, out var honeypotValue)
+        var honeypotKey = sanitized.Keys.FirstOrDefault(key => NormalizeFieldIdentity(key) == NormalizeFieldIdentity(honeypotFieldName));
+        var honeypot = honeypotKey != null && sanitized.TryGetValue(honeypotKey, out var honeypotValue)
             ? Convert.ToString(honeypotValue) ?? string.Empty
             : string.Empty;
         entry.HoneypotFilled = !string.IsNullOrWhiteSpace(honeypot);
         entry.SpamStatus = entry.HoneypotFilled ? "suspected-spam" : "clean";
 
-        entry.ConsentAccepted = sanitized.TryGetValue(consentFieldName, out var consentValue) && IsTruthy(Convert.ToString(consentValue));
+        var consentKey = sanitized.Keys.FirstOrDefault(key => NormalizeFieldIdentity(key) == NormalizeFieldIdentity(consentFieldName));
+        entry.ConsentAccepted = consentKey != null && sanitized.TryGetValue(consentKey, out var consentValue) && IsTruthy(Convert.ToString(consentValue));
         if (consent.Required && !entry.ConsentAccepted)
         {
             Error(result, "submission.consent", "Consent is required.", $"formData.{consentFieldName}");
@@ -247,6 +252,11 @@ public static class FormSubmissionGuard
             _ => value
         };
     }
+
+    private static string NormalizeFieldIdentity(string value) => new(value
+        .Where(char.IsLetterOrDigit)
+        .Select(char.ToLowerInvariant)
+        .ToArray());
 
     private static void ApplyFieldAliases(Dictionary<string, object> data)
     {

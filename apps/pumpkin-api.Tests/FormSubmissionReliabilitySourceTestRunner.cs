@@ -10,6 +10,7 @@ public static class FormSubmissionReliabilitySourceTestRunner
         var cosmos = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "CosmosDataConnection.cs"));
         var mongo = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "MongoDataConnection.cs"));
         var model = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-net-models", "Models", "FormEntry.cs"));
+        var guard = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "FormSubmissionGuard.cs"));
 
         Assert(model.Contains("SubmissionId", StringComparison.Ordinal), "submissionId is persisted");
         Assert(model.Contains("CorrelationId", StringComparison.Ordinal), "correlationId is persisted");
@@ -20,6 +21,7 @@ public static class FormSubmissionReliabilitySourceTestRunner
         Assert(cosmos.Contains("IdempotentReplay = true", StringComparison.Ordinal), "Cosmos replay exists");
         Assert(mongo.Contains("ServerErrorCategory.DuplicateKey", StringComparison.Ordinal), "Mongo race recovery exists");
         Assert(mongo.Contains("IdempotentReplay = true", StringComparison.Ordinal), "Mongo replay exists");
+        Assert(guard.Contains("NormalizeFieldIdentity", StringComparison.Ordinal), "compiler/runtime field naming aliases reconcile safely");
         Console.WriteLine("Form submission reliability source contract passed.");
         return Task.CompletedTask;
     }
