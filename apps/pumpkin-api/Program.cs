@@ -321,6 +321,8 @@ static string JsonElementToString(JsonElement element)
 
 static int ReadFormInstanceCount(FormDefinition definition)
 {
+    if (definition.ValidationRules.TryGetValue("instanceMappings", out var mappings) && mappings is JsonElement mappingsElement && mappingsElement.ValueKind == JsonValueKind.Array)
+        return mappingsElement.GetArrayLength();
     foreach (var key in new[] { "sourceInstanceCount", "instanceCount" })
     {
         if (!definition.ValidationRules.TryGetValue(key, out var value) || value == null)

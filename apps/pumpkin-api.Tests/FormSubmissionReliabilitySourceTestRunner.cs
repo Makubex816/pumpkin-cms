@@ -25,6 +25,7 @@ public static class FormSubmissionReliabilitySourceTestRunner
         Assert(program.Contains("Math.Clamp(requestedPageSize, 1, 200)", StringComparison.Ordinal), "tenant inbox pagination is bounded");
         Assert(program.Contains("/api/admin/{tenantId}/form-readiness", StringComparison.Ordinal), "safe readiness snapshot exists");
         Assert(program.Contains("external_runtime_freeze", StringComparison.Ordinal), "runtime freeze has an explicit readiness state");
+        Assert(program.Contains("mappingsElement.GetArrayLength()", StringComparison.Ordinal), "readiness counts canonical instance mappings");
         Assert(manager.Contains("CancelAfter(TimeSpan.FromSeconds(10))", StringComparison.Ordinal), "API bound exists");
         Assert(manager.Contains("LeadPersistenceStatus = \"persisted\"", StringComparison.Ordinal), "persistence status is independent");
         Assert(manager.Contains("NotificationDeliveryStatus = \"not_configured\"", StringComparison.Ordinal), "notification state is independent");
