@@ -1,0 +1,20 @@
+{
+  "taskId": "V2.8.63CRSR",
+  "status": "blocked_true_hard_gate_production_worker_or_capacity_owner_approval_required",
+  "sourceHead": "7a733d5f",
+  "productionDeployment": "f6bdf0d7-ca60-4e7f-818c-f4c74a710a86",
+  "productionPackageSha256": "8f5db9c94ceac79d63ffe1aa71c578cc794bcb8b49e62462712ef37c435f59f8",
+  "slotDeployment": "cb31ebcf-0b01-4215-9521-af10d4edd8d1",
+  "slotPackageSha256": "04edf05c61a7f45cec52c80936ec5125a1be3ec5ce3fc11951b6e80af72b482c",
+  "backupChecksumEntries": 18,
+  "backupChecksumMismatches": 0,
+  "currentSku": "S1",
+  "currentCapacity": 2,
+  "requestedSku": "S2",
+  "requestedCapacity": 2,
+  "productionPromoted": false,
+  "adminDeployed": false,
+  "tenantRenameEnabled": false,
+  "indexingChanged": false,
+  "airstripPublicRuntimeRequested": false
+}
