@@ -22,6 +22,7 @@ public static class IdentityFoundationSourceTestRunner
             ("backup projection excludes password hash and tokens", BackupRedaction),
             ("migration dry run is deterministic and execution disabled", DeterministicDryRun),
             ("notification provider honestly reports no-provider state", NoProvider)
+            ,("dual-write writer is registered on login", LoginDualWriteSource)
         };
         foreach (var test in tests) { test.Run(); Console.WriteLine($"PASS: {test.Name}"); }
         Console.WriteLine($"Identity foundation source tests passed: {tests.Length}/{tests.Length}");
@@ -95,6 +96,12 @@ public static class IdentityFoundationSourceTestRunner
         Assert(a.InputFingerprint == IdentityMigrationPlanner.CreateDryRun(reloaded).InputFingerprint, "model default timestamps changed plan hash");
     }
     private static void NoProvider() => Assert(new DisabledIdentityNotificationProvider().Capability == NotificationCapability.DisabledNoProvider, "provider state dishonest");
+    private static void LoginDualWriteSource()
+    {
+        var root = FindRepositoryRoot();
+        var program = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Program.cs"));
+        Assert(program.Contains("IIdentityLoginCompatibilityWriter identityWriter") && program.Contains("WriteSuccessfulLoginAsync"), "login does not invoke identity dual-write");
+    }
 
     private static Tenant Tenant(string slug) => new() { Id = $"legacy-{slug}", TenantId = slug, Name = slug, Status = "active" };
     private static User User(string id, string tenant, string email, UserRole role = UserRole.Viewer) => new()
@@ -102,4 +109,10 @@ public static class IdentityFoundationSourceTestRunner
     private static IReadOnlyDictionary<string, IReadOnlyList<string>> EmptyRecipients() => new Dictionary<string, IReadOnlyList<string>>();
     private static IReadOnlyDictionary<string, IReadOnlyList<string>> EmptyDependencies() => new Dictionary<string, IReadOnlyList<string>>();
     private static void Assert(bool condition, string message) { if (!condition) throw new InvalidOperationException(message); }
+    private static string FindRepositoryRoot()
+    {
+        var current = new DirectoryInfo(AppContext.BaseDirectory);
+        while (current is not null && !Directory.Exists(Path.Combine(current.FullName, "apps"))) current = current.Parent;
+        return current?.FullName ?? throw new DirectoryNotFoundException("repository root not found");
+    }
 }

@@ -671,7 +671,7 @@ app.MapGet("/api/themes/{tenantId}/{themeId}",
 
 // Login endpoint
 app.MapPost("/api/auth/login",
-    async (IDatabaseService databaseService, LoginRequest request, IConfiguration configuration) =>
+    async (IDatabaseService databaseService, IIdentityLoginCompatibilityWriter identityWriter, LoginRequest request, IConfiguration configuration, HttpContext context) =>
     {
         var user = await databaseService.GetUserByEmailAsync(request.Email);
 
@@ -719,6 +719,7 @@ app.MapPost("/api/auth/login",
 
         // Update last login
         await databaseService.UpdateUserLastLoginAsync(user.Id, user.TenantId);
+        await identityWriter.WriteSuccessfulLoginAsync(user, context.TraceIdentifier, context.RequestAborted);
 
         return Results.Ok(new LoginResponse
         {

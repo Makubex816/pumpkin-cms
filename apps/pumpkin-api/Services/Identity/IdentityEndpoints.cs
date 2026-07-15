@@ -8,6 +8,7 @@ public static class IdentityEndpoints
     {
         services.Configure<IdentityFeatureOptions>(configuration.GetSection(IdentityFeatureOptions.SectionName));
         services.AddSingleton<IIdentityNotificationProvider, DisabledIdentityNotificationProvider>();
+        services.AddSingleton<IIdentityLoginCompatibilityWriter, IdentityLoginCompatibilityWriter>();
         return services;
     }
 
