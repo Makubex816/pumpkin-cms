@@ -1,0 +1,3 @@
+# V2.8.63B — Controlled Identity Foundation Deployment, Production Backup, Additive Containers and Indexes, Dry-Run and Production Backfill, Dual-Read/Dual-Write Activation, All-Tenant Compatibility Proof, and Rollback Readiness
+
+Back up every tenant and user before writes. Create additive storage/indexes only. Run the deterministic identity migration dry run, resolve or hold every conflict, then backfill tenantUid, UserAccount and TenantMembership without changing existing passwords or access. Deploy API/Admin only after source proof; activate dual-read then controlled dual-write behind flags, retain every legacy field, prove Ice, Party Pros, Airstrip metadata and Vegas, verify backups/restores and rollback, and do not retire legacy identity paths.
