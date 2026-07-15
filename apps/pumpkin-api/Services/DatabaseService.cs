@@ -58,6 +58,11 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.SaveFormEntryAsync(apiKey, tenantId, formEntry);
     }
 
+    public Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry, CancellationToken cancellationToken)
+    {
+        return _dataConnection.SaveFormEntryAsync(apiKey, tenantId, formEntry, cancellationToken);
+    }
+
     public Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
     {
         return _dataConnection.GetFormEntriesByTenantAsync(tenantId);
@@ -76,6 +81,11 @@ public class DatabaseService : IDatabaseService, IDisposable
     public Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type)
     {
         return _dataConnection.GetFormDefinitionAsync(apiKey, tenantId, type);
+    }
+
+    public Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type, CancellationToken cancellationToken)
+    {
+        return _dataConnection.GetFormDefinitionAsync(apiKey, tenantId, type, cancellationToken);
     }
 
     public Task<List<FormDefinition>> GetFormDefinitionsByTenantAsync(string tenantId)

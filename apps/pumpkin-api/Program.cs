@@ -204,6 +204,9 @@ FormEntry BuildFormEntryFromSubmitAliasPayload(string tenantId, string type, Jso
     var formKey = type.Trim();
     var siteKey = tenantId;
     var sourcePage = "external-submit-alias";
+    var submissionId = context.Request.Headers["X-Pumpkin-Submission-Id"].FirstOrDefault() ?? string.Empty;
+    var correlationId = context.Request.Headers["X-Correlation-Id"].FirstOrDefault() ?? string.Empty;
+    var idempotencyKey = context.Request.Headers["Idempotency-Key"].FirstOrDefault() ?? string.Empty;
 
     if (payload.ValueKind == JsonValueKind.Object)
     {
@@ -215,6 +218,12 @@ FormEntry BuildFormEntryFromSubmitAliasPayload(string tenantId, string type, Jso
             siteKey = JsonElementToString(siteKeyElement);
         if (payload.TryGetProperty("sourcePage", out var sourcePageElement))
             sourcePage = JsonElementToString(sourcePageElement);
+        if (payload.TryGetProperty("submissionId", out var submissionElement))
+            submissionId = JsonElementToString(submissionElement);
+        if (payload.TryGetProperty("correlationId", out var correlationElement))
+            correlationId = JsonElementToString(correlationElement);
+        if (payload.TryGetProperty("idempotencyKey", out var idempotencyElement))
+            idempotencyKey = JsonElementToString(idempotencyElement);
 
         if (payload.TryGetProperty("formData", out var formDataElement) && formDataElement.ValueKind == JsonValueKind.Object)
         {
@@ -247,9 +256,16 @@ FormEntry BuildFormEntryFromSubmitAliasPayload(string tenantId, string type, Jso
     formData.TryAdd("siteKey", siteKey);
     formData.TryAdd("formKey", formKey);
     formData.TryAdd("sourcePage", sourcePage);
+    submissionId = Guid.TryParse(submissionId, out var parsedSubmission) ? parsedSubmission.ToString() : Guid.NewGuid().ToString();
+    correlationId = Guid.TryParse(correlationId, out var parsedCorrelation) ? parsedCorrelation.ToString() : Guid.NewGuid().ToString();
+    idempotencyKey = string.IsNullOrWhiteSpace(idempotencyKey) ? submissionId : idempotencyKey.Trim();
 
     return new FormEntry
     {
+        Id = submissionId,
+        SubmissionId = submissionId,
+        CorrelationId = correlationId,
+        IdempotencyKey = idempotencyKey,
         TenantId = tenantId,
         SiteKey = siteKey,
         FormId = formId,
@@ -262,6 +278,8 @@ FormEntry BuildFormEntryFromSubmitAliasPayload(string tenantId, string type, Jso
         UserAgent = context.Request.Headers.UserAgent.FirstOrDefault() ?? string.Empty,
         Metadata = new FormEntryMetadata
         {
+            SubmissionId = submissionId,
+            CorrelationId = correlationId,
             Source = "external-submit-alias",
             Tags = new List<string> { "external-compat-alias", tenantId, formKey }
                 .Where(tag => !string.IsNullOrWhiteSpace(tag))
@@ -421,7 +439,7 @@ app.MapPost("/api/forms/{tenantId}/entries",
             apiKey = authHeader.Substring("Bearer ".Length).Trim();
         }
 
-        return await PumpkinManager.SaveFormEntryAsync(databaseService, apiKey, tenantId, formEntry);
+        return await PumpkinManager.SaveFormEntryAsync(databaseService, apiKey, tenantId, formEntry, context.RequestAborted);
     })
     .WithTags("Forms")
     .WithName("SaveFormEntry")
@@ -443,7 +461,7 @@ app.MapPost("/api/forms/{tenantId}/submit/{type}",
         }
 
         var formEntry = BuildFormEntryFromSubmitAliasPayload(tenantId, type, payload, context);
-        return await PumpkinManager.SaveFormEntrySubmitAliasAsync(databaseService, apiKey, tenantId, type, formEntry);
+        return await PumpkinManager.SaveFormEntrySubmitAliasAsync(databaseService, apiKey, tenantId, type, formEntry, context.RequestAborted);
     })
     .WithTags("Forms")
     .WithName("SaveFormEntrySubmitAlias")
@@ -470,6 +488,54 @@ app.MapGet("/api/forms/{tenantId}/definitions/{type}",
     .WithName("GetFormDefinition")
     .WithSummary("Get a form definition by type")
     .WithDescription("Reads an active or published FormDefinition for a specific tenant by form type or form key. Requires API key authentication via Authorization header (Bearer {apiKey})")
+    .RequireCors("TenantCors");
+
+// Authenticated no-write readiness probe. This never constructs or saves a FormEntry.
+app.MapGet("/api/forms/{tenantId}/preflight/{type}",
+    async (IDatabaseService databaseService, string tenantId, string type, HttpContext context) =>
+    {
+        var correlationId = context.Request.Headers["X-Correlation-Id"].FirstOrDefault();
+        correlationId = Guid.TryParse(correlationId, out var parsed) ? parsed.ToString() : Guid.NewGuid().ToString();
+        var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
+        var apiKey = !string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+            ? authHeader["Bearer ".Length..].Trim()
+            : string.Empty;
+        try
+        {
+            using var bound = CancellationTokenSource.CreateLinkedTokenSource(context.RequestAborted);
+            bound.CancelAfter(TimeSpan.FromSeconds(10));
+            var definition = await databaseService.GetFormDefinitionAsync(apiKey, tenantId, PageRedirectGuard.NormalizeSlug(type), bound.Token);
+            if (definition == null)
+                return Results.NotFound(new { ready = false, errorCode = "form_definition_not_active", tenantId, formType = type, correlationId, createsFormEntry = false });
+            return Results.Ok(new
+            {
+                ready = true,
+                tenantId,
+                formDefinitionId = definition.Id,
+                formKey = definition.FormKey,
+                formType = definition.FormType,
+                status = definition.Status,
+                fieldCount = definition.Fields?.Count ?? 0,
+                consentConfigured = definition.Fields?.Any(field => string.Equals(field.Name, "privacyConsent", StringComparison.OrdinalIgnoreCase)) == true,
+                honeypotConfigured = definition.Fields?.Any(field => string.Equals(field.Name, "companyWebsite", StringComparison.OrdinalIgnoreCase)) == true,
+                recipientRef = "TENANT_CONTACT_EMAIL",
+                correlationId,
+                idempotencySupported = true,
+                createsFormEntry = false
+            });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Results.Unauthorized();
+        }
+        catch (OperationCanceledException)
+        {
+            return Results.Json(new { ready = false, errorCode = "preflight_timeout", tenantId, formType = type, correlationId, createsFormEntry = false }, statusCode: StatusCodes.Status504GatewayTimeout);
+        }
+    })
+    .WithTags("Forms")
+    .WithName("PreflightFormSubmission")
+    .WithSummary("Validate tenant form submission readiness without writing")
     .RequireCors("TenantCors");
 
 // Get sitemap pages
@@ -1899,6 +1965,12 @@ app.MapGet("/api/admin/{tenantId}/form-entries",
         try
         {
             var formEntries = await databaseService.GetFormEntriesByTenantAsync(tenantId);
+            var submissionId = context.Request.Query["submissionId"].FirstOrDefault();
+            var correlationId = context.Request.Query["correlationId"].FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(submissionId))
+                formEntries = formEntries.Where(entry => string.Equals(entry.SubmissionId, submissionId, StringComparison.Ordinal)).ToList();
+            if (!string.IsNullOrWhiteSpace(correlationId))
+                formEntries = formEntries.Where(entry => string.Equals(entry.CorrelationId, correlationId, StringComparison.Ordinal)).ToList();
             return Results.Ok(new { formEntries, count = formEntries.Count, tenantId });
         }
         catch (Exception ex)

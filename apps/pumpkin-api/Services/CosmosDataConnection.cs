@@ -420,7 +420,9 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
-    public async Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry)
+    public Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry) => SaveFormEntryAsync(apiKey, tenantId, formEntry, CancellationToken.None);
+
+    public async Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry, CancellationToken cancellationToken)
     {
         try
         {
@@ -433,10 +435,13 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             }
 
             // Ensure the form entry has required fields
-            if (string.IsNullOrEmpty(formEntry.Id))
-            {
-                formEntry.Id = Guid.NewGuid().ToString();
-            }
+            if (string.IsNullOrWhiteSpace(formEntry.SubmissionId))
+                formEntry.SubmissionId = Guid.NewGuid().ToString();
+            formEntry.Id = formEntry.SubmissionId;
+            formEntry.IdempotencyKey = string.IsNullOrWhiteSpace(formEntry.IdempotencyKey) ? formEntry.SubmissionId : formEntry.IdempotencyKey;
+            formEntry.Metadata ??= new FormEntryMetadata();
+            formEntry.Metadata.SubmissionId = formEntry.SubmissionId;
+            formEntry.Metadata.CorrelationId = formEntry.CorrelationId;
 
             // Set tenant ID if not already set
             if (string.IsNullOrEmpty(formEntry.TenantId))
@@ -453,7 +458,7 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             }
 
             // Create the form entry
-            var response = await formEntryContainer.CreateItemAsync(formEntry, new PartitionKey(tenantId));
+            var response = await formEntryContainer.CreateItemAsync(formEntry, new PartitionKey(tenantId), cancellationToken: cancellationToken);
 
             _logger.LogInformation("Form entry created successfully - FormEntryId: {FormEntryId}, FormId: {FormId}, TenantId: {TenantId}, RU Cost: {RequestCharge}",
                 formEntry.Id, formEntry.FormId, tenantId, response.RequestCharge);
@@ -463,7 +468,10 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
         {
             _logger.LogWarning("Form entry already exists - FormEntryId: {FormEntryId}, TenantId: {TenantId}", formEntry.Id, tenantId);
-            throw new InvalidOperationException($"Form entry with ID {formEntry.Id} already exists", ex);
+            var existing = await _database.GetContainer("FormEntry").ReadItemAsync<FormEntry>(formEntry.Id, new PartitionKey(tenantId), cancellationToken: cancellationToken);
+            existing.Resource.Metadata ??= new FormEntryMetadata();
+            existing.Resource.Metadata.IdempotentReplay = true;
+            return existing.Resource;
         }
         catch (CosmosException ex)
         {

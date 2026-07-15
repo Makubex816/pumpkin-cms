@@ -2,6 +2,9 @@
  * Represents metadata associated with a form submission
  */
 export interface FormEntryMetadata {
+  submissionId?: string;
+  correlationId?: string;
+  idempotentReplay?: boolean;
   source: string;
   referrer: string;
   status: string;
@@ -17,6 +20,9 @@ export interface FormEntryMetadata {
  */
 export interface FormEntry {
   id: string;
+  submissionId?: string;
+  correlationId?: string;
+  idempotencyKey?: string;
   tenantId: string;
   siteKey?: string;
   formId: string;

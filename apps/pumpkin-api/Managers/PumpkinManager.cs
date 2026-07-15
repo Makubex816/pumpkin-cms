@@ -175,7 +175,7 @@ public static class PumpkinManager
         }
     }
 
-    public static async Task<IResult> SaveFormEntryAsync(IDatabaseService databaseService, string apiKey, string tenantId, FormEntry formEntry)
+    public static async Task<IResult> SaveFormEntryAsync(IDatabaseService databaseService, string apiKey, string tenantId, FormEntry formEntry, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -202,9 +202,11 @@ public static class PumpkinManager
             if (string.IsNullOrEmpty(formEntry.FormId))
                 return Results.BadRequest("Form ID is required");
 
-            var savedFormEntry = await databaseService.SaveFormEntryAsync(apiKey, tenantId, formEntry);
+            using var bound = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            bound.CancelAfter(TimeSpan.FromSeconds(10));
+            var savedFormEntry = await databaseService.SaveFormEntryAsync(apiKey, tenantId, formEntry, bound.Token);
 
-            return Results.Created($"/api/forms/{tenantId}/entries/{savedFormEntry.Id}", savedFormEntry);
+            return Results.Created($"/api/forms/{tenantId}/entries/{savedFormEntry.Id}", new { success = true, formEntryId = savedFormEntry.Id, submissionId = savedFormEntry.SubmissionId, correlationId = savedFormEntry.CorrelationId, createdAt = savedFormEntry.SubmittedAt, idempotentReplay = savedFormEntry.Metadata?.IdempotentReplay == true });
         }
         catch (UnauthorizedAccessException)
         {
@@ -220,7 +222,7 @@ public static class PumpkinManager
         }
     }
 
-    public static async Task<IResult> SaveFormEntrySubmitAliasAsync(IDatabaseService databaseService, string apiKey, string tenantId, string type, FormEntry formEntry)
+    public static async Task<IResult> SaveFormEntrySubmitAliasAsync(IDatabaseService databaseService, string apiKey, string tenantId, string type, FormEntry formEntry, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -243,12 +245,14 @@ public static class PumpkinManager
 
             if (IsDefaultFormKey(formEntry.FormKey))
             {
-                return await SaveFormEntryAsync(databaseService, apiKey, tenantId, formEntry);
+                return await SaveFormEntryAsync(databaseService, apiKey, tenantId, formEntry, cancellationToken);
             }
 
-            var formDefinition = await databaseService.GetFormDefinitionAsync(apiKey, tenantId, normalizedType);
+            using var bound = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            bound.CancelAfter(TimeSpan.FromSeconds(10));
+            var formDefinition = await databaseService.GetFormDefinitionAsync(apiKey, tenantId, normalizedType, bound.Token);
             if (formDefinition == null)
-                return Results.NotFound("Form definition not found or access denied");
+                return Results.NotFound(new { success = false, errorCode = "form_definition_not_found", message = "The requested form definition is not active.", submissionId = formEntry.SubmissionId, correlationId = formEntry.CorrelationId, retryable = false, persistenceCompleted = false });
 
             formEntry.FormKey = formDefinition.FormKey;
             formEntry.FormId = FirstNonEmpty(formEntry.FormId, formDefinition.Id, formDefinition.FormKey);
@@ -267,9 +271,9 @@ public static class PumpkinManager
             if (string.IsNullOrEmpty(formEntry.FormId))
                 return Results.BadRequest("Form ID is required");
 
-            var savedFormEntry = await databaseService.SaveFormEntryAsync(apiKey, tenantId, formEntry);
+            var savedFormEntry = await databaseService.SaveFormEntryAsync(apiKey, tenantId, formEntry, bound.Token);
 
-            return Results.Created($"/api/forms/{tenantId}/entries/{savedFormEntry.Id}", savedFormEntry);
+            return Results.Created($"/api/forms/{tenantId}/entries/{savedFormEntry.Id}", new { success = true, formEntryId = savedFormEntry.Id, submissionId = savedFormEntry.SubmissionId, correlationId = savedFormEntry.CorrelationId, createdAt = savedFormEntry.SubmittedAt, idempotentReplay = savedFormEntry.Metadata?.IdempotentReplay == true });
         }
         catch (UnauthorizedAccessException)
         {

@@ -279,7 +279,9 @@ public class MongoDataConnection : IDataConnection, IDisposable
         }
     }
 
-    public async Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry)
+    public Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry) => SaveFormEntryAsync(apiKey, tenantId, formEntry, CancellationToken.None);
+
+    public async Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry, CancellationToken cancellationToken)
     {
         try
         {
@@ -292,10 +294,13 @@ public class MongoDataConnection : IDataConnection, IDisposable
             }
 
             // Ensure the form entry has required fields
-            if (string.IsNullOrEmpty(formEntry.Id))
-            {
-                formEntry.Id = Guid.NewGuid().ToString();
-            }
+            if (string.IsNullOrWhiteSpace(formEntry.SubmissionId))
+                formEntry.SubmissionId = Guid.NewGuid().ToString();
+            formEntry.Id = formEntry.SubmissionId;
+            formEntry.IdempotencyKey = string.IsNullOrWhiteSpace(formEntry.IdempotencyKey) ? formEntry.SubmissionId : formEntry.IdempotencyKey;
+            formEntry.Metadata ??= new FormEntryMetadata();
+            formEntry.Metadata.SubmissionId = formEntry.SubmissionId;
+            formEntry.Metadata.CorrelationId = formEntry.CorrelationId;
 
             // Set tenant ID if not already set
             if (string.IsNullOrEmpty(formEntry.TenantId))
@@ -310,12 +315,14 @@ public class MongoDataConnection : IDataConnection, IDisposable
                 Builders<FormEntry>.Filter.Eq(f => f.Id, formEntry.Id),
                 Builders<FormEntry>.Filter.Eq(f => f.TenantId, tenantId)
             );
-            var exists = await formEntryCollection.Find(existingFilter).AnyAsync();
+            var existing = await formEntryCollection.Find(existingFilter).FirstOrDefaultAsync(cancellationToken);
             
-            if (exists)
+            if (existing != null)
             {
                 _logger.LogWarning("Form entry already exists - FormEntryId: {FormEntryId}, TenantId: {TenantId}", formEntry.Id, tenantId);
-                throw new InvalidOperationException($"Form entry with ID {formEntry.Id} already exists");
+                existing.Metadata ??= new FormEntryMetadata();
+                existing.Metadata.IdempotentReplay = true;
+                return existing;
             }
 
             // Set timestamp
@@ -325,12 +332,20 @@ public class MongoDataConnection : IDataConnection, IDisposable
             }
 
             // Insert the form entry
-            await formEntryCollection.InsertOneAsync(formEntry);
+            await formEntryCollection.InsertOneAsync(formEntry, cancellationToken: cancellationToken);
 
             _logger.LogInformation("Form entry created successfully - FormEntryId: {FormEntryId}, FormId: {FormId}, TenantId: {TenantId}",
                 formEntry.Id, formEntry.FormId, tenantId);
 
             return formEntry;
+        }
+        catch (MongoWriteException ex) when (ex.WriteError?.Category == ServerErrorCategory.DuplicateKey)
+        {
+            var existing = await _database.GetCollection<FormEntry>("FormEntry").Find(item => item.Id == formEntry.Id && item.TenantId == tenantId).FirstOrDefaultAsync(cancellationToken);
+            if (existing == null) throw;
+            existing.Metadata ??= new FormEntryMetadata();
+            existing.Metadata.IdempotentReplay = true;
+            return existing;
         }
         catch (MongoException ex)
         {

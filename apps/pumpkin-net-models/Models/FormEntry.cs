@@ -10,6 +10,15 @@ public class FormEntry
     [JsonPropertyName("id")]
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
+    [JsonPropertyName("submissionId")]
+    public string SubmissionId { get; set; } = string.Empty;
+
+    [JsonPropertyName("correlationId")]
+    public string CorrelationId { get; set; } = string.Empty;
+
+    [JsonPropertyName("idempotencyKey")]
+    public string IdempotencyKey { get; set; } = string.Empty;
+
     [JsonPropertyName("tenantId")]
     public string TenantId { get; set; } = string.Empty;
 
@@ -61,6 +70,14 @@ public class FormEntry
 
 public class FormEntryMetadata
 {
+    [JsonPropertyName("submissionId")]
+    public string SubmissionId { get; set; } = string.Empty;
+
+    [JsonPropertyName("correlationId")]
+    public string CorrelationId { get; set; } = string.Empty;
+
+    [JsonPropertyName("idempotentReplay")]
+    public bool IdempotentReplay { get; set; }
     [JsonPropertyName("source")]
     public string Source { get; set; } = string.Empty;
 

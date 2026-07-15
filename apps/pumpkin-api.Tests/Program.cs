@@ -6,6 +6,12 @@ using pumpkin_api.Tests;
 using pumpkin_net_models.Models;
 using System.Text.Json;
 
+if (args.Contains("--v2-8-62irjrtu", StringComparer.OrdinalIgnoreCase))
+{
+    await FormSubmissionReliabilitySourceTestRunner.RunAsync();
+    return;
+}
+
 if (args.Contains("--phase-2h9", StringComparer.OrdinalIgnoreCase))
 {
     await OutboundLinkApiReadOnlyTestRunner.RunAsync();

@@ -13,10 +13,12 @@ public interface IDataConnection
     Task<Page> UpdatePageAsync(string apiKey, string tenantId, string pageSlug, Page page);
     Task<bool> DeletePageAsync(string apiKey, string tenantId, string pageSlug);
     Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry);
+    Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry, CancellationToken cancellationToken) => SaveFormEntryAsync(apiKey, tenantId, formEntry).WaitAsync(cancellationToken);
     Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId);
     Task<FormEntry?> GetFormEntryAsync(string tenantId, string id);
     Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate);
     Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type);
+    Task<FormDefinition?> GetFormDefinitionAsync(string apiKey, string tenantId, string type, CancellationToken cancellationToken) => GetFormDefinitionAsync(apiKey, tenantId, type).WaitAsync(cancellationToken);
     Task<List<FormDefinition>> GetFormDefinitionsByTenantAsync(string tenantId);
     Task<FormDefinition?> GetFormDefinitionAdminAsync(string tenantId, string id);
     Task<FormDefinition> CreateFormDefinitionAsync(string tenantId, FormDefinition definition);
