@@ -159,6 +159,8 @@ public static class IdentityFoundationSourceTestRunner
                cosmos.Contains("legacy_login_locator_missing") &&
                cosmos.Contains("ReadItemAsync<pumpkin_net_models.Models.User>"),
             "legacy login does not use the single-partition locator and point read");
+        Assert(cosmos.Contains("LimitToEndpoint = true") && cosmos.Contains("RequestTimeout = TimeSpan.FromSeconds(10)"),
+            "Cosmos endpoint discovery is not bounded to the configured account endpoint");
     }
 
     private static Tenant Tenant(string slug) => new() { Id = $"legacy-{slug}", TenantId = slug, Name = slug, Status = "active" };

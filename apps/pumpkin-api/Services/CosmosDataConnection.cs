@@ -32,6 +32,7 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         var clientOptions = new CosmosClientOptions
         {
             ConnectionMode = ConnectionMode.Gateway,
+            LimitToEndpoint = true,
             RequestTimeout = TimeSpan.FromSeconds(10),
             MaxRetryAttemptsOnRateLimitedRequests = cosmosSettings.MaxRetryAttemptsOnRateLimitedRequests,
             MaxRetryWaitTimeOnRateLimitedRequests = TimeSpan.FromSeconds(cosmosSettings.MaxRetryWaitTimeOnRateLimitedRequests),

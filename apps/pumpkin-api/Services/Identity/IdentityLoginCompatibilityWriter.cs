@@ -34,7 +34,9 @@ public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibili
             _cosmos = new CosmosClient(cosmosSettings.Value.ConnectionString, new CosmosClientOptions
             {
                 Serializer = new CosmosSystemTextJsonSerializer(),
-                ConnectionMode = ConnectionMode.Gateway
+                ConnectionMode = ConnectionMode.Gateway,
+                LimitToEndpoint = true,
+                RequestTimeout = TimeSpan.FromSeconds(10)
             });
         }
     }
