@@ -1,0 +1,13 @@
+{
+  "taskId": "V2.8.63CRR",
+  "status": "blocked_true_hard_gate_production_parity_unresolved_after_instrumented_slot",
+  "sourceCommit": "1b621209",
+  "candidateSha256": "f746544d49ee8ebf8cfe70f8a28147f8d9e7cb054681bc008ee6038a38c278f6",
+  "slotDeploymentId": "5fc7e705-0b2a-4f0b-8a07-ca86bba5f88b",
+  "productionSwapPerformed": false,
+  "adminDeploymentPerformed": false,
+  "syntheticIdentityCreated": false,
+  "customerMutations": 0,
+  "airstripPublicRequests": 0,
+  "indexingChanged": false
+}
