@@ -23,6 +23,7 @@ public static class IdentityFoundationSourceTestRunner
             ("migration dry run is deterministic and execution disabled", DeterministicDryRun),
             ("notification provider honestly reports no-provider state", NoProvider)
             ,("dual-write writer is registered on login", LoginDualWriteSource)
+            ,("feature state diagnostic is authenticated", FeatureDiagnosticSource)
         };
         foreach (var test in tests) { test.Run(); Console.WriteLine($"PASS: {test.Name}"); }
         Console.WriteLine($"Identity foundation source tests passed: {tests.Length}/{tests.Length}");
@@ -101,6 +102,12 @@ public static class IdentityFoundationSourceTestRunner
         var root = FindRepositoryRoot();
         var program = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Program.cs"));
         Assert(program.Contains("IIdentityLoginCompatibilityWriter identityWriter") && program.Contains("WriteSuccessfulLoginAsync"), "login does not invoke identity dual-write");
+    }
+    private static void FeatureDiagnosticSource()
+    {
+        var root = FindRepositoryRoot();
+        var endpoints = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "Identity", "IdentityEndpoints.cs"));
+        Assert(endpoints.Contains("/api/identity/feature-state") && endpoints.Contains("RequireAuthorization()"), "feature diagnostic is missing or public");
     }
 
     private static Tenant Tenant(string slug) => new() { Id = $"legacy-{slug}", TenantId = slug, Name = slug, Status = "active" };

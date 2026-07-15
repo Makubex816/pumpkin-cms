@@ -14,6 +14,15 @@ public static class IdentityEndpoints
 
     public static IEndpointRouteBuilder MapIdentityFoundation(this IEndpointRouteBuilder endpoints)
     {
+        endpoints.MapGet("/api/identity/feature-state", (IOptions<IdentityFeatureOptions> options) => Results.Ok(new
+        {
+            foundationEnabled = options.Value.Enabled,
+            dualReadEnabled = options.Value.DualReadEnabled,
+            dualWriteEnabled = options.Value.DualWriteEnabled,
+            renameEnabled = options.Value.RenameExecutionEnabled,
+            migrationExecutionEnabled = options.Value.MigrationExecutionEnabled,
+            notificationProviderEnabled = options.Value.ExternalNotificationProviderEnabled
+        })).RequireAuthorization().WithTags("Identity - Read Only");
         var current = endpoints.MapGroup("/api/identity/current").RequireAuthorization().WithTags("Identity - Current User");
         current.MapGet("/profile", Disabled);
         current.MapGet("/memberships", Disabled);

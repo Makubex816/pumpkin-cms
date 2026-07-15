@@ -14,14 +14,14 @@ public interface IIdentityLoginCompatibilityWriter
 
 public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibilityWriter, IDisposable
 {
-    private readonly IdentityFeatureOptions _features;
+    private readonly IOptionsMonitor<IdentityFeatureOptions> _features;
     private readonly DatabaseSettings _databaseSettings;
     private readonly CosmosClient? _cosmos;
 
-    public IdentityLoginCompatibilityWriter(IOptions<IdentityFeatureOptions> features,
+    public IdentityLoginCompatibilityWriter(IOptionsMonitor<IdentityFeatureOptions> features,
         IOptions<DatabaseSettings> databaseSettings, IOptions<CosmosDbSettings> cosmosSettings)
     {
-        _features = features.Value;
+        _features = features;
         _databaseSettings = databaseSettings.Value;
         if (_databaseSettings.Provider.Equals("CosmosDb", StringComparison.OrdinalIgnoreCase) &&
             !string.IsNullOrWhiteSpace(cosmosSettings.Value.ConnectionString))
@@ -36,7 +36,8 @@ public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibili
 
     public async Task WriteSuccessfulLoginAsync(LegacyUser legacyUser, string requestId, CancellationToken cancellationToken)
     {
-        if (!_features.Enabled || !_features.DualWriteEnabled) return;
+        var featureState = _features.CurrentValue;
+        if (!featureState.Enabled || !featureState.DualWriteEnabled) return;
         if (_cosmos is null || !_databaseSettings.Provider.Equals("CosmosDb", StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("identity_dual_write_provider_unavailable");
 
