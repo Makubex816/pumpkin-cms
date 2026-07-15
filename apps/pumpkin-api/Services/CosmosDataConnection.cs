@@ -2300,7 +2300,7 @@ public class CosmosDataConnection : IDataConnection, IDisposable
 
             while (iterator.HasMoreResults)
             {
-                var response = await iterator.ReadNextAsync(cancellationToken);
+                var response = await iterator.ReadNextAsync(cancellationToken).WaitAsync(cancellationToken);
                 locators.AddRange(response);
             }
 
@@ -2313,7 +2313,7 @@ public class CosmosDataConnection : IDataConnection, IDisposable
                     await _database.GetContainer("User").ReadItemAsync<JsonObject>(
                         "00000000-0000-0000-0000-000000000000",
                         new PartitionKey("__identity_login_enumeration_probe__"),
-                        cancellationToken: cancellationToken);
+                        cancellationToken: cancellationToken).WaitAsync(cancellationToken);
                 }
                 catch (CosmosException error) when (error.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -2327,7 +2327,8 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             if (string.IsNullOrWhiteSpace(legacyUserId) || string.IsNullOrWhiteSpace(legacyTenantId))
                 throw new InvalidOperationException("legacy_login_locator_missing");
             var responseItem = await _database.GetContainer("User").ReadItemAsync<pumpkin_net_models.Models.User>(
-                legacyUserId, new PartitionKey(legacyTenantId), cancellationToken: cancellationToken);
+                legacyUserId, new PartitionKey(legacyTenantId), cancellationToken: cancellationToken)
+                .WaitAsync(cancellationToken);
             var user = responseItem.Resource;
             
             _logger.LogInformation("GetUserByEmail completed - Found: {Found}", user != null);

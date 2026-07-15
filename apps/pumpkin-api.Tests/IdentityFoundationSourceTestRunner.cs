@@ -171,10 +171,14 @@ public static class IdentityFoundationSourceTestRunner
         var program = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Program.cs"));
         var cosmos = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "CosmosDataConnection.cs"));
         var writer = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "Identity", "IdentityLoginCompatibilityWriter.cs"));
+        var legacyEmailLookup = SliceBetween(cosmos,
+            "private async Task<pumpkin_net_models.Models.User?> GetUserByEmailOnceAsync(",
+            "public async Task<object> DiagnoseLegacyLookupAsync");
         Assert(cosmos.Contains("ConnectionMode = ConnectionMode.Gateway") &&
                cosmos.Contains("overall.CancelAfter(TimeSpan.FromMilliseconds(4800))") &&
                cosmos.Contains("attemptTimeout.CancelAfter(TimeSpan.FromMilliseconds(2200))") &&
-               cosmos.Contains("ReadNextAsync(cancellationToken)"), "login lookup can wait without a bounded gateway budget");
+               Count(legacyEmailLookup, ".WaitAsync(cancellationToken)") == 3,
+            "login lookup can wait beyond its strict provider deadline");
         Assert(program.Contains("stage=legacy_lookup_started") &&
                program.Contains("stage=legacy_lookup_completed") &&
                program.Contains("loginBudget.CancelAfter(TimeSpan.FromSeconds(9))") &&
