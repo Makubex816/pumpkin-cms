@@ -145,11 +145,16 @@ public static class IdentityFoundationSourceTestRunner
         var program = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Program.cs"));
         var cosmos = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "CosmosDataConnection.cs"));
         Assert(cosmos.Contains("ConnectionMode = ConnectionMode.Gateway") &&
-               cosmos.Contains("CancellationTokenSource(TimeSpan.FromSeconds(12))") &&
+               cosmos.Contains("CancellationTokenSource(TimeSpan.FromSeconds(5))") &&
                cosmos.Contains("ReadNextAsync(timeout.Token)"), "login lookup can wait without a gateway bound");
         Assert(program.Contains("stage=legacy_lookup_started") &&
                program.Contains("stage=legacy_lookup_completed") &&
                !program.Contains("request.Password}"), "safe login stage tracing is missing");
+        Assert(program.Contains("/api/identity/diagnostics/legacy-lookup") &&
+               program.Contains("RequireAuthorization()") &&
+               cosmos.Contains("authenticationMode = \"connection_string_account_key\"") &&
+               cosmos.Contains("StageAsync(\"dns\"") && cosmos.Contains("StageAsync(\"legacy_query\""),
+            "bounded protected data-plane diagnostic is missing");
     }
 
     private static Tenant Tenant(string slug) => new() { Id = $"legacy-{slug}", TenantId = slug, Name = slug, Status = "active" };

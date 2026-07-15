@@ -4,6 +4,9 @@ using pumpkin_api.Services.TenantRedirects;
 using pumpkin_net_models.Models;
 using System.Net;
 using System.Security.Cryptography;
+using System.Diagnostics;
+using System.Net.Security;
+using System.Net.Sockets;
 
 namespace pumpkin_api.Services;
 
@@ -16,12 +19,14 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     private readonly CosmosClient _cosmosClient;
     private readonly Database _database;
     private readonly ILogger<CosmosDataConnection> _logger;
+    private readonly string _accountHost;
     private bool _disposed = false;
 
     public CosmosDataConnection(IOptions<CosmosDbSettings> settings, ILogger<CosmosDataConnection> logger)
     {
         _logger = logger;
         var cosmosSettings = settings.Value;
+        _accountHost = new Uri(ParseAccountEndpoint(cosmosSettings.ConnectionString)).Host;
 
         var clientOptions = new CosmosClientOptions
         {
@@ -2240,7 +2245,7 @@ public class CosmosDataConnection : IDataConnection, IDisposable
                 "SELECT * FROM c WHERE c.email = @email")
                 .WithParameter("@email", email);
 
-            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(12));
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             var iterator = userContainer.GetItemQueryIterator<pumpkin_net_models.Models.User>(
                 query,
                 requestOptions: new QueryRequestOptions { MaxConcurrency = 1, MaxItemCount = 10 });
@@ -2248,14 +2253,13 @@ public class CosmosDataConnection : IDataConnection, IDisposable
 
             while (iterator.HasMoreResults)
             {
-                var response = await iterator.ReadNextAsync(timeout.Token);
+                var response = await iterator.ReadNextAsync(timeout.Token).WaitAsync(timeout.Token);
                 users.AddRange(response);
             }
 
             var user = users.FirstOrDefault();
             
-            _logger.LogInformation("GetUserByEmail - Email: {Email}, Found: {Found}", 
-                email, user != null);
+            _logger.LogInformation("GetUserByEmail completed - Found: {Found}", user != null);
             
             return user;
         }
@@ -2270,6 +2274,63 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             throw;
         }
     }
+
+    public async Task<object> DiagnoseLegacyLookupAsync(string email, string requestId, CancellationToken cancellationToken)
+    {
+        var stages = new List<object>();
+        var timer = Stopwatch.StartNew();
+        async Task StageAsync(string name, Func<CancellationToken, Task> action)
+        {
+            using var stageTimeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            stageTimeout.CancelAfter(TimeSpan.FromSeconds(5));
+            var started = timer.ElapsedMilliseconds;
+            try
+            {
+                await action(stageTimeout.Token).WaitAsync(stageTimeout.Token);
+                stages.Add(new { stage = name, success = true, elapsedMs = timer.ElapsedMilliseconds - started });
+            }
+            catch (OperationCanceledException)
+            {
+                stages.Add(new { stage = name, success = false, elapsedMs = timer.ElapsedMilliseconds - started, errorCategory = "timeout_or_cancelled" });
+                throw;
+            }
+            catch (Exception ex)
+            {
+                stages.Add(new { stage = name, success = false, elapsedMs = timer.ElapsedMilliseconds - started, errorCategory = SafeCategory(ex) });
+                throw;
+            }
+        }
+
+        try
+        {
+            await StageAsync("dns", async ct => { _ = await Dns.GetHostAddressesAsync(_accountHost, ct); });
+            using var tcp = new TcpClient();
+            await StageAsync("tcp", ct => tcp.ConnectAsync(_accountHost, 443, ct).AsTask());
+            using var tls = new SslStream(tcp.GetStream(), false);
+            await StageAsync("tls", ct => tls.AuthenticateAsClientAsync(new SslClientAuthenticationOptions { TargetHost = _accountHost }, ct));
+            await StageAsync("database_metadata", async ct => { _ = await _database.ReadAsync(cancellationToken: ct); });
+            await StageAsync("container_metadata", async ct => { _ = await _database.GetContainer("User").ReadContainerAsync(cancellationToken: ct); });
+            pumpkin_net_models.Models.User? result = null;
+            await StageAsync("legacy_query", async ct => { result = await GetUserByEmailAsync(email).WaitAsync(ct); });
+            return new { requestId, provider = "CosmosSql", authenticationMode = "connection_string_account_key", stages, resultCount = result is null ? 0 : 1, elapsedMs = timer.ElapsedMilliseconds };
+        }
+        catch (Exception ex)
+        {
+            return new { requestId, provider = "CosmosSql", authenticationMode = "connection_string_account_key", stages, resultCount = (int?)null, elapsedMs = timer.ElapsedMilliseconds, errorCategory = SafeCategory(ex) };
+        }
+    }
+
+    private static string ParseAccountEndpoint(string connectionString) => connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries)
+        .Select(part => part.Split('=', 2)).First(part => part.Length == 2 && part[0].Equals("AccountEndpoint", StringComparison.OrdinalIgnoreCase))[1];
+    private static string SafeCategory(Exception ex) => ex switch
+    {
+        CosmosException cosmos when cosmos.StatusCode == HttpStatusCode.Forbidden => "authorization",
+        CosmosException cosmos => $"cosmos_{(int)cosmos.StatusCode}",
+        SocketException => "network",
+        System.Security.Authentication.AuthenticationException => "tls",
+        OperationCanceledException => "timeout_or_cancelled",
+        _ => "provider_or_query"
+    };
 
     /// <summary>
     /// Create a user in the tenant-scoped User container.

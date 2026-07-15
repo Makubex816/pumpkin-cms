@@ -669,6 +669,15 @@ app.MapGet("/api/themes/{tenantId}/{themeId}",
 
 // ===== AUTHENTICATION ENDPOINTS =====
 
+app.MapPost("/api/identity/diagnostics/legacy-lookup",
+    async (CosmosDataConnection cosmos, LegacyLookupDiagnosticRequest request, HttpContext context) =>
+    {
+        if (!context.User.IsInRole(UserRole.SuperAdmin.ToString()) || string.IsNullOrWhiteSpace(request.Email))
+            return Results.Forbid();
+        return Results.Ok(await cosmos.DiagnoseLegacyLookupAsync(request.Email, context.TraceIdentifier, context.RequestAborted));
+    })
+    .RequireAuthorization();
+
 // Login endpoint
 app.MapPost("/api/auth/login",
     async (IDatabaseService databaseService, IIdentityLoginCompatibilityWriter identityWriter, LoginRequest request, IConfiguration configuration, HttpContext context, ILogger<Program> logger) =>
@@ -3392,3 +3401,5 @@ public sealed class PageImportRequest
     public string TargetSlug { get; set; } = string.Empty;
     public List<pumpkin_net_models.Models.Page> Pages { get; set; } = new();
 }
+
+public sealed record LegacyLookupDiagnosticRequest(string Email);
