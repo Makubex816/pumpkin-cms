@@ -1,0 +1,23 @@
+{
+  "taskId": "V2.8.63CR",
+  "status": "partial_features_active_operational_closeout_incomplete",
+  "sourceCommits": ["c03f0413", "92ee1670"],
+  "canary": {
+    "resource": "app-pumpkin-api-v2-8-63cr-canary-centralus-001",
+    "deploymentId": "931030db-d777-48d4-8a37-851af4844266",
+    "packageSha256": "d5d298f00517a2ca32c40a0f3c540cdb3909f1dd47d80e88e94508c3eb6578e6",
+    "deletedAtCloseout": true
+  },
+  "production": {
+    "failedCutoverDeploymentId": "388a7fd1-cb09-4929-a335-bfbf0d6af291",
+    "rollbackDeploymentId": "f6bdf0d7-ca60-4e7f-818c-f4c74a710a86",
+    "rollbackPackageSha256": "8f5db9c94ceac79d63ffe1aa71c578cc794bcb8b49e62462712ef37c435f59f8",
+    "dualWriteEnabled": false,
+    "managementEnabled": false,
+    "renameEnabled": false,
+    "notificationsEnabled": false
+  },
+  "customerMutations": 0,
+  "airstripPublicRequests": 0,
+  "indexingChanged": false
+}
