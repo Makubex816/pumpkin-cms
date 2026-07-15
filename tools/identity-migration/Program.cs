@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Azure.Cosmos;
+using pumpkin_api.Services;
 using pumpkin_api.Services.Identity;
 using pumpkin_net_models.Models;
 
@@ -11,7 +12,11 @@ var command = args.FirstOrDefault()?.ToLowerInvariant() ?? "help";
 var connection = Environment.GetEnvironmentVariable("PUMPKIN_IDENTITY_COSMOS_CONNECTION");
 var databaseName = Environment.GetEnvironmentVariable("PUMPKIN_IDENTITY_DATABASE") ?? "pumpkin-prod-cms";
 if (string.IsNullOrWhiteSpace(connection)) throw new InvalidOperationException("PUMPKIN_IDENTITY_COSMOS_CONNECTION is required");
-using var client = new CosmosClient(connection, new CosmosClientOptions { ConnectionMode = ConnectionMode.Gateway });
+using var client = new CosmosClient(connection, new CosmosClientOptions
+{
+    ConnectionMode = ConnectionMode.Gateway,
+    Serializer = new CosmosSystemTextJsonSerializer(new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+});
 var database = client.GetDatabase(databaseName);
 var output = Option("--output") ?? throw new ArgumentException("--output is required");
 Directory.CreateDirectory(output);
