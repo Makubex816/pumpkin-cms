@@ -32,7 +32,8 @@ switch (command)
     case "dry-run": await DryRunAsync(); break;
     case "apply": await ApplyAsync(); break;
     case "compare": await CompareAsync(); break;
-    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, or compare");
+    case "activate": await ActivateAsync(); break;
+    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, or activate");
 }
 
 string? Option(string name)
@@ -188,6 +189,36 @@ async Task CompareAsync()
     await WriteJsonAsync(Path.Combine(output, "dual-read-comparison.json"), new { planHash = plan.InputFingerprint, comparisons, mismatches, passed = mismatches == 0 });
     Console.WriteLine(JsonSerializer.Serialize(new { status = "compare_complete", comparisons = comparisons.Count, mismatches, passed = mismatches == 0 }));
     if (mismatches > 0) Environment.ExitCode = 2;
+}
+
+async Task ActivateAsync()
+{
+    var expectedPlanHash = Option("--plan-hash") ?? throw new ArgumentException("--plan-hash is required");
+    var snapshot = await LoadSnapshotAsync();
+    var plan = IdentityMigrationPlanner.CreateDryRun(snapshot.Snapshot);
+    if (!string.Equals(plan.InputFingerprint, expectedPlanHash, StringComparison.Ordinal))
+        throw new InvalidOperationException("source changed after dual-read comparison");
+    var migration = database.GetContainer("IdentityMigration");
+    foreach (var tenant in plan.Tenants)
+    {
+        await UpsertAsync(migration, new
+        {
+            id = $"identity-feature-{tenant.ProposedTenantUid}", migrationPartition = "global", type = "IdentityFeatureState",
+            tenantUid = tenant.ProposedTenantUid, foundationEnabled = true, dualReadEnabled = true, dualWriteEnabled = true,
+            compatibilityAdaptersEnabled = true, legacyCompatibilityRetained = true, selfServiceEnabled = false,
+            tenantRenameEnabled = false, notificationProviderEnabled = false, updatedAt = DateTime.UtcNow,
+            planHash = plan.InputFingerprint
+        }, new("global"));
+    }
+    var audit = database.GetContainer("SecurityAuditEvents");
+    await UpsertAsync(audit, new
+    {
+        id = $"identity-activation-{plan.InputFingerprint[..16]}", auditPartition = "global", eventType = "identity_dual_write_activated",
+        actorRole = "system", requestId = $"identity-backfill-{plan.InputFingerprint[..16]}", result = "success",
+        safeNewMetadataJson = JsonSerializer.Serialize(new { dualRead = true, dualWrite = true, selfService = false }), createdAt = DateTime.UtcNow
+    }, new("global"));
+    await WriteJsonAsync(Path.Combine(output, "activation-result.json"), new { planHash = plan.InputFingerprint, tenants = plan.Tenants.Count, dualRead = true, dualWrite = true, selfService = false });
+    Console.WriteLine(JsonSerializer.Serialize(new { status = "activation_complete", planHash = plan.InputFingerprint, tenants = plan.Tenants.Count }));
 }
 
 async Task<(LegacyIdentitySnapshot Snapshot, List<JsonObject> Tenants, List<JsonObject> Users, List<JsonObject> Definitions)> LoadSnapshotAsync()
