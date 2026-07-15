@@ -1122,10 +1122,12 @@ function createEmptyFormDefinition(tenantId: string): FormDefinition {
   const now = new Date().toISOString()
   return {
     id: '',
+    formDefinitionId: '',
     tenantId,
     siteKey: tenantId,
     formKey: '',
     name: '',
+    type: 'custom',
     description: '',
     status: 'active',
     formType: 'custom',
@@ -1135,6 +1137,11 @@ function createEmptyFormDefinition(tenantId: string): FormDefinition {
     staticEndpointRef: '',
     leadRecipientRef: 'no-email-proof',
     notificationEmailRef: '',
+    submitButtonText: 'Submit',
+    submitBehavior: 'message',
+    redirectUrl: '',
+    notificationEmails: [],
+    notifications: { enabled: false, replyToField: '', subjectTemplate: '' },
     successMessage: 'Form received.',
     errorMessage: 'Form could not be sent.',
     spamProtection: {
@@ -1142,6 +1149,9 @@ function createEmptyFormDefinition(tenantId: string): FormDefinition {
       minMessageLength: 0,
       maxPayloadBytes: 20000,
       maxFieldLength: 1000,
+      rejectWhenHoneypotFilled: true,
+      requireConsent: false,
+      consentFieldName: 'consent',
     },
     consent: {
       required: false,
@@ -1156,6 +1166,8 @@ function createEmptyFormDefinition(tenantId: string): FormDefinition {
       routingMode: 'admin-readback-only',
       recipientGroupRef: 'no-email-proof',
     },
+    rateLimit: { enabled: true, maxSubmissions: 5, windowSeconds: 60 },
+    isActive: true,
     createdAt: now,
     updatedAt: now,
     createdBy: '',
@@ -1182,6 +1194,7 @@ function createDefaultDefinitionField(): FormDefinition['fields'][number] {
     width: 'half',
     sensitive: false,
     includeInLeadSummary: true,
+    attributes: {},
   }
 }
 
