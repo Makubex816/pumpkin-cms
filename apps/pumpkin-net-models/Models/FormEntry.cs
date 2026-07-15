@@ -101,6 +101,15 @@ public class FormEntryMetadata
 
     [JsonPropertyName("staticEndpointRef")]
     public string StaticEndpointRef { get; set; } = string.Empty;
+
+    [JsonPropertyName("leadPersistenceStatus")]
+    public string LeadPersistenceStatus { get; set; } = "persisted";
+
+    [JsonPropertyName("notificationConfigured")]
+    public bool NotificationConfigured { get; set; }
+
+    [JsonPropertyName("notificationDeliveryStatus")]
+    public string NotificationDeliveryStatus { get; set; } = "not_configured";
 }
 
 public class FormEntryStatusUpdate

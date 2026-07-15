@@ -21,7 +21,13 @@ public static class FormSubmissionReliabilitySourceTestRunner
         Assert(program.Contains("PreflightExactFormSubmission", StringComparison.Ordinal), "exact payload no-write preflight exists");
         Assert(program.Contains("createsFormEntry = false", StringComparison.Ordinal), "preflight proves no persistence");
         Assert(program.Contains("context.Request.Query[\"submissionId\"]", StringComparison.Ordinal), "submission readback exists");
+        Assert(program.Contains("context.Request.Query[\"sourceHost\"]", StringComparison.Ordinal), "tenant inbox source-host filtering exists");
+        Assert(program.Contains("Math.Clamp(requestedPageSize, 1, 200)", StringComparison.Ordinal), "tenant inbox pagination is bounded");
+        Assert(program.Contains("/api/admin/{tenantId}/form-readiness", StringComparison.Ordinal), "safe readiness snapshot exists");
+        Assert(program.Contains("external_runtime_freeze", StringComparison.Ordinal), "runtime freeze has an explicit readiness state");
         Assert(manager.Contains("CancelAfter(TimeSpan.FromSeconds(10))", StringComparison.Ordinal), "API bound exists");
+        Assert(manager.Contains("LeadPersistenceStatus = \"persisted\"", StringComparison.Ordinal), "persistence status is independent");
+        Assert(manager.Contains("NotificationDeliveryStatus = \"not_configured\"", StringComparison.Ordinal), "notification state is independent");
         Assert(cosmos.Contains("Id = formEntry.SubmissionId", StringComparison.Ordinal), "Cosmos deterministic identity exists");
         Assert(cosmos.Contains("IdempotentReplay = true", StringComparison.Ordinal), "Cosmos replay exists");
         Assert(mongo.Contains("ServerErrorCategory.DuplicateKey", StringComparison.Ordinal), "Mongo race recovery exists");

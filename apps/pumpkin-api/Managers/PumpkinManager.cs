@@ -202,6 +202,11 @@ public static class PumpkinManager
             if (string.IsNullOrEmpty(formEntry.FormId))
                 return Results.BadRequest("Form ID is required");
 
+            formEntry.Metadata ??= new FormEntryMetadata();
+            formEntry.Metadata.LeadPersistenceStatus = "persisted";
+            formEntry.Metadata.NotificationConfigured = false;
+            formEntry.Metadata.NotificationDeliveryStatus = "not_configured";
+
             using var bound = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             bound.CancelAfter(TimeSpan.FromSeconds(10));
             var savedFormEntry = await databaseService.SaveFormEntryAsync(apiKey, tenantId, formEntry, bound.Token);
@@ -270,6 +275,13 @@ public static class PumpkinManager
 
             if (string.IsNullOrEmpty(formEntry.FormId))
                 return Results.BadRequest("Form ID is required");
+
+            formEntry.Metadata ??= new FormEntryMetadata();
+            formEntry.Metadata.LeadPersistenceStatus = "persisted";
+            formEntry.Metadata.NotificationConfigured = !string.IsNullOrWhiteSpace(formDefinition.NotificationEmailRef) ||
+                !string.IsNullOrWhiteSpace(formDefinition.LeadRecipientRef);
+            // Persistence is authoritative. A recipient reference does not imply that a delivery provider exists.
+            formEntry.Metadata.NotificationDeliveryStatus = "not_configured";
 
             var savedFormEntry = await databaseService.SaveFormEntryAsync(apiKey, tenantId, formEntry, bound.Token);
 

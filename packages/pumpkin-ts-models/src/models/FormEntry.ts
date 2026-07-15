@@ -13,6 +13,9 @@ export interface FormEntryMetadata {
   consentAccepted?: boolean;
   leadRecipientRef?: string;
   staticEndpointRef?: string;
+  leadPersistenceStatus?: 'persisted' | 'failed';
+  notificationConfigured?: boolean;
+  notificationDeliveryStatus?: 'not_configured' | 'pending' | 'sent' | 'failed' | 'suppressed_test' | 'dead_lettered';
 }
 
 /**

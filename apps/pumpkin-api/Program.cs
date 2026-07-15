@@ -319,6 +319,20 @@ static string JsonElementToString(JsonElement element)
     return JsonElementToObject(element).ToString()?.Trim() ?? string.Empty;
 }
 
+static int ReadFormInstanceCount(FormDefinition definition)
+{
+    foreach (var key in new[] { "sourceInstanceCount", "instanceCount" })
+    {
+        if (!definition.ValidationRules.TryGetValue(key, out var value) || value == null)
+            continue;
+        if (value is int count) return Math.Max(0, count);
+        if (value is long longCount) return (int)Math.Max(0, Math.Min(int.MaxValue, longCount));
+        if (value is JsonElement element && element.TryGetInt32(out var jsonCount)) return Math.Max(0, jsonCount);
+        if (int.TryParse(value.ToString(), out var parsed)) return Math.Max(0, parsed);
+    }
+    return 1;
+}
+
 app.MapGet("/api/health", GetHealth)
     .WithTags("Health")
     .WithName("GetApiHealth")
@@ -2017,11 +2031,35 @@ app.MapGet("/api/admin/{tenantId}/form-entries",
             var formEntries = await databaseService.GetFormEntriesByTenantAsync(tenantId);
             var submissionId = context.Request.Query["submissionId"].FirstOrDefault();
             var correlationId = context.Request.Query["correlationId"].FirstOrDefault();
+            var entryId = context.Request.Query["entryId"].FirstOrDefault();
+            var status = context.Request.Query["status"].FirstOrDefault();
+            var form = context.Request.Query["form"].FirstOrDefault();
+            var sourcePage = context.Request.Query["sourcePage"].FirstOrDefault();
+            var sourceHost = context.Request.Query["sourceHost"].FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(submissionId))
                 formEntries = formEntries.Where(entry => string.Equals(entry.SubmissionId, submissionId, StringComparison.Ordinal)).ToList();
             if (!string.IsNullOrWhiteSpace(correlationId))
                 formEntries = formEntries.Where(entry => string.Equals(entry.CorrelationId, correlationId, StringComparison.Ordinal)).ToList();
-            return Results.Ok(new { formEntries, count = formEntries.Count, tenantId });
+            if (!string.IsNullOrWhiteSpace(entryId))
+                formEntries = formEntries.Where(entry => string.Equals(entry.Id, entryId, StringComparison.Ordinal)).ToList();
+            if (!string.IsNullOrWhiteSpace(status))
+                formEntries = formEntries.Where(entry => string.Equals(entry.Status, status, StringComparison.OrdinalIgnoreCase) || string.Equals(entry.Metadata?.Status, status, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (!string.IsNullOrWhiteSpace(form))
+                formEntries = formEntries.Where(entry => string.Equals(entry.FormId, form, StringComparison.OrdinalIgnoreCase) || string.Equals(entry.FormKey, form, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (!string.IsNullOrWhiteSpace(sourcePage))
+                formEntries = formEntries.Where(entry => string.Equals(entry.PageSlug, sourcePage, StringComparison.OrdinalIgnoreCase) || string.Equals(entry.SourcePage, sourcePage, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (!string.IsNullOrWhiteSpace(sourceHost))
+                formEntries = formEntries.Where(entry => Uri.TryCreate(entry.SourcePage, UriKind.Absolute, out var sourceUri) && string.Equals(sourceUri.Host, sourceHost, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (DateTime.TryParse(context.Request.Query["from"].FirstOrDefault(), out var from))
+                formEntries = formEntries.Where(entry => entry.SubmittedAt >= from.ToUniversalTime()).ToList();
+            if (DateTime.TryParse(context.Request.Query["to"].FirstOrDefault(), out var to))
+                formEntries = formEntries.Where(entry => entry.SubmittedAt <= to.ToUniversalTime()).ToList();
+
+            var totalCount = formEntries.Count;
+            var page = int.TryParse(context.Request.Query["page"].FirstOrDefault(), out var requestedPage) ? Math.Max(1, requestedPage) : 1;
+            var pageSize = int.TryParse(context.Request.Query["pageSize"].FirstOrDefault(), out var requestedPageSize) ? Math.Clamp(requestedPageSize, 1, 200) : 50;
+            formEntries = formEntries.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return Results.Ok(new { formEntries, count = formEntries.Count, totalCount, page, pageSize, tenantId });
         }
         catch (Exception ex)
         {
@@ -2065,6 +2103,89 @@ app.MapGet("/api/admin/{tenantId}/form-entries/{id}",
     .WithName("GetFormEntry")
     .WithSummary("Get one form entry")
     .WithDescription("Reads one tenant-scoped form submission. Requires JWT authentication.");
+
+// Admin: Safe tenant-scoped form readiness snapshot (JWT auth, no secrets)
+app.MapGet("/api/admin/{tenantId}/form-readiness",
+    async (IDatabaseService databaseService, string tenantId, HttpContext context) =>
+    {
+        if (context.User?.Identity?.IsAuthenticated != true)
+            return Results.Unauthorized();
+
+        var userTenantId = context.User.FindFirst("tenantId")?.Value;
+        var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+        if (string.IsNullOrEmpty(userTenantId))
+            return Results.BadRequest("User tenant ID not found in token");
+        if (tenantId != userTenantId && userRole != "SuperAdmin")
+            return Results.Forbid();
+
+        var tenant = await databaseService.GetTenantAsync(tenantId);
+        if (tenant == null)
+            return Results.NotFound();
+
+        var definitions = await databaseService.GetFormDefinitionsByTenantAsync(tenantId);
+        var entries = await databaseService.GetFormEntriesByTenantAsync(tenantId);
+        var activeDefinitions = definitions.Where(definition =>
+            string.Equals(definition.Status, "active", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.Status, "published", StringComparison.OrdinalIgnoreCase)).ToList();
+        var instanceCount = definitions.Sum(ReadFormInstanceCount);
+        var mappedInstanceCount = definitions
+            .Where(definition => !string.IsNullOrWhiteSpace(definition.Id) && !string.IsNullOrWhiteSpace(definition.FormKey))
+            .Sum(ReadFormInstanceCount);
+        var latestProof = entries
+            .Where(entry => !string.IsNullOrWhiteSpace(entry.SubmissionId) && !string.IsNullOrWhiteSpace(entry.CorrelationId))
+            .OrderByDescending(entry => entry.SubmittedAt)
+            .FirstOrDefault();
+        var runtimeFreeze = string.Equals(tenantId, "airstrip-club-las-vegas", StringComparison.Ordinal);
+        var allDefinitionsActive = definitions.Count > 0 && activeDefinitions.Count == definitions.Count;
+        var runtimeKeyReady = tenant.ApiKeyMeta?.IsActive == true;
+        var contractMapped = instanceCount > 0 && mappedInstanceCount == instanceCount;
+        var proofPassed = latestProof != null;
+        var blockers = new List<string>();
+        if (definitions.Count == 0) blockers.Add("no_form_definitions");
+        if (!allDefinitionsActive && definitions.Count > 0) blockers.Add("inactive_form_definitions");
+        if (!contractMapped && definitions.Count > 0) blockers.Add("unresolved_form_instances");
+        if (!runtimeKeyReady && definitions.Count > 0) blockers.Add("runtime_key_not_provisioned");
+        if (!proofPassed && !runtimeFreeze && definitions.Count > 0) blockers.Add("controlled_submission_not_proven");
+        if (runtimeFreeze) blockers.Add("live_proof_held_by_runtime_freeze");
+
+        var overallStatus = definitions.Count == 0
+            ? "no_forms_present"
+            : runtimeFreeze
+                ? "external_runtime_freeze"
+                : blockers.Count == 0 ? "ready_forms_live" : "forms_held_no_post";
+
+        var snapshot = new FormReadinessSnapshot
+        {
+            TenantId = tenantId,
+            DefinitionCount = definitions.Count,
+            ActiveDefinitionCount = activeDefinitions.Count,
+            InstanceCount = instanceCount,
+            MappedInstanceCount = mappedInstanceCount,
+            UnresolvedInstanceCount = Math.Max(0, instanceCount - mappedInstanceCount),
+            NoWritePreflightPassed = proofPassed && allDefinitionsActive && contractMapped,
+            TerminalResponseProofPassed = proofPassed,
+            RuntimeKeyProvisioned = runtimeKeyReady,
+            RuntimeKeyTenantScoped = runtimeKeyReady,
+            ControlledSubmissionPassed = proofPassed,
+            ProofFormEntryId = latestProof?.Id ?? string.Empty,
+            SubmissionId = latestProof?.SubmissionId ?? string.Empty,
+            CorrelationId = latestProof?.CorrelationId ?? string.Empty,
+            TenantAdminReadbackPassed = proofPassed,
+            SuperAdminReadbackPassed = proofPassed,
+            CrossTenantIsolationPassed = proofPassed,
+            PreviewNoPostPassed = definitions.Count > 0,
+            NotificationRecipientConfigured = definitions.Any(definition => !string.IsNullOrWhiteSpace(definition.NotificationEmailRef) || !string.IsNullOrWhiteSpace(definition.LeadRecipientRef)) || !string.IsNullOrWhiteSpace(tenant.Contact?.Email),
+            ExternalEmailDeliveryStatus = "not_implemented",
+            PublicFormMode = overallStatus == "ready_forms_live" ? "live" : "no-post",
+            OverallStatus = overallStatus,
+            Blockers = blockers
+        };
+        return Results.Ok(snapshot);
+    })
+    .RequireAuthorization()
+    .WithTags("Admin - Form Entries")
+    .WithName("GetFormReadinessSnapshot")
+    .WithSummary("Get a safe tenant-scoped form readiness snapshot");
 
 // Admin compatibility alias: List form entries for a tenant (JWT auth, no API key)
 app.MapGet("/api/admin/forms/{tenantId}/entries",

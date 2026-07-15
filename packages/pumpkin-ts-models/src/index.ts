@@ -47,6 +47,7 @@ export type {
   FormEntry,
   FormEntryMetadata
 } from './models/FormEntry';
+export type { FormReadinessSnapshot, FormReadinessOverallStatus } from './models/FormReadinessSnapshot';
 
 // Form definition and default form system
 export type {
