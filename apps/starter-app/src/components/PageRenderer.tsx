@@ -239,21 +239,33 @@ function getSectionId(block: CmsBlock) {
 }
 
 async function submitForm(payload: FormBlockSubmitPayload) {
+  const submissionId = crypto.randomUUID();
+  const correlationId = crypto.randomUUID();
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 25_000);
+  try {
   const response = await fetch(`/api/forms/submit/${encodeURIComponent(payload.formType.trim().toLowerCase())}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    signal: controller.signal,
     body: JSON.stringify({
       ...payload.formData,
       formKey: payload.formKey,
       pageSlug: payload.pageSlug,
       sourcePage: payload.sourcePage,
+      submissionId,
+      correlationId,
+      idempotencyKey: submissionId,
     }),
   });
 
   if (!response.ok) {
     throw new Error(await getErrorMessage(response));
+  }
+  } finally {
+    window.clearTimeout(timeout);
   }
 }
 

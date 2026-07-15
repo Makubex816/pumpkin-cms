@@ -64,6 +64,10 @@ export function ContactFormBlock({
     }
 
     const body = collectFormData(form, pageSlug);
+    const submissionId = crypto.randomUUID();
+    const correlationId = crypto.randomUUID();
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 25_000);
     setSubmitState('submitting');
     setMessage('');
 
@@ -73,7 +77,8 @@ export function ContactFormBlock({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        signal: controller.signal,
+        body: JSON.stringify({ ...body, submissionId, correlationId, idempotencyKey: submissionId }),
       });
 
       if (!response.ok) {
@@ -92,6 +97,8 @@ export function ContactFormBlock({
     } catch (error) {
       setSubmitState('error');
       setMessage(error instanceof Error ? error.message : 'The form could not be submitted.');
+    } finally {
+      window.clearTimeout(timeout);
     }
   };
 

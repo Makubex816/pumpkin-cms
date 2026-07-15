@@ -319,16 +319,21 @@ export function PreviewBehaviorAdapter({
           new FormData(form).entries(),
         );
         formData.privacyConsent = form.querySelector<HTMLInputElement>('input[name="privacyConsent"]')?.checked === true;
+        const submissionId = crypto.randomUUID();
         const correlationId = crypto.randomUUID();
+        form.dataset.pumpkinSubmissionId = submissionId;
         form.dataset.pumpkinCorrelationId = correlationId;
         const requestController = new AbortController();
-        const requestTimeout = window.setTimeout(() => requestController.abort(), 45_000);
+        const requestTimeout = window.setTimeout(() => requestController.abort(), 25_000);
         const response = await fetch(`/api/forms/submit/${encodeURIComponent(formKey)}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           signal: requestController.signal,
           body: JSON.stringify({
             tenantId,
+            submissionId,
+            correlationId,
+            idempotencyKey: submissionId,
             siteKey: tenantId,
             formId: formKey,
             pageSlug,
@@ -351,15 +356,14 @@ export function PreviewBehaviorAdapter({
           }),
         });
         window.clearTimeout(requestTimeout);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-        const body = await response.json().catch(() => null) as { id?: string } | null;
+        const body = await response.json().catch(() => null) as { formEntryId?: string; submissionId?: string; correlationId?: string; message?: string } | null;
+        if (!response.ok) throw new Error(body?.message || `HTTP ${response.status}`);
         showFormMessage(form, 'Thank you. Your request has been received.', false);
         form.reset();
         ensureHiddenInput(form, 'tenantId', tenantId);
         ensureHiddenInput(form, 'pageSlug', pageSlug);
         ensureHiddenInput(form, 'formKey', formKey);
-        record('form-submit-succeeded', { formKey, pageSlug, entryId: body?.id || null, status: response.status });
+        record('form-submit-succeeded', { formKey, pageSlug, entryId: body?.formEntryId || null, submissionId, correlationId, status: response.status });
       } catch (error) {
         showFormMessage(form, 'The form could not be submitted. Please try again later.', true);
         record('form-submit-failed', {

@@ -13,6 +13,7 @@
     "test:party-pros-recovery": "node test/party-pros-preview-contract.test.mjs",
     "test:host-tenant-runtime": "node test/tenant-runtime-config.test.mjs && node test/host-tenant-public-contract.test.mjs",
     "test:deployment-artifacts": "node test/deployment-artifact-completeness.test.mjs",
+    "test:form-pipeline-reliability": "node test/form-pipeline-reliability.test.mjs",
     "proof:party-pros-recovery": "node test/party-pros-recovery-browser-proof.mjs",
     "prepare:standalone": "node scripts/prepare-standalone-deployment.mjs"
   },
