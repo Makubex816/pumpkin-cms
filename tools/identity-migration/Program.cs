@@ -33,7 +33,8 @@ switch (command)
     case "apply": await ApplyAsync(); break;
     case "compare": await CompareAsync(); break;
     case "activate": await ActivateAsync(); break;
-    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, or activate");
+    case "verify": await VerifyAsync(); break;
+    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, activate, or verify");
 }
 
 string? Option(string name)
@@ -219,6 +220,36 @@ async Task ActivateAsync()
     }, new("global"));
     await WriteJsonAsync(Path.Combine(output, "activation-result.json"), new { planHash = plan.InputFingerprint, tenants = plan.Tenants.Count, dualRead = true, dualWrite = true, selfService = false });
     Console.WriteLine(JsonSerializer.Serialize(new { status = "activation_complete", planHash = plan.InputFingerprint, tenants = plan.Tenants.Count }));
+}
+
+async Task VerifyAsync()
+{
+    var tenants = await ReadAllAsync("TenantIdentity");
+    var accounts = await ReadAllAsync("UserAccounts");
+    var memberships = await ReadAllAsync("TenantMemberships");
+    var contacts = await ReadAllAsync("TenantContactSettings");
+    var audits = await ReadAllAsync("SecurityAuditEvents");
+    var migrations = await ReadAllAsync("IdentityMigration");
+    var formEntries = await CountAsync("FormEntry");
+    var result = new
+    {
+        tenants = tenants.Count, accounts = accounts.Count, memberships = memberships.Count, contacts = contacts.Count,
+        featureStates = migrations.Count(x => Text(x, "type") == "IdentityFeatureState"),
+        completedRuns = migrations.Count(x => Text(x, "type") == "IdentityBackfillRun" && Text(x, "status") == "completed"),
+        loginDualWrites = accounts.Count(x => !string.IsNullOrWhiteSpace(Text(x, "lastLoginAt"))),
+        loginDualWriteAudits = audits.Count(x => Text(x, "eventType") == "identity_login_dual_write"),
+        formEntries, verifiedAt = DateTime.UtcNow
+    };
+    await WriteJsonAsync(Path.Combine(output, "production-identity-readback.json"), result);
+    Console.WriteLine(JsonSerializer.Serialize(result));
+}
+
+async Task<int> CountAsync(string containerName)
+{
+    var iterator = database.GetContainer(containerName).GetItemQueryIterator<int>(new QueryDefinition("SELECT VALUE COUNT(1) FROM c"));
+    var count = 0;
+    while (iterator.HasMoreResults) count += (await iterator.ReadNextAsync()).FirstOrDefault();
+    return count;
 }
 
 async Task<(LegacyIdentitySnapshot Snapshot, List<JsonObject> Tenants, List<JsonObject> Users, List<JsonObject> Definitions)> LoadSnapshotAsync()
