@@ -6,6 +6,12 @@ using pumpkin_api.Tests;
 using pumpkin_net_models.Models;
 using System.Text.Json;
 
+if (args.Contains("--v2-8-63a", StringComparer.OrdinalIgnoreCase))
+{
+    await IdentityFoundationSourceTestRunner.RunAsync();
+    return;
+}
+
 if (args.Contains("--v2-8-62irjrtu", StringComparer.OrdinalIgnoreCase))
 {
     await FormSubmissionReliabilitySourceTestRunner.RunAsync();

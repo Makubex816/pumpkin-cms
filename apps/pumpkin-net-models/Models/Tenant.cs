@@ -4,6 +4,13 @@ namespace pumpkin_net_models.Models;
 
 public class Tenant
 {
+    // V2.8.63A additive identity. Legacy records may omit this until backfill.
+    [JsonPropertyName("tenantUid")]
+    public string? TenantUid { get; set; }
+
+    [JsonPropertyName("tenantSlug")]
+    public string? TenantSlug { get; set; }
+
     [JsonPropertyName("id")]
     public string Id { get; set; } = string.Empty;
 
@@ -18,6 +25,9 @@ public class Tenant
 
     [JsonPropertyName("status")]
     public string Status { get; set; } = string.Empty;
+
+    [JsonPropertyName("identityFeatureState")]
+    public IdentityFeatureState? IdentityFeatureState { get; set; }
 
     [JsonPropertyName("apiKey")]
     public string ApiKey { get; set; } = string.Empty;

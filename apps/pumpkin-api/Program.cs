@@ -1,6 +1,7 @@
 using pumpkin_api.Services;
 using pumpkin_api.Services.DomainBindings;
 using pumpkin_api.Services.TenantRedirects;
+using pumpkin_api.Services.Identity;
 using pumpkin_api.Managers;
 using pumpkin_net_models.Models;
 using System.Text.Json;
@@ -140,6 +141,7 @@ builder.Services.AddImportIntakeReadOnlyFoundation();
 builder.Services.AddImportExecutionProjectionReadOnlyFoundation();
 builder.Services.AddOperatorHandoffReadOnlyFoundation();
 builder.Services.AddDomainBindingFoundation();
+builder.Services.AddIdentityFoundation(builder.Configuration);
 
 var app = builder.Build();
 
@@ -3365,6 +3367,8 @@ app.MapDelete("/api/admin/themes/{tenantId}/{themeId}",
     .WithName("DeleteTheme")
     .WithSummary("Delete a theme")
     .WithDescription("Deletes a theme by ID for a specific tenant. Requires JWT authentication.");
+
+app.MapIdentityFoundation();
 
 app.Run();
 
