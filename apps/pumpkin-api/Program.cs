@@ -695,13 +695,17 @@ app.MapPost("/api/auth/login",
 
         var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
+        await databaseService.UpdateUserLastLoginAsync(user.Id, user.TenantId);
+        var sessionVersion = await identityWriter.WriteSuccessfulLoginAsync(user, context.TraceIdentifier, context.RequestAborted);
+
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Role, user.Role.ToString()),
-            new Claim("tenantId", user.TenantId)
+            new Claim("tenantId", user.TenantId),
+            new Claim("sessionVersion", sessionVersion.ToString(System.Globalization.CultureInfo.InvariantCulture))
         };
 
         var expirationMinutes = int.Parse(jwtSettings["ExpirationMinutes"]!);
@@ -716,10 +720,6 @@ app.MapPost("/api/auth/login",
         );
 
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-        // Update last login
-        await databaseService.UpdateUserLastLoginAsync(user.Id, user.TenantId);
-        await identityWriter.WriteSuccessfulLoginAsync(user, context.TraceIdentifier, context.RequestAborted);
 
         return Results.Ok(new LoginResponse
         {

@@ -24,6 +24,9 @@ public static class IdentityFoundationSourceTestRunner
             ("notification provider honestly reports no-provider state", NoProvider)
             ,("dual-write writer is registered on login", LoginDualWriteSource)
             ,("feature state diagnostic is authenticated", FeatureDiagnosticSource)
+            ,("management defaults remain disabled", ManagementDefaults)
+            ,("JWT session version is issued and enforced", SessionVersionSource)
+            ,("management routes use tenant authorization", ManagementAuthorizationSource)
         };
         foreach (var test in tests) { test.Run(); Console.WriteLine($"PASS: {test.Name}"); }
         Console.WriteLine($"Identity foundation source tests passed: {tests.Length}/{tests.Length}");
@@ -108,6 +111,24 @@ public static class IdentityFoundationSourceTestRunner
         var root = FindRepositoryRoot();
         var endpoints = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "Identity", "IdentityEndpoints.cs"));
         Assert(endpoints.Contains("/api/identity/feature-state") && endpoints.Contains("RequireAuthorization()"), "feature diagnostic is missing or public");
+    }
+    private static void ManagementDefaults()
+    {
+        var options = new IdentityFeatureOptions();
+        Assert(!options.ManagementEnabled && !options.TenantSwitcherEnabled && !options.SuperAdminManagementEnabled, "management defaults are active");
+    }
+    private static void SessionVersionSource()
+    {
+        var root = FindRepositoryRoot();
+        var program = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Program.cs"));
+        var service = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "Identity", "IdentityManagementService.cs"));
+        Assert(program.Contains("new Claim(\"sessionVersion\"") && service.Contains("tokenVersion != Long(account, \"sessionVersion\""), "session version is not issued/enforced");
+    }
+    private static void ManagementAuthorizationSource()
+    {
+        var root = FindRepositoryRoot();
+        var service = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "Identity", "IdentityManagementService.cs"));
+        Assert(service.Contains("CanManageTenant") && service.Contains("final_tenant_admin_protected") && service.Contains("email_not_unique"), "management authorization invariants missing");
     }
 
     private static Tenant Tenant(string slug) => new() { Id = $"legacy-{slug}", TenantId = slug, Name = slug, Status = "active" };

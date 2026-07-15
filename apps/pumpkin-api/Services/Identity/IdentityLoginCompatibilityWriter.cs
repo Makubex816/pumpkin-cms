@@ -9,7 +9,7 @@ namespace pumpkin_api.Services.Identity;
 
 public interface IIdentityLoginCompatibilityWriter
 {
-    Task WriteSuccessfulLoginAsync(LegacyUser legacyUser, string requestId, CancellationToken cancellationToken);
+    Task<long> WriteSuccessfulLoginAsync(LegacyUser legacyUser, string requestId, CancellationToken cancellationToken);
 }
 
 public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibilityWriter, IDisposable
@@ -34,10 +34,10 @@ public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibili
         }
     }
 
-    public async Task WriteSuccessfulLoginAsync(LegacyUser legacyUser, string requestId, CancellationToken cancellationToken)
+    public async Task<long> WriteSuccessfulLoginAsync(LegacyUser legacyUser, string requestId, CancellationToken cancellationToken)
     {
         var featureState = _features.CurrentValue;
-        if (!featureState.Enabled || !featureState.DualWriteEnabled) return;
+        if (!featureState.Enabled || !featureState.DualWriteEnabled) return 1;
         if (_cosmos is null || !_databaseSettings.Provider.Equals("CosmosDb", StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("identity_dual_write_provider_unavailable");
 
@@ -46,6 +46,7 @@ public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibili
         var database = _cosmos.GetDatabase(_databaseSettings.CosmosDb.DatabaseName);
         var accounts = database.GetContainer("UserAccounts");
         var timestamp = DateTime.UtcNow;
+        var account = await accounts.ReadItemAsync<UserAccount>(userId, new PartitionKey("global"), cancellationToken: cancellationToken);
         await accounts.PatchItemAsync<object>(userId, new PartitionKey("global"),
             [PatchOperation.Set("/lastLoginAt", timestamp), PatchOperation.Set("/updatedAt", timestamp)],
             cancellationToken: cancellationToken);
@@ -57,6 +58,7 @@ public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibili
             actorUserId = userId, targetUserId = userId, requestId, result = "success", createdAt = timestamp,
             safeNewMetadataJson = "{\"legacyLastLogin\":true,\"identityLastLogin\":true}"
         }, new PartitionKey("global"), cancellationToken: cancellationToken);
+        return account.Resource.SessionVersion;
     }
 
     private static string DeterministicId(params string[] parts) => Convert.ToHexString(
