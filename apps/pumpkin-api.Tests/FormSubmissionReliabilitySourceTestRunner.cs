@@ -1,5 +1,8 @@
 namespace pumpkin_api.Tests;
 
+using pumpkin_api.Services;
+using pumpkin_net_models.Models;
+
 public static class FormSubmissionReliabilitySourceTestRunner
 {
     public static Task RunAsync()
@@ -24,6 +27,28 @@ public static class FormSubmissionReliabilitySourceTestRunner
         Assert(mongo.Contains("ServerErrorCategory.DuplicateKey", StringComparison.Ordinal), "Mongo race recovery exists");
         Assert(mongo.Contains("IdempotentReplay = true", StringComparison.Ordinal), "Mongo replay exists");
         Assert(guard.Contains("NormalizeFieldIdentity", StringComparison.Ordinal), "compiler/runtime field naming aliases reconcile safely");
+        var definition = new FormDefinition
+        {
+            FormKey = "test-form",
+            FormType = "lead",
+            Fields = new List<FormDefinitionField>
+            {
+                new() { Name = "privacyconsent", Id = "privacyconsent", Type = "checkbox", Required = true },
+                new() { Name = "tenant-id", Id = "tenant-id", Type = "hidden", Required = true },
+                new() { Name = "form-key", Id = "form-key", Type = "hidden", Required = true }
+            },
+            Consent = new FormConsent { Required = true, FieldName = "privacyConsent" },
+            SpamProtection = new FormSpamProtection { HoneypotFieldName = "companyWebsite" }
+        };
+        var entry = new FormEntry
+        {
+            TenantId = "test-tenant",
+            FormId = "test-form",
+            FormKey = "test-form",
+            FormData = new Dictionary<string, object> { ["privacyConsent"] = true, ["tenantId"] = "test-tenant", ["formKey"] = "test-form", ["companyWebsite"] = "" }
+        };
+        var validation = FormSubmissionGuard.SanitizeDynamic(entry, definition);
+        Assert(validation.Ok && entry.ConsentAccepted, "runtime aliases satisfy canonical required fields and consent");
         Console.WriteLine("Form submission reliability source contract passed.");
         return Task.CompletedTask;
     }

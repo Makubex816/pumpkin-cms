@@ -147,9 +147,22 @@ public static class FormSubmissionGuard
         var fields = (definition.Fields ?? new List<FormDefinitionField>())
             .Concat(definition.HiddenFields ?? new List<FormDefinitionField>())
             .ToList();
-        var allowed = new HashSet<string>(fields
+        var definitionFieldNames = fields
             .SelectMany(field => new[] { field.Name, field.Id })
-            .Where(value => !string.IsNullOrWhiteSpace(value)), StringComparer.Ordinal);
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+        var ambiguousIdentities = definitionFieldNames
+            .GroupBy(NormalizeFieldIdentity, StringComparer.Ordinal)
+            .Where(group => group.Select(value => value).Distinct(StringComparer.Ordinal).Count() > 1)
+            .Select(group => group.Key)
+            .ToHashSet(StringComparer.Ordinal);
+        if (ambiguousIdentities.Count > 0)
+        {
+            Error(result, "submission.ambiguousFieldIdentity", "The form definition contains ambiguous normalized field identities.", "formData");
+            return result;
+        }
+        var allowed = new HashSet<string>(definitionFieldNames, StringComparer.Ordinal);
         allowed.Add("tenantId");
         allowed.Add("siteKey");
         allowed.Add("formKey");
@@ -163,9 +176,9 @@ public static class FormSubmissionGuard
         var sanitized = new Dictionary<string, object>(StringComparer.Ordinal);
         foreach (var item in entry.FormData ?? new Dictionary<string, object>())
         {
-            var canonicalKey = allowed.Contains(item.Key)
-                ? item.Key
-                : allowed.FirstOrDefault(candidate => NormalizeFieldIdentity(candidate) == NormalizeFieldIdentity(item.Key));
+            var normalizedItemKey = NormalizeFieldIdentity(item.Key);
+            var canonicalKey = definitionFieldNames.FirstOrDefault(candidate => NormalizeFieldIdentity(candidate) == normalizedItemKey)
+                ?? (allowed.Contains(item.Key) ? item.Key : allowed.FirstOrDefault(candidate => NormalizeFieldIdentity(candidate) == normalizedItemKey));
             if (string.IsNullOrWhiteSpace(canonicalKey))
             {
                 Warn(result, "submission.unknownField", $"Unknown field \"{item.Key}\" was ignored.", $"formData.{item.Key}");
