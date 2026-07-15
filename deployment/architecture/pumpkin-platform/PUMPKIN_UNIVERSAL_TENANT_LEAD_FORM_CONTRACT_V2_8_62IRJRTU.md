@@ -1,0 +1,3 @@
+# Universal tenant lead-form contract
+
+Every logical submission uses one high-entropy submission ID, one base correlation ID, and a tenant/form-scoped idempotency identity. These identifiers persist through browser, starter, API, storage, structured response, and tenant-scoped readback. API persistence, starter upstream transport, and browser terminal handling are bounded at 10, 15, and 25 seconds. Equivalent compiler/runtime field identities are reconciled without weakening required-field, consent, honeypot, authentication, or tenant-isolation checks. Cosmos and Mongo must create once or return the existing entry on replay.

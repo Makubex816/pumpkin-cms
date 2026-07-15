@@ -1,0 +1,15 @@
+{
+  "taskId": "V2.8.62IRJRTU",
+  "status": "blocked_idempotency_or_single_logical_submission_not_guaranteed",
+  "apiCommits": ["af49ec0e", "4ac01f28"],
+  "starterCommit": "11e50a4a",
+  "apiDeployments": ["249e9e81-1152-40ea-8e80-e2446469236d", "b628e520-02c3-42bb-809f-e51746ef0531"],
+  "starterDeployments": ["80017b20-f831-44a6-a359-e1f035ef557d"],
+  "logicalSubmissionId": "fddcc28c-8a5e-429a-be89-6eab7d80ff79",
+  "correlationId": "19cb2f8c-0de1-4b33-9d60-47e0af6b3e31",
+  "transportAttempts": 3,
+  "vegasEntriesCreated": 0,
+  "vegasRuntimeKeyActive": false,
+  "noindexActive": true,
+  "airstripRequests": 0
+}
