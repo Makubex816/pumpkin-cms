@@ -538,6 +538,56 @@ app.MapGet("/api/forms/{tenantId}/preflight/{type}",
     .WithSummary("Validate tenant form submission readiness without writing")
     .RequireCors("TenantCors");
 
+// Validate an exact public payload through the real definition and guard contract without persistence.
+app.MapPost("/api/forms/{tenantId}/preflight/{type}",
+    async (IDatabaseService databaseService, string tenantId, string type, JsonElement payload, HttpContext context) =>
+    {
+        var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
+        var apiKey = !string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+            ? authHeader["Bearer ".Length..].Trim()
+            : string.Empty;
+        var entry = BuildFormEntryFromSubmitAliasPayload(tenantId, type, payload, context);
+        try
+        {
+            using var bound = CancellationTokenSource.CreateLinkedTokenSource(context.RequestAborted);
+            bound.CancelAfter(TimeSpan.FromSeconds(10));
+            var definition = await databaseService.GetFormDefinitionAsync(apiKey, tenantId, PageRedirectGuard.NormalizeSlug(type), bound.Token);
+            if (definition == null)
+                return Results.NotFound(new { ready = false, errorCode = "form_definition_not_active", entry.SubmissionId, entry.CorrelationId, createsFormEntry = false });
+            var validation = FormSubmissionGuard.SanitizeDynamic(entry, definition);
+            if (!validation.Ok)
+                return Results.BadRequest(new { ready = false, errorCode = "payload_validation_failed", errors = validation.Errors.Select(issue => issue.Message), entry.SubmissionId, entry.CorrelationId, createsFormEntry = false });
+            return Results.Ok(new
+            {
+                ready = true,
+                tenantId,
+                formDefinitionId = definition.Id,
+                formKey = definition.FormKey,
+                formType = definition.FormType,
+                normalizedFieldNames = entry.FormData.Keys.OrderBy(key => key),
+                entry.ConsentAccepted,
+                entry.HoneypotFilled,
+                recipientRef = "TENANT_CONTACT_EMAIL",
+                entry.SubmissionId,
+                entry.CorrelationId,
+                idempotencySupported = true,
+                createsFormEntry = false
+            });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Results.Json(new { ready = false, errorCode = "invalid_tenant_key", entry.SubmissionId, entry.CorrelationId, createsFormEntry = false }, statusCode: StatusCodes.Status401Unauthorized);
+        }
+        catch (OperationCanceledException)
+        {
+            return Results.Json(new { ready = false, errorCode = "preflight_timeout", entry.SubmissionId, entry.CorrelationId, createsFormEntry = false }, statusCode: StatusCodes.Status504GatewayTimeout);
+        }
+    })
+    .WithTags("Forms")
+    .WithName("PreflightExactFormSubmission")
+    .WithSummary("Validate an exact form payload without writing")
+    .RequireCors("TenantCors");
+
 // Get sitemap pages
 app.MapGet("/api/tenant/{tenantId}/sitemap",
     async (IDatabaseService databaseService, string tenantId, HttpContext context) =>

@@ -15,6 +15,8 @@ public static class FormSubmissionReliabilitySourceTestRunner
         Assert(model.Contains("SubmissionId", StringComparison.Ordinal), "submissionId is persisted");
         Assert(model.Contains("CorrelationId", StringComparison.Ordinal), "correlationId is persisted");
         Assert(program.Contains("/api/forms/{tenantId}/preflight/{type}", StringComparison.Ordinal), "no-write preflight exists");
+        Assert(program.Contains("PreflightExactFormSubmission", StringComparison.Ordinal), "exact payload no-write preflight exists");
+        Assert(program.Contains("createsFormEntry = false", StringComparison.Ordinal), "preflight proves no persistence");
         Assert(program.Contains("context.Request.Query[\"submissionId\"]", StringComparison.Ordinal), "submission readback exists");
         Assert(manager.Contains("CancelAfter(TimeSpan.FromSeconds(10))", StringComparison.Ordinal), "API bound exists");
         Assert(cosmos.Contains("Id = formEntry.SubmissionId", StringComparison.Ordinal), "Cosmos deterministic identity exists");
