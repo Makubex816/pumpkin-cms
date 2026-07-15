@@ -15,7 +15,11 @@ if (string.IsNullOrWhiteSpace(connection)) throw new InvalidOperationException("
 using var client = new CosmosClient(connection, new CosmosClientOptions
 {
     ConnectionMode = ConnectionMode.Gateway,
-    Serializer = new CosmosSystemTextJsonSerializer(new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+    Serializer = new CosmosSystemTextJsonSerializer(new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    })
 });
 var database = client.GetDatabase(databaseName);
 var output = Option("--output") ?? throw new ArgumentException("--output is required");
