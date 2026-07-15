@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
 using pumpkin_net_models.Models;
+using System.Text.Json.Nodes;
 using LegacyUser = pumpkin_net_models.Models.User;
 
 namespace pumpkin_api.Services.Identity;
@@ -46,7 +47,8 @@ public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibili
         var database = _cosmos.GetDatabase(_databaseSettings.CosmosDb.DatabaseName);
         var accounts = database.GetContainer("UserAccounts");
         var timestamp = DateTime.UtcNow;
-        var account = await accounts.ReadItemAsync<UserAccount>(userId, new PartitionKey("global"), cancellationToken: cancellationToken);
+        var account = await accounts.ReadItemAsync<JsonObject>(userId, new PartitionKey("global"), cancellationToken: cancellationToken);
+        var sessionVersion = account.Resource["sessionVersion"] is JsonValue value && value.TryGetValue<long>(out var parsed) ? parsed : 1;
         await accounts.PatchItemAsync<object>(userId, new PartitionKey("global"),
             [PatchOperation.Set("/lastLoginAt", timestamp), PatchOperation.Set("/updatedAt", timestamp)],
             cancellationToken: cancellationToken);
@@ -58,7 +60,7 @@ public sealed class IdentityLoginCompatibilityWriter : IIdentityLoginCompatibili
             actorUserId = userId, targetUserId = userId, requestId, result = "success", createdAt = timestamp,
             safeNewMetadataJson = "{\"legacyLastLogin\":true,\"identityLastLogin\":true}"
         }, new PartitionKey("global"), cancellationToken: cancellationToken);
-        return account.Resource.SessionVersion;
+        return sessionVersion;
     }
 
     private static string DeterministicId(params string[] parts) => Convert.ToHexString(
