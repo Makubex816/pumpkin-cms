@@ -18,6 +18,7 @@ import {
   PenLine,
   Rocket,
   UploadCloud,
+  ShieldCheck,
   Users,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -33,6 +34,11 @@ interface NavItem {
 }
 
 const navigation: NavItem[] = [
+  {
+    name: 'Identity & Access',
+    href: '/dashboard/identity',
+    icon: <ShieldCheck className="w-5 h-5" />,
+  },
   {
     name: 'Dashboard',
     href: '/dashboard',
