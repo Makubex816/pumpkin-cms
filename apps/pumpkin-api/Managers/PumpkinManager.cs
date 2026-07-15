@@ -248,16 +248,16 @@ public static class PumpkinManager
             formEntry.FormKey = NormalizeSubmitAliasFormKey(PageRedirectGuard.NormalizeSlug(FirstNonEmpty(formEntry.FormKey, normalizedType)));
             formEntry.FormId = FirstNonEmpty(formEntry.FormId, formEntry.FormKey);
 
-            if (IsDefaultFormKey(formEntry.FormKey))
-            {
-                return await SaveFormEntryAsync(databaseService, apiKey, tenantId, formEntry, cancellationToken);
-            }
-
             using var bound = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             bound.CancelAfter(TimeSpan.FromSeconds(10));
             var formDefinition = await databaseService.GetFormDefinitionAsync(apiKey, tenantId, normalizedType, bound.Token);
             if (formDefinition == null)
+            {
+                // Preserve legacy default forms only when the tenant has no active canonical definition.
+                if (IsDefaultFormKey(formEntry.FormKey))
+                    return await SaveFormEntryAsync(databaseService, apiKey, tenantId, formEntry, cancellationToken);
                 return Results.NotFound(new { success = false, errorCode = "form_definition_not_found", message = "The requested form definition is not active.", submissionId = formEntry.SubmissionId, correlationId = formEntry.CorrelationId, retryable = false, persistenceCompleted = false });
+            }
 
             formEntry.FormKey = formDefinition.FormKey;
             formEntry.FormId = FirstNonEmpty(formEntry.FormId, formDefinition.Id, formDefinition.FormKey);

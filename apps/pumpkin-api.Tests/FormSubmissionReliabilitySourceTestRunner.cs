@@ -28,6 +28,7 @@ public static class FormSubmissionReliabilitySourceTestRunner
         Assert(manager.Contains("CancelAfter(TimeSpan.FromSeconds(10))", StringComparison.Ordinal), "API bound exists");
         Assert(manager.Contains("LeadPersistenceStatus = \"persisted\"", StringComparison.Ordinal), "persistence status is independent");
         Assert(manager.Contains("NotificationDeliveryStatus = \"not_configured\"", StringComparison.Ordinal), "notification state is independent");
+        Assert(manager.Contains("Preserve legacy default forms only when the tenant has no active canonical definition", StringComparison.Ordinal), "active definitions take precedence over legacy default guards");
         Assert(cosmos.Contains("Id = formEntry.SubmissionId", StringComparison.Ordinal), "Cosmos deterministic identity exists");
         Assert(cosmos.Contains("IdempotentReplay = true", StringComparison.Ordinal), "Cosmos replay exists");
         Assert(mongo.Contains("ServerErrorCategory.DuplicateKey", StringComparison.Ordinal), "Mongo race recovery exists");
