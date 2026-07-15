@@ -1,0 +1,19 @@
+{
+  "taskId": "V2.8.62K",
+  "status": "complete_vegas_onboarding_closed_forms_live_noindex",
+  "tenantId": "strip-club-near-me-vegas",
+  "backupPath": "C:/Users/User/Desktop/PumpkinCMS/secure-operator-handoff/tenant-backups/v2-8-62k-strip-club-near-me-vegas-final",
+  "backupManifestSha256": "7938D38654AF138E34003DCAE063225EBB8BC9FA673BF1E15382CB080D782C5B",
+  "checksumManifestSha256": "F05EFB4DAD0343167DFE361988A085C1CE15CE7632F0B0BA79A8251A22CCEDD8",
+  "databaseFiles": 20,
+  "mediaFiles": 302,
+  "mediaBytes": 28343976,
+  "checksumEntries": 329,
+  "formEntryId": "0caaac4b-662f-46d6-89d8-272fe2cc154f",
+  "newFormPosts": 0,
+  "airstripRequests": 0,
+  "indexingApproved": false,
+  "noindexActive": true,
+  "sitemapIncluded": false,
+  "searchConsoleAction": false
+}
