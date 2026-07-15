@@ -53,7 +53,7 @@ export async function POST(request: NextRequest, { params }: SubmitRouteContext)
   const upstreamTimeout = setTimeout(() => upstreamController.abort(), 15_000);
   let response: Response;
   try {
-    response = await fetch(
+    const upstream = fetch(
     `${config.apiUrl}/api/forms/${encodeURIComponent(config.tenantId)}/submit/${encodeURIComponent(params.type)}`,
     {
       method: 'POST',
@@ -75,7 +75,11 @@ export async function POST(request: NextRequest, { params }: SubmitRouteContext)
       }),
       signal: upstreamController.signal,
     },
-  );
+    );
+    response = await Promise.race([
+      upstream,
+      new Promise<never>((_, reject) => setTimeout(() => reject(new DOMException('Upstream deadline exceeded', 'AbortError')), 15_000)),
+    ]);
   } catch (error) {
     const timedOut = error instanceof DOMException && error.name === 'AbortError';
     console.warn('pumpkin-form-stage', { stage: 'starter_upstream_failed', tenantId: route.tenantId, formKey: requestedFormKey, submissionId, correlationId, elapsedMs: Date.now() - startedAt, errorCode: timedOut ? 'upstream_timeout' : 'upstream_transport_error', persistenceCompleted: false });

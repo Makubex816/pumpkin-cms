@@ -23,5 +23,7 @@ assert.doesNotMatch(route, /retry\s*\(/i);
 assert.match(preflight, /createsFormEntry: false/);
 assert.match(preflight, /\/preflight\//);
 assert.match(preflight, /upstreamTimeout|upstream_timeout/);
+assert.match(preflight, /Promise\.race/);
+assert.match(route, /Promise\.race/);
 
 console.log(JSON.stringify({ definitions: definitions.size, instances: fixture.forms.instances.length, fidelity15Instances: 9, upstreamTimeoutMs: 15000, browserTimeoutMs: 25000, automaticRetry: false }));

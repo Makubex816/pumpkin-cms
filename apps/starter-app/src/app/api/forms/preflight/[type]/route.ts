@@ -18,12 +18,16 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15_000);
   try {
-    const response = await fetch(`${config.apiUrl}/api/forms/${encodeURIComponent(config.tenantId)}/preflight/${encodeURIComponent(params.type)}`, {
+    const upstream = fetch(`${config.apiUrl}/api/forms/${encodeURIComponent(config.tenantId)}/preflight/${encodeURIComponent(params.type)}`, {
       method: 'POST',
       headers: { Accept: 'application/json', Authorization: `Bearer ${config.apiKey}`, 'Content-Type': 'application/json', 'Idempotency-Key': submissionId, 'X-Pumpkin-Submission-Id': submissionId, 'X-Correlation-Id': correlationId },
       body: JSON.stringify({ ...body, tenantId: config.tenantId, submissionId, correlationId, idempotencyKey: submissionId }),
       signal: controller.signal,
     });
+    const response = await Promise.race([
+      upstream,
+      new Promise<never>((_, reject) => setTimeout(() => reject(new DOMException('Upstream deadline exceeded', 'AbortError')), 15_000)),
+    ]);
     const text = await response.text();
     return new NextResponse(text, { status: response.status, headers: { 'Content-Type': response.headers.get('content-type') ?? 'application/json', 'X-Pumpkin-Submission-Id': submissionId, 'X-Correlation-Id': correlationId } });
   } catch (error) {
