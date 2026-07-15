@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -147,7 +148,9 @@ public static class IdentityFoundationSourceTestRunner
         var root = FindRepositoryRoot();
         var program = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Program.cs"));
         var service = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "Identity", "IdentityManagementService.cs"));
-        Assert(program.Contains("new Claim(\"sessionVersion\"") && service.Contains("tokenVersion != Long(account, \"sessionVersion\""), "session version is not issued/enforced");
+        Assert(program.Contains("new Claim(\"sessionVersion\"") && service.Contains("tokenVersion != Long(account, \"sessionVersion\"") &&
+               service.Contains("IsLegacyProductionDiagnosticRequest") && service.Contains("EvaluateLegacyProductionDiagnosticSession"),
+            "session version is not issued/enforced with diagnostic-only production-token compatibility");
     }
     private static void ManagementAuthorizationSource()
     {
@@ -292,6 +295,45 @@ public static class IdentityFoundationSourceTestRunner
             "stale session version accepted");
         Assert(IdentityManagementService.EvaluateSession(account, Principal(new Claim("sessionVersion", "3"), new Claim(ClaimTypes.Role, "SuperAdmin"))).Status == IdentitySessionValidationStatus.RoleMismatch,
             "stale SuperAdmin role accepted");
+
+        var legacySuperAdmin = Principal(
+            new Claim(ClaimTypes.NameIdentifier, "legacy-user-1"),
+            new Claim(ClaimTypes.Role, "SuperAdmin"),
+            new Claim("tenantId", "legacy-tenant-1"));
+        var legacyAccount = new JsonObject
+        {
+            ["userId"] = "identity-user-1",
+            ["legacyUserId"] = "legacy-user-1",
+            ["legacyTenantId"] = "legacy-tenant-1",
+            ["status"] = "Active",
+            ["globalRole"] = "SuperAdmin",
+            ["sessionVersion"] = 1,
+            ["forcePasswordChange"] = false
+        };
+        Assert(IdentityManagementService.IsLegacyProductionTokenShape(legacySuperAdmin) &&
+               IdentityManagementService.IsLegacyProductionDiagnosticRequest(
+                   new PathString("/api/identity/diagnostics/legacy-lookup"), true, legacySuperAdmin) &&
+               IdentityManagementService.EvaluateLegacyProductionDiagnosticSession(legacyAccount, legacySuperAdmin).Status == IdentitySessionValidationStatus.Valid,
+            "the exact currently issued production SuperAdmin token shape is not diagnostic-compatible");
+        Assert(!IdentityManagementService.IsLegacyProductionDiagnosticRequest(
+                   new PathString("/api/auth/verify"), true, legacySuperAdmin) &&
+               !IdentityManagementService.IsLegacyProductionDiagnosticRequest(
+                   new PathString("/api/identity/admin/users/target/password-reset"), true, legacySuperAdmin) &&
+               !IdentityManagementService.IsLegacyProductionDiagnosticRequest(
+                   new PathString("/api/identity/diagnostics/legacy-lookup"), false, legacySuperAdmin),
+            "legacy production-token compatibility escapes the temporary diagnostic route and flag boundary");
+        var malformedCurrentToken = Principal(
+            new Claim(ClaimTypes.NameIdentifier, "legacy-user-1"),
+            new Claim(ClaimTypes.Role, "SuperAdmin"),
+            new Claim("tenantId", "legacy-tenant-1"),
+            new Claim("sessionVersion", string.Empty),
+            new Claim(JwtRegisteredClaimNames.Jti, "new-token-with-missing-version"));
+        Assert(!IdentityManagementService.IsLegacyProductionTokenShape(malformedCurrentToken) &&
+               IdentityManagementService.EvaluateLegacyProductionDiagnosticSession(legacyAccount, malformedCurrentToken).Status == IdentitySessionValidationStatus.VersionMismatch,
+            "a malformed current token can enter the legacy production compatibility path");
+        legacyAccount["sessionVersion"] = 2;
+        Assert(IdentityManagementService.EvaluateLegacyProductionDiagnosticSession(legacyAccount, legacySuperAdmin).Status == IdentitySessionValidationStatus.VersionMismatch,
+            "session revocation does not invalidate the diagnostic-only legacy production token");
     }
 
     private static void ForcedPasswordRecoveryPaths()
@@ -314,6 +356,18 @@ public static class IdentityFoundationSourceTestRunner
         Assert(program.Contains("OnTokenValidated = async context") &&
                program.Contains("ValidateProtectedSessionAsync") &&
                program.Contains("identity_session_invalid"), "JWT validation does not consult live identity state");
+        var service = Source("apps", "pumpkin-api", "Services", "Identity", "IdentityManagementService.cs");
+        var legacyCompatibility = SliceBetween(service, "public static bool IsLegacyProductionDiagnosticRequest", "public async Task<IdentityLoginAuthorityResult> ResolveLoginAuthorityAsync");
+        Assert(legacyCompatibility.Contains("JwtRegisteredClaimNames.Jti") &&
+               legacyCompatibility.Contains("JwtRegisteredClaimNames.Iat") &&
+               legacyCompatibility.Contains("FindAll(\"sessionVersion\").Count() == 0") &&
+               legacyCompatibility.Contains("CapacityDiagnosticsEnabled") == false &&
+               service.Contains("_features.CurrentValue.CapacityDiagnosticsEnabled") &&
+               legacyCompatibility.Contains("/api/identity/diagnostics/legacy-lookup") &&
+               legacyCompatibility.Contains("Long(account, \"sessionVersion\", 1) != 1") &&
+               !legacyCompatibility.Contains("TenantAdmin") &&
+               service.Contains("context.Items[ValidatedAccountItemKey] = account"),
+            "legacy production-token compatibility is not exact-shape, baseline-version, and diagnostic-only bounded");
         Assert(program.Contains("IdentitySessionValidationStatus.ProviderUnavailable") &&
                program.Contains("OnChallenge = async context") && program.Contains("context.HandleResponse()") &&
                program.Contains("StatusCodes.Status503ServiceUnavailable") &&

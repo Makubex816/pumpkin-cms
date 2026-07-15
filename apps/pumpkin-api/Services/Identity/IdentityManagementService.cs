@@ -75,9 +75,19 @@ public sealed class IdentityManagementService
         try
         {
             var account = await AccountByLegacyUserIdAsync(legacyUserId, cancellationToken);
-            var result = EvaluateSession(account, principal);
+            var legacyProductionDiagnostic = IsLegacyProductionDiagnosticRequest(
+                context.Request.Path, _features.CurrentValue.CapacityDiagnosticsEnabled, principal);
+            var result = legacyProductionDiagnostic
+                ? EvaluateLegacyProductionDiagnosticSession(account, principal)
+                : EvaluateSession(account, principal);
             if (result.Status == IdentitySessionValidationStatus.Valid && account is not null)
             {
+                if (legacyProductionDiagnostic)
+                {
+                    context.Items[ValidatedAccountItemKey] = account;
+                    return result;
+                }
+
                 var tenantUid = principal.FindFirstValue("tenantUid");
                 var membershipId = principal.FindFirstValue("membershipId");
                 var tenantRole = principal.FindFirstValue("tenantRole");
@@ -128,6 +138,64 @@ public sealed class IdentityManagementService
             return new(IdentitySessionValidationStatus.RoleMismatch, UserId: userId);
 
         return new(IdentitySessionValidationStatus.Valid, Bool(account, "forcePasswordChange"), userId);
+    }
+
+    public static bool IsLegacyProductionDiagnosticRequest(
+        PathString path,
+        bool capacityDiagnosticsEnabled,
+        ClaimsPrincipal principal) =>
+        capacityDiagnosticsEnabled &&
+        string.Equals(path.Value, "/api/identity/diagnostics/legacy-lookup", StringComparison.OrdinalIgnoreCase) &&
+        principal.IsInRole(UserRole.SuperAdmin.ToString()) &&
+        IsLegacyProductionTokenShape(principal);
+
+    public static bool IsLegacyProductionTokenShape(ClaimsPrincipal principal) =>
+        principal.FindAll(ClaimTypes.NameIdentifier).Count() == 1 &&
+        principal.FindAll(ClaimTypes.Role).Count() == 1 &&
+        principal.FindAll("tenantId").Count() == 1 &&
+        principal.FindAll("sessionVersion").Count() == 0 &&
+        principal.FindAll("tenantUid").Count() == 0 &&
+        principal.FindAll("membershipId").Count() == 0 &&
+        principal.FindAll("tenantRole").Count() == 0 &&
+        principal.FindAll("userId").Count() == 0 &&
+        principal.FindAll("accountId").Count() == 0 &&
+        principal.FindAll("securityStamp").Count() == 0 &&
+        !HasRawOrMappedJwtClaim(principal, JwtRegisteredClaimNames.Jti) &&
+        !HasRawOrMappedJwtClaim(principal, JwtRegisteredClaimNames.Iat);
+
+    public static IdentitySessionValidationResult EvaluateLegacyProductionDiagnosticSession(
+        JsonObject? account,
+        ClaimsPrincipal principal)
+    {
+        if (!IsLegacyProductionTokenShape(principal))
+            return new(IdentitySessionValidationStatus.VersionMismatch);
+        if (account is null)
+            return new(IdentitySessionValidationStatus.MissingIdentity);
+
+        var userId = Text(account, "userId");
+        if (!StatusIsActive(account))
+            return new(IdentitySessionValidationStatus.AccountInactive, UserId: userId);
+        if (Long(account, "sessionVersion", 1) != 1)
+            return new(IdentitySessionValidationStatus.VersionMismatch, UserId: userId);
+        var tokenRole = principal.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
+        var tokenTenantId = principal.FindFirstValue("tenantId") ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(tokenTenantId) ||
+            !string.Equals(tokenTenantId, Text(account, "legacyTenantId"), StringComparison.Ordinal) ||
+            !string.Equals(tokenRole, UserRole.SuperAdmin.ToString(), StringComparison.Ordinal))
+            return new(IdentitySessionValidationStatus.TenantContextInvalid, UserId: userId);
+
+        var accountIsSuperAdmin = string.Equals(
+            Text(account, "globalRole"), UserRole.SuperAdmin.ToString(), StringComparison.Ordinal);
+        if (!accountIsSuperAdmin)
+            return new(IdentitySessionValidationStatus.RoleMismatch, UserId: userId);
+        return new(IdentitySessionValidationStatus.Valid, Bool(account, "forcePasswordChange"), userId);
+    }
+
+    private static bool HasRawOrMappedJwtClaim(ClaimsPrincipal principal, string jwtClaimName)
+    {
+        if (principal.FindAll(jwtClaimName).Any()) return true;
+        return JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.TryGetValue(jwtClaimName, out var mapped) &&
+            principal.FindAll(mapped).Any();
     }
 
     public async Task<IdentityLoginAuthorityResult> ResolveLoginAuthorityAsync(
