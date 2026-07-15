@@ -692,6 +692,7 @@ public static class IdentityFoundationSourceTestRunner
         var tool = Source("tools", "identity-migration", "Program.cs");
         var backup = SliceBetween(tool, "async Task BackupAsync()", "static string SanitizeIdentityJson");
         var dryRun = SliceBetween(tool, "async Task DryRunAsync()", "async Task ApplyAsync()");
+        var loginReconciliation = SliceBetween(tool, "async Task ReconcilePendingLoginAsync()", "async Task LoginAcceptanceAsync()");
         var acceptance = SliceBetween(tool, "async Task LoginAcceptanceAsync()", "async Task RepairLoginLocatorsAsync()");
         var acceptanceExactMatches = SliceBetween(acceptance, "var acceptanceAudits", "if (expectDualWrite &&");
         var creation = SliceBetween(tool, "async Task SyntheticCreateAsync()", "async Task SyntheticVerifyAsync()");
@@ -702,6 +703,24 @@ public static class IdentityFoundationSourceTestRunner
                tool.Contains("case \"synthetic-switch-fixture-status\"") &&
                tool.Contains("case \"synthetic-contact-snapshot\"") && tool.Contains("case \"synthetic-cleanup\""),
             "synthetic lifecycle commands are incomplete");
+        Assert(tool.Contains("case \"reconcile-login-pending\"") &&
+               loginReconciliation.Contains("no_session_or_audit_later_success_verified") &&
+               loginReconciliation.Contains("complete_write_set_verified") &&
+               loginReconciliation.Contains("later exact successful-login audit") &&
+               loginReconciliation.Contains("requestPartition") &&
+               loginReconciliation.Contains("auditPartition") &&
+               loginReconciliation.Contains("sessionCreatedAt != auditCreatedAt") &&
+               loginReconciliation.Contains("a partial or inconsistent write set") &&
+               loginReconciliation.Contains("identity_login_reconciliation_resolved") &&
+               loginReconciliation.Contains("one resumable migration row") &&
+               loginReconciliation.Contains("result = \"pending\"") &&
+               loginReconciliation.Contains("remainingPendingAudits") &&
+               loginReconciliation.Contains("reconciledThisRun") &&
+               loginReconciliation.Contains("resolvedRows.Select") &&
+               loginReconciliation.Contains("IfMatchEtag") &&
+               loginReconciliation.Contains("requestIdDigest = OpaqueDigest") &&
+               loginReconciliation.Contains("CryptographicOperations.ZeroMemory(digestKey)"),
+            "pending login reconciliation is not bounded, audited, resumable, or identifier-safe");
         Assert(creation.Contains("SyntheticCreationOperation") && creation.Contains("status = \"Pending\"") &&
                creation.Contains("handoffSha256") && creation.Contains("syntheticValidationId = \"V2.8.63CRST\"") &&
                creation.Contains("isSyntheticValidation = true") && creation.Contains("partialDataPresent") &&

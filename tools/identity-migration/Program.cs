@@ -36,6 +36,7 @@ switch (command)
     case "compare": await CompareAsync(); break;
     case "activate": await ActivateAsync(); break;
     case "verify": await VerifyAsync(); break;
+    case "reconcile-login-pending": await ReconcilePendingLoginAsync(); break;
     case "login-acceptance": await LoginAcceptanceAsync(); break;
     case "repair-login-locators": await RepairLoginLocatorsAsync(); break;
     case "synthetic-create": await SyntheticCreateAsync(); break;
@@ -43,7 +44,7 @@ switch (command)
     case "synthetic-switch-fixture-status": await SyntheticSwitchFixtureStatusAsync(); break;
     case "synthetic-contact-snapshot": await SyntheticContactSnapshotAsync(); break;
     case "synthetic-cleanup": await SyntheticCleanupAsync(); break;
-    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, activate, verify, login-acceptance, repair-login-locators, synthetic-create, synthetic-verify, synthetic-switch-fixture-status, synthetic-contact-snapshot, or synthetic-cleanup");
+    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, activate, verify, reconcile-login-pending, login-acceptance, repair-login-locators, synthetic-create, synthetic-verify, synthetic-switch-fixture-status, synthetic-contact-snapshot, or synthetic-cleanup");
 }
 
 string? Option(string name)
@@ -337,6 +338,244 @@ async Task VerifyAsync()
     if (!result.reconciliationClear)
         throw new InvalidOperationException("production identity verification found pending reconciliation, security mutation, or pending audit state");
     Console.WriteLine(JsonSerializer.Serialize(result));
+}
+
+async Task ReconcilePendingLoginAsync()
+{
+    var migrations = await ReadAllAsync("IdentityMigration");
+    var requests = await ReadAllAsync("IdentityRequests");
+    var audits = await ReadAllAsync("SecurityAuditEvents");
+    var accounts = await ReadAllAsync("UserAccounts");
+    var reconciliationAudits = audits.Where(x =>
+        Text(x, "eventType") == "identity_login_reconciliation_resolved").ToList();
+
+    foreach (var pendingAudit in reconciliationAudits.Where(x => Text(x, "result") == "pending"))
+    {
+        var linkedResolved = migrations.Where(x =>
+            Text(x, "type") == "IdentityLoginReconciliation" &&
+            Text(x, "status") == "Resolved" &&
+            Text(x, "resolutionAuditId") == Text(pendingAudit, "id")).ToArray();
+        var linkedPending = migrations.Where(x =>
+            Text(x, "type") == "IdentityLoginReconciliation" &&
+            Text(x, "status") == "Pending" &&
+            $"login-reconciliation-resolved-{SafeDigest(Text(x, "id"))[..24]}" == Text(pendingAudit, "id")).ToArray();
+        if (linkedResolved.Length == 1 && linkedPending.Length == 0)
+        {
+            await database.GetContainer("SecurityAuditEvents").PatchItemAsync<object>(Text(pendingAudit, "id"), new("global"),
+            [
+                PatchOperation.Set("/result", "success"),
+                PatchOperation.Set("/updatedAt", DateTime.UtcNow)
+            ], new PatchItemRequestOptions { IfMatchEtag = Text(pendingAudit, "_etag") });
+        }
+        else if (linkedResolved.Length != 0 || linkedPending.Length != 1)
+        {
+            throw new InvalidOperationException("a pending login reconciliation audit lacks one resumable migration row");
+        }
+    }
+
+    audits = await ReadAllAsync("SecurityAuditEvents");
+    reconciliationAudits = audits.Where(x =>
+        Text(x, "eventType") == "identity_login_reconciliation_resolved").ToList();
+    var pending = migrations.Where(x =>
+        Text(x, "type") == "IdentityLoginReconciliation" &&
+        Text(x, "status") == "Pending").ToArray();
+
+    (string Resolution, int SessionCount, int LoginAuditCount, int SupersedingAuditCount) Evaluate(JsonObject row)
+    {
+        var id = Text(row, "id");
+        var userId = Text(row, "userId");
+        var requestId = Text(row, "requestId");
+        if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(userId) ||
+            string.IsNullOrWhiteSpace(requestId) ||
+            !DateTimeOffset.TryParse(Text(row, "createdAt"), out var createdAt))
+            throw new InvalidOperationException("a login reconciliation row is malformed");
+
+        var matchingAccounts = accounts.Where(x => Text(x, "userId") == userId).ToArray();
+        var matchingSessions = requests.Where(x =>
+            Text(x, "type") == "UserSession" && Text(x, "requestId") == requestId).ToArray();
+        var matchingLoginAudits = audits.Where(x =>
+            Text(x, "eventType") == "identity_login_dual_write" && Text(x, "requestId") == requestId).ToArray();
+        if (matchingAccounts.Length != 1 ||
+            !DateTimeOffset.TryParse(Text(matchingAccounts[0], "lastLoginAt"), out var accountLastLoginAt))
+            throw new InvalidOperationException("a login reconciliation lacks one linked account with verified accounting");
+
+        var supersedingAudits = audits.Where(x =>
+        {
+            if (Text(x, "eventType") != "identity_login_dual_write" ||
+                Text(x, "actorUserId") != userId || Text(x, "targetUserId") != userId ||
+                Text(x, "result") != "success" || Text(x, "auditPartition") != "global" ||
+                string.IsNullOrWhiteSpace(Text(x, "requestId")) ||
+                Text(x, "id") != $"login-{Text(x, "requestId")}" ||
+                !DateTimeOffset.TryParse(Text(x, "createdAt"), out var auditAt))
+                return false;
+            return auditAt > createdAt && auditAt == accountLastLoginAt;
+        }).ToArray();
+
+        if (matchingSessions.Length == 0 && matchingLoginAudits.Length == 0)
+        {
+            if (supersedingAudits.Length == 0)
+                throw new InvalidOperationException("an incomplete login reconciliation lacks a later exact successful-login audit");
+            return ("no_session_or_audit_later_success_verified", 0, 0, supersedingAudits.Length);
+        }
+
+        if (matchingSessions.Length != 1 || matchingLoginAudits.Length != 1 ||
+            Text(matchingSessions[0], "userId") != userId ||
+            Text(matchingSessions[0], "requestPartition") != userId ||
+            string.IsNullOrWhiteSpace(Text(matchingSessions[0], "id")) ||
+            Number(matchingSessions[0], "sessionVersion", 0) < 1 ||
+            Text(matchingLoginAudits[0], "actorUserId") != userId ||
+            Text(matchingLoginAudits[0], "targetUserId") != userId ||
+            Text(matchingLoginAudits[0], "result") != "success" ||
+            Text(matchingLoginAudits[0], "auditPartition") != "global" ||
+            Text(matchingLoginAudits[0], "id") != $"login-{requestId}" ||
+            !DateTimeOffset.TryParse(Text(matchingSessions[0], "createdAt"), out var sessionCreatedAt) ||
+            !DateTimeOffset.TryParse(Text(matchingLoginAudits[0], "createdAt"), out var auditCreatedAt) ||
+            sessionCreatedAt != auditCreatedAt || accountLastLoginAt < auditCreatedAt)
+            throw new InvalidOperationException("a pending login reconciliation has a partial or inconsistent write set");
+        return ("complete_write_set_verified", 1, 1, supersedingAudits.Length);
+    }
+
+    var digestKey = RandomNumberGenerator.GetBytes(32);
+    try
+    {
+        foreach (var row in pending)
+        {
+            var id = Text(row, "id");
+            var userId = Text(row, "userId");
+            if (string.IsNullOrWhiteSpace(Text(row, "_etag")))
+                throw new InvalidOperationException("a pending login reconciliation row lacks a concurrency token");
+            var evaluation = Evaluate(row);
+
+            var resolvedAt = DateTime.UtcNow;
+            var resolutionAuditId = $"login-reconciliation-resolved-{SafeDigest(id)[..24]}";
+            var existingResolutionAudits = reconciliationAudits.Where(x => Text(x, "id") == resolutionAuditId).ToArray();
+            if (existingResolutionAudits.Length > 1 ||
+                (existingResolutionAudits.Length == 1 &&
+                 (Text(existingResolutionAudits[0], "eventType") != "identity_login_reconciliation_resolved" ||
+                  Text(existingResolutionAudits[0], "targetUserId") != userId ||
+                  Text(existingResolutionAudits[0], "resolutionCategory") != evaluation.Resolution ||
+                  Text(existingResolutionAudits[0], "result") is not ("pending" or "success"))))
+                throw new InvalidOperationException("a login reconciliation resolution audit failed integrity validation");
+            if (existingResolutionAudits.Length == 0)
+            {
+                await database.GetContainer("SecurityAuditEvents").CreateItemAsync(new
+                {
+                    id = resolutionAuditId,
+                    auditPartition = "global",
+                    eventType = "identity_login_reconciliation_resolved",
+                    actorRole = "system",
+                    targetUserId = userId,
+                    requestId = $"reconcile-{SafeDigest(id)[..24]}",
+                    resolutionCategory = evaluation.Resolution,
+                    result = "pending",
+                    createdAt = resolvedAt
+                }, new PartitionKey("global"));
+            }
+
+            await database.GetContainer("IdentityMigration").PatchItemAsync<object>(id, new("global"),
+            [
+                PatchOperation.Set("/status", "Resolved"),
+                PatchOperation.Set("/resolutionCategory", evaluation.Resolution),
+                PatchOperation.Set("/resolutionAuditId", resolutionAuditId),
+                PatchOperation.Set("/resolvedAt", resolvedAt),
+                PatchOperation.Set("/updatedAt", resolvedAt)
+            ], new PatchItemRequestOptions { IfMatchEtag = Text(row, "_etag") });
+
+            var auditReadback = await database.GetContainer("SecurityAuditEvents")
+                .ReadItemAsync<JsonObject>(resolutionAuditId, new("global"));
+            if (Text(auditReadback.Resource, "result") == "pending")
+            {
+                await database.GetContainer("SecurityAuditEvents").PatchItemAsync<object>(resolutionAuditId, new("global"),
+                [
+                    PatchOperation.Set("/result", "success"),
+                    PatchOperation.Set("/updatedAt", DateTime.UtcNow)
+                ], new PatchItemRequestOptions { IfMatchEtag = Text(auditReadback.Resource, "_etag") });
+            }
+
+        }
+
+        migrations = await ReadAllAsync("IdentityMigration");
+        audits = await ReadAllAsync("SecurityAuditEvents");
+        foreach (var pendingAudit in audits.Where(x =>
+                     Text(x, "eventType") == "identity_login_reconciliation_resolved" && Text(x, "result") == "pending"))
+        {
+            var linked = migrations.Where(x =>
+                Text(x, "type") == "IdentityLoginReconciliation" && Text(x, "status") == "Resolved" &&
+                Text(x, "resolutionAuditId") == Text(pendingAudit, "id")).ToArray();
+            if (linked.Length != 1)
+                throw new InvalidOperationException("a terminal login reconciliation audit lacks one resolved migration row");
+            await database.GetContainer("SecurityAuditEvents").PatchItemAsync<object>(Text(pendingAudit, "id"), new("global"),
+            [
+                PatchOperation.Set("/result", "success"),
+                PatchOperation.Set("/updatedAt", DateTime.UtcNow)
+            ], new PatchItemRequestOptions { IfMatchEtag = Text(pendingAudit, "_etag") });
+        }
+
+        migrations = await ReadAllAsync("IdentityMigration");
+        audits = await ReadAllAsync("SecurityAuditEvents");
+        var remainingPending = migrations.Count(x =>
+            Text(x, "type") == "IdentityLoginReconciliation" && Text(x, "status") == "Pending");
+        var remainingPendingAudits = audits.Count(x =>
+            Text(x, "eventType") == "identity_login_reconciliation_resolved" && Text(x, "result") == "pending");
+        if (remainingPending != 0 || remainingPendingAudits != 0)
+            throw new InvalidOperationException("login reconciliation did not reach a fully audited terminal state");
+
+        var resolvedRows = migrations.Where(x =>
+            Text(x, "type") == "IdentityLoginReconciliation" && Text(x, "status") == "Resolved" &&
+            !string.IsNullOrWhiteSpace(Text(x, "resolutionAuditId"))).ToArray();
+        var results = resolvedRows.Select(row =>
+        {
+            var evaluation = Evaluate(row);
+            var resolutionAuditId = Text(row, "resolutionAuditId");
+            var resolutionAudit = audits.Where(x => Text(x, "id") == resolutionAuditId).ToArray();
+            if (resolutionAudit.Length != 1 ||
+                Text(resolutionAudit[0], "eventType") != "identity_login_reconciliation_resolved" ||
+                Text(resolutionAudit[0], "targetUserId") != Text(row, "userId") ||
+                Text(resolutionAudit[0], "resolutionCategory") != evaluation.Resolution ||
+                Text(resolutionAudit[0], "result") != "success" ||
+                Text(row, "resolutionCategory") != evaluation.Resolution ||
+                resolutionAuditId != $"login-reconciliation-resolved-{SafeDigest(Text(row, "id"))[..24]}" ||
+                !DateTimeOffset.TryParse(Text(row, "resolvedAt"), out var resolvedAt))
+                throw new InvalidOperationException("a resolved login reconciliation failed final audit integrity validation");
+            return new
+            {
+                migrationIdDigest = OpaqueDigest(digestKey, "login-reconciliation", Text(row, "id"))[..16],
+                requestIdDigest = OpaqueDigest(digestKey, "login-request", Text(row, "requestId"))[..16],
+                userIdDigest = OpaqueDigest(digestKey, "login-user", Text(row, "userId"))[..16],
+                resolution = evaluation.Resolution,
+                matchingSessionCount = evaluation.SessionCount,
+                matchingLoginAuditCount = evaluation.LoginAuditCount,
+                supersedingAuditCount = evaluation.SupersedingAuditCount,
+                resolvedAt
+            };
+        }).ToArray();
+
+        var result = new
+        {
+            toolVersion = ToolVersion,
+            reconciledThisRun = pending.Length,
+            reconciledCount = results.Length,
+            remainingPending,
+            remainingPendingAudits,
+            results,
+            completedAt = DateTime.UtcNow
+        };
+        var resultPath = Path.Combine(output, "login-reconciliation-result.json");
+        await WriteJsonAsync(resultPath, result);
+        await WriteChecksumManifestAsync(output, [resultPath]);
+        Console.WriteLine(JsonSerializer.Serialize(new
+        {
+            status = "login_reconciliation_complete",
+            reconciledThisRun = pending.Length,
+            reconciledCount = results.Length,
+            remainingPending,
+            remainingPendingAudits
+        }));
+    }
+    finally
+    {
+        CryptographicOperations.ZeroMemory(digestKey);
+    }
 }
 
 async Task LoginAcceptanceAsync()
