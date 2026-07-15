@@ -1,0 +1,15 @@
+{
+  "taskId": "V2.8.63BR",
+  "status": "complete_identity_foundation_login_dualwrite_audit_proven_ready_for_63c",
+  "carryforwardCommit": "f413ffe7",
+  "readbackCommit": "3f5b7fe4",
+  "logins": 2,
+  "loginDualWrites": 2,
+  "loginAudits": 2,
+  "dualReadComparisons": 9,
+  "dualReadMismatches": 0,
+  "sourceDeploymentRequired": false,
+  "adminDeploymentRequired": false,
+  "airstripPublicRuntimeRequested": false,
+  "indexingMutation": false
+}
