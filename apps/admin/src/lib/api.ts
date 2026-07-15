@@ -544,6 +544,17 @@ class ApiClient {
     return response.formEntries
   }
 
+  async getFormReadiness(token: string, tenantId: string): Promise<import('pumpkin-ts-models').FormReadinessSnapshot> {
+    return this.request<import('pumpkin-ts-models').FormReadinessSnapshot>(
+      `/api/admin/${encodeURIComponent(tenantId)}/form-readiness`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+        headers: { 'Authorization': `Bearer ${token}` },
+      }
+    )
+  }
+
   async getFormEntry(token: string, tenantId: string, id: string): Promise<FormEntry> {
     return this.request<FormEntry>(
       `/api/admin/${encodeURIComponent(tenantId)}/form-entries/${encodeURIComponent(id)}`,

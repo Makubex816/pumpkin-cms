@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
-import type { FormEntry } from 'pumpkin-ts-models'
+import type { FormEntry, FormReadinessSnapshot } from 'pumpkin-ts-models'
 
 const STATUS_OPTIONS = ['all', 'new', 'reviewed', 'contacted', 'quoted', 'won', 'lost', 'spam', 'suspected-spam', 'archived'] as const
 
@@ -15,6 +15,9 @@ interface Filters {
   status: StatusFilter
   formId: string
   pageSlug: string
+  sourceHost: string
+  fromDate: string
+  toDate: string
   search: string
 }
 
@@ -22,6 +25,9 @@ const defaultFilters: Filters = {
   status: 'all',
   formId: '',
   pageSlug: '',
+  sourceHost: '',
+  fromDate: '',
+  toDate: '',
   search: '',
 }
 
@@ -31,6 +37,8 @@ export default function FormEntriesDashboardPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [filters, setFilters] = useState<Filters>(defaultFilters)
+  const [readiness, setReadiness] = useState<FormReadinessSnapshot | null>(null)
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     let isCurrent = true
@@ -45,9 +53,13 @@ export default function FormEntriesDashboardPage() {
       try {
         setLoading(true)
         setError(null)
-        const tenantEntries = await apiClient.getFormEntries(token, currentTenant.tenantId)
+        const [tenantEntries, tenantReadiness] = await Promise.all([
+          apiClient.getFormEntries(token, currentTenant.tenantId),
+          apiClient.getFormReadiness(token, currentTenant.tenantId),
+        ])
         if (isCurrent) {
           setEntries(tenantEntries)
+          setReadiness(tenantReadiness)
         }
       } catch (err) {
         console.error('[Lead Inbox] Failed to load form entries:', err)
@@ -71,6 +83,9 @@ export default function FormEntriesDashboardPage() {
   const formIds = useMemo(() => uniqueSorted(entries.map((entry) => entry.formId).filter(Boolean)), [entries])
   const pageSlugs = useMemo(() => uniqueSorted(entries.map((entry) => entry.pageSlug).filter(Boolean)), [entries])
   const filteredEntries = useMemo(() => filterEntries(entries, filters), [entries, filters])
+  const pageSize = 25
+  const pageCount = Math.max(1, Math.ceil(filteredEntries.length / pageSize))
+  const visibleEntries = useMemo(() => filteredEntries.slice((page - 1) * pageSize, page * pageSize), [filteredEntries, page])
   const summary = useMemo(() => buildSummary(entries), [entries])
 
   if (isLoading) {
@@ -133,6 +148,13 @@ export default function FormEntriesDashboardPage() {
       </header>
 
       <section className="card">
+        {readiness && (
+          <div className="mb-5 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm">
+            <strong>Form readiness: {readiness.overallStatus}</strong>
+            <span className="ml-3 text-neutral-600">{readiness.activeDefinitionCount}/{readiness.definitionCount} active definitions; {readiness.mappedInstanceCount}/{readiness.instanceCount} mapped instances.</span>
+            {readiness.blockers.length > 0 && <div className="mt-2 text-amber-800">Blockers: {readiness.blockers.join(', ')}</div>}
+          </div>
+        )}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <label className="block">
             <span className="text-sm font-medium text-neutral-700">Status</span>
@@ -147,6 +169,21 @@ export default function FormEntriesDashboardPage() {
                 </option>
               ))}
             </select>
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-neutral-700">Source Host</span>
+            <input value={filters.sourceHost} onChange={(event) => { setPage(1); setFilters((current) => ({ ...current, sourceHost: event.target.value })) }} className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm" placeholder="example.com" />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-neutral-700">From Date</span>
+            <input type="date" value={filters.fromDate} onChange={(event) => { setPage(1); setFilters((current) => ({ ...current, fromDate: event.target.value })) }} className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm" />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-neutral-700">To Date</span>
+            <input type="date" value={filters.toDate} onChange={(event) => { setPage(1); setFilters((current) => ({ ...current, toDate: event.target.value })) }} className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm" />
           </label>
 
           <label className="block">
@@ -207,7 +244,7 @@ export default function FormEntriesDashboardPage() {
             <div>
               <h2 className="text-lg font-semibold text-neutral-900">Submissions</h2>
               <p className="mt-1 text-sm text-neutral-600">
-                Showing {filteredEntries.length} of {entries.length} tenant entries.
+              Showing {visibleEntries.length} of {filteredEntries.length} matching tenant entries.
               </p>
             </div>
           </div>
@@ -234,7 +271,7 @@ export default function FormEntriesDashboardPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-100 bg-white">
-                  {filteredEntries.map((entry) => (
+                  {visibleEntries.map((entry) => (
                     <tr key={entry.id}>
                       <td className="whitespace-nowrap px-4 py-3 text-neutral-700">{formatDateTime(entry.submittedAt)}</td>
                       <td className="px-4 py-3 font-medium text-neutral-900">{getLeadField(entry, 'name') || 'Not provided'}</td>
@@ -257,6 +294,13 @@ export default function FormEntriesDashboardPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+          {filteredEntries.length > pageSize && (
+            <div className="mt-4 flex items-center justify-end gap-3 text-sm">
+              <button type="button" className="btn btn-secondary" disabled={page <= 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>Previous</button>
+              <span>Page {page} of {pageCount}</span>
+              <button type="button" className="btn btn-secondary" disabled={page >= pageCount} onClick={() => setPage((value) => Math.min(pageCount, value + 1))}>Next</button>
             </div>
           )}
         </section>
@@ -317,6 +361,10 @@ function filterEntries(entries: FormEntry[], filters: Filters) {
     if (filters.status !== 'all' && status !== filters.status) return false
     if (filters.formId && entry.formId !== filters.formId) return false
     if (filters.pageSlug && entry.pageSlug !== filters.pageSlug) return false
+    if (filters.sourceHost && getSourceHost(entry) !== filters.sourceHost.trim().toLowerCase()) return false
+    const submitted = new Date(entry.submittedAt)
+    if (filters.fromDate && submitted < new Date(`${filters.fromDate}T00:00:00`)) return false
+    if (filters.toDate && submitted > new Date(`${filters.toDate}T23:59:59.999`)) return false
 
     if (!search) return true
 
@@ -331,6 +379,10 @@ function filterEntries(entries: FormEntry[], filters: Filters) {
 
     return searchText.includes(search)
   })
+}
+
+function getSourceHost(entry: FormEntry) {
+  try { return new URL(entry.sourcePage || entry.metadata?.source || '').hostname.toLowerCase() } catch { return '' }
 }
 
 function getLeadField(entry: FormEntry, field: LeadField) {

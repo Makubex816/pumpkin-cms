@@ -217,6 +217,7 @@ export default function FormEntryDetailPage() {
                 <ReadOnlyRow label="Form ID" value={entry.formId || 'Not recorded'} />
                 <ReadOnlyRow label="Page Slug" value={entry.pageSlug || 'Not recorded'} />
                 <ReadOnlyRow label="Metadata Source" value={entry.metadata?.source || 'Not recorded'} />
+                <ReadOnlyRow label="Source Host" value={getSourceHost(entry) || 'Not recorded'} />
                 <ReadOnlyRow label="Referrer" value={entry.metadata?.referrer || 'Not recorded'} />
                 <ReadOnlyRow label="Tags" value={(entry.metadata?.tags || []).join(', ') || 'None'} />
               </div>
@@ -242,7 +243,14 @@ export default function FormEntryDetailPage() {
             <h2 className="text-lg font-semibold text-neutral-900">Request Metadata</h2>
             <div className="mt-3 space-y-3 text-sm">
               <ReadOnlyRow label="Entry ID" value={entry.id} />
+              <ReadOnlyRow label="Submission ID" value={entry.submissionId || entry.metadata?.submissionId || 'Not recorded'} />
+              <ReadOnlyRow label="Correlation ID" value={entry.correlationId || entry.metadata?.correlationId || 'Not recorded'} />
               <ReadOnlyRow label="Tenant ID" value={entry.tenantId} />
+              <ReadOnlyRow label="Consent" value={entry.consentAccepted ? 'Accepted' : 'Not accepted'} />
+              <ReadOnlyRow label="Spam Status" value={entry.spamStatus || entry.metadata?.spamStatus || 'Not recorded'} />
+              <ReadOnlyRow label="Lead Persistence" value={entry.metadata?.leadPersistenceStatus || 'persisted'} />
+              <ReadOnlyRow label="Notification Configured" value={entry.metadata?.notificationConfigured ? 'Yes' : 'No'} />
+              <ReadOnlyRow label="Notification Delivery" value={entry.metadata?.notificationDeliveryStatus || 'not_configured'} />
               <ReadOnlyRow label="IP Address" value={entry.ipAddress || 'Not recorded'} muted />
               <ReadOnlyRow label="User Agent" value={entry.userAgent || 'Not recorded'} muted />
             </div>
@@ -327,6 +335,10 @@ function stringifyFormValue(value: unknown): string {
   if (typeof value === 'number' || typeof value === 'boolean') return String(value)
   if (Array.isArray(value)) return value.map(stringifyFormValue).filter(Boolean).join(', ')
   return JSON.stringify(value)
+}
+
+function getSourceHost(entry: FormEntry) {
+  try { return new URL(entry.sourcePage || entry.metadata?.source || '').hostname } catch { return '' }
 }
 
 function getErrorMessage(error: unknown, fallback: string) {
