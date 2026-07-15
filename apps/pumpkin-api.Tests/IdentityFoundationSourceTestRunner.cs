@@ -12,6 +12,7 @@ public static class IdentityFoundationSourceTestRunner
         {
             ("feature flags default safely disabled", FeatureFlagsDisabled),
             ("Cosmos and Mongo contracts have parity", ProviderParity),
+            ("UserAccount email uniqueness is global in Cosmos", GlobalEmailUniqueness),
             ("one identity can map to multiple tenants deterministically", MultiTenantIdentity),
             ("duplicate normalized email is held as conflict", DuplicateEmailConflict),
             ("orphaned user is held as conflict", OrphanConflict),
@@ -32,6 +33,13 @@ public static class IdentityFoundationSourceTestRunner
     {
         IdentityProviderParity.AssertEquivalent("CosmosDb", IdentityProviderParity.Definitions);
         IdentityProviderParity.AssertEquivalent("MongoDb", IdentityProviderParity.Definitions);
+    }
+    private static void GlobalEmailUniqueness()
+    {
+        var users = IdentityProviderParity.Definitions.Single(x => x.Name == "UserAccounts");
+        Assert(users.PartitionKey == "/identityPartition" && users.UniqueKeys.Contains("/normalizedEmail"), "email uniqueness is partition-local");
+        var account = new UserAccount { UserId = "u", LoginEmail = "a@example.com", NormalizedEmail = "A@EXAMPLE.COM", PasswordHash = "hash" };
+        Assert(account.PartitionKey == "global", "UserAccount partition is not global");
     }
     private static void MultiTenantIdentity()
     {

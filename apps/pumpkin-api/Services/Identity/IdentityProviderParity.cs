@@ -7,7 +7,8 @@ public static class IdentityProviderParity
 {
     public static IReadOnlyList<IdentityContainerDefinition> Definitions { get; } =
     [
-        new("UserAccounts", "/userId", ["/normalizedEmail", "/userId"], ["/status", "/globalRole"], true, false),
+        // A constant logical partition makes Cosmos unique keys global, matching Mongo semantics.
+        new("UserAccounts", "/identityPartition", ["/normalizedEmail", "/userId"], ["/status", "/globalRole"], true, false),
         new("TenantMemberships", "/tenantUid", ["/tenantUid,/userId", "/membershipId"], ["/userId", "/status", "/role"], true, true),
         new("TenantIdentifierAliases", "/tenantUid", ["/previousSlug"], ["/canonicalSlug", "/status"], true, true),
         new("TenantRenameJobs", "/tenantUid", ["/id"], ["/status", "/requestedSlug"], true, true),

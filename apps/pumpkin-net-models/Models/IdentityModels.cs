@@ -52,6 +52,7 @@ public sealed class TenantRenameJobStep : IdentityRecord
 
 public sealed class UserAccount : IdentityRecord
 {
+    public string IdentityPartition { get; set; } = "global";
     public required string UserId { get; set; }
     public required string LoginEmail { get; set; }
     public required string NormalizedEmail { get; set; }
@@ -64,6 +65,7 @@ public sealed class UserAccount : IdentityRecord
     public long SessionVersion { get; set; } = 1;
     public int FailedLoginCount { get; set; }
     public DateTime? LockedUntil { get; set; }
+    [JsonIgnore] public string PartitionKey => IdentityPartition;
 }
 
 public sealed class TenantMembership : IdentityRecord
