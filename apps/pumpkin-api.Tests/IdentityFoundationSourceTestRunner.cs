@@ -27,6 +27,7 @@ public static class IdentityFoundationSourceTestRunner
             ,("management defaults remain disabled", ManagementDefaults)
             ,("JWT session version is issued and enforced", SessionVersionSource)
             ,("management routes use tenant authorization", ManagementAuthorizationSource)
+            ,("session version production shapes are compatible", SessionVersionShapes)
         };
         foreach (var test in tests) { test.Run(); Console.WriteLine($"PASS: {test.Name}"); }
         Console.WriteLine($"Identity foundation source tests passed: {tests.Length}/{tests.Length}");
@@ -129,6 +130,13 @@ public static class IdentityFoundationSourceTestRunner
         var root = FindRepositoryRoot();
         var service = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "Identity", "IdentityManagementService.cs"));
         Assert(service.Contains("CanManageTenant") && service.Contains("final_tenant_admin_protected") && service.Contains("email_not_unique"), "management authorization invariants missing");
+    }
+    private static void SessionVersionShapes()
+    {
+        static long Parse(string json) { using var document = JsonDocument.Parse(json); return IdentityLoginCompatibilityWriter.ParseSessionVersion(document.RootElement); }
+        Assert(Parse("{}") == 1 && Parse("{\"sessionVersion\":null}") == 1 && Parse("{\"sessionVersion\":3}") == 3 && Parse("{\"sessionVersion\":\"4\"}") == 4, "compatible session version shape rejected");
+        var threw = false; try { Parse("{\"sessionVersion\":\"broken\"}"); } catch (JsonException) { threw = true; }
+        Assert(threw, "malformed session version accepted");
     }
 
     private static Tenant Tenant(string slug) => new() { Id = $"legacy-{slug}", TenantId = slug, Name = slug, Status = "active" };
