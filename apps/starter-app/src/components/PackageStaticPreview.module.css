@@ -6,14 +6,36 @@
 
 .previewRoot :global(.pumpkin-live-form-consent) {
   align-items: flex-start;
+  cursor: pointer;
   display: flex;
   gap: 0.65rem;
   margin-block: 1rem;
+  max-width: 100%;
+  width: 100%;
 }
 
-.previewRoot :global(.pumpkin-live-form-consent input) {
-  flex: 0 0 auto;
-  margin-top: 0.25rem;
+.previewRoot :global(.pumpkin-live-form-consent input[type='checkbox']) {
+  appearance: auto;
+  block-size: 1.125rem !important;
+  flex: 0 0 1.125rem;
+  inline-size: 1.125rem !important;
+  margin: 0.2rem 0 0 !important;
+  min-block-size: 1.125rem !important;
+  min-inline-size: 1.125rem !important;
+  padding: 0 !important;
+}
+
+.previewRoot :global(.pumpkin-live-form-consent input[type='checkbox']:focus-visible) {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+.previewRoot :global(.pumpkin-live-form-consent span) {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: normal;
+  white-space: normal;
+  word-break: normal;
 }
 
 .previewRoot :global(.pumpkin-form-honeypot) {
@@ -26,6 +48,10 @@
 }
 
 @media (max-width: 800px) {
+  .previewRoot {
+    padding-bottom: calc(var(--pumpkin-fixed-ui-clearance, 0px) + env(safe-area-inset-bottom)) !important;
+  }
+
   .previewRoot :global(*) {
     min-width: 0 !important;
   }

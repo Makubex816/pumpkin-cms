@@ -64,6 +64,28 @@ export function PreviewBehaviorAdapter({
 
     const appliedBodyClasses = bodyClass.split(/\s+/).filter(Boolean);
     document.body.classList.add(...appliedBodyClasses);
+    const updateFixedUiClearance = () => {
+      const fixedElements = all<HTMLElement>('a, button, div, nav').filter((element) => {
+        const style = window.getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return style.position === 'fixed'
+          && style.display !== 'none'
+          && style.visibility !== 'hidden'
+          && rect.height > 0
+          && rect.top >= window.innerHeight / 2
+          && rect.bottom <= window.innerHeight + 2
+          && !element.closest('.pumpkin-age-gate');
+      });
+      const top = fixedElements.reduce(
+        (current, element) => Math.min(current, element.getBoundingClientRect().top),
+        window.innerHeight,
+      );
+      const clearance = Math.max(0, Math.ceil(window.innerHeight - top));
+      root.style.setProperty('--pumpkin-fixed-ui-clearance', clearance ? `${clearance + 16}px` : '0px');
+      fixedElements.forEach((element) => element.setAttribute('data-pumpkin-fixed-ui', 'true'));
+    };
+    updateFixedUiClearance();
+    window.addEventListener('resize', updateFixedUiClearance, options);
 
     const formMappingById = new Map(formMappings.map((mapping) => [mapping.sourceFormId, mapping]));
     const liveForms = all<HTMLFormElement>('form[data-source-form-id]');
@@ -297,17 +319,38 @@ export function PreviewBehaviorAdapter({
           new FormData(form).entries(),
         );
         formData.privacyConsent = form.querySelector<HTMLInputElement>('input[name="privacyConsent"]')?.checked === true;
+        const correlationId = crypto.randomUUID();
+        form.dataset.pumpkinCorrelationId = correlationId;
+        const requestController = new AbortController();
+        const requestTimeout = window.setTimeout(() => requestController.abort(), 45_000);
         const response = await fetch(`/api/forms/submit/${encodeURIComponent(formKey)}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          signal: requestController.signal,
           body: JSON.stringify({
-            ...formData,
             tenantId,
+            siteKey: tenantId,
+            formId: formKey,
             pageSlug,
             sourcePage: window.location.pathname,
             formKey,
+            consentAccepted: formData.privacyConsent === true,
+            honeypotFilled: Boolean(formData.companyWebsite),
+            formData: {
+              ...formData,
+              correlationId,
+              sourcePage: window.location.pathname,
+              tenantId,
+              siteKey: tenantId,
+              formKey,
+            },
+            metadata: {
+              source: 'pumpkin-package-form',
+              tags: [correlationId],
+            },
           }),
         });
+        window.clearTimeout(requestTimeout);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
         const body = await response.json().catch(() => null) as { id?: string } | null;
@@ -319,7 +362,14 @@ export function PreviewBehaviorAdapter({
         record('form-submit-succeeded', { formKey, pageSlug, entryId: body?.id || null, status: response.status });
       } catch (error) {
         showFormMessage(form, 'The form could not be submitted. Please try again later.', true);
-        record('form-submit-failed', { formKey, pageSlug, error: error instanceof Error ? error.message : 'unknown' });
+        record('form-submit-failed', {
+          formKey,
+          pageSlug,
+          correlationId: form.dataset.pumpkinCorrelationId || null,
+          error: error instanceof DOMException && error.name === 'AbortError'
+            ? 'timeout'
+            : error instanceof Error ? error.message : 'unknown',
+        });
       } finally {
         if (submit) submit.disabled = false;
       }
@@ -393,6 +443,9 @@ function ensureConsent(form: HTMLFormElement) {
   const label = document.createElement('label');
   label.className = 'pumpkin-live-form-consent';
   const input = document.createElement('input');
+  input.id = `pumpkin-consent-${(form.dataset.sourceFormId || form.dataset.pumpkinFormKey || 'form')
+    .replace(/[^a-z0-9]+/gi, '-')
+    .replace(/^-|-$/g, '')}`;
   input.name = 'privacyConsent';
   input.type = 'checkbox';
   input.required = true;
