@@ -1,0 +1,13 @@
+{
+  "taskId": "V2.8.63B",
+  "status": "partial_foundation_deployed_backfill_or_dualwrite_incomplete",
+  "planHash": "1624103eb98ee1e81c1873a4e231b3e1",
+  "backfillRunId": "identity-backfill-1624103eb98ee1e8",
+  "counts": { "tenants": 4, "users": 5, "memberships": 5, "contacts": 4, "conflicts": 0 },
+  "dualRead": { "comparisons": 9, "mismatches": 0, "passed": true },
+  "dualWriteEnabled": true,
+  "interactiveLoginDualWriteProof": false,
+  "starterDeploymentCount": 0,
+  "airstripPublicRuntimeRequested": false,
+  "indexingMutation": false
+}
