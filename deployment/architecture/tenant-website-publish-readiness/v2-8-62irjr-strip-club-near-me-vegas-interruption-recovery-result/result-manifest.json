@@ -1,0 +1,16 @@
+{
+  "phase": "V2.8.62IRJR",
+  "status": "blocked_single_recovery_deploy_failed_no_form_activation",
+  "branch": "feature/admin-page-editor-import-export",
+  "head": "a456472f7ec6364a5ea6b24f65c3338ba7a88dba",
+  "originalCommit": "89f7475afbf8f119b29fcd0a93ef0e7e28aa64bf",
+  "originalDeploymentId": "d51d608c-c60d-4dbb-8ad9-7338638a11d2",
+  "recoveryDeploymentId": "dbbe5740-8af7-44b3-a80c-7141474d3a60",
+  "recoveryDeploymentStatus": "failed_inactive_status_3_http_400",
+  "recoveryDeploymentAttempts": 1,
+  "syntheticPostCount": 0,
+  "airstripRequestCount": 0,
+  "runtimeKeyActivated": false,
+  "publicFormsActivated": false,
+  "indexingActivated": false
+}
