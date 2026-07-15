@@ -34,7 +34,8 @@ switch (command)
     case "compare": await CompareAsync(); break;
     case "activate": await ActivateAsync(); break;
     case "verify": await VerifyAsync(); break;
-    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, activate, or verify");
+    case "login-acceptance": await LoginAcceptanceAsync(); break;
+    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, activate, verify, or login-acceptance");
 }
 
 string? Option(string name)
@@ -242,6 +243,48 @@ async Task VerifyAsync()
     };
     await WriteJsonAsync(Path.Combine(output, "production-identity-readback.json"), result);
     Console.WriteLine(JsonSerializer.Serialize(result));
+}
+
+async Task LoginAcceptanceAsync()
+{
+    var requestedEmails = (Option("--emails") ?? throw new ArgumentException("--emails is required"))
+        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        .Select(IdentitySecurityService.NormalizeEmail).ToHashSet(StringComparer.Ordinal);
+    var users = await ReadAllAsync("User");
+    var accounts = await ReadAllAsync("UserAccounts");
+    var memberships = await ReadAllAsync("TenantMemberships");
+    var audits = await ReadAllAsync("SecurityAuditEvents");
+    var selected = users.Where(x => requestedEmails.Contains(IdentitySecurityService.NormalizeEmail(Text(x, "email"))))
+        .Select(legacy =>
+        {
+            var normalized = IdentitySecurityService.NormalizeEmail(Text(legacy, "email"));
+            var account = accounts.Single(x => Text(x, "normalizedEmail") == normalized);
+            var userId = Text(account, "userId");
+            var memberRows = memberships.Where(x => Text(x, "userId") == userId).Select(x => new
+            {
+                membershipId = Text(x, "membershipId"), tenantUid = Text(x, "tenantUid"), role = Text(x, "role"),
+                status = Text(x, "status"), isPrimaryTenantAdmin = Bool(x, "isPrimaryTenantAdmin", false)
+            }).ToArray();
+            var loginAudits = audits.Where(x => Text(x, "actorUserId") == userId && Text(x, "eventType") == "identity_login_dual_write")
+                .OrderBy(x => Text(x, "createdAt")).Select(x => new
+                {
+                    eventId = Text(x, "id"), requestId = Text(x, "requestId"), result = Text(x, "result"), createdAt = Text(x, "createdAt")
+                }).ToArray();
+            return new
+            {
+                legacyUserId = Text(legacy, "id"), normalizedEmail = normalized, legacyRole = Role(legacy),
+                legacyTenantId = Text(legacy, "tenantId"), legacyActive = Bool(legacy, "isActive", true),
+                legacyLastLogin = Text(legacy, "lastLogin"), userId, globalRole = Text(account, "globalRole"),
+                accountStatus = Text(account, "status"), accountLastLoginAt = Text(account, "lastLoginAt"),
+                sessionVersion = Number(account, "sessionVersion", 1),
+                passwordFingerprintEqual = SafeDigest(Text(legacy, "passwordHash")) == SafeDigest(Text(account, "passwordHash")),
+                loginEmailEqual = string.Equals(Text(legacy, "email"), Text(account, "loginEmail"), StringComparison.Ordinal),
+                memberships = memberRows, successfulLoginAudits = loginAudits
+            };
+        }).OrderBy(x => x.normalizedEmail).ToArray();
+    if (selected.Length != requestedEmails.Count) throw new InvalidOperationException("one or more requested identities were not found");
+    await WriteJsonAsync(Path.Combine(output, "login-acceptance-readback.json"), new { capturedAt = DateTime.UtcNow, identities = selected });
+    Console.WriteLine(JsonSerializer.Serialize(new { status = "login_acceptance_readback_complete", identities = selected.Length, audits = selected.Sum(x => x.successfulLoginAudits.Length) }));
 }
 
 async Task<int> CountAsync(string containerName)
