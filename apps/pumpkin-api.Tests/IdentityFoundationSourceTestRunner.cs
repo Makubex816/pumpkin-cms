@@ -155,6 +155,10 @@ public static class IdentityFoundationSourceTestRunner
                cosmos.Contains("authenticationMode = \"connection_string_account_key\"") &&
                cosmos.Contains("StageAsync(\"dns\"") && cosmos.Contains("StageAsync(\"legacy_query\""),
             "bounded protected data-plane diagnostic is missing");
+        Assert(cosmos.Contains("PartitionKey = new PartitionKey(\"global\")") &&
+               cosmos.Contains("legacy_login_locator_missing") &&
+               cosmos.Contains("ReadItemAsync<pumpkin_net_models.Models.User>"),
+            "legacy login does not use the single-partition locator and point read");
     }
 
     private static Tenant Tenant(string slug) => new() { Id = $"legacy-{slug}", TenantId = slug, Name = slug, Status = "active" };

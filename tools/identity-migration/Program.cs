@@ -35,7 +35,8 @@ switch (command)
     case "activate": await ActivateAsync(); break;
     case "verify": await VerifyAsync(); break;
     case "login-acceptance": await LoginAcceptanceAsync(); break;
-    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, activate, verify, or login-acceptance");
+    case "repair-login-locators": await RepairLoginLocatorsAsync(); break;
+    default: throw new ArgumentException("command must be backup, provision, dry-run, apply, compare, activate, verify, login-acceptance, or repair-login-locators");
 }
 
 string? Option(string name)
@@ -306,6 +307,32 @@ async Task LoginAcceptanceAsync()
     if (selected.Length != requestedEmails.Count) throw new InvalidOperationException("one or more requested identities were not found");
     await WriteJsonAsync(Path.Combine(output, "login-acceptance-readback.json"), new { capturedAt = DateTime.UtcNow, identities = selected });
     Console.WriteLine(JsonSerializer.Serialize(new { status = "login_acceptance_readback_complete", identities = selected.Length, audits = selected.Sum(x => x.successfulLoginAudits.Length) }));
+}
+
+async Task RepairLoginLocatorsAsync()
+{
+    var users = await ReadAllAsync("User");
+    var accounts = await ReadAllAsync("UserAccounts");
+    var container = database.GetContainer("UserAccounts");
+    var repaired = 0;
+    foreach (var account in accounts)
+    {
+        var legacyId = Text(account, "legacyUserId");
+        var legacy = users.SingleOrDefault(x => Text(x, "id") == legacyId)
+            ?? throw new InvalidOperationException("account legacy user mapping missing");
+        var tenantId = Text(legacy, "tenantId");
+        if (string.IsNullOrWhiteSpace(tenantId)) throw new InvalidOperationException("legacy tenant partition missing");
+        if (Text(account, "legacyTenantId") == tenantId) continue;
+        await container.PatchItemAsync<JsonObject>(Text(account, "id"), new("global"),
+            [PatchOperation.Set("/legacyTenantId", tenantId)]);
+        repaired++;
+    }
+    await WriteJsonAsync(Path.Combine(output, "login-locator-repair.json"), new
+    {
+        status = "complete", accounts = accounts.Count, repaired,
+        passwordFieldsRead = false, passwordFieldsWritten = false, membershipWrites = 0
+    });
+    Console.WriteLine(JsonSerializer.Serialize(new { status = "login_locator_repair_complete", accounts = accounts.Count, repaired }));
 }
 
 async Task<int> CountAsync(string containerName)

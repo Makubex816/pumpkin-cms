@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Diagnostics;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Text.Json.Nodes;
 
 namespace pumpkin_api.Services;
 
@@ -2239,25 +2240,32 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     {
         try
         {
-            var userContainer = _database.GetContainer("User");
-            
-            var query = new QueryDefinition(
-                "SELECT * FROM c WHERE c.email = @email")
-                .WithParameter("@email", email);
+            var normalizedEmail = Identity.IdentitySecurityService.NormalizeEmail(email);
+            var locatorContainer = _database.GetContainer("UserAccounts");
+            var query = new QueryDefinition("SELECT * FROM c WHERE c.normalizedEmail = @email")
+                .WithParameter("@email", normalizedEmail);
 
             using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-            var iterator = userContainer.GetItemQueryIterator<pumpkin_net_models.Models.User>(
+            var iterator = locatorContainer.GetItemQueryIterator<JsonObject>(
                 query,
-                requestOptions: new QueryRequestOptions { MaxConcurrency = 1, MaxItemCount = 10 });
-            var users = new List<pumpkin_net_models.Models.User>();
+                requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey("global"), MaxItemCount = 2 });
+            var locators = new List<JsonObject>();
 
             while (iterator.HasMoreResults)
             {
                 var response = await iterator.ReadNextAsync(timeout.Token).WaitAsync(timeout.Token);
-                users.AddRange(response);
+                locators.AddRange(response);
             }
 
-            var user = users.FirstOrDefault();
+            if (locators.Count == 0) return null;
+            if (locators.Count != 1) throw new InvalidOperationException("legacy_login_locator_not_unique");
+            var legacyUserId = locators[0]["legacyUserId"]?.GetValue<string>();
+            var legacyTenantId = locators[0]["legacyTenantId"]?.GetValue<string>();
+            if (string.IsNullOrWhiteSpace(legacyUserId) || string.IsNullOrWhiteSpace(legacyTenantId))
+                throw new InvalidOperationException("legacy_login_locator_missing");
+            var responseItem = await _database.GetContainer("User").ReadItemAsync<pumpkin_net_models.Models.User>(
+                legacyUserId, new PartitionKey(legacyTenantId), cancellationToken: timeout.Token).WaitAsync(timeout.Token);
+            var user = responseItem.Resource;
             
             _logger.LogInformation("GetUserByEmail completed - Found: {Found}", user != null);
             
