@@ -16,6 +16,7 @@ public sealed class IdentityFeatureOptions
     public bool ContactManagementEnabled { get; set; }
     public bool SuperAdminManagementEnabled { get; set; }
     public bool ProviderAwareEmailRequestsEnabled { get; set; }
+    public bool CapacityDiagnosticsEnabled { get; set; }
 
     public bool IsSafeV2_8_63A => !Enabled && !DualWriteEnabled && !RenameExecutionEnabled &&
         !MigrationExecutionEnabled && !ExternalNotificationProviderEnabled && !ManagementEnabled;

@@ -358,9 +358,19 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.GetUserByIdAsync(tenantId, userId);
     }
 
+    public Task<User?> GetUserByIdAsync(string tenantId, string userId, CancellationToken cancellationToken)
+    {
+        return _dataConnection.GetUserByIdAsync(tenantId, userId, cancellationToken);
+    }
+
     public Task<User?> GetUserByEmailAsync(string email)
     {
         return _dataConnection.GetUserByEmailAsync(email);
+    }
+
+    public Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+    {
+        return _dataConnection.GetUserByEmailAsync(email, cancellationToken);
     }
 
     public Task<User> CreateUserAsync(User user)
@@ -373,9 +383,34 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.UpdateUserAsync(user);
     }
 
+    public Task PatchUserLoginEmailAsync(string userId, string tenantId, string loginEmail, CancellationToken cancellationToken)
+    {
+        return _dataConnection.PatchUserLoginEmailAsync(userId, tenantId, loginEmail, cancellationToken);
+    }
+
+    public Task PatchUserPasswordHashAsync(string userId, string tenantId, string passwordHash, CancellationToken cancellationToken)
+    {
+        return _dataConnection.PatchUserPasswordHashAsync(userId, tenantId, passwordHash, cancellationToken);
+    }
+
+    public Task PatchUserActiveStateAsync(string userId, string tenantId, bool isActive, CancellationToken cancellationToken)
+    {
+        return _dataConnection.PatchUserActiveStateAsync(userId, tenantId, isActive, cancellationToken);
+    }
+
+    public Task PatchUserProfileNamesAsync(string userId, string tenantId, string? firstName, string? lastName, CancellationToken cancellationToken)
+    {
+        return _dataConnection.PatchUserProfileNamesAsync(userId, tenantId, firstName, lastName, cancellationToken);
+    }
+
     public Task UpdateUserLastLoginAsync(string userId, string tenantId)
     {
         return _dataConnection.UpdateUserLastLoginAsync(userId, tenantId);
+    }
+
+    public Task UpdateUserLastLoginAsync(string userId, string tenantId, CancellationToken cancellationToken)
+    {
+        return _dataConnection.UpdateUserLastLoginAsync(userId, tenantId, cancellationToken);
     }
 
     public void Dispose()

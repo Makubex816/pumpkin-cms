@@ -12,7 +12,11 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -109,6 +113,41 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(
                 System.Text.Encoding.UTF8.GetBytes(jwtSecretKey))
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var identityManagement = context.HttpContext.RequestServices.GetRequiredService<IdentityManagementService>();
+                var validation = await identityManagement.ValidateProtectedSessionAsync(
+                    context.HttpContext,
+                    context.Principal ?? new ClaimsPrincipal(),
+                    context.HttpContext.RequestAborted);
+                if (validation.Status is IdentitySessionValidationStatus.NotRequired or IdentitySessionValidationStatus.Valid)
+                {
+                    if (validation.ForcePasswordChange && context.Principal?.Identity is ClaimsIdentity identity)
+                        identity.AddClaim(new Claim(IdentityManagementService.ForcePasswordChangeClaimType, "true"));
+                    return;
+                }
+
+                if (validation.Status == IdentitySessionValidationStatus.ProviderUnavailable)
+                    context.HttpContext.Items["pumpkin.identity-provider-unavailable"] = true;
+                context.Fail("identity_session_invalid");
+            },
+            OnChallenge = async context =>
+            {
+                if (!context.HttpContext.Items.TryGetValue("pumpkin.identity-provider-unavailable", out var unavailable) ||
+                    unavailable is not true) return;
+
+                context.HandleResponse();
+                context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+                context.Response.Headers.CacheControl = "no-store";
+                context.Response.Headers.RetryAfter = "5";
+                await context.Response.WriteAsJsonAsync(new IdentityError(
+                    "identity_provider_temporarily_unavailable",
+                    "Identity verification is temporarily unavailable; retry shortly.",
+                    context.HttpContext.TraceIdentifier));
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -122,10 +161,63 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyOrigin()
             .AllowAnyMethod()
-            .AllowAnyHeader();
+            .AllowAnyHeader()
+            .WithExposedHeaders("X-Pumpkin-Request-Id");
     });
 });
 builder.Services.AddSingleton<ICorsPolicyProvider, TenantCorsPolicyProvider>();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+        IsBcryptCostRoute(context.Request.Path)
+            ? RateLimitPartition.GetConcurrencyLimiter(
+                "identity-bcrypt-worker",
+                _ => new ConcurrencyLimiterOptions
+                {
+                    PermitLimit = 2,
+                    QueueLimit = 0,
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+                })
+            : RateLimitPartition.GetNoLimiter("identity-non-bcrypt"));
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.OnRejected = async (rejected, cancellationToken) =>
+    {
+        var isLogin = IsLoginRoute(rejected.HttpContext.Request.Path);
+        rejected.HttpContext.Response.Headers.CacheControl = "no-store";
+        rejected.HttpContext.Response.Headers.Pragma = "no-cache";
+        rejected.HttpContext.Response.Headers.RetryAfter = "5";
+        await rejected.HttpContext.Response.WriteAsJsonAsync(new IdentityError(
+            isLogin ? "identity_login_rate_limited" : "identity_credential_mutation_rate_limited",
+            isLogin ? "Too many login attempts; retry shortly." : "Another credential operation is in progress; retry shortly.",
+            rejected.HttpContext.TraceIdentifier), cancellationToken);
+    };
+    options.AddPolicy("identity-login", context =>
+        RateLimitPartition.GetTokenBucketLimiter(
+            context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new TokenBucketRateLimiterOptions
+            {
+                TokenLimit = 8,
+                TokensPerPeriod = 2,
+                ReplenishmentPeriod = TimeSpan.FromSeconds(5),
+                AutoReplenishment = true,
+                QueueLimit = 0,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+            }));
+    options.AddPolicy("identity-credential-mutation", context =>
+        RateLimitPartition.GetTokenBucketLimiter(
+            context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
+                $"anonymous:{context.Connection.RemoteIpAddress}",
+            _ => new TokenBucketRateLimiterOptions
+            {
+                TokenLimit = 6,
+                TokensPerPeriod = 1,
+                ReplenishmentPeriod = TimeSpan.FromSeconds(10),
+                AutoReplenishment = true,
+                QueueLimit = 0,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+            }));
+});
 
 // Register data connection implementations
 builder.Services.AddSingleton<CosmosDataConnection>();
@@ -149,14 +241,76 @@ var app = builder.Build();
 // "AllowAll" is the default for admin/auth routes; content routes override with "TenantCors".
 app.UseCors("AllowAll");
 
+// Identity and authentication responses can contain authorization state, session
+// metadata, or one-time credential results. Stamp the policy before authentication
+// and model binding so early 4xx/5xx outcomes cannot inherit cacheable defaults.
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/api/auth", StringComparison.OrdinalIgnoreCase) ||
+        context.Request.Path.StartsWithSegments("/api/identity", StringComparison.OrdinalIgnoreCase))
+    {
+        context.Response.Headers.CacheControl = "no-store";
+        context.Response.Headers.Pragma = "no-cache";
+    }
+
+    await next();
+});
+
+app.Use(async (context, next) =>
+{
+    if (HttpMethods.IsPost(context.Request.Method) && IsBcryptCostRoute(context.Request.Path))
+    {
+        const long maximumCredentialBodyBytes = 4096;
+        if (IsLoginRoute(context.Request.Path))
+        {
+            context.Response.Headers["X-Pumpkin-Request-Id"] = context.TraceIdentifier;
+            context.Response.Headers.CacheControl = "no-store";
+            context.Response.Headers.Pragma = "no-cache";
+        }
+        var bodySizeFeature = context.Features.Get<IHttpMaxRequestBodySizeFeature>();
+        if (bodySizeFeature is { IsReadOnly: false }) bodySizeFeature.MaxRequestBodySize = maximumCredentialBodyBytes;
+        if (context.Request.ContentLength is > maximumCredentialBodyBytes)
+        {
+            context.Response.StatusCode = StatusCodes.Status413PayloadTooLarge;
+            context.Response.Headers.CacheControl = "no-store";
+            context.Response.Headers.Pragma = "no-cache";
+            await context.Response.WriteAsJsonAsync(new IdentityError(
+                "identity_credential_request_too_large",
+                "The credential request is too large.",
+                context.TraceIdentifier));
+            return;
+        }
+    }
+
+    await next();
+});
+
 // Keep dependency-light health checks independent from protected JWT/runtime bindings.
 app.UseWhen(
     context => !IsDependencyLightHealthPath(context),
     protectedBranch =>
     {
         protectedBranch.UseAuthentication();
+        protectedBranch.Use(async (context, next) =>
+        {
+            var forcedRotation = context.User.Identity?.IsAuthenticated == true &&
+                context.User.HasClaim(IdentityManagementService.ForcePasswordChangeClaimType, "true");
+            if (forcedRotation && !IdentityManagementService.IsForcePasswordChangePathAllowed(context.Request.Path))
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                await context.Response.WriteAsJsonAsync(new IdentityError(
+                    "force_password_change_required",
+                    "Change the account password before continuing.",
+                    context.TraceIdentifier));
+                return;
+            }
+
+            await next();
+        });
         protectedBranch.UseAuthorization();
     });
+
+app.UseRateLimiter();
 
 static bool IsDependencyLightHealthPath(HttpContext context)
 {
@@ -670,97 +824,229 @@ app.MapGet("/api/themes/{tenantId}/{themeId}",
 // ===== AUTHENTICATION ENDPOINTS =====
 
 app.MapPost("/api/identity/diagnostics/legacy-lookup",
-    async (CosmosDataConnection cosmos, LegacyLookupDiagnosticRequest request, HttpContext context) =>
+    async (CosmosDataConnection cosmos, IOptionsMonitor<IdentityFeatureOptions> identityFeatures,
+        LegacyLookupDiagnosticRequest request, HttpContext context) =>
     {
-        if (!context.User.IsInRole(UserRole.SuperAdmin.ToString()) || string.IsNullOrWhiteSpace(request.Email))
+        if (!context.User.IsInRole(UserRole.SuperAdmin.ToString()))
             return Results.Forbid();
+        if (!identityFeatures.CurrentValue.CapacityDiagnosticsEnabled)
+            return Results.NotFound(new IdentityError(
+                "identity_capacity_diagnostics_disabled",
+                "Capacity diagnostics are disabled.",
+                context.TraceIdentifier));
+        if (string.IsNullOrWhiteSpace(request.Email) ||
+            System.Text.Encoding.UTF8.GetByteCount(request.Email) > 320)
+            return Results.BadRequest(new IdentityError(
+                "identity_capacity_diagnostic_request_invalid",
+                "The diagnostic request is invalid.",
+                context.TraceIdentifier));
         return Results.Ok(await cosmos.DiagnoseLegacyLookupAsync(request.Email, context.TraceIdentifier, context.RequestAborted));
     })
-    .RequireAuthorization();
+    .RequireAuthorization()
+    .RequireRateLimiting("identity-credential-mutation");
 
 // Login endpoint
+const string LoginEnumerationSafeBcryptHash = "$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW";
 app.MapPost("/api/auth/login",
-    async (IDatabaseService databaseService, IIdentityLoginCompatibilityWriter identityWriter, LoginRequest request, IConfiguration configuration, HttpContext context, ILogger<Program> logger) =>
+    async (IDatabaseService databaseService, IdentityManagementService identityManagement,
+        IIdentityLoginCompatibilityWriter identityWriter, IOptionsMonitor<IdentityFeatureOptions> identityFeatures,
+        LoginRequest request, IConfiguration configuration, HttpContext context, ILogger<Program> logger) =>
     {
         var loginTimer = System.Diagnostics.Stopwatch.StartNew();
-        logger.LogInformation("IdentityLoginStage stage=request_parsed requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
-        logger.LogInformation("IdentityLoginStage stage=legacy_lookup_started requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
-        var user = await databaseService.GetUserByEmailAsync(request.Email);
-        logger.LogInformation("IdentityLoginStage stage=legacy_lookup_completed requestId={RequestId} elapsedMs={ElapsedMs} success={Success}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds, user is not null);
+        using var process = System.Diagnostics.Process.GetCurrentProcess();
+        var processCpuStart = process.TotalProcessorTime;
+        var workerInstance = SafeWorkerInstance();
+        var legacyLookupMs = 0L;
+        var bcryptMs = 0L;
+        var bcryptCallCount = 0;
+        var legacyAccountingMs = 0L;
+        var identityWrite = new IdentityLoginWriteResult(1, 0, 0, 0);
+        var capacityDiagnostics = identityFeatures.CurrentValue.CapacityDiagnosticsEnabled;
+        context.Response.Headers["X-Pumpkin-Request-Id"] = context.TraceIdentifier;
+        context.Response.Headers.CacheControl = "no-store";
+        context.Response.Headers.Pragma = "no-cache";
+        context.Items["pumpkin.capacity-diagnostics"] = capacityDiagnostics;
+        using var loginBudget = CancellationTokenSource.CreateLinkedTokenSource(context.RequestAborted);
+        loginBudget.CancelAfter(TimeSpan.FromSeconds(9));
 
-        if (user == null || !user.IsActive)
+        try
         {
-            return Results.Unauthorized();
-        }
-
-        // Verify password with BCrypt
-        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-        {
-            return Results.Unauthorized();
-        }
-
-        logger.LogInformation("IdentityLoginStage stage=credential_verification_completed requestId={RequestId} elapsedMs={ElapsedMs} success=true role={Role}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds, user.Role.ToString());
-
-        Console.WriteLine($"[Login] User: {user.Username}, Role enum value: {user.Role}, Role as string: {user.Role.ToString()}");
-
-        // Generate JWT token
-        var jwtSettings = configuration.GetSection("Jwt");
-        var secretKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!));
-
-        var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-        await databaseService.UpdateUserLastLoginAsync(user.Id, user.TenantId);
-        logger.LogInformation("IdentityLoginStage stage=legacy_accounting_completed requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
-        var sessionVersion = await identityWriter.WriteSuccessfulLoginAsync(user, context.TraceIdentifier, context.RequestAborted);
-        logger.LogInformation("IdentityLoginStage stage=identity_write_completed requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
-
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
-            new Claim("tenantId", user.TenantId),
-            new Claim("sessionVersion", sessionVersion.ToString(System.Globalization.CultureInfo.InvariantCulture))
-        };
-
-        var expirationMinutes = int.Parse(jwtSettings["ExpirationMinutes"]!);
-        var expiresAt = DateTime.UtcNow.AddMinutes(expirationMinutes);
-
-        var token = new JwtSecurityToken(
-            issuer: jwtSettings["Issuer"],
-            audience: jwtSettings["Audience"],
-            claims: claims,
-            expires: expiresAt,
-            signingCredentials: credentials
-        );
-
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-        logger.LogInformation("IdentityLoginStage stage=response_serialization_started requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
-        return Results.Ok(new LoginResponse
-        {
-            Token = tokenString,
-            ExpiresAt = expiresAt,
-            User = new UserInfo
+            if (string.IsNullOrWhiteSpace(request.Email) ||
+                string.IsNullOrEmpty(request.Password) ||
+                System.Text.Encoding.UTF8.GetByteCount(request.Email) > 320 ||
+                System.Text.Encoding.UTF8.GetByteCount(request.Password) > 1024)
             {
-                Id = user.Id,
-                TenantId = user.TenantId,
-                Email = user.Email,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = user.Role.ToString(),
-                Permissions = user.Permissions
+                return Results.BadRequest(new IdentityError(
+                    "identity_login_request_invalid",
+                    "The login request is invalid.",
+                    context.TraceIdentifier));
             }
-        });
+
+            if (capacityDiagnostics)
+                logger.LogInformation("IdentityLoginStage stage=legacy_lookup_started requestId={RequestId} workerInstance={WorkerInstance}", context.TraceIdentifier, workerInstance);
+            var legacyLookupTimer = System.Diagnostics.Stopwatch.StartNew();
+            pumpkin_net_models.Models.User? user;
+            try
+            {
+                user = await databaseService.GetUserByEmailAsync(request.Email, loginBudget.Token);
+            }
+            finally
+            {
+                legacyLookupMs = legacyLookupTimer.ElapsedMilliseconds;
+            }
+            if (capacityDiagnostics)
+                logger.LogInformation("IdentityLoginStage stage=legacy_lookup_completed requestId={RequestId} workerInstance={WorkerInstance} legacyLookupMs={LegacyLookupMs} success={Success}", context.TraceIdentifier, workerInstance, legacyLookupMs, user is not null);
+
+            var bcryptTimer = System.Diagnostics.Stopwatch.StartNew();
+            bool passwordVerified;
+            var verifiedLegacyPasswordHash = user is { IsActive: true }
+                ? user.PasswordHash
+                : LoginEnumerationSafeBcryptHash;
+            try
+            {
+                bcryptCallCount = 1;
+                passwordVerified = BCrypt.Net.BCrypt.Verify(request.Password, verifiedLegacyPasswordHash);
+            }
+            finally
+            {
+                bcryptMs = bcryptTimer.ElapsedMilliseconds;
+            }
+            if (capacityDiagnostics)
+                logger.LogInformation("IdentityLoginStage stage=credential_verification_completed requestId={RequestId} workerInstance={WorkerInstance} bcryptMs={BcryptMs} bcryptCallCount={BcryptCallCount} success={Success}", context.TraceIdentifier, workerInstance, bcryptMs, bcryptCallCount, passwordVerified);
+            if (user is null || !user.IsActive || !passwordVerified)
+            {
+                LogLoginTerminal(logger, context, workerInstance, StatusCodes.Status401Unauthorized,
+                    bcryptCallCount, bcryptMs, loginTimer.ElapsedMilliseconds, legacyLookupMs,
+                    legacyAccountingMs, identityWrite.IdentityWriteMs, identityWrite.SessionWriteMs,
+                    identityWrite.AuditWriteMs, (process.TotalProcessorTime - processCpuStart).TotalMilliseconds);
+                return Results.Unauthorized();
+            }
+
+            var authorityTimer = System.Diagnostics.Stopwatch.StartNew();
+            var authority = await identityManagement.ResolveLoginAuthorityAsync(
+                user, verifiedLegacyPasswordHash, loginBudget.Token);
+            var authorityMs = authorityTimer.ElapsedMilliseconds;
+            identityWrite = new(authority.SessionVersion, authorityMs, 0, 0);
+            if (!authority.Authorized)
+            {
+                LogLoginTerminal(logger, context, workerInstance, StatusCodes.Status401Unauthorized,
+                    bcryptCallCount, bcryptMs, loginTimer.ElapsedMilliseconds, legacyLookupMs,
+                    legacyAccountingMs, identityWrite.IdentityWriteMs, identityWrite.SessionWriteMs,
+                    identityWrite.AuditWriteMs, (process.TotalProcessorTime - processCpuStart).TotalMilliseconds);
+                return Results.Unauthorized();
+            }
+
+            var jwtSettings = configuration.GetSection("Jwt");
+            var secretKey = new SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!));
+            var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var expirationMinutes = int.Parse(jwtSettings["ExpirationMinutes"]!);
+            var issuedAt = DateTimeOffset.UtcNow;
+            var expiresAt = issuedAt.UtcDateTime.AddMinutes(expirationMinutes);
+            var sessionId = Guid.NewGuid().ToString("N");
+
+            var legacyAccountingTimer = System.Diagnostics.Stopwatch.StartNew();
+            try
+            {
+                await databaseService.UpdateUserLastLoginAsync(user.Id, user.TenantId, loginBudget.Token);
+            }
+            finally
+            {
+                legacyAccountingMs = legacyAccountingTimer.ElapsedMilliseconds;
+            }
+            if (capacityDiagnostics)
+                logger.LogInformation("IdentityLoginStage stage=legacy_accounting_completed requestId={RequestId} workerInstance={WorkerInstance} legacyAccountingMs={LegacyAccountingMs}", context.TraceIdentifier, workerInstance, legacyAccountingMs);
+
+            var compatibilityWrite = await identityWriter.WriteSuccessfulLoginAsync(
+                authority, context.TraceIdentifier, sessionId, expiresAt, loginBudget.Token);
+            identityWrite = compatibilityWrite with
+            {
+                IdentityWriteMs = authorityMs + compatibilityWrite.IdentityWriteMs
+            };
+            if (capacityDiagnostics)
+                logger.LogInformation("IdentityLoginStage stage=identity_write_completed requestId={RequestId} workerInstance={WorkerInstance} identityWriteMs={IdentityWriteMs} sessionWriteMs={SessionWriteMs} auditWriteMs={AuditWriteMs}",
+                    context.TraceIdentifier, workerInstance, identityWrite.IdentityWriteMs,
+                    identityWrite.SessionWriteMs, identityWrite.AuditWriteMs);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, authority.EffectiveRole),
+                new Claim("tenantId", user.TenantId),
+                new Claim("sessionVersion", identityWrite.SessionVersion.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                new Claim(JwtRegisteredClaimNames.Jti, sessionId),
+                new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToUnixTimeSeconds().ToString(System.Globalization.CultureInfo.InvariantCulture), ClaimValueTypes.Integer64)
+            };
+            if (authority.Required)
+            {
+                claims.Add(new Claim("tenantUid", authority.TenantUid!));
+                claims.Add(new Claim("membershipId", authority.MembershipId!));
+                claims.Add(new Claim("tenantRole", authority.TenantRole!));
+            }
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: expiresAt,
+                signingCredentials: credentials);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            var response = new LoginResponse
+            {
+                Token = tokenString,
+                ExpiresAt = expiresAt,
+                User = new UserInfo
+                {
+                    Id = user.Id,
+                    TenantId = user.TenantId,
+                    Email = user.Email,
+                    Username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Role = authority.EffectiveRole,
+                    Permissions = user.Permissions
+                }
+            };
+            LogLoginTerminal(logger, context, workerInstance, StatusCodes.Status200OK,
+                bcryptCallCount, bcryptMs, loginTimer.ElapsedMilliseconds, legacyLookupMs,
+                legacyAccountingMs, identityWrite.IdentityWriteMs, identityWrite.SessionWriteMs,
+                identityWrite.AuditWriteMs, (process.TotalProcessorTime - processCpuStart).TotalMilliseconds);
+            return Results.Ok(response);
+        }
+        catch (OperationCanceledException) when (context.RequestAborted.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception error) when (IsTransientLoginProviderFailure(error))
+        {
+            LogLoginTerminal(logger, context, workerInstance, StatusCodes.Status503ServiceUnavailable,
+                bcryptCallCount, bcryptMs, loginTimer.ElapsedMilliseconds, legacyLookupMs,
+                legacyAccountingMs, identityWrite.IdentityWriteMs, identityWrite.SessionWriteMs,
+                identityWrite.AuditWriteMs, (process.TotalProcessorTime - processCpuStart).TotalMilliseconds);
+            logger.LogWarning("Identity login dependency unavailable requestId={RequestId} errorCode={ErrorCode}",
+                context.TraceIdentifier, error.GetType().Name);
+            context.Response.Headers.RetryAfter = "5";
+            return Results.Json(new IdentityError(
+                "identity_login_temporarily_unavailable",
+                "Login is temporarily unavailable; retry shortly.",
+                context.TraceIdentifier), statusCode: StatusCodes.Status503ServiceUnavailable);
+        }
+        catch
+        {
+            LogLoginTerminal(logger, context, workerInstance, StatusCodes.Status500InternalServerError,
+                bcryptCallCount, bcryptMs, loginTimer.ElapsedMilliseconds, legacyLookupMs,
+                legacyAccountingMs, identityWrite.IdentityWriteMs, identityWrite.SessionWriteMs,
+                identityWrite.AuditWriteMs, (process.TotalProcessorTime - processCpuStart).TotalMilliseconds);
+            throw;
+        }
     })
     .WithTags("Authentication")
     .WithName("Login")
     .WithSummary("User login")
     .WithDescription("Authenticates a user with email and password, returns JWT token for subsequent requests")
-    .AllowAnonymous();
+    .AllowAnonymous()
+    .RequireRateLimiting("identity-login");
 
 // Verify current JWT and return current user info
 app.MapGet("/api/auth/verify",
@@ -774,6 +1060,7 @@ app.MapGet("/api/auth/verify",
         var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var tenantId = context.User.FindFirst("tenantId")?.Value;
+        var tenantUid = context.User.FindFirst("tenantUid")?.Value;
         var username = context.User.FindFirst(ClaimTypes.Name)?.Value;
         var role = context.User.FindFirst(ClaimTypes.Role)?.Value;
 
@@ -787,7 +1074,8 @@ app.MapGet("/api/auth/verify",
         }
 
         var user = await databaseService.GetUserByEmailAsync(email);
-        if (user == null || !user.IsActive || user.Id != userId || user.TenantId != tenantId)
+        if (user == null || !user.IsActive || user.Id != userId ||
+            string.IsNullOrWhiteSpace(tenantUid) && user.TenantId != tenantId)
         {
             return Results.Unauthorized();
         }
@@ -795,12 +1083,12 @@ app.MapGet("/api/auth/verify",
         return Results.Ok(new UserInfo
         {
             Id = user.Id,
-            TenantId = user.TenantId,
+            TenantId = tenantId,
             Email = user.Email,
             Username = user.Username,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Role = user.Role.ToString(),
+            Role = role,
             Permissions = user.Permissions
         });
     })
@@ -1252,7 +1540,8 @@ app.MapDelete("/api/admin/tenants/{tenantId}",
 
 // Admin: Create a TenantAdmin user for an existing tenant (JWT-authenticated)
 app.MapPost("/api/admin/tenants/{tenantId}/tenant-admins",
-    async (IDatabaseService databaseService, HttpContext context, string tenantId, CreateTenantAdminUserRequest request) =>
+    async (IDatabaseService databaseService, IOptionsMonitor<IdentityFeatureOptions> identityFeatures,
+        HttpContext context, string tenantId, CreateTenantAdminUserRequest request) =>
     {
         if (context.User?.Identity?.IsAuthenticated != true)
         {
@@ -1270,6 +1559,14 @@ app.MapPost("/api/admin/tenants/{tenantId}/tenant-admins",
         if (!TenantAdminUserProvisioningService.IsSuperAdminRole(userRole))
         {
             return Results.Forbid();
+        }
+
+        if (IdentityFeaturePolicy.Foundation(identityFeatures.CurrentValue) && identityFeatures.CurrentValue.DualReadEnabled)
+        {
+            return Results.Conflict(new IdentityError(
+                "identity_tenant_admin_creation_requires_authoritative_route",
+                "Use the identity membership workflow while identity authority is active.",
+                context.TraceIdentifier));
         }
 
         try
@@ -1333,7 +1630,9 @@ app.MapGet("/api/admin/users",
 
 // Admin: Update only user email and name fields. Role, tenant, password, and active state are not editable here.
 app.MapPatch("/api/admin/users/{tenantId}/{userId}",
-    async (IDatabaseService databaseService, HttpContext context, string tenantId, string userId, UpdateUserProfileRequest request) =>
+    async (IDatabaseService databaseService, IOptionsMonitor<IdentityFeatureOptions> identityFeatures,
+        HttpContext context, string tenantId, string userId, UpdateUserProfileRequest request,
+        CancellationToken cancellationToken) =>
     {
         if (context.User?.Identity?.IsAuthenticated != true)
         {
@@ -1344,6 +1643,29 @@ app.MapPatch("/api/admin/users/{tenantId}/{userId}",
         if (!UserProfileManagementService.IsSuperAdminRole(userRole))
         {
             return Results.Forbid();
+        }
+
+        if (IdentityFeaturePolicy.Foundation(identityFeatures.CurrentValue) && identityFeatures.CurrentValue.DualReadEnabled)
+        {
+            var current = await databaseService.GetUserByIdAsync(tenantId.Trim().ToLowerInvariant(), userId)
+                .WaitAsync(cancellationToken);
+            if (current is null) return Results.NotFound();
+            if (!string.Equals(current.Email.Trim(), request.Email?.Trim(), StringComparison.OrdinalIgnoreCase))
+            {
+                return Results.Conflict(new IdentityError(
+                    "identity_email_change_requires_authoritative_route",
+                    "Use the identity email-change workflow while identity authority is active.",
+                    context.TraceIdentifier));
+            }
+
+            var namesOnly = await UserProfileManagementService.UpdateUserNamesAsync(
+                databaseService, tenantId, userId, request, cancellationToken);
+            return namesOnly.Status switch
+            {
+                UserProfileUpdateStatus.Updated => Results.Ok(namesOnly.User),
+                UserProfileUpdateStatus.NotFound => Results.NotFound(namesOnly.Message),
+                _ => Results.BadRequest(namesOnly.Message)
+            };
         }
 
         try
@@ -1370,7 +1692,9 @@ app.MapPatch("/api/admin/users/{tenantId}/{userId}",
 
 // Admin: Rotate the authenticated SuperAdmin user's own password. Responses are sanitized.
 app.MapPost("/api/admin/users/{tenantId}/{userId}/password",
-    async (IDatabaseService databaseService, HttpContext context, string tenantId, string userId, ChangeUserPasswordRequest request) =>
+    async (IDatabaseService databaseService, IdentityManagementService identityManagement,
+        IOptionsMonitor<IdentityFeatureOptions> identityFeatures, HttpContext context,
+        string tenantId, string userId, ChangeUserPasswordRequest request, CancellationToken cancellationToken) =>
     {
         if (context.User?.Identity?.IsAuthenticated != true)
         {
@@ -1394,6 +1718,12 @@ app.MapPost("/api/admin/users/{tenantId}/{userId}/password",
             return Results.Forbid();
         }
 
+        if (IdentityFeaturePolicy.Foundation(identityFeatures.CurrentValue) && identityFeatures.CurrentValue.DualReadEnabled)
+        {
+            return await identityManagement.ChangePasswordAsync(context,
+                new ChangePasswordRequest(request.CurrentPassword, request.NewPassword, true), cancellationToken);
+        }
+
         try
         {
             var result = await UserProfileManagementService.ChangeUserPasswordAsync(databaseService, tenantId, userId, request);
@@ -1411,6 +1741,7 @@ app.MapPost("/api/admin/users/{tenantId}/{userId}/password",
         }
     })
     .RequireAuthorization()
+    .RequireRateLimiting("identity-credential-mutation")
     .WithTags("Admin")
     .WithName("ChangeOwnSuperAdminPassword")
     .WithSummary("Change own SuperAdmin password")
@@ -3390,6 +3721,83 @@ app.MapDelete("/api/admin/themes/{tenantId}/{themeId}",
 app.MapIdentityFoundation();
 
 app.Run();
+
+static string SafeWorkerInstance()
+{
+    var instanceId = Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID");
+    if (string.IsNullOrWhiteSpace(instanceId)) return "local";
+    var digest = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(instanceId));
+    return Convert.ToHexString(digest).ToLowerInvariant()[..12];
+}
+
+static bool IsLoginRoute(PathString path) =>
+    string.Equals(path.Value?.TrimEnd('/'), "/api/auth/login", StringComparison.OrdinalIgnoreCase);
+
+static bool IsBcryptCostRoute(PathString path)
+{
+    var value = path.Value?.TrimEnd('/') ?? string.Empty;
+    if (IsLoginRoute(path) ||
+        value.Equals("/api/identity/current/password", StringComparison.OrdinalIgnoreCase) ||
+        value.Equals("/api/identity/current/login-email-change", StringComparison.OrdinalIgnoreCase))
+        return true;
+    return value.StartsWith("/api/identity/superadmin/users/", StringComparison.OrdinalIgnoreCase) &&
+            (value.EndsWith("/password-reset", StringComparison.OrdinalIgnoreCase) ||
+             value.EndsWith("/temporary-password", StringComparison.OrdinalIgnoreCase)) ||
+        value.StartsWith("/api/admin/users/", StringComparison.OrdinalIgnoreCase) &&
+            value.EndsWith("/password", StringComparison.OrdinalIgnoreCase);
+}
+
+static bool IsTransientLoginProviderFailure(Exception error)
+{
+    if (error is TimeoutException or OperationCanceledException or Microsoft.Azure.Cosmos.CosmosException)
+        return true;
+    if (error is InvalidOperationException invalid &&
+        (invalid.Message == "identity_login_dual_write_incomplete" ||
+         invalid.Message == "identity_dual_write_provider_unavailable" ||
+         invalid.Message == "identity_login_authority_provider_unavailable"))
+        return true;
+    return error.InnerException is not null && IsTransientLoginProviderFailure(error.InnerException);
+}
+
+static void LogLoginTerminal(
+    ILogger logger,
+    HttpContext context,
+    string workerInstance,
+    int statusCode,
+    int bcryptCallCount,
+    long bcryptMs,
+    long totalMs,
+    long legacyLookupMs,
+    long legacyAccountingMs,
+    long identityWriteMs,
+    long sessionWriteMs,
+    long auditWriteMs,
+    double processCpuMs)
+{
+    ThreadPool.GetAvailableThreads(out var availableWorkerThreads, out _);
+    if (!context.Items.TryGetValue("pumpkin.capacity-diagnostics", out var diagnosticState) || diagnosticState is not true)
+    {
+        logger.LogInformation("IdentityLoginTerminal requestId={RequestId} statusCode={StatusCode}",
+            context.TraceIdentifier, statusCode);
+        return;
+    }
+    logger.LogInformation(
+        "IdentityLoginTerminal requestId={RequestId} workerInstance={WorkerInstance} statusCode={StatusCode} bcryptCallCount={BcryptCallCount} bcryptMs={BcryptMs} totalMs={TotalMs} legacyLookupMs={LegacyLookupMs} legacyAccountingMs={LegacyAccountingMs} identityWriteMs={IdentityWriteMs} sessionWriteMs={SessionWriteMs} auditWriteMs={AuditWriteMs} processCpuMs={ProcessCpuMs} threadPoolPending={ThreadPoolPending} availableWorkerThreads={AvailableWorkerThreads}",
+        context.TraceIdentifier,
+        workerInstance,
+        statusCode,
+        bcryptCallCount,
+        bcryptMs,
+        totalMs,
+        legacyLookupMs,
+        legacyAccountingMs,
+        identityWriteMs,
+        sessionWriteMs,
+        auditWriteMs,
+        processCpuMs,
+        ThreadPool.PendingWorkItemCount,
+        availableWorkerThreads);
+}
 
 public sealed class PageImportRequest
 {

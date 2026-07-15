@@ -1236,21 +1236,27 @@ public class MongoDataConnection : IDataConnection, IDisposable
             .ToList();
     }
 
-    public async Task<User?> GetUserByIdAsync(string tenantId, string userId)
+    public Task<User?> GetUserByIdAsync(string tenantId, string userId) =>
+        GetUserByIdAsync(tenantId, userId, CancellationToken.None);
+
+    public async Task<User?> GetUserByIdAsync(string tenantId, string userId, CancellationToken cancellationToken)
     {
         var collection = _database.GetCollection<User>("User");
         var filter = Builders<User>.Filter.And(
             Builders<User>.Filter.Eq(u => u.Id, userId),
             Builders<User>.Filter.Eq(u => u.TenantId, tenantId.Trim().ToLowerInvariant()));
 
-        return await collection.Find(filter).FirstOrDefaultAsync();
+        return await collection.Find(filter).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<User?> GetUserByEmailAsync(string email)
+    public Task<User?> GetUserByEmailAsync(string email) =>
+        GetUserByEmailAsync(email, CancellationToken.None);
+
+    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
     {
         var collection = _database.GetCollection<User>("User");
         var filter = Builders<User>.Filter.Eq(u => u.Email, email);
-        var user = await collection.Find(filter).FirstOrDefaultAsync();
+        var user = await collection.Find(filter).FirstOrDefaultAsync(cancellationToken);
         
         _logger.LogInformation("GetUserByEmail - Email: {Email}, Found: {Found}", 
             email, user != null);
@@ -1296,6 +1302,38 @@ public class MongoDataConnection : IDataConnection, IDisposable
             user.Id, user.TenantId, user.Role);
 
         return user;
+    }
+
+    public Task PatchUserLoginEmailAsync(string userId, string tenantId, string loginEmail, CancellationToken cancellationToken) =>
+        PatchUserIdentityFieldAsync(userId, tenantId,
+            Builders<User>.Update.Set(user => user.Email, loginEmail.Trim().ToLowerInvariant()), cancellationToken);
+
+    public Task PatchUserPasswordHashAsync(string userId, string tenantId, string passwordHash, CancellationToken cancellationToken) =>
+        PatchUserIdentityFieldAsync(userId, tenantId,
+            Builders<User>.Update.Set(user => user.PasswordHash, passwordHash), cancellationToken);
+
+    public Task PatchUserActiveStateAsync(string userId, string tenantId, bool isActive, CancellationToken cancellationToken) =>
+        PatchUserIdentityFieldAsync(userId, tenantId,
+            Builders<User>.Update.Set(user => user.IsActive, isActive), cancellationToken);
+
+    public Task PatchUserProfileNamesAsync(string userId, string tenantId, string? firstName, string? lastName, CancellationToken cancellationToken) =>
+        PatchUserIdentityFieldAsync(userId, tenantId,
+            Builders<User>.Update
+                .Set(user => user.FirstName, firstName)
+                .Set(user => user.LastName, lastName), cancellationToken);
+
+    private async Task PatchUserIdentityFieldAsync(
+        string userId,
+        string tenantId,
+        UpdateDefinition<User> update,
+        CancellationToken cancellationToken)
+    {
+        var collection = _database.GetCollection<User>("User");
+        var filter = Builders<User>.Filter.And(
+            Builders<User>.Filter.Eq(user => user.Id, userId),
+            Builders<User>.Filter.Eq(user => user.TenantId, tenantId.Trim().ToLowerInvariant()));
+        var result = await collection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
+        if (result.MatchedCount != 1) throw new KeyNotFoundException("Legacy identity user was not found.");
     }
 
     public async Task UpdateUserLastLoginAsync(string userId, string tenantId)
@@ -1808,12 +1846,42 @@ public class MongoDataConnection : IDataConnection, IDisposable
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }
 
+    public Task<User?> GetUserByIdAsync(string tenantId, string userId, CancellationToken cancellationToken)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
     public Task<User?> GetUserByEmailAsync(string email)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }
 
+    public Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
     public Task<User> UpdateUserAsync(User user)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task PatchUserLoginEmailAsync(string userId, string tenantId, string loginEmail, CancellationToken cancellationToken)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task PatchUserPasswordHashAsync(string userId, string tenantId, string passwordHash, CancellationToken cancellationToken)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task PatchUserActiveStateAsync(string userId, string tenantId, bool isActive, CancellationToken cancellationToken)
+    {
+        throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
+    }
+
+    public Task PatchUserProfileNamesAsync(string userId, string tenantId, string? firstName, string? lastName, CancellationToken cancellationToken)
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }

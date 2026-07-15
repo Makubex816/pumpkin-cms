@@ -93,8 +93,18 @@ public interface IDataConnection
     // User authentication methods
     Task<List<User>> GetUsersAsync(string? tenantId = null);
     Task<User?> GetUserByIdAsync(string tenantId, string userId);
+    Task<User?> GetUserByIdAsync(string tenantId, string userId, CancellationToken cancellationToken) =>
+        GetUserByIdAsync(tenantId, userId).WaitAsync(cancellationToken);
     Task<User?> GetUserByEmailAsync(string email);
+    Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken) =>
+        GetUserByEmailAsync(email).WaitAsync(cancellationToken);
     Task<User> CreateUserAsync(User user);
     Task<User> UpdateUserAsync(User user);
+    Task PatchUserLoginEmailAsync(string userId, string tenantId, string loginEmail, CancellationToken cancellationToken);
+    Task PatchUserPasswordHashAsync(string userId, string tenantId, string passwordHash, CancellationToken cancellationToken);
+    Task PatchUserActiveStateAsync(string userId, string tenantId, bool isActive, CancellationToken cancellationToken);
+    Task PatchUserProfileNamesAsync(string userId, string tenantId, string? firstName, string? lastName, CancellationToken cancellationToken);
     Task UpdateUserLastLoginAsync(string userId, string tenantId);
+    Task UpdateUserLastLoginAsync(string userId, string tenantId, CancellationToken cancellationToken) =>
+        UpdateUserLastLoginAsync(userId, tenantId).WaitAsync(cancellationToken);
 }

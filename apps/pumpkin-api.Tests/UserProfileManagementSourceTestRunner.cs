@@ -218,10 +218,22 @@ public static class UserProfileManagementSourceTestRunner
                 string.Equals(user.Id, userId, StringComparison.Ordinal)));
         }
 
+        public Task<User?> GetUserByIdAsync(string tenantId, string userId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return GetUserByIdAsync(tenantId, userId);
+        }
+
         public Task<User?> GetUserByEmailAsync(string email)
         {
             return Task.FromResult(_users.FirstOrDefault(user =>
                 string.Equals(user.Email, email, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        public Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return GetUserByEmailAsync(email);
         }
 
         public Task<User> UpdateUserAsync(User user)
@@ -294,6 +306,20 @@ public static class UserProfileManagementSourceTestRunner
         public Task<Theme> UpdateThemeAsync(string tenantId, string themeId, Theme theme) => throw NotUsed();
         public Task<bool> DeleteThemeAsync(string tenantId, string themeId) => throw NotUsed();
         public Task<User> CreateUserAsync(User user) => throw NotUsed();
+        public Task PatchUserLoginEmailAsync(string userId, string tenantId, string loginEmail, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserPasswordHashAsync(string userId, string tenantId, string passwordHash, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserActiveStateAsync(string userId, string tenantId, bool isActive, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserProfileNamesAsync(string userId, string tenantId, string? firstName, string? lastName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = _users.FirstOrDefault(existing =>
+                string.Equals(existing.TenantId, tenantId, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.Id, userId, StringComparison.Ordinal));
+            if (user is null) throw new InvalidOperationException("User not found.");
+            user.FirstName = firstName ?? string.Empty;
+            user.LastName = lastName ?? string.Empty;
+            return Task.CompletedTask;
+        }
         public Task UpdateUserLastLoginAsync(string userId, string tenantId) => throw NotUsed();
 
         private static NotSupportedException NotUsed() => new("This test fake method is not used.");

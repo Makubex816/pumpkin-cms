@@ -713,8 +713,14 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
     public Task<pumpkin_net_models.Models.User?> GetUserByIdAsync(string tenantId, string userId)
         => _connection.GetUserByIdAsync(tenantId, userId);
 
+    public Task<pumpkin_net_models.Models.User?> GetUserByIdAsync(string tenantId, string userId, CancellationToken cancellationToken)
+        => _connection.GetUserByIdAsync(tenantId, userId, cancellationToken);
+
     public Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(string email)
         => _connection.GetUserByEmailAsync(email);
+
+    public Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+        => _connection.GetUserByEmailAsync(email, cancellationToken);
 
     public Task<pumpkin_net_models.Models.User> CreateUserAsync(pumpkin_net_models.Models.User user)
         => _connection.CreateUserAsync(user);
@@ -724,6 +730,18 @@ internal class TestDatabaseService : IDatabaseService, IDisposable
 
     public Task UpdateUserLastLoginAsync(string userId, string tenantId)
         => _connection.UpdateUserLastLoginAsync(userId, tenantId);
+
+    public Task PatchUserLoginEmailAsync(string userId, string tenantId, string loginEmail, CancellationToken cancellationToken)
+        => _connection.PatchUserLoginEmailAsync(userId, tenantId, loginEmail, cancellationToken);
+
+    public Task PatchUserPasswordHashAsync(string userId, string tenantId, string passwordHash, CancellationToken cancellationToken)
+        => _connection.PatchUserPasswordHashAsync(userId, tenantId, passwordHash, cancellationToken);
+
+    public Task PatchUserActiveStateAsync(string userId, string tenantId, bool isActive, CancellationToken cancellationToken)
+        => _connection.PatchUserActiveStateAsync(userId, tenantId, isActive, cancellationToken);
+
+    public Task PatchUserProfileNamesAsync(string userId, string tenantId, string? firstName, string? lastName, CancellationToken cancellationToken)
+        => _connection.PatchUserProfileNamesAsync(userId, tenantId, firstName, lastName, cancellationToken);
 
     // Theme methods
     public Task<Theme?> GetThemeAsync(string apiKey, string tenantId, string themeId)

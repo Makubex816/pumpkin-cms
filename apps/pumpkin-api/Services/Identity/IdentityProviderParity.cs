@@ -12,11 +12,11 @@ public static class IdentityProviderParity
         new("TenantMemberships", "/tenantUid", ["/tenantUid,/userId", "/membershipId"], ["/userId", "/status", "/role"], true, true),
         new("TenantIdentifierAliases", "/tenantUid", ["/previousSlug"], ["/canonicalSlug", "/status"], true, true),
         new("TenantRenameJobs", "/tenantUid", ["/id"], ["/status", "/requestedSlug"], true, true),
-        new("IdentityRequests", "/userId", ["/id"], ["/status", "/expiresAt"], true, false),
+        new("IdentityRequests", "/requestPartition", ["/id"], ["/status", "/expiresAt"], true, false),
         new("TenantContactSettings", "/tenantUid", ["/tenantUid"], ["/deliveryCapability"], true, true),
         new("IdentityNotificationOutbox", "/recipientNormalizedEmail", ["/deduplicationKey"], ["/status", "/nextAttemptAt"], true, false),
-        new("SecurityAuditEvents", "/targetTenantUid", ["/id"], ["/eventType", "/actorUserId", "/targetUserId", "/createdAt"], false, true),
-        new("IdentityMigration", "/id", ["/id"], ["/status", "/category"], true, true)
+        new("SecurityAuditEvents", "/auditPartition", ["/id"], ["/eventType", "/actorUserId", "/targetUserId", "/createdAt"], false, true),
+        new("IdentityMigration", "/migrationPartition", ["/id"], ["/status", "/category"], true, true)
     ];
 
     public static void AssertEquivalent(string providerName, IReadOnlyList<IdentityContainerDefinition> actual)

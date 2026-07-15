@@ -23,6 +23,8 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     private readonly string _accountHost;
     private bool _disposed = false;
 
+    internal CosmosClient SharedClient => _cosmosClient;
+
     public CosmosDataConnection(IOptions<CosmosDbSettings> settings, ILogger<CosmosDataConnection> logger)
     {
         _logger = logger;
@@ -2217,14 +2219,21 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
-    public async Task<pumpkin_net_models.Models.User?> GetUserByIdAsync(string tenantId, string userId)
+    public Task<pumpkin_net_models.Models.User?> GetUserByIdAsync(string tenantId, string userId) =>
+        GetUserByIdAsync(tenantId, userId, CancellationToken.None);
+
+    public async Task<pumpkin_net_models.Models.User?> GetUserByIdAsync(
+        string tenantId,
+        string userId,
+        CancellationToken cancellationToken)
     {
         try
         {
             var userContainer = _database.GetContainer("User");
             var response = await userContainer.ReadItemAsync<pumpkin_net_models.Models.User>(
                 userId,
-                new PartitionKey(tenantId.Trim().ToLowerInvariant()));
+                new PartitionKey(tenantId.Trim().ToLowerInvariant()),
+                cancellationToken: cancellationToken);
 
             return response.Resource;
         }
@@ -2237,24 +2246,45 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     /// <summary>
     /// Get user by email address for authentication
     /// </summary>
-    public async Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(string email)
-    {
-        for (var attempt = 1; attempt <= 2; attempt++)
-        {
-            try
-            {
-                return await GetUserByEmailOnceAsync(email);
-            }
-            catch (OperationCanceledException) when (attempt == 1)
-            {
-                _logger.LogWarning("Legacy login locator attempt timed out; retrying once - Attempt: {Attempt}", attempt);
-            }
-        }
+    public Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(string email) =>
+        GetUserByEmailAsync(email, CancellationToken.None);
 
-        throw new TimeoutException("legacy_login_locator_retry_exhausted");
+    public async Task<pumpkin_net_models.Models.User?> GetUserByEmailAsync(
+        string email,
+        CancellationToken cancellationToken)
+    {
+        using var overall = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        overall.CancelAfter(TimeSpan.FromMilliseconds(4800));
+        try
+        {
+            for (var attempt = 1; attempt <= 2; attempt++)
+            {
+                using var attemptTimeout = CancellationTokenSource.CreateLinkedTokenSource(overall.Token);
+                if (attempt == 1) attemptTimeout.CancelAfter(TimeSpan.FromMilliseconds(2200));
+                try
+                {
+                    return await GetUserByEmailOnceAsync(email, attemptTimeout.Token);
+                }
+                catch (OperationCanceledException) when (
+                    attempt == 1 &&
+                    !overall.IsCancellationRequested &&
+                    !cancellationToken.IsCancellationRequested)
+                {
+                    _logger.LogWarning("Legacy login locator attempt timed out; retrying once - Attempt: {Attempt}", attempt);
+                }
+            }
+
+            throw new TimeoutException("legacy_login_locator_retry_exhausted");
+        }
+        catch (OperationCanceledException error) when (!cancellationToken.IsCancellationRequested)
+        {
+            throw new TimeoutException("legacy_login_locator_retry_exhausted", error);
+        }
     }
 
-    private async Task<pumpkin_net_models.Models.User?> GetUserByEmailOnceAsync(string email)
+    private async Task<pumpkin_net_models.Models.User?> GetUserByEmailOnceAsync(
+        string email,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -2263,7 +2293,6 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             var query = new QueryDefinition("SELECT * FROM c WHERE c.normalizedEmail = @email")
                 .WithParameter("@email", normalizedEmail);
 
-            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             var iterator = locatorContainer.GetItemQueryIterator<JsonObject>(
                 query,
                 requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey("global"), MaxItemCount = 2 });
@@ -2271,18 +2300,34 @@ public class CosmosDataConnection : IDataConnection, IDisposable
 
             while (iterator.HasMoreResults)
             {
-                var response = await iterator.ReadNextAsync(timeout.Token).WaitAsync(timeout.Token);
+                var response = await iterator.ReadNextAsync(cancellationToken);
                 locators.AddRange(response);
             }
 
-            if (locators.Count == 0) return null;
+            if (locators.Count == 0)
+            {
+                // Keep the provider call shape comparable to a known login without
+                // disclosing whether the global email locator matched.
+                try
+                {
+                    await _database.GetContainer("User").ReadItemAsync<JsonObject>(
+                        "00000000-0000-0000-0000-000000000000",
+                        new PartitionKey("__identity_login_enumeration_probe__"),
+                        cancellationToken: cancellationToken);
+                }
+                catch (CosmosException error) when (error.StatusCode == HttpStatusCode.NotFound)
+                {
+                    // The fixed miss is the expected outcome.
+                }
+                return null;
+            }
             if (locators.Count != 1) throw new InvalidOperationException("legacy_login_locator_not_unique");
             var legacyUserId = locators[0]["legacyUserId"]?.GetValue<string>();
             var legacyTenantId = locators[0]["legacyTenantId"]?.GetValue<string>();
             if (string.IsNullOrWhiteSpace(legacyUserId) || string.IsNullOrWhiteSpace(legacyTenantId))
                 throw new InvalidOperationException("legacy_login_locator_missing");
             var responseItem = await _database.GetContainer("User").ReadItemAsync<pumpkin_net_models.Models.User>(
-                legacyUserId, new PartitionKey(legacyTenantId), cancellationToken: timeout.Token).WaitAsync(timeout.Token);
+                legacyUserId, new PartitionKey(legacyTenantId), cancellationToken: cancellationToken);
             var user = responseItem.Resource;
             
             _logger.LogInformation("GetUserByEmail completed - Found: {Found}", user != null);
@@ -2337,7 +2382,7 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             await StageAsync("database_metadata", async ct => { _ = await _database.ReadAsync(cancellationToken: ct); });
             await StageAsync("container_metadata", async ct => { _ = await _database.GetContainer("User").ReadContainerAsync(cancellationToken: ct); });
             pumpkin_net_models.Models.User? result = null;
-            await StageAsync("legacy_query", async ct => { result = await GetUserByEmailAsync(email).WaitAsync(ct); });
+            await StageAsync("legacy_query", async ct => { result = await GetUserByEmailAsync(email, ct); });
             return new { requestId, provider = "CosmosSql", authenticationMode = "connection_string_account_key", stages, resultCount = result is null ? 0 : 1, elapsedMs = timer.ElapsedMilliseconds };
         }
         catch (Exception ex)
@@ -2424,25 +2469,79 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     /// <summary>
     /// Update user's last login timestamp
     /// </summary>
-    public async Task UpdateUserLastLoginAsync(string userId, string tenantId)
+    public Task PatchUserLoginEmailAsync(
+        string userId,
+        string tenantId,
+        string loginEmail,
+        CancellationToken cancellationToken) =>
+        PatchUserIdentityFieldAsync(userId, tenantId, "/email", loginEmail.Trim().ToLowerInvariant(), "login-email", cancellationToken);
+
+    public Task PatchUserPasswordHashAsync(
+        string userId,
+        string tenantId,
+        string passwordHash,
+        CancellationToken cancellationToken) =>
+        PatchUserIdentityFieldAsync(userId, tenantId, "/passwordHash", passwordHash, "password-hash", cancellationToken);
+
+    public Task PatchUserActiveStateAsync(
+        string userId,
+        string tenantId,
+        bool isActive,
+        CancellationToken cancellationToken) =>
+        PatchUserIdentityFieldAsync(userId, tenantId, "/isActive", isActive, "active-state", cancellationToken);
+
+    public async Task PatchUserProfileNamesAsync(
+        string userId,
+        string tenantId,
+        string? firstName,
+        string? lastName,
+        CancellationToken cancellationToken)
+    {
+        await _database.GetContainer("User").PatchItemAsync<object>(
+            userId,
+            new PartitionKey(tenantId.Trim().ToLowerInvariant()),
+            [PatchOperation.Set("/firstName", firstName), PatchOperation.Set("/lastName", lastName)],
+            cancellationToken: cancellationToken);
+        _logger.LogInformation("Legacy profile names patched - UserId: {UserId}, TenantId: {TenantId}", userId, tenantId);
+    }
+
+    private async Task PatchUserIdentityFieldAsync(
+        string userId,
+        string tenantId,
+        string path,
+        object value,
+        string field,
+        CancellationToken cancellationToken)
+    {
+        await _database.GetContainer("User").PatchItemAsync<object>(
+            userId,
+            new PartitionKey(tenantId.Trim().ToLowerInvariant()),
+            [PatchOperation.Set(path, value)],
+            cancellationToken: cancellationToken);
+        _logger.LogInformation("Legacy identity field patched - UserId: {UserId}, TenantId: {TenantId}, Field: {Field}",
+            userId, tenantId, field);
+    }
+
+    public Task UpdateUserLastLoginAsync(string userId, string tenantId) =>
+        UpdateUserLastLoginAsync(userId, tenantId, CancellationToken.None);
+
+    public async Task UpdateUserLastLoginAsync(
+        string userId,
+        string tenantId,
+        CancellationToken cancellationToken)
     {
         try
         {
             var userContainer = _database.GetContainer("User");
-            
-            // Read the user first
-            var user = await userContainer.ReadItemAsync<pumpkin_net_models.Models.User>(
+            await userContainer.PatchItemAsync<object>(
                 userId,
-                new PartitionKey(tenantId));
-
-            // Update last login
-            user.Resource.LastLogin = DateTime.UtcNow;
-
-            // Save back to database
-            await userContainer.ReplaceItemAsync(
-                user.Resource,
-                userId,
-                new PartitionKey(tenantId));
+                new PartitionKey(tenantId),
+                [PatchOperation.Set("/lastLogin", DateTime.UtcNow)],
+                requestOptions: new PatchItemRequestOptions
+                {
+                    FilterPredicate = "FROM c WHERE c.isActive = true"
+                },
+                cancellationToken: cancellationToken);
 
             _logger.LogInformation("UpdateUserLastLogin - UserId: {UserId}, TenantId: {TenantId}", 
                 userId, tenantId);

@@ -147,6 +147,32 @@ public static class UserProfileManagementService
             ToResponse(updated));
     }
 
+    public static async Task<UserProfileUpdateResult> UpdateUserNamesAsync(
+        IDatabaseService databaseService,
+        string tenantId,
+        string userId,
+        UpdateUserProfileRequest request,
+        CancellationToken cancellationToken)
+    {
+        var normalizedTenantId = NormalizeTenantId(tenantId);
+        if (string.IsNullOrWhiteSpace(normalizedTenantId) || string.IsNullOrWhiteSpace(userId))
+            return BadRequest("Tenant ID and user ID are required.");
+
+        var firstName = NormalizeOptionalText(request.FirstName);
+        var lastName = NormalizeOptionalText(request.LastName);
+        if (!IsSafeProfileName(firstName) || !IsSafeProfileName(lastName))
+            return BadRequest("Profile names must be at most 100 characters and cannot contain control characters.");
+
+        var user = await databaseService.GetUserByIdAsync(normalizedTenantId, userId).WaitAsync(cancellationToken);
+        if (user is null)
+            return new UserProfileUpdateResult(UserProfileUpdateStatus.NotFound, Message: "User was not found.");
+
+        await databaseService.PatchUserProfileNamesAsync(userId, normalizedTenantId, firstName, lastName, cancellationToken);
+        user.FirstName = firstName;
+        user.LastName = lastName;
+        return new UserProfileUpdateResult(UserProfileUpdateStatus.Updated, ToResponse(user));
+    }
+
     public static async Task<UserPasswordUpdateResult> ChangeUserPasswordAsync(
         IDatabaseService databaseService,
         string tenantId,
@@ -261,4 +287,7 @@ public static class UserProfileManagementService
     {
         return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
     }
+
+    private static bool IsSafeProfileName(string? value) =>
+        value is null || value.Length <= 100 && !value.Any(char.IsControl);
 }

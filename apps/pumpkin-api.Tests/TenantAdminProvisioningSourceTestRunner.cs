@@ -117,6 +117,12 @@ public static class TenantAdminProvisioningSourceTestRunner
             });
         }
 
+        public Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return GetUserByEmailAsync(email);
+        }
+
         public Task<User> CreateUserAsync(User user)
         {
             CreatedUser = user;
@@ -125,6 +131,7 @@ public static class TenantAdminProvisioningSourceTestRunner
 
         public Task<List<User>> GetUsersAsync(string? tenantId = null) => throw NotUsed();
         public Task<User?> GetUserByIdAsync(string tenantId, string userId) => throw NotUsed();
+        public Task<User?> GetUserByIdAsync(string tenantId, string userId, CancellationToken cancellationToken) => throw NotUsed();
         public Task<User> UpdateUserAsync(User user) => throw NotUsed();
 
         public Task<Page?> GetPageAsync(string apiKey, string tenantId, string pageSlug) => throw NotUsed();
@@ -182,6 +189,10 @@ public static class TenantAdminProvisioningSourceTestRunner
         public Task<Theme> UpdateThemeAsync(string tenantId, string themeId, Theme theme) => throw NotUsed();
         public Task<bool> DeleteThemeAsync(string tenantId, string themeId) => throw NotUsed();
         public Task UpdateUserLastLoginAsync(string userId, string tenantId) => throw NotUsed();
+        public Task PatchUserLoginEmailAsync(string userId, string tenantId, string loginEmail, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserPasswordHashAsync(string userId, string tenantId, string passwordHash, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserActiveStateAsync(string userId, string tenantId, bool isActive, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserProfileNamesAsync(string userId, string tenantId, string? firstName, string? lastName, CancellationToken cancellationToken) => throw NotUsed();
 
         private static NotSupportedException NotUsed() => new("This test fake method is not used.");
     }

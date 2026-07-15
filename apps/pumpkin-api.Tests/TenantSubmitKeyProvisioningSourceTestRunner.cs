@@ -139,10 +139,16 @@ public static class TenantSubmitKeyProvisioningSourceTestRunner
         public Task<bool> DeleteThemeAsync(string tenantId, string themeId) => throw NotUsed();
         public Task<List<User>> GetUsersAsync(string? tenantId = null) => throw NotUsed();
         public Task<User?> GetUserByIdAsync(string tenantId, string userId) => throw NotUsed();
+        public Task<User?> GetUserByIdAsync(string tenantId, string userId, CancellationToken cancellationToken) => throw NotUsed();
         public Task<User?> GetUserByEmailAsync(string email) => throw NotUsed();
+        public Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken) => throw NotUsed();
         public Task<User> CreateUserAsync(User user) => throw NotUsed();
         public Task<User> UpdateUserAsync(User user) => throw NotUsed();
         public Task UpdateUserLastLoginAsync(string userId, string tenantId) => throw NotUsed();
+        public Task PatchUserLoginEmailAsync(string userId, string tenantId, string loginEmail, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserPasswordHashAsync(string userId, string tenantId, string passwordHash, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserActiveStateAsync(string userId, string tenantId, bool isActive, CancellationToken cancellationToken) => throw NotUsed();
+        public Task PatchUserProfileNamesAsync(string userId, string tenantId, string? firstName, string? lastName, CancellationToken cancellationToken) => throw NotUsed();
 
         private static NotSupportedException NotUsed() => new("This test fake method is not used.");
     }

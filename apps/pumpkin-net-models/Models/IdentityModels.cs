@@ -61,6 +61,8 @@ public sealed class UserAccount : IdentityRecord
     public IdentityRecordStatus Status { get; set; } = IdentityRecordStatus.Active;
     public bool EmailVerified { get; set; }
     public bool ForcePasswordChange { get; set; }
+    public bool IsSyntheticValidation { get; init; }
+    public string? SyntheticValidationId { get; init; }
     public string SecurityStamp { get; set; } = Guid.NewGuid().ToString("N");
     public long SessionVersion { get; set; } = 1;
     public int FailedLoginCount { get; set; }
