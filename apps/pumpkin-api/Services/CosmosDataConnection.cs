@@ -25,6 +25,8 @@ public class CosmosDataConnection : IDataConnection, IDisposable
 
         var clientOptions = new CosmosClientOptions
         {
+            ConnectionMode = ConnectionMode.Gateway,
+            RequestTimeout = TimeSpan.FromSeconds(10),
             MaxRetryAttemptsOnRateLimitedRequests = cosmosSettings.MaxRetryAttemptsOnRateLimitedRequests,
             MaxRetryWaitTimeOnRateLimitedRequests = TimeSpan.FromSeconds(cosmosSettings.MaxRetryWaitTimeOnRateLimitedRequests),
             Serializer = new CosmosSystemTextJsonSerializer()
@@ -2238,12 +2240,15 @@ public class CosmosDataConnection : IDataConnection, IDisposable
                 "SELECT * FROM c WHERE c.email = @email")
                 .WithParameter("@email", email);
 
-            var iterator = userContainer.GetItemQueryIterator<pumpkin_net_models.Models.User>(query);
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(12));
+            var iterator = userContainer.GetItemQueryIterator<pumpkin_net_models.Models.User>(
+                query,
+                requestOptions: new QueryRequestOptions { MaxConcurrency = 1, MaxItemCount = 10 });
             var users = new List<pumpkin_net_models.Models.User>();
 
             while (iterator.HasMoreResults)
             {
-                var response = await iterator.ReadNextAsync();
+                var response = await iterator.ReadNextAsync(timeout.Token);
                 users.AddRange(response);
             }
 

@@ -28,6 +28,7 @@ public static class IdentityFoundationSourceTestRunner
             ,("JWT session version is issued and enforced", SessionVersionSource)
             ,("management routes use tenant authorization", ManagementAuthorizationSource)
             ,("session version production shapes are compatible", SessionVersionShapes)
+            ,("production login lookup is gateway bounded and stage traced", ProductionLoginLookupBounded)
         };
         foreach (var test in tests) { test.Run(); Console.WriteLine($"PASS: {test.Name}"); }
         Console.WriteLine($"Identity foundation source tests passed: {tests.Length}/{tests.Length}");
@@ -137,6 +138,18 @@ public static class IdentityFoundationSourceTestRunner
         Assert(Parse("{}") == 1 && Parse("{\"sessionVersion\":null}") == 1 && Parse("{\"sessionVersion\":3}") == 3 && Parse("{\"sessionVersion\":\"4\"}") == 4, "compatible session version shape rejected");
         var threw = false; try { Parse("{\"sessionVersion\":\"broken\"}"); } catch (JsonException) { threw = true; }
         Assert(threw, "malformed session version accepted");
+    }
+    private static void ProductionLoginLookupBounded()
+    {
+        var root = FindRepositoryRoot();
+        var program = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Program.cs"));
+        var cosmos = File.ReadAllText(Path.Combine(root, "apps", "pumpkin-api", "Services", "CosmosDataConnection.cs"));
+        Assert(cosmos.Contains("ConnectionMode = ConnectionMode.Gateway") &&
+               cosmos.Contains("CancellationTokenSource(TimeSpan.FromSeconds(12))") &&
+               cosmos.Contains("ReadNextAsync(timeout.Token)"), "login lookup can wait without a gateway bound");
+        Assert(program.Contains("stage=legacy_lookup_started") &&
+               program.Contains("stage=legacy_lookup_completed") &&
+               !program.Contains("request.Password}"), "safe login stage tracing is missing");
     }
 
     private static Tenant Tenant(string slug) => new() { Id = $"legacy-{slug}", TenantId = slug, Name = slug, Status = "active" };

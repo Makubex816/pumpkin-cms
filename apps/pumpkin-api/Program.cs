@@ -671,9 +671,13 @@ app.MapGet("/api/themes/{tenantId}/{themeId}",
 
 // Login endpoint
 app.MapPost("/api/auth/login",
-    async (IDatabaseService databaseService, IIdentityLoginCompatibilityWriter identityWriter, LoginRequest request, IConfiguration configuration, HttpContext context) =>
+    async (IDatabaseService databaseService, IIdentityLoginCompatibilityWriter identityWriter, LoginRequest request, IConfiguration configuration, HttpContext context, ILogger<Program> logger) =>
     {
+        var loginTimer = System.Diagnostics.Stopwatch.StartNew();
+        logger.LogInformation("IdentityLoginStage stage=request_parsed requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
+        logger.LogInformation("IdentityLoginStage stage=legacy_lookup_started requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
         var user = await databaseService.GetUserByEmailAsync(request.Email);
+        logger.LogInformation("IdentityLoginStage stage=legacy_lookup_completed requestId={RequestId} elapsedMs={ElapsedMs} success={Success}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds, user is not null);
 
         if (user == null || !user.IsActive)
         {
@@ -686,6 +690,8 @@ app.MapPost("/api/auth/login",
             return Results.Unauthorized();
         }
 
+        logger.LogInformation("IdentityLoginStage stage=credential_verification_completed requestId={RequestId} elapsedMs={ElapsedMs} success=true role={Role}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds, user.Role.ToString());
+
         Console.WriteLine($"[Login] User: {user.Username}, Role enum value: {user.Role}, Role as string: {user.Role.ToString()}");
 
         // Generate JWT token
@@ -696,7 +702,9 @@ app.MapPost("/api/auth/login",
         var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
         await databaseService.UpdateUserLastLoginAsync(user.Id, user.TenantId);
+        logger.LogInformation("IdentityLoginStage stage=legacy_accounting_completed requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
         var sessionVersion = await identityWriter.WriteSuccessfulLoginAsync(user, context.TraceIdentifier, context.RequestAborted);
+        logger.LogInformation("IdentityLoginStage stage=identity_write_completed requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
 
         var claims = new[]
         {
@@ -721,6 +729,7 @@ app.MapPost("/api/auth/login",
 
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
+        logger.LogInformation("IdentityLoginStage stage=response_serialization_started requestId={RequestId} elapsedMs={ElapsedMs}", context.TraceIdentifier, loginTimer.ElapsedMilliseconds);
         return Results.Ok(new LoginResponse
         {
             Token = tokenString,
