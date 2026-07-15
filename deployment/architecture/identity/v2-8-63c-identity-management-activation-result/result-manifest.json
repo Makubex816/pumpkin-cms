@@ -1,0 +1,14 @@
+{
+  "taskId": "V2.8.63C",
+  "status": "blocked_three_corrected_api_deployments_failed",
+  "sourceCommits": ["ba18439e", "72f04aba", "4ec8536f", "9be9a6a6", "3fa1f6df"],
+  "apiDeploymentAttempts": 3,
+  "rollbackDeploymentId": "85211338-ce94-4fba-bf3f-c1c238553936",
+  "adminDeploymentAttempts": 0,
+  "starterDeploymentAttempts": 0,
+  "syntheticIdentityCreated": false,
+  "managementActivated": false,
+  "dualWriteEnabled": false,
+  "airstripPublicRuntimeRequested": false,
+  "indexingChanged": false
+}
