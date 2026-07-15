@@ -78,7 +78,21 @@ public static class IdentityMigrationPlanner
 
     public static string ToSafeJson(IdentityMigrationPlan plan) => JsonSerializer.Serialize(plan, new JsonSerializerOptions { WriteIndented = true });
     private static string DeterministicId(params string[] parts) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(string.Join("\n", parts)))).ToLowerInvariant()[..32];
-    private static string Fingerprint(LegacyIdentitySnapshot snapshot) => DeterministicId("v2.8.63a", JsonSerializer.Serialize(snapshot));
+    private static string Fingerprint(LegacyIdentitySnapshot snapshot)
+    {
+        var stable = new
+        {
+            tenants = snapshot.Tenants.OrderBy(x => x.Id, StringComparer.Ordinal).Select(x => new
+                { x.Id, x.TenantId, x.Name, x.Status, contactEmail = x.Contact.Email }),
+            users = snapshot.Users.OrderBy(x => x.Id, StringComparer.Ordinal).Select(x => new
+                { x.Id, x.TenantId, x.Email, x.Username, role = x.Role.ToString(), x.IsActive, permissions = x.Permissions.OrderBy(p => p, StringComparer.Ordinal) }),
+            recipients = snapshot.FormRecipients.OrderBy(x => x.Key, StringComparer.Ordinal).Select(x => new
+                { x.Key, values = x.Value.OrderBy(v => v, StringComparer.Ordinal) }),
+            dependencies = snapshot.DependencyReferences.OrderBy(x => x.Key, StringComparer.Ordinal).Select(x => new
+                { x.Key, values = x.Value.OrderBy(v => v, StringComparer.Ordinal) })
+        };
+        return DeterministicId("v2.8.63b", JsonSerializer.Serialize(stable));
+    }
     private static IdentityMigrationConflict Conflict(string category, string? tenantId, string? userId, string detail) => new()
         { Category = category, LegacyTenantId = tenantId, UserId = userId, SafeDetail = detail };
 }

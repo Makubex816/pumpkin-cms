@@ -91,6 +91,8 @@ public static class IdentityFoundationSourceTestRunner
         var snapshot = new LegacyIdentitySnapshot([Tenant("one")], [User("u", "one", "a@example.com", UserRole.TenantAdmin)], EmptyRecipients(), EmptyDependencies());
         var a = IdentityMigrationPlanner.CreateDryRun(snapshot); var b = IdentityMigrationPlanner.CreateDryRun(snapshot);
         Assert(a.InputFingerprint == b.InputFingerprint && a.ResumeToken == b.ResumeToken && !a.ExecutionEnabled, "dry run not deterministic/safe");
+        var reloaded = new LegacyIdentitySnapshot([Tenant("one")], [User("u", "one", "a@example.com", UserRole.TenantAdmin)], EmptyRecipients(), EmptyDependencies());
+        Assert(a.InputFingerprint == IdentityMigrationPlanner.CreateDryRun(reloaded).InputFingerprint, "model default timestamps changed plan hash");
     }
     private static void NoProvider() => Assert(new DisabledIdentityNotificationProvider().Capability == NotificationCapability.DisabledNoProvider, "provider state dishonest");
 
