@@ -1,13 +1,13 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { AdminUserProfile, UpdateUserProfileRequest } from 'pumpkin-ts-models'
 import { apiClient } from '@/lib/api'
 import { useAuth } from '@/contexts/AuthContext'
 
 type UserEditState = {
   user: AdminUserProfile
-  email: string
   firstName: string
   lastName: string
 }
@@ -36,27 +36,34 @@ export default function UsersPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [editState, setEditState] = useState<UserEditState | null>(null)
+  const usersLoadGeneration = useRef(0)
   const isSuperAdmin = user?.role === 'SuperAdmin'
 
   const loadUsers = useCallback(async () => {
+    const generation = ++usersLoadGeneration.current
+    setUsers([])
+    setEditState(null)
     if (!token || !isSuperAdmin) {
       setLoading(false)
+      setError(null)
       return
     }
 
     try {
       setLoading(true)
       setError(null)
-      setUsers(await apiClient.getAdminUsers(token, tenantFilter || undefined))
+      const result = await apiClient.getAdminUsers(token, tenantFilter || undefined)
+      if (usersLoadGeneration.current === generation) setUsers(result)
     } catch (err: any) {
-      setError(err.message || 'Users failed to load')
+      if (usersLoadGeneration.current === generation) setError(err.message || 'Users failed to load')
     } finally {
-      setLoading(false)
+      if (usersLoadGeneration.current === generation) setLoading(false)
     }
   }, [token, isSuperAdmin, tenantFilter])
 
   useEffect(() => {
     loadUsers()
+    return () => { usersLoadGeneration.current += 1 }
   }, [loadUsers])
 
   const tenantOptions = useMemo(() => {
@@ -68,7 +75,6 @@ export default function UsersPage() {
   const openEdit = (profile: AdminUserProfile) => {
     setEditState({
       user: profile,
-      email: profile.email,
       firstName: profile.firstName || '',
       lastName: profile.lastName || '',
     })
@@ -78,7 +84,9 @@ export default function UsersPage() {
     if (!token || !editState) return
 
     const payload: UpdateUserProfileRequest = {
-      email: editState.email,
+      // The legacy profile endpoint still requires this field. Preserve the exact
+      // current value; login-email mutation belongs to the identity API only.
+      email: editState.user.email,
       firstName: editState.firstName,
       lastName: editState.lastName,
     }
@@ -141,14 +149,15 @@ export default function UsersPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-neutral-200">
+              <caption className="sr-only">Legacy profile users grouped by tenant</caption>
               <thead className="bg-neutral-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Tenant</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Role</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Last Login</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium uppercase text-neutral-500">Actions</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Name</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Email</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Tenant</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Role</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase text-neutral-500">Last Login</th>
+                  <th scope="col" className="px-6 py-3 text-right text-xs font-medium uppercase text-neutral-500">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200 bg-white">
@@ -197,19 +206,25 @@ export default function UsersPage() {
 
             <div className="mt-6 space-y-4">
               <label className="block text-sm font-medium text-neutral-700">
-                Email
+                Login email (managed by Identity &amp; Access)
                 <input
-                  className="input mt-1 w-full"
+                  className="input mt-1 w-full bg-neutral-100"
                   type="email"
-                  value={editState.email}
-                  onChange={(event) => setEditState({ ...editState, email: event.target.value })}
+                  value={editState.user.email}
+                  readOnly
+                  aria-describedby="legacy-email-hold"
                 />
               </label>
+              <p id="legacy-email-hold" className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+                Login email editing is disabled here to prevent legacy and identity records from diverging. Use the feature-gated{' '}
+                <Link href="/dashboard/identity" className="font-medium underline">Identity &amp; Access</Link> controls.
+              </p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block text-sm font-medium text-neutral-700">
                   First Name
                   <input
                     className="input mt-1 w-full"
+                    maxLength={100}
                     value={editState.firstName}
                     onChange={(event) => setEditState({ ...editState, firstName: event.target.value })}
                   />
@@ -218,6 +233,7 @@ export default function UsersPage() {
                   Last Name
                   <input
                     className="input mt-1 w-full"
+                    maxLength={100}
                     value={editState.lastName}
                     onChange={(event) => setEditState({ ...editState, lastName: event.target.value })}
                   />

@@ -3,17 +3,26 @@ import fs from 'node:fs'
 const page = fs.readFileSync(new URL('../src/app/dashboard/identity/page.tsx', import.meta.url), 'utf8')
 const client = fs.readFileSync(new URL('../src/lib/identity/client.ts', import.meta.url), 'utf8')
 const contracts = fs.readFileSync(new URL('../src/lib/identity/contracts.ts', import.meta.url), 'utf8')
+const auth = fs.readFileSync(new URL('../src/contexts/AuthContext.tsx', import.meta.url), 'utf8')
+const api = fs.readFileSync(new URL('../src/lib/api.ts', import.meta.url), 'utf8')
 
 const checks = {
-  'feature disabled unless exact true': contracts.includes("=== 'true'"),
-  'account security controls': page.includes('My account & security') && page.includes('current-password'),
-  'tenant rename preflight': page.includes('Run rename preflight') && page.includes('typed confirmation'),
-  'contact separated from lead persistence': page.includes('Lead persistence:') && page.includes('Delivery capability:'),
-  'users and final admin transfer projection': page.includes('Users & access') && page.includes('transfer controls'),
-  'SuperAdmin projection': page.includes("user?.role === 'SuperAdmin'") && page.includes('membership matrix'),
-  'accessible state announcements': page.includes('role="status"') && page.includes('role="alert"') && page.includes('aria-live'),
-  'membership tenant switch contract': client.includes('/api/identity/current/switch-tenant'),
-  'verified email and password contracts': client.includes('/login-email-change') && client.includes('/password'),
+  'authenticated feature state': client.includes('/api/identity/feature-state') && page.includes('client.featureState()'),
+  'separate read and mutation gates': contracts.includes('const read =') && contracts.includes('const mutate ='),
+  'account security controls': page.includes('Account & sessions') && page.includes('isStrongBcryptPassword'),
+  'tenant management is adopted-token scoped': page.includes('membership, user?.tenantId') && page.includes('tenantScopeAuthorized'),
+  'tenant rename held': page.includes('Tenant rename is disabled pending V2.8.63D') && !client.includes('/rename'),
+  'contact separated and concurrency protected': page.includes('Lead persistence:') && page.includes('contactSettings.concurrencyToken') && client.includes("'If-Match'"),
+  'final admin protection': page.includes('Users & memberships') && page.includes('Final active TenantAdmin protected'),
+  'stored TenantAdmin cannot be reactivated by tenant admin': page.includes('canSetIdentityMembershipStatus(membership, status, isSuperAdmin)'),
+  'SuperAdmin marker fails closed': page.includes('selectedGlobalUser?.isSyntheticValidation === true') && !page.includes('isSyntheticValidationEmail'),
+  'accessible state and tables': page.includes('role="status"') && page.includes('role="alert"') && page.includes('<caption className="sr-only">') && page.includes('<th scope="col"'),
+  'one-time secret is not announced live': page.includes('aria-label="One-time temporary password handoff"') && !page.includes('aria-live="polite"'),
+  'membership tenant switch contract': client.includes('/api/identity/current/switch-tenant') && page.includes('adoptIdentityTenantSession'),
+  'provider hold uses exact error': page.includes('isIdentityNotificationProviderUnavailable(error)'),
+  'all requests are no-store': client.includes("cache: 'no-store'") && api.includes("cache: 'no-store'"),
+  'read generations are token bound': page.includes('tenantDataToken === token') && page.includes('globalUsersToken === token'),
+  'auth tenant loading is race guarded': auth.includes('tenantLoadGeneration.current !== generation'),
 }
 
 for (const [name, passed] of Object.entries(checks)) {

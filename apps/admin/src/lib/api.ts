@@ -68,11 +68,8 @@ class ApiClient {
 
     const config: RequestInit = {
       ...options,
+      cache: 'no-store',
       headers,
-    }
-
-    if ((config.method || 'GET').toUpperCase() === 'GET' && !config.cache) {
-      config.cache = 'no-store'
     }
 
     console.log('[API Client] Request:', {

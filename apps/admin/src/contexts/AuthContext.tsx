@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react'
 import type { UserInfo, TenantInfo } from 'pumpkin-ts-models'
 import { apiClient } from '@/lib/api'
 
@@ -14,6 +14,7 @@ interface AuthContextType {
   currentTenant: TenantInfo | null
   availableTenants: TenantInfo[]
   setCurrentTenant: (tenant: TenantInfo) => void
+  adoptIdentityTenantSession: (replacementToken: string, legacyTenantId: string, tenantRole: string) => void
   login: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
@@ -62,6 +63,12 @@ function getFallbackTenant(user: UserInfo | null) {
   }
 }
 
+function isAuthoritativeVerifyRejection(error: unknown): boolean {
+  if (!error || typeof error !== 'object') return false
+  const status = (error as { status?: unknown }).status
+  return status === 401 || status === 403
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserInfo | null>(null)
   const [token, setToken] = useState<string | null>(null)
@@ -70,13 +77,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [tenantLoadError, setTenantLoadError] = useState<string | null>(null)
   const [currentTenant, setCurrentTenantState] = useState<TenantInfo | null>(null)
   const [availableTenants, setAvailableTenants] = useState<TenantInfo[]>([])
+  const tenantLoadGeneration = useRef(0)
 
   // Load tenants when authenticated
   useEffect(() => {
+    const generation = ++tenantLoadGeneration.current
     async function loadTenants() {
+      setAvailableTenants([])
       if (!token || !user) {
         console.log('[AuthContext] Skipping tenant load - no token or user')
-        setIsLoadingTenants(false)
+        if (tenantLoadGeneration.current === generation) {
+          setTenantLoadError(null)
+          setIsLoadingTenants(false)
+        }
         return
       }
       
@@ -88,6 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const tenants = (await apiClient.getTenants(token))
           .map(toTenantInfo)
           .filter((tenant): tenant is TenantInfo => Boolean(tenant))
+        if (tenantLoadGeneration.current !== generation) return
         console.log('[AuthContext] Loaded tenants:', tenants)
         setAvailableTenants(tenants)
         
@@ -119,6 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         }
       } catch (error) {
+        if (tenantLoadGeneration.current !== generation) return
         console.error('[AuthContext] Failed to load tenants:', error)
         setTenantLoadError(error instanceof Error ? error.message : 'Failed to load tenant list')
         const fallbackTenant = getStoredTenant() || getFallbackTenant(user)
@@ -127,11 +142,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           localStorage.setItem(CURRENT_TENANT_KEY, JSON.stringify(fallbackTenant))
         }
       } finally {
-        setIsLoadingTenants(false)
+        if (tenantLoadGeneration.current === generation) setIsLoadingTenants(false)
       }
     }
     
     loadTenants()
+    return () => {
+      if (tenantLoadGeneration.current === generation) tenantLoadGeneration.current += 1
+    }
   }, [token, user])
 
   const setCurrentTenant = (tenant: TenantInfo) => {
@@ -140,6 +158,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setCurrentTenantState(safeTenant)
     localStorage.setItem(CURRENT_TENANT_KEY, JSON.stringify(safeTenant))
+  }
+
+  const adoptIdentityTenantSession = (replacementToken: string, legacyTenantId: string, tenantRole: string) => {
+    if (!replacementToken || !user) return
+
+    const updatedUser: UserInfo = {
+      ...user,
+      tenantId: legacyTenantId,
+      role: user.role === 'SuperAdmin' ? user.role : tenantRole,
+    }
+    setToken(replacementToken)
+    setUser(updatedUser)
+    localStorage.setItem(TOKEN_KEY, replacementToken)
+    localStorage.setItem(USER_KEY, JSON.stringify(updatedUser))
   }
 
   // Load auth state from localStorage on mount
@@ -159,8 +191,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setCurrentTenantState(fallbackTenant)
           }
           
-          // Optionally verify token with API (if endpoint exists)
-          // If verification fails, we'll still trust localStorage until an actual API call fails
+          // The verify endpoint is authoritative for explicit authentication and authorization rejection.
+          // Network failures retain the local session so a transient outage does not force a logout.
           try {
             const verifiedUser = await apiClient.verifyToken(storedToken)
             setUser(verifiedUser)
@@ -172,9 +204,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               }
             }
           } catch (error) {
-            // Token verification endpoint may not exist - that's OK
-            // We'll trust localStorage and let actual API calls handle auth errors
-            console.log('[AuthContext] Token verification skipped (endpoint may not exist)')
+            if (isAuthoritativeVerifyRejection(error)) {
+              setToken(null)
+              setUser(null)
+              setCurrentTenantState(null)
+              setAvailableTenants([])
+              setTenantLoadError(null)
+              setIsLoadingTenants(false)
+              localStorage.removeItem(TOKEN_KEY)
+              localStorage.removeItem(USER_KEY)
+              localStorage.removeItem(CURRENT_TENANT_KEY)
+              window.location.replace('/login')
+              return
+            }
+
+            console.warn('[AuthContext] Token verification was inconclusive; retaining the local session for a transient failure.', error)
           }
         }
       } catch (error) {
@@ -237,6 +281,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     currentTenant,
     availableTenants,
     setCurrentTenant,
+    adoptIdentityTenantSession,
     login,
     logout,
   }
