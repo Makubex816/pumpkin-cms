@@ -26,12 +26,13 @@ public sealed class IdentityManagementService : IDisposable
 
     public async Task<IResult> ProfileAsync(HttpContext c, CancellationToken ct)
     {
+        if (!Enabled(x => x.ManagementEnabled)) return Disabled(c);
         var actor = await ActorAsync(c, ct); if (actor is null) return Unauthorized(c);
         return Results.Ok(new { userId = Text(actor.Account, "userId"), loginEmail = Text(actor.Account, "loginEmail"), emailVerified = Bool(actor.Account, "emailVerified"), forcePasswordChange = Bool(actor.Account, "forcePasswordChange"), sessionVersion = Long(actor.Account, "sessionVersion", 1), providerState = "held_no_delivery_provider" });
     }
 
     public async Task<IResult> CurrentMembershipsAsync(HttpContext c, CancellationToken ct)
-    { var a = await ActorAsync(c, ct); return a is null ? Unauthorized(c) : Results.Ok(await QueryAsync("TenantMemberships", "SELECT * FROM c WHERE c.userId=@id", ("@id", Text(a.Account, "userId")), ct)); }
+    { if (!Enabled(x => x.ManagementEnabled)) return Disabled(c); var a = await ActorAsync(c, ct); return a is null ? Unauthorized(c) : Results.Ok(await QueryAsync("TenantMemberships", "SELECT * FROM c WHERE c.userId=@id", ("@id", Text(a.Account, "userId")), ct)); }
 
     public async Task<IResult> SwitchTenantAsync(HttpContext c, SwitchTenantRequest r, CancellationToken ct)
     {
@@ -56,7 +57,7 @@ public sealed class IdentityManagementService : IDisposable
     }
 
     public async Task<IResult> TenantMembershipsAsync(HttpContext c, string tenantUid, CancellationToken ct)
-    { var a = await ActorAsync(c, ct); if (a is null || !await CanManageTenant(a, tenantUid, ct)) return Results.Forbid(); return Results.Ok(await QueryAsync("TenantMemberships", "SELECT * FROM c WHERE c.tenantUid=@t", ("@t", tenantUid), ct)); }
+    { if (!Enabled(x => x.ManagementEnabled)) return Disabled(c); var a = await ActorAsync(c, ct); if (a is null || !await CanManageTenant(a, tenantUid, ct)) return Results.Forbid(); return Results.Ok(await QueryAsync("TenantMemberships", "SELECT * FROM c WHERE c.tenantUid=@t", ("@t", tenantUid), ct)); }
 
     public async Task<IResult> UserMembershipsAsync(HttpContext c, string userId, CancellationToken ct)
     { var a = await ActorAsync(c, ct); if (a is null || !a.SuperAdmin) return Results.Forbid(); return Results.Ok(await QueryAsync("TenantMemberships", "SELECT * FROM c WHERE c.userId=@u", ("@u", userId), ct)); }
@@ -65,7 +66,7 @@ public sealed class IdentityManagementService : IDisposable
     { var a = await ActorAsync(c, ct); if (a is null || !a.SuperAdmin || !Enabled(x => x.SuperAdminManagementEnabled)) return Results.Forbid(); var users = await QueryAsync("UserAccounts", "SELECT * FROM c", ct); return Results.Ok(users.Select(SafeUser)); }
 
     public async Task<IResult> ContactSettingsAsync(HttpContext c, string tenantUid, CancellationToken ct)
-    { var a = await ActorAsync(c, ct); if (a is null || !await CanAccessTenant(a, tenantUid, ct)) return Results.Forbid(); return Results.Ok((await QueryAsync("TenantContactSettings", "SELECT * FROM c WHERE c.tenantUid=@t", ("@t", tenantUid), ct)).SingleOrDefault()); }
+    { if (!Enabled(x => x.ManagementEnabled)) return Disabled(c); var a = await ActorAsync(c, ct); if (a is null || !await CanAccessTenant(a, tenantUid, ct)) return Results.Forbid(); return Results.Ok((await QueryAsync("TenantContactSettings", "SELECT * FROM c WHERE c.tenantUid=@t", ("@t", tenantUid), ct)).SingleOrDefault()); }
 
     public async Task<IResult> UpdateContactSettingsAsync(HttpContext c, string tenantUid, ContactSettingsUpdate r, CancellationToken ct)
     {
