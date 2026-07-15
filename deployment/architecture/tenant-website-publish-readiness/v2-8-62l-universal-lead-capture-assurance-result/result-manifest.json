@@ -1,0 +1,14 @@
+{
+  "taskId": "V2.8.62L",
+  "status": "complete_universal_assurance_airstrip_live_proof_held",
+  "tenantCount": 4,
+  "definitionCount": 35,
+  "instanceCount": 68,
+  "readyTenantCount": 3,
+  "runtimeFreezeTenantCount": 1,
+  "newControlledProofs": 2,
+  "apiDeploymentId": "2c1adcb8-1b79-46fc-910e-7f275085009a",
+  "adminDeploymentId": "97a3ab62-8a5f-4248-b2be-2006cb09eafc",
+  "airstripPublicRuntimeRequests": 0,
+  "indexingChanges": 0
+}
