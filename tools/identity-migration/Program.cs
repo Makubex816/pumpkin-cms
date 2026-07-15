@@ -57,27 +57,48 @@ async Task BackupAsync()
     var tenantDocs = await ReadAllAsync("Tenant");
     var userDocs = await ReadAllAsync("User");
     var formDocs = await ReadAllAsync("FormDefinition");
+    var identityContainers = new[] { "TenantIdentity", "TenantIdentifierAliases", "TenantRenameJobs", "UserAccounts",
+        "TenantMemberships", "IdentityRequests", "TenantContactSettings", "IdentityNotificationOutbox",
+        "SecurityAuditEvents", "IdentityMigration" };
+    var identityDocs = new Dictionary<string, List<JsonObject>>(StringComparer.Ordinal);
+    foreach (var container in identityContainers) identityDocs[container] = await ReadAllAsync(container);
     var restricted = Path.Combine(output, "restricted-rollback");
     var sanitized = Path.Combine(output, "sanitized-validation");
     Directory.CreateDirectory(restricted); Directory.CreateDirectory(sanitized);
     await WriteJsonAsync(Path.Combine(restricted, "Tenant.json"), tenantDocs);
     await WriteJsonAsync(Path.Combine(restricted, "User.json"), userDocs);
     await WriteJsonAsync(Path.Combine(restricted, "FormDefinition.json"), formDocs);
+    foreach (var item in identityDocs)
+        await WriteJsonAsync(Path.Combine(restricted, $"{item.Key}.json"), item.Value);
     await WriteJsonAsync(Path.Combine(sanitized, "tenants.json"), tenantDocs.Select(SanitizeTenant).ToArray());
     await WriteJsonAsync(Path.Combine(sanitized, "users.json"), userDocs.Select(SanitizeUser).ToArray());
     await WriteJsonAsync(Path.Combine(sanitized, "form-notification-references.json"), formDocs.Select(SanitizeFormReference).ToArray());
+    await WriteJsonAsync(Path.Combine(sanitized, "identity-inventory.json"), identityDocs.Select(item => new
+    {
+        container = item.Key, count = item.Value.Count,
+        safeDigests = item.Value.Select(x => new { id = Text(x, "id"), digest = SafeDigest(SanitizeIdentityJson(x)) }).ToArray()
+    }).ToArray());
     var inventory = new
     {
         toolVersion = ToolVersion, capturedAt = DateTime.UtcNow, databaseName,
         counts = new { tenants = tenantDocs.Count, users = userDocs.Count, formDefinitions = formDocs.Count },
         passwordHashPresenceCount = userDocs.Count(x => Text(x, "passwordHash").Length > 0),
-        sourceContainers = new[] { "Tenant", "User", "FormDefinition" },
-        restoreOrder = new[] { "Tenant", "User", "FormDefinition", "disable-identity-flags", "validate-login-and-access" },
+        identityCounts = identityDocs.ToDictionary(x => x.Key, x => x.Value.Count),
+        sourceContainers = new[] { "Tenant", "User", "FormDefinition" }.Concat(identityContainers).ToArray(),
+        restoreOrder = new[] { "Tenant", "User", "FormDefinition" }.Concat(identityContainers).Concat(["disable-identity-flags", "validate-login-and-access"]).ToArray(),
         restrictedBackup = true, sanitizedExport = true
     };
     await WriteJsonAsync(Path.Combine(output, "inventory.json"), inventory);
     await WriteChecksumManifestAsync(output);
     Console.WriteLine(JsonSerializer.Serialize(new { status = "backup_complete", tenants = tenantDocs.Count, users = userDocs.Count, output, toolVersion = ToolVersion }));
+}
+
+static string SanitizeIdentityJson(JsonObject source)
+{
+    var clone = source.DeepClone().AsObject();
+    foreach (var name in new[] { "passwordHash", "tokenHash", "tokenReferenceHash", "templateDataJson", "sourceIp", "userAgent" })
+        clone.Remove(name);
+    return clone.ToJsonString();
 }
 
 async Task ProvisionAsync()
