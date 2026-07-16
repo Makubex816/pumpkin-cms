@@ -1,0 +1,116 @@
+{
+  "taskId": "V2.8.63CRSTUR",
+  "status": "complete_readiness_gate_management_active_tenantadmin_transfer_pilot_held_retain_s2_ready_for_63d",
+  "closedAtUtc": "2026-07-16T14:08:03Z",
+  "repository": {
+    "branch": "feature/admin-page-editor-import-export",
+    "head": "87ba5cd0ec305d30b9345ea95475c1b7fcde1c62",
+    "stagingEmptyAtEntry": true,
+    "activeGitOperationAtEntry": false,
+    "dirtyWorktreePreserved": true
+  },
+  "apiPromotionCarryforward": {
+    "deploymentId": "c9451f4b-0b2e-44bc-9d08-ac9b767a6c05",
+    "packageSha256": "0cdd1dea1ff7a39d2484a7e3b36f1a0b2f76501f714732ba47c1c18452b0e7d4",
+    "packageBytes": 12045875,
+    "packageEntries": 56,
+    "replayed": false
+  },
+  "rollbackSlot": {
+    "name": "crr-validation",
+    "state": "Running",
+    "deploymentId": "f6bdf0d7-ca60-4e7f-818c-f4c74a710a86",
+    "preserved": true
+  },
+  "adminPromotionCarryforward": {
+    "deploymentId": "8c960132-3521-45c7-9a16-d5265ddbb640",
+    "buildId": "jXp9rYv0Dcu7KPH6sq1xI",
+    "packageSha256": "4a832102647f3fa56bc08c69c4a913e39dddaabb783737d2b1a9820979a0811f",
+    "packageBytes": 7437915,
+    "packageEntries": 2028,
+    "replayed": false
+  },
+  "managementActivation": {
+    "successfulAttempt": 11,
+    "stagesCompleted": 7,
+    "managementActive": true,
+    "allSevenStageFlagsActive": true,
+    "foundationDualReadDualWriteActive": true,
+    "renameMigrationAndExternalProviderHeld": true,
+    "tenantAdminTransferPilot": "held",
+    "finalAdminLiveConflict": "held-no-synthetic-only-tenant",
+    "syntheticCleanupIdempotent": true,
+    "customerCredentialMutations": 0,
+    "customerMembershipMutations": 0,
+    "customerOwnershipMutations": 0,
+    "airstripPublicRequests": 0,
+    "completedAtUtc": "2026-07-16T13:47:40.1475740Z"
+  },
+  "finalFeatureState": {
+    "identityFoundation": true,
+    "dualRead": true,
+    "dualWrite": true,
+    "management": true,
+    "passwordAndSessionManagement": true,
+    "tenantSwitcher": true,
+    "membershipManagement": true,
+    "contactManagement": true,
+    "superAdminManagement": true,
+    "providerAwareEmailRequests": true,
+    "tenantRename": false,
+    "migrationExecution": false,
+    "externalNotificationProvider": false,
+    "capacityDiagnostics": false,
+    "twoWorkersVerified": true
+  },
+  "customerPreservation": {
+    "tenants": 4,
+    "accounts": 6,
+    "memberships": 8,
+    "contacts": 4,
+    "formEntries": 12,
+    "pendingReconciliations": 0,
+    "pendingSecurityMutations": 0,
+    "pendingSyntheticOperations": 0,
+    "pendingAudits": 0,
+    "reconciliationClear": true,
+    "verifiedAtUtc": "2026-07-16T14:07:13.4956019Z"
+  },
+  "capacity": {
+    "s1Attempted": true,
+    "s1Failure": "TenantAdmin sequential login cycle 5 returned no HTTP response after 30013 ms",
+    "s1Window": {
+      "startedAtUtc": "2026-07-16T13:56:47.7856714Z",
+      "endedAtUtc": "2026-07-16T13:58:13.7486907Z",
+      "maxCpuMinuteAveragePercent": 10,
+      "maxMemoryMinuteAveragePercent": 72.5,
+      "maxHttpQueueLength": 0
+    },
+    "finalDecision": "retain_s2_two_workers_with_evidence",
+    "finalSku": "S2",
+    "finalWorkerCount": 2,
+    "s2RecoveryRuntimePassed": true,
+    "s2RecoveryMaxCpuMinuteAveragePercent": 61,
+    "s2RecoveryMaxMemoryMinuteAveragePercent": 56.666666666666664
+  },
+  "boundaries": {
+    "apiPromotionReplayed": false,
+    "slotSwapReplayed": false,
+    "adminDeploymentReplayed": false,
+    "customerCredentialsChanged": false,
+    "customerLoginEmailsChanged": false,
+    "customerTenantRenamed": false,
+    "airstripPublicRuntimeRequested": false,
+    "indexingChanged": false,
+    "externalEmailProviderConfigured": false,
+    "secretsPersisted": false
+  },
+  "evidence": {
+    "managementAttempt11": ".tmp/v2-8-63crstu/evidence/identity-management-stages-attempt-11",
+    "finalCapacityDecision": ".tmp/v2-8-63crstu/evidence/final-capacity-decision/final-capacity-decision.json",
+    "s1Attempt": ".tmp/v2-8-63crstu/evidence/s1-two-worker-retention-test-attempt-2",
+    "finalRuntimeSmoke": ".tmp/v2-8-63crstu/evidence/final-runtime-smoke-after-capacity-diagnostics-disabled",
+    "finalControlPlane": ".tmp/v2-8-63crstu/evidence/final-closeout-control-plane",
+    "finalIdentityVerify": ".tmp/v2-8-63crstu/evidence/final-customer-preservation-after-capacity-closeout/tool-final-identity-verify"
+  }
+}
