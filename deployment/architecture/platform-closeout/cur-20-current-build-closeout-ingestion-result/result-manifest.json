@@ -1,0 +1,93 @@
+{
+  "taskId": "CUR-20",
+  "title": "Current Build Closeout Ingestion, Active Downstream and Atlas Reconciliation, Phase-Name Simplification, Capacity-Decision Logging, Upstream Recheck, and Working-Memory/CHAT-PACK Regeneration",
+  "status": "blocked_active_downstream_or_atlas_not_identified",
+  "closedAtLocal": "2026-07-16T12:16:19.1594379-04:00",
+  "closedAtUtc": "2026-07-16T16:16:19Z",
+  "repository": {
+    "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms",
+    "branch": "feature/admin-page-editor-import-export",
+    "head": "7c252060d18df4001586e61f1ed8db0d152f1d01",
+    "headTree": "17f5320ac941bd26f63d5a4fc6f709165c110dd3",
+    "headParent": "87ba5cd0ec305d30b9345ea95475c1b7fcde1c62",
+    "headSubject": "docs: close out CRSTUR identity activation",
+    "stagingEmptyAtCloseoutWriteStart": true
+  },
+  "crstur": {
+    "legacyPhaseId": "V2.8.63CRSTUR",
+    "resultPath": "deployment/architecture/identity/v2-8-63crstu-readiness-identity-activation-result/",
+    "documentationCommit": "7c252060d18df4001586e61f1ed8db0d152f1d01",
+    "sourceHeadRecordedByCloseout": "87ba5cd0ec305d30b9345ea95475c1b7fcde1c62",
+    "status": "complete_readiness_gate_management_active_tenantadmin_transfer_pilot_held_retain_s2_ready_for_63d"
+  },
+  "inputPackages": {
+    "atlasBridge": {
+      "filename": "Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0.zip",
+      "sha256": "065523926d4005370b45de9778193b8249ef567454c66c30d32b4164eaa3b57c",
+      "entryCount": 104,
+      "crcReadErrors": 0,
+      "authority": "proposed_bridge_pending_active_build_atlas_ingestion"
+    },
+    "workingMemoryPrecloseout": {
+      "filename": "PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15.zip",
+      "sha256": "1ff1a4ab9cf8657df7566df8463e770dcc07e2a94fa6d47817ab1410264b49f9",
+      "entryCount": 46,
+      "crcReadErrors": 0,
+      "authority": "precloseout_active_phase_input"
+    }
+  },
+  "activeAtlas": {
+    "located": false,
+    "modificationAttempted": false,
+    "backupCreated": false,
+    "reason": "No active Build Atlas found outside the supplied proposed bridge package."
+  },
+  "liveReadback": {
+    "appServicePlan": {
+      "name": "asp-pumpkin-api-prod-centralus-001",
+      "sku": "S2",
+      "capacity": 2
+    },
+    "apiDeploymentId": "c9451f4b-0b2e-44bc-9d08-ac9b767a6c05",
+    "rollbackSlotDeploymentId": "f6bdf0d7-ca60-4e7f-818c-f4c74a710a86",
+    "adminDeploymentId": "8c960132-3521-45c7-9a16-d5265ddbb640",
+    "starterDeploymentId": "ecd75861-5600-4394-a20b-76202bead5c3",
+    "health": {
+      "apiHealth": 200,
+      "apiHealthAlias": 200,
+      "apiDependencyReadiness": 200,
+      "adminRoot": 200,
+      "starterRoot": 200
+    }
+  },
+  "upstreamRecheck": {
+    "repository": "https://github.com/SDI-AI/pumpkin-cms",
+    "branch": "main",
+    "head": "817e176cd6af7759c58923c713c5b8ac7cf79996",
+    "tree": "b4fed8406bd8ac8ab05ce8614d3cf3ba03cd1bbe",
+    "parents": [
+      "0c6e31a7184cd65d17cda66af9dc080293bd25f7",
+      "f7f83ef6614974fa9bf99b81755afb2bad959194"
+    ],
+    "commitDateUtc": "2026-07-16T15:17:48Z",
+    "message": "Merge branch 'main' of https://github.com/sdi-ai/pumpkin-cms",
+    "movedFromAtlasCandidate": true,
+    "movedFromPreviousObservedHead": true
+  },
+  "outputs": {
+    "atlasVersionReleased": false,
+    "workingMemoryVersionReleased": false,
+    "chatPackRegenerated": false,
+    "up20PromptCreated": true,
+    "idm40PromptCreated": true
+  },
+  "safety": {
+    "liveMutation": false,
+    "repositoryCodeMutation": false,
+    "activeAtlasOverwrite": false,
+    "packageZipGenerated": false,
+    "gitStagingUsed": false,
+    "commitCreated": false
+  }
+}
+
