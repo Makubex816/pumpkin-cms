@@ -1,0 +1,7 @@
+# Identity-management activation V2.8.63CRST
+
+Production identity-management activation is downstream of complete immutable API acceptance. Before deploying Admin or enabling mutation features, require production health, two-worker cold and warm login proof, dual-read and dual-write equivalence, one audit and session per successful login, preserved customer passwords/emails/roles/memberships/contact settings, Forms and tenant-runtime health, and immediate rollback readiness.
+
+Activate features incrementally: read-only identity UI; password/session management; tenant switching; users/memberships; contact and form-notification settings; SuperAdmin management; then provider-aware email requests. Use only a controlled synthetic identity for destructive proof, preserve final-admin protection, isolate TenantAdmin-transfer proof before any reversible live pilot, and verify health, isolation, audits, capacity recovery, and rollback after every stage. Tenant rename remains a separate held phase.
+
+CRST did not satisfy the API readiness prerequisite. Admin source was committed behind gates, but no Admin deployment, synthetic identity, password/session operation, membership operation, setting mutation, transfer, or email request was attempted. Production management flags and dual-write remain disabled. This is the required behavior for `blocked_three_corrected_slot_candidate_cycles_failed`.

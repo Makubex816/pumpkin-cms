@@ -1,0 +1,7 @@
+# App Service capacity retention decision standard V2.8.63CRST
+
+A controlled S1/two-worker retention test is permitted only after immutable production API acceptance, Admin deployment, complete identity-management activation, synthetic cleanup, stable rollback state, and no active slot swap or feature mutation. Stop nonessential validation load, record the S2 baseline, scale exactly to S1/two workers, and run health, dependency, invalid/approved role login, dual-write/audit, repetition, moderate burst, Admin, feature, Forms, and runtime checks.
+
+Retain S1 only with zero timeout or HTTP 500, every login below ten seconds, no worker-dependent result, sustained CPU below 85 percent, sustained memory below 90 percent, post-burst recovery, and no authorization or identity-write regression. On any failure, immediately return to S2/two workers, reprove health and approved logins, and do not repeat the S1 test. Never test B1, one worker, more than two workers, or an unapproved higher SKU.
+
+CRST stopped before the S1 test prerequisites. Its closeout state retains S2/two workers, with the validation slot stopped and production healthy. This is a safety retention state, not a completed successful capacity-retention decision. The current 72-hour S2 authorization expires at 2026-07-18T19:54:40.8078855Z; continued S2 retention beyond it requires an owner extension. A future owner-approved readiness candidate must complete production and management acceptance before the single S1 test is authorized.

@@ -1,0 +1,152 @@
+{
+  "taskId": "V2.8.63CRST",
+  "status": "blocked_three_corrected_slot_candidate_cycles_failed",
+  "closedAtUtc": "2026-07-16T00:47:00Z",
+  "crsrCarryforward": {
+    "status": "blocked_true_hard_gate_production_worker_or_capacity_owner_approval_required",
+    "closeoutCommit": "fec340b158696db2ba78747007a57fe8fbbf01c0",
+    "sourceCommit": "7a733d5f2812d8459716f7b9c2e76b5e6a3252b9",
+    "verified": true
+  },
+  "capacity": {
+    "scaleStartedAtUtc": "2026-07-15T19:57:17Z",
+    "scaleConvergedAtUtc": "2026-07-15T19:57:20Z",
+    "finalSku": "S2",
+    "finalWorkerCount": 2,
+    "s1RetentionTestAttempted": false
+  },
+  "approval": {
+    "ignoredRelativePath": ".tmp/v2-8-63crst/owner-input/pumpkin-api-s2-two-worker-capacity-approval.json",
+    "sha256": "836831e3cf950c5caa2c0b6d43f12f486c71439acfa62ef6c7e6c4186414f6e2",
+    "approvedAtUtc": "2026-07-15T19:54:40.8078855Z",
+    "initialApprovalExpiresAtUtc": "2026-07-18T19:54:40.8078855Z",
+    "extensionRequiredBeyondInitialWindow": true
+  },
+  "sourceCommits": {
+    "clean": [
+      "c354cfb6",
+      "dc1c225e",
+      "03211a7e",
+      "e65e76c1",
+      "6d781337"
+    ],
+    "branch": [
+      "b88c7825",
+      "36407cd3",
+      "51039ead",
+      "ac62862c",
+      "2864c664"
+    ]
+  },
+  "materialSlotCandidates": [
+    {
+      "ordinal": 1,
+      "runtimeSourceCommit": "c354cfb6",
+      "packageSourceTree": "dc1c225e",
+      "sha256": "ef11dea4404c53ea00b98aa5f9dc5ade042d1d2ca7c6558201d9deb31802907a",
+      "slotDeploymentId": "05724e1d-6724-47b6-8f54-0f0595a8375d",
+      "failedGate": "zero_write_direct_diagnostic_authorization",
+      "failure": {
+        "atUtc": "2026-07-15T23:04:21Z",
+        "status": 401,
+        "milliseconds": 4982,
+        "error": "identity_session_invalid",
+        "endpointExecuted": false
+      },
+      "materialCorrectionCommit": "e65e76c1"
+    },
+    {
+      "ordinal": 2,
+      "runtimeSourceCommit": "e65e76c1",
+      "sha256": "43b46d0757360e2432dbdf24db0aec7003c0ef02f1ea621a6ee4fee30404e1a7",
+      "slotDeploymentId": "aa215fb2-146c-4fc7-ae7a-a472f09f8ec2",
+      "failedGate": "stage_a_cold_worker",
+      "failure": {
+        "requestsPassed": 17,
+        "requestsTotal": 18,
+        "status": 503,
+        "clientMilliseconds": 6774,
+        "serverMilliseconds": 6166,
+        "legacyLookupMilliseconds": 6106,
+        "bcryptCalls": 0,
+        "writes": 0,
+        "error": "TimeoutException"
+      },
+      "materialCorrectionCommit": "6d781337"
+    },
+    {
+      "ordinal": 3,
+      "runtimeSourceCommit": "6d781337",
+      "sha256": "0eed05a93c21f1291a8d2d1e89c15ef7c7b00d6dca3d729f7987a17e9e7aae29",
+      "bytes": 11957894,
+      "slotDeploymentId": "31667716-211b-473d-8027-e98e92d0e895",
+      "failedGate": "production_parity_cold_worker_readiness",
+      "requiredCorrection": "A packaged truthful readiness endpoint plus App Service routing and swap-warmup enforcement; this would be a fourth material candidate."
+    }
+  ],
+  "nonMaterialToolOnlyDeployment": {
+    "runtimeSourceCommit": "03211a7e",
+    "sha256": "6a4e76b139ca0d7da50dcffa18d495d4145a62a4b8fc8242a4faf2b7b78717cb",
+    "slotDeploymentId": "8abe45bb-e2b9-479b-852f-3f53fa44a9ba",
+    "countedAsMaterialCandidate": false
+  },
+  "finalCandidateAcceptance": {
+    "stageAPassed": true,
+    "stageBWarmPassed": true,
+    "failedFirstTouchDelaysSeconds": [
+      38.19,
+      28.74
+    ],
+    "stabilizedDelaySeconds": 136.542,
+    "stabilizedRequestsPassed": 18,
+    "stabilizedRequestsTotal": 18,
+    "successfulLoginAudits": 16,
+    "successfulLoginSessions": 16,
+    "enforceableReadinessGatePresent": false,
+    "eachPassingScheduleIncludedFiveSequentialCyclesPerRole": true,
+    "eachPassingScheduleIncludedTwoRequestModerateBurst": true,
+    "workerStability": {
+      "stageAWarm": {
+        "maxProcessCpuMilliseconds": 5922.234,
+        "maxThreadPoolPending": 0,
+        "minimumAvailableWorkerThreads": 32765
+      },
+      "stageACold": {
+        "maxProcessCpuMilliseconds": 6375.815,
+        "maxThreadPoolPending": 2,
+        "minimumAvailableWorkerThreads": 32764
+      },
+      "stageBWarm": {
+        "maxProcessCpuMilliseconds": 1453.155,
+        "maxThreadPoolPending": 0,
+        "minimumAvailableWorkerThreads": 32765
+      },
+      "stageBStabilizedCold": {
+        "maxProcessCpuMilliseconds": 5690.705,
+        "maxThreadPoolPending": 3,
+        "minimumAvailableWorkerThreads": 32764
+      }
+    }
+  },
+  "production": {
+    "deploymentChanged": false,
+    "deploymentId": "f6bdf0d7-ca60-4e7f-818c-f4c74a710a86",
+    "identityFoundation": true,
+    "dualRead": true,
+    "dualWrite": false,
+    "managementFeatures": false
+  },
+  "slot": {
+    "name": "crr-validation",
+    "finalState": "Stopped",
+    "dualWrite": false,
+    "capacityDiagnostics": false
+  },
+  "productionSwapAttempted": false,
+  "adminDeploymentAttempted": false,
+  "syntheticIdentityCreated": false,
+  "tenantRenameEnabled": false,
+  "airstripPublicRuntimeRequested": false,
+  "indexingChanged": false,
+  "nextStep": "Owner approval for a fourth packaged truthful-readiness candidate; do not begin V2.8.63D."
+}
