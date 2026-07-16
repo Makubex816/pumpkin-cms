@@ -8,8 +8,22 @@ using System.Diagnostics;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text.Json.Nodes;
+using System.Collections.ObjectModel;
 
 namespace pumpkin_api.Services;
+
+public sealed class CosmosIdentityReadinessException : Exception
+{
+    public CosmosIdentityReadinessException(
+        IReadOnlyDictionary<string, long> stageTimingsMs,
+        Exception innerException)
+        : base("cosmos_identity_readiness_probe_failed", innerException)
+    {
+        StageTimingsMs = stageTimingsMs;
+    }
+
+    public IReadOnlyDictionary<string, long> StageTimingsMs { get; }
+}
 
 /// <summary>
 /// Cosmos DB implementation of IDataConnection.
@@ -21,6 +35,8 @@ public class CosmosDataConnection : IDataConnection, IDisposable
     private readonly Database _database;
     private readonly ILogger<CosmosDataConnection> _logger;
     private readonly string _accountHost;
+    private readonly object _accountMetadataTaskGate = new();
+    private Task? _accountMetadataTask;
     private bool _disposed = false;
 
     internal CosmosClient SharedClient => _cosmosClient;
@@ -2345,6 +2361,107 @@ public class CosmosDataConnection : IDataConnection, IDisposable
             _logger.LogError(ex, "Error retrieving user during legacy login lookup");
             throw;
         }
+    }
+
+    /// <summary>
+    /// Performs the bounded, zero-write data-plane checks required before this
+    /// worker can receive identity traffic. Projected locator values and point
+    /// read content are deliberately discarded and never logged or returned.
+    /// </summary>
+    public async Task<IReadOnlyDictionary<string, long>> ProbeIdentityReadinessAsync(
+        CancellationToken cancellationToken)
+    {
+        var timings = new Dictionary<string, long>(StringComparer.Ordinal);
+
+        async Task StageAsync(string stage, Func<CancellationToken, Task> action)
+        {
+            using var bounded = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            bounded.CancelAfter(TimeSpan.FromSeconds(65));
+            var timer = Stopwatch.StartNew();
+            try
+            {
+                await action(bounded.Token).WaitAsync(bounded.Token);
+                _logger.LogInformation(
+                    "DependencyReadinessCosmosStage stage={Stage} result=success elapsedMs={ElapsedMs}",
+                    stage,
+                    timer.ElapsedMilliseconds);
+            }
+            catch (Exception error)
+            {
+                timings[stage] = timer.ElapsedMilliseconds;
+                _logger.LogWarning(
+                    "DependencyReadinessCosmosStage stage={Stage} result=failure category={Category} elapsedMs={ElapsedMs}",
+                    stage,
+                    SafeCategory(error),
+                    timer.ElapsedMilliseconds);
+                throw new CosmosIdentityReadinessException(
+                    new ReadOnlyDictionary<string, long>(
+                        new Dictionary<string, long>(timings, StringComparer.Ordinal)),
+                    error);
+            }
+            finally
+            {
+                timings[stage] = timer.ElapsedMilliseconds;
+            }
+        }
+
+        await StageAsync("account_metadata", async token =>
+            await GetAccountMetadataTask().WaitAsync(token));
+        await StageAsync("database_metadata", async token =>
+            _ = await _database.ReadAsync(cancellationToken: token).WaitAsync(token));
+        await StageAsync("locator_container_metadata", async token =>
+            _ = await _database.GetContainer("UserAccounts")
+                .ReadContainerAsync(cancellationToken: token).WaitAsync(token));
+        await StageAsync("legacy_container_metadata", async token =>
+            _ = await _database.GetContainer("User")
+                .ReadContainerAsync(cancellationToken: token).WaitAsync(token));
+
+        await StageAsync("locator_query", async token =>
+        {
+            var query = new QueryDefinition(
+                    "SELECT TOP 1 VALUE 1 FROM c WHERE c.normalizedEmail = @syntheticEmail")
+                .WithParameter("@syntheticEmail", "__PUMPKIN_READINESS_PROBE__@READINESS.INVALID");
+            using var iterator = _database.GetContainer("UserAccounts")
+                .GetItemQueryIterator<int>(
+                    query,
+                    requestOptions: new QueryRequestOptions
+                    {
+                        PartitionKey = new PartitionKey("global"),
+                        MaxItemCount = 1,
+                        MaxConcurrency = 1
+                    });
+            if (iterator.HasMoreResults)
+                _ = await iterator.ReadNextAsync(token).WaitAsync(token);
+        });
+
+        await StageAsync("legacy_point_read", async token =>
+        {
+            var legacy = _database.GetContainer("User");
+            using var response = await legacy.ReadItemStreamAsync(
+                "00000000-0000-0000-0000-000000000000",
+                new PartitionKey("__identity_readiness_probe__"),
+                cancellationToken: token).WaitAsync(token);
+            if (!response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.NotFound)
+                response.EnsureSuccessStatusCode();
+        });
+
+        return new ReadOnlyDictionary<string, long>(timings);
+    }
+
+    private Task GetAccountMetadataTask()
+    {
+        lock (_accountMetadataTaskGate)
+        {
+            if (_accountMetadataTask is null ||
+                (_accountMetadataTask.IsCompleted && !_accountMetadataTask.IsCompletedSuccessfully))
+                _accountMetadataTask = ReadAccountMetadataAsync();
+            return _accountMetadataTask;
+        }
+    }
+
+    private async Task ReadAccountMetadataAsync()
+    {
+        _ = await _cosmosClient.ReadAccountAsync();
     }
 
     public async Task<object> DiagnoseLegacyLookupAsync(string email, string requestId, CancellationToken cancellationToken)

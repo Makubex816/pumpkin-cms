@@ -2,6 +2,7 @@ using pumpkin_api.Services;
 using pumpkin_api.Services.DomainBindings;
 using pumpkin_api.Services.TenantRedirects;
 using pumpkin_api.Services.Identity;
+using pumpkin_api.Services.Readiness;
 using pumpkin_api.Managers;
 using pumpkin_net_models.Models;
 using System.Text.Json;
@@ -234,6 +235,7 @@ builder.Services.AddImportExecutionProjectionReadOnlyFoundation();
 builder.Services.AddOperatorHandoffReadOnlyFoundation();
 builder.Services.AddDomainBindingFoundation();
 builder.Services.AddIdentityFoundation(builder.Configuration);
+builder.Services.AddDependencyReadiness();
 
 var app = builder.Build();
 
@@ -316,7 +318,8 @@ static bool IsDependencyLightHealthPath(HttpContext context)
 {
     var path = context.Request.Path.Value;
     return string.Equals(path, "/health", StringComparison.OrdinalIgnoreCase) ||
-        string.Equals(path, "/api/health", StringComparison.OrdinalIgnoreCase);
+        string.Equals(path, "/api/health", StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(path, AppServiceReadinessContract.Path, StringComparison.OrdinalIgnoreCase);
 }
 
 // Local development media serving. Production media should use Azure Blob/CDN-compatible storage.
@@ -3719,6 +3722,7 @@ app.MapDelete("/api/admin/themes/{tenantId}/{themeId}",
     .WithDescription("Deletes a theme by ID for a specific tenant. Requires JWT authentication.");
 
 app.MapIdentityFoundation();
+app.MapDependencyReadiness();
 
 app.Run();
 
