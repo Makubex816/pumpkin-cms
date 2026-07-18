@@ -1,0 +1,307 @@
+{
+  "status": "blocked_atlas_security_or_history_preservation",
+  "activeStateValues": [
+    "ACTIVE",
+    "ACTIVE_BACKUP",
+    "ACTIVE_ROLLBACK",
+    "ACTIVE_INPUT",
+    "ACTIVE_OUTPUT",
+    "CURRENT_REFERENCE",
+    "PROPOSED",
+    "HISTORICAL",
+    "SUPERSEDED",
+    "STALE",
+    "RECOVERABLE",
+    "UNKNOWN"
+  ],
+  "resources": [
+    {
+      "resourceId": "SRC-ACTIVE-REPO",
+      "name": "PumpkinCMS active downstream repository",
+      "category": "source repository",
+      "path": "pumpkin-cms",
+      "parentArea": "pumpkin-cms",
+      "version": "feature/admin-page-editor-import-export",
+      "hash": "611b8237a7d8c3123965edfba7f59b597f31bdf4",
+      "manifest": "git HEAD",
+      "checksumState": "git object verified by rev-parse",
+      "activeState": "ACTIVE",
+      "authority": "active downstream repo for CUR-20 documentation and result lane",
+      "confidentiality": "repository",
+      "gitState": "dirty with unrelated pre-existing changes; staging empty before A02 writes",
+      "externalLiveLinkage": "CRSTUR deployment references carried forward from A01",
+      "evidence": [
+        "git-repository-and-worktree-audit.md",
+        "parent-workspace-inventory.md"
+      ],
+      "notes": "A02 adds documentation only and does not stage unrelated changes."
+    },
+    {
+      "resourceId": "SRC-CRSTU-WORKTREE",
+      "name": "CRSTU build/source snapshot",
+      "category": "Git worktree",
+      "path": "v2-8-63crstu-build",
+      "parentArea": "v2-8-63crstu-build",
+      "version": "detached worktree",
+      "hash": "87ba5cd0ec305d30b9345ea95475c1b7fcde1c62",
+      "manifest": "git HEAD",
+      "checksumState": "git object verified by rev-parse",
+      "activeState": "CURRENT_REFERENCE",
+      "authority": "CRSTU build snapshot / source evidence",
+      "confidentiality": "repository",
+      "gitState": "dirtyPathCount=1",
+      "externalLiveLinkage": "CRSTUR source head recorded by A01",
+      "evidence": [
+        "git-repository-and-worktree-audit.md"
+      ],
+      "notes": "Not selected as active Atlas source."
+    },
+    {
+      "resourceId": "SRC-UPSTREAM-MIRROR",
+      "name": "SDI-AI upstream local mirror",
+      "category": "source repository",
+      "path": "external-reference/SDI-AI-pumpkin-cms",
+      "parentArea": "external-reference",
+      "version": "main",
+      "hash": "565a8afd669a42224a9d15759f7060faa375d000",
+      "manifest": "git HEAD",
+      "checksumState": "git object verified by rev-parse",
+      "activeState": "STALE",
+      "authority": "reference mirror only; current upstream main rechecked remotely",
+      "confidentiality": "repository",
+      "gitState": "clean",
+      "externalLiveLinkage": "remote main head 817e176cd6af7759c58923c713c5b8ac7cf79996",
+      "evidence": [
+        "upstream-recheck.md",
+        "git-repository-and-worktree-audit.md"
+      ],
+      "notes": "No tracked Atlas structure or history signatures."
+    },
+    {
+      "resourceId": "SRC-PUBLIC-DOWNSTREAM",
+      "name": "Makubex816 public downstream mirror",
+      "category": "source repository",
+      "path": "external-reference/Makubex816-pumpkin-cms",
+      "parentArea": "external-reference",
+      "version": "main",
+      "hash": "64156a3015943f08bc89cadb2caae910d5cadf4f",
+      "manifest": "git HEAD",
+      "checksumState": "git object verified by rev-parse",
+      "activeState": "HISTORICAL",
+      "authority": "public lineage reference, not active build proof",
+      "confidentiality": "repository",
+      "gitState": "clean",
+      "externalLiveLinkage": "none selected for CUR-20",
+      "evidence": [
+        "git-repository-and-worktree-audit.md"
+      ],
+      "notes": "Matches the supplied bridge publicDownstream reference."
+    },
+    {
+      "resourceId": "ATLAS-BRIDGE-V3",
+      "name": "Supplied Atlas v3 bridge extracted by A01",
+      "category": "proposed bridge",
+      "path": "cur-20-package-work/inputs/atlas-v3/Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0",
+      "parentArea": "cur-20-package-work",
+      "version": "3.0.0",
+      "hash": "065523926d4005370b45de9778193b8249ef567454c66c30d32b4164eaa3b57c",
+      "manifest": "package-manifest.json",
+      "checksumState": "A01 CRC ok; manifest SHA-256 bdc6dc218ba5a0c81393838e412c4a1b1a7a21abc4c721f117f2afca6701d0b4",
+      "activeState": "PROPOSED",
+      "authority": "proposed bridge only; not active Atlas",
+      "confidentiality": "operator package metadata",
+      "gitState": "outside repo working tree as extracted input",
+      "externalLiveLinkage": "upstream candidate 18b5cea was superseded by current upstream 817e176",
+      "predecessor": "previous proposed build maps embedded as references",
+      "successor": "none",
+      "evidence": [
+        "atlas-candidate-register.md",
+        "atlas-authority-matrix.md"
+      ],
+      "notes": "Contains `.project-ops`, ledgers, schemas, generator, validator, and CHAT-PACK, but self-identifies as pre-closeout/proposed."
+    },
+    {
+      "resourceId": "WM-V090",
+      "name": "Working-memory v0.9 precloseout package",
+      "category": "working-memory package",
+      "path": "cur-20-package-work/inputs/working-memory-v090/PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15",
+      "parentArea": "cur-20-package-work",
+      "version": "0.9.0-precloseout",
+      "hash": "1ff1a4ab9cf8657df7566df8463e770dcc07e2a94fa6d47817ab1410264b49f9",
+      "manifest": "PACKAGE-MANIFEST.json",
+      "checksumState": "A01 CRC ok; extracted manifest SHA-256 6314a90ad0b7d3ed8acd7c85ff934469112c78fbb418123357337ed89c377ae8",
+      "activeState": "ACTIVE_INPUT",
+      "authority": "precloseout working-memory input only",
+      "confidentiality": "operator package metadata",
+      "gitState": "outside repo working tree as extracted input",
+      "externalLiveLinkage": "none",
+      "evidence": [
+        "working-memory-chat-pack-result.md",
+        "atlas-candidate-register.md"
+      ],
+      "notes": "Not regenerated because no active Atlas was selected."
+    },
+    {
+      "resourceId": "RESULT-A01",
+      "name": "CUR-20-A01 blocked closeout result",
+      "category": "active output",
+      "path": "pumpkin-cms/deployment/architecture/platform-closeout/cur-20-current-build-closeout-ingestion-result",
+      "parentArea": "pumpkin-cms",
+      "version": "A01",
+      "hash": "611b8237a7d8c3123965edfba7f59b597f31bdf4",
+      "manifest": "result-manifest.json",
+      "checksumState": "committed",
+      "activeState": "ACTIVE_OUTPUT",
+      "authority": "preserved A01 evidence",
+      "confidentiality": "operator report",
+      "gitState": "committed",
+      "externalLiveLinkage": "contains CRSTUR/live carryforward from A01",
+      "evidence": [
+        "README.md",
+        "cur-20-reconciliation-result.md"
+      ],
+      "notes": "A02 is nested under this lane."
+    },
+    {
+      "resourceId": "SECURE-HANDOFF",
+      "name": "Secure operator handoff tree",
+      "category": "secure handoff",
+      "path": "secure-operator-handoff",
+      "parentArea": "secure-operator-handoff",
+      "version": "mixed",
+      "hash": null,
+      "manifest": "31 manifest/checksum-like files",
+      "checksumState": "metadata hashes recorded only",
+      "activeState": "CURRENT_REFERENCE",
+      "authority": "secure operator metadata and secret boundary",
+      "confidentiality": "secret-bearing boundary; values not printed",
+      "gitState": "not a Git repo",
+      "externalLiveLinkage": "tenant/platform handoff references",
+      "evidence": [
+        "secure-handoff-metadata-audit.md"
+      ],
+      "notes": "Known hardcopy/credential files were not opened for value disclosure."
+    },
+    {
+      "resourceId": "SECURE-PLATFORM-IDENTITY-CRST",
+      "name": "Platform identity CRST capacity and identity activation handoff",
+      "category": "metadata register",
+      "path": "secure-operator-handoff/platform-identity/v2-8-63crst-capacity-and-identity-activation",
+      "parentArea": "secure-operator-handoff/platform-identity",
+      "version": "V2.8.63CRST",
+      "hash": "8f12c9ed79d6bddb7b0340858c53101645b1602b99c805a0a39ad1fd5886feac",
+      "manifest": "result-manifest.json",
+      "checksumState": "manifest and CHECKSUMS.sha256 present",
+      "activeState": "CURRENT_REFERENCE",
+      "authority": "identity/capacity handoff evidence",
+      "confidentiality": "secure metadata",
+      "gitState": "not a Git repo",
+      "externalLiveLinkage": "CRST/CRSTU identity lane",
+      "evidence": [
+        "secure-handoff-metadata-audit.md"
+      ],
+      "notes": "Metadata only; no secrets printed."
+    },
+    {
+      "resourceId": "TENANT-INTAKE",
+      "name": "Tenant onboarding intake",
+      "category": "tenant intake",
+      "path": "tenant-onboarding-intake",
+      "parentArea": "tenant-onboarding-intake",
+      "version": "mixed tenants",
+      "hash": null,
+      "manifest": "tenant package archives and extracted content",
+      "checksumState": "archive hashes sampled in archive audit",
+      "activeState": "ACTIVE_INPUT",
+      "authority": "customer/private content intake boundary",
+      "confidentiality": "customer/private content",
+      "gitState": "not a Git repo",
+      "externalLiveLinkage": "tenant launch/onboarding lanes",
+      "evidence": [
+        "archive-and-backup-audit.md"
+      ],
+      "notes": "Top-level tenant areas: PartyPros, StripClubNearMeVegas, secondary-candidate, TRUENewestTenant, 7-10-2026 new tentant."
+    },
+    {
+      "resourceId": "ARCHIVE-CENSUS",
+      "name": "Parent workspace archive census",
+      "category": "backup",
+      "path": ".",
+      "parentArea": "all",
+      "version": "A02",
+      "hash": null,
+      "manifest": "134 archive files",
+      "checksumState": "SHA-256 calculated; central directory inspected where ZIP; no corrupt archive observed",
+      "activeState": "CURRENT_REFERENCE",
+      "authority": "archive/backup resource inventory",
+      "confidentiality": "mixed; customer and secure package boundaries respected",
+      "gitState": "mixed",
+      "externalLiveLinkage": "rollback and tenant backup packages",
+      "evidence": [
+        "archive-and-backup-audit.md"
+      ],
+      "notes": "No archive central directory contained Atlas/working-memory structural signatures."
+    },
+    {
+      "resourceId": "DEPLOYMENT-REFS",
+      "name": "CRSTUR live deployment reference set",
+      "category": "active deployment reference",
+      "path": "pumpkin-cms/deployment/architecture/identity/v2-8-63crstu-readiness-identity-activation-result",
+      "parentArea": "pumpkin-cms",
+      "version": "V2.8.63CRSTUR",
+      "hash": "7c252060d18df4001586e61f1ed8db0d152f1d01",
+      "manifest": "CRSTUR result package",
+      "checksumState": "committed docs",
+      "activeState": "CURRENT_REFERENCE",
+      "authority": "live carryforward reference, not re-mutated",
+      "confidentiality": "operator report",
+      "gitState": "committed before A02",
+      "externalLiveLinkage": "API c9451f4b, rollback f6bdf0d7, Admin 8c960132, starter ecd75861, S2/two workers",
+      "evidence": [
+        "cur-20-reconciliation-result.md",
+        "capacity-perf-10-overlay.md"
+      ],
+      "notes": "Deployment references carried from CRSTUR/A01; A02 made no live Azure changes."
+    },
+    {
+      "resourceId": "TOOLS-ATLAS-BRIDGE",
+      "name": "Bridge package Atlas tools",
+      "category": "tool",
+      "path": "cur-20-package-work/inputs/atlas-v3/Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0/tools",
+      "parentArea": "cur-20-package-work",
+      "version": "3.0.0",
+      "hash": null,
+      "manifest": "package-manifest.json",
+      "checksumState": "listed in bridge package manifest",
+      "activeState": "PROPOSED",
+      "authority": "tools for proposed bridge only",
+      "confidentiality": "operator package metadata",
+      "gitState": "outside repo",
+      "externalLiveLinkage": "none",
+      "evidence": [
+        "atlas-package-result.md"
+      ],
+      "notes": "Contains update, validation, release-package, and chat-pack scripts; not executed for mutation."
+    },
+    {
+      "resourceId": "PROGRAM-MGMT-SHELLS",
+      "name": "Program-management intake/output shells",
+      "category": "program-management input",
+      "path": "program-management-intake; program-management-output",
+      "parentArea": "program-management-intake/program-management-output",
+      "version": "OPS-010 shell",
+      "hash": null,
+      "manifest": "none",
+      "checksumState": "empty",
+      "activeState": "UNKNOWN",
+      "authority": "no active Atlas evidence",
+      "confidentiality": "none observed",
+      "gitState": "not Git repos",
+      "externalLiveLinkage": "none",
+      "evidence": [
+        "parent-workspace-inventory.md"
+      ],
+      "notes": "No active Atlas, outputs, schemas, logs, or CHAT-PACK found."
+    }
+  ]
+}

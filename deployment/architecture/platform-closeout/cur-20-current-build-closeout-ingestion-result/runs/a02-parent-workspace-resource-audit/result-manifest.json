@@ -1,0 +1,63 @@
+{
+  "taskId": "CUR-20-A02",
+  "title": "Full PumpkinCMS Parent-Workspace Active Resource Audit, Build Atlas Discovery, Secure Handoff and Backup Reconciliation, Active Source and Package Authority Map, and CUR-20 Continuation",
+  "status": "blocked_atlas_security_or_history_preservation",
+  "completedAtUtc": "2026-07-16T18:31:38Z",
+  "workspaceRootPolicy": "parent-workspace audited; distributable docs use relative paths",
+  "repository": {
+    "relativePath": "pumpkin-cms",
+    "branch": "feature/admin-page-editor-import-export",
+    "headAtAudit": "611b8237a7d8c3123965edfba7f59b597f31bdf4",
+    "a01Commit": "611b8237a7d8c3123965edfba7f59b597f31bdf4",
+    "crsturDocsCommit": "7c252060d18df4001586e61f1ed8db0d152f1d01",
+    "stagingUsed": false,
+    "commitCreated": false
+  },
+  "auditScope": {
+    "topLevelAreaCount": 20,
+    "gitRepositoryOrWorktreeCount": 6,
+    "archiveCount": 134,
+    "archiveBytes": 1192351715,
+    "safeTextSignatureMatchedFiles": 1525,
+    "structuralAtlasOrWorkingMemorySignatureObjects": 19,
+    "secureManifestLikeFiles": 31
+  },
+  "activeAtlas": {
+    "selected": false,
+    "backupCreated": false,
+    "modificationAttempted": false,
+    "reason": "No authoritative active or recoverable active Atlas was found. The only complete Atlas-shaped tree is the supplied v3 proposed bridge, whose manifest and current state mark it pre-closeout and not active."
+  },
+  "cur20Continuation": {
+    "crsturIngestedIntoAuditDocs": true,
+    "crsturAppliedToActiveAtlas": false,
+    "atlasPackageGenerated": false,
+    "workingMemoryV1Generated": false,
+    "chatPackRegenerated": false,
+    "up20PromptPreserved": true,
+    "idm40PromptPreserved": true
+  },
+  "upstreamRecheck": {
+    "repo": "https://github.com/SDI-AI/pumpkin-cms",
+    "branch": "main",
+    "fetchedAtUtc": "2026-07-16T18:26:35Z",
+    "head": "817e176cd6af7759c58923c713c5b8ac7cf79996",
+    "tree": "b4fed8406bd8ac8ab05ce8614d3cf3ba03cd1bbe",
+    "parents": [
+      "0c6e31a7184cd65d17cda66af9dc080293bd25f7",
+      "f7f83ef6614974fa9bf99b81755afb2bad959194"
+    ],
+    "date": "2026-07-16T11:17:48-04:00",
+    "message": "Merge branch 'main' of https://github.com/sdi-ai/pumpkin-cms",
+    "changedSinceA01ObservedHead": 0,
+    "workflowCount": 0
+  },
+  "safety": {
+    "liveMutation": false,
+    "archiveExecution": false,
+    "secretValuePrinted": false,
+    "airstripRuntimeRequested": false,
+    "indexingAction": false,
+    "gitAddAllUsed": false
+  }
+}
