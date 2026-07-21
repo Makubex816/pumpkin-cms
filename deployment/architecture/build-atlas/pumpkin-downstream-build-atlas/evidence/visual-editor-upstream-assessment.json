@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "3.0.0",
+  "evidenceId": "EV-VISUAL-EDITOR-UPSTREAM-ASSESSMENT-18B5",
+  "observedAt": "2026-07-15T14:45:00-04:00",
+  "upstreamSnapshotSha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+  "implementationObserved": true,
+  "decision": "adapt_or_port_with_downstream_tenant_role_migration_and_reliability_layers",
+  "strengths": [
+    "authenticated visual preview route",
+    "preview-to-editor messaging",
+    "block insert, edit, move, duplicate, delete, and enable filtering",
+    "stable block identity fields in .NET and TypeScript contracts",
+    "desktop/tablet/mobile preview widths",
+    "page metadata, SEO, structured data, and relationships",
+    "nested navigation editing and header-logo media selection",
+    "unsaved-change warning and explicit page/header save controls",
+    "preview blocks link navigation and form submission as a UX safeguard"
+  ],
+  "observedPaths": [
+    "apps/starter-app/src/app/admin/(workspace)/pages/_components/PageVisualEditor.tsx",
+    "apps/starter-app/src/app/admin/preview/VisualPreviewFrame.tsx",
+    "apps/starter-app/src/components/PageRenderer.tsx",
+    "apps/starter-app/src/components/admin/MenuTreeEditor.tsx",
+    "apps/starter-app/src/components/blocks/ContentBlocksEditor.tsx",
+    "apps/starter-app/src/lib/visual-editor-messages.ts",
+    "apps/pumpkin-net-models/Models/IHtmlBlock.cs",
+    "apps/pumpkin-net-models/Models/HtmlBlockBase.cs"
+  ],
+  "gaps": [
+    {
+      "id": "VE-GAP-001",
+      "priority": "P0",
+      "area": "data_migration",
+      "requirement": "deterministically backfill stable IDs and prove every known and custom block round-trips without content/order drift"
+    },
+    {
+      "id": "VE-GAP-002",
+      "priority": "P0",
+      "area": "tenant_and_role_isolation",
+      "requirement": "adapt starter single-tenant context to downstream TenantAdmin/SuperAdmin authorization and audit"
+    },
+    {
+      "id": "VE-GAP-003",
+      "priority": "P0",
+      "area": "concurrency",
+      "requirement": "ETag/version preconditions prevent silent overwrite"
+    },
+    {
+      "id": "VE-GAP-004",
+      "priority": "P0",
+      "area": "save_readback",
+      "requirement": "verify page/theme/navigation state and cache invalidation after write"
+    },
+    {
+      "id": "VE-GAP-005",
+      "priority": "P1",
+      "area": "preview_security",
+      "requirement": "review iframe sandbox/CSP/message origin and ensure server-side no-write enforcement for preview"
+    },
+    {
+      "id": "VE-GAP-006",
+      "priority": "P1",
+      "area": "rich_html",
+      "requirement": "replace or rigorously qualify regex-only sanitization with a maintained sanitizer/trusted policy"
+    },
+    {
+      "id": "VE-GAP-007",
+      "priority": "P1",
+      "area": "browser_e2e_and_rollback",
+      "requirement": "prove all editor operations, responsive preview, save/reload, conflict, and legacy rollback"
+    }
+  ],
+  "acceptance": [
+    "open/edit/save/reload existing pages without semantic drift",
+    "all block IDs remain stable across subsequent edits",
+    "TenantAdmin cannot read/write another tenant",
+    "SuperAdmin context changes are explicit and audited",
+    "preview cannot create a FormEntry or navigate unexpectedly",
+    "stale save returns conflict rather than overwriting",
+    "public runtime reflects successful save after authoritative readback"
+  ],
+  "qualificationStatus": "source_review_complete_runtime_migration_and_cleanroom_proof_pending"
+}

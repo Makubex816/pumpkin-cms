@@ -1,0 +1,10 @@
+matrixVersion: 4.0.0
+checks:
+  - { id: json-yaml-parse, status: passed_by_tools_validate_package }
+  - { id: package-manifest-and-checksum, status: passed_by_tools_validate_package }
+  - { id: source-zip-integrity, status: passed_with_limitation, note: original ZIPs absent; A01 committed SHA/CRC evidence preserved and extracted input trees present }
+  - { id: azure-readonly, status: passed }
+  - { id: runtime-get-probes, status: passed }
+  - { id: upstream-recheck, status: observed_unfrozen_not_ingested }
+  - { id: deterministic-release, status: pending_until_release_workspace_run }
+  - { id: no-zip-committed, status: passed_if_git_status_has_no_zip_under_canonical_path }

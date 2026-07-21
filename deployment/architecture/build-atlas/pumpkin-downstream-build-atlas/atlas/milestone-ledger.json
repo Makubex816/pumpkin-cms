@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "4.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "milestones": [
+    {
+      "id": "V2.8.61K",
+      "status": "complete_historical_resource_atlas",
+      "commit": "61357bee8dea1c0c9d07b52e16389975d7b764be"
+    },
+    {
+      "id": "V2.8.63CRSTUR",
+      "status": "complete_readiness_gate_management_active_tenantadmin_transfer_pilot_held_retain_s2_ready_for_63d",
+      "commit": "7c252060d18df4001586e61f1ed8db0d152f1d01"
+    },
+    {
+      "id": "CUR-20-A01",
+      "status": "blocked_active_downstream_or_atlas_not_identified",
+      "commit": "611b8237a7d8c3123965edfba7f59b597f31bdf4"
+    },
+    {
+      "id": "CUR-20-A02",
+      "status": "blocked_atlas_security_or_history_preservation",
+      "commit": "de487b91eff85ecec0de27770c889c66312794d5"
+    },
+    {
+      "id": "CUR-20-A03",
+      "status": "complete_v2_8_61k_resource_atlas_recovered_build_atlas_authority_classified",
+      "commit": "e50bda6aa3fc08c92c808a00e892ad66d1e8526c"
+    },
+    {
+      "id": "CUR-20-A04",
+      "status": "complete_prospective_comprehensive_build_atlas_v4_established_working_memory_v1_chat_pack_released_cur20_complete",
+      "commit": "pending_commit_1_and_commit_2_at_generation_time"
+    },
+    {
+      "id": "UP-20",
+      "status": "not_started"
+    },
+    {
+      "id": "IDM-40",
+      "status": "not_started"
+    },
+    {
+      "id": "PERF-10",
+      "status": "not_started"
+    },
+    {
+      "id": "PAY-00",
+      "status": "not_started"
+    }
+  ]
+}

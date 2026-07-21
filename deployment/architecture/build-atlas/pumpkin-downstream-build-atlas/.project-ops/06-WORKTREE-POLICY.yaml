@@ -1,0 +1,13 @@
+policyVersion: 4.0.0
+status: active
+rules:
+  - preserve user-owned dirty worktree files
+  - stage exact A04 paths only
+  - never use git add -A for closeout or Atlas commits
+  - no reset, checkout, clean, force-push, rebase, or merge unless explicitly authorized
+  - .tmp release artifacts must remain untracked
+allowedA04Commits:
+  - path: deployment/architecture/build-atlas/pumpkin-downstream-build-atlas/
+    message: docs: establish canonical Pumpkin comprehensive build atlas
+  - path: deployment/architecture/platform-closeout/cur-20-current-build-closeout-ingestion-result/runs/a04-prospective-comprehensive-build-atlas-inception/
+    message: docs: close out CUR-20 A04 atlas inception

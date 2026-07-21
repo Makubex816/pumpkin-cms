@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "v3ObservedCandidate": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+  "a01ObservedHead": "817e176cd6af7759c58923c713c5b8ac7cf79996",
+  "a04ObservedHead": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+  "a04ObservedTree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
+  "a04ObservedSubject": "Adopt Apache 2.0 license",
+  "status": "observed_unfrozen_not_ingested_not_qualified",
+  "successorGate": "UP-20"
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "incidents": [
+    {
+      "id": "INC-CRSTUR-S1-LOGIN-CYCLE-5",
+      "source": "CRSTUR",
+      "symptom": "TenantAdmin sequential login cycle 5 returned no HTTP response after 30013 ms",
+      "rootCauseClassification": "capacity_regression_under_S1_two_worker_test",
+      "resolution": "retain_S2_two_workers"
+    },
+    {
+      "id": "INC-A04-ADMIN-ISOLATED-FIRST-GET-TIMEOUT",
+      "source": "A04 GET probes",
+      "symptom": "isolated admin first GET no HTTP response before 30s",
+      "rootCauseClassification": "transient_or_cold_connection_observation_not_reproduced",
+      "resolution": "retry returned 200 in 298ms"
+    }
+  ]
+}

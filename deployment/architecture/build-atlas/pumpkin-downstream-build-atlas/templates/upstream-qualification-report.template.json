@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "3.0.0",
+  "snapshotSha": "",
+  "immutableBranch": "",
+  "snapshotTag": "",
+  "qualifiedTag": "",
+  "treeSha": "",
+  "parentShas": [],
+  "archiveSha256": "",
+  "bundleSha256": "",
+  "cleanRoom": {
+    "dotnetRestore": "",
+    "dotnetBuild": "",
+    "contractTests": "",
+    "tsModels": "",
+    "blockViews": "",
+    "starterLint": "",
+    "starterTypeCheck": "",
+    "starterBuild": "",
+    "secretScan": "",
+    "protectedPathScan": ""
+  },
+  "status": "pending",
+  "exceptions": []
+}

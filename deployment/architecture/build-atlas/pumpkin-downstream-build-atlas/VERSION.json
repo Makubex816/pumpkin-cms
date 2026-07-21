@@ -1,0 +1,16 @@
+{
+  "package": "pumpkin-downstream-build-atlas",
+  "packageVersion": "4.0.0",
+  "schemaVersion": "4.0.0",
+  "createdAtUtc": "2026-07-21T03:05:00Z",
+  "authority": "first_active_canonical_comprehensive_build_atlas_established_prospectively_by_CUR-20-A04",
+  "canonicalPath": "deployment/architecture/build-atlas/pumpkin-downstream-build-atlas/",
+  "entryRepositoryHead": "e50bda6aa3fc08c92c808a00e892ad66d1e8526c",
+  "entryBranch": "feature/admin-page-editor-import-export",
+  "status": "complete_prospective_comprehensive_build_atlas_v4_established_working_memory_v1_chat_pack_released_cur20_complete",
+  "supersedes": {
+    "v3BridgePackage": "proposed_bridge_input_only_until_CUR-20-A04",
+    "v2_8_61kPlatformResourceAtlas": "historical_resource_inventory_and_protection_baseline",
+    "cur20A01A02A03": "truthful_blocked_or_targeted_recovery_records_preserved"
+  }
+}

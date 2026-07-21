@@ -1,0 +1,696 @@
+# Project Workflow Operating-System Review
+
+I reviewed all recent conversation artifacts retrievable in this project, concentrating on the July 13–15 Pumpkin CMS work: V2.8.62DRU, V2.8.62F, V2.8.62HP, V2.8.62IRJ, and the latest Build Plan and Milestones note. The visible work primarily concerns Vegas, Party Pros, Ice, Airstrip, Pumpkin API, Admin, TenantAdmin, SuperAdmin, FormDefinition, and FormEntry.
+
+The full working report, including proposed schemas, templates, status models, automation opportunities, and the recommended six-file chat package, is here:
+
+[Download the Project Workflow Operating System Review v0.1](sandbox:/mnt/data/IceSkatingRinkRentals_Project_Workflow_Operating_System_Review_v0.1.md)
+
+One limitation is important: this is comprehensive for the recent project conversations and files available to me here. I am not claiming access to conversations that were not represented in the retrievable project material. The analysis of our “logic” is reconstructed from observable decisions, instructions, actions, updates, and results—not private hidden reasoning.
+
+---
+
+## 1. Central conclusion
+
+We have developed much more than a preferred way of prompting.
+
+We have developed an **evidence-gated operating system for building**:
+
+> **Owner intent is converted into a bounded phase contract. The actual state is proven before action. Mutations are earned through gates. Results are read back from authoritative systems. Completion becomes a durable, independently resumable closeout.**
+
+The distinguishing qualities of this operating system are:
+
+- explicit authority boundaries;
+- immutable carryforward from earlier phases;
+- read-only proof before mutation;
+- exact mutation and deployment budgets;
+- no blind retries;
+- supported APIs rather than direct repair;
+- deterministic artifacts and hashes;
+- tenant isolation as an acceptance condition;
+- no-regression proof across shared infrastructure;
+- preservation of valid partial state;
+- precise separation of independent status dimensions;
+- durable result packages and next-phase mapping.
+
+The way to reduce babysitting is **not** to create a larger master prompt containing every historical detail. It is to separate:
+
+1. stable operating doctrine;
+2. slow-changing project architecture;
+3. current verified state;
+4. current phase authority;
+5. authoritative evidence;
+6. exact resumption state.
+
+That gives a new chat enough autonomy to operate without giving it room to guess.
+
+---
+
+# 2. How you operate
+
+## You act as architect, governor, and acceptance authority
+
+Your working style consistently performs four functions.
+
+| Function | How it appears in the work |
+|---|---|
+| **Product architect** | You define the platform behavior that should exist across every tenant, rather than accepting a one-off local fix. |
+| **Risk governor** | You define approved and forbidden mutations, hard stops, one-attempt budgets, frozen systems, and conditional writes. |
+| **Systems integrator** | You require source, deployment, runtime, data, admin access, tenant isolation, notification, backup, and user-facing behavior to agree. |
+| **Acceptance authority** | You specify the evidence that must exist before a phase may be declared complete. |
+
+Your most important reasoning habit is **decomposition**.
+
+For example, the universal lead-form program does not treat “form working” as a single yes/no state. It separates:
+
+- lead persistence;
+- admin inbox access;
+- tenant isolation;
+- notification-recipient configuration;
+- external email delivery;
+- public form mode.
+
+It also establishes FormEntry as the authoritative lead record and email as a secondary notification path. A missing email service must not prevent the lead from being stored. Contact and notification addresses are mutable tenant settings and are distinct from login identity. fileciteturn0file0 fileciteturn12file3
+
+That tells me something fundamental about your logic:
+
+> You do not accept a simplified status when the simplification could hide a material difference in system behavior.
+
+You also consistently prefer:
+
+- facts over guesses;
+- universal mechanisms over tenant exceptions;
+- reversible or resumable changes over brittle one-time operations;
+- explicit partial states over cosmetically clean but inaccurate summaries;
+- proof of resulting behavior over proof that a command ran;
+- the preservation of future options until the current phase is proven.
+
+## You use phases as authority containers
+
+The detailed V2.8 phase prompts function as operational contracts. They normally contain:
+
+- phase ID;
+- lane and classification;
+- immutable carryforward;
+- current state;
+- approved actions;
+- conditional actions;
+- prohibited actions;
+- attempt budgets;
+- entry gates;
+- hard stops;
+- expected invariants;
+- validation requirements;
+- allowed file paths;
+- acceptance criteria;
+- final-response requirements;
+- next-phase carryforward.
+
+In the redirect work, for example, two writes were authorized only if both live non-mutating validations passed. If either validation failed, neither redirect was to be created. If the first creation succeeded and the second failed, the first was not to be destructively deleted merely to recreate a clean-looking state. Blind retry and direct datastore repair were explicitly prohibited. fileciteturn9file14
+
+This is a sophisticated control model. It allows substantial execution autonomy while retaining owner control over the important boundaries.
+
+---
+
+# 3. How I operate at my best in this workflow
+
+My strongest role in this project is not simply “coder.” It is:
+
+- contract interpreter;
+- state reconciler;
+- evidence analyst;
+- controlled operator;
+- validator;
+- closeout compiler.
+
+The most effective observable sequence is:
+
+1. Read the complete phase contract.
+2. Identify the exact authority boundary.
+3. Reconcile historical carryforward against current state.
+4. Establish which facts are proven, unproven, or stale.
+5. Prefer read-only discovery.
+6. Produce the smallest general implementation that satisfies the contract.
+7. Validate source and artifacts locally.
+8. reproduce the result in a clean environment;
+9. consume external mutation budgets only after local proof;
+10. read back resulting state;
+11. prove semantic behavior, isolation, and no-regression;
+12. create a durable closeout.
+
+The V2.8.62IRJ work demonstrates this clearly. It began by verifying the required historical commits, branch, staging state, approval artifact, and prohibitions before touching Azure, CMS, or runtime state. fileciteturn10file2
+
+Later, an exact 20-path source allowlist was verified, committed, and followed by a fresh sparse clean-room build from the committed tree. The deployment artifact was not allowed to depend on the dirty workspace. fileciteturn10file3turn10file5turn10file8
+
+That is the right assistant role for your workflow:
+
+> Convert a large owner intent into a sequence of independently provable state transitions without weakening its constraints.
+
+---
+
+# 4. The shared problem-solving logic
+
+The central reasoning move we both use is:
+
+> **Convert uncertainty into a named gate, then satisfy the gate using the least destructive authoritative proof available.**
+
+That pattern explains most of the detailed process.
+
+## Before acting
+
+The implicit decision tree is:
+
+1. **Is this action authorized in the current phase?**  
+   Capability does not equal permission.
+
+2. **Is the required baseline verified?**  
+   Historical conversation memory is not enough.
+
+3. **Can the fact be proven without mutation?**  
+   Read-only proof is preferred.
+
+4. **Does this consume an attempt budget?**  
+   All local checks should pass before that budget is consumed.
+
+5. **Is this reusable platform behavior or tenant data?**  
+   Behavior belongs in generic platform mechanisms; tenant-specific differences belong in configuration or data.
+
+6. **What authoritative readback will prove success afterward?**  
+   This must be known before the write begins.
+
+## After something fails
+
+One of the strongest developed methods is that we do not treat every failure as the same kind of failure.
+
+| Failure class | Reasoning response |
+|---|---|
+| **Local parser or command-construction failure** | Determine whether the external command was actually invoked before counting an attempt. |
+| **Transport/provider failure** | Distinguish an inaccessible checking endpoint from a failure of the target system. |
+| **Proof-harness defect** | Repair timing, selector, browser-path, or harness assumptions, then repeat the read-only proof. |
+| **Expected API normalization** | Compare semantics and prior revision state before calling it content drift. |
+| **Live-state drift** | Stop and reconcile the baseline before mutation. |
+| **Real product defect** | Reproduce independently, determine blast radius, and block the next mutation. |
+| **Security or isolation failure** | Immediate hard stop. |
+| **Partial mutation** | Preserve successful state, document it precisely, and resume idempotently. |
+| **Accepted but pending external request** | Use bounded readback; do not issue a duplicate request. |
+| **Evidence gap** | Mark the capability unproven rather than complete or failed. |
+
+This classification was applied explicitly when PowerShell rejected a deployment-result expression before `az` was invoked. Because no external deployment occurred, the one-attempt budget remained intact; the corrected command became the actual first attempt. fileciteturn12file19
+
+It was also applied when one DNS-checking endpoint failed. The failure was classified as transport-level rather than DNS drift, and equivalent authoritative checks were rerun through working providers. fileciteturn10file11
+
+Conversely, when a Vegas route reproducibly collapsed during browser hydration on both hosts, that was classified as a real product blocker rather than a count or proof-harness problem. The next irreversible actions—key activation and form POST—remained blocked. fileciteturn9file7turn10file19
+
+That distinction is essential to working in flow. It prevents both extremes:
+
+- stopping the entire project for a harmless test-harness problem;
+- pushing forward after discovering a genuine product or security blocker.
+
+---
+
+# 5. The methods we have developed
+
+## 5.1 Immutable carryforward
+
+Completed phases become verified input to future phases through:
+
+- committed result manifests;
+- source commits;
+- deployment IDs;
+- hashes;
+- backup manifests;
+- exact counts;
+- prior proof results.
+
+They are not merely summarized in prose. They are expected to be reverified before use.
+
+## 5.2 Exact authority matrices
+
+Actions are classified as:
+
+- approved;
+- conditionally approved;
+- forbidden;
+- frozen;
+- outside current scope.
+
+This is considerably safer than a broad statement such as “finish the launch.”
+
+## 5.3 Hard stops
+
+Hard stops encode what must prevent further action:
+
+- missing commits;
+- dirty or staged worktree conditions;
+- hash mismatch;
+- count drift;
+- unmapped content;
+- secret detection;
+- unsafe package paths;
+- failed local proof;
+- deployment failure;
+- unexpected POST;
+- Airstrip request;
+- tenant-isolation failure;
+- shared-platform regression.
+
+The deterministic preview phase, for example, required a versioned fixture, repeatable content hash, complete mapping of routes, forms, links, media, redirects, and controls, and a fail-closed result for anything unmapped. It expressly prohibited tenant-specific compiler hard-coding. fileciteturn12file17turn12file8
+
+## 5.4 Exact allowlists
+
+The work avoids broad staging and broad artifact inclusion.
+
+Approved source paths are listed exactly. Protected or irrelevant material is excluded:
+
+- `.tmp`;
+- credentials;
+- backups;
+- source packages;
+- normalized packages;
+- media binaries;
+- browser profiles;
+- deployment output;
+- `node_modules`;
+- `.next`;
+- secret registers.
+
+Validation includes staged-path comparison, whitespace checks, secret scans, local-path scans, and checks for protected configuration. fileciteturn11file2turn11file12
+
+## 5.5 Deterministic clean-room construction
+
+The clean-room process proves that a successful result does not depend on:
+
+- an uncommitted local file;
+- dirty package output;
+- a developer machine’s existing dependency tree;
+- an accidental local path;
+- previously generated build state.
+
+The same input and compiler version are expected to produce the same fixture hash, with volatile timestamps excluded or isolated. fileciteturn12file17
+
+## 5.6 Controlled mutation budgets
+
+Deployment and mutation attempts are treated as finite owner-authorized resources.
+
+This creates healthy pressure to:
+
+- do complete local proof;
+- avoid speculative deployment;
+- identify whether a failed invocation reached the external system;
+- avoid parallel or duplicate actions;
+- wait for definitive readback.
+
+## 5.7 Post-write readback
+
+A mutation is followed by verification of:
+
+- record existence;
+- exact source and target;
+- tenant ownership;
+- active state;
+- uniqueness;
+- runtime behavior;
+- cross-tenant denial;
+- unaffected target behavior;
+- exact resulting counts.
+
+## 5.8 No-regression matrices
+
+A Vegas phase does not only prove Vegas.
+
+It verifies appropriate combinations of:
+
+- Party Pros;
+- Ice;
+- Pumpkin API;
+- Admin;
+- shared starter;
+- previews;
+- default routes;
+- zero unexpected Airstrip access;
+- zero unapproved POSTs.
+
+## 5.9 Durable closeout
+
+The phase contract requires the closeout to report far more than “done”:
+
+- phase status;
+- lane and classification;
+- carryforward;
+- commit and source proof;
+- package proof;
+- deployment ID;
+- validation results;
+- post-write readback;
+- tenant isolation;
+- no-regression;
+- files changed;
+- prohibited-action confirmations;
+- next-phase map;
+- exact-path commit instructions.
+
+That expectation is explicit in the recent redirect phase. fileciteturn11file1
+
+---
+
+# 6. Our definition of acceptable work
+
+## Acceptable
+
+Work is acceptable when it is:
+
+- explicitly authorized;
+- grounded in current state;
+- limited to exact scope;
+- generic where the concern belongs to the platform;
+- deterministic where artifacts are derived;
+- tenant-isolated;
+- safe to resume;
+- performed through supported interfaces;
+- protected from secrets and local-state leakage;
+- proven before and after mutation;
+- checked for shared-platform regressions;
+- closed out durably.
+
+## Unacceptable
+
+Work is not acceptable when it relies on:
+
+- guessing;
+- silent scope expansion;
+- blind retries;
+- broad staging;
+- tenant-specific hard-coding of platform behavior;
+- direct datastore repair when supported application routes exist;
+- treating request acceptance as resulting-state proof;
+- weakening tests to obtain green output;
+- conflating email delivery with lead storage;
+- conflating login identity with tenant contact configuration;
+- erasing valid partial state;
+- hiding blockers in optimistic language;
+- asking the next chat to reconstruct state from history.
+
+---
+
+# 7. How we work in flow
+
+The workflow is at its best when only one question controls the next action:
+
+> **What is the next gate, and what exact evidence will satisfy it?**
+
+This reduces cognitive branching.
+
+A good working update therefore does not narrate every command. It states:
+
+```text
+PROVEN
+- What is now authoritative.
+
+UNCHANGED / SAFETY
+- Which protected systems or mutation counts remain untouched.
+
+ISSUE
+- Any blocker and its classification.
+
+NEXT GATE
+- The single condition controlling the next authorized action.
+```
+
+Example:
+
+```text
+PROVEN
+- Branch, baseline commits, staging, package hash, and local build match.
+
+UNCHANGED / SAFETY
+- No external deployment, form POST, credential change, or Airstrip request.
+- Starter deployment budget remains 1.
+
+NEXT GATE
+- The clean-room package must pass protected-config and local-path scans.
+```
+
+This is the communication pattern most likely to preserve your confidence while reducing excessive supervision.
+
+---
+
+# 8. Main strengths of the current system
+
+## It prevents false completion
+
+A successful command is never automatically a successful phase. This catches:
+
+- accepted but unconfirmed infrastructure requests;
+- unexpected API normalization;
+- runtime defects hidden by valid server HTML;
+- forms that respond but do not persist;
+- persistence that works but lacks tenant isolation;
+- deployments that succeed but regress shared tenants.
+
+## It enables autonomy without surrendering control
+
+You do not need to approve every command when the phase contract already defines:
+
+- authorized actions;
+- conditions;
+- budgets;
+- prohibitions;
+- hard stops;
+- closeout requirements.
+
+That is the right model for reducing babysitting.
+
+## It treats security as an observable engineering result
+
+Tenant isolation, zero secret exposure, zero unexpected POSTs, credential immutability, and frozen-system protections are tested and reported.
+
+## It builds toward a real multi-tenant platform
+
+The repeated preference for generic compilers, registries, tenant-scoped routes, immutable IDs, mutable settings, and universal reconciliation prevents the product from becoming a collection of tenant-specific exceptions.
+
+## It preserves truth under partial failure
+
+The process does not manufacture a clean story by deleting a successful first write after a failed second write. It records the exact resulting state.
+
+---
+
+# 9. Where redundant work and babysitting currently come from
+
+## 9.1 Stable rules are recopied into every phase
+
+Long prompts repeat large amounts of:
+
+- security policy;
+- staging restrictions;
+- mutation prohibitions;
+- closeout requirements;
+- historical carryforward.
+
+This creates context overhead and stale-copy risk.
+
+**Correction:** Stable rules should live in a versioned Operating Contract and be referenced by version.
+
+## 9.2 Policy and current state are mixed
+
+Permanent doctrine, temporary counts, one-time attempt budgets, future backlog, and live state often appear in the same prompt.
+
+**Correction:** Separate stable doctrine from dynamic state and current phase authority.
+
+## 9.3 Resumption depends on chat continuity
+
+Context compaction or interruption forces large-scale rereading.
+
+**Correction:** Generate a resumption capsule after every material checkpoint.
+
+## 9.4 Proof harnesses are sometimes temporary
+
+Browser executables, semantic selectors, readiness timing, DNS endpoints, and line-ending assumptions occasionally require rediscovery.
+
+**Correction:** Maintain reusable, versioned proof harnesses with self-checks and machine-readable results.
+
+## 9.5 Attempt accounting remains mostly manual
+
+We currently reason in prose about whether an external operation actually occurred.
+
+**Correction:** Use an append-only attempt ledger with states such as:
+
+```text
+prepared
+local_failure_before_invocation
+invoked
+accepted
+readback_confirmed
+failed
+indeterminate
+```
+
+## 9.6 Exact counts sometimes lack portable lineage
+
+Counts are useful, but only when tied to the artifact and hash that make them authoritative.
+
+**Correction:** Every invariant should carry its source, hash, scope, reason, comparison mode, and drift policy.
+
+## 9.7 Owner updates and operator logs are mixed
+
+Detailed operational logs are useful evidence but can bury the decision state.
+
+**Correction:** Separate:
+
+- operator log;
+- decision log;
+- owner update.
+
+---
+
+# 10. The proposed Operating Contract v1
+
+These should become the stable non-negotiable rules carried into every chat:
+
+1. **Never guess current state.**
+2. **The current phase defines the authority boundary.**
+3. **Every mutation must be explicitly approved.**
+4. **Read-only proof precedes mutation.**
+5. **A request is not a result; authoritative readback is required.**
+6. **No blind retries.**
+7. **Preserve and document valid partial success.**
+8. **Use supported platform paths, not direct repair.**
+9. **Reusable behavior must remain generic and tenant-scoped.**
+10. **Secrets and private artifacts remain outside source, logs, fixtures, and chat packages.**
+11. **Exact allowlists govern source changes, staging, and deployment artifacts.**
+12. **Every closeout must permit independent resumption.**
+
+Those rules capture the stable doctrine without carrying every tenant count or prior deployment into every chat.
+
+---
+
+# 11. Recommended chat-bootstrap package
+
+The minimal package should contain six files.
+
+| File | Purpose |
+|---|---|
+| `00-OPERATING-CONTRACT.md` | Stable rules and failure-classification doctrine |
+| `01-PROJECT-ARCHITECTURE.md` | Systems, environments, tenants, authority boundaries, and sources of truth |
+| `02-CURRENT-STATE.json` | Fresh verified facts, deployments, modes, blockers, and timestamps |
+| `03-CURRENT-PHASE.yaml` | Objective, scope, approvals, prohibitions, budgets, gates, and acceptance |
+| `04-EVIDENCE-INDEX.json` | Artifact identifiers, hashes, proof status, IDs, and freshness |
+| `05-RESUMPTION-CAPSULE.md` | Completed gates, partial state, budgets remaining, blocker, and next safe action |
+
+For implementation-heavy phases, add:
+
+- `06-WORKTREE-POLICY.yaml`
+- `07-SECURITY-POLICY.md`
+- `08-VALIDATION-MATRIX.yaml`
+- `09-UPDATE-TEMPLATE.md`
+- `10-CLOSEOUT-SCHEMA.json`
+- `11-NEXT-PHASE-MAP.md`
+- `schemas/`
+- `harnesses/`
+
+The package should reference—but never contain—credentials, backups, customer data, FormEntries, source packages, media binaries, deployment ZIPs, browser profiles, or secret registers.
+
+---
+
+# 12. What this package solves
+
+A new chat receiving the package should immediately know:
+
+- what project it is in;
+- what system is authoritative for each concern;
+- what the actual current state is;
+- how fresh that state is;
+- what phase is active;
+- exactly what is authorized;
+- exactly what is prohibited;
+- which actions are conditional;
+- how many attempts remain;
+- what evidence already exists;
+- what constitutes completion;
+- how to classify failures;
+- where execution stopped;
+- what the next safe action is.
+
+That is what will materially reduce:
+
+- repeated explanations;
+- repeated owner corrections;
+- rediscovery;
+- scope drift;
+- unsafe retries;
+- false completion;
+- context-compaction recovery work.
+
+---
+
+# 13. Recommended adoption sequence
+
+## First: ratify the doctrine
+
+Agree on the twelve Operating Contract rules and the failure-classification table.
+
+## Second: build the six-file minimal package
+
+Keep the operating contract stable and generate the other files from current project state.
+
+## Third: back-test it against one completed phase
+
+V2.8.62DRU or V2.8.62F would be strong tests. A fresh chat should be able to reconstruct:
+
+- its authority;
+- its required evidence;
+- its hard stops;
+- its mutation budgets;
+- its partial-failure behavior;
+- its required closeout.
+
+## Fourth: use it on the next live phase
+
+Measure:
+
+- number of owner corrections;
+- repeated questions;
+- time spent rediscovering state;
+- context size;
+- unsafe or out-of-scope attempts;
+- closeout completeness.
+
+## Fifth: automate only repeated, stable behavior
+
+The first automation targets should be:
+
+- phase-schema validation;
+- preflight;
+- attempt ledger;
+- mutation wrapper;
+- evidence index;
+- closeout generator;
+- resumption capsule generator;
+- context-pack builder.
+
+---
+
+# Final assessment
+
+The underlying way we operate is already strong and unusually mature.
+
+Your role is to define the desired system, risk envelope, and acceptance truth. My role is to turn that into bounded, evidence-backed state transitions and to refuse to convert uncertainty into false completion.
+
+The reusable operating formula is:
+
+```text
+Intent
+→ phase contract
+→ verified baseline
+→ read-only proof
+→ exact scoped implementation
+→ clean-room proof
+→ controlled mutation
+→ authoritative readback
+→ isolation and no-regression
+→ durable closeout
+→ resumption-ready carryforward
+```
+
+The single most important improvement is to stop carrying this operating system implicitly inside long phase conversations. It should become a versioned, validated package in which stable doctrine is small and dynamic state is machine-readable.
+
+The appropriate next artifact is **Operating Contract v1 and the six-file bootstrap-package schema**, back-tested against one completed Pumpkin phase before becoming the default package for every new project chat.

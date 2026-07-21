@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "decisions": [
+    {
+      "id": "ADR-A04-001",
+      "decision": "Establish Build Atlas v4.0.0 prospectively at canonical path",
+      "status": "accepted"
+    },
+    {
+      "id": "ADR-A04-002",
+      "decision": "Do not backdate v3 bridge as active authority before A04",
+      "status": "accepted"
+    },
+    {
+      "id": "ADR-A04-003",
+      "decision": "Carry V2.8.61K forward as historical resource/protection baseline",
+      "status": "accepted"
+    },
+    {
+      "id": "ADR-A04-004",
+      "decision": "Carry CRSTUR forward for identity activation and S2/two-worker capacity",
+      "status": "accepted"
+    },
+    {
+      "id": "ADR-A04-005",
+      "decision": "Treat current upstream main as observed/unfrozen/not ingested",
+      "status": "accepted"
+    },
+    {
+      "id": "ADR-A04-006",
+      "decision": "Leave UP-20, IDM-40, PERF-10, and PAY-00 unstarted",
+      "status": "accepted"
+    }
+  ]
+}

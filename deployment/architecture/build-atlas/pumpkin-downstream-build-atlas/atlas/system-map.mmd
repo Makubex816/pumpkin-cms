@@ -1,0 +1,22 @@
+flowchart LR
+  U[SDI-AI public upstream main] --> S[Immutable upstream snapshot]
+  S --> Q[Clean-room qualification]
+  Q --> I[Three-way semantic integration]
+  D[Active downstream product
+local/private/current phase] --> I
+  A[Active downstream Atlas] --> I
+  I --> P[Qualified downstream product]
+  P --> API[Pumpkin API]
+  P --> TA[TenantAdmin]
+  P --> SA[SuperAdmin control plane]
+  P --> T[Starter/tenant runtimes]
+  T --> F[Public forms]
+  F --> C[CAPTCHA verification]
+  C --> E[Exact-one FormEntry]
+  E --> TA
+  E --> SA
+  E --> N[Optional notification]
+  P --> VE[Visual editor]
+  VE --> PG[Pages/themes/navigation/media]
+  P -. later partner push .-> PAY[Authorize.Net lane]
+  P --> AT[Atlas + evidence + chat pack + ZIP]

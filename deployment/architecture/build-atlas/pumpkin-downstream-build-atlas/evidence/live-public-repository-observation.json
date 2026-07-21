@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "3.0.0",
+  "observedAt": "2026-07-15T14:45:00-04:00",
+  "upstream": {
+    "repository": "SDI-AI/pumpkin-cms",
+    "branch": "main",
+    "head": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+    "previousObservedHead": "785e079269276c177832f9e7186ae44675e76f52",
+    "newCommits": 5,
+    "changedPaths": 43,
+    "status": "observed_not_frozen_not_qualified"
+  },
+  "publicDownstream": {
+    "repository": "Makubex816/pumpkin-cms",
+    "branch": "main",
+    "head": "64156a3015943f08bc89cadb2caae910d5cadf4f",
+    "aheadBy": 0,
+    "behindBy": 59,
+    "mergeBase": "64156a3015943f08bc89cadb2caae910d5cadf4f",
+    "status": "historical_lineage_only"
+  },
+  "activeBuild": {
+    "repository": null,
+    "branch": null,
+    "head": null,
+    "status": "current_closeout_and_local_private_inventory_required"
+  }
+}

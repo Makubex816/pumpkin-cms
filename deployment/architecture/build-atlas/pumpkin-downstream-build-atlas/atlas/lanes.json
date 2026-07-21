@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "lanes": [
+    {
+      "id": "CUR-20-A04",
+      "state": "complete_after_required_commits",
+      "purpose": "canonical Atlas inception"
+    },
+    {
+      "id": "UP-20",
+      "state": "not_started",
+      "purpose": "upstream recheck/freeze/qualification/integration planning"
+    },
+    {
+      "id": "IDM-40",
+      "state": "not_started",
+      "purpose": "identity continuation after CRSTUR"
+    },
+    {
+      "id": "PERF-10",
+      "state": "not_started",
+      "purpose": "performance/capacity/cost analysis after S2 retention"
+    },
+    {
+      "id": "PAY-00",
+      "state": "not_started",
+      "purpose": "payment architecture/intake only"
+    }
+  ]
+}

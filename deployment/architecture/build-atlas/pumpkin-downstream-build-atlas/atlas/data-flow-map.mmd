@@ -1,0 +1,21 @@
+sequenceDiagram
+  participant User as Public user
+  participant Starter as Tenant starter
+  participant API as Pumpkin API
+  participant Captcha as Turnstile
+  participant Store as FormEntry store
+  participant TA as TenantAdmin
+  participant SA as SuperAdmin
+  participant Notify as Notification service
+
+  User->>Starter: Complete form + challenge
+  Starter->>API: submissionId + correlationId + fields + token
+  API->>Captcha: server verification (bounded/idempotent)
+  Captcha-->>API: success/action/hostname or structured failure
+  API->>Store: create-or-return existing exact-one FormEntry
+  Store-->>API: FormEntry ID + duplicate/readback state
+  API-->>Starter: authoritative result + requiresNewCaptcha
+  TA->>API: tenant-scoped inbox/read/status/export
+  SA->>API: explicit authorized tenant context
+  Store-->>Notify: independent delivery work after persistence
+  Notify-->>Store: delivery status only; never recreates FormEntry

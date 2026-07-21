@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "3.0.0",
+  "upstreamSnapshotSha": "",
+  "activeDownstreamHead": "",
+  "provider": "turnstile",
+  "contractDecision": "adopt_upstream_contract_and_harden",
+  "gapResults": [
+    {
+      "gapId": "CAP-GAP-001",
+      "status": "pending",
+      "evidenceRefs": [],
+      "notes": ""
+    }
+  ],
+  "tenantRollout": [],
+  "mutationBudgets": {
+    "testVerifications": 0,
+    "productionSubmissions": 0
+  },
+  "nextGate": ""
+}

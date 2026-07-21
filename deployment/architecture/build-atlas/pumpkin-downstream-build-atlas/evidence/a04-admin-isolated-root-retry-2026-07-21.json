@@ -1,0 +1,10 @@
+﻿{
+    "collectedAtUtc":  "2026-07-21T02:59:55.8907585Z",
+    "name":  "admin_isolated_root_retry",
+    "url":  "https://app-pumpkin-admin-isolated-centralus-001.azurewebsites.net/",
+    "method":  "GET",
+    "statusCode":  200,
+    "elapsedMs":  298,
+    "contentLength":  4970,
+    "error":  null
+}

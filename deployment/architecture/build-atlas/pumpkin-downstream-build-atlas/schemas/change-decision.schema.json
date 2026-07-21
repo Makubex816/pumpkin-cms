@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Upstream change decision v3",
+  "type": "object",
+  "required": [
+    "decisionId",
+    "upstreamSnapshotSha",
+    "subsystem",
+    "classification",
+    "rationale",
+    "validationRequired"
+  ],
+  "properties": {
+    "decisionId": {
+      "type": "string"
+    },
+    "upstreamSnapshotSha": {
+      "type": "string"
+    },
+    "subsystem": {
+      "type": "string"
+    },
+    "classification": {
+      "enum": [
+        "direct_adopt",
+        "supersedes_downstream",
+        "adapt_or_port",
+        "wrap_and_extend",
+        "conflict_requires_design",
+        "defer_external_dependency",
+        "reject_with_rationale",
+        "private_boundary_contract_only"
+      ]
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "incomingPaths": {
+      "type": "array"
+    },
+    "downstreamPaths": {
+      "type": "array"
+    },
+    "migrationRequired": {
+      "type": "boolean"
+    },
+    "validationRequired": {
+      "type": "array"
+    },
+    "atlasUpdates": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

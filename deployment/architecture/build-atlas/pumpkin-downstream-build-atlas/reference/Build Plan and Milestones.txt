@@ -1,0 +1,65 @@
+Good. Let the current Codex pass finish without manually reactivating the Vegas key or sending another form submission.
+
+When the output arrives, send the complete closeout, including any source commits, deployment IDs, preflight results, submission/correlation IDs, FormEntry readback, and final form modes. I’ll use the actual result to finalize the universal lead-form program rather than guessing another phase.
+
+The platform-wide target is:
+
+```text
+Primary lead capture
+Public form
+→ tenant-scoped Pumpkin submit route
+→ validation/consent/honeypot
+→ FormEntry stored internally
+→ TenantAdmin inbox for that tenant
+→ SuperAdmin platform-wide access
+```
+
+```text
+Secondary notification
+Stored FormEntry
+→ optional notification service
+→ tenant contact/form-notification recipients
+```
+
+The internal FormEntry must be the authoritative lead record. Email notification must be secondary: a missing, delayed, or failed email sender must never prevent the lead from being saved or make it disappear.
+
+The universal closeout will require, for every current and future tenant:
+
+- Every live form instance maps to a valid active canonical FormDefinition.
+- A successful submission creates exactly one tenant-scoped FormEntry.
+- TenantAdmins can list, open, update status, export, and manage only their own tenant’s leads.
+- SuperAdmins can access and manage leads across all tenants.
+- The same FormEntry ID is inaccessible through another tenant.
+- Correlation IDs, submission IDs, and idempotency prevent duplicates and ambiguous timeouts.
+- Form persistence works even when no external email provider exists.
+- Contact and notification emails are mutable tenant settings, separate from login identity.
+- Notification delivery status is recorded separately from FormEntry persistence.
+- New tenant onboarding cannot pass the launch gate until no-write preflight, one controlled persistence proof, readback, and isolation all pass.
+- Existing tenants receive a reconciliation pass so Ice, Party Pros, Airstrip, and Vegas are verified under the same contract.
+
+The eventual universal status should distinguish these independently:
+
+```text
+leadPersistence:
+working | blocked
+
+adminInbox:
+working | blocked
+
+tenantIsolation:
+working | blocked
+
+notificationRecipientConfigured:
+true | false
+
+externalEmailDelivery:
+implemented_and_proven
+implemented_but_unproven
+not_implemented
+failed
+
+publicFormMode:
+live | no-post
+```
+
+That prevents “email not configured” from being confused with “lead capture not working.”

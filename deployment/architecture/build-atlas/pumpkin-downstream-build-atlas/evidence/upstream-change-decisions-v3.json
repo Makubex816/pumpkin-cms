@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "3.0.0",
+  "updatedAt": "2026-07-15T14:45:00-04:00",
+  "decisions": [
+    {
+      "decisionId": "UPD-2026-0715-BLOCK-ID",
+      "upstreamSnapshotSha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+      "subsystem": "block_identity_and_serialization",
+      "classification": "direct_adopt",
+      "rationale": "Required by the upstream visual editor and useful downstream, subject to deterministic migration and all-block round-trip proof.",
+      "incomingPaths": [
+        "apps/pumpkin-net-models/Models/IHtmlBlock.cs",
+        "apps/pumpkin-net-models/Models/HtmlBlockBase.cs",
+        "packages/pumpkin-ts-models/src/models/IHtmlBlock.ts"
+      ],
+      "downstreamPaths": [],
+      "migrationRequired": true,
+      "validationRequired": [
+        "all known blocks round trip",
+        "custom blocks preserved",
+        "stable IDs after save/reload",
+        "duplicate semantics"
+      ],
+      "atlasUpdates": [
+        "capability.visualEditor",
+        "dataContract.IHtmlBlock"
+      ]
+    },
+    {
+      "decisionId": "UPD-2026-0715-VISUAL",
+      "upstreamSnapshotSha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+      "subsystem": "starter_visual_page_and_navigation_editor",
+      "classification": "adapt_or_port",
+      "rationale": "Strong single-tenant shared-core primitive; downstream requires tenant/role adapters, concurrency, audit, security, and runtime readback.",
+      "incomingPaths": [
+        "apps/starter-app/src/app/admin/(workspace)/pages/_components/PageVisualEditor.tsx",
+        "apps/starter-app/src/app/admin/preview/VisualPreviewFrame.tsx",
+        "apps/starter-app/src/components/PageRenderer.tsx",
+        "apps/starter-app/src/components/admin/MenuTreeEditor.tsx",
+        "apps/starter-app/src/components/blocks/ContentBlocksEditor.tsx",
+        "apps/starter-app/src/lib/visual-editor-messages.ts",
+        "apps/pumpkin-net-models/Models/IHtmlBlock.cs",
+        "apps/pumpkin-net-models/Models/HtmlBlockBase.cs"
+      ],
+      "downstreamPaths": [],
+      "migrationRequired": true,
+      "validationRequired": [
+        "open/edit/save/reload existing pages without semantic drift",
+        "all block IDs remain stable across subsequent edits",
+        "TenantAdmin cannot read/write another tenant",
+        "SuperAdmin context changes are explicit and audited",
+        "preview cannot create a FormEntry or navigate unexpectedly",
+        "stale save returns conflict rather than overwriting",
+        "public runtime reflects successful save after authoritative readback"
+      ],
+      "atlasUpdates": [
+        "capability.visualEditor",
+        "capability.navigationEditor",
+        "milestone.VE"
+      ]
+    },
+    {
+      "decisionId": "UPD-2026-0715-CAPTCHA",
+      "upstreamSnapshotSha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+      "subsystem": "tenant_and_form_captcha",
+      "classification": "wrap_and_extend",
+      "rationale": "The tenant/per-form Turnstile contract aligns with the program; retain it and add production reliability, exact-one submission, distributed controls, and rollout proof.",
+      "incomingPaths": [
+        "apps/pumpkin-api/Services/CaptchaVerifier.cs",
+        "apps/pumpkin-api/Managers/PumpkinManager.cs",
+        "apps/pumpkin-net-models/Models/Tenant.cs",
+        "apps/pumpkin-net-models/Models/FormDefinition.cs",
+        "packages/pumpkin-block-views/src/components/TurnstileWidget.tsx",
+        "apps/starter-app/src/components/ContactFormBlock.tsx",
+        "packages/pumpkin-block-views/src/views/FormBlockView.tsx"
+      ],
+      "downstreamPaths": [],
+      "migrationRequired": true,
+      "validationRequired": [
+        "valid challenge creates exactly one FormEntry",
+        "missing/invalid/expired/replayed/action-mismatch/hostname-mismatch tokens create zero FormEntries",
+        "network ambiguity never causes duplicate FormEntry",
+        "raw token and secret never appear in storage/log/package",
+        "every active tenant has independent configuration and evidence"
+      ],
+      "atlasUpdates": [
+        "capability.captcha",
+        "capability.formPersistence",
+        "milestone.CAP"
+      ]
+    },
+    {
+      "decisionId": "UPD-2026-0715-HEADER-LOGO",
+      "upstreamSnapshotSha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+      "subsystem": "header_logo_media",
+      "classification": "direct_adopt",
+      "rationale": "A generic tenant theming capability; prove media ownership, alt text, and tenant-scoped save/readback.",
+      "incomingPaths": [
+        "apps/starter-app/src/app/admin/(workspace)/themes/_components/ThemeEditor.tsx",
+        "apps/starter-app/src/app/admin/(workspace)/pages/_components/PageVisualEditor.tsx"
+      ],
+      "downstreamPaths": [],
+      "migrationRequired": false,
+      "validationRequired": [
+        "tenant media ownership",
+        "logo alt text",
+        "save/reload",
+        "public header/footer rendering"
+      ],
+      "atlasUpdates": [
+        "capability.media",
+        "capability.navigationEditor"
+      ]
+    },
+    {
+      "decisionId": "UPD-2026-0715-AUTHNET",
+      "upstreamSnapshotSha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+      "subsystem": "authorize_net",
+      "classification": "defer_external_dependency",
+      "rationale": "No implementation was observed in this upstream head. Intake remains gated to a later partner push.",
+      "incomingPaths": [],
+      "downstreamPaths": [],
+      "migrationRequired": false,
+      "validationRequired": [
+        "recheck later upstream head",
+        "payment architecture/secret/card-data/webhook/idempotency review"
+      ],
+      "atlasUpdates": [
+        "capability.authorizeNet"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Authorize.Net intake report",
+  "type": "object",
+  "required": [
+    "upstreamSnapshotSha",
+    "implementationObserved",
+    "paths",
+    "capabilities",
+    "secretHandling",
+    "cardDataBoundary",
+    "decision"
+  ],
+  "properties": {
+    "upstreamSnapshotSha": {
+      "type": "string"
+    },
+    "implementationObserved": {
+      "type": "boolean"
+    },
+    "paths": {
+      "type": "array"
+    },
+    "capabilities": {
+      "type": "object"
+    },
+    "secretHandling": {
+      "type": "object"
+    },
+    "cardDataBoundary": {
+      "type": "string"
+    },
+    "webhookHandling": {
+      "type": "object"
+    },
+    "idempotency": {
+      "type": "object"
+    },
+    "decision": {
+      "enum": [
+        "direct_adopt",
+        "adapt_or_port",
+        "wrap_and_extend",
+        "conflict_requires_design",
+        "defer_external_dependency",
+        "reject_with_rationale"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

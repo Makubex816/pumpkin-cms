@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pumpkin current state v4 schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "status",
+    "canonicalAtlas",
+    "repository",
+    "runtimeReadback",
+    "upstream"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "canonicalAtlas": {
+      "type": "object"
+    },
+    "repository": {
+      "type": "object"
+    },
+    "runtimeReadback": {
+      "type": "object"
+    },
+    "upstream": {
+      "type": "object"
+    }
+  }
+}

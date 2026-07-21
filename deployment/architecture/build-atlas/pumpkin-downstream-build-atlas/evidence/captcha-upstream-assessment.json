@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "3.0.0",
+  "evidenceId": "EV-CAPTCHA-UPSTREAM-ASSESSMENT-18B5",
+  "observedAt": "2026-07-15T14:45:00-04:00",
+  "upstreamSnapshotSha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+  "implementationObserved": true,
+  "provider": "turnstile",
+  "decision": "adopt_upstream_contract_and_harden",
+  "strengths": [
+    "tenant-scoped defaults",
+    "per-form inherit/required/disabled override",
+    "secret key reference instead of public secret value",
+    "server-side verification adapter",
+    "action and allowed-hostname checks",
+    "shared explicit-render client widget",
+    "token omitted from persisted form data in contract test",
+    "missing token blocks persistence",
+    "form editor exposes mode and action"
+  ],
+  "observedPaths": [
+    "apps/pumpkin-api/Services/CaptchaVerifier.cs",
+    "apps/pumpkin-api/Managers/PumpkinManager.cs",
+    "apps/pumpkin-net-models/Models/Tenant.cs",
+    "apps/pumpkin-net-models/Models/FormDefinition.cs",
+    "packages/pumpkin-block-views/src/components/TurnstileWidget.tsx",
+    "apps/starter-app/src/components/ContactFormBlock.tsx",
+    "packages/pumpkin-block-views/src/views/FormBlockView.tsx"
+  ],
+  "gaps": [
+    {
+      "id": "CAP-GAP-001",
+      "priority": "P0",
+      "area": "verification_idempotency",
+      "requirement": "send stable provider idempotency_key or prove no transport retry occurs after request ambiguity"
+    },
+    {
+      "id": "CAP-GAP-002",
+      "priority": "P0",
+      "area": "client_token_lifecycle",
+      "requirement": "reset/clear challenge after every response path that may consume a token, not only success"
+    },
+    {
+      "id": "CAP-GAP-003",
+      "priority": "P0",
+      "area": "submission_idempotency",
+      "requirement": "CAPTCHA must sit inside an exact-one FormEntry transaction with submission and correlation IDs"
+    },
+    {
+      "id": "CAP-GAP-004",
+      "priority": "P0",
+      "area": "distributed_abuse_control",
+      "requirement": "replace or supplement process-local rate windows for multi-instance/restart safety"
+    },
+    {
+      "id": "CAP-GAP-005",
+      "priority": "P1",
+      "area": "structured_errors_and_telemetry",
+      "requirement": "capture provider error codes/challenge timestamp and classify timeout, cancellation, HTTP, JSON, action, and hostname failures without secrets/tokens"
+    },
+    {
+      "id": "CAP-GAP-006",
+      "priority": "P1",
+      "area": "operations",
+      "requirement": "prove hostnames, CSP, test keys, accessibility, privacy/retention, and outage policy per environment"
+    },
+    {
+      "id": "CAP-GAP-007",
+      "priority": "P1",
+      "area": "tenant_rollout",
+      "requirement": "controlled proof and exact FormEntry readback for every active tenant"
+    }
+  ],
+  "acceptance": [
+    "valid challenge creates exactly one FormEntry",
+    "missing/invalid/expired/replayed/action-mismatch/hostname-mismatch tokens create zero FormEntries",
+    "network ambiguity never causes duplicate FormEntry",
+    "raw token and secret never appear in storage/log/package",
+    "every active tenant has independent configuration and evidence"
+  ],
+  "qualificationStatus": "source_review_complete_runtime_and_cleanroom_proof_pending"
+}

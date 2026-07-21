@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "3.0.0",
+  "upstreamSnapshotSha": "",
+  "activeDownstreamHead": "",
+  "pageInventory": {
+    "count": 0,
+    "blockCountsByType": {},
+    "missingIds": 0,
+    "duplicateIds": 0,
+    "customBlocks": []
+  },
+  "migration": {
+    "strategy": "",
+    "dryRunHash": "",
+    "writesAuthorized": false,
+    "rollbackArtifact": ""
+  },
+  "roleMatrix": [],
+  "concurrency": {
+    "mechanism": "",
+    "staleWriteResult": ""
+  },
+  "security": {
+    "previewAuth": "",
+    "iframeCsp": "",
+    "serverNoWrite": "",
+    "htmlSanitizer": ""
+  },
+  "browserEvidence": [],
+  "nextGate": ""
+}

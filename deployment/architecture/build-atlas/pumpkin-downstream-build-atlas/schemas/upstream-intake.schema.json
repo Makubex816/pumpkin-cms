@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pumpkin upstream intake report v3",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evidenceId",
+    "observedAt",
+    "repository",
+    "branch",
+    "startSha",
+    "endSha",
+    "stable",
+    "observationStatus",
+    "ancestry",
+    "changeStats",
+    "commits",
+    "files",
+    "subsystemDecisions",
+    "hardStops"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "3.0.0"
+    },
+    "evidenceId": {
+      "type": "string"
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "string"
+    },
+    "startSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "endSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "stable": {
+      "type": "boolean"
+    },
+    "observationStatus": {
+      "type": "string"
+    },
+    "ancestry": {
+      "type": "object",
+      "required": [
+        "status",
+        "aheadBy",
+        "behindBy",
+        "mergeBase"
+      ]
+    },
+    "changeStats": {
+      "type": "object",
+      "required": [
+        "commits",
+        "files",
+        "additions",
+        "deletions"
+      ]
+    },
+    "commits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "sha",
+          "message",
+          "role"
+        ]
+      }
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "status",
+          "additions",
+          "deletions",
+          "changes"
+        ]
+      }
+    },
+    "subsystemDecisions": {
+      "type": "array"
+    },
+    "hardStops": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

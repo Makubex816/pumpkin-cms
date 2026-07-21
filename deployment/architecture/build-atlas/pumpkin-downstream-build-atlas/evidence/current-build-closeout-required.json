@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "3.0.0",
+  "evidenceId": "EV-CURRENT-BUILD-CLOSEOUT-REQUIRED",
+  "status": "blocked_external_current_phase_running",
+  "protected": true,
+  "forbiddenUntilCloseout": [
+    "upstream integration",
+    "deployment",
+    "credential mutation",
+    "live form submission",
+    "CAPTCHA activation",
+    "payment mutation",
+    "active Atlas replacement"
+  ],
+  "requiredFields": [
+    "repository",
+    "branch",
+    "sourceHead",
+    "mergeCommits",
+    "worktreeStatus",
+    "changedPaths",
+    "deploymentIds",
+    "artifactHashes",
+    "preflightResults",
+    "cleanRoomResults",
+    "submissionIds",
+    "correlationIds",
+    "formEntryReadback",
+    "tenantAdminReadback",
+    "superAdminReadback",
+    "tenantIsolationResults",
+    "finalTenantFormModes",
+    "blockers",
+    "activeAtlas",
+    "nextSafeGate"
+  ],
+  "ingestionTemplate": "templates/current-build-closeout-ingestion.template.json",
+  "reason": "the public downstream default branch is historical and cannot substitute for the active build closeout"
+}

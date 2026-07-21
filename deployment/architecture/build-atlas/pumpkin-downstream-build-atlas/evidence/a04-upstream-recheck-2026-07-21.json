@@ -1,0 +1,20 @@
+﻿{
+    "collectedAtUtc":  "2026-07-21T03:00:17.6201661Z",
+    "repository":  "https://github.com/SDI-AI/pumpkin-cms.git",
+    "branch":  "main",
+    "method":  "isolated_git_fetch_depth_50_and_ls_remote",
+    "priorObservedHead":  "817e176cd6af7759c58923c713c5b8ac7cf79996",
+    "head":  "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+    "tree":  "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
+    "parents":  "aba572d7e13ed8a98cf0af5e2ba2700a1689e424",
+    "authorDate":  "2026-07-20T19:02:07-04:00",
+    "commitDate":  "2026-07-20T19:02:07-04:00",
+    "subject":  "Adopt Apache 2.0 license",
+    "message":  [
+                    "Adopt Apache 2.0 license",
+                    ""
+                ],
+    "lsRemote":  "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e\trefs/heads/main",
+    "movedFromPriorObservedHead":  true,
+    "mutationBoundary":  "read_only_temp_git_fetch_no_active_worktree_change"
+}

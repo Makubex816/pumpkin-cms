@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "overlays": [
+    {
+      "source": "v3 bridge",
+      "priorStatus": "proposed_bridge_pending_active_atlas_and_current_build_closeout_ingestion",
+      "a04Status": "promoted_as_source_material_and_corrected_into_active_canonical_v4"
+    },
+    {
+      "source": "working-memory v0.9",
+      "priorStatus": "precloseout_active_phase_input",
+      "a04Status": "regenerated_as_working_memory_v1_0_0"
+    },
+    {
+      "source": "V2.8.61K",
+      "priorStatus": "post_integration_platform_resource_atlas_plain_text_resource_map_no_mutation",
+      "a04Status": "historical_resource_inventory_and_protection_baseline"
+    },
+    {
+      "source": "CRSTUR",
+      "priorStatus": "complete_readiness_gate_management_active_tenantadmin_transfer_pilot_held_retain_s2_ready_for_63d",
+      "a04Status": "identity_capacity_customer_preservation_carryforward"
+    },
+    {
+      "source": "A01",
+      "priorStatus": "blocked_active_downstream_or_atlas_not_identified",
+      "a04Status": "truthful_blocked_record_preserved"
+    },
+    {
+      "source": "A03",
+      "priorStatus": "complete_v2_8_61k_resource_atlas_recovered_build_atlas_authority_classified",
+      "a04Status": "truthful_targeted_recovery_record_preserved"
+    }
+  ]
+}

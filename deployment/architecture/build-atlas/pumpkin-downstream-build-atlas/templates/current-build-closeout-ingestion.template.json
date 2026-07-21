@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "3.0.0",
+  "phaseId": "",
+  "status": "complete",
+  "repository": "",
+  "branch": "",
+  "sourceHead": "",
+  "mergeCommits": [],
+  "worktreeStatus": {
+    "clean": null,
+    "stagedPaths": [],
+    "untrackedProtectedPaths": []
+  },
+  "changedPaths": [],
+  "deployments": [
+    {
+      "system": "",
+      "deploymentId": "",
+      "artifactSha256": "",
+      "sourceCommit": "",
+      "result": "",
+      "authoritativeReadback": ""
+    }
+  ],
+  "validation": {
+    "preflight": [],
+    "cleanRoom": [],
+    "runtime": [],
+    "noRegression": []
+  },
+  "forms": {
+    "submissionIds": [],
+    "correlationIds": [],
+    "formEntryReadback": [],
+    "exactOne": null
+  },
+  "roles": {
+    "tenantAdmin": {},
+    "superAdmin": {},
+    "tenantIsolation": {}
+  },
+  "tenantModes": [
+    {
+      "tenantId": "",
+      "leadPersistence": "",
+      "adminInbox": "",
+      "tenantIsolation": "",
+      "notificationRecipientConfigured": null,
+      "externalEmailDelivery": "",
+      "publicFormMode": "",
+      "captcha": ""
+    }
+  ],
+  "activeAtlas": {
+    "path": "",
+    "version": "",
+    "updateCommand": "",
+    "lastMilestone": ""
+  },
+  "blockers": [],
+  "nextSafeGate": ""
+}

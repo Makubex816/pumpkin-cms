@@ -1,0 +1,31 @@
+phaseId: CUR-20-A04
+version: 4.0.0
+status: complete_prospective_comprehensive_build_atlas_v4_established_working_memory_v1_chat_pack_released_cur20_complete
+objective:
+  primary: Establish the first active canonical comprehensive Pumpkin Build Atlas prospectively.
+scope:
+  in: [documentation and Atlas artifact generation, read-only Azure control-plane evidence, GET-only runtime evidence, deterministic package generation in ignored release workspace]
+  out: [deployment, restart, slot swap, scale, appsetting, feature-flag, identity, tenant, CMS, form, DNS, TLS, indexing, Airstrip runtime, payment mutation]
+mutationBudgets:
+  liveAzureWrites: { allowed: 0, consumed: 0 }
+  deploysOrRestarts: { allowed: 0, consumed: 0 }
+  slotSwaps: { allowed: 0, consumed: 0 }
+  appSettingsOrSecretsReads: { allowed: 0, consumed: 0 }
+  tenantOrCustomerDataWrites: { allowed: 0, consumed: 0 }
+  formPosts: { allowed: 0, consumed: 0 }
+  paymentTransactions: { allowed: 0, consumed: 0 }
+  gitCommits: { allowed: 2, consumed: 0_until_committed }
+gates:
+  - { id: A04-AUTHORITY, status: passed }
+  - { id: V3-BRIDGE-INTEGRITY, status: passed_with_limitation, evidence: A01 committed SHA/CRC plus extracted input tree }
+  - { id: V2-8-61K-CARRYFORWARD, status: passed }
+  - { id: CRSTUR-CARRYFORWARD, status: passed }
+  - { id: LIVE-READBACK, status: passed }
+  - { id: UPSTREAM-RECHECK, status: observed_unfrozen_not_ingested }
+  - { id: RELEASE-DETERMINISM, status: pending_until_A04_closeout }
+hardStops:
+  - do not overwrite or delete existing owner/user work
+  - do not read protected settings, secrets, keys, or connection strings
+  - do not mutate Azure, DNS, TLS, tenant data, identity data, forms, indexing, Airstrip public runtime, or payment systems
+  - do not stage unrelated dirty worktree paths
+nextSafeGate: Commit canonical Atlas exact path, build release artifacts twice from committed source, then commit A04 closeout exact path.

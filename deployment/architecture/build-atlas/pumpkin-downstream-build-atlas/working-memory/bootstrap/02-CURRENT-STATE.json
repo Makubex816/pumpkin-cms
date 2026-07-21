@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "atlasVersion": "4.0.0",
+  "status": "complete_prospective_comprehensive_build_atlas_v4_established_working_memory_v1_chat_pack_released_cur20_complete",
+  "canonicalAtlasPath": "deployment/architecture/build-atlas/pumpkin-downstream-build-atlas/",
+  "runtimeHighlights": {
+    "collectedAtUtc": "2026-07-21T02:58:50.1877953Z",
+    "appServicePlan": {
+      "capacity": 2,
+      "kind": "linux",
+      "location": "Central US",
+      "name": "asp-pumpkin-api-prod-centralus-001",
+      "numberOfSites": null,
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "sku": "S2",
+      "status": null,
+      "tier": "Standard"
+    },
+    "protectedResourceCount": 14,
+    "health": {
+      "apiHealth": 200,
+      "apiDependencyReadiness": 200,
+      "apiRoot": 200,
+      "adminRoot": 200,
+      "adminIsolatedInitial": null,
+      "adminIsolatedRetry": 200,
+      "iceSwaRoot": 200,
+      "iceApex": 200,
+      "iceWww": 200
+    },
+    "mutationBoundary": "GET_only_or_control_plane_show_list; no appsettings, keys, connection strings, POST, deploy, restart, scale, slot swap, DNS, TLS, indexing, CMS, identity, tenant, payment, or form mutation"
+  },
+  "identityCarryforward": {
+    "source": "V2.8.63CRSTUR committed manifest",
+    "apiDeploymentId": "c9451f4b-0b2e-44bc-9d08-ac9b767a6c05",
+    "rollbackSlot": {
+      "name": "crr-validation",
+      "state": "Running",
+      "deploymentId": "f6bdf0d7-ca60-4e7f-818c-f4c74a710a86",
+      "preserved": true
+    },
+    "adminDeploymentId": "8c960132-3521-45c7-9a16-d5265ddbb640",
+    "managementActivation": {
+      "successfulAttempt": 11,
+      "stagesCompleted": 7,
+      "managementActive": true,
+      "allSevenStageFlagsActive": true,
+      "foundationDualReadDualWriteActive": true,
+      "renameMigrationAndExternalProviderHeld": true,
+      "tenantAdminTransferPilot": "held",
+      "finalAdminLiveConflict": "held-no-synthetic-only-tenant",
+      "syntheticCleanupIdempotent": true,
+      "customerCredentialMutations": 0,
+      "customerMembershipMutations": 0,
+      "customerOwnershipMutations": 0,
+      "airstripPublicRequests": 0,
+      "completedAtUtc": "2026-07-16T13:47:40.1475740Z"
+    },
+    "finalFeatureState": {
+      "identityFoundation": true,
+      "dualRead": true,
+      "dualWrite": true,
+      "management": true,
+      "passwordAndSessionManagement": true,
+      "tenantSwitcher": true,
+      "membershipManagement": true,
+      "contactManagement": true,
+      "superAdminManagement": true,
+      "providerAwareEmailRequests": true,
+      "tenantRename": false,
+      "migrationExecution": false,
+      "externalNotificationProvider": false,
+      "capacityDiagnostics": false,
+      "twoWorkersVerified": true
+    },
+    "customerPreservation": {
+      "tenants": 4,
+      "accounts": 6,
+      "memberships": 8,
+      "contacts": 4,
+      "formEntries": 12,
+      "pendingReconciliations": 0,
+      "pendingSecurityMutations": 0,
+      "pendingSyntheticOperations": 0,
+      "pendingAudits": 0,
+      "reconciliationClear": true,
+      "verifiedAtUtc": "2026-07-16T14:07:13.4956019Z"
+    },
+    "capacity": {
+      "s1Attempted": true,
+      "s1Failure": "TenantAdmin sequential login cycle 5 returned no HTTP response after 30013 ms",
+      "s1Window": {
+        "startedAtUtc": "2026-07-16T13:56:47.7856714Z",
+        "endedAtUtc": "2026-07-16T13:58:13.7486907Z",
+        "maxCpuMinuteAveragePercent": 10,
+        "maxMemoryMinuteAveragePercent": 72.5,
+        "maxHttpQueueLength": 0
+      },
+      "finalDecision": "retain_s2_two_workers_with_evidence",
+      "finalSku": "S2",
+      "finalWorkerCount": 2,
+      "s2RecoveryRuntimePassed": true,
+      "s2RecoveryMaxCpuMinuteAveragePercent": 61,
+      "s2RecoveryMaxMemoryMinuteAveragePercent": 56.666666666666664
+    }
+  },
+  "upstream": {
+    "repository": "https://github.com/SDI-AI/pumpkin-cms.git",
+    "branch": "main",
+    "priorA01ObservedHead": "817e176cd6af7759c58923c713c5b8ac7cf79996",
+    "currentObservedHead": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+    "currentTree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
+    "currentCommitDate": "2026-07-20T19:02:07-04:00",
+    "currentSubject": "Adopt Apache 2.0 license",
+    "movedFromPriorObservedHead": true,
+    "classification": "observed_unfrozen_not_ingested_not_qualified"
+  },
+  "successorLanes": {
+    "UP-20": "not_started_retain_for_successor_prompt",
+    "IDM-40": "not_started_retain_for_successor_prompt",
+    "PERF-10": "not_started_retain_for_successor_prompt",
+    "PAY-00": "not_started_retain_for_successor_prompt"
+  }
+}

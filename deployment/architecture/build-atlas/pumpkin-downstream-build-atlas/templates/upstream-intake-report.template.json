@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "3.0.0",
+  "evidenceId": "",
+  "observedAt": "",
+  "repository": "SDI-AI/pumpkin-cms",
+  "branch": "main",
+  "previousBaseline": null,
+  "startSha": "",
+  "endSha": "",
+  "stable": false,
+  "observationStatus": "observed_once",
+  "ancestry": {
+    "status": "",
+    "aheadBy": 0,
+    "behindBy": 0,
+    "mergeBase": ""
+  },
+  "changeStats": {
+    "commits": 0,
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+  },
+  "commits": [],
+  "files": [],
+  "clusters": {},
+  "ciEvidence": {},
+  "subsystemDecisions": [],
+  "hardStops": []
+}

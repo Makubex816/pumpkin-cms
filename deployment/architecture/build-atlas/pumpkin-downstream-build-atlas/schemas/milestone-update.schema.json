@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Atlas milestone update",
+  "type": "object",
+  "required": [
+    "milestoneId",
+    "title",
+    "buildPath",
+    "status",
+    "evidenceRefs",
+    "nextGate"
+  ],
+  "properties": {
+    "milestoneId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string"
+    },
+    "buildPath": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "active",
+        "complete",
+        "complete_with_documented_exception",
+        "blocked_external",
+        "blocked_defect",
+        "partial_preserved",
+        "failed"
+      ]
+    },
+    "completedAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "upstreamSnapshotSha": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productHeadSha": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capabilityChanges": {
+      "type": "array"
+    },
+    "nextGate": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

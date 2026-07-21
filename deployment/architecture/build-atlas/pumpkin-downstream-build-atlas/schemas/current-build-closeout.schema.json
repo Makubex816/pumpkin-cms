@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Current downstream build closeout ingestion v3",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "phaseId",
+    "status",
+    "repository",
+    "branch",
+    "sourceHead",
+    "worktreeStatus",
+    "changedPaths",
+    "deployments",
+    "validation",
+    "forms",
+    "roles",
+    "tenantModes",
+    "activeAtlas",
+    "blockers",
+    "nextSafeGate"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "3.0.0"
+    },
+    "phaseId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "complete_with_documented_exception",
+        "partial_preserved",
+        "blocked",
+        "failed"
+      ]
+    },
+    "repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "branch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceHead": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "mergeCommits": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{40}$"
+      }
+    },
+    "worktreeStatus": {
+      "type": "object"
+    },
+    "changedPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deployments": {
+      "type": "array"
+    },
+    "validation": {
+      "type": "object"
+    },
+    "forms": {
+      "type": "object"
+    },
+    "roles": {
+      "type": "object"
+    },
+    "tenantModes": {
+      "type": "array"
+    },
+    "activeAtlas": {
+      "type": "object",
+      "required": [
+        "path",
+        "version",
+        "updateCommand"
+      ]
+    },
+    "blockers": {
+      "type": "array"
+    },
+    "nextSafeGate": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true
+}

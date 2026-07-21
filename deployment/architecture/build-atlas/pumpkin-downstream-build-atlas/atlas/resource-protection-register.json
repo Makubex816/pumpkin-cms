@@ -1,0 +1,317 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "source": "A04 read-only control-plane plus V2.8.61K do-not-delete carryforward",
+  "entries": [
+    {
+      "name": "cosmos-pumpkin-prod-eastus",
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "resourceGroup": "rg-ice-production-cosmos",
+      "location": "eastus",
+      "protectionStatus": "do_not_delete_production_cosmos_data",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "iceskatingmedia",
+      "type": "Microsoft.Storage/storageAccounts",
+      "resourceGroup": "rg-ice-production-media",
+      "location": "eastus",
+      "protectionStatus": "do_not_delete_production_tenant_media",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "func-ice-static-contact-20260605",
+      "type": "Microsoft.Web/sites",
+      "resourceGroup": "rg-ice-static-form-endpoint",
+      "location": "eastus",
+      "protectionStatus": "do_not_delete_until_dependency_proof_legacy_static_contact_function",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "iceforms20260605",
+      "type": "Microsoft.Storage/storageAccounts",
+      "resourceGroup": "rg-ice-static-form-endpoint",
+      "location": "eastus",
+      "protectionStatus": "do_not_delete_until_dependency_proof_legacy_static_contact_storage",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "swa-ice-static-isolated-staging",
+      "type": "Microsoft.Web/staticSites",
+      "resourceGroup": "rg-ice-static-staging",
+      "location": "eastus2",
+      "protectionStatus": "do_not_delete_ice_isolated_staging_proof",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "swa-ice-static-staging",
+      "type": "Microsoft.Web/staticSites",
+      "resourceGroup": "rg-ice-static-staging",
+      "location": "eastus2",
+      "protectionStatus": "do_not_delete_ice_production_public_website",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "app-airstrip-preview-isolated-centralus-001",
+      "type": "Microsoft.Web/sites",
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "location": "centralus",
+      "protectionStatus": "do_not_delete_airstrip_frozen_no_public_runtime_probe_without_new_authority",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "app-airstrip-prod-centralus-001",
+      "type": "Microsoft.Web/sites",
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "location": "centralus",
+      "protectionStatus": "do_not_delete_airstrip_frozen_no_public_runtime_probe_without_new_authority",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "app-pumpkin-admin-isolated-centralus-001",
+      "type": "Microsoft.Web/sites",
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "location": "centralus",
+      "protectionStatus": "do_not_delete_isolated_admin_proof",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "app-pumpkin-admin-prod-centralus-001",
+      "type": "Microsoft.Web/sites",
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "location": "centralus",
+      "protectionStatus": "do_not_delete_production_admin_ui",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "app-pumpkin-api-prod-centralus-001",
+      "type": "Microsoft.Web/sites",
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "location": "centralus",
+      "protectionStatus": "do_not_delete_production_api",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "asp-pumpkin-api-prod-centralus-001",
+      "type": "Microsoft.Web/serverFarms",
+      "resourceGroup": "rg-pumpkin-api-prod-centralus",
+      "location": "centralus",
+      "protectionStatus": "do_not_delete_s2_two_worker_plan_after_crstur_capacity_decision",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "cosmos-pumpkincms-stg-olm01",
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "resourceGroup": "rg-pumpkincms-stg-eastus-olm",
+      "location": "eastus",
+      "protectionStatus": "cleanup_candidate_needs_dependency_proof",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    },
+    {
+      "name": "pumpkincmsstgolm01",
+      "type": "Microsoft.Storage/storageAccounts",
+      "resourceGroup": "rg-pumpkincms-stg-eastus-olm",
+      "location": "eastus",
+      "protectionStatus": "cleanup_candidate_needs_dependency_proof",
+      "allowedActionsInA04": [
+        "read_control_plane_metadata",
+        "GET_health_or_root_only_when_not_airstrip_public"
+      ],
+      "forbiddenWithoutNewAuthority": [
+        "delete",
+        "restart",
+        "scale",
+        "swap",
+        "deploy",
+        "appsettings_read_or_write",
+        "keys_or_connection_strings",
+        "role_assignment_change",
+        "tenant_or_data_mutation"
+      ]
+    }
+  ],
+  "airstripBoundary": "Airstrip remains frozen; A04 made zero public Airstrip runtime requests.",
+  "legacyCleanupBoundary": "OLM staging and legacy static contact resources remain cleanup candidates only after dependency proof."
+}

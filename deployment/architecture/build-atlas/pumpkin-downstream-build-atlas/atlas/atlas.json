@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "4.0.0",
+  "atlasVersion": "4.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "status": "complete_prospective_comprehensive_build_atlas_v4_established_working_memory_v1_chat_pack_released_cur20_complete",
+  "program": "Pumpkin downstream product, tenant runtime, governance, identity, upstream-intake, performance, and payment roadmap",
+  "authorityNote": "First active canonical comprehensive Build Atlas, established prospectively by CUR-20-A04. Earlier package files imported from v3 are historical inputs when contradicted by A04 current-state registers.",
+  "canonicalPath": "deployment/architecture/build-atlas/pumpkin-downstream-build-atlas/",
+  "sourceHierarchy": [
+    {
+      "rank": 1,
+      "source": "A04 owner authorization and committed canonical Atlas v4.0.0"
+    },
+    {
+      "rank": 2,
+      "source": "Committed CRSTUR result manifest for identity/capacity/customer preservation"
+    },
+    {
+      "rank": 3,
+      "source": "Recovered V2.8.61K platform resource Atlas for historical resource protection"
+    },
+    {
+      "rank": 4,
+      "source": "A01/A02/A03 closeout records for provenance and limitations"
+    },
+    {
+      "rank": 5,
+      "source": "Imported v3 bridge and v0.9 working memory as source material only"
+    }
+  ],
+  "repositories": {
+    "activeDownstream": {
+      "path": "C:\\Users\\User\\Desktop\\PumpkinCMS\\pumpkin-cms",
+      "branch": "feature/admin-page-editor-import-export",
+      "entryHead": "e50bda6aa3fc08c92c808a00e892ad66d1e8526c"
+    },
+    "publicOrigin": {
+      "repository": "Makubex816/pumpkin-cms",
+      "remote": "origin"
+    },
+    "upstream": {
+      "repository": "https://github.com/SDI-AI/pumpkin-cms.git",
+      "branch": "main",
+      "currentObservedHead": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+      "classification": "observed_unfrozen_not_ingested_not_qualified"
+    }
+  },
+  "currentStateRef": ".project-ops/02-CURRENT-STATE.json",
+  "resourceMapRef": "atlas/resource-map.json",
+  "resourceProtectionRef": "atlas/resource-protection-register.json",
+  "legacyPhaseCrosswalkRef": "atlas/legacy-phase-crosswalk.json",
+  "workingMemoryRef": "working-memory/PumpkinCMS_Chat_Working_Memory_Master_v1.0.0.md",
+  "chatPackRef": "generated/CHAT-PACK.md",
+  "currentGates": [
+    {
+      "id": "G-A04-AUTHORITY",
+      "status": "passed"
+    },
+    {
+      "id": "G-CANONICAL-ATLAS-PATH",
+      "status": "passed"
+    },
+    {
+      "id": "G-WORKING-MEMORY-V1",
+      "status": "passed"
+    },
+    {
+      "id": "G-CHAT-PACK",
+      "status": "passed"
+    },
+    {
+      "id": "G-LIVE-READBACK",
+      "status": "passed"
+    },
+    {
+      "id": "G-UPSTREAM-RECHECK",
+      "status": "observed_unfrozen_not_ingested"
+    },
+    {
+      "id": "G-RELEASE-DETERMINISM",
+      "status": "pending_until_closeout"
+    }
+  ],
+  "nextLanes": [
+    "UP-20",
+    "IDM-40",
+    "PERF-10",
+    "PAY-00"
+  ]
+}

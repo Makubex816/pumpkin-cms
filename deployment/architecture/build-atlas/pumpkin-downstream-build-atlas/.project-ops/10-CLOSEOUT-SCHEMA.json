@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pumpkin Build Atlas closeout schema v4",
+  "type": "object",
+  "required": [
+    "taskId",
+    "status",
+    "completedAtUtc",
+    "canonicalAtlas",
+    "safety",
+    "commits"
+  ],
+  "properties": {
+    "taskId": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "completedAtUtc": {
+      "type": "string"
+    },
+    "canonicalAtlas": {
+      "type": "object"
+    },
+    "safety": {
+      "type": "object"
+    },
+    "commits": {
+      "type": "object"
+    },
+    "releaseArtifacts": {
+      "type": "object"
+    }
+  }
+}

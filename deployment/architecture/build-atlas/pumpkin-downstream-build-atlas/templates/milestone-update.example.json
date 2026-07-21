@@ -1,0 +1,12 @@
+{
+  "milestoneId": "EXAMPLE-00",
+  "title": "Example milestone",
+  "buildPath": "example",
+  "status": "complete",
+  "completedAt": "2026-07-15T17:00:00-04:00",
+  "upstreamSnapshotSha": null,
+  "productHeadSha": null,
+  "evidenceRefs": ["EV-EXAMPLE"],
+  "capabilityChanges": [],
+  "nextGate": "Replace with the actual next gate."
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "classifications": [
+    {
+      "id": "historical-baseline",
+      "meaning": "trusted as evidence/protection baseline, not current execution authority"
+    },
+    {
+      "id": "active-canonical",
+      "meaning": "current Atlas/governance authority after A04 commit"
+    },
+    {
+      "id": "observed-unfrozen",
+      "meaning": "remote/source state observed but not frozen, qualified, or integrated"
+    },
+    {
+      "id": "not-started-successor-lane",
+      "meaning": "retained prompt lane with no A04 execution"
+    },
+    {
+      "id": "cleanup-candidate-needs-proof",
+      "meaning": "resource may be obsolete but must not be removed without dependency evidence"
+    }
+  ]
+}

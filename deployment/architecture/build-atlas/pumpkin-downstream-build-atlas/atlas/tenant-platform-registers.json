@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "source": "CRSTUR customer preservation plus V2.8.61K tenant/resource maps",
+  "customerPreservation": {
+    "tenants": 4,
+    "accounts": 6,
+    "memberships": 8,
+    "contacts": 4,
+    "formEntries": 12,
+    "pendingReconciliations": 0,
+    "pendingSecurityMutations": 0,
+    "pendingSyntheticOperations": 0,
+    "pendingAudits": 0,
+    "reconciliationClear": true,
+    "verifiedAtUtc": "2026-07-16T14:07:13.4956019Z"
+  },
+  "tenants": [
+    {
+      "key": "ice",
+      "displayName": "Ice",
+      "state": "production_static_site_active_custom_domains_ready",
+      "primaryEvidence": "swa-ice-static-staging GET 200 and V2.8.61K"
+    },
+    {
+      "key": "party-pros",
+      "displayName": "Party Pros",
+      "state": "retained_customer_tenant_no_A04_mutation",
+      "primaryEvidence": "CRSTUR preservation counts"
+    },
+    {
+      "key": "airstrip",
+      "displayName": "Airstrip",
+      "state": "frozen_no_A04_public_runtime_probe",
+      "primaryEvidence": "V2.8.61K airstrip frozen"
+    },
+    {
+      "key": "vegas",
+      "displayName": "Vegas",
+      "state": "retained_customer_tenant_no_A04_mutation",
+      "primaryEvidence": "CRSTUR preservation counts"
+    }
+  ]
+}

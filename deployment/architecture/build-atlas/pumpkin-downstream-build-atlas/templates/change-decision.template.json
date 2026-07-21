@@ -1,0 +1,12 @@
+{
+  "decisionId": "UPD-0000",
+  "upstreamSnapshotSha": "",
+  "subsystem": "",
+  "classification": "conflict_requires_design",
+  "rationale": "",
+  "incomingPaths": [],
+  "downstreamPaths": [],
+  "migrationRequired": false,
+  "validationRequired": [],
+  "atlasUpdates": []
+}

@@ -1,0 +1,416 @@
+{
+  "schemaVersion": "3.0.0",
+  "evidenceId": "EV-UPSTREAM-INTAKE-2026-07-15-18B5",
+  "observedAt": "2026-07-15T14:45:00-04:00",
+  "repository": "SDI-AI/pumpkin-cms",
+  "branch": "main",
+  "previousBaseline": "785e079269276c177832f9e7186ae44675e76f52",
+  "startSha": "785e079269276c177832f9e7186ae44675e76f52",
+  "endSha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+  "stable": false,
+  "observationStatus": "head_observed_once_not_immutable_not_qualified",
+  "ancestry": {
+    "status": "ahead",
+    "aheadBy": 5,
+    "behindBy": 0,
+    "mergeBase": "785e079269276c177832f9e7186ae44675e76f52"
+  },
+  "changeStats": {
+    "commits": 5,
+    "files": 43,
+    "additions": 1784,
+    "deletions": 59
+  },
+  "commits": [
+    {
+      "sha": "4157356f977b1ca0d8a2b93cf5b5493c8bf46338",
+      "message": "Block Updates",
+      "role": "block_identity_and_serialization"
+    },
+    {
+      "sha": "a5e8eb83ed158a084a8384fa7721b92688ac2b23",
+      "message": "Add starter visual page and navigation editor",
+      "role": "visual_editor"
+    },
+    {
+      "sha": "8e2bc1e7a2dc4b8126707c4a0e13448da246ed56",
+      "message": "Add tenant CAPTCHA and header logo media support",
+      "role": "captcha_and_media"
+    },
+    {
+      "sha": "d84cef200b4fb53f760a5ab248f2abf0b2ffc422",
+      "message": "Update .gitignore",
+      "role": "deployment_artifact_exclusion"
+    },
+    {
+      "sha": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+      "message": "Merge pull request #6 from SDI-AI/feature/starter-visual-page-editor",
+      "role": "main_merge"
+    }
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1
+    },
+    {
+      "path": "apps/pumpkin-api.Tests/Phase1ContractTests.cs",
+      "status": "modified",
+      "additions": 122,
+      "deletions": 0,
+      "changes": 122
+    },
+    {
+      "path": "apps/pumpkin-api.Tests/Program.cs",
+      "status": "modified",
+      "additions": 18,
+      "deletions": 0,
+      "changes": 18
+    },
+    {
+      "path": "apps/pumpkin-api/CAPTCHA.md",
+      "status": "added",
+      "additions": 42,
+      "deletions": 0,
+      "changes": 42
+    },
+    {
+      "path": "apps/pumpkin-api/Managers/PumpkinManager.cs",
+      "status": "modified",
+      "additions": 111,
+      "deletions": 1,
+      "changes": 112
+    },
+    {
+      "path": "apps/pumpkin-api/Program.cs",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 2,
+      "changes": 14
+    },
+    {
+      "path": "apps/pumpkin-api/Services/CaptchaVerifier.cs",
+      "status": "added",
+      "additions": 76,
+      "deletions": 0,
+      "changes": 76
+    },
+    {
+      "path": "apps/pumpkin-net-models/Models/FormDefinition.cs",
+      "status": "modified",
+      "additions": 35,
+      "deletions": 0,
+      "changes": 35
+    },
+    {
+      "path": "apps/pumpkin-net-models/Models/HtmlBlockBase.cs",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 1,
+      "changes": 13
+    },
+    {
+      "path": "apps/pumpkin-net-models/Models/IHtmlBlock.cs",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 1,
+      "changes": 11
+    },
+    {
+      "path": "apps/pumpkin-net-models/Models/Tenant.cs",
+      "status": "modified",
+      "additions": 31,
+      "deletions": 0,
+      "changes": 31
+    },
+    {
+      "path": "apps/starter-app/content/contact-form-definition.json",
+      "status": "modified",
+      "additions": 7,
+      "deletions": 1,
+      "changes": 8
+    },
+    {
+      "path": "apps/starter-app/src/app/admin/(workspace)/forms/_components/FormDefinitionEditor.tsx",
+      "status": "modified",
+      "additions": 47,
+      "deletions": 2,
+      "changes": 49
+    },
+    {
+      "path": "apps/starter-app/src/app/admin/(workspace)/pages/[...slug]/page.tsx",
+      "status": "modified",
+      "additions": 20,
+      "deletions": 3,
+      "changes": 23
+    },
+    {
+      "path": "apps/starter-app/src/app/admin/(workspace)/pages/_components/PageVisualEditor.tsx",
+      "status": "modified",
+      "additions": 297,
+      "deletions": 21,
+      "changes": 318
+    },
+    {
+      "path": "apps/starter-app/src/app/admin/(workspace)/pages/new/page.tsx",
+      "status": "modified",
+      "additions": 15,
+      "deletions": 2,
+      "changes": 17
+    },
+    {
+      "path": "apps/starter-app/src/app/admin/(workspace)/themes/_components/ThemeEditor.tsx",
+      "status": "modified",
+      "additions": 75,
+      "deletions": 2,
+      "changes": 77
+    },
+    {
+      "path": "apps/starter-app/src/app/admin/preview/VisualPreviewFrame.tsx",
+      "status": "added",
+      "additions": 79,
+      "deletions": 0,
+      "changes": 79
+    },
+    {
+      "path": "apps/starter-app/src/app/admin/preview/page.tsx",
+      "status": "added",
+      "additions": 9,
+      "deletions": 0,
+      "changes": 9
+    },
+    {
+      "path": "apps/starter-app/src/app/globals.css",
+      "status": "modified",
+      "additions": 221,
+      "deletions": 0,
+      "changes": 221
+    },
+    {
+      "path": "apps/starter-app/src/components/ContactFormBlock.tsx",
+      "status": "modified",
+      "additions": 48,
+      "deletions": 3,
+      "changes": 51
+    },
+    {
+      "path": "apps/starter-app/src/components/PageRenderer.tsx",
+      "status": "modified",
+      "additions": 65,
+      "deletions": 6,
+      "changes": 71
+    },
+    {
+      "path": "apps/starter-app/src/components/admin/MenuTreeEditor.tsx",
+      "status": "added",
+      "additions": 163,
+      "deletions": 0,
+      "changes": 163
+    },
+    {
+      "path": "apps/starter-app/src/components/blocks/ContentBlocksEditor.tsx",
+      "status": "modified",
+      "additions": 20,
+      "deletions": 3,
+      "changes": 23
+    },
+    {
+      "path": "apps/starter-app/src/lib/pumpkin-api.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1
+    },
+    {
+      "path": "apps/starter-app/src/lib/visual-editor-messages.ts",
+      "status": "added",
+      "additions": 30,
+      "deletions": 0,
+      "changes": 30
+    },
+    {
+      "path": "packages/pumpkin-block-views/src/components/TurnstileWidget.tsx",
+      "status": "added",
+      "additions": 96,
+      "deletions": 0,
+      "changes": 96
+    },
+    {
+      "path": "packages/pumpkin-block-views/src/index.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2
+    },
+    {
+      "path": "packages/pumpkin-block-views/src/views/FormBlockView.tsx",
+      "status": "modified",
+      "additions": 49,
+      "deletions": 2,
+      "changes": 51
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/index.d.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/index.d.ts.map",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/index.js.map",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/models/FormDefinition.d.ts",
+      "status": "modified",
+      "additions": 11,
+      "deletions": 0,
+      "changes": 11
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/models/FormDefinition.d.ts.map",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/models/IHtmlBlock.d.ts",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/models/IHtmlBlock.d.ts.map",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/models/Tenant.d.ts",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 0,
+      "changes": 12
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/models/Tenant.d.ts.map",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2
+    },
+    {
+      "path": "packages/pumpkin-ts-models/dist/models/Tenant.js.map",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2
+    },
+    {
+      "path": "packages/pumpkin-ts-models/src/index.ts",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5
+    },
+    {
+      "path": "packages/pumpkin-ts-models/src/models/FormDefinition.ts",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 0,
+      "changes": 13
+    },
+    {
+      "path": "packages/pumpkin-ts-models/src/models/IHtmlBlock.ts",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 1,
+      "changes": 5
+    },
+    {
+      "path": "packages/pumpkin-ts-models/src/models/Tenant.ts",
+      "status": "modified",
+      "additions": 14,
+      "deletions": 0,
+      "changes": 14
+    }
+  ],
+  "clusters": {
+    "blockIdentityAndSerialization": [
+      "apps/pumpkin-net-models/Models/HtmlBlockBase.cs",
+      "apps/pumpkin-net-models/Models/IHtmlBlock.cs",
+      "packages/pumpkin-ts-models/src/models/IHtmlBlock.ts",
+      "apps/pumpkin-api.Tests/Phase1ContractTests.cs"
+    ],
+    "visualEditorAndNavigation": [
+      "apps/starter-app/src/app/admin/(workspace)/pages/_components/PageVisualEditor.tsx",
+      "apps/starter-app/src/app/admin/preview/VisualPreviewFrame.tsx",
+      "apps/starter-app/src/components/PageRenderer.tsx",
+      "apps/starter-app/src/components/admin/MenuTreeEditor.tsx",
+      "apps/starter-app/src/lib/visual-editor-messages.ts"
+    ],
+    "captcha": [
+      "apps/pumpkin-api/Services/CaptchaVerifier.cs",
+      "apps/pumpkin-api/Managers/PumpkinManager.cs",
+      "apps/pumpkin-net-models/Models/FormDefinition.cs",
+      "apps/pumpkin-net-models/Models/Tenant.cs",
+      "packages/pumpkin-block-views/src/components/TurnstileWidget.tsx",
+      "apps/starter-app/src/components/ContactFormBlock.tsx",
+      "packages/pumpkin-block-views/src/views/FormBlockView.tsx"
+    ],
+    "headerLogoMedia": [
+      "apps/starter-app/src/app/admin/(workspace)/themes/_components/ThemeEditor.tsx",
+      "apps/starter-app/src/app/admin/(workspace)/pages/_components/PageVisualEditor.tsx"
+    ]
+  },
+  "ciEvidence": {
+    "combinedStatusCount": 0,
+    "pullRequestWorkflowRunCount": 0,
+    "sourceTestRunnerRequiresExplicitFlag": "--run-tests",
+    "cleanRoomQualificationRequired": true
+  },
+  "subsystemDecisions": [
+    {
+      "decisionId": "UPD-2026-0715-BLOCK-ID",
+      "subsystem": "block_identity",
+      "classification": "direct_adopt_after_migration_proof"
+    },
+    {
+      "decisionId": "UPD-2026-0715-VISUAL",
+      "subsystem": "visual_editor",
+      "classification": "adapt_or_port"
+    },
+    {
+      "decisionId": "UPD-2026-0715-CAPTCHA",
+      "subsystem": "captcha",
+      "classification": "wrap_and_extend"
+    },
+    {
+      "decisionId": "UPD-2026-0715-HEADER-LOGO",
+      "subsystem": "header_logo_media",
+      "classification": "direct_adopt_after_tenant_scope_proof"
+    }
+  ],
+  "hardStops": [
+    "current downstream phase has not closed",
+    "active downstream source and Atlas are not inventoried",
+    "candidate has not been frozen or clean-room qualified",
+    "no source integration authority exists in this documentation phase"
+  ]
+}

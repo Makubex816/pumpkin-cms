@@ -1,0 +1,54 @@
+{
+  "package": "PumpkinCMS_Chat_Working_Memory_Master_v1.0.0",
+  "version": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "sourceAtlas": "../VERSION.json",
+  "fileCount": 9,
+  "files": [
+    {
+      "path": "bootstrap/00-OPERATING-CONTRACT.md",
+      "sha256": "1d0da4859b8238144cebcae5c3d1790e946e59be1395650773cf45a680ebf8b5",
+      "bytes": 681
+    },
+    {
+      "path": "bootstrap/01-PROJECT-ARCHITECTURE.md",
+      "sha256": "d9d4555135036fb5d453e84d892b75c732add47f8c9509ca23cc183a6f34b6f0",
+      "bytes": 260
+    },
+    {
+      "path": "bootstrap/02-CURRENT-STATE.json",
+      "sha256": "06c2035ef03aba3f611b93c3d6cc72ea14ca867da3ca8d3cf9d4bce1dd1e794c",
+      "bytes": 4626
+    },
+    {
+      "path": "bootstrap/03-CURRENT-PHASE.yaml",
+      "sha256": "5aeda0570927ad749091c544753260db0336ead1a32bbdaee32dd9e9d03eb317",
+      "bytes": 1931
+    },
+    {
+      "path": "bootstrap/04-EVIDENCE-INDEX.json",
+      "sha256": "6d4e665ea5f9f21a3bb7981ee4078fec6f7337f12a89370166466ff88652458d",
+      "bytes": 3214
+    },
+    {
+      "path": "bootstrap/05-RESUMPTION-CAPSULE.md",
+      "sha256": "3f37f1c5f2b63c8ed05dbfbdb7aa973f8717c9b03d83c810f3a3c29bcf63a8c1",
+      "bytes": 1434
+    },
+    {
+      "path": "PACKAGE-MANIFEST.json",
+      "sha256": "139d7318124eafff3aa36e618aa20c7801a206f5cb822f414d93b01f0cc62666",
+      "bytes": 1692
+    },
+    {
+      "path": "PumpkinCMS_Chat_Working_Memory_Master_v1.0.0.md",
+      "sha256": "34d6d8b2fae106c63464980e7d64b17234508b0ded496936dd3d5a13d875467d",
+      "bytes": 1246
+    },
+    {
+      "path": "START-HERE.md",
+      "sha256": "7180c496fb80b4a77e1c582890cde146a039eeed5897f53f1a757405cc8977a5",
+      "bytes": 287
+    }
+  ]
+}

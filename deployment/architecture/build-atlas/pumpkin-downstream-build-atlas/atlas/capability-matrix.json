@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "4.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "capabilities": [
+    {
+      "id": "cms-pages-media-tenants",
+      "state": "active_with_protected_live_data",
+      "evidence": "CRSTUR customer preservation and V2.8.61K resource map"
+    },
+    {
+      "id": "identity-management",
+      "state": "management_active_rename_migration_external_provider_held",
+      "evidence": "CRSTUR"
+    },
+    {
+      "id": "admin-ui",
+      "state": "production_root_get_200",
+      "evidence": "A04 GET probes"
+    },
+    {
+      "id": "api-runtime",
+      "state": "health_and_dependency_ready_get_200",
+      "evidence": "A04 GET probes"
+    },
+    {
+      "id": "ice-public-static-site",
+      "state": "default_and_custom_domains_get_200",
+      "evidence": "A04 GET probes"
+    },
+    {
+      "id": "airstrip",
+      "state": "frozen_no_public_runtime_probe_in_A04",
+      "evidence": "V2.8.61K and A04 boundary"
+    },
+    {
+      "id": "upstream-captcha-visual-editor",
+      "state": "observed_unfrozen_not_ingested_not_qualified",
+      "evidence": "A04 upstream recheck"
+    },
+    {
+      "id": "authorize-net-payments",
+      "state": "PAY-00_not_started_architecture_only",
+      "evidence": "A04 next phase map"
+    },
+    {
+      "id": "capacity",
+      "state": "S2_two_workers_retained",
+      "evidence": "CRSTUR and A04 control-plane readback"
+    }
+  ]
+}

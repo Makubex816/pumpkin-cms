@@ -1,0 +1,86 @@
+﻿{
+    "collectedAtUtc":  "2026-07-21T02:59:46.2938716Z",
+    "mutationBoundary":  "GET_only_no_form_submit_no_auth_mutation_no_airstrip_public_probe",
+    "results":  [
+                    {
+                        "name":  "api_health_root",
+                        "url":  "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/health",
+                        "method":  "GET",
+                        "statusCode":  200,
+                        "elapsedMs":  586,
+                        "contentLength":  191,
+                        "contentSampleSha256":  "91e77d7daa741106bc51ad82f4c9664e6c8a278569b10282c5b7225b9e32f820",
+                        "error":  null
+                    },
+                    {
+                        "name":  "api_dependency_ready",
+                        "url":  "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/health/ready",
+                        "method":  "GET",
+                        "statusCode":  200,
+                        "elapsedMs":  88,
+                        "contentLength":  30,
+                        "contentSampleSha256":  "4ce34a0c78eb27fbfb75d500676d2a14a8a59ea9187cdcbd0dac4ce3dd36134e",
+                        "error":  null
+                    },
+                    {
+                        "name":  "api_default_root",
+                        "url":  "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net/",
+                        "method":  "GET",
+                        "statusCode":  200,
+                        "elapsedMs":  88,
+                        "contentLength":  55,
+                        "contentSampleSha256":  "2ee370896572013989460ddbd1976002df9b7651b77e18aeb7fae5c3b6ff4e3f",
+                        "error":  null
+                    },
+                    {
+                        "name":  "admin_root",
+                        "url":  "https://app-pumpkin-admin-prod-centralus-001.azurewebsites.net/",
+                        "method":  "GET",
+                        "statusCode":  200,
+                        "elapsedMs":  925,
+                        "contentLength":  4970,
+                        "contentSampleSha256":  "2c7c342d23ea04852aab5f26eb0c7be16b1d906c140218c1fa66771e8d91d5f6",
+                        "error":  null
+                    },
+                    {
+                        "name":  "admin_isolated_root",
+                        "url":  "https://app-pumpkin-admin-isolated-centralus-001.azurewebsites.net/",
+                        "method":  "GET",
+                        "statusCode":  null,
+                        "elapsedMs":  30047,
+                        "contentLength":  null,
+                        "contentSampleSha256":  null,
+                        "error":  "The operation has timed out."
+                    },
+                    {
+                        "name":  "ice_swa_root",
+                        "url":  "https://happy-mud-0b375e20f.7.azurestaticapps.net/",
+                        "method":  "GET",
+                        "statusCode":  200,
+                        "elapsedMs":  596,
+                        "contentLength":  55026,
+                        "contentSampleSha256":  "eb292e3a156b0f3d45f025a3354a109fb433e9b1fcc13647f28219c08dc57804",
+                        "error":  null
+                    },
+                    {
+                        "name":  "ice_swa_custom_apex",
+                        "url":  "https://iceskatingrinkrentals.com/",
+                        "method":  "GET",
+                        "statusCode":  200,
+                        "elapsedMs":  872,
+                        "contentLength":  55026,
+                        "contentSampleSha256":  "eb292e3a156b0f3d45f025a3354a109fb433e9b1fcc13647f28219c08dc57804",
+                        "error":  null
+                    },
+                    {
+                        "name":  "ice_swa_custom_www",
+                        "url":  "https://www.iceskatingrinkrentals.com/",
+                        "method":  "GET",
+                        "statusCode":  200,
+                        "elapsedMs":  918,
+                        "contentLength":  55026,
+                        "contentSampleSha256":  "eb292e3a156b0f3d45f025a3354a109fb433e9b1fcc13647f28219c08dc57804",
+                        "error":  null
+                    }
+                ]
+}

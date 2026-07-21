@@ -1,0 +1,382 @@
+﻿{
+    "collectedAtUtc":  "2026-07-21T02:58:50.1877953Z",
+    "mutationBoundary":  "read_only_control_plane_no_appsettings_no_keys_no_connection_strings_no_secret_values_no_write_commands",
+    "reads":  [
+                  {
+                      "label":  "account_show",
+                      "exitCode":  0,
+                      "command":  "az account show --query {name:name,id:id,tenantId:tenantId,userType:user.type} -o json",
+                      "result":  {
+                                     "id":  "ff887def-fd83-4a19-9298-13d4b1687873",
+                                     "name":  "Azure subscription 1",
+                                     "tenantId":  "38b16667-a82c-4ff8-98d8-aeebbec4536a",
+                                     "userType":  "user"
+                                 }
+                  },
+                  {
+                      "label":  "protected_named_resource_census",
+                      "exitCode":  0,
+                      "command":  "az resource list --query [?name==\u0027app-pumpkin-api-prod-centralus-001\u0027 || name==\u0027app-pumpkin-admin-prod-centralus-001\u0027 || name==\u0027app-pumpkin-admin-isolated-centralus-001\u0027 || name==\u0027app-airstrip-prod-centralus-001\u0027 || name==\u0027app-airstrip-preview-isolated-centralus-001\u0027 || name==\u0027asp-pumpkin-api-prod-centralus-001\u0027 || name==\u0027swa-ice-static-staging\u0027 || name==\u0027swa-ice-static-isolated-staging\u0027 || name==\u0027cosmos-pumpkin-prod-eastus\u0027 || name==\u0027cosmos-pumpkincms-stg-olm01\u0027 || name==\u0027iceskatingmedia\u0027 || name==\u0027iceforms20260605\u0027 || name==\u0027pumpkincmsstgolm01\u0027 || name==\u0027func-ice-static-contact-20260605\u0027].{name:name,type:type,resourceGroup:resourceGroup,location:location} -o json",
+                      "result":  {
+                                     "value":  [
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "iceskatingmedia",
+                                                       "resourceGroup":  "rg-ice-production-media",
+                                                       "type":  "Microsoft.Storage/storageAccounts"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "iceforms20260605",
+                                                       "resourceGroup":  "rg-ice-static-form-endpoint",
+                                                       "type":  "Microsoft.Storage/storageAccounts"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "func-ice-static-contact-20260605",
+                                                       "resourceGroup":  "rg-ice-static-form-endpoint",
+                                                       "type":  "Microsoft.Web/sites"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "cosmos-pumpkin-prod-eastus",
+                                                       "resourceGroup":  "rg-ice-production-cosmos",
+                                                       "type":  "Microsoft.DocumentDB/databaseAccounts"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "cosmos-pumpkincms-stg-olm01",
+                                                       "resourceGroup":  "rg-pumpkincms-stg-eastus-olm",
+                                                       "type":  "Microsoft.DocumentDB/databaseAccounts"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "pumpkincmsstgolm01",
+                                                       "resourceGroup":  "rg-pumpkincms-stg-eastus-olm",
+                                                       "type":  "Microsoft.Storage/storageAccounts"
+                                                   },
+                                                   {
+                                                       "location":  "eastus2",
+                                                       "name":  "swa-ice-static-staging",
+                                                       "resourceGroup":  "rg-ice-static-staging",
+                                                       "type":  "Microsoft.Web/staticSites"
+                                                   },
+                                                   {
+                                                       "location":  "eastus2",
+                                                       "name":  "swa-ice-static-isolated-staging",
+                                                       "resourceGroup":  "rg-ice-static-staging",
+                                                       "type":  "Microsoft.Web/staticSites"
+                                                   },
+                                                   {
+                                                       "location":  "centralus",
+                                                       "name":  "asp-pumpkin-api-prod-centralus-001",
+                                                       "resourceGroup":  "rg-pumpkin-api-prod-centralus",
+                                                       "type":  "Microsoft.Web/serverFarms"
+                                                   },
+                                                   {
+                                                       "location":  "centralus",
+                                                       "name":  "app-pumpkin-api-prod-centralus-001",
+                                                       "resourceGroup":  "rg-pumpkin-api-prod-centralus",
+                                                       "type":  "Microsoft.Web/sites"
+                                                   },
+                                                   {
+                                                       "location":  "centralus",
+                                                       "name":  "app-pumpkin-admin-isolated-centralus-001",
+                                                       "resourceGroup":  "rg-pumpkin-api-prod-centralus",
+                                                       "type":  "Microsoft.Web/sites"
+                                                   },
+                                                   {
+                                                       "location":  "centralus",
+                                                       "name":  "app-pumpkin-admin-prod-centralus-001",
+                                                       "resourceGroup":  "rg-pumpkin-api-prod-centralus",
+                                                       "type":  "Microsoft.Web/sites"
+                                                   },
+                                                   {
+                                                       "location":  "centralus",
+                                                       "name":  "app-airstrip-preview-isolated-centralus-001",
+                                                       "resourceGroup":  "rg-pumpkin-api-prod-centralus",
+                                                       "type":  "Microsoft.Web/sites"
+                                                   },
+                                                   {
+                                                       "location":  "centralus",
+                                                       "name":  "app-airstrip-prod-centralus-001",
+                                                       "resourceGroup":  "rg-pumpkin-api-prod-centralus",
+                                                       "type":  "Microsoft.Web/sites"
+                                                   }
+                                               ],
+                                     "Count":  14
+                                 }
+                  },
+                  {
+                      "label":  "prod_appservice_plan",
+                      "exitCode":  0,
+                      "command":  "az appservice plan show -g rg-pumpkin-api-prod-centralus -n asp-pumpkin-api-prod-centralus-001 --query {name:name,resourceGroup:resourceGroup,location:location,sku:sku.name,tier:sku.tier,capacity:sku.capacity,numberOfSites:numberOfSites,status:status,kind:kind} -o json",
+                      "result":  {
+                                     "capacity":  2,
+                                     "kind":  "linux",
+                                     "location":  "Central US",
+                                     "name":  "asp-pumpkin-api-prod-centralus-001",
+                                     "numberOfSites":  null,
+                                     "resourceGroup":  "rg-pumpkin-api-prod-centralus",
+                                     "sku":  "S2",
+                                     "status":  null,
+                                     "tier":  "Standard"
+                                 }
+                  },
+                  {
+                      "label":  "webapp_show_app-pumpkin-api-prod-centralus-001",
+                      "exitCode":  0,
+                      "command":  "az webapp show -g rg-pumpkin-api-prod-centralus -n app-pumpkin-api-prod-centralus-001 --query {name:name,state:state,defaultHostName:defaultHostName,hostNames:hostNames,serverFarmId:serverFarmId,httpsOnly:httpsOnly,kind:kind} -o json",
+                      "result":  {
+                                     "defaultHostName":  "app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+                                     "hostNames":  [
+                                                       "app-pumpkin-api-prod-centralus-001.azurewebsites.net"
+                                                   ],
+                                     "httpsOnly":  false,
+                                     "kind":  "app,linux",
+                                     "name":  "app-pumpkin-api-prod-centralus-001",
+                                     "serverFarmId":  "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/serverfarms/asp-pumpkin-api-prod-centralus-001",
+                                     "state":  "Running"
+                                 }
+                  },
+                  {
+                      "label":  "webapp_show_app-pumpkin-admin-prod-centralus-001",
+                      "exitCode":  0,
+                      "command":  "az webapp show -g rg-pumpkin-api-prod-centralus -n app-pumpkin-admin-prod-centralus-001 --query {name:name,state:state,defaultHostName:defaultHostName,hostNames:hostNames,serverFarmId:serverFarmId,httpsOnly:httpsOnly,kind:kind} -o json",
+                      "result":  {
+                                     "defaultHostName":  "app-pumpkin-admin-prod-centralus-001.azurewebsites.net",
+                                     "hostNames":  [
+                                                       "app-pumpkin-admin-prod-centralus-001.azurewebsites.net"
+                                                   ],
+                                     "httpsOnly":  false,
+                                     "kind":  "app,linux",
+                                     "name":  "app-pumpkin-admin-prod-centralus-001",
+                                     "serverFarmId":  "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/serverfarms/asp-pumpkin-api-prod-centralus-001",
+                                     "state":  "Running"
+                                 }
+                  },
+                  {
+                      "label":  "webapp_show_app-pumpkin-admin-isolated-centralus-001",
+                      "exitCode":  0,
+                      "command":  "az webapp show -g rg-pumpkin-api-prod-centralus -n app-pumpkin-admin-isolated-centralus-001 --query {name:name,state:state,defaultHostName:defaultHostName,hostNames:hostNames,serverFarmId:serverFarmId,httpsOnly:httpsOnly,kind:kind} -o json",
+                      "result":  {
+                                     "defaultHostName":  "app-pumpkin-admin-isolated-centralus-001.azurewebsites.net",
+                                     "hostNames":  [
+                                                       "app-pumpkin-admin-isolated-centralus-001.azurewebsites.net"
+                                                   ],
+                                     "httpsOnly":  false,
+                                     "kind":  "app,linux",
+                                     "name":  "app-pumpkin-admin-isolated-centralus-001",
+                                     "serverFarmId":  "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/serverfarms/asp-pumpkin-api-prod-centralus-001",
+                                     "state":  "Running"
+                                 }
+                  },
+                  {
+                      "label":  "webapp_show_app-airstrip-prod-centralus-001",
+                      "exitCode":  0,
+                      "command":  "az webapp show -g rg-pumpkin-api-prod-centralus -n app-airstrip-prod-centralus-001 --query {name:name,state:state,defaultHostName:defaultHostName,hostNames:hostNames,serverFarmId:serverFarmId,httpsOnly:httpsOnly,kind:kind} -o json",
+                      "result":  {
+                                     "defaultHostName":  "app-airstrip-prod-centralus-001.azurewebsites.net",
+                                     "hostNames":  [
+                                                       "app-airstrip-prod-centralus-001.azurewebsites.net"
+                                                   ],
+                                     "httpsOnly":  false,
+                                     "kind":  "app,linux",
+                                     "name":  "app-airstrip-prod-centralus-001",
+                                     "serverFarmId":  "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/serverfarms/asp-pumpkin-api-prod-centralus-001",
+                                     "state":  "Running"
+                                 }
+                  },
+                  {
+                      "label":  "webapp_show_app-airstrip-preview-isolated-centralus-001",
+                      "exitCode":  0,
+                      "command":  "az webapp show -g rg-pumpkin-api-prod-centralus -n app-airstrip-preview-isolated-centralus-001 --query {name:name,state:state,defaultHostName:defaultHostName,hostNames:hostNames,serverFarmId:serverFarmId,httpsOnly:httpsOnly,kind:kind} -o json",
+                      "result":  {
+                                     "defaultHostName":  "app-airstrip-preview-isolated-centralus-001.azurewebsites.net",
+                                     "hostNames":  [
+                                                       "app-airstrip-preview-isolated-centralus-001.azurewebsites.net"
+                                                   ],
+                                     "httpsOnly":  false,
+                                     "kind":  "app,linux",
+                                     "name":  "app-airstrip-preview-isolated-centralus-001",
+                                     "serverFarmId":  "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-api-prod-centralus/providers/Microsoft.Web/serverfarms/asp-pumpkin-api-prod-centralus-001",
+                                     "state":  "Running"
+                                 }
+                  },
+                  {
+                      "label":  "api_slot_list",
+                      "exitCode":  0,
+                      "command":  "az webapp deployment slot list -g rg-pumpkin-api-prod-centralus -n app-pumpkin-api-prod-centralus-001 --query [].{name:name,state:state,defaultHostName:defaultHostName,hostNames:hostNames} -o json",
+                      "result":  {
+                                     "value":  [
+                                                   {
+                                                       "defaultHostName":  "app-pumpkin-api-prod-centralus-001-crr-validation.azurewebsites.net",
+                                                       "hostNames":  [
+                                                                         "app-pumpkin-api-prod-centralus-001-crr-validation.azurewebsites.net"
+                                                                     ],
+                                                       "name":  "crr-validation",
+                                                       "state":  "Running"
+                                                   }
+                                               ],
+                                     "Count":  1
+                                 }
+                  },
+                  {
+                      "label":  "staticwebapp_show_swa-ice-static-staging",
+                      "exitCode":  0,
+                      "command":  "az staticwebapp show -g rg-ice-static-staging -n swa-ice-static-staging --query {name:name,resourceGroup:resourceGroup,location:location,sku:sku.name,defaultHostname:defaultHostname,repositoryUrl:repositoryUrl,branch:branch,customDomains:customDomains} -o json",
+                      "result":  {
+                                     "branch":  null,
+                                     "customDomains":  [
+                                                           "iceskatingrinkrentals.com",
+                                                           "www.iceskatingrinkrentals.com"
+                                                       ],
+                                     "defaultHostname":  "happy-mud-0b375e20f.7.azurestaticapps.net",
+                                     "location":  "East US 2",
+                                     "name":  "swa-ice-static-staging",
+                                     "repositoryUrl":  null,
+                                     "resourceGroup":  "rg-ice-static-staging",
+                                     "sku":  "Free"
+                                 }
+                  },
+                  {
+                      "label":  "staticwebapp_show_swa-ice-static-isolated-staging",
+                      "exitCode":  0,
+                      "command":  "az staticwebapp show -g rg-ice-static-staging -n swa-ice-static-isolated-staging --query {name:name,resourceGroup:resourceGroup,location:location,sku:sku.name,defaultHostname:defaultHostname,repositoryUrl:repositoryUrl,branch:branch,customDomains:customDomains} -o json",
+                      "result":  {
+                                     "branch":  null,
+                                     "customDomains":  [
+
+                                                       ],
+                                     "defaultHostname":  "kind-island-0a85a740f.7.azurestaticapps.net",
+                                     "location":  "East US 2",
+                                     "name":  "swa-ice-static-isolated-staging",
+                                     "repositoryUrl":  null,
+                                     "resourceGroup":  "rg-ice-static-staging",
+                                     "sku":  "Free"
+                                 }
+                  },
+                  {
+                      "label":  "cosmos_show_cosmos-pumpkin-prod-eastus",
+                      "exitCode":  0,
+                      "command":  "az cosmosdb show -g rg-ice-production-cosmos -n cosmos-pumpkin-prod-eastus --query {name:name,resourceGroup:resourceGroup,location:location,locations:locations[].locationName,backupPolicyType:backupPolicy.type,kind:kind,consistency:consistencyPolicy.defaultConsistencyLevel} -o json",
+                      "result":  {
+                                     "backupPolicyType":  "Continuous",
+                                     "consistency":  "Session",
+                                     "kind":  "GlobalDocumentDB",
+                                     "location":  "East US",
+                                     "locations":  [
+                                                       "East US"
+                                                   ],
+                                     "name":  "cosmos-pumpkin-prod-eastus",
+                                     "resourceGroup":  "rg-ice-production-cosmos"
+                                 }
+                  },
+                  {
+                      "label":  "cosmos_show_cosmos-pumpkincms-stg-olm01",
+                      "exitCode":  0,
+                      "command":  "az cosmosdb show -g rg-pumpkincms-stg-eastus-olm -n cosmos-pumpkincms-stg-olm01 --query {name:name,resourceGroup:resourceGroup,location:location,locations:locations[].locationName,backupPolicyType:backupPolicy.type,kind:kind,consistency:consistencyPolicy.defaultConsistencyLevel} -o json",
+                      "result":  {
+                                     "backupPolicyType":  "Periodic",
+                                     "consistency":  "Session",
+                                     "kind":  "GlobalDocumentDB",
+                                     "location":  "East US",
+                                     "locations":  [
+                                                       "East US"
+                                                   ],
+                                     "name":  "cosmos-pumpkincms-stg-olm01",
+                                     "resourceGroup":  "rg-pumpkincms-stg-eastus-olm"
+                                 }
+                  },
+                  {
+                      "label":  "storage_show_iceskatingmedia",
+                      "exitCode":  0,
+                      "command":  "az storage account show -g rg-ice-production-media -n iceskatingmedia --query {name:name,resourceGroup:resourceGroup,location:location,kind:kind,sku:sku.name,primaryBlobEndpoint:primaryEndpoints.blob,allowBlobPublicAccess:allowBlobPublicAccess,minimumTlsVersion:minimumTlsVersion} -o json",
+                      "result":  {
+                                     "allowBlobPublicAccess":  true,
+                                     "kind":  "StorageV2",
+                                     "location":  "eastus",
+                                     "minimumTlsVersion":  "TLS1_2",
+                                     "name":  "iceskatingmedia",
+                                     "primaryBlobEndpoint":  "https://iceskatingmedia.blob.core.windows.net/",
+                                     "resourceGroup":  "rg-ice-production-media",
+                                     "sku":  "Standard_LRS"
+                                 }
+                  },
+                  {
+                      "label":  "storage_show_iceforms20260605",
+                      "exitCode":  0,
+                      "command":  "az storage account show -g rg-ice-static-form-endpoint -n iceforms20260605 --query {name:name,resourceGroup:resourceGroup,location:location,kind:kind,sku:sku.name,primaryBlobEndpoint:primaryEndpoints.blob,allowBlobPublicAccess:allowBlobPublicAccess,minimumTlsVersion:minimumTlsVersion} -o json",
+                      "result":  {
+                                     "allowBlobPublicAccess":  false,
+                                     "kind":  "StorageV2",
+                                     "location":  "eastus",
+                                     "minimumTlsVersion":  "TLS1_2",
+                                     "name":  "iceforms20260605",
+                                     "primaryBlobEndpoint":  "https://iceforms20260605.blob.core.windows.net/",
+                                     "resourceGroup":  "rg-ice-static-form-endpoint",
+                                     "sku":  "Standard_LRS"
+                                 }
+                  },
+                  {
+                      "label":  "storage_show_pumpkincmsstgolm01",
+                      "exitCode":  0,
+                      "command":  "az storage account show -g rg-pumpkincms-stg-eastus-olm -n pumpkincmsstgolm01 --query {name:name,resourceGroup:resourceGroup,location:location,kind:kind,sku:sku.name,primaryBlobEndpoint:primaryEndpoints.blob,allowBlobPublicAccess:allowBlobPublicAccess,minimumTlsVersion:minimumTlsVersion} -o json",
+                      "result":  {
+                                     "allowBlobPublicAccess":  false,
+                                     "kind":  "StorageV2",
+                                     "location":  "eastus",
+                                     "minimumTlsVersion":  "TLS1_2",
+                                     "name":  "pumpkincmsstgolm01",
+                                     "primaryBlobEndpoint":  "https://pumpkincmsstgolm01.blob.core.windows.net/",
+                                     "resourceGroup":  "rg-pumpkincms-stg-eastus-olm",
+                                     "sku":  "Standard_LRS"
+                                 }
+                  },
+                  {
+                      "label":  "legacy_olm_resource_group",
+                      "exitCode":  0,
+                      "command":  "az resource list -g rg-pumpkincms-stg-eastus-olm --query [].{name:name,type:type,location:location} -o json",
+                      "result":  {
+                                     "value":  [
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "log-pumpkincms-stg-olm01",
+                                                       "type":  "Microsoft.OperationalInsights/workspaces"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "cosmos-pumpkincms-stg-olm01",
+                                                       "type":  "Microsoft.DocumentDB/databaseAccounts"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "pumpkincmsstgolm01",
+                                                       "type":  "Microsoft.Storage/storageAccounts"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "id-pumpkincms-olm-stg",
+                                                       "type":  "Microsoft.ManagedIdentity/userAssignedIdentities"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "appi-pumpkincms-stg-olm01",
+                                                       "type":  "Microsoft.Insights/components"
+                                                   },
+                                                   {
+                                                       "location":  "eastus",
+                                                       "name":  "kv-pumpkincms-stg-olm01",
+                                                       "type":  "Microsoft.KeyVault/vaults"
+                                                   },
+                                                   {
+                                                       "location":  "global",
+                                                       "name":  "Application Insights Smart Detection",
+                                                       "type":  "microsoft.insights/actiongroups"
+                                                   }
+                                               ],
+                                     "Count":  7
+                                 }
+                  }
+              ]
+}

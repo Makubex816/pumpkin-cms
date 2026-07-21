@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "3.0.0",
+  "evidenceId": "EV-PUBLIC-DOWNSTREAM-2026-07-15",
+  "observedAt": "2026-07-15T14:45:00-04:00",
+  "repository": "Makubex816/pumpkin-cms",
+  "branch": "main",
+  "head": "64156a3015943f08bc89cadb2caae910d5cadf4f",
+  "headMessage": "SiteMap",
+  "comparisonToUpstream": {
+    "upstreamHead": "18b5cea01d23298b95b5945999e66a4aec8d748b",
+    "status": "behind",
+    "aheadBy": 0,
+    "behindBy": 59,
+    "mergeBase": "64156a3015943f08bc89cadb2caae910d5cadf4f"
+  },
+  "interpretation": "public_default_branch_is_historical_lineage_not_current_active_build_proof",
+  "historicalCapabilitySignals": [
+    {
+      "commit": "365c44d20f7258b3c6012ff58bb204b57525cca4",
+      "signal": "page map coordinates, parent hub, hub links"
+    },
+    {
+      "commit": "eace197085ec7b2c1e742f1c72739ce095c42809",
+      "signal": "theme retrieved from database"
+    },
+    {
+      "commit": "61097d9d4dd00de3e79464962ceb054c56713674",
+      "signal": "tenant-origin CORS behavior"
+    },
+    {
+      "commit": "0a5446d95ffed70ffd458f6568f4f42e1d811929",
+      "signal": "admin login and tenant CRUD"
+    },
+    {
+      "commit": "370e74db1c87130b39a2f6f12770fd0b9d19206f",
+      "signal": "SuperAdmin tenant concept"
+    },
+    {
+      "commit": "64156a3015943f08bc89cadb2caae910d5cadf4f",
+      "signal": "sitemap endpoint and runtime route"
+    }
+  ],
+  "limitations": [
+    "does not expose the current local/private integrated product",
+    "does not prove the branch or source currently deployed",
+    "does not replace the running phase closeout or live Atlas"
+  ],
+  "requiredNextEvidence": [
+    "current phase closeout",
+    "local/private repository inventory",
+    "deployment source and commit readback",
+    "existing Atlas location/version/update command"
+  ]
+}

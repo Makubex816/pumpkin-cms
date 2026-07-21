@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "4.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "classification": "a04_canonical_inception_evidence_index",
+  "entries": [
+    {
+      "id": "EV-A04-AUTH",
+      "path": "owner attachment e63f705a-6288-46c7-a086-3a8b38f44248/pasted-text.txt",
+      "role": "authorization_prompt",
+      "committed": false
+    },
+    {
+      "id": "EV-A01-MANIFEST",
+      "path": "deployment/architecture/platform-closeout/cur-20-current-build-closeout-ingestion-result/result-manifest.json",
+      "sha256": "9a3ed41ac2ee84f22a080a116784e9a220e9147590b10db28c8a88ec519fe005",
+      "role": "source ZIP hash/CRC and blocked A01 record",
+      "committed": true
+    },
+    {
+      "id": "EV-A02-MANIFEST",
+      "path": "deployment/architecture/platform-closeout/cur-20-current-build-closeout-ingestion-result/runs/a02-parent-workspace-resource-audit/result-manifest.json",
+      "sha256": "95ddf6c7c4b1a711dc1db4e30f3eb1d0e949a2702f364191efff6d7b876a1750",
+      "role": "accepted parent workspace audit",
+      "committed": true
+    },
+    {
+      "id": "EV-A03-MANIFEST",
+      "path": "deployment/architecture/platform-closeout/cur-20-current-build-closeout-ingestion-result/runs/a03-v2-8-61k-resource-atlas-targeted-recovery/result-manifest.json",
+      "sha256": "2aa3999922e17ddb1c820ee78b1232d03556ae7b0edbdae71f5f27ecedef9bf2",
+      "role": "targeted recovery and authority classification",
+      "committed": true
+    },
+    {
+      "id": "EV-V2-8-61K",
+      "path": "deployment/architecture/tenant-website-publish-readiness/v2-8-61k-platform-resource-atlas-result/result-manifest.json",
+      "sha256": "3068c2a69c20857c2ac9fcb316f252fa430501923a9f3eb59ef9ca1e1c7c73d1",
+      "role": "historical resource protection baseline",
+      "committed": true
+    },
+    {
+      "id": "EV-CRSTUR",
+      "path": "deployment/architecture/identity/v2-8-63crstu-readiness-identity-activation-result/result-manifest.json",
+      "sha256": "75501728f63438d6dffb8e084ceb7a1bb94713688e73c2a20cc3f62c7d139601",
+      "role": "identity activation and capacity carryforward",
+      "committed": true
+    },
+    {
+      "id": "EV-A04-AZURE",
+      "path": "evidence/a04-live-control-plane-readback-2026-07-21.json",
+      "sha256": "0505e8ec839fd91c3df7d912a9d360c18c9201587925d0c331be63ae45c4e85d",
+      "role": "fresh read-only Azure control-plane readback",
+      "committed": true
+    },
+    {
+      "id": "EV-A04-HTTP",
+      "path": "evidence/a04-live-http-get-probes-2026-07-21.json",
+      "sha256": "eb0c5389b972a800eaae6c12e3d7c9258ec874290cf51cd0878a84eff3290cc7",
+      "role": "fresh GET-only health/root probes",
+      "committed": true
+    },
+    {
+      "id": "EV-A04-UPSTREAM",
+      "path": "evidence/a04-upstream-recheck-2026-07-21.json",
+      "sha256": "1276d8a6fc8a987e20c1342282dce1729d119d8de5379efea0dc3d36d74e808e",
+      "role": "isolated upstream main recheck",
+      "committed": true
+    },
+    {
+      "id": "EV-A04-ZIP-SEARCH",
+      "path": "evidence/a04-source-zip-search-2026-07-21.json",
+      "sha256": "17173673b0315e1e9d6a134b5740e0f42974c5e7462a6551ebe4eb86f141a39b",
+      "role": "current workspace source ZIP search limitation",
+      "committed": true
+    }
+  ]
+}

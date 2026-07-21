@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-21T03:05:00Z",
+  "risks": [
+    {
+      "id": "R-A04-001",
+      "severity": "critical",
+      "risk": "Staging unrelated dirty worktree files",
+      "mitigation": "exact-path staging only"
+    },
+    {
+      "id": "R-A04-002",
+      "severity": "critical",
+      "risk": "Treating unfrozen upstream as integrated",
+      "mitigation": "UP-20 separate successor gate"
+    },
+    {
+      "id": "R-A04-003",
+      "severity": "high",
+      "risk": "Scaling below S2/two workers regresses TenantAdmin login readiness",
+      "mitigation": "CRSTUR retain-S2 decision is authoritative until PERF-10"
+    },
+    {
+      "id": "R-A04-004",
+      "severity": "high",
+      "risk": "Deleting legacy resources before dependency proof",
+      "mitigation": "cleanup_candidate_needs_dependency_proof statuses"
+    },
+    {
+      "id": "R-A04-005",
+      "severity": "high",
+      "risk": "Airstrip public runtime accidentally probed or mutated",
+      "mitigation": "frozen/no-probe boundary"
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "A-A04-001",
+      "assumption": "A01 committed ZIP hash/CRC evidence is authoritative where original ZIP files are absent in current workspace",
+      "status": "accepted_with_limitation"
+    },
+    {
+      "id": "A-A04-002",
+      "assumption": "No active comprehensive Build Atlas existed before A04 based on accepted A01-A03 evidence",
+      "status": "accepted"
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "D-UP-20",
+      "dependency": "fresh owner authority before upstream freeze/qualification/integration"
+    },
+    {
+      "id": "D-IDM-40",
+      "dependency": "fresh owner authority before identity continuation"
+    },
+    {
+      "id": "D-PERF-10",
+      "dependency": "fresh owner authority before capacity changes"
+    },
+    {
+      "id": "D-PAY-00",
+      "dependency": "fresh owner authority before payment intake or transactions"
+    }
+  ]
+}

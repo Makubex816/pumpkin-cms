@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pumpkin visual editor upstream assessment v3",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evidenceId",
+    "upstreamSnapshotSha",
+    "implementationObserved",
+    "decision",
+    "strengths",
+    "observedPaths",
+    "gaps",
+    "acceptance",
+    "qualificationStatus"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "3.0.0"
+    },
+    "upstreamSnapshotSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "implementationObserved": {
+      "const": true
+    },
+    "decision": {
+      "enum": [
+        "adapt_or_port_with_downstream_tenant_role_migration_and_reliability_layers"
+      ]
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "priority",
+          "area",
+          "requirement"
+        ]
+      }
+    },
+    "strengths": {
+      "type": "array"
+    },
+    "observedPaths": {
+      "type": "array"
+    },
+    "acceptance": {
+      "type": "array"
+    },
+    "qualificationStatus": {
+      "type": "string"
+    },
+    "evidenceId": {
+      "type": "string"
+    },
+    "observedAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,17 @@
+﻿{
+    "collectedAtUtc":  "2026-07-21T03:00:43.0225776Z",
+    "searchRoots":  [
+                        "C:\\Users\\User\\Desktop\\PumpkinCMS",
+                        "C:\\Users\\User\\.codex\\attachments"
+                    ],
+    "archiveCount":  127,
+    "targetExpected":  {
+                           "Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0.zip":  "065523926d4005370b45de9778193b8249ef567454c66c30d32b4164eaa3b57c",
+                           "PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15.zip":  "1ff1a4ab9cf8657df7566df8463e770dcc07e2a94fa6d47817ab1410264b49f9"
+                       },
+    "directMatches":  [
+
+                      ],
+    "a01CommittedInputPackageEvidence":  "deployment/architecture/platform-closeout/cur-20-current-build-closeout-ingestion-result/result-manifest.json",
+    "conclusion":  "source_zip_files_not_found_by_name_or_sha256_current_workspace_use_a01_committed_hash_and_crc_evidence"
+}

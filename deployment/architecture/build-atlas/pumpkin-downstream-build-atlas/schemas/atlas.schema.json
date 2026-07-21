@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pumpkin Build Atlas v4 schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "atlasVersion",
+    "status",
+    "canonicalPath"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "atlasVersion": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "canonicalPath": {
+      "type": "string"
+    }
+  }
+}

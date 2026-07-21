@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pumpkin CAPTCHA upstream assessment v3",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evidenceId",
+    "upstreamSnapshotSha",
+    "implementationObserved",
+    "provider",
+    "decision",
+    "strengths",
+    "observedPaths",
+    "gaps",
+    "acceptance",
+    "qualificationStatus"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "3.0.0"
+    },
+    "upstreamSnapshotSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "implementationObserved": {
+      "const": true
+    },
+    "provider": {
+      "enum": [
+        "turnstile"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "adopt_upstream_contract_and_harden"
+      ]
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "priority",
+          "area",
+          "requirement"
+        ]
+      }
+    },
+    "strengths": {
+      "type": "array"
+    },
+    "observedPaths": {
+      "type": "array"
+    },
+    "acceptance": {
+      "type": "array"
+    },
+    "qualificationStatus": {
+      "type": "string"
+    },
+    "evidenceId": {
+      "type": "string"
+    },
+    "observedAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}
