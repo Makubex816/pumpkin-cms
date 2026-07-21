@@ -1,0 +1,20 @@
+{
+  "evidenceId": "owner-supplied-v2-8-61k-analysis",
+  "filename": "V2_8_61K_Atlas_Report_Analysis.md",
+  "path": ".tmp/cur-20-a03/owner-input/V2_8_61K_Atlas_Report_Analysis.md",
+  "sha256": "7061e14ca88b13d4d4fc14ea764ea0f5df4577db62e5ec54fd79bdd052f39133",
+  "bytes": 6296,
+  "lastWriteUtc": "2026-07-08T03:20:53.5591762Z",
+  "classification": "owner_supplied_secondary_summary",
+  "ownerInstructionDate": "post-A02 input supplied for CUR-20-A03",
+  "assertedCompletedClassification": "post_integration_platform_resource_atlas_plain_text_resource_map_no_mutation",
+  "assertedBaselineStatement": "Treat V2.8.61K as the current resource map baseline.",
+  "authorityUse": "secondary evidence corroborating and correcting A02 until original evidence is recovered; after A03, original Git package is stronger authority",
+  "notTheOriginalPackage": true,
+  "stagedOrCommittedByA03": false,
+  "a03Result": {
+    "originalPackageRecovered": true,
+    "originalPackagePath": "deployment/architecture/tenant-website-publish-readiness/v2-8-61k-platform-resource-atlas-result/",
+    "originalPackageCommit": "61357bee8dea1c0c9d07b52e16389975d7b764be"
+  }
+}
