@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "status": "complete_comprehensive_build_atlas_active_working_memory_v1_released_cur20_complete",
+  "selectedVersion": "3.1.0",
+  "selectedVersionRationale": "MINOR: v3 layout is preserved and A04 adds backward-compatible authority activation, ledgers, evidence, milestones, and current closeout ingestion.",
+  "chain": [
+    {
+      "order": 1,
+      "id": "V2.8.61K",
+      "type": "PLATFORM_RESOURCE_ATLAS",
+      "authority": "AUTHORITATIVE_RESOURCE_MAP_BASELINE_AS_OF_61K"
+    },
+    {
+      "order": 2,
+      "id": "Atlas v3",
+      "type": "COMPREHENSIVE_BUILD_ATLAS_BRIDGE",
+      "authorityBeforeA04": "PROPOSED",
+      "preservation": "copied byte-for-byte from validated ZIP before overlay"
+    },
+    {
+      "order": 3,
+      "id": "Working-memory v0.9",
+      "type": "PRECLOSEOUT_WORKING_MEMORY",
+      "authority": "ACTIVE_INPUT",
+      "preservation": "validated and backed up byte-for-byte"
+    },
+    {
+      "order": 4,
+      "id": "CUR-20-A04",
+      "type": "COMPREHENSIVE_BUILD_ATLAS",
+      "authorityAfterValidation": "ACTIVE",
+      "version": "3.1.0"
+    }
+  ],
+  "priorA04VariantAfterA03": {
+    "path": "deployment/architecture/build-atlas/pumpkin-downstream-build-atlas/",
+    "classification": "previous repo-committed A04 variant inventoried, not overwritten; corrected prompt establishes outside-repo active source tree"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "taskId": "CUR-20",
   "title": "Current Build Closeout Ingestion, Active Downstream and Atlas Reconciliation, Phase-Name Simplification, Capacity-Decision Logging, Upstream Recheck, and Working-Memory/CHAT-PACK Regeneration",
-  "status": "blocked_active_downstream_or_atlas_not_identified",
+  "status": "complete_comprehensive_build_atlas_active_working_memory_v1_released_cur20_complete",
   "closedAtLocal": "2026-07-16T12:16:19.1594379-04:00",
   "closedAtUtc": "2026-07-16T16:16:19Z",
   "repository": {
@@ -75,9 +75,9 @@
     "movedFromPreviousObservedHead": true
   },
   "outputs": {
-    "atlasVersionReleased": false,
-    "workingMemoryVersionReleased": false,
-    "chatPackRegenerated": false,
+    "atlasVersionReleased": true,
+    "workingMemoryVersionReleased": true,
+    "chatPackRegenerated": true,
     "up20PromptCreated": true,
     "idm40PromptCreated": true
   },
@@ -88,6 +88,13 @@
     "packageZipGenerated": false,
     "gitStagingUsed": false,
     "commitCreated": false
+  },
+  "a04": {
+    "resultPath": "deployment/architecture/platform-closeout/cur-20-current-build-closeout-ingestion-result/runs/a04-comprehensive-build-atlas-inception/",
+    "activeAtlasVersion": "3.1.0",
+    "activeAtlasPointer": "deployment/architecture/build-atlas/ACTIVE_ATLAS_AUTHORITY_POINTER.json",
+    "packageSha256": "9f54522a13c2a077f9a8eb8ae09138e9a09ecbc8a0ef0a4efb406b84c24a7d74",
+    "workingMemorySha256": "c8c4b625bf40e6c33c1f653999b59804d949b249081eee67300807749fcf7866",
+    "commitCreatedByCorrectedA04": false
   }
 }
-

@@ -1,0 +1,15 @@
+{
+  "activeAtlasVersion": "3.1.0",
+  "locationClassification": "outside_repository_program_management_active_source_tree",
+  "packageFilename": "Pumpkin_Downstream_Build_Atlas_v3.1.0.zip",
+  "packageSha256": "9f54522a13c2a077f9a8eb8ae09138e9a09ecbc8a0ef0a4efb406b84c24a7d74",
+  "manifestSha256": "7e4f1f766f179ef708a0b73e9dfe0c83108977da06baf93eec6b0725386379a6",
+  "authorityEffectivePhase": "CUR-20-A04",
+  "predecessors": [
+    "V2.8.61K Platform Resource Atlas",
+    "Atlas v3 proposed bridge",
+    "working-memory v0.9",
+    "A01/A02/A03/CRSTUR"
+  ],
+  "containsSecrets": false
+}

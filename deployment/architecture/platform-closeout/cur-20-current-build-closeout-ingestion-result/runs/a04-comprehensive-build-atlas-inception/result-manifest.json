@@ -1,0 +1,246 @@
+{
+  "taskId": "CUR-20-A04",
+  "status": "complete_comprehensive_build_atlas_active_working_memory_v1_released_cur20_complete",
+  "completedAtUtc": "2026-07-21T04:55:00Z",
+  "selectedVersion": "3.1.0",
+  "activeAtlas": {
+    "activeAtlasVersion": "3.1.0",
+    "locationClassification": "outside_repository_program_management_active_source_tree",
+    "packageFilename": "Pumpkin_Downstream_Build_Atlas_v3.1.0.zip",
+    "packageSha256": "9f54522a13c2a077f9a8eb8ae09138e9a09ecbc8a0ef0a4efb406b84c24a7d74",
+    "manifestSha256": "7e4f1f766f179ef708a0b73e9dfe0c83108977da06baf93eec6b0725386379a6",
+    "authorityEffectivePhase": "CUR-20-A04",
+    "predecessors": [
+      "V2.8.61K Platform Resource Atlas",
+      "Atlas v3 proposed bridge",
+      "working-memory v0.9",
+      "A01/A02/A03/CRSTUR"
+    ],
+    "containsSecrets": false
+  },
+  "inputValidation": {
+    "zipIntegrity": [
+      {
+        "id": "atlas-v3",
+        "zipPath": "C:\\Users\\User\\Downloads\\Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0.zip",
+        "sha256": "065523926d4005370b45de9778193b8249ef567454c66c30d32b4164eaa3b57c",
+        "bytes": 187257,
+        "entryCount": 104,
+        "crcReadErrors": 0,
+        "pathTraversalEntries": 0,
+        "extractedPath": ".tmp\\cur-20-a04-corrected\\inputs\\atlas-v3",
+        "topLevel": [
+          "Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0/.project-ops/00-OPERATING-CONTRACT.md",
+          "Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0/.project-ops/01-PROJECT-ARCHITECTURE.md",
+          "Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0/.project-ops/02-CURRENT-STATE.json",
+          "Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0/.project-ops/03-CURRENT-PHASE.yaml",
+          "Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0/.project-ops/04-EVIDENCE-INDEX.json"
+        ]
+      },
+      {
+        "id": "working-memory-v0.9",
+        "zipPath": "C:\\Users\\User\\Downloads\\PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15.zip",
+        "sha256": "1ff1a4ab9cf8657df7566df8463e770dcc07e2a94fa6d47817ab1410264b49f9",
+        "bytes": 124216,
+        "entryCount": 46,
+        "crcReadErrors": 0,
+        "pathTraversalEntries": 0,
+        "extractedPath": ".tmp\\cur-20-a04-corrected\\inputs\\working-memory-v0.9",
+        "topLevel": [
+          "PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15/PACKAGE-MANIFEST.json",
+          "PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15/START-HERE.md",
+          "PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15/bootstrap/00-OPERATING-CONTRACT.md",
+          "PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15/bootstrap/01-PROJECT-ARCHITECTURE.md",
+          "PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15/bootstrap/02-CURRENT-STATE.json"
+        ]
+      }
+    ],
+    "inputValidation": {
+      "generatedAtUtc": "2026-07-21T04:48:10.891Z",
+      "results": [
+        {
+          "id": "atlas-v3",
+          "root": ".tmp/cur-20-a04-corrected/inputs/atlas-v3/Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0",
+          "fileCount": 104,
+          "jsonCount": 33,
+          "yamlCount": 3,
+          "checksumManifest": "CHECKSUMS.sha256",
+          "checksumEntries": 103,
+          "manifest": "package-manifest.json",
+          "manifestFileCount": 102,
+          "bootstrapSixFilesPresent": null,
+          "possibleSecrets": [],
+          "errors": []
+        },
+        {
+          "id": "working-memory-v0.9",
+          "root": ".tmp/cur-20-a04-corrected/inputs/working-memory-v0.9/PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15",
+          "fileCount": 46,
+          "jsonCount": 11,
+          "yamlCount": 5,
+          "checksumManifest": "checksums.sha256",
+          "checksumEntries": 45,
+          "manifest": "PACKAGE-MANIFEST.json",
+          "manifestFileCount": 44,
+          "bootstrapSixFilesPresent": true,
+          "possibleSecrets": [],
+          "errors": []
+        }
+      ],
+      "passed": true
+    }
+  },
+  "downstreamState": {
+    "repository": {
+      "root": "local downstream checkout",
+      "branch": "feature/admin-page-editor-import-export",
+      "head": "98a45410d276f7fc954de48ae7d903e95e5b87ad"
+    },
+    "deployments": {
+      "apiDeploymentId": "c9451f4b-0b2e-44bc-9d08-ac9b767a6c05",
+      "rollbackSlotDeploymentId": "f6bdf0d7-ca60-4e7f-818c-f4c74a710a86",
+      "adminDeploymentId": "8c960132-3521-45c7-9a16-d5265ddbb640",
+      "adminBuildId": "jXp9rYv0Dcu7KPH6sq1xI",
+      "starterDeploymentId": "ecd75861-5600-4394-a20b-76202bead5c3"
+    },
+    "featureState": {
+      "identityFoundation": true,
+      "dualRead": true,
+      "dualWrite": true,
+      "management": true,
+      "passwordAndSessionManagement": true,
+      "tenantSwitcher": true,
+      "membershipManagement": true,
+      "contactManagement": true,
+      "superAdminManagement": true,
+      "providerAwareEmailRequests": true,
+      "tenantRename": false,
+      "migrationExecution": false,
+      "externalNotificationProvider": false,
+      "capacityDiagnostics": false,
+      "twoWorkersVerified": true
+    },
+    "capacity": {
+      "currentSku": "S2",
+      "currentWorkers": 2,
+      "decisionState": "temporary_observation",
+      "source": "fresh Azure readback plus CRSTUR"
+    },
+    "safeCounts": {
+      "tenants": 4,
+      "accounts": 6,
+      "memberships": 8,
+      "contacts": 4,
+      "formEntries": 12,
+      "pendingReconciliations": 0,
+      "pendingSecurityMutations": 0,
+      "pendingSyntheticOperations": 0,
+      "pendingAudits": 0,
+      "reconciliationClear": true,
+      "verifiedAtUtc": "2026-07-16T14:07:13.4956019Z"
+    },
+    "holds": [
+      "tenant rename disabled",
+      "migration execution disabled",
+      "external provider not configured",
+      "capacity diagnostics disabled",
+      "Airstrip frozen",
+      "indexing held",
+      "payment held"
+    ],
+    "health": {
+      "api_health_root": 200,
+      "api_dependency_ready": 200,
+      "api_default_root": 200,
+      "admin_root": 200,
+      "admin_isolated_root": 200,
+      "ice_swa_root": 200,
+      "ice_swa_custom_apex": 200,
+      "ice_swa_custom_www": 200
+    }
+  },
+  "resourceReconciliation": {
+    "historicalCount": 29,
+    "currentAdditionCount": 9
+  },
+  "legacyCrosswalkCount": 289,
+  "incidentCount": 20,
+  "releaseArtifacts": {
+    "generatedAtUtc": "2026-07-21T05:20:00Z",
+    "taskId": "CUR-20-A04",
+    "version": "3.1.0",
+    "releaseRoot": "program-management/build-atlas/releases/v3.1.0",
+    "validationRoot": "program-management/build-atlas/validation/cur-20-a04",
+    "atlasSha256": "9f54522a13c2a077f9a8eb8ae09138e9a09ecbc8a0ef0a4efb406b84c24a7d74",
+    "workingMemorySha256": "c8c4b625bf40e6c33c1f653999b59804d949b249081eee67300807749fcf7866",
+    "atlasDeterministic": true,
+    "workingMemoryDeterministic": true,
+    "atlas": {
+      "run1": {
+        "zip": "program-management/build-atlas/releases/v3.1.0/run1/Pumpkin_Downstream_Build_Atlas_v3.1.0.zip",
+        "bytes": 184600,
+        "sha256": "9f54522a13c2a077f9a8eb8ae09138e9a09ecbc8a0ef0a4efb406b84c24a7d74",
+        "entryCheck": {
+          "entryCount": 120,
+          "unsafeEntryCount": 0,
+          "unsafeEntries": []
+        }
+      },
+      "run2": {
+        "zip": "program-management/build-atlas/releases/v3.1.0/run2/Pumpkin_Downstream_Build_Atlas_v3.1.0.zip",
+        "bytes": 184600,
+        "sha256": "9f54522a13c2a077f9a8eb8ae09138e9a09ecbc8a0ef0a4efb406b84c24a7d74",
+        "entryCheck": {
+          "entryCount": 120,
+          "unsafeEntryCount": 0,
+          "unsafeEntries": []
+        }
+      },
+      "deterministicZip": true,
+      "extractedInventory": {
+        "equal": true,
+        "leftCount": 120,
+        "rightCount": 120
+      }
+    },
+    "workingMemory": {
+      "run1": {
+        "zip": "program-management/build-atlas/releases/v3.1.0/run1/PumpkinCMS_Chat_Working_Memory_Persistence_Package_v1.0.0.zip",
+        "bytes": 12399,
+        "sha256": "c8c4b625bf40e6c33c1f653999b59804d949b249081eee67300807749fcf7866",
+        "entryCheck": {
+          "entryCount": 8,
+          "unsafeEntryCount": 0,
+          "unsafeEntries": []
+        }
+      },
+      "run2": {
+        "zip": "program-management/build-atlas/releases/v3.1.0/run2/PumpkinCMS_Chat_Working_Memory_Persistence_Package_v1.0.0.zip",
+        "bytes": 12399,
+        "sha256": "c8c4b625bf40e6c33c1f653999b59804d949b249081eee67300807749fcf7866",
+        "entryCheck": {
+          "entryCount": 8,
+          "unsafeEntryCount": 0,
+          "unsafeEntries": []
+        }
+      },
+      "deterministicZip": true,
+      "extractedInventory": {
+        "equal": true,
+        "leftCount": 8,
+        "rightCount": 8
+      }
+    },
+    "overall": {
+      "deterministic": true,
+      "unsafeZipEntries": 0
+    }
+  },
+  "safety": {
+    "liveMutation": false,
+    "airstripPublicRuntimeRequest": false,
+    "indexingAction": false,
+    "gitCommitCreatedByCorrectedA04": false,
+    "stagedFilesExpected": 0
+  }
+}
