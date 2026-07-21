@@ -1,0 +1,26 @@
+{
+  "generatedAtUtc": "2026-07-21T03:16:24Z",
+  "releaseWorkspace": ".tmp/cur-20-a04/release/",
+  "sourceCommit": "aec5bbc6ecdd5f66310fa3faeda83f4fd3b5a5da",
+  "committedZipFiles": false,
+  "runs": [
+    {
+      "label": "run1",
+      "atlasZipSha256": "23b33c5d7ca983c985a1a189e2b7b4659104dfe02056fa859efbae171d584eda",
+      "atlasZipBytes": 183552,
+      "workingMemoryZipSha256": "881fc2a264b84ed3ff90a7e71197a4767b8f603956bccf2f32bcd2542d300f24",
+      "workingMemoryZipBytes": 9248
+    },
+    {
+      "label": "run2",
+      "atlasZipSha256": "23b33c5d7ca983c985a1a189e2b7b4659104dfe02056fa859efbae171d584eda",
+      "atlasZipBytes": 183552,
+      "workingMemoryZipSha256": "881fc2a264b84ed3ff90a7e71197a4767b8f603956bccf2f32bcd2542d300f24",
+      "workingMemoryZipBytes": 9248
+    }
+  ],
+  "atlasDeterministic": true,
+  "workingMemoryDeterministic": true,
+  "determinismResultSha256": "e1d7cc5e183a7d6282dfb44dc77e1e30ff362193e938d218227d6bbf7eb6490c"
+}
+

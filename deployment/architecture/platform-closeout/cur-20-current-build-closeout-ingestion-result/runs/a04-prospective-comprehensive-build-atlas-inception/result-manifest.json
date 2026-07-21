@@ -1,0 +1,137 @@
+{
+  "taskId": "CUR-20-A04",
+  "title": "Prospective Comprehensive Build Atlas Inception",
+  "status": "complete_prospective_comprehensive_build_atlas_v4_established_working_memory_v1_chat_pack_released_cur20_complete",
+  "completedAtUtc": "2026-07-21T03:16:24Z",
+  "canonicalAtlas": {
+    "path": "deployment/architecture/build-atlas/pumpkin-downstream-build-atlas/",
+    "version": "4.0.0",
+    "commit": "aec5bbc6ecdd5f66310fa3faeda83f4fd3b5a5da",
+    "commitTree": "87fb957bf096a8685193d38e1ba0cabe9f0993b4",
+    "commitParent": "e50bda6aa3fc08c92c808a00e892ad66d1e8526c",
+    "commitSubject": "docs: establish canonical Pumpkin comprehensive build atlas",
+    "validation": "PACKAGE VALIDATION PASSED: 131 files",
+    "fileCount": 131,
+    "legacyIdentifierCount": 352
+  },
+  "closeout": {
+    "path": "deployment/architecture/platform-closeout/cur-20-current-build-closeout-ingestion-result/runs/a04-prospective-comprehensive-build-atlas-inception/",
+    "commit": "self_commit_contains_this_closeout_package",
+    "commitSubject": "docs: close out CUR-20 A04 atlas inception"
+  },
+  "sourceInputs": {
+    "v3Bridge": {
+      "filename": "Pumpkin_Downstream_Build_Atlas_Upstream_CAPTCHA_VisualEditor_Payments_v3.0.zip",
+      "sha256FromA01": "065523926d4005370b45de9778193b8249ef567454c66c30d32b4164eaa3b57c",
+      "entryCountFromA01": 104,
+      "crcReadErrorsFromA01": 0,
+      "directZipFoundInA04Workspace": false,
+      "a04Use": "promoted_as_source_material_under_A04_authority_with_v4_overlay"
+    },
+    "workingMemoryV090": {
+      "filename": "PumpkinCMS_Chat_Working_Memory_Persistence_Package_v0.9.0-precloseout_2026-07-15.zip",
+      "sha256FromA01": "1ff1a4ab9cf8657df7566df8463e770dcc07e2a94fa6d47817ab1410264b49f9",
+      "entryCountFromA01": 46,
+      "crcReadErrorsFromA01": 0,
+      "directZipFoundInA04Workspace": false,
+      "a04Use": "regenerated_as_working_memory_v1_0_0"
+    },
+    "sourceZipSearchEvidenceSha256": "17173673b0315e1e9d6a134b5740e0f42974c5e7462a6551ebe4eb86f141a39b"
+  },
+  "carryforward": {
+    "a01": {
+      "commit": "611b8237a7d8c3123965edfba7f59b597f31bdf4",
+      "status": "blocked_active_downstream_or_atlas_not_identified"
+    },
+    "a02": {
+      "commit": "de487b91eff85ecec0de27770c889c66312794d5",
+      "status": "blocked_atlas_security_or_history_preservation",
+      "packageDigest": "95ddf6c7c4b1a711dc1db4e30f3eb1d0e949a2702f364191efff6d7b876a1750"
+    },
+    "a03": {
+      "commit": "e50bda6aa3fc08c92c808a00e892ad66d1e8526c",
+      "status": "complete_v2_8_61k_resource_atlas_recovered_build_atlas_authority_classified"
+    },
+    "v2_8_61k": {
+      "commit": "61357bee8dea1c0c9d07b52e16389975d7b764be",
+      "role": "historical_resource_inventory_and_protection_baseline",
+      "manifestSha256": "3068c2a69c20857c2ac9fcb316f252fa430501923a9f3eb59ef9ca1e1c7c73d1"
+    },
+    "crstur": {
+      "commit": "7c252060d18df4001586e61f1ed8db0d152f1d01",
+      "status": "complete_readiness_gate_management_active_tenantadmin_transfer_pilot_held_retain_s2_ready_for_63d",
+      "apiDeploymentId": "c9451f4b-0b2e-44bc-9d08-ac9b767a6c05",
+      "rollbackSlotDeploymentId": "f6bdf0d7-ca60-4e7f-818c-f4c74a710a86",
+      "adminDeploymentId": "8c960132-3521-45c7-9a16-d5265ddbb640",
+      "capacityDecision": "retain_s2_two_workers_with_evidence"
+    }
+  },
+  "liveReadback": {
+    "controlPlaneReadbackSha256": "0505e8ec839fd91c3df7d912a9d360c18c9201587925d0c331be63ae45c4e85d",
+    "httpGetProbeSha256": "eb0c5389b972a800eaae6c12e3d7c9258ec874290cf51cd0878a84eff3290cc7",
+    "adminIsolatedRetrySha256": "8fa4e44399d781bcf954b07e46b916e965941da8e5518fca8c6c38ef01156ddb",
+    "protectedResourceCount": 14,
+    "appServicePlanSku": "S2",
+    "appServicePlanCapacity": 2,
+    "apiHealth": 200,
+    "apiDependencyReadiness": 200,
+    "adminRoot": 200,
+    "adminIsolatedRootRetry": 200,
+    "iceSwaDefaultRoot": 200,
+    "iceCustomApex": 200,
+    "iceCustomWww": 200
+  },
+  "upstreamRecheck": {
+    "repository": "https://github.com/SDI-AI/pumpkin-cms.git",
+    "branch": "main",
+    "head": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+    "tree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
+    "commitDate": "2026-07-20T19:02:07-04:00",
+    "subject": "Adopt Apache 2.0 license",
+    "classification": "observed_unfrozen_not_ingested_not_qualified",
+    "evidenceSha256": "1276d8a6fc8a987e20c1342282dce1729d119d8de5379efea0dc3d36d74e808e"
+  },
+  "releaseArtifacts": {
+    "generatedOutsideSourceTree": true,
+    "committedZipFiles": false,
+    "determinismResultSha256": "e1d7cc5e183a7d6282dfb44dc77e1e30ff362193e938d218227d6bbf7eb6490c",
+    "atlasZipSha256": "23b33c5d7ca983c985a1a189e2b7b4659104dfe02056fa859efbae171d584eda",
+    "atlasZipBytes": 183552,
+    "workingMemoryZipSha256": "881fc2a264b84ed3ff90a7e71197a4767b8f603956bccf2f32bcd2542d300f24",
+    "workingMemoryZipBytes": 9248,
+    "deterministicRuns": 2,
+    "atlasDeterministic": true,
+    "workingMemoryDeterministic": true
+  },
+  "successorLanes": {
+    "UP-20": "not_started",
+    "IDM-40": "not_started",
+    "PERF-10": "not_started",
+    "PAY-00": "not_started"
+  },
+  "safety": {
+    "liveMutation": false,
+    "deployOrRestart": false,
+    "slotSwap": false,
+    "scaleChange": false,
+    "appsettingsOrSecretReadWrite": false,
+    "featureFlagChange": false,
+    "tenantIdentityCmsFormMutation": false,
+    "dnsTlsIndexingMutation": false,
+    "airstripPublicRuntimeProbe": false,
+    "paymentMutation": false,
+    "gitAddAllUsed": false,
+    "unrelatedDirtyWorktreePreserved": true
+  },
+  "createdArtifacts": [
+    "README.md",
+    "result-manifest.json",
+    "canonical-atlas-inception-result.md",
+    "release-artifact-determinism-result.json",
+    "validation-summary.md",
+    "safety-boundary-result.md",
+    "next-phase-prompt.md",
+    "commit-instructions.md"
+  ]
+}
+
