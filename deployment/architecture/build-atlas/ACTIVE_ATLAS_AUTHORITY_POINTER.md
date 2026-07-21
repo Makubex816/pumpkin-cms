@@ -1,15 +1,19 @@
 # Active Atlas authority pointer
 
-Active Atlas version: `3.1.0`
+Active Atlas Snapshot version: `3.2.0`
 
-Location classification: `outside_repository_program_management_active_source_tree`
+Location classification: outside-repository program-management snapshot source tree.
 
-Package filename: `Pumpkin_Downstream_Build_Atlas_v3.1.0.zip`
+Snapshot source tree: `program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.2.0/`
 
-Package SHA-256: `9f54522a13c2a077f9a8eb8ae09138e9a09ecbc8a0ef0a4efb406b84c24a7d74`
+Package filename: `Pumpkin_Downstream_Build_Atlas_Snapshot_v3.2.0.zip`
 
-Manifest SHA-256: `7e4f1f766f179ef708a0b73e9dfe0c83108977da06baf93eec6b0725386379a6`
+Package SHA-256: `cf0a43593774a85e45de0706f85a7ceff24219de479a263db216374ab0c69850`
 
-Authority-effective phase: `CUR-20-A04`
+Manifest SHA-256: `497a4499a91da5f6002df1e464e9885220b4b184c24ad029cd66c4bdd498193e`
 
-No secret values are stored in this pointer.
+Authority-effective phase: `UP-20-A02`
+
+Frozen upstream: `fda4611f6ca5a6206e3e8d6254e3e41c3b50618e` / tree `08f1ecdb73c846564c2a0f3de889b66775e8ae5c`
+
+Qualification state: `FROZEN_NOT_YET_CLEAN_ROOM_QUALIFIED`

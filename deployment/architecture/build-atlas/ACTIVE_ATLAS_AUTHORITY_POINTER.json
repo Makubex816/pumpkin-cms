@@ -1,15 +1,20 @@
 {
-  "activeAtlasVersion": "3.1.0",
-  "locationClassification": "outside_repository_program_management_active_source_tree",
-  "packageFilename": "Pumpkin_Downstream_Build_Atlas_v3.1.0.zip",
-  "packageSha256": "9f54522a13c2a077f9a8eb8ae09138e9a09ecbc8a0ef0a4efb406b84c24a7d74",
-  "manifestSha256": "7e4f1f766f179ef708a0b73e9dfe0c83108977da06baf93eec6b0725386379a6",
-  "authorityEffectivePhase": "CUR-20-A04",
+  "activeAtlasVersion": "3.2.0",
+  "locationClassification": "outside_repository_program_management_snapshot_source_tree",
+  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.2.0.zip",
+  "packageSha256": "cf0a43593774a85e45de0706f85a7ceff24219de479a263db216374ab0c69850",
+  "manifestSha256": "497a4499a91da5f6002df1e464e9885220b4b184c24ad029cd66c4bdd498193e",
+  "authorityEffectivePhase": "UP-20-A02",
   "predecessors": [
-    "V2.8.61K Platform Resource Atlas",
-    "Atlas v3 proposed bridge",
-    "working-memory v0.9",
-    "A01/A02/A03/CRSTUR"
+    "Build Atlas v3.1.0 baseline snapshot",
+    "UP-20-A02 frozen upstream evidence delta"
   ],
-  "containsSecrets": false
+  "containsSecrets": false,
+  "frozenUpstream": {
+    "repository": "https://github.com/SDI-AI/pumpkin-cms.git",
+    "selectedRef": "refs/heads/main",
+    "commit": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+    "tree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
+    "qualificationState": "FROZEN_NOT_YET_CLEAN_ROOM_QUALIFIED"
+  }
 }

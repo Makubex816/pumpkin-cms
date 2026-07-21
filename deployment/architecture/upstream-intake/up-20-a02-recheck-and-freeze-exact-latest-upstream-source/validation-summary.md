@@ -1,0 +1,30 @@
+# Validation summary
+
+- A04 committed: true.
+- Active Atlas verified: true.
+- Working memory verified: true.
+- Two remote-ref observations: true.
+- All branches/tags/available PR refs inventoried: true.
+- Default branch recorded: true.
+- Intended baseline resolved: true.
+- Exact commit/tree/parents recorded: true.
+- Previous accepted snapshot recorded: true.
+- Complete delta recorded: true.
+- License/NOTICE inventory recorded: true.
+- CI/workflow inventory recorded: true.
+- Git bundle created and verified: true.
+- Source archive built twice: true.
+- Source archive deterministic: true.
+- Successor Atlas Snapshot deterministic: true.
+- Source archive extracted inventories identical: true.
+- Successor Atlas Snapshot extracted inventories identical: true.
+- Successor Atlas Snapshot ZIP CRC/read check unsafe entries: 0.
+- JSON/YAML parse: passed.
+- Secret-pattern scan: 0 hits.
+- Absolute user-path scan: 0 hits.
+- Active pointer package hash matches successor snapshot package: true.
+- `git diff --check`: passed for UP-20/A02 repo-safe paths.
+- Staged files after UP-20-A02 generation: 0.
+- Final validation evidence: `program-management/upstream-intake/UP-20-A02/validation/final-validation.json`.
+- No upstream/downstream source write: true.
+- No deployment/Airstrip/indexing/live mutation: true.

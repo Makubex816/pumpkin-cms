@@ -1,0 +1,23 @@
+# Downstream preservation inventory
+
+- immutable tenantUid architecture: PRESERVE_NO_REGRESSION
+- mutable tenant-slug foundation: PRESERVE_NO_REGRESSION
+- global UserAccount and TenantMembership: PRESERVE_NO_REGRESSION
+- TenantAdmin and SuperAdmin management: PRESERVE_NO_REGRESSION
+- password and session management: PRESERVE_NO_REGRESSION
+- tenant contact and form-notification settings: PRESERVE_NO_REGRESSION
+- tenant-scoped FormEntry persistence: PRESERVE_NO_REGRESSION
+- TenantAdmin Forms inbox: PRESERVE_NO_REGRESSION
+- cross-tenant isolation: PRESERVE_NO_REGRESSION
+- Party Pros runtime, catalog, blog, cart, fixtures, and forms: PRESERVE_NO_REGRESSION
+- Vegas pages, media, redirects, forms, domains, TLS, and noindex: PRESERVE_NO_REGRESSION
+- Ice runtime and forms: PRESERVE_NO_REGRESSION
+- Airstrip public-runtime freeze: PRESERVE_NO_REGRESSION
+- custom-host routing: PRESERVE_NO_REGRESSION
+- runtime-key isolation: PRESERVE_NO_REGRESSION
+- package-fidelity compiler: PRESERVE_NO_REGRESSION
+- preview fixtures: PRESERVE_NO_REGRESSION
+- dependency-aware App Service readiness: PRESERVE_NO_REGRESSION
+- current S2/two-worker operating state: PRESERVE_NO_REGRESSION
+- backup and restore standards: PRESERVE_NO_REGRESSION
+- active Atlas Snapshot Library and working memory: PRESERVE_NO_REGRESSION
