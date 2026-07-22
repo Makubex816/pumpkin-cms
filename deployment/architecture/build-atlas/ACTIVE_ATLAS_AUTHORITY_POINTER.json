@@ -1,17 +1,17 @@
 {
-  "activeAtlasVersion": "3.4.0",
-  "pointerVersion": "3.4.0",
-  "atlasVersion": "3.4.0",
+  "activeAtlasVersion": "3.5.0",
+  "pointerVersion": "3.5.0",
+  "atlasVersion": "3.5.0",
   "locationClassification": "outside_repository_program_management_snapshot_source_tree",
-  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.4.0",
-  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.4.0.zip",
-  "packagePath": "program-management/build-atlas/releases/v3.4.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.4.0.zip",
-  "packageSha256": "097d6aaae0be643df227b7bfcef5e31600104ec557b1d2f23f3dfca65a0007c2",
-  "manifestSha256": "2d43ef6c8c2603a9fefc883a9173090361fb26af6e1b84bb3533d581bf410fde",
-  "authorityEffectivePhase": "INT-10-A01-SP",
-  "updatedAt": "2026-07-22T00:00:00.000Z",
-  "updateTaskId": "INT-10-A01-SP",
-  "status": "complete_local_foundation_with_dependency_or_legal_holds_ready_for_controlled_pilot",
+  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.5.0",
+  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.5.0.zip",
+  "packagePath": "program-management/build-atlas/releases/v3.5.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.5.0.zip",
+  "packageSha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
+  "manifestSha256": "4d7e4d448a2fa96844ccea21653da9d788a0d3076d0091b5b6bc94afd6d5facf",
+  "authorityEffectivePhase": "PUB-20-A01",
+  "updatedAt": "2026-07-22T23:23:19.663Z",
+  "updateTaskId": "PUB-20-A01",
+  "status": "blocked_static_host_or_shared_api_security_contract",
   "predecessors": [
     "Build Atlas v3.1.0 baseline snapshot",
     "UP-20-A02 frozen upstream evidence delta",
@@ -35,23 +35,21 @@
     "qualificationState": "CLEAN_ROOM_QUALIFIED_WITH_HOLDS_READY_FOR_INT10"
   },
   "authority": {
-    "taskId": "INT-10-A01-SP",
-    "resultPackage": "deployment/architecture/upstream-integration/int-10-a01-static-swa-workspace-onboarding-superpass",
-    "finalSourceHeadBeforeCloseout": "2cfe94c76e93d8261a716a1e0fd2447e41c4cb2d",
-    "frozenUpstreamCommit": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
-    "frozenUpstreamTree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c"
+    "taskId": "PUB-20-A01",
+    "resultPackage": "deployment/architecture/tenant-publication/pub-20-a01-controlled-static-web-app-pilot",
+    "repositoryHeadAtEntry": "aada78b28e46a2ce865a8ae14f11114d374fad7a"
   },
   "atlasPackage": {
-    "version": "3.4.0",
-    "path": "program-management/build-atlas/releases/v3.4.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.4.0.zip",
-    "sha256": "097d6aaae0be643df227b7bfcef5e31600104ec557b1d2f23f3dfca65a0007c2",
+    "version": "3.5.0",
+    "path": "program-management/build-atlas/releases/v3.5.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.5.0.zip",
+    "sha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/build-atlas/releases/v3.4.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.4.0.zip",
-    "comparisonPackageSha256": "097d6aaae0be643df227b7bfcef5e31600104ec557b1d2f23f3dfca65a0007c2",
-    "manifestSha256": "2d43ef6c8c2603a9fefc883a9173090361fb26af6e1b84bb3533d581bf410fde"
+    "comparisonPackagePath": "program-management/build-atlas/releases/v3.5.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.5.0.zip",
+    "comparisonPackageSha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
+    "manifestSha256": "4d7e4d448a2fa96844ccea21653da9d788a0d3076d0091b5b6bc94afd6d5facf"
   },
-  "atlasPackageSha256": "097d6aaae0be643df227b7bfcef5e31600104ec557b1d2f23f3dfca65a0007c2",
-  "atlasManifestSha256": "2d43ef6c8c2603a9fefc883a9173090361fb26af6e1b84bb3533d581bf410fde",
+  "atlasPackageSha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
+  "atlasManifestSha256": "4d7e4d448a2fa96844ccea21653da9d788a0d3076d0091b5b6bc94afd6d5facf",
   "supersededPackagingEvidence": {
     "path": "program-management/build-atlas/releases/superseded/up-30-a01-mislabeled-v3.2.0",
     "reason": "UP-30 successor package was initially mislabeled as v3.2.0 before closeout.",
@@ -80,12 +78,12 @@
     "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged."
   },
   "workingMemoryPackage": {
-    "version": "1.1.0",
-    "path": "program-management/working-memory/releases/v1.1.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.1.0.zip",
-    "sha256": "fda02d642228ee2d457b0a73c21c714b7792b9e54f6e76eba59889c6f4a29da5",
+    "version": "1.2.0",
+    "path": "program-management/working-memory/releases/v1.2.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.2.0.zip",
+    "sha256": "62744c82ee48c423686066f2f9c5f7f0a49fbda2224c311d3c9b115a8845c1c4",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/working-memory/releases/v1.1.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.1.0.zip",
-    "comparisonPackageSha256": "fda02d642228ee2d457b0a73c21c714b7792b9e54f6e76eba59889c6f4a29da5"
+    "comparisonPackagePath": "program-management/working-memory/releases/v1.2.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.2.0.zip",
+    "comparisonPackageSha256": "62744c82ee48c423686066f2f9c5f7f0a49fbda2224c311d3c9b115a8845c1c4"
   },
   "int10": {
     "status": "complete_local_foundation_with_dependency_or_legal_holds_ready_for_controlled_pilot",
@@ -100,5 +98,16 @@
     "onboardingPlanSha256": "6971d15efbf6a20ab924c06e7e0b7ee7c6145c6b9c0605d5d2477fd0e9fd0ec9",
     "cleanRoomRuns": 2,
     "liveMutation": false
+  },
+  "pub20": {
+    "status": "blocked_static_host_or_shared_api_security_contract",
+    "liveMutation": false,
+    "staticWebAppCreated": false,
+    "syntheticTenantCreated": false,
+    "formEntryCreated": false,
+    "immutableArtifactSha256": "d02364ddd6970cc6e11a14dc753f0b240f46e14c7d8c7c2a65d41c6fbd484675",
+    "domainAuditClassification": "DOMAIN_AVAILABLE_FOR_FUTURE_SUBDOMAIN_REVIEW",
+    "domainStage": "HELD_OWNER_DISABLED_CURRENT_SITE_PRESERVED",
+    "nextGate": "PUB-20 focused successor-artifact and public-API correction authority"
   }
 }

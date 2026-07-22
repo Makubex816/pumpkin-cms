@@ -1,0 +1,136 @@
+{
+  "packageKind": "repo_safe_result_package",
+  "taskId": "PUB-20-A01",
+  "status": "blocked_static_host_or_shared_api_security_contract",
+  "generatedAtUtc": "2026-07-22T23:23:19.663Z",
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "entry-gate-and-owner-approval.md",
+    "pre-mutation-state-and-backup.md",
+    "ghostdevstackcom-read-only-domain-audit.md",
+    "synthetic-tenant-proof.md",
+    "static-web-app-resource-and-deployment.md",
+    "static-artifact-runtime-proof.md",
+    "shared-api-public-transport-proof.md",
+    "exactly-one-formentry-proof.md",
+    "tenant-isolation-proof.md",
+    "domain-stage-held-result.md",
+    "onboarding-plan-live-reconciliation.md",
+    "rollback-retention-token-and-cost.md",
+    "customer-platform-no-regression.md",
+    "atlas-working-memory-update.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 740,
+      "sha256": "1c7e9c63b0544be6cd5135fb18ee7b5e69514251c7f33b9001b53be5353a3f3f"
+    },
+    {
+      "path": "entry-gate-and-owner-approval.md",
+      "bytes": 761,
+      "sha256": "800ebe2cd4a3350b93ebd8aff4881ff5fb66f15d4a97e18011079ae28ef10a76"
+    },
+    {
+      "path": "pre-mutation-state-and-backup.md",
+      "bytes": 749,
+      "sha256": "2f46468c91b3a826b769e1983c1fc8f045ca412615814c1141e4bf0da959b2cc"
+    },
+    {
+      "path": "ghostdevstackcom-read-only-domain-audit.md",
+      "bytes": 786,
+      "sha256": "c084fbaf7eaceacd3ea763761aa81f5166577a0061bfce1db2c90d80e5740814"
+    },
+    {
+      "path": "synthetic-tenant-proof.md",
+      "bytes": 310,
+      "sha256": "3a3bff72d9bc655975150cc46995a425331c364bdbd571741de5ae162ec3ced3"
+    },
+    {
+      "path": "static-web-app-resource-and-deployment.md",
+      "bytes": 308,
+      "sha256": "a708a70b4d60ac646564e1532d1a8736354b784864522e22e633ffbe0579ae7d"
+    },
+    {
+      "path": "static-artifact-runtime-proof.md",
+      "bytes": 718,
+      "sha256": "f65c1c922b89f6281b606cdb0b0d73b9f98f4402057cc559f680ebf943d2b4a8"
+    },
+    {
+      "path": "shared-api-public-transport-proof.md",
+      "bytes": 580,
+      "sha256": "4b696e58b473f5aac0b7e19ab75c3497e2bcc8fd8f8ace82a741a54940feffdb"
+    },
+    {
+      "path": "exactly-one-formentry-proof.md",
+      "bytes": 413,
+      "sha256": "44cf01dd758c5d638aabf9bd5351464dd34a29e71aa84152c7004f072deed559"
+    },
+    {
+      "path": "tenant-isolation-proof.md",
+      "bytes": 352,
+      "sha256": "87fe0ec3d6fcc4f37a4b3aca46e051576d4d047776d37bc36c72b5bf927c913e"
+    },
+    {
+      "path": "domain-stage-held-result.md",
+      "bytes": 320,
+      "sha256": "5e9042ec5fb3ec775b08d5ed1e7449e61e2a551035d78385f09d0e97b2465f2d"
+    },
+    {
+      "path": "onboarding-plan-live-reconciliation.md",
+      "bytes": 624,
+      "sha256": "85a52de0ef32336bb657677e05a457c71229bdb4b9684dd72d5c86a73df6ec2b"
+    },
+    {
+      "path": "rollback-retention-token-and-cost.md",
+      "bytes": 677,
+      "sha256": "40be152acd5cfcf692df4e67b11bfde16102dfdab3946356d5f89034144b02e9"
+    },
+    {
+      "path": "customer-platform-no-regression.md",
+      "bytes": 387,
+      "sha256": "96f14b36db40138ab7f840aed1a16abd44b7b3ef09ecad1a3180a36a161e9703"
+    },
+    {
+      "path": "atlas-working-memory-update.md",
+      "bytes": 592,
+      "sha256": "212721f5aff43dd5e0cdbae6f642a88bffe1bd5cb066187059adda4897b3bf1a"
+    },
+    {
+      "path": "security-boundary-result.md",
+      "bytes": 354,
+      "sha256": "c15cdc806aedefa53501682821be3ab1c385f3ddc9e9e04db394637d07b0caf2"
+    },
+    {
+      "path": "validation-summary.md",
+      "bytes": 826,
+      "sha256": "735c3cde2292ff45e5d665fa74e9dbb927edf615cbe48571fd25fb03d695b720"
+    },
+    {
+      "path": "next-phase-prompt.md",
+      "bytes": 988,
+      "sha256": "011e7e9b939fee2413fa9dad6b92310a4dbf14a248aceadfac0f9a7e5a94acaa"
+    }
+  ],
+  "liveMutation": false,
+  "staticWebAppCreated": false,
+  "formEntryCreated": false,
+  "domainMutation": false,
+  "tokenProvisioned": false,
+  "atlas": {
+    "version": "3.5.0",
+    "packageSha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
+    "manifestSha256": "4d7e4d448a2fa96844ccea21653da9d788a0d3076d0091b5b6bc94afd6d5facf",
+    "deterministic": true
+  },
+  "workingMemory": {
+    "version": "1.2.0",
+    "packageSha256": "62744c82ee48c423686066f2f9c5f7f0a49fbda2224c311d3c9b115a8845c1c4",
+    "deterministic": true
+  },
+  "nextGate": "PUB-20 focused successor-artifact and public-API correction authority"
+}
