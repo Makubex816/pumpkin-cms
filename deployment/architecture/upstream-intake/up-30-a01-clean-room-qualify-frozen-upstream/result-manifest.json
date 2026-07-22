@@ -1,0 +1,145 @@
+{
+  "taskId": "UP-30-A01",
+  "status": "complete_frozen_upstream_qualified_with_holds_ready_for_int10",
+  "createdAt": "2026-07-21T22:18:21.396Z",
+  "frozenCommit": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+  "frozenTree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
+  "up20CarryforwardCommit": "9d8f552e142bb73e4ada3690e6f717068ebd0078",
+  "a04Commit": "8f4bcc937e74161ff911d0890dae84c1c12904bc",
+  "evidenceRoot": "program-management/upstream-intake/UP-30-A01/evidence",
+  "outsideRepoLogsRoot": "program-management/upstream-intake/UP-30-A01/logs",
+  "files": [
+    "README.md",
+    "result-manifest.json",
+    "entry-gate-and-clean-room-environment.md",
+    "frozen-source-integrity-proof.md",
+    "source-and-toolchain-inventory.md",
+    "dependency-restore-and-audit.md",
+    "licensing-and-notice-qualification.md",
+    "schema-first-block-contract-qualification.md",
+    "dotnet-build-and-test-result.md",
+    "typescript-package-qualification.md",
+    "starter-admin-build-and-test-result.md",
+    "visual-editor-and-unique-css-proof.md",
+    "theme-css-publishing-proof.md",
+    "formentries-and-captcha-assessment.md",
+    "api-and-runtime-contract-assessment.md",
+    "package-and-distribution-completeness.md",
+    "security-and-dependency-review.md",
+    "determinism-result.md",
+    "qualification-disposition-matrix.md",
+    "atlas-update-result.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md",
+    "INT-10_THREE_WAY_SEMANTIC_RECONCILIATION_PROMPT.md"
+  ],
+  "holds": [
+    "Exact .NET SDK 10.0.100 was not available from the host SDK resolver and was installed locally under the UP-30 outside-repository tools directory for qualification.",
+    "No committed .NET packages.lock.json files were present; exact-SDK locked-mode restore/build/test passed, but NuGet transitive lockfile evidence remains absent.",
+    "The repository root contains a package-lock.json but no root package.json, so root-level npm ci cannot qualify a workspace dependency graph.",
+    "pumpkin-ts-models npm ci and build passed in both clean-room roots, but npm audit reported high-severity dev-dependency advisories for brace-expansion and minimatch.",
+    "pumpkin-block-views has no adjacent package-lock.json; npm ci fails and build cannot resolve tsc under locked restore.",
+    "apps/starter-app has no adjacent package-lock.json; npm ci fails and type-check/build cannot resolve tsc under locked restore.",
+    "npm audit could not be completed for block-views or starter-app because lockfiles are absent.",
+    "No upstream GitHub Actions workflow was present in the frozen source to use as an authoritative CI mirror.",
+    "The local exact-SDK first-run emitted a development certificate installation message; no trust command, live service activation, or deployment was performed."
+  ],
+  "matrix": [
+    {
+      "area": "Entry gates and clean-room environment",
+      "status": "QUALIFIED",
+      "evidence": "UP-20 carryforward, source archive, bundle clone, and run1/run2 inventory checks."
+    },
+    {
+      "area": "Frozen source integrity",
+      "status": "QUALIFIED",
+      "evidence": "Bundle/archive/manifest hashes and commit/tree checks."
+    },
+    {
+      "area": "Source and toolchain inventory",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "Exact SDK 10.0.100 was installed locally outside the repo after host SDK resolution failed."
+    },
+    {
+      "area": "Dependency restore and audit",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "Exact-SDK .NET restore passed; pumpkin-ts-models npm ci passed; block-views/starter/root Node locked restore and audits remain held."
+    },
+    {
+      "area": "Licensing and notice",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "License/notice files are present; legal acceptance remains outside automated qualification."
+    },
+    {
+      "area": "Schema-first block contracts",
+      "status": "QUALIFIED",
+      "evidence": "Generator --check and contract tests in run1/run2."
+    },
+    {
+      "area": ".NET build and test",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "Exact-SDK restore/build/test passed in both clean-room roots; NuGet lockfile evidence remains absent."
+    },
+    {
+      "area": "TypeScript packages",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "pumpkin-ts-models passed; pumpkin-block-views remains blocked by missing lockfile/local tsc."
+    },
+    {
+      "area": "Starter/admin build",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "starter-app npm ci/type-check/build logs."
+    },
+    {
+      "area": "Visual editor and unique CSS proof",
+      "status": "UNKNOWN_BLOCKED_BY_EARLIER_FAILURE",
+      "evidence": "Source inventory plus starter build status."
+    },
+    {
+      "area": "Theme CSS publishing",
+      "status": "UNKNOWN_BLOCKED_BY_EARLIER_FAILURE",
+      "evidence": "Source inventory plus starter build status."
+    },
+    {
+      "area": "FormEntries and CAPTCHA-adjacent behavior",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "Static source inventory; no live CAPTCHA activation performed."
+    },
+    {
+      "area": "API and runtime contracts",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "Static API inventory and exact-SDK .NET build state."
+    },
+    {
+      "area": "Package and distribution completeness",
+      "status": "FAILED_PACKAGE_COMPLETENESS",
+      "evidence": "block-views and starter-app lack package-lock evidence; package-suite distribution proof incomplete."
+    },
+    {
+      "area": "Security and dependency review",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "Static scan found no high-risk secrets; npm audit found high dev-dependency advisories in pumpkin-ts-models and audits were incomplete elsewhere."
+    },
+    {
+      "area": "Determinism",
+      "status": "QUALIFIED_WITH_HOLDS",
+      "evidence": "Run1/run2 source and command inventories compared; full build determinism remains held by partial Node restore."
+    }
+  ],
+  "updatedAt": "2026-07-21T23:44:59.120Z",
+  "atlasVersionCorrection": {
+    "correctedAt": "2026-07-21T23:44:59.120Z",
+    "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged.",
+    "preservedBaseline": {
+      "version": "3.2.0",
+      "sha256": "cf0a43593774a85e45de0706f85a7ceff24219de479a263db216374ab0c69850"
+    },
+    "successor": {
+      "version": "3.3.0",
+      "sha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
+      "manifestSha256": "3618ea67a1d166ea479052ac7e1cda8e4e87b97a537e8f096d016ec205f9a649",
+      "deterministic": true
+    }
+  }
+}

@@ -1,20 +1,81 @@
 {
-  "activeAtlasVersion": "3.2.0",
+  "activeAtlasVersion": "3.3.0",
+  "pointerVersion": "3.3.0",
+  "atlasVersion": "3.3.0",
   "locationClassification": "outside_repository_program_management_snapshot_source_tree",
-  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.2.0.zip",
-  "packageSha256": "cf0a43593774a85e45de0706f85a7ceff24219de479a263db216374ab0c69850",
-  "manifestSha256": "497a4499a91da5f6002df1e464e9885220b4b184c24ad029cd66c4bdd498193e",
-  "authorityEffectivePhase": "UP-20-A02",
+  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.3.0",
+  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.3.0.zip",
+  "packagePath": "program-management/build-atlas/releases/v3.3.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.3.0.zip",
+  "packageSha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
+  "manifestSha256": "3618ea67a1d166ea479052ac7e1cda8e4e87b97a537e8f096d016ec205f9a649",
+  "authorityEffectivePhase": "UP-30-A01",
+  "updatedAt": "2026-07-21T23:44:59.120Z",
+  "updateTaskId": "UP-30-A01",
+  "status": "complete_frozen_upstream_qualified_with_holds_ready_for_int10",
   "predecessors": [
     "Build Atlas v3.1.0 baseline snapshot",
-    "UP-20-A02 frozen upstream evidence delta"
+    "UP-20-A02 frozen upstream evidence delta",
+    "UP-30-A01 clean-room frozen upstream qualification with holds",
+    "UP-30-A01 Atlas snapshot version correction to v3.3.0"
   ],
   "containsSecrets": false,
+  "baselineSnapshot": {
+    "version": "3.2.0",
+    "packagePath": "program-management/build-atlas/releases/v3.2.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.2.0.zip",
+    "packageSha256": "cf0a43593774a85e45de0706f85a7ceff24219de479a263db216374ab0c69850",
+    "manifestSha256": "497a4499a91da5f6002df1e464e9885220b4b184c24ad029cd66c4bdd498193e",
+    "preserved": true
+  },
   "frozenUpstream": {
     "repository": "https://github.com/SDI-AI/pumpkin-cms.git",
     "selectedRef": "refs/heads/main",
     "commit": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
     "tree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
-    "qualificationState": "FROZEN_NOT_YET_CLEAN_ROOM_QUALIFIED"
+    "qualificationState": "CLEAN_ROOM_QUALIFIED_WITH_HOLDS_READY_FOR_INT10"
+  },
+  "authority": {
+    "taskId": "UP-30-A01",
+    "frozenUpstreamCommit": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+    "frozenUpstreamTree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
+    "resultPackage": "deployment/architecture/upstream-intake/up-30-a01-clean-room-qualify-frozen-upstream",
+    "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged."
+  },
+  "atlasPackage": {
+    "version": "3.3.0",
+    "path": "program-management/build-atlas/releases/v3.3.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.3.0.zip",
+    "sha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
+    "deterministicRebuild": true,
+    "comparisonPackagePath": "program-management/build-atlas/releases/v3.3.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.3.0.zip",
+    "comparisonPackageSha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
+    "manifestSha256": "3618ea67a1d166ea479052ac7e1cda8e4e87b97a537e8f096d016ec205f9a649"
+  },
+  "atlasPackageSha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
+  "atlasManifestSha256": "3618ea67a1d166ea479052ac7e1cda8e4e87b97a537e8f096d016ec205f9a649",
+  "supersededPackagingEvidence": {
+    "path": "program-management/build-atlas/releases/superseded/up-30-a01-mislabeled-v3.2.0",
+    "reason": "UP-30 successor package was initially mislabeled as v3.2.0 before closeout.",
+    "active": false
+  },
+  "frozenUpstreamQualification": {
+    "taskId": "UP-30-A01",
+    "status": "complete_frozen_upstream_qualified_with_holds_ready_for_int10",
+    "resultPackage": "deployment/architecture/upstream-intake/up-30-a01-clean-room-qualify-frozen-upstream",
+    "frozenCommit": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
+    "frozenTree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
+    "holds": [
+      "Exact .NET SDK 10.0.100 was not available from the host SDK resolver and was installed locally under the UP-30 outside-repository tools directory for qualification.",
+      "No committed .NET packages.lock.json files were present; exact-SDK locked-mode restore/build/test passed, but NuGet transitive lockfile evidence remains absent.",
+      "The repository root contains a package-lock.json but no root package.json, so root-level npm ci cannot qualify a workspace dependency graph.",
+      "pumpkin-ts-models npm ci and build passed in both clean-room roots, but npm audit reported high-severity dev-dependency advisories for brace-expansion and minimatch.",
+      "pumpkin-block-views has no adjacent package-lock.json; npm ci fails and build cannot resolve tsc under locked restore.",
+      "apps/starter-app has no adjacent package-lock.json; npm ci fails and type-check/build cannot resolve tsc under locked restore.",
+      "npm audit could not be completed for block-views or starter-app because lockfiles are absent.",
+      "No upstream GitHub Actions workflow was present in the frozen source to use as an authoritative CI mirror.",
+      "The local exact-SDK first-run emitted a development certificate installation message; no trust command, live service activation, or deployment was performed."
+    ]
+  },
+  "versionCorrection": {
+    "correctedAt": "2026-07-21T23:44:59.120Z",
+    "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged."
   }
 }
