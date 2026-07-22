@@ -1,0 +1,23 @@
+{
+  "name": "pumpkin-cms-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Downstream Pumpkin CMS integration workspace for deterministic starter, model, and block-view builds.",
+  "workspaces": [
+    "apps/starter-app",
+    "packages/pumpkin-ts-models",
+    "packages/pumpkin-block-views"
+  ],
+  "scripts": {
+    "workspace:inventory": "node tools/workspace/inventory.mjs",
+    "build:packages": "npm run build --workspace pumpkin-ts-models && npm run build --workspace pumpkin-block-views",
+    "build:starter": "npm run build --workspace pumpkin-starter-app",
+    "type-check:starter": "npm run type-check --workspace pumpkin-starter-app",
+    "test:starter:contracts": "npm run test:preview-fixtures --workspace pumpkin-starter-app && npm run test:host-tenant-runtime --workspace pumpkin-starter-app",
+    "ci:root": "npm run workspace:inventory && npm run build:packages && npm run type-check:starter && npm run test:starter:contracts"
+  },
+  "engines": {
+    "node": ">=20 <25",
+    "npm": ">=10 <12"
+  }
+}
