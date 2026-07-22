@@ -1,0 +1,80 @@
+{
+  "artifactId": "synthetic-pumpkin-swa-static-artifact",
+  "tenantUid": "tenant_synth_static_0001",
+  "tenantSlug": "synthetic-static-pumpkin",
+  "displayName": "Synthetic Static Pumpkin",
+  "environment": "local-proof",
+  "canonicalHost": "synthetic-static.example.invalid",
+  "api": {
+    "transportMode": "publicTenantScopedFetch",
+    "origin": "https://api.synthetic.example.invalid",
+    "publicSubmitPath": "/public/forms/submit",
+    "requiresCredentialInArtifact": false
+  },
+  "theme": {
+    "id": "pumpkin-evergreen",
+    "version": "int10-local",
+    "css": ":root{--pumpkin-accent:#f97316;--pumpkin-bg:#fff7ed;--pumpkin-ink:#1f1308}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--pumpkin-bg);color:var(--pumpkin-ink)}main{max-width:72rem;margin:0 auto;padding:3rem 1.25rem}.hero{border:1px solid #fed7aa;border-radius:1.5rem;padding:2rem;background:#fff}.card{border:1px solid #ffedd5;border-radius:1rem;padding:1rem;background:#fff}a{color:#c2410c}.form{display:grid;gap:.75rem}.field{display:grid;gap:.25rem}.notice{font-size:.875rem;color:#7c2d12}"
+  },
+  "routes": [
+    {
+      "path": "/",
+      "title": "Synthetic Static Pumpkin",
+      "blocks": [
+        {
+          "type": "hero",
+          "heading": "A deterministic static tenant proof",
+          "body": "Generated from shared Pumpkin source and synthetic non-customer configuration."
+        },
+        {
+          "type": "card",
+          "heading": "Static at rest",
+          "body": "The public files contain no privileged provider credentials and no live customer payloads."
+        }
+      ]
+    },
+    {
+      "path": "/contact",
+      "title": "Contact the synthetic tenant",
+      "formId": "synthetic-contact",
+      "blocks": [
+        {
+          "type": "hero",
+          "heading": "Tenant-scoped public form contract",
+          "body": "This page renders a public form shell that targets the shared Pumpkin API contract."
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "from": "/home",
+      "to": "/",
+      "status": 301
+    }
+  ],
+  "forms": [
+    {
+      "id": "synthetic-contact",
+      "mode": "sharedPumpkinApi",
+      "captcha": {
+        "mode": "mocked",
+        "publicSiteKey": "1x00000000000000000000AA"
+      },
+      "fields": [
+        {
+          "name": "name",
+          "label": "Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "message",
+          "label": "Message",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "tenant": {
+    "intent": "create",
+    "uid": "tenant_synth_static_0001",
+    "slug": "synthetic-static-pumpkin",
+    "displayName": "Synthetic Static Pumpkin"
+  },
+  "tenantAdmin": {
+    "reference": "synthetic-admin-ref",
+    "emailHash": "sha256:11dbb89713d94e1d77b5534759dbcc624fe4d370d1c0a88e5809705845bff2f5"
+  },
+  "contact": {
+    "notificationMode": "shared-api-secondary-email-hold",
+    "fromDisplayName": "Synthetic Static Pumpkin"
+  },
+  "contentPackage": {
+    "id": "synthetic-content-package",
+    "sha256": "ed29b7a77d32a63f68489998fd3450c94f5e104af0bb8af6efd046aa7b948539"
+  },
+  "theme": {
+    "id": "pumpkin-evergreen",
+    "sha256": "1a3ec4fc1191eecf2cdbd093c9f8b58168fa47d4ca9d2e4f83f2cdb1e88ddc95"
+  },
+  "staticArtifact": {
+    "id": "synthetic-pumpkin-swa-static-artifact",
+    "sha256": "pending-local-build"
+  },
+  "azure": {
+    "subscriptionAlias": "synthetic-subscription-reference",
+    "resourceGroup": "rg-synth-static-pumpkin",
+    "staticWebAppName": "swa-synth-static-pumpkin",
+    "region": "eastus2",
+    "environment": "pilot"
+  },
+  "domains": {
+    "apex": "synthetic-static.example.invalid",
+    "www": "www.synthetic-static.example.invalid",
+    "registrarProvider": "dry-run-registrar",
+    "dnsProvider": "dry-run-dns",
+    "nameserverDelegationMode": "no-delegation-records-only"
+  },
+  "transport": {
+    "apiTransportMode": "publicTenantScopedFetch",
+    "publicFormMode": "sharedPumpkinApi",
+    "captchaMode": "mocked-turnstile"
+  },
+  "rollback": {
+    "artifactId": "synthetic-pumpkin-swa-static-artifact-previous",
+    "sha256": "70c1f5c64ae566609bc3cdf226a612c8d37d0f45962bd8d9f57a4d9f4dfd5bc1"
+  },
+  "approvals": {
+    "azureResourceMutation": "not-approved",
+    "paidPlan": "not-approved",
+    "apiBackendLinking": "not-approved",
+    "domainDnsNameserverTlsMutation": "not-approved",
+    "formPersistenceProof": "not-approved"
+  }
+}
