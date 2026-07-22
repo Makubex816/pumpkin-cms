@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
-import ts from '../node_modules/typescript/lib/typescript.js';
+
+const require = createRequire(import.meta.url);
+const ts = require('typescript');
 
 const sourcePath = path.resolve('apps/starter-app/src/lib/tenant-redirect-runtime.ts');
 const source = fs.readFileSync(sourcePath, 'utf8');

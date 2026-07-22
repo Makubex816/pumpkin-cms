@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
-import ts from '../node_modules/typescript/lib/typescript.js';
+
+const require = createRequire(import.meta.url);
+const ts = require('typescript');
 
 const fixturePath = path.resolve('preview-fixtures/strip-club-near-me-vegas/preview.json');
 const fixture = JSON.parse(await readFile(fixturePath, 'utf8'));
