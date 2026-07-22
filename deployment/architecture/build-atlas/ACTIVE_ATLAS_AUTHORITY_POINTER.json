@@ -1,22 +1,23 @@
 {
-  "activeAtlasVersion": "3.3.0",
-  "pointerVersion": "3.3.0",
-  "atlasVersion": "3.3.0",
+  "activeAtlasVersion": "3.4.0",
+  "pointerVersion": "3.4.0",
+  "atlasVersion": "3.4.0",
   "locationClassification": "outside_repository_program_management_snapshot_source_tree",
-  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.3.0",
-  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.3.0.zip",
-  "packagePath": "program-management/build-atlas/releases/v3.3.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.3.0.zip",
-  "packageSha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
-  "manifestSha256": "3618ea67a1d166ea479052ac7e1cda8e4e87b97a537e8f096d016ec205f9a649",
-  "authorityEffectivePhase": "UP-30-A01",
-  "updatedAt": "2026-07-21T23:44:59.120Z",
-  "updateTaskId": "UP-30-A01",
-  "status": "complete_frozen_upstream_qualified_with_holds_ready_for_int10",
+  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.4.0",
+  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.4.0.zip",
+  "packagePath": "program-management/build-atlas/releases/v3.4.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.4.0.zip",
+  "packageSha256": "097d6aaae0be643df227b7bfcef5e31600104ec557b1d2f23f3dfca65a0007c2",
+  "manifestSha256": "2d43ef6c8c2603a9fefc883a9173090361fb26af6e1b84bb3533d581bf410fde",
+  "authorityEffectivePhase": "INT-10-A01-SP",
+  "updatedAt": "2026-07-22T00:00:00.000Z",
+  "updateTaskId": "INT-10-A01-SP",
+  "status": "complete_local_foundation_with_dependency_or_legal_holds_ready_for_controlled_pilot",
   "predecessors": [
     "Build Atlas v3.1.0 baseline snapshot",
     "UP-20-A02 frozen upstream evidence delta",
     "UP-30-A01 clean-room frozen upstream qualification with holds",
-    "UP-30-A01 Atlas snapshot version correction to v3.3.0"
+    "UP-30-A01 Atlas snapshot version correction to v3.3.0",
+    "INT-10-A01-SP local static SWA/root workspace/onboarding foundation"
   ],
   "containsSecrets": false,
   "baselineSnapshot": {
@@ -34,23 +35,23 @@
     "qualificationState": "CLEAN_ROOM_QUALIFIED_WITH_HOLDS_READY_FOR_INT10"
   },
   "authority": {
-    "taskId": "UP-30-A01",
+    "taskId": "INT-10-A01-SP",
+    "resultPackage": "deployment/architecture/upstream-integration/int-10-a01-static-swa-workspace-onboarding-superpass",
+    "finalSourceHeadBeforeCloseout": "2cfe94c76e93d8261a716a1e0fd2447e41c4cb2d",
     "frozenUpstreamCommit": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e",
-    "frozenUpstreamTree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c",
-    "resultPackage": "deployment/architecture/upstream-intake/up-30-a01-clean-room-qualify-frozen-upstream",
-    "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged."
+    "frozenUpstreamTree": "08f1ecdb73c846564c2a0f3de889b66775e8ae5c"
   },
   "atlasPackage": {
-    "version": "3.3.0",
-    "path": "program-management/build-atlas/releases/v3.3.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.3.0.zip",
-    "sha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
+    "version": "3.4.0",
+    "path": "program-management/build-atlas/releases/v3.4.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.4.0.zip",
+    "sha256": "097d6aaae0be643df227b7bfcef5e31600104ec557b1d2f23f3dfca65a0007c2",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/build-atlas/releases/v3.3.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.3.0.zip",
-    "comparisonPackageSha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
-    "manifestSha256": "3618ea67a1d166ea479052ac7e1cda8e4e87b97a537e8f096d016ec205f9a649"
+    "comparisonPackagePath": "program-management/build-atlas/releases/v3.4.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.4.0.zip",
+    "comparisonPackageSha256": "097d6aaae0be643df227b7bfcef5e31600104ec557b1d2f23f3dfca65a0007c2",
+    "manifestSha256": "2d43ef6c8c2603a9fefc883a9173090361fb26af6e1b84bb3533d581bf410fde"
   },
-  "atlasPackageSha256": "a15eaa82ba1a8dba9b5a89042c19638d593c336eb6bddaf3610e4fac187aa3a1",
-  "atlasManifestSha256": "3618ea67a1d166ea479052ac7e1cda8e4e87b97a537e8f096d016ec205f9a649",
+  "atlasPackageSha256": "097d6aaae0be643df227b7bfcef5e31600104ec557b1d2f23f3dfca65a0007c2",
+  "atlasManifestSha256": "2d43ef6c8c2603a9fefc883a9173090361fb26af6e1b84bb3533d581bf410fde",
   "supersededPackagingEvidence": {
     "path": "program-management/build-atlas/releases/superseded/up-30-a01-mislabeled-v3.2.0",
     "reason": "UP-30 successor package was initially mislabeled as v3.2.0 before closeout.",
@@ -77,5 +78,27 @@
   "versionCorrection": {
     "correctedAt": "2026-07-21T23:44:59.120Z",
     "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged."
+  },
+  "workingMemoryPackage": {
+    "version": "1.1.0",
+    "path": "program-management/working-memory/releases/v1.1.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.1.0.zip",
+    "sha256": "fda02d642228ee2d457b0a73c21c714b7792b9e54f6e76eba59889c6f4a29da5",
+    "deterministicRebuild": true,
+    "comparisonPackagePath": "program-management/working-memory/releases/v1.1.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.1.0.zip",
+    "comparisonPackageSha256": "fda02d642228ee2d457b0a73c21c714b7792b9e54f6e76eba59889c6f4a29da5"
+  },
+  "int10": {
+    "status": "complete_local_foundation_with_dependency_or_legal_holds_ready_for_controlled_pilot",
+    "rootPackageLockSha256": "c0f981d52b70ca72f8f07f1e4f8f5cd05e58997ab9e4ddad0995a0c90a799d86",
+    "semanticRecordCount": 137,
+    "dispositionTotals": {
+      "ADAPT_OR_PORT": 114,
+      "WRAP_AND_EXTEND": 23
+    },
+    "staticArtifactSha256": "d02364ddd6970cc6e11a14dc753f0b240f46e14c7d8c7c2a65d41c6fbd484675",
+    "staticArtifactManifestSha256": "1d95f749aa47368fb1c4accb4e240eb2ec2405c683b6cd2219cfb82f7ee7a1f7",
+    "onboardingPlanSha256": "6971d15efbf6a20ab924c06e7e0b7ee7c6145c6b9c0605d5d2477fd0e9fd0ec9",
+    "cleanRoomRuns": 2,
+    "liveMutation": false
   }
 }

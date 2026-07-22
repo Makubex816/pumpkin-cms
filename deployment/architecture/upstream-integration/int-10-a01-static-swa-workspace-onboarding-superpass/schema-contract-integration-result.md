@@ -1,5 +1,12 @@
 # Schema and generated-contract integration result
 
-Checkpoint status: semantic reconciliation complete; source integration pending.
+Result: additive integration complete with generated-output hold.
 
-The upstream schema/generator lane is classified for downstream adaptation, with backward-compatible serialized page/block reader-writer behavior required before any source commit claims completion.
+Committed:
+
+- `schemas/blocks/` canonical frozen-upstream block schema catalog.
+- `scripts/test-block-contracts.mjs`.
+- `scripts/generate-block-contracts.mjs`.
+- `apps/pumpkin-api.Tests/Fixtures/block-contracts.generated.json`.
+
+Two clean roots validated 16 generated block fixtures against the schemas. Checked-in downstream generated model/dist rewrites were not overwritten; generated-output adaptation remains controlled by the committed generator and future exact review.

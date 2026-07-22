@@ -1,5 +1,5 @@
 # Visual editor, theme, and style integration result
 
-Checkpoint status: semantic reconciliation complete; source integration pending.
+Result: architecture and compatibility disposition complete; no unsafe overwrite performed.
 
-The admin visual editor, navigation editor, theme editor, unique block CSS, and theme CSS publishing changes are dynamic platform capabilities. They must not be embedded as tenant public static runtime behavior.
+The upstream visual-editor, navigation-editor, theme-editor, unique block CSS, and theme CSS publishing changes remain dynamic platform capabilities. INT-10 preserves the boundary that these capabilities are not part of the public tenant static artifact. Starter tenant contract tests passed in two clean roots.

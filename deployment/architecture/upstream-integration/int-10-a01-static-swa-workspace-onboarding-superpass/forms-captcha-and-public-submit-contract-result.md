@@ -1,5 +1,5 @@
 # Forms, CAPTCHA, and public submit contract result
 
-Checkpoint status: semantic reconciliation complete; source integration pending.
+Result: local public contract proof passed.
 
-FormEntry remains authoritative. CAPTCHA is only an abuse-control layer and does not replace schema validation, payload limits, honeypot controls, consent, idempotency, correlation IDs, distributed rate limits, persistence, authorization, or tenant isolation.
+The static artifact includes a synthetic public form shell and tenant-scoped shared API submit contract without performing any live POST. FormEntry remains authoritative. CAPTCHA is represented only as mocked public abuse-control metadata and does not replace validation, rate limiting, idempotency, persistence, authorization, or tenant isolation.

@@ -1,7 +1,5 @@
 # Next phase map
 
-After local INT-10 success:
-
 1. PUB-20 controlled synthetic Azure Static Web Apps pilot.
 2. Dependency advisory remediation.
 3. Owner/legal license acceptance.

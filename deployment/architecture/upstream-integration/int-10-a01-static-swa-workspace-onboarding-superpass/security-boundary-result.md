@@ -1,7 +1,7 @@
 # Security boundary result
 
-Checkpoint status: live boundary preserved.
+Result: passed.
 
-No live Azure, DNS, registrar, nameserver, TLS, deployment, tenant, identity, form, CAPTCHA-provider, indexing, capacity, upstream, branch, tag, PR, merge, rebase, cherry-pick, or push mutation is authorized or performed by this checkpoint.
+No live Azure, DNS, registrar, nameserver, TLS, deployment, tenant, identity, form, CAPTCHA-provider, indexing, capacity, upstream write, branch, tag, PR, merge, rebase, cherry-pick, push, resource deletion, or paid-plan mutation occurred.
 
-Credentials, customer payloads, raw logs, absolute local paths, and embedded archives are forbidden in the distributable public static artifact.
+Repo-staged closeout scans passed for credential patterns and absolute local paths.

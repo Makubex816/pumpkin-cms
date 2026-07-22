@@ -1,8 +1,7 @@
 # Next dependency hold prompt
 
-Resolve preserved dependency holds without live deployment:
+Resolve preserved dependency holds:
 
-- create or explicitly reject .NET lockfile policy;
-- remediate or document npm brace-expansion/minimatch advisory paths;
-- verify package-suite completeness under the root workspace;
-- preserve legal acceptance as a separate owner/legal gate.
+- npm advisories: 5 total, 1 moderate, 4 high.
+- NuGet lockfile policy.
+- package-suite completeness and legal acceptance sequencing.

@@ -1,10 +1,11 @@
 # Source commit and exact-path allowlists
 
-Checkpoint commit model:
+Source/doc commits produced by INT-10:
 
-- Commit 1 stages only this INT-10 result package.
-- Later root workspace commit may stage only root package metadata/lockfile and focused workspace package metadata/tests.
-- Later static/onboarding commit may stage only exact source, schema, tool, fixture, and test paths created for deterministic static publication and no-op onboarding dry-run.
-- Final closeout may stage only active Atlas pointer files, exact INT-10 result package files, and allowed Atlas/working-memory generated documents.
+- `f14e7dab6966b1bd3e2063922f079273ca0f5737` — docs: reconcile frozen upstream and ratify tenant architecture.
+- `b1d4c7b3efe10cbdf1991d9990833e5ad9a7da5a` — build: establish downstream root npm workspace.
+- `e13aa1fa0ea6e25eaa69002d3d0dd5b73acd8380` — feat: integrate qualified upstream platform capabilities.
+- `c83971fbf09ca532dcad3e474118b40bac2b2dad` — feat: add deterministic static tenant publication and onboarding plan.
+- `2cfe94c76e93d8261a716a1e0fd2447e41c4cb2d` — test: make starter contract checks workspace-aware.
 
-Forbidden: `git add -A`.
+All commits used exact-path staging. `git add -A` was not used.

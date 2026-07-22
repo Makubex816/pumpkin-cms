@@ -1,8 +1,10 @@
 # Downstream preservation and compatibility result
 
-Checkpoint preservation rules:
+Preserved:
 
-- keep unrelated dirty work unstaged;
-- avoid current dirty admin, ice-rink-web, and pumpkin-ts-models dist paths in INT-10 source commits unless separately reconciled;
-- preserve downstream tenant isolation, identity authorization, FormEntry persistence, and existing page/block serialization;
-- make public tenant output static and deterministic from recorded inputs.
+- existing dirty work remained unstaged;
+- tenant isolation and shared API boundaries;
+- public static artifact contains no privileged credential or customer payload;
+- legacy starter tenant contract tests passed;
+- schema fixture compatibility passed;
+- no live migration or destructive serialization rewrite occurred.

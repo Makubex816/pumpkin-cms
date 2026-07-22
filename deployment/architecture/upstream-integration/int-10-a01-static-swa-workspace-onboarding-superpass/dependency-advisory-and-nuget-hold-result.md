@@ -1,11 +1,7 @@
 # Dependency advisory and NuGet hold result
 
-Checkpoint status: advisory and NuGet lockfile holds preserved.
+npm audit result: 5 total advisories (1 moderate, 4 high, 0 critical).
 
-Preserved holds:
+NuGet result: two clean roots passed focused restore/build/test for `apps/pumpkin-api/pumpkin-api.sln` using SDK roll-forward to 10.0.204. No committed NuGet lockfile policy was introduced; that hold remains explicit.
 
-- no committed NuGet packages.lock.json proven for the affected .NET graph;
-- pumpkin-ts-models dev-dependency advisories involving brace-expansion/minimatch paths remain unresolved until an independent dependency remediation lane;
-- legal acceptance remains held.
-
-No live deployment or distribution is authorized by this result.
+No dependency upgrade, lockfile policy change, or live deployment was performed.

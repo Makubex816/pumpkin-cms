@@ -1,20 +1,24 @@
 # Validation summary
 
-Checkpoint validations:
+Passed:
 
 - UP-30 v3.3.0 authority committed.
-- Entry HEAD recorded.
-- Product source head separated from docs-only authority head.
-- Dirty product-source drift inventoried and preserved unstaged.
-- Frozen upstream comparison commits resolved from the accepted bundle.
-- Authoritative upstream delta total: 137.
-- Semantic records by disposition: ADAPT_OR_PORT=114, WRAP_AND_EXTEND=23.
+- Product source head resolved separately from docs authority.
+- 137 upstream paths accounted.
+- Root npm workspace and root lock established.
+- Two clean roots passed `npm ci --ignore-scripts`.
+- Two clean roots passed `npm run ci:root`.
+- Two clean roots passed focused .NET restore/build/test.
+- Static artifact deterministic proof passed.
+- Onboarding dry-run deterministic/idempotency/delta proof passed.
+- Atlas and working-memory deterministic package proof passed.
 - No live mutation.
 
-Pending validations:
+Preserved holds:
 
-- root npm workspace lock generation;
-- two clean-root npm ci proofs;
-- static artifact deterministic build;
-- onboarding dry-run determinism/idempotency/delta proof;
-- final Atlas/working-memory v3.4.0/v1.1.0 deterministic package proof.
+- npm dependency advisories;
+- NuGet lockfile policy;
+- owner/legal acceptance;
+- live controlled pilot approval;
+- PERF-10 capacity review;
+- PAY-00 Authorize.Net intake.
