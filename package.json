@@ -13,8 +13,9 @@
     "build:packages": "npm run build --workspace pumpkin-ts-models && npm run build --workspace pumpkin-block-views",
     "build:starter": "npm run build --workspace pumpkin-starter-app",
     "type-check:starter": "npm run type-check --workspace pumpkin-starter-app",
+    "test:block-contracts": "node scripts/test-block-contracts.mjs",
     "test:starter:contracts": "npm run test:preview-fixtures --workspace pumpkin-starter-app && npm run test:host-tenant-runtime --workspace pumpkin-starter-app",
-    "ci:root": "npm run workspace:inventory && npm run build:packages && npm run type-check:starter && npm run test:starter:contracts"
+    "ci:root": "npm run workspace:inventory && npm run test:block-contracts && npm run build:packages && npm run type-check:starter && npm run test:starter:contracts"
   },
   "engines": {
     "node": ">=20 <25",
