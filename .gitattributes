@@ -1,0 +1,2 @@
+# TypeScript emits these committed package artifacts with LF line endings.
+packages/pumpkin-ts-models/dist/** text eol=lf
