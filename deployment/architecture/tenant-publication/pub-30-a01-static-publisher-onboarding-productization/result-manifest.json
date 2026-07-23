@@ -1,0 +1,268 @@
+{
+  "packageKind": "repo_safe_result_package",
+  "schemaVersion": "pub-30-a01-result-manifest-v2",
+  "taskId": "PUB-30-A01",
+  "status": "blocked_dpapi_provider_or_deployment_security",
+  "reconciliationState": "FROZEN_AT_SECURITY_GATE",
+  "generatedAtUtc": "2026-07-23T09:54:56.0479025Z",
+  "requiredFileCount": 22,
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "entry-gates-owner-approval-and-backup.md",
+    "product-data-contracts-and-state-machines.md",
+    "universal-static-publisher-proof.md",
+    "current-tenant-local-artifact-fidelity.md",
+    "product-release-and-publication-registry.md",
+    "static-web-app-resource-deployment-service.md",
+    "dpapi-and-managed-secret-provider-result.md",
+    "onboarding-orchestrator-proof.md",
+    "admin-tenantadmin-publication-ui.md",
+    "public-form-contract-productization.md",
+    "dependency-lockfile-and-licensing-result.md",
+    "local-clean-room-acceptance.md",
+    "platform-deployment-result.md",
+    "synthetic-productized-live-regression.md",
+    "customer-migration-readiness-packets.md",
+    "rollback-backup-and-no-regression.md",
+    "atlas-working-memory-update.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "contentInventory": {
+    "hashAlgorithm": "SHA-256",
+    "embeddedMemberCount": 21,
+    "excludedMember": "result-manifest.json",
+    "exclusionReason": "SELF_REFERENCE",
+    "files": [
+      {
+        "path": "admin-tenantadmin-publication-ui.md",
+        "sha256": "3c90493b84594ead53317cd040c8c79e92fc33c6ce9def3318b4f51769cb9ff6",
+        "bytes": 1901
+      },
+      {
+        "path": "atlas-working-memory-update.md",
+        "sha256": "f2156d72ae24824331534900fa0481b446617607cef601b69c8dd0322ddc9df7",
+        "bytes": 1987
+      },
+      {
+        "path": "current-tenant-local-artifact-fidelity.md",
+        "sha256": "2c68541bd1cbb1f4ac738baa133b713d8e502170a67c25d9f44a35a0d01cef5f",
+        "bytes": 3374
+      },
+      {
+        "path": "customer-migration-readiness-packets.md",
+        "sha256": "6b6c38a46211804ff52d1aa29532c50207ede9d7a45e688c73142ac368f613af",
+        "bytes": 4560
+      },
+      {
+        "path": "dependency-lockfile-and-licensing-result.md",
+        "sha256": "ffdd2bb74e8541bf8cdcde9fa4b2790a44a013661ef5a9e16e245292bcf9ec4a",
+        "bytes": 2180
+      },
+      {
+        "path": "dpapi-and-managed-secret-provider-result.md",
+        "sha256": "00aa5138a79d1ab94280d9274fdae484246010fa6c45b95be90f19be48a6ad1b",
+        "bytes": 2078
+      },
+      {
+        "path": "entry-gates-owner-approval-and-backup.md",
+        "sha256": "21a0496c38a200f69acb3b83f015252b571d8d9c667591174ab9cf986785b827",
+        "bytes": 4028
+      },
+      {
+        "path": "local-clean-room-acceptance.md",
+        "sha256": "997cb47cdd3e00f42ddbe0edb4bc801e7bae88de2a2b0366591a5b58ecdd7d7c",
+        "bytes": 2802
+      },
+      {
+        "path": "next-phase-prompt.md",
+        "sha256": "b77599bd3c4ec2944ff80327bb67554cff4e0a69cbc931845365c2980116fee3",
+        "bytes": 1382
+      },
+      {
+        "path": "onboarding-orchestrator-proof.md",
+        "sha256": "e3409e0b3e78df9dce84e09f278f42fe0ccc66a7c9db9592f611a25737cee270",
+        "bytes": 1549
+      },
+      {
+        "path": "platform-deployment-result.md",
+        "sha256": "d61f0cbb1ea18d4f72d59982fbcb67998d8f338dca95efa9425e47a5fb850053",
+        "bytes": 1950
+      },
+      {
+        "path": "product-data-contracts-and-state-machines.md",
+        "sha256": "99de9ac4d403889f4bbcf066a48ad62dd7e33b58c0870ddcdb0f67406ac3f68e",
+        "bytes": 2204
+      },
+      {
+        "path": "product-release-and-publication-registry.md",
+        "sha256": "130caa9b82c87800a7c3c35e727df520664786de311bd9f819eaf12cf4dd1a90",
+        "bytes": 1908
+      },
+      {
+        "path": "public-form-contract-productization.md",
+        "sha256": "416dedff65a8445ae92b8b2f207f29b7a35b725c05e3c3a4946cfff06ea3d518",
+        "bytes": 1835
+      },
+      {
+        "path": "README.md",
+        "sha256": "abcce488d0b5266ebd48d4062b4211c192ced7005932bc3baddc4540150dc5b6",
+        "bytes": 2565
+      },
+      {
+        "path": "rollback-backup-and-no-regression.md",
+        "sha256": "1a37848fce1d9d6a56ad8aa46587d07ffa477a26cf2590fb44c7663de89bc2bf",
+        "bytes": 1735
+      },
+      {
+        "path": "security-boundary-result.md",
+        "sha256": "9589848e2c3187e3e60f538fdd06e5b6e38a4332672ed54ffa763f116bffe7e2",
+        "bytes": 1823
+      },
+      {
+        "path": "static-web-app-resource-deployment-service.md",
+        "sha256": "c2f2e0be870c55177cdffd161a3cdc82c2c680533d559049bfe7c5a1c648af76",
+        "bytes": 1770
+      },
+      {
+        "path": "synthetic-productized-live-regression.md",
+        "sha256": "05a2930e3c4a03f8666a1170e247e3abab5daa89300feb1764a9e8d28f885d3b",
+        "bytes": 1338
+      },
+      {
+        "path": "universal-static-publisher-proof.md",
+        "sha256": "369a01ca03ef99476371b68037060ea60f81fe967ad2abfe5fbb968a16679b6b",
+        "bytes": 2146
+      },
+      {
+        "path": "validation-summary.md",
+        "sha256": "94cdc29de8103fdea5ecfc5e3c31423ab7345c28b11bec94b92c15879f545e46",
+        "bytes": 1986
+      }
+    ]
+  },
+  "externalCloseoutFields": [
+    "resultManifestSha256",
+    "resultPackageCommitSha",
+    "atlasAuthorityCommitSha"
+  ],
+  "sourceLineage": {
+    "entryBaseline": "aa8943ee29c99ae47fd57d7b60dfe160b6afa6e7",
+    "finalTechnicalSource": "aab6823bd265cf91e77868a6649dd984016837b9",
+    "focusedCommits": [
+      "c176ec3fd49e6cae400d0d30626425087d6077b8",
+      "afb089ee40625c3651add122d396686c1f2b8d2e",
+      "e84befee994735b9979ef64ef1c78f75a5f28c48",
+      "7e6534a269d1f16a7fa34f7810246cdfb8ef89c1",
+      "4b5741c57421e98ae6a60080f835be42e26a8ed9",
+      "27058f39f0a7e60d92ea2785f55b955939c64dbc",
+      "a36778649f4c7d70236eae7f22d5a17aba2fa57a",
+      "0b5ae2c02a84e9c26400ac498af3b1630ad99cd8",
+      "973f0366027696083e433905d1e6d8da7fbe702e",
+      "dc02e8635160e19866cf56caf3beb2e1ba582807",
+      "aab6823bd265cf91e77868a6649dd984016837b9"
+    ]
+  },
+  "entryAuthority": {
+    "atlasVersion": "3.7.0",
+    "atlasPackageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
+    "atlasManifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a",
+    "workingMemoryVersion": "1.4.0",
+    "workingMemoryPackageSha256": "be361392de87bcaa2efda738264174389a20f255cc131a45b634210546bd6ba3",
+    "workingMemoryManifestSha256": "755abc68784db39ce80e1f02d0c9f66936448a4363f7bfd840c0f53e533e186c"
+  },
+  "approval": {
+    "sha256": "4c6552221b00cd46948a7ca01f07f41b4828f87fdb66f14fc8880e31c90884e8",
+    "decisionStatus": "approved",
+    "capacityAuthorizedThroughUtc": "2026-08-06T03:27:08.1575363Z",
+    "maxCorrectedDeploymentAttemptsPerApplication": 3,
+    "maxAdditionalLogicalSyntheticFormSubmissions": 1,
+    "consumedDeploymentAttempts": 0,
+    "consumedLogicalSyntheticFormSubmissions": 0
+  },
+  "backup": {
+    "manifestSha256": "6647b23f3d63af719d3c7b9beaf2a788e37eb2b29a08756dd0128cb5e1eff5d0",
+    "checksumsSha256": "fc9c4a71e33c9bd06d7d683a516c754a61e94c9a25a217bdb456687d140c1e2e",
+    "liveRestorePerformed": false
+  },
+  "productization": {
+    "finalTechnicalSource": "aab6823bd265cf91e77868a6649dd984016837b9",
+    "publicationProductTests": 46,
+    "publicationProductNetworkCalls": 0,
+    "publicationProductLiveMutations": 0,
+    "candidateFileCount": 24,
+    "candidateInventorySha256": "ed33ad67abab8a04b08e6f91b5d3689269b5d0041c702003864fae6137a92f74",
+    "apiPackageSha256": "f616e5c0025e6d1022d7423b761d0df19c3d597e962c97f3fc94ce83d55c76e5",
+    "apiInventorySha256": "66bf6dd14478ef4d3a37a3cc9755622fa18c216ed8a368941d7c224dc69ccd79",
+    "adminPackageSha256": "1a46dcc4f6d179538761cc5368c015197a6b2869bf6469e633b966beffcc6c7e",
+    "adminInventorySha256": "fd54ad6607feff70a10c735438bb91567fbd355a23430afe38a6d1284f703339",
+    "crossRootDeterminism": true
+  },
+  "hostingClassifications": {
+    "iceRinkRentals": "STATIC_READY_WITH_ADAPTATION",
+    "partyProsPhiladelphia": "SHARED_COMPATIBILITY_REQUIRED",
+    "stripClubNearMeVegas": "SHARED_COMPATIBILITY_REQUIRED",
+    "airstrip": "BLOCKED_BY_MISSING_EVIDENCE"
+  },
+  "productCredentialProvider": {
+    "status": "DESIGN_HELD_NON_EXECUTABLE",
+    "currentFixture": "WINDOWS_DPAPI_CURRENT_USER_SINGLE_OPERATOR",
+    "plaintextAtRest": false,
+    "managedProviderCreated": false,
+    "paidSecretStoreCreated": false
+  },
+  "liveOperations": {
+    "apiDeploymentAttempts": 0,
+    "adminDeploymentAttempts": 0,
+    "starterDeploymentAttempts": 0,
+    "staticWebAppDeploymentAttempts": 0,
+    "syntheticMutations": 0,
+    "ticketIssuanceCalls": 0,
+    "publicFormHttpPosts": 0,
+    "customerMutations": 0
+  },
+  "securityGate": {
+    "readOnlyDiagnosticExposedProtectedValuesInCommandTrace": true,
+    "protectedValuesIncludedInRepository": false,
+    "protectedValuesIncludedInResultPackage": false,
+    "rawLogsIncludedInResultPackage": false,
+    "diagnosticFileMutationCount": 0,
+    "diagnosticCommitCount": 0,
+    "diagnosticLiveMutationCount": 0,
+    "deploymentAttemptCount": 0,
+    "syntheticMutationCount": 0,
+    "requiredAuthority": "PLATFORM_SECRET_ROTATION_AND_PARITY_RECOVERY"
+  },
+  "preservedRollbackLineage": {
+    "a02ArtifactSha256": "227512fe26000e0fa933da51ec41a83e274cbb38b24bf15624de0b142271b4dd",
+    "a02ManifestSha256": "80c9db24ab57d537e11eb86bfadb8d4e58f7cef87bf0c59978617c2224d98e54",
+    "safeNoPostArtifactSha256": "33122aab2b9f64567f2d1bf29d175c232f2b3c1715237fe5a49c04c75697e769",
+    "safeNoPostManifestSha256": "46bccba3f29081946d235fcb15b07a73f43703dfde4f41e648cffd27033b4517"
+  },
+  "legalDistributionState": "HELD_OWNER_LEGAL_REVIEW",
+  "customerExecutionEnabled": false,
+  "containsSecrets": false,
+  "containsCustomerPayloads": false,
+  "containsRawLogs": false,
+  "nextGate": {
+    "id": "OWNER_AUTHORIZED_PLATFORM_SECRET_ROTATION_AND_PARITY_RECOVERY",
+    "ownerAuthorizationRequired": true,
+    "before": "PUB-40"
+  },
+  "handoffs": {
+    "pub40": {
+      "path": "../pub-40-controlled-existing-tenant-static-migration-pilot-prompt.md",
+      "sha256": "3ad99a24e5d051d43b824f35b1db799b508b7fbdbcb3beb08f94c785252ed019"
+    },
+    "dom20": {
+      "path": "../dom-20-held-ghostdevstack-noncustomer-domain-pilot-prompt.md",
+      "sha256": "1ba1384208d5901d4ff487f8eab79d111129cbfb63a2550579cb381703ca7996"
+    },
+    "sec20": {
+      "path": "../sec-20-conditional-managed-multioperator-secret-provider-prompt.md",
+      "sha256": "c80a87b6e8758b82541cc16242baa2857716f917ec8c2cc38009c3ac5328ebaa"
+    }
+  }
+}
