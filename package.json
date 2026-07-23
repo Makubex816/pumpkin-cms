@@ -16,9 +16,10 @@
     "test:block-contracts": "node scripts/test-block-contracts.mjs",
     "test:starter:contracts": "npm run test:preview-fixtures --workspace pumpkin-starter-app && npm run test:host-tenant-runtime --workspace pumpkin-starter-app",
     "test:static-publication": "node tools/static-tenant-publication/validate.mjs",
+    "test:publication-product": "node tools/tenant-publication-product/validate.mjs",
     "plan:onboarding:dry-run": "node tools/tenant-onboarding-dry-run/plan.mjs --input tools/tenant-onboarding-dry-run/synthetic-onboarding-input.json --out .tmp/int10-onboarding/plan.json",
     "test:onboarding:dry-run": "node tools/tenant-onboarding-dry-run/validate.mjs",
-    "ci:root": "npm run workspace:inventory && npm run test:block-contracts && npm run test:static-publication && npm run test:onboarding:dry-run && npm run build:packages && npm run type-check:starter && npm run test:starter:contracts"
+    "ci:root": "npm run workspace:inventory && npm run test:block-contracts && npm run test:static-publication && npm run test:publication-product && npm run test:onboarding:dry-run && npm run build:packages && npm run type-check:starter && npm run test:starter:contracts"
   },
   "engines": {
     "node": ">=20 <25",
