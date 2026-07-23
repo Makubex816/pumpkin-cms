@@ -1,0 +1,13 @@
+{
+  "name": "pumpkin-tenant-publication-product",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "candidates": "node generate-current-tenant-candidates.mjs",
+    "test": "node validate.mjs"
+  },
+  "engines": {
+    "node": ">=20 <25"
+  }
+}
