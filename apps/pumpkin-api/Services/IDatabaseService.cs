@@ -14,6 +14,8 @@ public interface IDatabaseService
     Task<bool> DeletePageAsync(string apiKey, string tenantId, string pageSlug);
     Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry);
     Task<FormEntry> SaveFormEntryAsync(string apiKey, string tenantId, FormEntry formEntry, CancellationToken cancellationToken) => SaveFormEntryAsync(apiKey, tenantId, formEntry).WaitAsync(cancellationToken);
+    Task<PublicFormEntryCreateResult> CreatePublicFormEntryAsync(FormEntry formEntry, CancellationToken cancellationToken) =>
+        Task.FromException<PublicFormEntryCreateResult>(new NotSupportedException("Public form persistence is not supported by this test double."));
     Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId);
     Task<FormEntry?> GetFormEntryAsync(string tenantId, string id);
     Task<FormEntry> UpdateFormEntryStatusAsync(string tenantId, string id, FormEntryStatusUpdate statusUpdate);
@@ -24,6 +26,12 @@ public interface IDatabaseService
     Task<FormDefinition> CreateFormDefinitionAsync(string tenantId, FormDefinition definition);
     Task<FormDefinition> UpdateFormDefinitionAsync(string tenantId, string id, FormDefinition definition);
     Task<bool> DeleteFormDefinitionAsync(string tenantId, string id);
+    Task<PublicPublication?> GetPublicPublicationAsync(string publicationId, CancellationToken cancellationToken) =>
+        Task.FromException<PublicPublication?>(new NotSupportedException("Public publications are not supported by this test double."));
+    Task<PublicPublication> CreatePublicPublicationAsync(PublicPublication publication, CancellationToken cancellationToken) =>
+        Task.FromException<PublicPublication>(new NotSupportedException("Public publications are not supported by this test double."));
+    Task<PublicPublication> UpdatePublicPublicationAsync(PublicPublication publication, long expectedRevision, CancellationToken cancellationToken) =>
+        Task.FromException<PublicPublication>(new NotSupportedException("Public publications are not supported by this test double."));
     Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId);
     
     

@@ -14,10 +14,24 @@ if (args.out) {
 process.stdout.write(serialized);
 
 function buildPlan(input) {
+  const current = input.currentState ?? {};
+  const approvals = {
+    identityTenantMutation: normalizeApproval(input.approvals.identityTenantMutation),
+    azureResourceMutation: normalizeApproval(input.approvals.azureResourceMutation),
+    freePlan: normalizeApproval(input.approvals.freePlan),
+    apiDeployment: normalizeApproval(input.approvals.apiDeployment),
+    staticDeployment: normalizeApproval(input.approvals.staticDeployment),
+    publicPublicationMutation: normalizeApproval(input.approvals.publicPublicationMutation),
+    domainDnsNameserverTlsMutation: normalizeApproval(input.approvals.domainDnsNameserverTlsMutation),
+    formPersistenceProof: normalizeApproval(input.approvals.formPersistenceProof),
+  };
   const context = {
     tenantUid: input.tenant.uid,
     tenantSlug: input.tenant.slug,
+    publicationId: input.publication?.id ?? "",
+    releaseId: input.publication?.releaseId ?? "",
     staticWebAppName: input.azure.staticWebAppName,
+    staticWebAppSku: input.azure.sku ?? "Free",
     apexDomain: input.domains.apex,
     wwwDomain: input.domains.www,
     staticArtifactSha256: input.staticArtifact.sha256,
@@ -26,54 +40,63 @@ function buildPlan(input) {
     op("tenant.upsert", "tenant", "plan", ["approval.identityTenantMutation"], context, {
       intent: input.tenant.intent,
       displayName: input.tenant.displayName,
-    }),
+    }, current.tenantExists === true ? "verify" : "create", approvals.identityTenantMutation),
     op("tenant-admin.membership.upsert", "identity", "plan", ["tenant.upsert", "approval.identityTenantMutation"], context, {
       tenantAdminReference: input.tenantAdmin.reference,
       emailHash: input.tenantAdmin.emailHash,
-    }),
+    }, current.tenantAdminMembershipExists === true ? "verify" : "create", approvals.identityTenantMutation),
     op("contact-settings.upsert", "shared-api", "plan", ["tenant.upsert", "approval.identityTenantMutation"], context, input.contact),
     op("static-artifact.verify", "static-build", "read-only", [], context, input.staticArtifact),
     op("azure.resource-group.ensure", "azure", "mutation-requires-approval", ["approval.azureResourceMutation"], context, {
       subscriptionAlias: input.azure.subscriptionAlias,
       resourceGroup: input.azure.resourceGroup,
       region: input.azure.region,
-    }),
-    op("azure.static-web-app.ensure", "azure", "mutation-requires-approval", ["azure.resource-group.ensure", "approval.azureResourceMutation", "approval.paidPlan"], context, {
+    }, current.resourceGroupExists === true ? "verify" : "create", approvals.azureResourceMutation),
+    op("azure.static-web-app.ensure", "azure", "mutation-requires-approval", ["azure.resource-group.ensure", "approval.azureResourceMutation", "approval.freePlan"], context, {
       staticWebAppName: input.azure.staticWebAppName,
       region: input.azure.region,
       environment: input.azure.environment,
-    }),
-    op("static-artifact.deploy", "azure", "mutation-requires-approval", ["static-artifact.verify", "azure.static-web-app.ensure", "approval.azureResourceMutation"], context, {
+      sku: input.azure.sku ?? "Free",
+    }, current.staticWebAppExists === true ? "verify" : "create", approvals.azureResourceMutation === "approved" && approvals.freePlan === "approved" ? "approved" : "not-approved"),
+    op("api.public-form-contract.deploy", "shared-api", "mutation-requires-approval", ["approval.apiDeployment"], context, {
+      transportMode: input.transport.apiTransportMode,
+      linkedBackend: false,
+    }, current.apiDeploymentMatches === true ? "verify" : "update", approvals.apiDeployment),
+    op("publication.record.ensure", "shared-api", "mutation-requires-approval", ["tenant.upsert", "api.public-form-contract.deploy", "approval.publicPublicationMutation"], context, input.publication ?? {}, current.publicationMatches === true ? "verify" : current.publicationExists === true ? "update" : "create", approvals.publicPublicationMutation),
+    op("publication.origin.register", "shared-api", "mutation-requires-approval", ["publication.record.ensure", "azure.static-web-app.ensure", "approval.publicPublicationMutation"], context, {
+      source: "static-web-app-default-host-readback",
+      exactOriginOnly: true,
+    }, current.publicationOriginRegistered === true ? "verify" : "update", approvals.publicPublicationMutation),
+    op("static-artifact.deploy", "azure", "mutation-requires-approval", ["static-artifact.verify", "azure.static-web-app.ensure", "publication.origin.register", "approval.staticDeployment"], context, {
       artifactId: input.staticArtifact.id,
       artifactSha256: input.staticArtifact.sha256,
-    }),
-    op("api.transport.configure", "shared-api", "mutation-requires-approval", ["approval.apiBackendLinking"], context, input.transport),
+    }, current.deployedArtifactMatches === true ? "verify" : "update", approvals.staticDeployment),
     op("domain.custom-binding.plan", "azure", "mutation-requires-approval", ["azure.static-web-app.ensure", "approval.domainDnsNameserverTlsMutation"], context, {
       apex: input.domains.apex,
       www: input.domains.www,
-    }),
+    }, "held", approvals.domainDnsNameserverTlsMutation),
     op("dns.records.plan", "dns", "mutation-requires-approval", ["domain.custom-binding.plan", "approval.domainDnsNameserverTlsMutation"], context, {
       dnsProvider: input.domains.dnsProvider,
       records: [
         { type: "CNAME", name: "www", value: `${input.azure.staticWebAppName}.azurestaticapps.net` },
         { type: "TXT", name: "@", value: "provider-validation-token-pending-readback" },
       ],
-    }),
+    }, "held", approvals.domainDnsNameserverTlsMutation),
     op("nameserver.delegation.plan", "registrar", "mutation-requires-approval", ["dns.records.plan", "approval.domainDnsNameserverTlsMutation"], context, {
       registrarProvider: input.domains.registrarProvider,
       mode: input.domains.nameserverDelegationMode,
-    }),
+    }, "held", approvals.domainDnsNameserverTlsMutation),
     op("tls.readiness.plan", "azure", "read-only-after-approved-mutation", ["domain.custom-binding.plan"], context, {
       apex: input.domains.apex,
       www: input.domains.www,
-    }),
-    op("preflight.no-write", "validation", "read-only", ["static-artifact.deploy", "api.transport.configure"], context, {
-      checks: ["static routes", "headers", "API origin", "form shell", "tenant isolation markers"],
+    }, "held", "not-approved"),
+    op("preflight.no-write", "validation", "read-only", ["static-artifact.deploy", "publication.record.ensure"], context, {
+      checks: ["static routes", "noindex headers", "API origin", "ticket issuance", "origin denial", "tenant isolation markers"],
     }),
     op("form.persistence-proof.gate", "shared-api", "blocked-until-approval", ["preflight.no-write", "approval.formPersistenceProof"], context, {
       publicFormMode: input.transport.publicFormMode,
       captchaMode: input.transport.captchaMode,
-    }),
+    }, Number(current.logicalSubmissionCount ?? 0) === 1 ? "verify" : "create", approvals.formPersistenceProof),
     op("tenant-isolation.gate", "validation", "read-only", ["preflight.no-write"], context, {
       tenantUid: input.tenant.uid,
       tenantSlug: input.tenant.slug,
@@ -87,16 +110,10 @@ function buildPlan(input) {
       tenant: input.tenant,
     }),
   ];
-  const approvals = {
-    identityTenantMutation: "not-approved",
-    azureResourceMutation: input.approvals.azureResourceMutation,
-    paidPlan: input.approvals.paidPlan,
-    apiBackendLinking: input.approvals.apiBackendLinking,
-    domainDnsNameserverTlsMutation: input.approvals.domainDnsNameserverTlsMutation,
-    formPersistenceProof: input.approvals.formPersistenceProof,
-  };
+  const mutationOperations = operations.filter((entry) => entry.mutationRequired);
   return {
     planKind: "pumpkin-tenant-onboarding-dry-run",
+    planSchemaVersion: "2.0",
     dryRunOnly: true,
     liveMutation: false,
     providerCredentialsRequired: false,
@@ -105,11 +122,16 @@ function buildPlan(input) {
     operations,
     operationCount: operations.length,
     operationKeys: operations.map((entry) => entry.key),
+    reconciliationStatus: mutationOperations.length === 0 ? "noop" : "changes-planned",
+    mutationRequiredCount: mutationOperations.length,
+    unauthorizedMutationCount: mutationOperations.filter((entry) => !entry.mutationAuthorized).length,
+    currentStateObserved: Object.keys(current).length > 0,
     idempotencyKey: sha256(stableStringify({ context, operationKeys: operations.map((entry) => entry.key) })),
   };
 }
 
-function op(key, provider, mode, dependsOn, context, details) {
+function op(key, provider, mode, dependsOn, context, details, plannedAction = "verify", approval = "not-required") {
+  const mutationRequired = ["create", "update", "delete"].includes(plannedAction);
   return {
     key,
     idempotencyKey: sha256(stableStringify({ key, context })),
@@ -117,8 +139,14 @@ function op(key, provider, mode, dependsOn, context, details) {
     mode,
     dependsOn,
     details,
-    mutationAuthorized: false,
+    plannedAction,
+    mutationRequired,
+    mutationAuthorized: mutationRequired && approval === "approved",
   };
+}
+
+function normalizeApproval(value) {
+  return value === "approved" || value === true ? "approved" : "not-approved";
 }
 
 function validate(input) {
@@ -137,6 +165,7 @@ function validate(input) {
     "azure.staticWebAppName",
     "azure.region",
     "azure.environment",
+    "azure.sku",
     "domains.apex",
     "domains.www",
     "domains.registrarProvider",
@@ -145,6 +174,8 @@ function validate(input) {
     "transport.apiTransportMode",
     "transport.publicFormMode",
     "transport.captchaMode",
+    "publication.id",
+    "publication.releaseId",
     "rollback.artifactId",
     "approvals.azureResourceMutation",
   ];

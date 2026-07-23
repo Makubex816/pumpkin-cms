@@ -25,12 +25,22 @@
     "id": "synthetic-pumpkin-swa-static-artifact",
     "sha256": "pending-local-build"
   },
+  "publication": {
+    "id": "pub_synth_static_0001",
+    "releaseId": "rel_pub20_a02_v2",
+    "indexingState": "held-noindex",
+    "publicMode": "ticketed-noncredential",
+    "formMappingIds": [
+      "synthetic-contact"
+    ]
+  },
   "azure": {
     "subscriptionAlias": "synthetic-subscription-reference",
     "resourceGroup": "rg-synth-static-pumpkin",
     "staticWebAppName": "swa-synth-static-pumpkin",
     "region": "eastus2",
-    "environment": "pilot"
+    "environment": "pilot",
+    "sku": "Free"
   },
   "domains": {
     "apex": "synthetic-static.example.invalid",
@@ -49,9 +59,12 @@
     "sha256": "70c1f5c64ae566609bc3cdf226a612c8d37d0f45962bd8d9f57a4d9f4dfd5bc1"
   },
   "approvals": {
+    "identityTenantMutation": "not-approved",
     "azureResourceMutation": "not-approved",
-    "paidPlan": "not-approved",
-    "apiBackendLinking": "not-approved",
+    "freePlan": "not-approved",
+    "apiDeployment": "not-approved",
+    "staticDeployment": "not-approved",
+    "publicPublicationMutation": "not-approved",
     "domainDnsNameserverTlsMutation": "not-approved",
     "formPersistenceProof": "not-approved"
   }

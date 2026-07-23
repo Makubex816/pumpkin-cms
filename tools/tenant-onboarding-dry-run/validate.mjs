@@ -9,10 +9,14 @@ fs.mkdirSync(base, { recursive: true });
 const run1 = runPlan("tools/tenant-onboarding-dry-run/synthetic-onboarding-input.json", `${base}/plan-run1.json`);
 const run2 = runPlan("tools/tenant-onboarding-dry-run/synthetic-onboarding-input.json", `${base}/plan-run2.json`);
 const changed = runPlan("tools/tenant-onboarding-dry-run/synthetic-onboarding-input-domain-change.json", `${base}/plan-domain-change.json`);
+const reconciled = runPlan("tools/tenant-onboarding-dry-run/synthetic-onboarding-input-reconciled.json", `${base}/plan-reconciled-run1.json`);
+const reconciledAgain = runPlan("tools/tenant-onboarding-dry-run/synthetic-onboarding-input-reconciled.json", `${base}/plan-reconciled-run2.json`);
 
 const run1Bytes = fs.readFileSync(`${base}/plan-run1.json`);
 const run2Bytes = fs.readFileSync(`${base}/plan-run2.json`);
 const changedBytes = fs.readFileSync(`${base}/plan-domain-change.json`);
+const reconciledBytes = fs.readFileSync(`${base}/plan-reconciled-run1.json`);
+const reconciledAgainBytes = fs.readFileSync(`${base}/plan-reconciled-run2.json`);
 const duplicateOperationKeys = new Set(run1.operationKeys).size !== run1.operationKeys.length;
 const changedOperationKeysSame = JSON.stringify(run1.operationKeys) === JSON.stringify(changed.operationKeys);
 const domainDelta =
@@ -30,12 +34,25 @@ const checks = {
   allOperationsNoMutationAuthorized: run1.operations.every((operation) => operation.mutationAuthorized === false),
   boundedDomainDelta: domainDelta && !run1Bytes.equals(changedBytes),
   approvalGatesPresent: Object.values(run1.approvals).every((value) => value === "not-approved"),
+  freePlanDoesNotRequirePaidPlan: run1.context.staticWebAppSku === "Free" &&
+    run1.operations.find((operation) => operation.key === "azure.static-web-app.ensure")?.dependsOn.includes("approval.freePlan") === true &&
+    !JSON.stringify(run1).includes("approval.paidPlan"),
+  directApiTransportDoesNotRequireLinkedBackend: !JSON.stringify(run1).includes("approval.apiBackendLinking"),
+  liveStateReconcilesToNoop: reconciled.reconciliationStatus === "noop" &&
+    reconciled.mutationRequiredCount === 0 &&
+    reconciled.unauthorizedMutationCount === 0,
+  reconciledRerunDeterministic: reconciledBytes.equals(reconciledAgainBytes) &&
+    reconciled.idempotencyKey === reconciledAgain.idempotencyKey,
+  domainRemainsHeldAfterReconciliation: reconciled.operations
+    .filter((operation) => operation.provider === "dns" || operation.provider === "registrar" || operation.key === "domain.custom-binding.plan")
+    .every((operation) => operation.plannedAction === "held" && operation.mutationAuthorized === false),
 };
 
 const result = {
   status: Object.values(checks).every(Boolean) ? "passed" : "failed",
   planSha256: sha256(run1Bytes),
   domainDeltaPlanSha256: sha256(changedBytes),
+  reconciledPlanSha256: sha256(reconciledBytes),
   operationCount: run1.operationCount,
   checks,
 };

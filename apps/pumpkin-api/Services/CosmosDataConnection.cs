@@ -1,5 +1,6 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
+using pumpkin_api.Services.PublicForms;
 using pumpkin_api.Services.TenantRedirects;
 using pumpkin_net_models.Models;
 using System.Net;
@@ -512,6 +513,39 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<PublicFormEntryCreateResult> CreatePublicFormEntryAsync(
+        FormEntry formEntry,
+        CancellationToken cancellationToken)
+    {
+        if (!PublicFormPersistenceContract.IsValidCandidate(formEntry))
+            throw new ArgumentException("public_form_entry_invalid", nameof(formEntry));
+
+        var container = _database.GetContainer("FormEntry");
+        try
+        {
+            var response = await container.CreateItemAsync(
+                formEntry,
+                new PartitionKey(formEntry.TenantId),
+                cancellationToken: cancellationToken);
+            return new(PublicFormEntryCreateStatus.Created, response.Resource);
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
+        {
+            try
+            {
+                var existing = await container.ReadItemAsync<FormEntry>(
+                    formEntry.Id,
+                    new PartitionKey(formEntry.TenantId),
+                    cancellationToken: cancellationToken);
+                return PublicFormPersistenceContract.ResolveDuplicate(existing.Resource, formEntry);
+            }
+            catch (CosmosException readException) when (readException.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new(PublicFormEntryCreateStatus.Conflict, null);
+            }
+        }
+    }
+
     public async Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
     {
         try
@@ -764,6 +798,75 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         {
             _logger.LogError(ex, "DeleteFormDefinitionAsync error - TenantId: {TenantId}, Id: {Id}", tenantId, id);
             throw;
+        }
+    }
+
+    public async Task<PublicPublication?> GetPublicPublicationAsync(
+        string publicationId,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(publicationId)) return null;
+        try
+        {
+            var response = await _database.GetContainer("PublicPublication")
+                .ReadItemAsync<PublicPublication>(
+                    publicationId,
+                    new PartitionKey(publicationId),
+                    cancellationToken: cancellationToken);
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+    }
+
+    public async Task<PublicPublication> CreatePublicPublicationAsync(
+        PublicPublication publication,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(publication.PublicationId) ||
+            !string.Equals(publication.Id, publication.PublicationId, StringComparison.Ordinal))
+            throw new ArgumentException("public_publication_invalid", nameof(publication));
+
+        // Provision this container explicitly with partition key /id. Request-time
+        // schema creation is intentionally forbidden so backup/IaC must agree first.
+        var container = _database.GetContainer("PublicPublication");
+        try
+        {
+            var response = await container.CreateItemAsync(
+                publication,
+                new PartitionKey(publication.PublicationId),
+                cancellationToken: cancellationToken);
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
+        {
+            throw new InvalidOperationException("public_publication_conflict", ex);
+        }
+    }
+
+    public async Task<PublicPublication> UpdatePublicPublicationAsync(
+        PublicPublication publication,
+        long expectedRevision,
+        CancellationToken cancellationToken)
+    {
+        if (expectedRevision < 1 || publication.Revision != expectedRevision + 1 ||
+            string.IsNullOrWhiteSpace(publication.ETag))
+            throw new InvalidOperationException("public_publication_revision_conflict");
+        try
+        {
+            var response = await _database.GetContainer("PublicPublication").ReplaceItemAsync(
+                publication,
+                publication.PublicationId,
+                new PartitionKey(publication.PublicationId),
+                new ItemRequestOptions { IfMatchEtag = publication.ETag },
+                cancellationToken);
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode is HttpStatusCode.PreconditionFailed or HttpStatusCode.Conflict)
+        {
+            throw new InvalidOperationException("public_publication_revision_conflict", ex);
         }
     }
 

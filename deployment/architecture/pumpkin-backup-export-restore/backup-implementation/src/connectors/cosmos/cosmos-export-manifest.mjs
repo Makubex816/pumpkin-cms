@@ -6,14 +6,68 @@ const logicalCollectionFileNames = {
   pages: 'pages.json',
   routes: 'routes.json',
   forms: 'forms.json',
+  formEntries: 'form-entries.json',
+  publicPublications: 'public-publications.json',
   mediaAssets: 'media-assets.json',
   themes: 'themes.json',
   publishRuns: 'publish-runs.json',
   importRuns: 'import-runs.json'
 };
 
+const restoreContracts = {
+  formEntries: Object.freeze({
+    kind: 'pumpkin.form-entries',
+    version: '2.0.0',
+    validator: 'lib/form-entry-restore-contract.mjs',
+    sourceContainer: 'FormEntry',
+    sourcePartitionPath: '/tenantId',
+    publicContextFields: Object.freeze([
+      'tenantUid',
+      'publicationId',
+      'releaseId',
+      'formMappingId',
+      'fieldContractVersion',
+      'publicIdempotencyIdentity',
+      'publicPayloadDigest'
+    ]),
+    publicIdentitySha256Required: true,
+    publicPayloadDigestSha256Required: true,
+    idempotencyKeyMatchesSubmissionId: true,
+    storageIdDerivation: "sha256(tenantUid+'\\n'+submissionId)",
+    legacyRecordsSupported: true,
+    publicIdempotencyIdentityUnique: true,
+    conflictingPublicPayloadDigestRejected: true,
+    ticketMaterialIncluded: false,
+    signingMaterialIncluded: false
+  }),
+  publicPublications: Object.freeze({
+    kind: 'pumpkin.public-publications',
+    version: '1.0.0',
+    validator: 'lib/public-publication-restore-contract.mjs',
+    sourceContainer: 'PublicPublication',
+    sourcePartitionPath: '/id',
+    idMatchesPublicationId: true,
+    globalPublicationIdUnique: true,
+    tenantIdentityFields: Object.freeze(['tenantId', 'tenantUid']),
+    httpsOriginsOnly: true,
+    allowedHostnamesDerivedFromOrigins: true,
+    activePublicTicketMappingsRequired: true,
+    activeOnRestore: false,
+    restoreState: 'held_pending_revalidation',
+    revalidationRequired: true,
+    ticketKeyRebindingRequired: true,
+    ticketMaterialIncluded: false,
+    signingMaterialIncluded: false
+  })
+};
+
 export function fileNameForLogicalCollection(name) {
   return logicalCollectionFileNames[name] ?? `${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}.json`;
+}
+
+export function restoreContractForLogicalCollection(name) {
+  const contract = restoreContracts[name];
+  return contract ? { ...contract } : null;
 }
 
 export function buildCosmosCollectionEnvelope({
@@ -26,6 +80,7 @@ export function buildCosmosCollectionEnvelope({
   liveCosmosExportPerformed = false,
   source = 'fake-fixture'
 }) {
+  const restoreContract = restoreContractForLogicalCollection(name);
   return {
     schemaVersion: '0.2.0',
     connectorContractVersion: cosmosConnectorContractVersion,
@@ -43,7 +98,8 @@ export function buildCosmosCollectionEnvelope({
     },
     generatedAt: createdAt,
     recordCount: records.length,
-    records
+    records,
+    ...(restoreContract ? { restoreContract } : {})
   };
 }
 
@@ -61,6 +117,12 @@ export function buildCosmosExportManifest({
   dataPlaneAccess = null,
   boundaries = {}
 }) {
+  const applicableRestoreContracts = recordSets
+    .map((recordSet) => ({
+      logicalCollection: recordSet.logicalCollection,
+      contract: restoreContractForLogicalCollection(recordSet.logicalCollection)
+    }))
+    .filter((entry) => entry.contract !== null);
   return {
     schemaVersion: '0.2.0',
     connectorContractVersion: cosmosConnectorContractVersion,
@@ -117,6 +179,7 @@ export function buildCosmosExportManifest({
       siteKey: scope.siteKey
     },
     recordSets,
-    totalRecordCount: recordSets.reduce((sum, set) => sum + set.recordCount, 0)
+    totalRecordCount: recordSets.reduce((sum, set) => sum + set.recordCount, 0),
+    ...(applicableRestoreContracts.length > 0 ? { restoreContracts: applicableRestoreContracts } : {})
   };
 }

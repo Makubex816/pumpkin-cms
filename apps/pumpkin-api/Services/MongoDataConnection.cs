@@ -1,7 +1,11 @@
 using Microsoft.Extensions.Options;
+using pumpkin_api.Services.PublicForms;
 using pumpkin_api.Services.TenantRedirects;
 using pumpkin_net_models.Models;
 using System.Security.Cryptography;
+#if USE_MONGODB
+using MongoDB.Driver;
+#endif
 
 namespace pumpkin_api.Services;
 
@@ -16,6 +20,8 @@ public class MongoDataConnection : IDataConnection, IDisposable
     private readonly IMongoClient _mongoClient;
     private readonly IMongoDatabase _database;
     private readonly ILogger<MongoDataConnection> _logger;
+    private readonly SemaphoreSlim _publicIndexGate = new(1, 1);
+    private bool _publicIndexesReady;
     private bool _disposed = false;
 
     public MongoDataConnection(IOptions<MongoDbSettings> settings, ILogger<MongoDataConnection> logger)
@@ -359,6 +365,29 @@ public class MongoDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<PublicFormEntryCreateResult> CreatePublicFormEntryAsync(
+        FormEntry formEntry,
+        CancellationToken cancellationToken)
+    {
+        if (!PublicFormPersistenceContract.IsValidCandidate(formEntry))
+            throw new ArgumentException("public_form_entry_invalid", nameof(formEntry));
+        await EnsurePublicIndexesAsync(cancellationToken);
+        var collection = _database.GetCollection<FormEntry>("FormEntry");
+        try
+        {
+            await collection.InsertOneAsync(formEntry, cancellationToken: cancellationToken);
+            return new(PublicFormEntryCreateStatus.Created, formEntry);
+        }
+        catch (MongoWriteException ex) when (ex.WriteError?.Category == ServerErrorCategory.DuplicateKey)
+        {
+            var existing = await collection.Find(item => item.Id == formEntry.Id)
+                .FirstOrDefaultAsync(cancellationToken);
+            return existing == null
+                ? new(PublicFormEntryCreateStatus.Conflict, null)
+                : PublicFormPersistenceContract.ResolveDuplicate(existing, formEntry);
+        }
+    }
+
     public async Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
     {
         var formEntryCollection = _database.GetCollection<FormEntry>("FormEntry");
@@ -476,6 +505,53 @@ public class MongoDataConnection : IDataConnection, IDisposable
         );
         var result = await collection.DeleteOneAsync(filter);
         return result.DeletedCount > 0;
+    }
+
+    public async Task<PublicPublication?> GetPublicPublicationAsync(
+        string publicationId,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(publicationId)) return null;
+        return await _database.GetCollection<PublicPublication>("PublicPublication")
+            .Find(item => item.Id == publicationId)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<PublicPublication> CreatePublicPublicationAsync(
+        PublicPublication publication,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(publication.PublicationId) ||
+            !string.Equals(publication.Id, publication.PublicationId, StringComparison.Ordinal))
+            throw new ArgumentException("public_publication_invalid", nameof(publication));
+        await EnsurePublicIndexesAsync(cancellationToken);
+        try
+        {
+            await _database.GetCollection<PublicPublication>("PublicPublication")
+                .InsertOneAsync(publication, cancellationToken: cancellationToken);
+            return publication;
+        }
+        catch (MongoWriteException ex) when (ex.WriteError?.Category == ServerErrorCategory.DuplicateKey)
+        {
+            throw new InvalidOperationException("public_publication_conflict", ex);
+        }
+    }
+
+    public async Task<PublicPublication> UpdatePublicPublicationAsync(
+        PublicPublication publication,
+        long expectedRevision,
+        CancellationToken cancellationToken)
+    {
+        if (expectedRevision < 1 || publication.Revision != expectedRevision + 1)
+            throw new InvalidOperationException("public_publication_revision_conflict");
+        var collection = _database.GetCollection<PublicPublication>("PublicPublication");
+        var filter = Builders<PublicPublication>.Filter.And(
+            Builders<PublicPublication>.Filter.Eq(item => item.Id, publication.PublicationId),
+            Builders<PublicPublication>.Filter.Eq(item => item.Revision, expectedRevision));
+        var result = await collection.ReplaceOneAsync(filter, publication, cancellationToken: cancellationToken);
+        if (result.ModifiedCount != 1)
+            throw new InvalidOperationException("public_publication_revision_conflict");
+        return publication;
     }
 
     private async Task<FormDefinition?> GetFormDefinitionByTypeAdminAsync(string tenantId, string type)
@@ -1099,6 +1175,7 @@ public class MongoDataConnection : IDataConnection, IDisposable
         if (!_disposed)
         {
             // MongoDB client doesn't require explicit disposal
+            _publicIndexGate.Dispose();
             _disposed = true;
         }
     }
@@ -1608,6 +1685,56 @@ public class MongoDataConnection : IDataConnection, IDisposable
             : value.Trim().ToLowerInvariant();
     }
 
+    private async Task EnsurePublicIndexesAsync(CancellationToken cancellationToken)
+    {
+        if (_publicIndexesReady) return;
+        await _publicIndexGate.WaitAsync(cancellationToken);
+        try
+        {
+            if (_publicIndexesReady) return;
+            var entries = _database.GetCollection<FormEntry>("FormEntry");
+            var publicEntryFilter = Builders<FormEntry>.Filter.Gt(item => item.PublicationId, string.Empty);
+            var submissionKeys = Builders<FormEntry>.IndexKeys
+                .Ascending(item => item.TenantUid)
+                .Ascending(item => item.SubmissionId);
+            var identityKeys = Builders<FormEntry>.IndexKeys
+                .Ascending(item => item.TenantUid)
+                .Ascending(item => item.PublicIdempotencyIdentity);
+            await entries.Indexes.CreateManyAsync(new[]
+            {
+                new CreateIndexModel<FormEntry>(submissionKeys, new CreateIndexOptions<FormEntry>
+                {
+                    Name = "ux_public_form_submission",
+                    Unique = true,
+                    PartialFilterExpression = publicEntryFilter
+                }),
+                new CreateIndexModel<FormEntry>(identityKeys, new CreateIndexOptions<FormEntry>
+                {
+                    Name = "ux_public_form_idempotency",
+                    Unique = true,
+                    PartialFilterExpression = publicEntryFilter
+                })
+            }, cancellationToken);
+
+            var publications = _database.GetCollection<PublicPublication>("PublicPublication");
+            var publicationKeys = Builders<PublicPublication>.IndexKeys
+                .Ascending(item => item.TenantId)
+                .Ascending(item => item.Status)
+                .Ascending(item => item.ActiveUntilUtc);
+            await publications.Indexes.CreateOneAsync(
+                new CreateIndexModel<PublicPublication>(publicationKeys, new CreateIndexOptions
+                {
+                    Name = "ix_public_publication_tenant_status_expiry"
+                }),
+                cancellationToken: cancellationToken);
+            _publicIndexesReady = true;
+        }
+        finally
+        {
+            _publicIndexGate.Release();
+        }
+    }
+
     private static string NormalizeDomainName(string value)
     {
         if (string.IsNullOrWhiteSpace(value)) return string.Empty;
@@ -1985,6 +2112,18 @@ public class MongoDataConnection : IDataConnection, IDisposable
     {
         throw new NotSupportedException("MongoDB support is not enabled. Install MongoDB.Driver package and define USE_MONGODB to enable MongoDB support.");
     }
+
+    public Task<PublicFormEntryCreateResult> CreatePublicFormEntryAsync(FormEntry formEntry, CancellationToken cancellationToken) =>
+        throw new NotSupportedException("MongoDB support is not enabled.");
+
+    public Task<PublicPublication?> GetPublicPublicationAsync(string publicationId, CancellationToken cancellationToken) =>
+        throw new NotSupportedException("MongoDB support is not enabled.");
+
+    public Task<PublicPublication> CreatePublicPublicationAsync(PublicPublication publication, CancellationToken cancellationToken) =>
+        throw new NotSupportedException("MongoDB support is not enabled.");
+
+    public Task<PublicPublication> UpdatePublicPublicationAsync(PublicPublication publication, long expectedRevision, CancellationToken cancellationToken) =>
+        throw new NotSupportedException("MongoDB support is not enabled.");
 
     public void Dispose()
     {

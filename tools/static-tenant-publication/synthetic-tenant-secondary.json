@@ -1,0 +1,82 @@
+{
+  "artifactId": "synthetic-tenant-static-pilot-artifact-v2",
+  "tenantUid": "pub20-a02-synthetic",
+  "publicationId": "pub20-a02-pilot",
+  "releaseId": "pub20-a02-release-v2",
+  "publicMode": "public-live",
+  "indexingState": {
+    "mode": "disabled",
+    "robots": "noindex,nofollow,noarchive",
+    "includeInSitemap": false
+  },
+  "displayName": "PUB-20 Synthetic Static Pilot",
+  "apiBaseUrl": "https://app-pumpkin-api-prod-centralus-001.azurewebsites.net",
+  "theme": {
+    "id": "pumpkin-orchard",
+    "version": "pub20-a02",
+    "css": ":root{--pumpkin-accent:#166534;--pumpkin-bg:#f7fee7;--pumpkin-ink:#14210d}body{margin:0;font-family:system-ui,sans-serif;background:var(--pumpkin-bg);color:var(--pumpkin-ink)}main{max-width:64rem;margin:0 auto;padding:2.5rem 1rem}.hero,.card{border:1px solid #bef264;border-radius:1rem;padding:1.5rem;background:#fff}.form{display:grid;gap:.8rem}.field{display:grid;gap:.3rem}button{width:max-content;padding:.6rem 1rem}"
+  },
+  "routes": [
+    {
+      "path": "/",
+      "title": "PUB-20 Synthetic Static Pilot",
+      "blocks": [
+        {
+          "type": "hero",
+          "heading": "A held, non-customer publication pilot",
+          "body": "This deterministic fixture validates the reusable static publisher without changing a customer domain."
+        }
+      ]
+    },
+    {
+      "path": "/contact",
+      "title": "Synthetic validation request",
+      "formId": "pilot-contact",
+      "blocks": [
+        {
+          "type": "card",
+          "heading": "Public live transport contract",
+          "body": "The client requests a short-lived server ticket before attempting a submission."
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "from": "/request",
+      "to": "/contact",
+      "status": 302
+    }
+  ],
+  "forms": [
+    {
+      "id": "pilot-contact",
+      "formMappingId": "pub20-a02-contact",
+      "fieldContractVersion": "1.0.0",
+      "submitLabel": "Send validation request",
+      "consent": {
+        "name": "privacyConsent",
+        "label": "I consent to processing this synthetic validation request."
+      },
+      "honeypot": {
+        "name": "businessUrl",
+        "label": "Leave this field blank"
+      },
+      "fields": [
+        {
+          "name": "email",
+          "label": "Email",
+          "type": "email",
+          "autocomplete": "email",
+          "required": true
+        },
+        {
+          "name": "details",
+          "label": "Request details",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

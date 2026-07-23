@@ -1,6 +1,6 @@
 {
   "tenant": {
-    "intent": "create",
+    "intent": "create-or-reuse",
     "uid": "tenant_synth_static_0001",
     "slug": "synthetic-static-pumpkin",
     "displayName": "Synthetic Static Pumpkin"
@@ -22,8 +22,8 @@
     "sha256": "1a3ec4fc1191eecf2cdbd093c9f8b58168fa47d4ca9d2e4f83f2cdb1e88ddc95"
   },
   "staticArtifact": {
-    "id": "synthetic-pumpkin-swa-static-artifact",
-    "sha256": "pending-local-build"
+    "id": "synthetic-pumpkin-swa-static-artifact-v2",
+    "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
   },
   "publication": {
     "id": "pub_synth_static_0001",
@@ -43,29 +43,41 @@
     "sku": "Free"
   },
   "domains": {
-    "apex": "synthetic-static-alt.example.invalid",
-    "www": "www.synthetic-static-alt.example.invalid",
-    "registrarProvider": "dry-run-registrar",
-    "dnsProvider": "dry-run-dns",
-    "nameserverDelegationMode": "no-delegation-records-only"
+    "apex": "synthetic-static.example.invalid",
+    "www": "www.synthetic-static.example.invalid",
+    "registrarProvider": "held",
+    "dnsProvider": "held",
+    "nameserverDelegationMode": "held-no-change"
   },
   "transport": {
-    "apiTransportMode": "publicTenantScopedFetch",
+    "apiTransportMode": "publicPublicationTicket",
     "publicFormMode": "sharedPumpkinApi",
-    "captchaMode": "mocked-turnstile"
+    "captchaMode": "held-not-active"
   },
   "rollback": {
     "artifactId": "synthetic-pumpkin-swa-static-artifact-previous",
-    "sha256": "70c1f5c64ae566609bc3cdf226a612c8d37d0f45962bd8d9f57a4d9f4dfd5bc1"
+    "sha256": "d02364ddd6970cc6e11a14dc753f0b240f46e14c7d8c7c2a65d41c6fbd484675"
   },
   "approvals": {
-    "identityTenantMutation": "not-approved",
-    "azureResourceMutation": "not-approved",
-    "freePlan": "not-approved",
-    "apiDeployment": "not-approved",
-    "staticDeployment": "not-approved",
-    "publicPublicationMutation": "not-approved",
+    "identityTenantMutation": "approved",
+    "azureResourceMutation": "approved",
+    "freePlan": "approved",
+    "apiDeployment": "approved",
+    "staticDeployment": "approved",
+    "publicPublicationMutation": "approved",
     "domainDnsNameserverTlsMutation": "not-approved",
-    "formPersistenceProof": "not-approved"
+    "formPersistenceProof": "approved"
+  },
+  "currentState": {
+    "tenantExists": true,
+    "tenantAdminMembershipExists": true,
+    "resourceGroupExists": true,
+    "staticWebAppExists": true,
+    "apiDeploymentMatches": true,
+    "publicationExists": true,
+    "publicationMatches": true,
+    "publicationOriginRegistered": true,
+    "deployedArtifactMatches": true,
+    "logicalSubmissionCount": 1
   }
 }

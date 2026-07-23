@@ -2,6 +2,7 @@ using pumpkin_api.Services;
 using pumpkin_api.Services.DomainBindings;
 using pumpkin_api.Services.TenantRedirects;
 using pumpkin_api.Services.Identity;
+using pumpkin_api.Services.PublicForms;
 using pumpkin_api.Services.Readiness;
 using pumpkin_api.Managers;
 using pumpkin_net_models.Models;
@@ -184,6 +185,21 @@ builder.Services.AddRateLimiter(options =>
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
     options.OnRejected = async (rejected, cancellationToken) =>
     {
+        if (rejected.HttpContext.Request.Path.StartsWithSegments("/api/public/publications", StringComparison.OrdinalIgnoreCase))
+        {
+            rejected.HttpContext.Response.Headers.CacheControl = "no-store";
+            rejected.HttpContext.Response.Headers.Pragma = "no-cache";
+            rejected.HttpContext.Response.Headers.Vary = "Origin";
+            rejected.HttpContext.Response.Headers.RetryAfter = "10";
+            await rejected.HttpContext.Response.WriteAsJsonAsync(new PublicFormErrorResponse
+            {
+                Success = false,
+                ErrorCode = "rate_limited",
+                RequestId = rejected.HttpContext.TraceIdentifier,
+                Retryable = true
+            }, cancellationToken);
+            return;
+        }
         var isLogin = IsLoginRoute(rejected.HttpContext.Request.Path);
         rejected.HttpContext.Response.Headers.CacheControl = "no-store";
         rejected.HttpContext.Response.Headers.Pragma = "no-cache";
@@ -218,6 +234,30 @@ builder.Services.AddRateLimiter(options =>
                 QueueLimit = 0,
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst
             }));
+    options.AddPolicy("public-form-preflight", context =>
+        RateLimitPartition.GetTokenBucketLimiter(
+            context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new TokenBucketRateLimiterOptions
+            {
+                TokenLimit = 20,
+                TokensPerPeriod = 5,
+                ReplenishmentPeriod = TimeSpan.FromSeconds(10),
+                AutoReplenishment = true,
+                QueueLimit = 0,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+            }));
+    options.AddPolicy("public-form-submit", context =>
+        RateLimitPartition.GetTokenBucketLimiter(
+            context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new TokenBucketRateLimiterOptions
+            {
+                TokenLimit = 8,
+                TokensPerPeriod = 1,
+                ReplenishmentPeriod = TimeSpan.FromSeconds(10),
+                AutoReplenishment = true,
+                QueueLimit = 0,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+            }));
 });
 
 // Register data connection implementations
@@ -234,6 +274,7 @@ builder.Services.AddImportIntakeReadOnlyFoundation();
 builder.Services.AddImportExecutionProjectionReadOnlyFoundation();
 builder.Services.AddOperatorHandoffReadOnlyFoundation();
 builder.Services.AddDomainBindingFoundation();
+builder.Services.AddPublicFormFoundation(builder.Configuration);
 builder.Services.AddIdentityFoundation(builder.Configuration);
 builder.Services.AddDependencyReadiness();
 
@@ -249,10 +290,13 @@ app.UseCors("AllowAll");
 app.Use(async (context, next) =>
 {
     if (context.Request.Path.StartsWithSegments("/api/auth", StringComparison.OrdinalIgnoreCase) ||
-        context.Request.Path.StartsWithSegments("/api/identity", StringComparison.OrdinalIgnoreCase))
+        context.Request.Path.StartsWithSegments("/api/identity", StringComparison.OrdinalIgnoreCase) ||
+        context.Request.Path.StartsWithSegments("/api/public/publications", StringComparison.OrdinalIgnoreCase))
     {
         context.Response.Headers.CacheControl = "no-store";
         context.Response.Headers.Pragma = "no-cache";
+        if (context.Request.Path.StartsWithSegments("/api/public/publications", StringComparison.OrdinalIgnoreCase))
+            context.Response.Headers.Vary = "Origin";
     }
 
     await next();
@@ -260,6 +304,27 @@ app.Use(async (context, next) =>
 
 app.Use(async (context, next) =>
 {
+    if (HttpMethods.IsPost(context.Request.Method) &&
+        context.Request.Path.StartsWithSegments("/api/public/publications", StringComparison.OrdinalIgnoreCase))
+    {
+        const long maximumPublicFormBodyBytes = 24 * 1024;
+        var bodySizeFeature = context.Features.Get<IHttpMaxRequestBodySizeFeature>();
+        if (bodySizeFeature is { IsReadOnly: false }) bodySizeFeature.MaxRequestBodySize = maximumPublicFormBodyBytes;
+        if (context.Request.ContentLength is > maximumPublicFormBodyBytes)
+        {
+            context.Response.StatusCode = StatusCodes.Status413PayloadTooLarge;
+            PublicFormEndpoints.StampPublicHeaders(context);
+            await context.Response.WriteAsJsonAsync(new PublicFormErrorResponse
+            {
+                Success = false,
+                ErrorCode = "request_too_large",
+                RequestId = context.TraceIdentifier,
+                Retryable = false
+            });
+            return;
+        }
+    }
+
     if (HttpMethods.IsPost(context.Request.Method) && IsBcryptCostRoute(context.Request.Path))
     {
         const long maximumCredentialBodyBytes = 4096;
@@ -312,6 +377,9 @@ app.UseWhen(
         protectedBranch.UseAuthorization();
     });
 
+// Keep rate limiting after authentication so the existing identity policies can
+// partition authenticated callers by their NameIdentifier claim. Public endpoint
+// policies remain IP-partitioned and CORS has already applied exact-origin headers.
 app.UseRateLimiter();
 
 static bool IsDependencyLightHealthPath(HttpContext context)
@@ -1182,6 +1250,7 @@ app.MapImportExecutionProjectionReadOnlyEndpoints();
 app.MapOperatorHandoffReadOnlyEndpoints();
 app.MapDomainBindingEndpoints();
 app.MapTenantRedirectEndpoints();
+app.MapPublicFormEndpoints();
 
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",

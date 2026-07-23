@@ -5,11 +5,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>pumpkin_api</RootNamespace>
+    <EnableMongoProvider Condition="'$(EnableMongoProvider)' == ''">true</EnableMongoProvider>
+    <DefineConstants Condition="'$(EnableMongoProvider)' == 'true'">$(DefineConstants);USE_MONGODB</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.3" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.56.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.10.0" Condition="'$(EnableMongoProvider)' == 'true'" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />

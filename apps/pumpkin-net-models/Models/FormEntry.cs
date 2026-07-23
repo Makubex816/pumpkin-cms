@@ -19,8 +19,29 @@ public class FormEntry
     [JsonPropertyName("idempotencyKey")]
     public string IdempotencyKey { get; set; } = string.Empty;
 
+    [JsonPropertyName("publicationId")]
+    public string PublicationId { get; set; } = string.Empty;
+
+    [JsonPropertyName("releaseId")]
+    public string ReleaseId { get; set; } = string.Empty;
+
+    [JsonPropertyName("formMappingId")]
+    public string FormMappingId { get; set; } = string.Empty;
+
+    [JsonPropertyName("fieldContractVersion")]
+    public string FieldContractVersion { get; set; } = string.Empty;
+
+    [JsonPropertyName("publicIdempotencyIdentity")]
+    public string PublicIdempotencyIdentity { get; set; } = string.Empty;
+
+    [JsonPropertyName("publicPayloadDigest")]
+    public string PublicPayloadDigest { get; set; } = string.Empty;
+
     [JsonPropertyName("tenantId")]
     public string TenantId { get; set; } = string.Empty;
+
+    [JsonPropertyName("tenantUid")]
+    public string TenantUid { get; set; } = string.Empty;
 
     [JsonPropertyName("siteKey")]
     public string SiteKey { get; set; } = string.Empty;

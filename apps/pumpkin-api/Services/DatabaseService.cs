@@ -63,6 +63,11 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.SaveFormEntryAsync(apiKey, tenantId, formEntry, cancellationToken);
     }
 
+    public Task<PublicFormEntryCreateResult> CreatePublicFormEntryAsync(FormEntry formEntry, CancellationToken cancellationToken)
+    {
+        return _dataConnection.CreatePublicFormEntryAsync(formEntry, cancellationToken);
+    }
+
     public Task<List<FormEntry>> GetFormEntriesByTenantAsync(string tenantId)
     {
         return _dataConnection.GetFormEntriesByTenantAsync(tenantId);
@@ -111,6 +116,21 @@ public class DatabaseService : IDatabaseService, IDisposable
     public Task<bool> DeleteFormDefinitionAsync(string tenantId, string id)
     {
         return _dataConnection.DeleteFormDefinitionAsync(tenantId, id);
+    }
+
+    public Task<PublicPublication?> GetPublicPublicationAsync(string publicationId, CancellationToken cancellationToken)
+    {
+        return _dataConnection.GetPublicPublicationAsync(publicationId, cancellationToken);
+    }
+
+    public Task<PublicPublication> CreatePublicPublicationAsync(PublicPublication publication, CancellationToken cancellationToken)
+    {
+        return _dataConnection.CreatePublicPublicationAsync(publication, cancellationToken);
+    }
+
+    public Task<PublicPublication> UpdatePublicPublicationAsync(PublicPublication publication, long expectedRevision, CancellationToken cancellationToken)
+    {
+        return _dataConnection.UpdatePublicPublicationAsync(publication, expectedRevision, cancellationToken);
     }
 
     public Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
