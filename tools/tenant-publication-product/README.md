@@ -163,6 +163,34 @@ twice. It requires byte-identical packages and manifests and validates the
 public-form client with fatal UTF-8 decoding, including the exact `Sending…`
 text. This is a local build proof only; it performs no form POST.
 
+## Admin deployment tree
+
+Raw Next.js `.next` output is build evidence, not a deployable package. Prepare
+the standalone Admin tree with:
+
+```text
+node tools/tenant-publication-product/prepare-admin-deployment-tree.mjs --app apps/admin --out <new-outside-repository-directory>
+```
+
+The preparation step writes only to a new, non-symlinked location outside the
+repository. It copies the standalone server and static assets, canonicalizes
+only a closed set of generated Next lookup and client-reference manifests,
+removes build-root paths, and returns a deterministic inventory. Dependency
+JSON, including order-sensitive conditional exports, otherwise remains
+byte-preserved. Every output path and text file, including `node_modules`, is
+checked for links, portable collisions, forbidden credential filenames,
+private roots, and high-confidence secret values.
+
+Next's generated preview fields are replaced with documented public inert
+sentinels only when Admin source and all compiled application server output have
+no preview/draft capability marker and the Pages Router manifest contains only
+the closed framework built-ins plus the generated 404 page. The Server Actions
+key is replaced only when both the JSON and JavaScript server-reference
+manifests agree that their action maps are empty. These public sentinels are not
+secrets and must never protect preview mode or Server Actions; adding either
+capability requires a separately reviewed secret-injection design and a
+contract update.
+
 Generation requires a completely clean worktree (including no untracked files
 or active Git operation), `--source-commit` equal to current `HEAD`, and
 both `PUMPKIN_PLATFORM_ORIGIN_PUBLIC_KEY_SHA256` and

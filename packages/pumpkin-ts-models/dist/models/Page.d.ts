@@ -271,7 +271,7 @@ export interface PageRevisionMetadata {
     lastChangeAt: string;
     latestSnapshot?: PageRevisionSnapshot | null;
 }
-export type PageChangeSource = 'admin_editor' | 'json_import' | 'csv_import' | 'xlsx_import' | 'lifecycle_action' | 'rollback' | 'cms_snapshot' | 'metadata_repair' | 'form_builder' | 'manual_unknown';
+export type PageChangeSource = 'admin_editor' | 'json_import' | 'csv_import' | 'xlsx_import' | 'lifecycle_action' | 'rollback' | 'cms_snapshot' | 'metadata_repair' | 'form_builder' | 'updated_home_contact_package_import' | 'post_repair_updated_home_contact_import' | 'ppec_home_contact_repair_import' | 'manual_unknown';
 /**
  * Single latest pre-update page snapshot stored in the Page document.
  */

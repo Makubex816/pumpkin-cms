@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "candidates": "node generate-current-tenant-candidates.mjs",
+    "prepare:admin": "node prepare-admin-deployment-tree.mjs",
     "test": "node validate.mjs"
   },
   "engines": {

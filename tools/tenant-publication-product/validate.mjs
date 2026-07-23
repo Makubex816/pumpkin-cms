@@ -194,6 +194,7 @@ const {
   markStepRunning,
   nextRunnableSteps,
   normalizeCredentialReference,
+  prepareDeterministicAdminDeploymentTree,
   publishTenantSnapshot,
   readDeterministicTarInventory,
   readRegistryFile,
@@ -1177,6 +1178,346 @@ test('themes allow closed-resource browser CSS constructs', () => {
     @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
   `;
   assert.doesNotThrow(() => publishTenantSnapshot(fixture));
+});
+
+test('Admin deployment preparation removes private roots and canonicalizes generated manifests', async () => {
+  const temporaryRoot = await fs.mkdtemp(
+    path.join(os.tmpdir(), 'pumpkin-admin-deployment-tree-'),
+  );
+  try {
+    const outputs = [];
+    const dependencyPackageText =
+      '{"name":"conditional-order-proof","exports":{".":{"import":"./esm.js","default":"./cjs.js"}}}\n';
+    for (const [name, reverse] of [
+      ['first', false],
+      ['second', true],
+    ]) {
+      const appRoot = path.join(temporaryRoot, name, 'apps', 'admin');
+      const standalone = path.join(appRoot, '.next', 'standalone');
+      await fs.mkdir(path.join(appRoot, 'src'), {
+        recursive: true,
+      });
+      await fs.writeFile(
+        path.join(appRoot, 'src', 'page.tsx'),
+        'export default function Page() { return null; }\n',
+      );
+      const manifestRoot = path.join(
+        standalone,
+        '.next',
+        'server',
+        'app',
+        'dashboard',
+        'page',
+      );
+      await fs.mkdir(manifestRoot, { recursive: true });
+      await fs.mkdir(path.join(appRoot, '.next', 'static'), {
+        recursive: true,
+      });
+      const appManifest = reverse
+        ? { pages: { '/two': 'two.js', '/one': 'one.js' }, root: appRoot }
+        : { root: appRoot, pages: { '/one': 'one.js', '/two': 'two.js' } };
+      await fs.writeFile(
+        path.join(standalone, '.next', 'app-build-manifest.json'),
+        JSON.stringify(appManifest),
+      );
+      await fs.writeFile(
+        path.join(standalone, '.next', 'prerender-manifest.json'),
+        JSON.stringify({
+          dynamicRoutes: {},
+          preview: {
+            previewModeEncryptionKey: reverse
+              ? '2'.repeat(64)
+              : '1'.repeat(64),
+            previewModeId: reverse
+              ? '4'.repeat(32)
+              : '3'.repeat(32),
+            previewModeSigningKey: reverse
+              ? '6'.repeat(64)
+              : '5'.repeat(64),
+          },
+          routes: {},
+        }),
+      );
+      await fs.mkdir(
+        path.join(standalone, '.next', 'server'),
+        { recursive: true },
+      );
+      const pagesRoot = path.join(
+        standalone,
+        '.next',
+        'server',
+        'pages',
+      );
+      await fs.mkdir(pagesRoot, { recursive: true });
+      const pagesManifest = {
+        '/_app': 'pages/_app.js',
+        '/_error': 'pages/_error.js',
+        '/_document': 'pages/_document.js',
+        '/404': 'pages/404.html',
+      };
+      await fs.writeFile(
+        path.join(
+          standalone,
+          '.next',
+          'server',
+          'pages-manifest.json',
+        ),
+        JSON.stringify(pagesManifest),
+      );
+      for (const target of Object.values(pagesManifest)) {
+        await fs.writeFile(
+          path.join(standalone, '.next', 'server', target),
+          '/* closed built-in */\n',
+        );
+      }
+      await fs.writeFile(
+        path.join(
+          standalone,
+          '.next',
+          'server',
+          'server-reference-manifest.json',
+        ),
+        JSON.stringify({
+          edge: {},
+          encryptionKey: reverse
+            ? `${'B'.repeat(43)}=`
+            : `${'A'.repeat(43)}=`,
+          node: {},
+        }),
+      );
+      await fs.writeFile(
+        path.join(
+          standalone,
+          '.next',
+          'server',
+          'server-reference-manifest.js',
+        ),
+        'self.__RSC_SERVER_MANIFEST="{\\"node\\":{},\\"edge\\":{},\\"encryptionKey\\":\\"process.env.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY\\"}"',
+      );
+      const dependencyRoot = path.join(
+        standalone,
+        'node_modules',
+        'conditional-order-proof',
+      );
+      await fs.mkdir(dependencyRoot, { recursive: true });
+      await fs.writeFile(
+        path.join(dependencyRoot, 'package.json'),
+        dependencyPackageText,
+      );
+      const clientManifest = reverse
+        ? { clientModules: { beta: { id: 2 }, alpha: { id: 1 } }, root: appRoot }
+        : { root: appRoot, clientModules: { alpha: { id: 1 }, beta: { id: 2 } } };
+      await fs.writeFile(
+        path.join(manifestRoot, 'page_client-reference-manifest.js'),
+        `globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/dashboard/page"]=${JSON.stringify(clientManifest)}`,
+      );
+      await fs.writeFile(
+        path.join(standalone, 'server.js'),
+        `globalThis.__buildRoot=${JSON.stringify(appRoot)};\n`,
+      );
+      await fs.writeFile(
+        path.join(appRoot, '.next', 'static', 'chunk.js'),
+        'globalThis.__syntheticChunk=true;\n',
+      );
+      const outputRoot = path.join(temporaryRoot, `${name}-output`);
+      const result =
+        await prepareDeterministicAdminDeploymentTree({
+          appRoot,
+          outputRoot,
+      });
+      assert.equal(result.privateAbsolutePathsIncluded, false);
+      assert.equal(result.credentialValuesIncluded, false);
+      assert.equal(result.canonicalJsonFileCount, 3);
+      assert.equal(result.canonicalClientManifestCount, 1);
+      assert.equal(result.neutralizedGeneratedSecretCount, 4);
+      assert.equal(result.previewCapabilityMarkersIncluded, false);
+      assert.equal(result.pagesRouterBuiltInsOnly, true);
+      assert.equal(result.serverActionsIncluded, false);
+      outputs.push({ result, outputRoot });
+    }
+    assert.equal(
+      outputs[0].result.inventorySha256,
+      outputs[1].result.inventorySha256,
+    );
+    assert.deepEqual(
+      outputs[0].result.inventory,
+      outputs[1].result.inventory,
+    );
+    const preparedText = await fs.readFile(
+      path.join(outputs[0].outputRoot, 'server.js'),
+      'utf8',
+    );
+    assert.match(preparedText, /__PUMPKIN_BUILD_ROOT__/);
+    assert.doesNotMatch(preparedText, /(?:[A-Za-z]:[\\/]|\/tmp\/)/);
+    const preparedPrerender = JSON.parse(
+      await fs.readFile(
+        path.join(
+          outputs[0].outputRoot,
+          '.next',
+          'prerender-manifest.json',
+        ),
+        'utf8',
+      ),
+    );
+    assert.notEqual(
+      preparedPrerender.preview.previewModeId,
+      '3'.repeat(32),
+    );
+    const preparedServerReference = JSON.parse(
+      await fs.readFile(
+        path.join(
+          outputs[0].outputRoot,
+          '.next',
+          'server',
+          'server-reference-manifest.json',
+        ),
+        'utf8',
+      ),
+    );
+    assert.deepEqual(preparedServerReference.edge, {});
+    assert.deepEqual(preparedServerReference.node, {});
+    assert.notEqual(
+      preparedServerReference.encryptionKey,
+      `${'A'.repeat(43)}=`,
+    );
+    assert.equal(
+      await fs.readFile(
+        path.join(
+          outputs[0].outputRoot,
+          'node_modules',
+          'conditional-order-proof',
+          'package.json',
+        ),
+        'utf8',
+      ),
+      dependencyPackageText,
+    );
+
+    const firstAppRoot = path.join(
+      temporaryRoot,
+      'first',
+      'apps',
+      'admin',
+    );
+    await assertRejectsCode(
+      () =>
+        prepareDeterministicAdminDeploymentTree({
+          appRoot: firstAppRoot,
+          outputRoot: path.join(
+            temporaryRoot,
+            'first',
+            'deployment-output',
+          ),
+        }),
+      'admin_deployment_output_inside_repository',
+    );
+
+    const serverReferenceScript = path.join(
+      firstAppRoot,
+      '.next',
+      'standalone',
+      '.next',
+      'server',
+      'server-reference-manifest.js',
+    );
+    const inertServerReferenceScript =
+      await fs.readFile(serverReferenceScript, 'utf8');
+    await fs.writeFile(
+      serverReferenceScript,
+      'self.__RSC_SERVER_MANIFEST="{\\"node\\":{\\"action\\":{\\"workers\\":{}}},\\"edge\\":{},\\"encryptionKey\\":\\"process.env.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY\\"}"',
+    );
+    await assertRejectsCode(
+      () =>
+        prepareDeterministicAdminDeploymentTree({
+          appRoot: firstAppRoot,
+          outputRoot: path.join(
+            temporaryRoot,
+            'server-action-output',
+          ),
+        }),
+      'admin_server_actions_not_inert',
+    );
+    await fs.writeFile(
+      serverReferenceScript,
+      inertServerReferenceScript,
+    );
+
+    const compiledPage = path.join(
+      firstAppRoot,
+      '.next',
+      'standalone',
+      '.next',
+      'server',
+      'chunks',
+      'preview-consumer.js',
+    );
+    await fs.mkdir(path.dirname(compiledPage), { recursive: true });
+    await fs.writeFile(
+      compiledPage,
+      'globalThis.__compiledCapability = "draftMode";\n',
+    );
+    await assertRejectsCode(
+      () =>
+        prepareDeterministicAdminDeploymentTree({
+          appRoot: firstAppRoot,
+          outputRoot: path.join(
+            temporaryRoot,
+            'preview-capability-output',
+          ),
+        }),
+      'admin_preview_capability_not_inert',
+    );
+    await fs.rm(compiledPage);
+
+    const sourcePage = path.join(
+      firstAppRoot,
+      'src',
+      'page.tsx',
+    );
+    const inertSourcePage = await fs.readFile(sourcePage, 'utf8');
+    await fs.writeFile(
+      sourcePage,
+      'export const capability = draftMode;\n',
+    );
+    await assertRejectsCode(
+      () =>
+        prepareDeterministicAdminDeploymentTree({
+          appRoot: firstAppRoot,
+          outputRoot: path.join(
+            temporaryRoot,
+            'source-preview-output',
+          ),
+        }),
+      'admin_preview_capability_not_inert',
+    );
+    await fs.writeFile(sourcePage, inertSourcePage);
+
+    const secretLikeDependency = path.join(
+      firstAppRoot,
+      '.next',
+      'standalone',
+      'node_modules',
+      'conditional-order-proof',
+      'secret-fixture.txt',
+    );
+    await fs.writeFile(
+      secretLikeDependency,
+      'client_secret="synthetic-secret-like-value"\n',
+    );
+    await assertRejectsCode(
+      () =>
+        prepareDeterministicAdminDeploymentTree({
+          appRoot: firstAppRoot,
+          outputRoot: path.join(
+            temporaryRoot,
+            'dependency-secret-output',
+          ),
+        }),
+      'admin_deployment_secret_value',
+    );
+  } finally {
+    await fs.rm(temporaryRoot, { recursive: true, force: true });
+  }
 });
 
 test('external media is explicitly mutable and never fidelity-complete or hash-bound', () => {

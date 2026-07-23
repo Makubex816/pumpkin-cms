@@ -1,4 +1,5 @@
 export * from './src/adapters.mjs';
+export * from './src/admin-deployment-tree.mjs';
 export * from './src/archive.mjs';
 export * from './src/canonical.mjs';
 export * from './src/contracts.mjs';
