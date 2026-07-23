@@ -1,17 +1,17 @@
 {
   "tenant": {
     "intent": "create-or-reuse",
-    "uid": "tenant_synth_static_0001",
-    "slug": "synthetic-static-pumpkin",
-    "displayName": "Synthetic Static Pumpkin"
+    "uid": "pub20-a02-synthetic",
+    "slug": "pub20-a02-synthetic",
+    "displayName": "PUB-20 A02 Synthetic Publication Pilot"
   },
   "tenantAdmin": {
-    "reference": "synthetic-admin-ref",
-    "emailHash": "sha256:11dbb89713d94e1d77b5534759dbcc624fe4d370d1c0a88e5809705845bff2f5"
+    "reference": "bf49c50da1b47ba17f9b961904c0bee1",
+    "emailHash": "sha256:e55f7b0327a2a95ad270631efa6a8c8e9a850593da8ad21e02241310123adb86"
   },
   "contact": {
-    "notificationMode": "shared-api-secondary-email-hold",
-    "fromDisplayName": "Synthetic Static Pumpkin"
+    "notificationMode": "persistence-only-no-external-notification",
+    "fromDisplayName": "PUB-20 A02 Synthetic Publication Pilot"
   },
   "contentPackage": {
     "id": "synthetic-content-package",
@@ -22,29 +22,29 @@
     "sha256": "1a3ec4fc1191eecf2cdbd093c9f8b58168fa47d4ca9d2e4f83f2cdb1e88ddc95"
   },
   "staticArtifact": {
-    "id": "synthetic-pumpkin-swa-static-artifact-v2",
-    "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    "id": "synthetic-tenant-static-pilot-artifact-v2",
+    "sha256": "227512fe26000e0fa933da51ec41a83e274cbb38b24bf15624de0b142271b4dd"
   },
   "publication": {
-    "id": "pub_synth_static_0001",
-    "releaseId": "rel_pub20_a02_v2",
+    "id": "pub20-a02-pilot",
+    "releaseId": "pub20-a02-release-v2",
     "indexingState": "held-noindex",
     "publicMode": "ticketed-noncredential",
     "formMappingIds": [
-      "synthetic-contact"
+      "pub20-a02-contact"
     ]
   },
   "azure": {
-    "subscriptionAlias": "synthetic-subscription-reference",
-    "resourceGroup": "rg-synth-static-pumpkin",
-    "staticWebAppName": "swa-synth-static-pumpkin",
+    "subscriptionAlias": "pumpkin-production-subscription",
+    "resourceGroup": "rg-pumpkin-pub20-a02-eastus2",
+    "staticWebAppName": "swa-pumpkin-pub20-a02-pilot",
     "region": "eastus2",
     "environment": "pilot",
     "sku": "Free"
   },
   "domains": {
-    "apex": "synthetic-static.example.invalid",
-    "www": "www.synthetic-static.example.invalid",
+    "apex": "ghostdevstackcom.com",
+    "www": "www.ghostdevstackcom.com",
     "registrarProvider": "held",
     "dnsProvider": "held",
     "nameserverDelegationMode": "held-no-change"
@@ -55,7 +55,7 @@
     "captchaMode": "held-not-active"
   },
   "rollback": {
-    "artifactId": "synthetic-pumpkin-swa-static-artifact-previous",
+    "artifactId": "synthetic-tenant-static-artifact-predecessor",
     "sha256": "d02364ddd6970cc6e11a14dc753f0b240f46e14c7d8c7c2a65d41c6fbd484675"
   },
   "approvals": {
