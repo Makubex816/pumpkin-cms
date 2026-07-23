@@ -7,6 +7,7 @@ const files = {
   client: new URL('../src/lib/publication-product/client.ts', import.meta.url),
   flags: new URL('../src/lib/publication-product/feature-flags.ts', import.meta.url),
   types: new URL('../src/lib/publication-product/types.ts', import.meta.url),
+  nextConfig: new URL('../next.config.js', import.meta.url),
   apiContract: new URL(
     '../../pumpkin-api/Services/Publications/PublicationProductContracts.cs',
     import.meta.url,
@@ -32,6 +33,8 @@ assert.match(source.client, /protected field/)
 assert.match(source.client, /\/api\/admin\/publication-products\/center/)
 assert.match(source.client, /rollbackArtifactId/)
 assert.doesNotMatch(source.client, /publication-product\/.*\/actions/)
+assert.match(source.nextConfig, /generateBuildId/)
+assert.match(source.nextConfig, /PUMPKIN_BUILD_ID/)
 assert.match(source.component, /artifact\.publicationId === tenant\.publicationId/)
 assert.match(source.component, /release\.publicationId === tenant\.publicationId/)
 assert.match(source.component, /item\.publicationId === tenant\.publicationId/)
