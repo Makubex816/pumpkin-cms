@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0",
+  "attributionId": "sdi-ai-pumpkin-cms-fda4611",
+  "upstream": {
+    "repository": "https://github.com/SDI-AI/pumpkin-cms.git",
+    "commit": "fda4611f6ca5a6206e3e8d6254e3e41c3b50618e"
+  },
+  "observedLicenseEvidence": {
+    "rootLicenseHeading": "Apache License Version 2.0",
+    "packageManifestLicenseFields": {
+      "packages/pumpkin-block-views/package.json": "MIT",
+      "packages/pumpkin-ts-models/package.json": "MIT"
+    },
+    "declarationConflict": true,
+    "distributionDecision": "HELD_PENDING_OWNER_LEGAL_REVIEW"
+  },
+  "files": [
+    {
+      "sourcePath": "deployment/licensing/upstream-sdi-ai-pumpkin-cms/LICENSE",
+      "packagePath": "third-party/sdi-ai-pumpkin-cms/LICENSE",
+      "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+    },
+    {
+      "sourcePath": "deployment/licensing/upstream-sdi-ai-pumpkin-cms/NOTICE",
+      "packagePath": "third-party/sdi-ai-pumpkin-cms/NOTICE",
+      "sha256": "65c58dd61ab8360b28cfbe33c859c694bc8502c22d8d8b686dc44aeccc926c9b"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup Condition="
+    '$(MSBuildProjectName)' == 'pumpkin-api'
+    Or '$(MSBuildProjectName)' == 'pumpkin-api.Tests'
+    Or '$(MSBuildProjectName)' == 'pumpkin-net-models'">
+    <!--
+      The API solution's three projects commit NuGet dependency graphs.
+      CI and clean-room callers enforce immutability by running the solution
+      restore in NuGet locked mode.
+    -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="
+    ('$(MSBuildProjectName)' == 'pumpkin-api'
+    Or '$(MSBuildProjectName)' == 'pumpkin-api.Tests')
+    And '$(EnableMongoProvider)' == 'false'">
+    <!-- The conditional provider graph and its test reference require a distinct immutable lock. -->
+    <NuGetLockFilePath>packages.cosmos-only.lock.json</NuGetLockFilePath>
+  </PropertyGroup>
+</Project>
