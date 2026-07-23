@@ -112,7 +112,9 @@ function buildFiles(config) {
   ].join("\n");
 
   const files = [
-    { path: "assets/public-form-client.js", content: clientSource },
+    ...(config.publicMode === "public-live"
+      ? [{ path: "assets/public-form-client.js", content: clientSource }]
+      : []),
     { path: "assets/theme.css", content: `${config.theme.css.trim()}\n${baseCss}\n` },
     { path: "robots.txt", content: "User-agent: *\nDisallow: /\n" },
     { path: "sitemap.xml", content: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"><!-- All routes are intentionally excluded while indexing is disabled. --></urlset>\n" },
@@ -148,8 +150,10 @@ function publicMetadata(config) {
       formId: form.id,
       formMappingId: form.formMappingId,
       fieldContractVersion: form.fieldContractVersion,
-      preflightPath: publicFormPath(config.publicationId, form.formMappingId, "preflight"),
-      submitPath: publicFormPath(config.publicationId, form.formMappingId, "submit"),
+      ...(config.publicMode === "public-live" ? {
+        preflightPath: publicFormPath(config.publicationId, form.formMappingId, "preflight"),
+        submitPath: publicFormPath(config.publicationId, form.formMappingId, "submit"),
+      } : {}),
       fields: form.fields.map(({ name, type, required }) => ({ name, type, required: Boolean(required) })),
       consentField: form.consent.name,
       honeypotField: form.honeypot.name,
@@ -175,6 +179,9 @@ function renderRoute(config, metadata, route) {
 
 function renderShell(config, metadata, title, body) {
   const metadataJson = escapeJsonForHtml(stableStringify(metadata));
+  const clientScript = config.publicMode === "public-live"
+    ? '\n  <script src="/assets/public-form-client.js" defer></script>'
+    : "";
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -183,8 +190,7 @@ function renderShell(config, metadata, title, body) {
   <meta name="robots" content="${escapeHtml(config.indexingState.robots)}">
   <title>${escapeHtml(title)}</title>
   <link rel="stylesheet" href="/assets/theme.css">
-  <script type="application/json" data-pumpkin-public-metadata>${metadataJson}</script>
-  <script src="/assets/public-form-client.js" defer></script>
+  <script type="application/json" data-pumpkin-public-metadata>${metadataJson}</script>${clientScript}
 </head>
 <body data-indexing-state="${escapeHtml(config.indexingState.mode)}">
   <main>

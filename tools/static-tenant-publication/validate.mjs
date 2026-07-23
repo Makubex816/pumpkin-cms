@@ -7,10 +7,26 @@ import { fileURLToPath } from "node:url";
 
 const toolRoot = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(toolRoot, "../..");
-const base = path.join(repoRoot, ".tmp", "pub20-a02-static-tenant");
+const base = path.join(repoRoot, ".tmp", "pub-20-a03", "static-publication-validation");
+const a02PublicLiveGolden = {
+  packageFile: "synthetic-tenant-static-pilot-artifact-v2.tar",
+  manifestFile: "synthetic-tenant-static-pilot-artifact-v2.manifest.json",
+  packageSha256: "227512fe26000e0fa933da51ec41a83e274cbb38b24bf15624de0b142271b4dd",
+  manifestSha256: "80c9db24ab57d537e11eb86bfadb8d4e58f7cef87bf0c59978617c2224d98e54",
+};
 const fixtures = [
-  { id: "primary-preview", path: path.join(toolRoot, "synthetic-tenant.json") },
-  { id: "secondary-live", path: path.join(toolRoot, "synthetic-tenant-secondary.json") },
+  {
+    id: "primary-preview",
+    path: path.join(toolRoot, "synthetic-tenant.json"),
+    packageFile: "static-tenant-artifact.tar",
+    manifestFile: "static-tenant-artifact-manifest.json",
+  },
+  {
+    id: "secondary-live",
+    path: path.join(toolRoot, "synthetic-tenant-secondary.json"),
+    packageFile: a02PublicLiveGolden.packageFile,
+    manifestFile: a02PublicLiveGolden.manifestFile,
+  },
 ];
 const runs = ["run1", "run2"];
 const checks = [];
@@ -23,8 +39,8 @@ for (const fixture of fixtures) {
   for (const run of runs) {
     const runRoot = path.join(base, fixture.id, run);
     const outputRoot = path.join(runRoot, "out");
-    const packagePath = path.join(runRoot, "static-tenant-artifact.tar");
-    const manifestPath = path.join(runRoot, "static-tenant-artifact-manifest.json");
+    const packagePath = path.join(runRoot, fixture.packageFile);
+    const manifestPath = path.join(runRoot, fixture.manifestFile);
     const result = spawnSync(process.execPath, [
       path.join(toolRoot, "build.mjs"),
       "--input",
@@ -73,18 +89,26 @@ for (const [fixtureId, artifact] of artifacts) {
   check(`${fixtureId}: tar paths are sorted POSIX paths`, tar.entries.every(({ path: filePath }, index, entries) => isSafePosixPath(filePath) && (index === 0 || entries[index - 1].path < filePath)));
   check(`${fixtureId}: output inventory matches manifest`, outputInventory(first.outputRoot, first.manifest.files));
 
-  const requiredFiles = [
+  const expectedFiles = [
     "404.html",
     "README.txt",
-    "assets/public-form-client.js",
     "assets/theme.css",
-    "index.html",
     "robots.txt",
     "sitemap.xml",
     "staticwebapp.config.json",
     "tenant-manifest.json",
-  ];
-  check(`${fixtureId}: required publication files present`, requiredFiles.every((filePath) => first.manifest.files.some((file) => file.path === filePath)));
+    ...artifact.fixture.routes.map((route) => route.path === "/"
+      ? "index.html"
+      : `${route.path.replace(/^\/+|\/+$/g, "")}/index.html`),
+    ...(artifact.fixture.publicMode === "public-live" ? ["assets/public-form-client.js"] : []),
+  ].sort();
+  const actualFiles = first.manifest.files.map((file) => file.path);
+  check(`${fixtureId}: publication file inventory is exact for mode`, JSON.stringify(actualFiles) === JSON.stringify(expectedFiles));
+  check(`${fixtureId}: file count is exact for mode`, first.manifest.fileCount === expectedFiles.length
+    && second.manifest.fileCount === expectedFiles.length);
+  check(`${fixtureId}: executable client inventory matches mode`, artifact.fixture.publicMode === "public-live"
+    ? actualFiles.includes("assets/public-form-client.js")
+    : !actualFiles.includes("assets/public-form-client.js") && actualFiles.every((filePath) => !filePath.endsWith(".js")));
 
   const metadata = readJson(path.join(first.outputRoot, "tenant-manifest.json"));
   const allowedMetadataKeys = [
@@ -118,7 +142,7 @@ for (const [fixtureId, artifact] of artifacts) {
   check(`${fixtureId}: SWA global X-Robots-Tag`, swaConfig.globalHeaders?.["X-Robots-Tag"] === "noindex,nofollow,noarchive");
   check(`${fixtureId}: no linked backend configuration`, !Object.hasOwn(swaConfig, "platform") && !Object.hasOwn(swaConfig, "apiRuntime"));
   const assetRoute = swaConfig.routes?.find((route) => route.route === "/assets/*");
-  check(`${fixtureId}: unhashed client is not immutable-cached`, typeof assetRoute?.headers?.["cache-control"] === "string"
+  check(`${fixtureId}: unhashed assets are not immutable-cached`, typeof assetRoute?.headers?.["cache-control"] === "string"
     && !/immutable|max-age=31536000/i.test(assetRoute.headers["cache-control"])
     && /no-cache|no-store|max-age=0/i.test(assetRoute.headers["cache-control"]));
 
@@ -128,7 +152,9 @@ for (const [fixtureId, artifact] of artifacts) {
     return html.includes('<meta name="robots" content="noindex,nofollow,noarchive">');
   }));
   check(`${fixtureId}: every HTML page embeds only safe metadata`, htmlFiles.every((file) => embeddedMetadataMatches(file, metadata)));
-  check(`${fixtureId}: every HTML page loads the executable client`, htmlFiles.every((file) => fs.readFileSync(file, "utf8").includes('<script src="/assets/public-form-client.js" defer></script>')));
+  check(`${fixtureId}: HTML client capability matches public mode`, artifact.fixture.publicMode === "public-live"
+    ? htmlFiles.every((file) => fs.readFileSync(file, "utf8").includes('<script src="/assets/public-form-client.js" defer></script>'))
+    : htmlFiles.every((file) => previewHtmlHasNoExecutableScript(file)));
 
   for (const form of artifact.fixture.forms) {
     const route = artifact.fixture.routes.find((candidate) => candidate.formId === form.id);
@@ -154,6 +180,26 @@ for (const [fixtureId, artifact] of artifacts) {
   }
 
   const publicText = listFiles(first.outputRoot).map((file) => fs.readFileSync(file, "utf8")).join("\n");
+  if (artifact.fixture.publicMode === "preview-no-post") {
+    const forbiddenPreviewCapabilities = [
+      /public-form-client\.js/i,
+      /["']?preflightPath["']?\s*:/i,
+      /["']?submitPath["']?\s*:/i,
+      /\/preflight(?:["'/?#\s]|$)/i,
+      /\/submit(?:["'/?#\s]|$)/i,
+      /\bfetch\s*\(/i,
+      /\bXMLHttpRequest\b/i,
+      /\bsendBeacon\s*\(/i,
+      /\bmethod\s*[:=]\s*["']POST["']/i,
+      /<form\b[^>]*\bmethod\s*=\s*["']?post\b/i,
+      /<button\b[^>]*\btype\s*=\s*["']?submit\b/i,
+      /<(?:input|textarea|select)\b[^>]*\sname\s*=/i,
+    ];
+    check(`${fixtureId}: preview artifact contains no POST capability`, !forbiddenPreviewCapabilities.some((pattern) => pattern.test(publicText)));
+    check(`${fixtureId}: preview metadata has no transport paths`, Object.values(metadata.publicFormMapping).every((mapping) =>
+      !Object.hasOwn(mapping, "preflightPath")
+      && !Object.hasOwn(mapping, "submitPath")));
+  }
   const forbiddenPatterns = [
     /BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY/i,
     /AccountKey\s*=/i,
@@ -179,6 +225,12 @@ check("two independent tenant fixtures", primary.fixture.tenantUid !== secondary
   && primary.fixture.publicationId !== secondary.fixture.publicationId
   && primary.runs[0].manifest.packageSha256 !== secondary.runs[0].manifest.packageSha256);
 check("preview and public-live modes covered", primary.fixture.publicMode === "preview-no-post" && secondary.fixture.publicMode === "public-live");
+check("A02 public-live package remains byte-identical", secondary.runs.every((run) =>
+  run.manifest.packageFile === a02PublicLiveGolden.packageFile
+  && run.manifest.packageSha256 === a02PublicLiveGolden.packageSha256
+  && sha256(run.packageBytes) === a02PublicLiveGolden.packageSha256));
+check("A02 public-live manifest remains byte-identical", secondary.runs.every((run) =>
+  sha256(run.manifestBytes) === a02PublicLiveGolden.manifestSha256));
 
 const rejectedRoot = path.join(base, "rejected-secret-input");
 const rejectedFixture = structuredClone(primary.fixture);
@@ -259,19 +311,41 @@ function publicMappingsMatchFixture(mapping, fixture) {
   if (!mapping || JSON.stringify(Object.keys(mapping).sort()) !== JSON.stringify(forms.map((form) => form.id).sort())) return false;
   return forms.every((form) => {
     const publicForm = mapping[form.id];
+    const expectedKeys = [
+      "consentField",
+      "fieldContractVersion",
+      "fields",
+      "formId",
+      "formMappingId",
+      "honeypotField",
+      ...(fixture.publicMode === "public-live" ? ["preflightPath", "submitPath"] : []),
+    ].sort();
+    const transportMatchesMode = fixture.publicMode === "public-live"
+      ? publicForm?.preflightPath === `/api/public/publications/${encodeURIComponent(publicationId)}/forms/${encodeURIComponent(form.formMappingId)}/preflight`
+        && publicForm?.submitPath === `/api/public/publications/${encodeURIComponent(publicationId)}/forms/${encodeURIComponent(form.formMappingId)}/submit`
+      : !Object.hasOwn(publicForm ?? {}, "preflightPath")
+        && !Object.hasOwn(publicForm ?? {}, "submitPath");
     return publicForm?.formId === form.id
+      && JSON.stringify(Object.keys(publicForm).sort()) === JSON.stringify(expectedKeys)
       && publicForm?.formMappingId === form.formMappingId
       && publicForm?.fieldContractVersion === form.fieldContractVersion
-      && publicForm?.preflightPath === `/api/public/publications/${encodeURIComponent(publicationId)}/forms/${encodeURIComponent(form.formMappingId)}/preflight`
-      && publicForm?.submitPath === `/api/public/publications/${encodeURIComponent(publicationId)}/forms/${encodeURIComponent(form.formMappingId)}/submit`
+      && transportMatchesMode
       && publicForm?.consentField === form.consent.name
       && publicForm?.honeypotField === form.honeypot.name
       && Array.isArray(publicForm?.fields)
       && publicForm.fields.length === form.fields.length
-      && publicForm.fields.every((field, index) => field.name === form.fields[index].name
+      && publicForm.fields.every((field, index) => JSON.stringify(Object.keys(field).sort()) === JSON.stringify(["name", "required", "type"])
+        && field.name === form.fields[index].name
         && field.type === form.fields[index].type
         && field.required === Boolean(form.fields[index].required));
   });
+}
+
+function previewHtmlHasNoExecutableScript(file) {
+  const html = fs.readFileSync(file, "utf8");
+  const withoutMetadata = html.replace(/<script type="application\/json" data-pumpkin-public-metadata>[^<]+<\/script>/g, "");
+  return !/<script\b/i.test(withoutMetadata)
+    && !/public-form-client\.js/i.test(html);
 }
 
 function embeddedMetadataMatches(file, expected) {
