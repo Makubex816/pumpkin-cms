@@ -7,6 +7,10 @@ const files = {
   client: new URL('../src/lib/publication-product/client.ts', import.meta.url),
   flags: new URL('../src/lib/publication-product/feature-flags.ts', import.meta.url),
   types: new URL('../src/lib/publication-product/types.ts', import.meta.url),
+  apiContract: new URL(
+    '../../pumpkin-api/Services/Publications/PublicationProductContracts.cs',
+    import.meta.url,
+  ),
 }
 
 const source = Object.fromEntries(
@@ -25,6 +29,26 @@ assert.match(source.component, /Customer execution is disabled/)
 assert.match(source.component, /Credential-reference metadata/)
 assert.match(source.client, /assertResponseContainsNoSecretValues/)
 assert.match(source.client, /protected field/)
+assert.match(source.client, /\/api\/admin\/publication-products\/center/)
+assert.match(source.client, /rollbackArtifactId/)
+assert.doesNotMatch(source.client, /publication-product\/.*\/actions/)
+assert.match(source.component, /artifact\.publicationId === tenant\.publicationId/)
+assert.match(source.component, /release\.publicationId === tenant\.publicationId/)
+assert.match(source.component, /item\.publicationId === tenant\.publicationId/)
+assert.match(source.component, /Select an accepted artifact and release/)
+assert.match(source.component, /artifact\.artifactId === selectedArtifactId/)
+assert.match(source.types, /TenantPublicationArtifactSummary/)
+for (const field of [
+  'artifactId',
+  'rollbackArtifactId',
+  'releaseId',
+  'rollbackReleaseId',
+  'idempotencyKey',
+  'expectedRevision',
+]) {
+  assert.match(source.apiContract, new RegExp(`JsonPropertyName\\(\"${field}\"\\)`))
+  assert.match(source.client, new RegExp(field))
+}
 
 for (const value of [
   'STATIC_PUBLISHED_SITE',

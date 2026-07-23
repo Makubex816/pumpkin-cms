@@ -48,14 +48,16 @@ export class PublicationProductClient {
     let body: object
     switch (request.action) {
       case 'BUILD_CANDIDATE':
-        if (!request.releaseId) {
-          throw new Error('Select an accepted product release before creating a candidate job.')
+        if (!request.releaseId || !request.artifactId) {
+          throw new Error('Select an accepted release with an immutable tenant artifact before creating a job.')
         }
         path = `/api/admin/publication-products/tenants/${tenant}/publications/${publication}/jobs`
         body = {
           jobId: `ui-job-${request.expectedRevision}`,
           releaseId: request.releaseId,
+          artifactId: request.artifactId,
           rollbackReleaseId: request.rollbackReleaseId || '',
+          rollbackArtifactId: request.rollbackArtifactId || '',
           kind: 'tenant-publication',
           steps: ONBOARDING_JOB_STEPS,
           idempotencyKey: request.idempotencyKey,
@@ -72,8 +74,14 @@ export class PublicationProductClient {
           `/api/admin/publication-products/tenants/${tenant}/publications/${publication}` +
           `/jobs/${job}/${request.action.toLowerCase()}`
         body =
-          request.action === 'ROLLBACK'
-            ? { ...actionBody, rollbackReleaseId: request.rollbackReleaseId || '' }
+          request.action === 'ROLLBACK' &&
+          request.rollbackReleaseId &&
+          request.rollbackArtifactId
+            ? {
+                ...actionBody,
+                rollbackReleaseId: request.rollbackReleaseId,
+                rollbackArtifactId: request.rollbackArtifactId,
+              }
             : actionBody
         break
       case 'REVOKE':

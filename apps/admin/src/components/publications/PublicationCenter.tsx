@@ -9,6 +9,7 @@ import type {
   PublicationJobSummary,
   ProductReleaseSummary,
   SuperAdminPublicationCenterSnapshot,
+  TenantPublicationArtifactSummary,
   TenantPublicationCenterSnapshot,
   TenantPublicationSummary,
 } from '@/lib/publication-product/types'
@@ -158,7 +159,8 @@ function TenantAdminView({
       <ActionCard
         tenant={snapshot.tenant}
         releases={snapshot.releases}
-        job={snapshot.jobs.find((item) => item.tenantUid === snapshot.tenant.tenantUid) || null}
+        artifacts={snapshot.artifacts}
+        jobs={snapshot.jobs}
         executionEnabled={executionEnabled}
         token={token}
         apiBaseUrl={apiBaseUrl}
@@ -200,7 +202,7 @@ function SuperAdminView({
             </thead>
             <tbody className="divide-y divide-neutral-100">
               {snapshot.tenants.map((tenant) => (
-                <tr key={tenant.tenantUid}>
+                <tr key={`${tenant.tenantUid}:${tenant.publicationId || 'unassigned'}`}>
                   <Td>{tenant.tenantName} ({tenant.tenantUid})</Td>
                   <Td>{humanize(tenant.hostingClass)}</Td>
                   <Td><StateBadge value={tenant.publicationState} /></Td>
@@ -236,10 +238,11 @@ function SuperAdminView({
 
       {snapshot.tenants.map((tenant) => (
         <ActionCard
-          key={tenant.tenantUid}
+          key={`${tenant.tenantUid}:${tenant.publicationId || 'unassigned'}`}
           tenant={tenant}
           releases={snapshot.releases}
-          job={snapshot.jobs.find((item) => item.tenantUid === tenant.tenantUid) || null}
+          artifacts={snapshot.artifacts}
+          jobs={snapshot.jobs}
           executionEnabled={executionEnabled}
           token={token}
           apiBaseUrl={apiBaseUrl}
@@ -308,7 +311,8 @@ function InventoryCard({ tenant }: { tenant: TenantPublicationSummary }) {
 function ActionCard({
   tenant,
   releases,
-  job,
+  artifacts,
+  jobs,
   executionEnabled,
   token,
   apiBaseUrl,
@@ -316,7 +320,8 @@ function ActionCard({
 }: {
   tenant: TenantPublicationSummary
   releases: ProductReleaseSummary[]
-  job: PublicationJobSummary | null
+  artifacts: TenantPublicationArtifactSummary[]
+  jobs: PublicationJobSummary[]
   executionEnabled: boolean
   token: string
   apiBaseUrl: string
@@ -326,20 +331,49 @@ function ActionCard({
     ? ['PREVIEW_PLAN', 'BUILD_CANDIDATE', 'PROMOTE', 'RESUME', 'ROLLBACK', 'REVOKE']
     : ['PREVIEW_PLAN', 'BUILD_CANDIDATE', 'ROLLBACK', 'REVOKE']
   const [selected, setSelected] = useState<PublicationAction>('PREVIEW_PLAN')
+  const [selectedArtifactId, setSelectedArtifactId] = useState('')
+  const [selectedJobId, setSelectedJobId] = useState('')
   const [confirmation, setConfirmation] = useState('')
   const [result, setResult] = useState('')
   const expected = ACTION_CONFIRMATIONS[selected]
-  const targetRelease =
-    releases.find(
-      (release) =>
-        release.status.toLowerCase() === 'accepted' && release.releaseId !== tenant.releaseId,
-    ) || releases.find((release) => release.status.toLowerCase() === 'accepted')
+  const scopedReleases = releases.filter(
+    (release) =>
+      release.tenantUid === tenant.tenantUid &&
+      release.publicationId === tenant.publicationId &&
+      release.status.toLowerCase() === 'accepted',
+  )
+  const acceptedReleaseIds = new Set(scopedReleases.map((release) => release.releaseId))
+  const scopedArtifacts = artifacts.filter(
+    (artifact) =>
+      artifact.tenantUid === tenant.tenantUid &&
+      artifact.publicationId === tenant.publicationId &&
+      acceptedReleaseIds.has(artifact.releaseId) &&
+      artifact.immutable === true &&
+      ['accepted', 'active'].includes(artifact.status.toLowerCase()),
+  )
+  const targetArtifact = scopedArtifacts.find((artifact) => artifact.artifactId === selectedArtifactId)
+  const targetRelease = scopedReleases.find(
+    (release) => release.releaseId === targetArtifact?.releaseId,
+  )
+  const scopedJobs = jobs.filter(
+    (item) =>
+      item.tenantUid === tenant.tenantUid &&
+      item.publicationId === tenant.publicationId,
+  )
+  const job = scopedJobs.find((item) => item.jobId === selectedJobId) || null
   const needsJob = selected === 'PROMOTE' || selected === 'RESUME' || selected === 'ROLLBACK'
+  const hasCompletePredecessor = Boolean(tenant.releaseId) === Boolean(tenant.artifactId)
+  const jobSupportsAction =
+    !needsJob ||
+    (Boolean(job) &&
+      (selected !== 'RESUME' || job?.canResume === true) &&
+      (selected !== 'ROLLBACK' || job?.canRollback === true))
   const canTargetAction =
     Boolean(tenant.publicationId) &&
     tenant.publicationRevision !== undefined &&
-    (!needsJob || Boolean(job)) &&
-    (selected !== 'BUILD_CANDIDATE' || Boolean(targetRelease))
+    jobSupportsAction &&
+    (selected !== 'BUILD_CANDIDATE' || hasCompletePredecessor) &&
+    (selected !== 'BUILD_CANDIDATE' || Boolean(targetRelease && targetArtifact))
   const permitted =
     selected === 'PREVIEW_PLAN'
       ? confirmation === expected
@@ -366,12 +400,20 @@ function ActionCard({
         publicationId: tenant.publicationId,
         jobId: job?.jobId,
         releaseId: targetRelease?.releaseId,
-        rollbackReleaseId: tenant.releaseId,
+        artifactId: targetArtifact?.artifactId,
+        rollbackReleaseId:
+          selected === 'BUILD_CANDIDATE' && tenant.releaseId && tenant.artifactId
+            ? tenant.releaseId
+            : undefined,
+        rollbackArtifactId:
+          selected === 'BUILD_CANDIDATE' && tenant.releaseId && tenant.artifactId
+            ? tenant.artifactId
+            : undefined,
         expectedRevision: tenant.publicationRevision,
         reason: `typed-confirmation:${expected.toLowerCase().replaceAll(' ', '-')}`,
         idempotencyKey:
           `${tenant.tenantUid}:${tenant.publicationId}:${tenant.publicationRevision}:` +
-          `${selected}:${job?.jobId || targetRelease?.releaseId || 'publication'}`,
+          `${selected}:${job?.jobId || targetArtifact?.artifactId || 'publication'}`,
       })
       setResult(
         `${response.action} accepted as ${response.state}` +
@@ -389,19 +431,61 @@ function ActionCard({
       <p className="mt-1 text-sm text-neutral-600">
         Execution requires both feature gates, current tenant authorization, a typed confirmation, and server-side idempotency.
       </p>
-      <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(220px,0.5fr)_minmax(280px,1fr)_auto] lg:items-end">
+      <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(200px,0.5fr)_minmax(220px,0.6fr)_minmax(280px,1fr)_auto] lg:items-end">
         <label className="text-sm font-medium text-neutral-800">
           Action
           <select
             value={selected}
             onChange={(event) => {
               setSelected(event.target.value as PublicationAction)
+              setSelectedArtifactId('')
+              setSelectedJobId('')
               setConfirmation('')
               setResult('')
             }}
             className="mt-1 block w-full rounded-md border border-neutral-300 bg-white px-3 py-2"
           >
             {actions.map((action) => <option key={action} value={action}>{humanize(action)}</option>)}
+          </select>
+        </label>
+        <label className="text-sm font-medium text-neutral-800">
+          Scoped target
+          <select
+            value={
+              selected === 'BUILD_CANDIDATE'
+                ? selectedArtifactId
+                : needsJob
+                  ? selectedJobId
+                  : ''
+            }
+            onChange={(event) => {
+              if (selected === 'BUILD_CANDIDATE') setSelectedArtifactId(event.target.value)
+              if (needsJob) setSelectedJobId(event.target.value)
+              setConfirmation('')
+              setResult('')
+            }}
+            disabled={(!needsJob && selected !== 'BUILD_CANDIDATE') || !executionEnabled}
+            className="mt-1 block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 disabled:bg-neutral-100"
+          >
+            <option value="">
+              {selected === 'BUILD_CANDIDATE'
+                ? 'Select an accepted artifact and release'
+                : needsJob
+                  ? 'Select a publication job'
+                  : 'No target required'}
+            </option>
+            {selected === 'BUILD_CANDIDATE' &&
+              scopedArtifacts.map((artifact) => (
+                <option key={artifact.artifactId} value={artifact.artifactId}>
+                  {artifact.artifactId} - {artifact.releaseId}
+                </option>
+              ))}
+            {needsJob &&
+              scopedJobs.map((item) => (
+                <option key={item.jobId} value={item.jobId}>
+                  {item.jobId} - {humanize(item.state)}
+                </option>
+              ))}
           </select>
         </label>
         <label className="text-sm font-medium text-neutral-800">
@@ -441,10 +525,11 @@ function ReleaseTable({ releases }: { releases: ProductReleaseSummary[] }) {
       <h2 className="text-lg font-semibold text-neutral-900">Immutable product releases</h2>
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-full divide-y divide-neutral-200 text-sm">
-          <thead><tr><Th>Release</Th><Th>Status</Th><Th>Source commit</Th><Th>Lock hash</Th><Th>Licensing</Th><Th>Supersession</Th></tr></thead>
+          <thead><tr><Th>Scope</Th><Th>Release</Th><Th>Status</Th><Th>Source commit</Th><Th>Lock hash</Th><Th>Licensing</Th><Th>Supersession</Th></tr></thead>
           <tbody className="divide-y divide-neutral-100">
             {releases.map((release) => (
-              <tr key={release.releaseId}>
+              <tr key={`${release.tenantUid}:${release.publicationId}:${release.releaseId}`}>
+                <Td>{release.tenantUid} / {release.publicationId}</Td>
                 <Td>{release.releaseId}</Td>
                 <Td><StateBadge value={release.status} /></Td>
                 <Td><CodeValue value={release.sourceCommit} /></Td>
@@ -466,12 +551,12 @@ function JobTable({ jobs }: { jobs: PublicationJobSummary[] }) {
       <h2 className="text-lg font-semibold text-neutral-900">Resumable publication/onboarding jobs</h2>
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-full divide-y divide-neutral-200 text-sm">
-          <thead><tr><Th>Job</Th><Th>Tenant</Th><Th>State</Th><Th>Progress</Th><Th>Next step</Th><Th>Resume / rollback</Th></tr></thead>
+          <thead><tr><Th>Job</Th><Th>Tenant / publication</Th><Th>State</Th><Th>Progress</Th><Th>Next step</Th><Th>Resume / rollback</Th></tr></thead>
           <tbody className="divide-y divide-neutral-100">
             {jobs.map((job) => (
-              <tr key={job.jobId}>
+              <tr key={`${job.tenantUid}:${job.publicationId}:${job.jobId}`}>
                 <Td><CodeValue value={job.jobId} /></Td>
-                <Td>{job.tenantUid}</Td>
+                <Td>{job.tenantUid} / {job.publicationId}</Td>
                 <Td><StateBadge value={job.state} /></Td>
                 <Td>{job.completedSteps}/{job.totalSteps}</Td>
                 <Td>{job.nextStep || 'Complete'}</Td>

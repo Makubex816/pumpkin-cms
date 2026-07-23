@@ -66,6 +66,8 @@ export interface CredentialReferenceMetadata {
 
 export interface ProductReleaseSummary {
   releaseId: string
+  tenantUid: string
+  publicationId: string
   sourceCommit: string
   status:
     | 'DRAFT'
@@ -83,10 +85,25 @@ export interface ProductReleaseSummary {
   artifactSha256?: string
 }
 
+export interface TenantPublicationArtifactSummary {
+  artifactId: string
+  tenantUid: string
+  publicationId: string
+  releaseId: string
+  artifactSha256: string
+  manifestSha256: string
+  status: string
+  immutable: boolean
+  rollbackArtifactId?: string
+  predecessorArtifactId?: string
+  supersededByArtifactId?: string
+}
+
 export interface PublicationJobSummary {
   jobId: string
   tenantUid: string
   publicationId: string
+  artifactId: string
   state: PublicationJobState
   completedSteps: number
   totalSteps: number
@@ -105,6 +122,7 @@ export interface TenantPublicationSummary {
   publicationState: PublicationState
   publicationRevision?: number
   releaseId?: string
+  artifactId?: string
   artifactSha256?: string
   manifestSha256?: string
   predecessorPublicationId?: string
@@ -125,6 +143,7 @@ export interface TenantPublicationCenterSnapshot {
   customerExecutionEnabled: boolean
   tenant: TenantPublicationSummary
   releases: ProductReleaseSummary[]
+  artifacts: TenantPublicationArtifactSummary[]
   jobs: PublicationJobSummary[]
 }
 
@@ -135,6 +154,7 @@ export interface SuperAdminPublicationCenterSnapshot {
   customerExecutionEnabled: boolean
   tenants: TenantPublicationSummary[]
   releases: ProductReleaseSummary[]
+  artifacts: TenantPublicationArtifactSummary[]
   jobs: PublicationJobSummary[]
   credentialReferences: CredentialReferenceMetadata[]
 }
@@ -153,7 +173,9 @@ export interface PublicationActionRequest {
   publicationId: string
   jobId?: string
   releaseId?: string
+  artifactId?: string
   rollbackReleaseId?: string
+  rollbackArtifactId?: string
   expectedRevision: number
   reason: string
   idempotencyKey: string
