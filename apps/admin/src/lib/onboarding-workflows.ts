@@ -1,9 +1,9 @@
-export const AIRSTRIP_OPERATOR_PATHS = {
-  backupBundle: 'C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-backups\\v2-8-61a-airstrip-full-backup-proof',
-  restoreDryRun: 'C:\\Users\\User\\Desktop\\PumpkinCMS\\secure-operator-handoff\\tenant-backups\\v2-8-61b-airstrip-restore-dryrun-proof',
-  intakeProof: 'C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\TRUENewestTenant\\v2-8-61c-intake-analysis-proof',
-  compiledPackageProof: 'C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\TRUENewestTenant\\v2-8-61d-compiled-package-proof\\compiled-package',
-  rawAirstripZip: 'C:\\Users\\User\\Desktop\\PumpkinCMS\\tenant-onboarding-intake\\TRUENewestTenant\\newest upload package\\pumpkinairstrip.zip',
+export const AIRSTRIP_OPERATOR_EVIDENCE = {
+  backupBundle: 'v2-8-61a-airstrip-full-backup-proof',
+  restoreDryRun: 'v2-8-61b-airstrip-restore-dryrun-proof',
+  intakeProof: 'v2-8-61c-intake-analysis-proof',
+  compiledPackageProof: 'v2-8-61d-compiled-package-proof',
+  rawAirstripZip: 'pumpkinairstrip.zip',
 } as const
 
 export const BACKUP_EXPORT_SUMMARY = {

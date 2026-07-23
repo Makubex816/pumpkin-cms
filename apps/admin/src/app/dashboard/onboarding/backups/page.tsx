@@ -11,7 +11,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext'
 import {
   AIRSTRIP_HARD_GATES,
-  AIRSTRIP_OPERATOR_PATHS,
+  AIRSTRIP_OPERATOR_EVIDENCE,
   BACKUP_BUNDLE_CHECKLIST,
   BACKUP_EXPORT_SUMMARY,
   BACKUP_LIMITATIONS,
@@ -162,8 +162,8 @@ export default function BackupManagerPage() {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
-        <PathBlock label="Outside-repo backup bundle" value={AIRSTRIP_OPERATOR_PATHS.backupBundle} />
-        <PathBlock label="Outside-repo restore dry-run proof" value={AIRSTRIP_OPERATOR_PATHS.restoreDryRun} />
+        <PathBlock label="Outside-repo backup evidence" value={AIRSTRIP_OPERATOR_EVIDENCE.backupBundle} />
+        <PathBlock label="Outside-repo restore dry-run evidence" value={AIRSTRIP_OPERATOR_EVIDENCE.restoreDryRun} />
       </section>
 
       <section className="card">

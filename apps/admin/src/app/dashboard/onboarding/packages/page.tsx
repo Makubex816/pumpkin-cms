@@ -12,7 +12,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext'
 import {
   AIRSTRIP_HARD_GATES,
-  AIRSTRIP_OPERATOR_PATHS,
+  AIRSTRIP_OPERATOR_EVIDENCE,
   OPERATOR_COMMAND_REFERENCES,
   PACKAGE_ANALYZER_SUMMARY,
   PACKAGE_COMPILER_SUMMARY,
@@ -174,9 +174,9 @@ export default function PackageIntakePage() {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
-        <PathBlock label="Raw Airstrip ZIP fixture" value={AIRSTRIP_OPERATOR_PATHS.rawAirstripZip} />
-        <PathBlock label="Analyzer proof output" value={AIRSTRIP_OPERATOR_PATHS.intakeProof} />
-        <PathBlock label="Compiled package proof" value={AIRSTRIP_OPERATOR_PATHS.compiledPackageProof} />
+        <PathBlock label="Raw Airstrip ZIP fixture" value={AIRSTRIP_OPERATOR_EVIDENCE.rawAirstripZip} />
+        <PathBlock label="Analyzer proof evidence" value={AIRSTRIP_OPERATOR_EVIDENCE.intakeProof} />
+        <PathBlock label="Compiled package evidence" value={AIRSTRIP_OPERATOR_EVIDENCE.compiledPackageProof} />
         <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
           <div className="flex items-center gap-2 font-semibold text-amber-950">
             <MonitorCheck className="h-4 w-4" aria-hidden="true" />
