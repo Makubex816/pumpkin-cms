@@ -1,0 +1,7 @@
+# Candidate artifact lineage and hashes
+
+A01 commit 57097415f008a0f68a0fec9d9c5c6148903208d5; source d505bac666490e6f032bcdefccdf80f6efdc666e; isolated provenance d0d5c2696b43fe788bbb88923b74315305ef78eb; planner reconciliation 42cd9c1868c9ba7f4a0513a2a13955f9c0928c31.
+
+Predecessor d02364ddd6970cc6e11a14dc753f0b240f46e14c7d8c7c2a65d41c6fbd484675 and predecessor manifest 1d95f749aa47368fb1c4accb4e240eb2ec2405c683b6cd2219cfb82f7ee7a1f7 remain unchanged. Candidate 227512fe26000e0fa933da51ec41a83e274cbb38b24bf15624de0b142271b4dd and candidate manifest 80c9db24ab57d537e11eb86bfadb8d4e58f7cef87bf0c59978617c2224d98e54 are frozen with 10 files.
+
+Candidate archive bytes 33280; extracted bytes 23681. The accepted successor is immutable and does not overwrite the predecessor.

@@ -1,17 +1,17 @@
 {
-  "activeAtlasVersion": "3.5.0",
-  "pointerVersion": "3.5.0",
-  "atlasVersion": "3.5.0",
+  "activeAtlasVersion": "3.6.0",
+  "pointerVersion": "3.6.0",
+  "atlasVersion": "3.6.0",
   "locationClassification": "outside_repository_program_management_snapshot_source_tree",
-  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.5.0",
-  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.5.0.zip",
-  "packagePath": "program-management/build-atlas/releases/v3.5.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.5.0.zip",
-  "packageSha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
-  "manifestSha256": "4d7e4d448a2fa96844ccea21653da9d788a0d3076d0091b5b6bc94afd6d5facf",
-  "authorityEffectivePhase": "PUB-20-A01",
-  "updatedAt": "2026-07-22T23:23:19.663Z",
-  "updateTaskId": "PUB-20-A01",
-  "status": "blocked_static_host_or_shared_api_security_contract",
+  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.6.0",
+  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.6.0.zip",
+  "packagePath": "program-management/build-atlas/releases/v3.6.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.6.0.zip",
+  "packageSha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
+  "manifestSha256": "a975934f3eefddc3acff5f923927fc892c2c27ee3124cf7d0c07471bf1e3667b",
+  "authorityEffectivePhase": "PUB-20-A02",
+  "updatedAt": "2026-07-23T03:29:03.394Z",
+  "updateTaskId": "PUB-20-A02",
+  "status": "blocked_pub20_a02_token_at_rest_security_contract_not_met",
   "predecessors": [
     "Build Atlas v3.1.0 baseline snapshot",
     "UP-20-A02 frozen upstream evidence delta",
@@ -35,21 +35,24 @@
     "qualificationState": "CLEAN_ROOM_QUALIFIED_WITH_HOLDS_READY_FOR_INT10"
   },
   "authority": {
-    "taskId": "PUB-20-A01",
-    "resultPackage": "deployment/architecture/tenant-publication/pub-20-a01-controlled-static-web-app-pilot",
-    "repositoryHeadAtEntry": "aada78b28e46a2ce865a8ae14f11114d374fad7a"
+    "taskId": "PUB-20-A02",
+    "resultPackage": "deployment/architecture/tenant-publication/pub-20-a02-successor-artifact-public-form-contract",
+    "repositoryHeadAtEntry": "42cd9c1868c9ba7f4a0513a2a13955f9c0928c31",
+    "sourceCommit": "d505bac666490e6f032bcdefccdf80f6efdc666e",
+    "isolatedSourceProvenanceCommit": "d0d5c2696b43fe788bbb88923b74315305ef78eb",
+    "plannerReconciliationCommit": "42cd9c1868c9ba7f4a0513a2a13955f9c0928c31"
   },
   "atlasPackage": {
-    "version": "3.5.0",
-    "path": "program-management/build-atlas/releases/v3.5.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.5.0.zip",
-    "sha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
+    "version": "3.6.0",
+    "path": "program-management/build-atlas/releases/v3.6.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.6.0.zip",
+    "sha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/build-atlas/releases/v3.5.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.5.0.zip",
-    "comparisonPackageSha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
-    "manifestSha256": "4d7e4d448a2fa96844ccea21653da9d788a0d3076d0091b5b6bc94afd6d5facf"
+    "comparisonPackagePath": "program-management/build-atlas/releases/v3.6.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.6.0.zip",
+    "comparisonPackageSha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
+    "manifestSha256": "a975934f3eefddc3acff5f923927fc892c2c27ee3124cf7d0c07471bf1e3667b"
   },
-  "atlasPackageSha256": "85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98",
-  "atlasManifestSha256": "4d7e4d448a2fa96844ccea21653da9d788a0d3076d0091b5b6bc94afd6d5facf",
+  "atlasPackageSha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
+  "atlasManifestSha256": "a975934f3eefddc3acff5f923927fc892c2c27ee3124cf7d0c07471bf1e3667b",
   "supersededPackagingEvidence": {
     "path": "program-management/build-atlas/releases/superseded/up-30-a01-mislabeled-v3.2.0",
     "reason": "UP-30 successor package was initially mislabeled as v3.2.0 before closeout.",
@@ -78,12 +81,13 @@
     "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged."
   },
   "workingMemoryPackage": {
-    "version": "1.2.0",
-    "path": "program-management/working-memory/releases/v1.2.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.2.0.zip",
-    "sha256": "62744c82ee48c423686066f2f9c5f7f0a49fbda2224c311d3c9b115a8845c1c4",
+    "version": "1.3.0",
+    "path": "program-management/working-memory/releases/v1.3.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.3.0.zip",
+    "sha256": "55cfa4a685fd5767ef3df5131ea28002af1f23d6e6b0fe4e07415a559aa2eb64",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/working-memory/releases/v1.2.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.2.0.zip",
-    "comparisonPackageSha256": "62744c82ee48c423686066f2f9c5f7f0a49fbda2224c311d3c9b115a8845c1c4"
+    "comparisonPackagePath": "program-management/working-memory/releases/v1.3.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.3.0.zip",
+    "comparisonPackageSha256": "55cfa4a685fd5767ef3df5131ea28002af1f23d6e6b0fe4e07415a559aa2eb64",
+    "manifestSha256": "dd1366657b7383e3e8b517c37b4e1d43c700951b0ae802ae6b13d418d8fc9e2b"
   },
   "int10": {
     "status": "complete_local_foundation_with_dependency_or_legal_holds_ready_for_controlled_pilot",
@@ -100,14 +104,35 @@
     "liveMutation": false
   },
   "pub20": {
-    "status": "blocked_static_host_or_shared_api_security_contract",
-    "liveMutation": false,
-    "staticWebAppCreated": false,
-    "syntheticTenantCreated": false,
-    "formEntryCreated": false,
-    "immutableArtifactSha256": "d02364ddd6970cc6e11a14dc753f0b240f46e14c7d8c7c2a65d41c6fbd484675",
-    "domainAuditClassification": "DOMAIN_AVAILABLE_FOR_FUTURE_SUBDOMAIN_REVIEW",
+    "attempt": "PUB-20-A02",
+    "status": "blocked_pub20_a02_token_at_rest_security_contract_not_met",
+    "liveMutation": true,
+    "staticWebAppCreated": true,
+    "syntheticTenantCreated": true,
+    "formEntryCreated": true,
+    "logicalSubmissionCount": 1,
+    "predecessorArtifactSha256": "d02364ddd6970cc6e11a14dc753f0b240f46e14c7d8c7c2a65d41c6fbd484675",
+    "candidateArtifactSha256": "227512fe26000e0fa933da51ec41a83e274cbb38b24bf15624de0b142271b4dd",
+    "candidateManifestSha256": "80c9db24ab57d537e11eb86bfadb8d4e58f7cef87bf0c59978617c2224d98e54",
+    "apiDeploymentId": "dfb07dc2-f47f-465b-a9c7-8b3bcd9de130",
+    "staticWebAppName": "swa-pumpkin-pub20-a02-pilot",
+    "defaultHostname": "purple-mud-029914d0f.7.azurestaticapps.net",
+    "onboardingPlanner": {
+      "baselinePlanSha256": "9905bfc3048aad9acdfaf4bda1c419ca12ee3946e6fbf3774ae9174ef07cd9b4",
+      "domainDeltaPlanSha256": "f5b6e865f97c72723976be35e2e655cd5653f86a5763266c63fc8bc9428bdc21",
+      "liveReconciledPlanSha256": "59914474d99d2cdc352ffc5e7d8c44f234dbf7a09b231f7a8c615874a65a82a7",
+      "operationCount": 20,
+      "idempotencyKey": "f72d7139441bc1302cf7a1544b39ed9c155601ec4a13ab453ded7e9d75be9db8",
+      "reconciliationStatus": "noop",
+      "mutationRequiredCount": 0,
+      "unauthorizedMutationCount": 0
+    },
+    "offlineRestoreProofSha256": "0cc8f36cefd630f9ab976cf5495de0d52003c514259f1984c9064f5a3df0a4d2",
     "domainStage": "HELD_OWNER_DISABLED_CURRENT_SITE_PRESERVED",
-    "nextGate": "PUB-20 focused successor-artifact and public-API correction authority"
+    "customerMutation": false,
+    "airstripRequested": false,
+    "indexingEnabled": false,
+    "capacityChanged": false,
+    "nextGate": "PUB-20-A03 Security Reconciliation"
   }
 }

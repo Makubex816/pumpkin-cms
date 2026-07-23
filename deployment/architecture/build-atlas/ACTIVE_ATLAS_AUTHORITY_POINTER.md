@@ -1,11 +1,13 @@
 # Active Build Atlas Authority Pointer
 
-- Active Atlas version: **3.5.0**
-- Status: **blocked_static_host_or_shared_api_security_contract**
-- Authority phase: **PUB-20-A01**
-- Atlas package SHA-256: `85c39d496126e24e9c57f56c02549d10f38b0ca5474199cbeb27ec681430bf98`
-- Atlas manifest SHA-256: `4d7e4d448a2fa96844ccea21653da9d788a0d3076d0091b5b6bc94afd6d5facf`
-- Working-memory version: **1.2.0**
-- Working-memory package SHA-256: `62744c82ee48c423686066f2f9c5f7f0a49fbda2224c311d3c9b115a8845c1c4`
+- Active Atlas version: 3.6.0
+- Status: blocked_pub20_a02_token_at_rest_security_contract_not_met
+- Authority phase: PUB-20-A02
+- Atlas package SHA-256: dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6
+- Atlas manifest SHA-256: a975934f3eefddc3acff5f923927fc892c2c27ee3124cf7d0c07471bf1e3667b
+- Working-memory version: 1.3.0
+- Working-memory package SHA-256: 55cfa4a685fd5767ef3df5131ea28002af1f23d6e6b0fe4e07415a559aa2eb64
 
-PUB-20-A01 stopped before live mutation. The immutable INT-10 artifact remains preserved, ghostdevstackcom.com remains untouched, and no Static Web App, tenant, token, API deployment, or FormEntry was created. A separately authorized successor-artifact/public-API correction is required before resuming PUB-20; PUB-30 remains held.
+PUB-20-A02 preserved A01, proved the deterministic successor and public form contract, and retained one Free noindex fixture. One logical submission created one FormEntry; replay returned it and conflict was rejected. Closeout was later blocked because the required pre-commit approval file was absent, the deployment token remained plaintext at rest, and a safe no-post rollback artifact was not proven.
+
+GhostDevStack, customers, Airstrip, indexing, email, payments, paid plans, and capacity are unchanged. Next gate: PUB-20-A03 security reconciliation.
