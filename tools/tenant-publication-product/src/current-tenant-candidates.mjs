@@ -1,5 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import {
   ContractError,
   ContractVersion,
@@ -22,6 +24,7 @@ import {
 import {
   assertDistributableHygiene,
   assertNoForbiddenData,
+  assertNoArtifactPathCollisions,
   assertSafeIdentifier,
   assertSafeRelativeReference,
   assertSha256,
@@ -48,6 +51,181 @@ const PRESERVED_PUB20_PACKAGE_SHA256 =
   '227512fe26000e0fa933da51ec41a83e274cbb38b24bf15624de0b142271b4dd';
 const PRESERVED_PUB20_MANIFEST_SHA256 =
   '80c9db24ab57d537e11eb86bfadb8d4e58f7cef87bf0c59978617c2224d98e54';
+const CURRENT_CANDIDATE_KEYS = Object.freeze([
+  CandidateKey.ICE_RINK_RENTALS,
+  CandidateKey.PARTY_PROS_PHILADELPHIA,
+  CandidateKey.STRIP_CLUB_NEAR_ME_VEGAS,
+]);
+const CURRENT_CANDIDATE_KEY_SET = new Set(CURRENT_CANDIDATE_KEYS);
+const RESERVED_CANDIDATE_SYSTEM_ROUTES = new Set(['/404.html']);
+const execFileAsync = promisify(execFile);
+const MAX_COMMITTED_SOURCE_BYTES = 128 * 1024 * 1024;
+const ICE_UNIVERSAL_ADAPTATION_CSS = `
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#0f172a;font-family:Inter,system-ui,sans-serif;line-height:1.6}
+header,main{width:min(72rem,calc(100% - 2rem));margin-inline:auto}
+header{padding:1.25rem 0;border-bottom:1px solid #bae6fd}
+.pumpkin-nav a{color:#0369a1;font-weight:700;text-decoration-thickness:.125rem;text-underline-offset:.25rem}
+main{padding:3rem 0 5rem}
+h1{font-size:clamp(2.25rem,6vw,4.5rem);line-height:1.05;color:#0c4a6e}
+h2{line-height:1.2;color:#0f172a}
+.block{margin:1.5rem 0;padding:1.5rem;border:1px solid #e2e8f0;border-radius:.75rem;background:#fff}
+.block-hero{background:linear-gradient(135deg,#f0f9ff 0%,#e0f2fe 100%);border-color:#bae6fd}
+.block-card{box-shadow:0 .75rem 2rem rgba(15,23,42,.08)}
+form{display:grid;gap:1rem;margin-top:2rem;padding:1.5rem;border:1px solid #bae6fd;border-radius:.75rem;background:#f8fafc}
+form label{display:grid;gap:.375rem;font-weight:700}
+form input,form select,form textarea,form button{font:inherit}
+form input,form select,form textarea{width:100%;padding:.75rem;border:1px solid #94a3b8;border-radius:.375rem;background:#fff}
+form button{padding:.75rem 1rem;border:0;border-radius:.375rem;background:#075985;color:#fff;font-weight:700}
+`.trim();
+
+const CANDIDATE_SET_KEYS = Object.freeze([
+  'airstripFreeze',
+  'attribution',
+  'candidates',
+  'genericFutureTenant',
+  'index',
+  'release',
+  'retainedPub20Synthetic',
+  'schemaVersion',
+]);
+const CANDIDATE_KEYS = Object.freeze([
+  'artifactId',
+  'candidateKey',
+  'hostingClass',
+  'inventories',
+  'manifest',
+  'orchestrator',
+  'packageBytes',
+  'publicationId',
+  'qualificationClass',
+  'readiness',
+  'snapshotId',
+  'sourceEvidence',
+  'staticProjection',
+  'tenantUid',
+]);
+const CANDIDATE_INDEX_KEYS = Object.freeze([
+  'airstrip',
+  'attribution',
+  'candidates',
+  'credentialValuesIncluded',
+  'customerFrontendDeployment',
+  'genericFutureTenantPlan',
+  'indexSha256',
+  'indexingMutation',
+  'legalDistributionState',
+  'liveMutation',
+  'networkCalls',
+  'recommendedFirstCustomerPilot',
+  'releaseId',
+  'retainedPub20Synthetic',
+  'schemaVersion',
+  'sourceCommit',
+]);
+const CANDIDATE_INDEX_ENTRY_KEYS = Object.freeze([
+  'artifactId',
+  'candidateKey',
+  'deploymentEligible',
+  'hostingClass',
+  'liveMutation',
+  'manifestFile',
+  'manifestFileSha256',
+  'manifestSha256',
+  'packageFile',
+  'packageSha256',
+  'publicationId',
+  'qualificationClass',
+  'snapshotId',
+  'staticProjectionFile',
+  'staticProjectionSha256',
+  'tenantUid',
+]);
+const CANDIDATE_MANIFEST_KEYS = Object.freeze([
+  'artifactId',
+  'candidateKey',
+  'deploymentEligible',
+  'fileCount',
+  'files',
+  'hostingClass',
+  'indexingMutation',
+  'legalDistributionState',
+  'liveMutation',
+  'manifestSha256',
+  'networkCalls',
+  'orchestratorPlanSha256',
+  'packageBytes',
+  'packageFile',
+  'packageSha256',
+  'publicFormPostExecuted',
+  'publicationId',
+  'qualificationClass',
+  'readinessSha256',
+  'releaseId',
+  'schemaVersion',
+  'snapshotId',
+  'sourceCommit',
+  'sourceEvidenceSha256',
+  'staticProjectionManifestSha256',
+  'staticProjectionSha256',
+  'tenantUid',
+]);
+const READINESS_KEYS = Object.freeze([
+  'adaptations',
+  'ageGate',
+  'approvals',
+  'artifactId',
+  'backupRestore',
+  'blockers',
+  'candidateKey',
+  'capabilities',
+  'cost',
+  'counts',
+  'customerDeploymentAuthorized',
+  'domain',
+  'fidelity',
+  'forms',
+  'hostingClass',
+  'indexing',
+  'liveMutation',
+  'migrationSequence',
+  'ownerAcceptanceRequired',
+  'packageDeviations',
+  'publicationId',
+  'pub40PromptInputs',
+  'qualificationClass',
+  'readinessSha256',
+  'releaseId',
+  'rollback',
+  'schemaVersion',
+  'snapshotId',
+  'staticProjection',
+  'tenantId',
+  'tenantUid',
+]);
+const ORCHESTRATOR_KEYS = Object.freeze([
+  'artifactId',
+  'candidateKey',
+  'deploymentApproved',
+  'domainHandoffs',
+  'executable',
+  'formPostApproved',
+  'hostingClass',
+  'indexingApproved',
+  'job',
+  'liveMutation',
+  'networkCalls',
+  'plan',
+  'planOnly',
+  'planSha256',
+  'publicationId',
+  'qualificationClass',
+  'releaseId',
+  'schemaVersion',
+  'snapshotId',
+  'tenantUid',
+]);
 
 const ICE_SOURCE_REFS = Object.freeze([
   'tools/ice-rink-local-seed/seed-sites/ice-rink-rentals/pages/contact.json',
@@ -89,10 +267,15 @@ const AIRSTRIP_SOURCE_REFS = Object.freeze([
 export async function buildCurrentTenantCandidateSet({
   repositoryRoot,
   releaseContext,
+  platformOriginAuthorization = null,
 }) {
   const repoRoot = path.resolve(repositoryRoot);
   const release = normalizeRelease(releaseContext);
-  const attribution = await loadFrozenAttribution(repoRoot);
+  await assertExactRepositoryCommit(repoRoot, release.sourceCommit);
+  const attribution = await loadFrozenAttribution(
+    repoRoot,
+    release.sourceCommit,
+  );
   const profilePlans = createCommittedCandidatePlans(
     release,
     attribution.files.map(({ path: packagePath, content, sha256: digest }) => ({
@@ -135,6 +318,7 @@ export async function buildCurrentTenantCandidateSet({
     repoRoot,
     release,
     attribution,
+    platformOriginAuthorization,
   );
   const indexBody = {
     schemaVersion: CANDIDATE_SCHEMA,
@@ -152,12 +336,17 @@ export async function buildCurrentTenantCandidateSet({
     },
     candidates: candidates.map((candidate) => ({
       candidateKey: candidate.candidateKey,
+      tenantUid: candidate.tenantUid,
+      publicationId: candidate.publicationId,
+      artifactId: candidate.artifactId,
+      snapshotId: candidate.snapshotId,
       qualificationClass: candidate.qualificationClass,
       hostingClass: candidate.hostingClass,
       packageFile: `${candidate.candidateKey}/candidate.tar`,
       packageSha256: candidate.manifest.packageSha256,
       manifestFile: `${candidate.candidateKey}/candidate-manifest.json`,
       manifestSha256: candidate.manifest.manifestSha256,
+      manifestFileSha256: serializedJsonSha256(candidate.manifest),
       staticProjectionFile: `${candidate.candidateKey}/static-projection.tar`,
       staticProjectionSha256: candidate.staticProjection.manifest.packageSha256,
       deploymentEligible: false,
@@ -224,18 +413,12 @@ export async function writeCurrentTenantCandidateSet({
   candidateSet,
 }) {
   const repoRoot = path.resolve(repositoryRoot);
-  const destination = path.resolve(outputRoot);
-  assertOutsideRepository(repoRoot, destination);
-  try {
-    await fs.access(destination);
-    throw new ContractError(
-      'candidate_output_exists',
-      'Candidate output root must not already exist.',
-    );
-  } catch (error) {
-    if (error?.code !== 'ENOENT') throw error;
-  }
-  await fs.mkdir(destination, { recursive: true });
+  const requestedDestination = path.resolve(outputRoot);
+  verifyCurrentTenantCandidateSet(candidateSet);
+  const destination = await createSafeCandidateOutputRoot(
+    repoRoot,
+    requestedDestination,
+  );
 
   await writeNewJson(path.join(destination, 'candidate-index.json'), candidateSet.index);
   await writeNewJson(
@@ -258,10 +441,34 @@ export async function writeCurrentTenantCandidateSet({
   );
 
   for (const candidate of candidateSet.candidates) {
-    const candidateRoot = path.join(destination, candidate.candidateKey);
+    const candidateKey = assertCurrentCandidateKey(
+      candidate.candidateKey,
+      'candidate.candidateKey',
+    );
+    const candidateRoot = resolveCandidateOutputRef(
+      destination,
+      candidateKey,
+      'candidate output directory',
+    );
     await fs.mkdir(candidateRoot);
     await writeNew(path.join(candidateRoot, 'candidate.tar'), candidate.packageBytes);
-    await writeNewJson(path.join(candidateRoot, 'candidate-manifest.json'), candidate.manifest);
+    const candidateManifestPath = path.join(
+      candidateRoot,
+      'candidate-manifest.json',
+    );
+    await writeNewJson(candidateManifestPath, candidate.manifest);
+    const indexEntry = candidateSet.index.candidates.find(
+      (entry) => entry.candidateKey === candidateKey,
+    );
+    if (
+      sha256(await fs.readFile(candidateManifestPath)) !==
+      indexEntry.manifestFileSha256
+    ) {
+      throw new ContractError(
+        'candidate_manifest_file_hash_mismatch',
+        `${candidateKey} serialized manifest file hash does not match the candidate index.`,
+      );
+    }
     await writeNewJson(
       path.join(candidateRoot, 'migration-readiness.json'),
       candidate.readiness,
@@ -296,12 +503,14 @@ export async function writeCurrentTenantCandidateSet({
 
 export async function inventoryCandidateOutput(outputRoot) {
   const root = path.resolve(outputRoot);
-  const files = await walkFiles(root);
+  await assertDirectoryPathWithoutSymlinks(root, 'candidate output');
+  const realRoot = await fs.realpath(root);
+  const files = await walkFiles(realRoot, realRoot);
   return Promise.all(
     files.map(async (file) => {
       const bytes = await fs.readFile(file);
       return {
-        path: toPosix(path.relative(root, file)),
+        path: toPosix(path.relative(realRoot, file)),
         bytes: bytes.length,
         sha256: sha256(bytes),
       };
@@ -312,14 +521,45 @@ export async function inventoryCandidateOutput(outputRoot) {
 }
 
 export function verifyCurrentTenantCandidateSet(candidateSet) {
+  assertExactObjectKeys(
+    candidateSet,
+    CANDIDATE_SET_KEYS,
+    'candidate_set_shape_invalid',
+    'Candidate set',
+  );
   if (candidateSet?.schemaVersion !== CANDIDATE_SCHEMA) {
     throw new ContractError('candidate_set_schema_invalid', 'Candidate-set schema is invalid.');
   }
-  if (candidateSet.candidates?.length !== 3) {
+  if (
+    !Array.isArray(candidateSet.candidates) ||
+    candidateSet.candidates.length !== CURRENT_CANDIDATE_KEYS.length
+  ) {
     throw new ContractError('candidate_set_count_invalid', 'Exactly three local candidates are required.');
   }
-  for (const candidate of candidateSet.candidates) {
+  const candidatesByKey = new Map();
+  for (const [index, candidate] of candidateSet.candidates.entries()) {
     verifyCandidate(candidate);
+    if (candidate.candidateKey !== CURRENT_CANDIDATE_KEYS[index]) {
+      throw new ContractError(
+        'candidate_order_invalid',
+        'Candidate set order must match the committed candidate-key order.',
+      );
+    }
+    if (candidatesByKey.has(candidate.candidateKey)) {
+      throw new ContractError(
+        'candidate_key_duplicate',
+        `Candidate key is duplicated: ${candidate.candidateKey}`,
+      );
+    }
+    candidatesByKey.set(candidate.candidateKey, candidate);
+  }
+  if (
+    CURRENT_CANDIDATE_KEYS.some((candidateKey) => !candidatesByKey.has(candidateKey))
+  ) {
+    throw new ContractError(
+      'candidate_key_set_invalid',
+      'Candidate set must contain each committed current-tenant candidate exactly once.',
+    );
   }
   verifyRetainedPub20Synthetic(candidateSet.retainedPub20Synthetic);
   if (
@@ -333,17 +573,147 @@ export function verifyCurrentTenantCandidateSet(candidateSet) {
       'Airstrip must remain metadata-only with no package or public request.',
     );
   }
+  verifyCandidateIndex(candidateSet, candidatesByKey);
+  return true;
+}
+
+function verifyCandidateIndex(candidateSet, candidatesByKey) {
+  assertExactObjectKeys(
+    candidateSet.index,
+    CANDIDATE_INDEX_KEYS,
+    'candidate_index_shape_invalid',
+    'Candidate index',
+  );
+  if (
+    candidateSet.index.schemaVersion !== CANDIDATE_SCHEMA ||
+    candidateSet.index.releaseId !== candidateSet.release?.releaseId ||
+    candidateSet.index.sourceCommit !== candidateSet.release?.sourceCommit
+  ) {
+    throw new ContractError(
+      'candidate_index_release_binding_invalid',
+      'Candidate index is not bound to the candidate-set release.',
+    );
+  }
+  if (
+    !Array.isArray(candidateSet.index.candidates) ||
+    candidateSet.index.candidates.length !== candidatesByKey.size
+  ) {
+    throw new ContractError(
+      'candidate_index_candidate_count_invalid',
+      'Candidate index must contain one entry per candidate.',
+    );
+  }
+  const seenIndexKeys = new Set();
+  for (const [index, entry] of candidateSet.index.candidates.entries()) {
+    assertExactObjectKeys(
+      entry,
+      CANDIDATE_INDEX_ENTRY_KEYS,
+      'candidate_index_entry_shape_invalid',
+      'Candidate index entry',
+    );
+    const candidateKey = assertCurrentCandidateKey(
+      entry.candidateKey,
+      'candidate index candidateKey',
+    );
+    if (candidateKey !== CURRENT_CANDIDATE_KEYS[index]) {
+      throw new ContractError(
+        'candidate_index_order_invalid',
+        'Candidate index order must match the committed candidate-key order.',
+      );
+    }
+    if (seenIndexKeys.has(candidateKey)) {
+      throw new ContractError(
+        'candidate_index_key_duplicate',
+        `Candidate index key is duplicated: ${candidateKey}`,
+      );
+    }
+    seenIndexKeys.add(candidateKey);
+    const candidate = candidatesByKey.get(candidateKey);
+    if (!candidate) {
+      throw new ContractError(
+        'candidate_index_candidate_unknown',
+        `Candidate index references an unknown candidate: ${candidateKey}`,
+      );
+    }
+    const expected = {
+      candidateKey,
+      tenantUid: candidate.tenantUid,
+      publicationId: candidate.publicationId,
+      artifactId: candidate.artifactId,
+      snapshotId: candidate.snapshotId,
+      qualificationClass: candidate.qualificationClass,
+      hostingClass: candidate.hostingClass,
+      packageFile: `${candidateKey}/candidate.tar`,
+      packageSha256: candidate.manifest.packageSha256,
+      manifestFile: `${candidateKey}/candidate-manifest.json`,
+      manifestSha256: candidate.manifest.manifestSha256,
+      manifestFileSha256: serializedJsonSha256(candidate.manifest),
+      staticProjectionFile: `${candidateKey}/static-projection.tar`,
+      staticProjectionSha256: candidate.staticProjection.manifest.packageSha256,
+      deploymentEligible: false,
+      liveMutation: false,
+    };
+    if (stableStringify(entry) !== stableStringify(expected)) {
+      throw new ContractError(
+        'candidate_index_entry_binding_invalid',
+        `Candidate index entry is not exactly bound to candidate: ${candidateKey}`,
+      );
+    }
+  }
   const { indexSha256, ...indexBody } = candidateSet.index;
   if (canonicalDigest(indexBody) !== indexSha256) {
     throw new ContractError('candidate_index_hash_mismatch', 'Candidate index hash is invalid.');
   }
-  return true;
 }
 
 function verifyCandidate(candidate) {
+  assertExactObjectKeys(
+    candidate,
+    CANDIDATE_KEYS,
+    'candidate_shape_invalid',
+    'Candidate',
+  );
+  const candidateKey = assertCurrentCandidateKey(
+    candidate.candidateKey,
+    'candidate.candidateKey',
+  );
+  assertExactObjectKeys(
+    candidate.manifest,
+    CANDIDATE_MANIFEST_KEYS,
+    'candidate_manifest_shape_invalid',
+    'Candidate manifest',
+  );
   if (candidate.manifest?.schemaVersion !== CANDIDATE_MANIFEST_SCHEMA) {
     throw new ContractError('candidate_manifest_schema_invalid', 'Candidate manifest schema is invalid.');
   }
+  assertExactObjectKeys(
+    candidate.readiness,
+    READINESS_KEYS,
+    'candidate_readiness_shape_invalid',
+    'Candidate readiness',
+  );
+  if (candidate.readiness.schemaVersion !== READINESS_SCHEMA) {
+    throw new ContractError(
+      'candidate_readiness_schema_invalid',
+      `${candidateKey} readiness schema is invalid.`,
+    );
+  }
+  assertExactObjectKeys(
+    candidate.orchestrator,
+    ORCHESTRATOR_KEYS,
+    'candidate_orchestrator_shape_invalid',
+    'Candidate orchestrator',
+  );
+  if (
+    candidate.orchestrator.schemaVersion !==
+    'pumpkin.candidate-orchestrator-plan.v1'
+  ) {
+    throw new ContractError(
+      'candidate_orchestrator_schema_invalid',
+      `${candidateKey} orchestrator schema is invalid.`,
+    );
+  }
+  verifyCandidateLineage(candidate);
   const { manifestSha256, ...manifestBody } = candidate.manifest;
   if (canonicalDigest(manifestBody) !== manifestSha256) {
     throw new ContractError(
@@ -351,12 +721,32 @@ function verifyCandidate(candidate) {
       `${candidate.candidateKey} manifest hash is invalid.`,
     );
   }
-  if (sha256(candidate.packageBytes) !== candidate.manifest.packageSha256) {
+  if (
+    !Buffer.isBuffer(candidate.packageBytes) ||
+    sha256(candidate.packageBytes) !== candidate.manifest.packageSha256 ||
+    candidate.packageBytes.length !== candidate.manifest.packageBytes ||
+    candidate.manifest.packageFile !== 'candidate.tar'
+  ) {
     throw new ContractError(
       'candidate_package_hash_mismatch',
       `${candidate.candidateKey} package hash is invalid.`,
     );
   }
+  const { readinessSha256, ...readinessBody } = candidate.readiness;
+  if (canonicalDigest(readinessBody) !== readinessSha256) {
+    throw new ContractError(
+      'candidate_readiness_hash_mismatch',
+      `${candidateKey} readiness hash is invalid.`,
+    );
+  }
+  const { planSha256, ...orchestratorBody } = candidate.orchestrator;
+  if (canonicalDigest(orchestratorBody) !== planSha256) {
+    throw new ContractError(
+      'candidate_orchestrator_hash_mismatch',
+      `${candidateKey} orchestrator hash is invalid.`,
+    );
+  }
+  verifyCandidateEmbeddedFileHashes(candidate);
   if (
     candidate.manifest.deploymentEligible !== false ||
     candidate.manifest.liveMutation !== false ||
@@ -369,6 +759,192 @@ function verifyCandidate(candidate) {
   }
 }
 
+function verifyCandidateLineage(candidate) {
+  const projection = candidate.staticProjection?.manifest;
+  const lineage = {
+    candidateKey: candidate.candidateKey,
+    tenantUid: candidate.tenantUid,
+    publicationId: candidate.publicationId,
+    artifactId: candidate.artifactId,
+    snapshotId: candidate.snapshotId,
+  };
+  for (const [label, document] of [
+    ['manifest', candidate.manifest],
+    ['readiness', candidate.readiness],
+    ['orchestrator', candidate.orchestrator],
+  ]) {
+    for (const [field, expected] of Object.entries(lineage)) {
+      if (document?.[field] !== expected) {
+        throw new ContractError(
+          'candidate_lineage_binding_invalid',
+          `${candidate.candidateKey} ${label}.${field} is not cross-bound.`,
+        );
+      }
+    }
+  }
+  if (
+    candidate.readiness.tenantId !== candidate.tenantUid ||
+    projection?.tenantUid !== candidate.tenantUid ||
+    projection?.publicationId !== candidate.publicationId ||
+    projection?.artifactId !== candidate.artifactId ||
+    projection?.snapshotId !== candidate.snapshotId ||
+    projection?.releaseId !== candidate.manifest.releaseId ||
+    candidate.readiness.releaseId !== candidate.manifest.releaseId ||
+    candidate.orchestrator.releaseId !== candidate.manifest.releaseId ||
+    candidate.manifest.qualificationClass !== candidate.qualificationClass ||
+    candidate.readiness.qualificationClass !== candidate.qualificationClass ||
+    candidate.orchestrator.qualificationClass !== candidate.qualificationClass ||
+    candidate.manifest.hostingClass !== candidate.hostingClass ||
+    candidate.readiness.hostingClass !== candidate.hostingClass ||
+    candidate.orchestrator.hostingClass !== candidate.hostingClass
+  ) {
+    throw new ContractError(
+      'candidate_publication_lineage_invalid',
+      `${candidate.candidateKey} tenant/publication lineage is inconsistent.`,
+    );
+  }
+  const plan = candidate.orchestrator.plan;
+  if (
+    plan?.tenantId !== candidate.tenantUid ||
+    plan?.publicationId !== candidate.publicationId ||
+    plan?.artifactId !== candidate.artifactId ||
+    plan?.releaseId !== candidate.manifest.releaseId
+  ) {
+    throw new ContractError(
+      'candidate_orchestrator_plan_lineage_invalid',
+      `${candidate.candidateKey} orchestrator plan is not bound to the candidate lineage.`,
+    );
+  }
+  const job = candidate.orchestrator.job;
+  if (
+    job?.tenantId !== candidate.tenantUid ||
+    job?.publicationId !== candidate.publicationId ||
+    job?.artifactId !== candidate.artifactId ||
+    job?.releaseId !== candidate.manifest.releaseId ||
+    !Array.isArray(candidate.orchestrator.domainHandoffs) ||
+    candidate.orchestrator.domainHandoffs.some(
+      (handoff) => handoff?.candidateKey !== candidate.candidateKey,
+    )
+  ) {
+    throw new ContractError(
+      'candidate_orchestrator_job_lineage_invalid',
+      `${candidate.candidateKey} orchestrator job/domain handoffs are not bound to the candidate lineage.`,
+    );
+  }
+  const promptInputs = candidate.readiness.pub40PromptInputs;
+  if (
+    promptInputs?.candidateKey !== candidate.candidateKey ||
+    promptInputs?.tenantId !== candidate.tenantUid ||
+    promptInputs?.releaseId !== candidate.manifest.releaseId ||
+    promptInputs?.staticArtifactId !== candidate.artifactId ||
+    promptInputs?.staticPackageSha256 !== projection.packageSha256 ||
+    promptInputs?.staticManifestSha256 !==
+      sha256(candidate.staticProjection.manifestBytes)
+  ) {
+    throw new ContractError(
+      'candidate_readiness_lineage_invalid',
+      `${candidate.candidateKey} readiness prompt inputs are not cross-bound.`,
+    );
+  }
+  if (
+    candidate.manifest.readinessSha256 !== candidate.readiness.readinessSha256 ||
+    candidate.manifest.orchestratorPlanSha256 !==
+      candidate.orchestrator.planSha256 ||
+    candidate.manifest.staticProjectionSha256 !== projection.packageSha256 ||
+    !Buffer.isBuffer(candidate.staticProjection.packageBytes) ||
+    sha256(candidate.staticProjection.packageBytes) !== projection.packageSha256 ||
+    !Buffer.isBuffer(candidate.staticProjection.manifestBytes) ||
+    !candidate.staticProjection.manifestBytes.equals(
+      serializedJsonBytes(projection),
+    ) ||
+    candidate.manifest.staticProjectionManifestSha256 !==
+      sha256(candidate.staticProjection.manifestBytes) ||
+    candidate.manifest.sourceEvidenceSha256 !==
+      candidate.sourceEvidence?.evidenceSha256 ||
+    candidate.readiness.staticProjection?.artifactId !== candidate.artifactId ||
+    candidate.readiness.staticProjection?.packageSha256 !==
+      projection.packageSha256 ||
+    candidate.readiness.staticProjection?.manifestSha256 !==
+      sha256(candidate.staticProjection.manifestBytes)
+  ) {
+    throw new ContractError(
+      'candidate_evidence_binding_invalid',
+      `${candidate.candidateKey} manifest, readiness, orchestrator, and projection evidence are not cross-bound.`,
+    );
+  }
+}
+
+function verifyCandidateEmbeddedFileHashes(candidate) {
+  if (!Array.isArray(candidate.manifest.files)) {
+    throw new ContractError(
+      'candidate_manifest_files_invalid',
+      `${candidate.candidateKey} manifest file inventory is required.`,
+    );
+  }
+  if (candidate.manifest.files.length !== candidate.manifest.fileCount) {
+    throw new ContractError(
+      'candidate_manifest_file_count_invalid',
+      `${candidate.candidateKey} manifest file count is inconsistent.`,
+    );
+  }
+  const inventory = new Map();
+  for (const [index, entry] of candidate.manifest.files.entries()) {
+    assertExactObjectKeys(
+      entry,
+      ['bytes', 'path', 'sha256'],
+      'candidate_manifest_file_inventory_invalid',
+      `Candidate manifest file[${index}]`,
+    );
+    const filePath = assertSafeRelativeReference(
+      entry.path,
+      `candidate.manifest.files[${index}].path`,
+    );
+    assertSha256(
+      entry.sha256,
+      `candidate.manifest.files[${index}].sha256`,
+    );
+    if (
+      !Number.isSafeInteger(entry.bytes) ||
+      entry.bytes < 0 ||
+      inventory.has(filePath)
+    ) {
+      throw new ContractError(
+        'candidate_manifest_file_inventory_invalid',
+        `${candidate.candidateKey} manifest file inventory is malformed.`,
+      );
+    }
+    inventory.set(filePath, entry);
+  }
+  assertNoArtifactPathCollisions(
+    [...inventory.keys()],
+    `${candidate.candidateKey} manifest inventory paths`,
+  );
+  const sortedPaths = [...inventory.keys()].sort((left, right) =>
+    left.localeCompare(right, 'en'),
+  );
+  if (
+    [...inventory.keys()].some(
+      (filePath, index) => filePath !== sortedPaths[index],
+    )
+  ) {
+    throw new ContractError(
+      'candidate_manifest_file_order_invalid',
+      `${candidate.candidateKey} manifest file inventory is not canonical.`,
+    );
+  }
+  for (const [filePath, value] of [
+    ['migration-readiness.json', candidate.readiness],
+    ['orchestrator-plan.json', candidate.orchestrator],
+  ]) {
+    if (inventory.get(filePath)?.sha256 !== serializedJsonSha256(value)) {
+      throw new ContractError(
+        'candidate_embedded_file_hash_mismatch',
+        `${candidate.candidateKey} ${filePath} is not bound to its serialized file hash.`,
+      );
+    }
+  }
+}
+
 async function buildIceCandidate({
   repositoryRoot,
   release,
@@ -377,7 +953,8 @@ async function buildIceCandidate({
 }) {
   const pages = await Promise.all(
     ICE_SOURCE_REFS.filter((sourceRef) => sourceRef.includes('/pages/')).map(
-      (sourceRef) => readJsonRef(repositoryRoot, sourceRef),
+      (sourceRef) =>
+        readJsonRef(repositoryRoot, sourceRef, release.sourceCommit),
     ),
   );
   pages.sort((left, right) =>
@@ -386,10 +963,12 @@ async function buildIceCandidate({
   const theme = await readJsonRef(
     repositoryRoot,
     'tools/ice-rink-local-seed/seed-sites/ice-rink-rentals/theme.json',
+    release.sourceCommit,
   );
-  const css = await readTextRef(
+  const sourceCss = await readTextRef(
     repositoryRoot,
     'apps/ice-rink-web/src/app/globals.css',
+    release.sourceCommit,
   );
   const routeSet = new Set(pages.map((page) => routeFromSlug(page.pageSlug)));
   const form = buildIceForm(pages);
@@ -422,11 +1001,16 @@ async function buildIceCandidate({
     },
     snapshot: {
       snapshotId: 'ice-rink-rentals-pub30-source-projection',
-      themes: [{ themeId: 'ice-rink-source-theme', css }],
+      themes: [
+        {
+          themeId: 'ice-rink-universal-adaptation-theme',
+          css: ICE_UNIVERSAL_ADAPTATION_CSS,
+        },
+      ],
       pages: pages.map((page) =>
         projectCmsPage(page, {
           tenantId: 'ice-rink-rentals',
-          themeId: 'ice-rink-source-theme',
+          themeId: 'ice-rink-universal-adaptation-theme',
           formIds:
             page.pageSlug === 'contact' && form ? [form.formId] : [],
         }),
@@ -440,7 +1024,11 @@ async function buildIceCandidate({
     attributionFiles: attributionForPublisher(attribution),
   };
   const staticProjection = publishTenantSnapshot(canonicalInput);
-  const sourceEvidence = await buildSourceEvidence(repositoryRoot, ICE_SOURCE_REFS);
+  const sourceEvidence = await buildSourceEvidence(
+    repositoryRoot,
+    ICE_SOURCE_REFS,
+    release.sourceCommit,
+  );
   const counts = {
     routes: pages.length,
     projectedRoutes: staticProjection.manifest.routeCount,
@@ -469,9 +1057,17 @@ async function buildIceCandidate({
       forms: form ? [formInventory(form)] : [],
       themes: [
         {
-          themeId: 'ice-rink-source-theme',
+          themeId: 'ice-rink-source-theme-evidence',
           sourceRef: 'apps/ice-rink-web/src/app/globals.css',
-          sha256: sha256(Buffer.from(css, 'utf8')),
+          sha256: sha256(Buffer.from(sourceCss, 'utf8')),
+          treatment:
+            'EXACT_GIT_TAILWIND_SOURCE_EVIDENCE_ONLY_NOT_BROWSER_ARTIFACT',
+          projectionThemeId: 'ice-rink-universal-adaptation-theme',
+          projectionCssSha256: sha256(
+            Buffer.from(ICE_UNIVERSAL_ADAPTATION_CSS, 'utf8'),
+          ),
+          projectionTreatment:
+            'DETERMINISTIC_BROWSER_NATIVE_UNIVERSAL_SELECTOR_ADAPTATION',
         },
       ],
       navigation,
@@ -500,12 +1096,14 @@ async function buildIceCandidate({
       },
       adaptations: [
         'CMS block contracts are mapped to the universal safe hero/card/text subset.',
+        'The exact-Git Ice Tailwind source is retained as hash-bound evidence only; the generic artifact uses a deterministic browser-native sky/slate theme aligned to universal publisher selectors.',
         'Public media references are inventoried but not fetched or embedded.',
         'The contact form is rendered PREVIEW_NO_POST with consent and honeypot controls.',
         'Source index intent is suppressed to HELD_NOINDEX for local proof.',
       ],
       blockers: [
         'Owner fidelity review is required before any customer pilot.',
+        'The universal adaptation theme does not claim pixel parity with the source Ice application Tailwind build.',
         'Media content hashes and approved binary materialization remain required.',
         'Live public-form origin/mapping approval remains required.',
       ],
@@ -521,9 +1119,17 @@ async function buildPartyCandidate({
 }) {
   const fixtureRef =
     'apps/starter-app/preview-fixtures/party-pros-philadelphia/preview.json';
-  const fixture = await readJsonRef(repositoryRoot, fixtureRef);
+  const fixture = await readJsonRef(
+    repositoryRoot,
+    fixtureRef,
+    release.sourceCommit,
+  );
   const cssRef = 'apps/starter-app/public/themes/party-pros-reference.css';
-  const css = await readTextRef(repositoryRoot, cssRef);
+  const css = await readTextRef(
+    repositoryRoot,
+    cssRef,
+    release.sourceCommit,
+  );
   const pages = Object.values(fixture.pages ?? {}).sort((left, right) =>
     routeFromSlug(left.pageSlug).localeCompare(routeFromSlug(right.pageSlug), 'en'),
   );
@@ -583,7 +1189,11 @@ async function buildPartyCandidate({
     attributionFiles: attributionForPublisher(attribution),
   };
   const staticProjection = publishTenantSnapshot(canonicalInput);
-  const sourceEvidence = await buildSourceEvidence(repositoryRoot, PARTY_SOURCE_REFS);
+  const sourceEvidence = await buildSourceEvidence(
+    repositoryRoot,
+    PARTY_SOURCE_REFS,
+    release.sourceCommit,
+  );
   const counts = {
     routes: pages.length,
     projectedRoutes: staticProjection.manifest.routeCount,
@@ -665,12 +1275,20 @@ async function buildVegasCandidate({
 }) {
   const fixtureRef =
     'apps/starter-app/preview-fixtures/strip-club-near-me-vegas/preview.json';
-  const fixture = await readJsonRef(repositoryRoot, fixtureRef);
+  const fixture = await readJsonRef(
+    repositoryRoot,
+    fixtureRef,
+    release.sourceCommit,
+  );
   const cssRefs = VEGAS_SOURCE_REFS.filter((sourceRef) => sourceRef.endsWith('.css'));
   const cssParts = await Promise.all(
     cssRefs.map(async (sourceRef) => ({
       sourceRef,
-      content: await readTextRef(repositoryRoot, sourceRef),
+      content: await readTextRef(
+        repositoryRoot,
+        sourceRef,
+        release.sourceCommit,
+      ),
     })),
   );
   const css = cssParts
@@ -680,6 +1298,13 @@ async function buildVegasCandidate({
     String(left.route).localeCompare(String(right.route), 'en'),
   );
   const routeSet = new Set(routes.map((route) => normalizeRoute(route.route)));
+  const projectedRoutes = routes.filter(
+    (route) =>
+      !RESERVED_CANDIDATE_SYSTEM_ROUTES.has(normalizeRoute(route.route)),
+  );
+  const projectedRouteSet = new Set(
+    projectedRoutes.map((route) => normalizeRoute(route.route)),
+  );
   const forms = (fixture.forms?.definitions ?? []).map((formDefinition, index) =>
     projectFormDefinition(formDefinition, {
       tenantId: fixture.tenantId,
@@ -703,7 +1328,7 @@ async function buildVegasCandidate({
     .filter((redirect) => {
       const from = normalizeRoute(redirect.sourcePath);
       const to = normalizeRoute(redirect.targetPath);
-      return !routeSet.has(from) && routeSet.has(to);
+      return !routeSet.has(from) && projectedRouteSet.has(to);
     })
     .map((redirect) => ({
       from: normalizeRoute(redirect.sourcePath),
@@ -711,18 +1336,28 @@ async function buildVegasCandidate({
       status: Number(redirect.statusCode),
       preserveQueryString: redirect.preserveQueryString !== false,
     }));
-  const navigation = buildRouteNavigation(routes);
+  const navigation = buildRouteNavigation(projectedRoutes);
   const mediaInventory = {
     canonical: (fixture.media?.canonical ?? []).map((item) => ({
       mediaId: String(item.id),
       bytes: Number(item.bytes),
-      sha256: assertSha256(item.sha256, 'Vegas canonical media sha256'),
+      declaredSourceSha256: assertSha256(
+        item.sha256,
+        'Vegas canonical media sha256',
+      ),
       url: safePublicHttps(item.url),
+      referenceClassification: 'MUTABLE_UNVERIFIED_REFERENCE',
+      fetchedOrVerified: false,
     })),
     aliases: (fixture.media?.aliases ?? []).map((item) => ({
       sourcePath: safeSourceAlias(item.sourcePath),
-      sha256: assertSha256(item.sha256, 'Vegas media alias sha256'),
+      declaredSourceSha256: assertSha256(
+        item.sha256,
+        'Vegas media alias sha256',
+      ),
       url: safePublicHttps(item.url),
+      referenceClassification: 'MUTABLE_UNVERIFIED_REFERENCE',
+      fetchedOrVerified: false,
       disposition: safeBounded(item.disposition, 120, 'preserved'),
     })),
   };
@@ -750,7 +1385,7 @@ async function buildVegasCandidate({
     snapshot: {
       snapshotId: 'strip-club-near-me-vegas-pub30-source-projection',
       themes: [{ themeId: 'vegas-source-theme', css }],
-      pages: routes.map((route) =>
+      pages: projectedRoutes.map((route) =>
         projectVegasRoute(route, {
           tenantId: fixture.tenantId,
           themeId: 'vegas-source-theme',
@@ -766,7 +1401,11 @@ async function buildVegasCandidate({
     attributionFiles: attributionForPublisher(attribution),
   };
   const staticProjection = publishTenantSnapshot(canonicalInput);
-  const sourceEvidence = await buildSourceEvidence(repositoryRoot, VEGAS_SOURCE_REFS);
+  const sourceEvidence = await buildSourceEvidence(
+    repositoryRoot,
+    VEGAS_SOURCE_REFS,
+    release.sourceCommit,
+  );
   const counts = {
     routes: Number(fixture.counts?.routes ?? routes.length),
     projectedRoutes: staticProjection.manifest.routeCount,
@@ -807,6 +1446,14 @@ async function buildVegasCandidate({
         disposition: safeBounded(route.disposition, 120, 'preserved'),
         counts: normalizeCountMap(route.counts ?? {}),
         inlineCssSha256: sha256(Buffer.from(String(route.inlineCss ?? ''), 'utf8')),
+        projectionIncluded: !RESERVED_CANDIDATE_SYSTEM_ROUTES.has(
+          normalizeRoute(route.route),
+        ),
+        projectionDisposition: RESERVED_CANDIDATE_SYSTEM_ROUTES.has(
+          normalizeRoute(route.route),
+        )
+          ? 'INVENTORY_ONLY_RESERVED_CANONICAL_ARTIFACT_SYSTEM_ROUTE'
+          : 'PROJECTED_TENANT_ROUTE',
       })),
       redirects: declaredRedirects.map((redirect) => ({
         from: normalizeRoute(redirect.sourcePath),
@@ -815,7 +1462,7 @@ async function buildVegasCandidate({
         preserveQueryString: redirect.preserveQueryString !== false,
         projectionIncluded:
           !routeSet.has(normalizeRoute(redirect.sourcePath)) &&
-          routeSet.has(normalizeRoute(redirect.targetPath)),
+          projectedRouteSet.has(normalizeRoute(redirect.targetPath)),
       })),
       media: mediaInventory,
       forms: forms.map(formInventory),
@@ -854,7 +1501,8 @@ async function buildVegasCandidate({
         adultCompliance: true,
       },
       adaptations: [
-        'All committed route identities and structural counts are projected without executing raw source HTML.',
+        'All committed route identities and structural counts are inventoried without executing raw source HTML.',
+        'The committed /404.html source route is inventory-only because the canonical artifact owns that generated system error-document path.',
         'Shared behaviors and per-route inline CSS remain compatibility evidence rather than universal blocks.',
         'Canonical media and aliases are hash-inventoried but never fetched or embedded.',
         'All forms remain PREVIEW_NO_POST; hidden routing fields are excluded from the browser projection.',
@@ -884,10 +1532,44 @@ function assembleCandidate({
   if (!profile) {
     throw new ContractError('candidate_profile_missing', 'Candidate profile is required.');
   }
+  const candidateKey = assertCurrentCandidateKey(
+    profile.candidateKey,
+    'candidate profile key',
+  );
+  const tenantUid = assertSafeIdentifier(
+    canonicalInput?.tenant?.tenantUid,
+    'candidate tenantUid',
+    { backend: true },
+  );
+  const publicationId = assertSafeIdentifier(
+    canonicalInput?.publication?.publicationId,
+    'candidate publicationId',
+  );
+  const artifactId = assertSafeIdentifier(
+    canonicalInput?.publication?.artifactId,
+    'candidate artifactId',
+  );
+  const snapshotId = assertSafeIdentifier(
+    canonicalInput?.snapshot?.snapshotId,
+    'candidate snapshotId',
+  );
+  if (
+    profile.tenantId !== tenantUid ||
+    staticProjection?.manifest?.tenantUid !== tenantUid ||
+    staticProjection?.manifest?.publicationId !== publicationId ||
+    staticProjection?.manifest?.artifactId !== artifactId ||
+    staticProjection?.manifest?.snapshotId !== snapshotId ||
+    staticProjection?.manifest?.releaseId !== release.releaseId
+  ) {
+    throw new ContractError(
+      'candidate_source_lineage_invalid',
+      `${candidateKey} canonical input, profile, and static projection are not cross-bound.`,
+    );
+  }
   const plan = createPublicationJobPlanForCandidate({
     ...profile,
     canonicalInput,
-    artifactId: canonicalInput.publication.artifactId,
+    artifactId,
     sourceRefs: sourceEvidence.files.map((file) => file.sourceRef),
   });
   const job = createPublicationJob(plan, {
@@ -896,7 +1578,11 @@ function assembleCandidate({
   });
   const orchestratorBody = {
     schemaVersion: 'pumpkin.candidate-orchestrator-plan.v1',
-    candidateKey: profile.candidateKey,
+    candidateKey,
+    tenantUid,
+    publicationId,
+    artifactId,
+    snapshotId,
     releaseId: release.releaseId,
     qualificationClass: profile.qualificationClass,
     hostingClass: profile.hostingClass,
@@ -907,7 +1593,7 @@ function assembleCandidate({
     formPostApproved: false,
     plan,
     job,
-    domainHandoffs: buildDomainHandoffs(profile.candidateKey, readiness.domain),
+    domainHandoffs: buildDomainHandoffs(candidateKey, readiness.domain),
     liveMutation: false,
     networkCalls: 0,
   };
@@ -995,7 +1681,11 @@ function assembleCandidate({
   const packageBytes = createDeterministicTar(candidateFiles);
   const manifestBody = {
     schemaVersion: CANDIDATE_MANIFEST_SCHEMA,
-    candidateKey: profile.candidateKey,
+    candidateKey,
+    tenantUid,
+    publicationId,
+    artifactId,
+    snapshotId,
     qualificationClass: profile.qualificationClass,
     hostingClass: profile.hostingClass,
     releaseId: release.releaseId,
@@ -1022,7 +1712,11 @@ function assembleCandidate({
     manifestSha256: canonicalDigest(manifestBody),
   };
   return {
-    candidateKey: profile.candidateKey,
+    candidateKey,
+    tenantUid,
+    publicationId,
+    artifactId,
+    snapshotId,
     qualificationClass: profile.qualificationClass,
     hostingClass: profile.hostingClass,
     packageBytes,
@@ -1050,6 +1744,10 @@ function buildReadiness({
     schemaVersion: READINESS_SCHEMA,
     candidateKey: profile.candidateKey,
     tenantId: profile.tenantId,
+    tenantUid: staticProjection.manifest.tenantUid,
+    publicationId: staticProjection.manifest.publicationId,
+    artifactId: staticProjection.manifest.artifactId,
+    snapshotId: staticProjection.manifest.snapshotId,
     releaseId: release.releaseId,
     qualificationClass: profile.qualificationClass,
     hostingClass: profile.hostingClass,
@@ -1074,7 +1772,7 @@ function buildReadiness({
       media:
         counts.mediaReferences === counts.embeddedMedia
           ? 'COUNT_PRESERVED'
-          : 'HASH_OR_REFERENCE_INVENTORY_ONLY_NOT_EMBEDDED',
+          : 'MUTABLE_UNVERIFIED_REFERENCE_INVENTORY_ONLY_NOT_EMBEDDED',
       themes:
         counts.themes === counts.projectedThemes
           ? 'COUNT_PRESERVED'
@@ -1101,6 +1799,12 @@ function buildReadiness({
         ? 'SOURCE_CAPABILITY_REQUIRES_TARGET_RUNTIME_REVIEW'
         : 'NOT_DECLARED',
       publicBehavior: 'LOCAL_PREVIEW_ONLY_NO_POST_NO_DEPLOYMENT',
+      fidelityComplete:
+        profile.qualificationClass === QualificationClass.STATIC_READY &&
+        counts.routes === counts.projectedRoutes &&
+        counts.redirects === counts.projectedRedirects &&
+        counts.mediaReferences === counts.embeddedMedia &&
+        counts.forms === counts.projectedForms,
     },
     domain,
     ageGate,
@@ -1221,7 +1925,11 @@ function buildDomainHandoffs(candidateKey, domain) {
 }
 
 async function buildAirstripFreeze(repositoryRoot, release) {
-  const sourceEvidence = await buildSourceEvidence(repositoryRoot, AIRSTRIP_SOURCE_REFS);
+  const sourceEvidence = await buildSourceEvidence(
+    repositoryRoot,
+    AIRSTRIP_SOURCE_REFS,
+    release.sourceCommit,
+  );
   const body = {
     schemaVersion: AIRSTRIP_FREEZE_SCHEMA,
     candidateKey: CandidateKey.AIRSTRIP,
@@ -1288,15 +1996,32 @@ async function buildRetainedPub20SyntheticArtifact(
   repositoryRoot,
   release,
   attribution,
+  platformOriginAuthorization,
 ) {
   const sourceRef = 'tools/static-tenant-publication/synthetic-tenant-secondary.json';
-  const sourceBytesBefore = await readBytesRef(repositoryRoot, sourceRef);
+  const sourceBytesBefore = await readBytesRef(
+    repositoryRoot,
+    sourceRef,
+    release.sourceCommit,
+  );
   const legacy = parseJsonBytes(sourceBytesBefore, sourceRef);
+  const platformOriginAuthority =
+    platformOriginAuthorization?.authority ?? null;
+  const platformOriginVerifier =
+    platformOriginAuthorization?.verifier ?? null;
   const canonicalInput = adaptPub20Input(legacy, release, {
     attributionFiles: attributionForPublisher(attribution),
+    platformOriginAuthority,
+    platformOriginVerifier,
   });
-  const first = publishTenantSnapshot(canonicalInput);
-  const second = publishTenantSnapshot(canonicalInput);
+  const first = publishTenantSnapshot(canonicalInput, {
+    platformOriginAuthority,
+    platformOriginVerifier,
+  });
+  const second = publishTenantSnapshot(canonicalInput, {
+    platformOriginAuthority,
+    platformOriginVerifier,
+  });
   if (
     !first.packageBytes.equals(second.packageBytes) ||
     !first.manifestBytes.equals(second.manifestBytes)
@@ -1306,7 +2031,11 @@ async function buildRetainedPub20SyntheticArtifact(
       'Retained PUB-20 synthetic output is not deterministic.',
     );
   }
-  const sourceBytesAfter = await readBytesRef(repositoryRoot, sourceRef);
+  const sourceBytesAfter = await readBytesRef(
+    repositoryRoot,
+    sourceRef,
+    release.sourceCommit,
+  );
   if (!sourceBytesBefore.equals(sourceBytesAfter)) {
     throw new ContractError(
       'retained_pub20_source_changed',
@@ -1743,8 +2472,10 @@ function collectPublicMediaReferences(value) {
       try {
         const normalized = safePublicHttps(text);
         references.set(`url:${normalized}`, {
-          kind: 'PUBLIC_HTTPS_REFERENCE_NOT_FETCHED',
+          kind: 'MUTABLE_UNVERIFIED_REFERENCE',
           reference: normalized,
+          fetchedOrVerified: false,
+          fidelityEvidence: false,
         });
       } catch {
         // Invalid or credential-bearing media URLs are omitted from public evidence.
@@ -1831,8 +2562,12 @@ function buildRouteNavigation(routes) {
     }));
 }
 
-async function loadFrozenAttribution(repositoryRoot) {
-  const manifestBytes = await readBytesRef(repositoryRoot, ATTRIBUTION_MANIFEST_REF);
+async function loadFrozenAttribution(repositoryRoot, sourceCommit) {
+  const manifestBytes = await readBytesRef(
+    repositoryRoot,
+    ATTRIBUTION_MANIFEST_REF,
+    sourceCommit,
+  );
   const manifest = parseJsonBytes(manifestBytes, ATTRIBUTION_MANIFEST_REF);
   if (
     manifest.observedLicenseEvidence?.distributionDecision !==
@@ -1858,7 +2593,11 @@ async function loadFrozenAttribution(repositoryRoot) {
       record.sha256,
       `attribution.files[${index}].sha256`,
     );
-    const sourceBytes = await readBytesRef(repositoryRoot, sourcePath);
+    const sourceBytes = await readBytesRef(
+      repositoryRoot,
+      sourcePath,
+      sourceCommit,
+    );
     let sourceText;
     try {
       sourceText = new TextDecoder('utf-8', { fatal: true }).decode(sourceBytes);
@@ -1919,10 +2658,14 @@ function attributionForPublisher(attribution) {
   }));
 }
 
-async function buildSourceEvidence(repositoryRoot, sourceRefs) {
+async function buildSourceEvidence(repositoryRoot, sourceRefs, sourceCommit) {
   const files = [];
   for (const sourceRef of uniqueSorted(sourceRefs)) {
-    const bytes = await readBytesRef(repositoryRoot, sourceRef);
+    const bytes = await readBytesRef(
+      repositoryRoot,
+      sourceRef,
+      sourceCommit,
+    );
     files.push({
       sourceRef,
       bytes: bytes.length,
@@ -1956,10 +2699,7 @@ function normalizeRelease(releaseContext = {}) {
       'release.releaseId',
     ),
     version: safeBounded(releaseContext.version, 120, '0.0.0-local'),
-    sourceCommit: assertSafeIdentifier(
-      releaseContext.sourceCommit,
-      'release.sourceCommit',
-    ),
+    sourceCommit: normalizeSourceCommit(releaseContext.sourceCommit),
     lockfileSha256: assertSha256(
       releaseContext.lockfileSha256,
       'release.lockfileSha256',
@@ -1969,15 +2709,19 @@ function normalizeRelease(releaseContext = {}) {
   };
 }
 
-async function readJsonRef(repositoryRoot, sourceRef) {
+async function readJsonRef(repositoryRoot, sourceRef, sourceCommit) {
   return parseJsonBytes(
-    await readBytesRef(repositoryRoot, sourceRef),
+    await readBytesRef(repositoryRoot, sourceRef, sourceCommit),
     sourceRef,
   );
 }
 
-async function readTextRef(repositoryRoot, sourceRef) {
-  const bytes = await readBytesRef(repositoryRoot, sourceRef);
+async function readTextRef(repositoryRoot, sourceRef, sourceCommit) {
+  const bytes = await readBytesRef(
+    repositoryRoot,
+    sourceRef,
+    sourceCommit,
+  );
   try {
     return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
   } catch {
@@ -1988,42 +2732,190 @@ async function readTextRef(repositoryRoot, sourceRef) {
   }
 }
 
-async function readBytesRef(repositoryRoot, sourceRef) {
-  const filePath = resolveRepositoryRef(repositoryRoot, sourceRef);
-  let stat;
+async function readBytesRef(repositoryRoot, sourceRef, sourceCommit) {
+  const safeRef = assertSafeRelativeReference(sourceRef, 'sourceRef');
+  const root = await assertExactRepositoryCommit(
+    repositoryRoot,
+    sourceCommit,
+  );
+  let treeOutput;
   try {
-    stat = await fs.stat(filePath);
-  } catch {
+    ({ stdout: treeOutput } = await execGit(
+      root,
+      [
+        'ls-tree',
+        '-z',
+        '--full-tree',
+        sourceCommit,
+        '--',
+        safeRef,
+      ],
+      MAX_COMMITTED_SOURCE_BYTES,
+    ));
+  } catch (error) {
+    throw new ContractError(
+      'source_ref_tree_lookup_failed',
+      `Committed source reference could not be resolved from Git: ${sourceRef}`,
+      { causeCode: error?.code ?? 'git_failed' },
+    );
+  }
+  const records = splitNulRecords(treeOutput);
+  if (records.length !== 1) {
     throw new ContractError(
       'source_ref_missing',
-      `Committed source reference is missing: ${sourceRef}`,
+      `Committed source reference is missing or ambiguous: ${sourceRef}`,
     );
   }
-  if (!stat.isFile()) {
+  const match =
+    /^([0-9]{6}) (blob|tree|commit) ([a-f0-9]{40,64})\t([\s\S]+)$/.exec(
+      records[0],
+    );
+  if (!match || match[4] !== safeRef) {
     throw new ContractError(
-      'source_ref_not_file',
-      `Committed source reference is not a file: ${sourceRef}`,
+      'source_ref_tree_entry_invalid',
+      `Committed source tree entry is invalid: ${sourceRef}`,
     );
   }
-  return fs.readFile(filePath);
-}
-
-function resolveRepositoryRef(repositoryRoot, sourceRef) {
-  const safeRef = assertSafeRelativeReference(sourceRef, 'sourceRef');
-  const root = path.resolve(repositoryRoot);
-  const resolved = path.resolve(root, ...safeRef.split('/'));
-  const relative = path.relative(root, resolved);
+  const [, mode, type, objectId] = match;
   if (
-    relative === '' ||
-    relative.startsWith('..') ||
-    path.isAbsolute(relative)
+    type !== 'blob' ||
+    (mode !== '100644' && mode !== '100755')
   ) {
     throw new ContractError(
-      'source_ref_scope_invalid',
-      `Source reference escaped the repository: ${sourceRef}`,
+      mode === '120000'
+        ? 'source_ref_symlink_forbidden'
+        : 'source_ref_not_file',
+      `Committed source reference must be a regular Git blob: ${sourceRef}`,
     );
   }
-  return resolved;
+  let blobOutput;
+  try {
+    ({ stdout: blobOutput } = await execGit(
+      root,
+      ['cat-file', 'blob', objectId],
+      MAX_COMMITTED_SOURCE_BYTES,
+    ));
+  } catch (error) {
+    throw new ContractError(
+      'source_ref_blob_read_failed',
+      `Committed source blob could not be read: ${sourceRef}`,
+      { causeCode: error?.code ?? 'git_failed' },
+    );
+  }
+  return Buffer.from(blobOutput);
+}
+
+function normalizeSourceCommit(value) {
+  if (typeof value !== 'string' || !/^[a-f0-9]{40}$/.test(value)) {
+    throw new ContractError(
+      'source_commit_invalid',
+      'release.sourceCommit must be an exact lowercase 40-character commit SHA.',
+    );
+  }
+  return value;
+}
+
+async function assertExactRepositoryCommit(repositoryRoot, sourceCommit) {
+  const commit = normalizeSourceCommit(sourceCommit);
+  const root = path.resolve(repositoryRoot);
+  const rootStat = await lstatRequired(
+    root,
+    'source_repository_missing',
+    'Repository root is missing.',
+  );
+  if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) {
+    throw new ContractError(
+      'source_repository_boundary_invalid',
+      'Repository root must be a real directory, not a symbolic link.',
+    );
+  }
+  const realRoot = await fs.realpath(root);
+  let topLevelOutput;
+  let commitOutput;
+  try {
+    ({ stdout: topLevelOutput } = await execGit(
+      realRoot,
+      ['rev-parse', '--show-toplevel'],
+      1024 * 1024,
+    ));
+    ({ stdout: commitOutput } = await execGit(
+      realRoot,
+      ['rev-parse', '--verify', `${commit}^{commit}`],
+      1024 * 1024,
+    ));
+  } catch (error) {
+    throw new ContractError(
+      'source_commit_unavailable',
+      'The exact source commit is unavailable in the repository object database.',
+      { causeCode: error?.code ?? 'git_failed' },
+    );
+  }
+  const gitRoot = path.resolve(
+    topLevelOutput.toString('utf8').trim(),
+  );
+  if (!samePath(realRoot, gitRoot)) {
+    throw new ContractError(
+      'source_repository_root_mismatch',
+      'repositoryRoot must be the exact Git worktree root.',
+    );
+  }
+  if (commitOutput.toString('ascii').trim() !== commit) {
+    throw new ContractError(
+      'source_commit_resolution_mismatch',
+      'The source commit did not resolve to the exact supplied commit.',
+    );
+  }
+  return realRoot;
+}
+
+async function execGit(repositoryRoot, args, maxBuffer) {
+  return execFileAsync(
+    'git',
+    [
+      '--literal-pathspecs',
+      '-C',
+      repositoryRoot,
+      ...args,
+    ],
+    {
+      encoding: 'buffer',
+      windowsHide: true,
+      maxBuffer,
+      env: sanitizedGitEnvironment(),
+    },
+  );
+}
+
+function sanitizedGitEnvironment() {
+  const environment = { ...process.env };
+  for (const key of Object.keys(environment)) {
+    if (
+      /^(?:GIT_DIR|GIT_WORK_TREE|GIT_INDEX_FILE|GIT_OBJECT_DIRECTORY|GIT_ALTERNATE_OBJECT_DIRECTORIES|GIT_COMMON_DIR|GIT_CONFIG_COUNT|GIT_CONFIG_KEY_\d+|GIT_CONFIG_VALUE_\d+|GIT_CEILING_DIRECTORIES)$/.test(
+        key,
+      )
+    ) {
+      delete environment[key];
+    }
+  }
+  environment.GIT_CONFIG_NOSYSTEM = '1';
+  environment.GIT_CONFIG_GLOBAL =
+    process.platform === 'win32' ? 'NUL' : '/dev/null';
+  environment.GIT_OPTIONAL_LOCKS = '0';
+  return environment;
+}
+
+function splitNulRecords(bytes) {
+  const text = Buffer.from(bytes).toString('utf8');
+  if (!text.endsWith('\0')) return text.length === 0 ? [] : [text];
+  return text.slice(0, -1).split('\0');
+}
+
+function samePath(left, right) {
+  const leftResolved = path.resolve(left);
+  const rightResolved = path.resolve(right);
+  return process.platform === 'win32'
+    ? leftResolved.toLowerCase() === rightResolved.toLowerCase()
+    : leftResolved === rightResolved;
 }
 
 function parseJsonBytes(bytes, sourceRef) {
@@ -2050,15 +2942,198 @@ function assertOutsideRepository(repositoryRoot, outputRoot) {
   const root = path.resolve(repositoryRoot);
   const destination = path.resolve(outputRoot);
   const relative = path.relative(root, destination);
+  const outside =
+    relative === '..' ||
+    relative.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(relative);
   if (
     relative === '' ||
-    (!relative.startsWith('..') && !path.isAbsolute(relative))
+    !outside
   ) {
     throw new ContractError(
       'candidate_output_inside_repository',
       'Candidate output must be outside the repository.',
     );
   }
+}
+
+async function createSafeCandidateOutputRoot(repositoryRoot, outputRoot) {
+  const root = path.resolve(repositoryRoot);
+  const destination = path.resolve(outputRoot);
+  assertOutsideRepository(root, destination);
+
+  const rootStat = await lstatRequired(
+    root,
+    'candidate_repository_missing',
+    'Repository root is missing.',
+  );
+  if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) {
+    throw new ContractError(
+      'candidate_repository_boundary_invalid',
+      'Repository root must be a real directory, not a symbolic link.',
+    );
+  }
+  const realRepositoryRoot = await fs.realpath(root);
+  const prefix = await inspectExistingPathPrefix(destination);
+  if (prefix.destinationExists) {
+    throw new ContractError(
+      'candidate_output_exists',
+      'Candidate output root must not already exist.',
+    );
+  }
+  const realExistingParent = await fs.realpath(prefix.existingPath);
+  const projectedDestination = path.resolve(
+    realExistingParent,
+    ...prefix.missingSegments,
+  );
+  assertRealPathOutsideRepository(realRepositoryRoot, projectedDestination);
+
+  let realDestination = realExistingParent;
+  for (const segment of prefix.missingSegments) {
+    const next = path.join(realDestination, segment);
+    await fs.mkdir(next);
+    const stat = await fs.lstat(next);
+    if (stat.isSymbolicLink() || !stat.isDirectory()) {
+      throw new ContractError(
+        'candidate_output_boundary_invalid',
+        'Candidate output creation produced an unsafe directory boundary.',
+      );
+    }
+    realDestination = await fs.realpath(next);
+    assertRealPathOutsideRepository(realRepositoryRoot, realDestination);
+  }
+  await assertDirectoryPathWithoutSymlinks(realDestination, 'candidate output');
+  assertRealPathOutsideRepository(realRepositoryRoot, realDestination);
+  return realDestination;
+}
+
+async function inspectExistingPathPrefix(targetPath) {
+  const resolved = path.resolve(targetPath);
+  const parsed = path.parse(resolved);
+  const segments = path
+    .relative(parsed.root, resolved)
+    .split(path.sep)
+    .filter(Boolean);
+  let cursor = parsed.root;
+  for (const [index, segment] of segments.entries()) {
+    const next = path.join(cursor, segment);
+    let stat;
+    try {
+      stat = await fs.lstat(next);
+    } catch (error) {
+      if (error?.code !== 'ENOENT') throw error;
+      return {
+        existingPath: cursor,
+        missingSegments: segments.slice(index),
+        destinationExists: false,
+      };
+    }
+    if (stat.isSymbolicLink()) {
+      throw new ContractError(
+        'candidate_output_symlink_forbidden',
+        'Candidate output path must not traverse a symbolic link.',
+      );
+    }
+    if (!stat.isDirectory()) {
+      if (index === segments.length - 1) {
+        return {
+          existingPath: next,
+          missingSegments: [],
+          destinationExists: true,
+        };
+      }
+      throw new ContractError(
+        'candidate_output_parent_not_directory',
+        'Candidate output path has a non-directory parent.',
+      );
+    }
+    cursor = next;
+  }
+  return {
+    existingPath: cursor,
+    missingSegments: [],
+    destinationExists: true,
+  };
+}
+
+async function assertDirectoryPathWithoutSymlinks(directoryPath, label) {
+  const resolved = path.resolve(directoryPath);
+  const parsed = path.parse(resolved);
+  const segments = path
+    .relative(parsed.root, resolved)
+    .split(path.sep)
+    .filter(Boolean);
+  let cursor = parsed.root;
+  for (const segment of segments) {
+    cursor = path.join(cursor, segment);
+    const stat = await lstatRequired(
+      cursor,
+      'candidate_output_missing',
+      `${label} path is missing.`,
+    );
+    if (stat.isSymbolicLink()) {
+      throw new ContractError(
+        'candidate_output_symlink_forbidden',
+        `${label} path must not traverse a symbolic link.`,
+      );
+    }
+    if (!stat.isDirectory()) {
+      throw new ContractError(
+        'candidate_output_not_directory',
+        `${label} path must contain only directories.`,
+      );
+    }
+  }
+}
+
+function assertRealPathOutsideRepository(realRepositoryRoot, realOutputRoot) {
+  if (
+    pathEquals(realRepositoryRoot, realOutputRoot) ||
+    isStrictDescendant(realRepositoryRoot, realOutputRoot)
+  ) {
+    throw new ContractError(
+      'candidate_output_inside_repository',
+      'Candidate output must be outside the real repository boundary.',
+    );
+  }
+}
+
+function resolveCandidateOutputRef(outputRoot, candidateKey, label) {
+  const safeKey = assertCurrentCandidateKey(candidateKey, label);
+  const root = path.resolve(outputRoot);
+  const resolved = path.resolve(root, safeKey);
+  if (!isStrictDescendant(root, resolved)) {
+    throw new ContractError(
+      'candidate_output_ref_scope_invalid',
+      `${label} escaped the candidate output root.`,
+    );
+  }
+  return resolved;
+}
+
+async function lstatRequired(filePath, code, message) {
+  try {
+    return await fs.lstat(filePath);
+  } catch (error) {
+    if (error?.code === 'ENOENT') {
+      throw new ContractError(code, message);
+    }
+    throw error;
+  }
+}
+
+function isStrictDescendant(parentPath, childPath) {
+  const relative = path.relative(path.resolve(parentPath), path.resolve(childPath));
+  return (
+    relative !== '' &&
+    !relative.startsWith(`..${path.sep}`) &&
+    relative !== '..' &&
+    !path.isAbsolute(relative)
+  );
+}
+
+function pathEquals(left, right) {
+  return path.relative(path.resolve(left), path.resolve(right)) === '';
 }
 
 async function writeNew(filePath, content) {
@@ -2071,18 +3146,85 @@ async function writeNew(filePath, content) {
 }
 
 async function writeNewJson(filePath, value) {
-  await writeNew(filePath, Buffer.from(`${stableStringify(value)}\n`, 'utf8'));
+  await writeNew(filePath, serializedJsonBytes(value));
 }
 
-async function walkFiles(root) {
+function serializedJsonBytes(value) {
+  return Buffer.from(`${stableStringify(value)}\n`, 'utf8');
+}
+
+function serializedJsonSha256(value) {
+  return sha256(serializedJsonBytes(value));
+}
+
+function assertCurrentCandidateKey(value, label) {
+  const candidateKey = assertSafeIdentifier(value, label, { backend: true });
+  if (!CURRENT_CANDIDATE_KEY_SET.has(candidateKey)) {
+    throw new ContractError(
+      'candidate_key_invalid',
+      `${label} is not a committed current-tenant candidate key.`,
+    );
+  }
+  return candidateKey;
+}
+
+function assertExactObjectKeys(value, expectedKeys, code, label) {
+  if (
+    !value ||
+    typeof value !== 'object' ||
+    Array.isArray(value) ||
+    Object.getPrototypeOf(value) !== Object.prototype
+  ) {
+    throw new ContractError(code, `${label} must be a plain object.`);
+  }
+  const actual = Object.keys(value).sort((left, right) =>
+    left.localeCompare(right, 'en'),
+  );
+  const expected = [...expectedKeys].sort((left, right) =>
+    left.localeCompare(right, 'en'),
+  );
+  if (
+    actual.length !== expected.length ||
+    actual.some((key, index) => key !== expected[index])
+  ) {
+    throw new ContractError(code, `${label} has an unexpected key shape.`, {
+      expected,
+      actual,
+    });
+  }
+}
+
+async function walkFiles(root, boundaryRoot = root) {
   const entries = await fs.readdir(root, { withFileTypes: true });
   const files = [];
   for (const entry of entries.sort((left, right) =>
     left.name.localeCompare(right.name, 'en'),
   )) {
     const entryPath = path.join(root, entry.name);
-    if (entry.isDirectory()) files.push(...(await walkFiles(entryPath)));
-    else if (entry.isFile()) files.push(entryPath);
+    const stat = await fs.lstat(entryPath);
+    if (stat.isSymbolicLink()) {
+      throw new ContractError(
+        'candidate_output_symlink_forbidden',
+        'Candidate output inventory must not traverse symbolic links.',
+      );
+    }
+    const realEntryPath = await fs.realpath(entryPath);
+    if (!isStrictDescendant(boundaryRoot, realEntryPath)) {
+      throw new ContractError(
+        'candidate_output_realpath_scope_invalid',
+        'Candidate output inventory escaped its real root.',
+      );
+    }
+    if (stat.isDirectory()) {
+      files.push(...(await walkFiles(realEntryPath, boundaryRoot)));
+    } else if (stat.isFile()) {
+      files.push(realEntryPath);
+    } else {
+      throw new ContractError(
+        'candidate_output_entry_type_invalid',
+        'Candidate output inventory contains a non-file entry.',
+      );
+    }
   }
   return files;
 }

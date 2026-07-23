@@ -1,4 +1,10 @@
 import {
+  createPublicKey,
+  verify as verifySignature,
+} from 'node:crypto';
+import postcss from 'postcss';
+import parseCssValue from 'postcss-value-parser';
+import {
   ContractError,
   ContractVersion,
   FormMode,
@@ -6,10 +12,16 @@ import {
   PublicationMode,
   assertEnumValue,
 } from './contracts.mjs';
-import { canonicalDigest, sha256, stableStringify } from './canonical.mjs';
+import {
+  canonicalDigest,
+  immutable,
+  sha256,
+  stableStringify,
+} from './canonical.mjs';
 import { createDeterministicTar, fileInventory } from './archive.mjs';
 import {
   assertDistributableHygiene,
+  assertGitCommitSha,
   assertHttpsUrl,
   assertNoForbiddenData,
   assertSafeArtifactPath,
@@ -35,8 +47,21 @@ const SUPPORTED_ATTRIBUTION_PATHS = new Set([
 const THIRD_PARTY_ATTRIBUTION_PATH =
   /^third-party\/[a-z0-9](?:[a-z0-9.-]{0,62}[a-z0-9])?\/(?:LICENSE|LICENSE\.txt|NOTICE|NOTICE\.txt)$/;
 const LEGAL_DISTRIBUTION_STATE = 'HELD_PENDING_OWNER_LEGAL_REVIEW';
+const ACCEPTED_RELEASE_LICENSE_STATES = new Set([
+  LEGAL_DISTRIBUTION_STATE,
+  'OWNER_LEGAL_REVIEW_ACCEPTED',
+]);
+const PLATFORM_ORIGIN_VERIFIERS = new WeakMap();
+const PLATFORM_ORIGIN_BOOT_PUBLIC_KEY_SHA256 =
+  process.env.PUMPKIN_PLATFORM_ORIGIN_PUBLIC_KEY_SHA256 ?? null;
+const PLATFORM_ORIGIN_BOOT_VERIFIER_SHA256 =
+  process.env.PUMPKIN_PLATFORM_ORIGIN_VERIFIER_SHA256 ?? null;
+const MAX_PLATFORM_ORIGIN_AUTHORITY_VALIDITY_MS = 24 * 60 * 60 * 1000;
 const RESERVED_ROUTES = [
   '/assets',
+  '/index.html',
+  '/404.html',
+  '/README.txt',
   '/robots.txt',
   '/sitemap.xml',
   '/tenant-manifest.json',
@@ -48,6 +73,60 @@ const RESERVED_ROUTES = [
   '/compatibility-report.json',
   '/staticwebapp.config.json',
 ];
+const EMBEDDED_MEDIA_FORMATS = Object.freeze({
+  'image/png': Object.freeze({
+    extensions: Object.freeze(['.png']),
+    matches: (bytes) =>
+      bytes.length >= 8 &&
+      bytes.subarray(0, 8).equals(
+        Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+      ),
+  }),
+  'image/jpeg': Object.freeze({
+    extensions: Object.freeze(['.jpg', '.jpeg']),
+    matches: (bytes) =>
+      bytes.length >= 4 &&
+      bytes[0] === 0xff &&
+      bytes[1] === 0xd8 &&
+      bytes.at(-2) === 0xff &&
+      bytes.at(-1) === 0xd9,
+  }),
+  'image/gif': Object.freeze({
+    extensions: Object.freeze(['.gif']),
+    matches: (bytes) =>
+      bytes.length >= 6 &&
+      (bytes.subarray(0, 6).toString('ascii') === 'GIF87a' ||
+        bytes.subarray(0, 6).toString('ascii') === 'GIF89a'),
+  }),
+  'image/webp': Object.freeze({
+    extensions: Object.freeze(['.webp']),
+    matches: (bytes) =>
+      bytes.length >= 12 &&
+      bytes.subarray(0, 4).toString('ascii') === 'RIFF' &&
+      bytes.subarray(8, 12).toString('ascii') === 'WEBP',
+  }),
+  'application/pdf': Object.freeze({
+    extensions: Object.freeze(['.pdf']),
+    matches: (bytes) =>
+      bytes.length >= 9 &&
+      bytes.subarray(0, 5).toString('ascii') === '%PDF-' &&
+      bytes
+        .subarray(Math.max(0, bytes.length - 1024))
+        .includes(Buffer.from('%%EOF', 'ascii')),
+  }),
+  'font/woff': Object.freeze({
+    extensions: Object.freeze(['.woff']),
+    matches: (bytes) =>
+      bytes.length >= 4 &&
+      bytes.subarray(0, 4).toString('ascii') === 'wOFF',
+  }),
+  'font/woff2': Object.freeze({
+    extensions: Object.freeze(['.woff2']),
+    matches: (bytes) =>
+      bytes.length >= 4 &&
+      bytes.subarray(0, 4).toString('ascii') === 'wOF2',
+  }),
+});
 
 const PUBLIC_FORM_CLIENT = `(() => {
   "use strict";
@@ -56,16 +135,27 @@ const PUBLIC_FORM_CLIENT = `(() => {
   let metadata;
   try { metadata = JSON.parse(metadataNode.textContent || "{}"); } catch { return; }
   if (metadata.formMode !== "PUBLIC_FORMS_LIVE") return;
+  const originAuthority = metadata.platformOriginAuthority;
+  const originAuthorityExpiresAt = Date.parse(originAuthority && originAuthority.expiresAt);
+  if (!Number.isFinite(originAuthorityExpiresAt) || originAuthorityExpiresAt <= Date.now()) return;
   const mappings = metadata.publicFormMappings || {};
   for (const form of document.querySelectorAll("[data-pumpkin-public-form]")) {
     const mapping = mappings[form.dataset.formId || ""];
     const button = form.querySelector("[data-pumpkin-submit]");
     const status = form.querySelector("[data-pumpkin-form-status]");
     if (!mapping || !button || !status) continue;
+    let logicalSubmissionSeed = null;
     button.disabled = false;
     button.setAttribute("aria-disabled", "false");
     button.addEventListener("click", async () => {
       if (button.disabled || !form.reportValidity()) return;
+      if (originAuthorityExpiresAt <= Date.now()) {
+        button.disabled = true;
+        status.textContent = "Submission authorization expired.";
+        status.dataset.state = "error";
+        status.dataset.code = "origin_authority_expired";
+        return;
+      }
       const values = {};
       for (const control of form.querySelectorAll("[data-field-name]")) {
         const name = control.dataset.fieldName;
@@ -84,7 +174,8 @@ const PUBLIC_FORM_CLIENT = `(() => {
       button.disabled = true;
       status.textContent = "Sending…";
       status.dataset.state = "pending";
-      const seed = crypto.randomUUID();
+      logicalSubmissionSeed ||= crypto.randomUUID();
+      const seed = logicalSubmissionSeed;
       try {
         const preflightResponse = await fetch(metadata.apiBaseUrl + mapping.preflightPath, {
           method: "POST",
@@ -111,12 +202,21 @@ const PUBLIC_FORM_CLIENT = `(() => {
         status.textContent = "Thank you. Your request was received.";
         status.dataset.state = "success";
         status.dataset.code = "created_or_replayed";
+        logicalSubmissionSeed = null;
       } catch {
         status.textContent = "Submission was not completed. Please try again.";
         status.dataset.state = "error";
         status.dataset.code = "transport_failed";
         button.disabled = false;
       }
+    });
+    form.addEventListener("reset", () => {
+      logicalSubmissionSeed = null;
+      status.textContent = "";
+      status.dataset.state = "";
+      status.dataset.code = "";
+      button.disabled = false;
+      button.setAttribute("aria-disabled", "false");
     });
   }
 })();\n`;
@@ -160,8 +260,33 @@ export class PublisherValidationError extends ContractError {
   }
 }
 
-export function publishTenantSnapshot(rawInput) {
-  const input = normalizePublicationInput(rawInput);
+export function createPrivilegedPlatformOriginVerifier(rawConfiguration) {
+  const configuration = normalizePlatformOriginVerifierConfiguration(
+    rawConfiguration,
+  );
+  const verifier = Object.freeze({
+    describe() {
+      return Object.freeze({
+        schemaVersion: configuration.schemaVersion,
+        status: configuration.status,
+        algorithm: configuration.algorithm,
+        keyId: configuration.keyId,
+        publicKeySha256: configuration.publicKeySha256,
+        verifierConfigurationSha256:
+          configuration.verifierConfigurationSha256,
+        revocationListId: configuration.revocationListId,
+        revokedAuthorityCount: configuration.revokedAuthorityIds.size,
+        bootTrustAnchorMatched: true,
+        privateKeyMaterialIncluded: false,
+      });
+    },
+  });
+  PLATFORM_ORIGIN_VERIFIERS.set(verifier, configuration);
+  return verifier;
+}
+
+export function publishTenantSnapshot(rawInput, options = {}) {
+  const input = normalizePublicationInput(rawInput, options);
   const compatibility = buildCompatibilityReport(input);
   const metadata = buildPublicMetadata(input);
   const files = buildArtifactFiles(input, metadata, compatibility);
@@ -190,9 +315,30 @@ export function publishTenantSnapshot(rawInput) {
     mediaCount: input.snapshot.media.length,
     mediaAliasCount: input.snapshot.mediaAliases.length,
     formCount: input.snapshot.forms.length,
+    formsSha256: canonicalDigest(input.snapshot.forms),
+    publicFormApiOrigin:
+      input.publication.formMode === FormMode.PUBLIC_FORMS_LIVE
+        ? input.publication.platformOrigin.origin
+        : null,
+    platformOriginAuthorityReceipt:
+      input.publication.formMode === FormMode.PUBLIC_FORMS_LIVE
+        ? structuredClone(
+            input.publication.platformOrigin.authorityReceipt,
+          )
+        : null,
+    platformOriginAuthorityReceiptSha256:
+      input.publication.formMode === FormMode.PUBLIC_FORMS_LIVE
+        ? canonicalDigest(
+            input.publication.platformOrigin.authorityReceipt,
+          )
+        : null,
     attributionFileCount: input.attributionFiles.length,
     legalDistributionState: LEGAL_DISTRIBUTION_STATE,
     compatibilityStatus: compatibility.status,
+    fidelityStatus: compatibility.fidelityStatus,
+    externalMutableMediaCount: input.snapshot.media.filter(
+      (item) => item.verificationState === 'MUTABLE_UNVERIFIED_REFERENCE',
+    ).length,
     deterministicInputSha256: canonicalDigest(input),
     liveMutation: false,
     indexingMutation: false,
@@ -212,7 +358,117 @@ export function publishTenantSnapshot(rawInput) {
   };
 }
 
-export function normalizePublicationInput(rawInput) {
+export function derivePlatformOriginAuthorityScope(rawInput) {
+  if (!rawInput || typeof rawInput !== 'object' || Array.isArray(rawInput)) {
+    throw new PublisherValidationError(
+      'input_invalid',
+      'Publication input must be an object.',
+    );
+  }
+  assertNoForbiddenData(rawInput, 'publication input');
+  if (rawInput.schemaVersion !== ContractVersion.publicationInput) {
+    throw new PublisherValidationError(
+      'schema_version_invalid',
+      `schemaVersion must be ${ContractVersion.publicationInput}.`,
+    );
+  }
+  const tenant = normalizeTenant(rawInput.tenant);
+  const productRelease = normalizeRelease(rawInput.productRelease);
+  const publication = normalizePublication(rawInput.publication, {
+    tenant,
+    productRelease,
+  });
+  if (publication.formMode !== FormMode.PUBLIC_FORMS_LIVE) {
+    throw new PublisherValidationError(
+      'platform_origin_scope_mode_invalid',
+      'Platform-origin authority scope applies only to PUBLIC_FORMS_LIVE.',
+    );
+  }
+  const snapshot = normalizeSnapshot(rawInput.snapshot, publication);
+  validateCrossReferences(snapshot, publication);
+  return immutable({
+    apiBaseUrl: publication.apiBaseUrl,
+    tenantUid: tenant.tenantUid,
+    publicationId: publication.publicationId,
+    releaseId: productRelease.releaseId,
+    artifactId: publication.artifactId,
+    snapshotId: snapshot.snapshotId,
+    formsSha256: canonicalDigest(snapshot.forms),
+  });
+}
+
+export function verifyPlatformOriginAuthorityReceipt(
+  authority,
+  verifier,
+  expectedScope,
+) {
+  if (
+    !expectedScope ||
+    typeof expectedScope !== 'object' ||
+    Array.isArray(expectedScope)
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_scope_invalid',
+      'Platform-origin receipt verification requires an exact expected scope.',
+    );
+  }
+  const expectedKeys = [
+    'apiBaseUrl',
+    'tenantUid',
+    'publicationId',
+    'releaseId',
+    'artifactId',
+    'snapshotId',
+    'formsSha256',
+  ];
+  if (
+    Object.keys(expectedScope).length !== expectedKeys.length ||
+    expectedKeys.some(
+      (key) =>
+        !Object.prototype.hasOwnProperty.call(expectedScope, key),
+    )
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_scope_invalid',
+      'Platform-origin receipt expected scope has an invalid shape.',
+    );
+  }
+  return immutable(
+    normalizePlatformOriginAuthority(authority, verifier, {
+      apiBaseUrl: assertHttpsUrl(
+        expectedScope.apiBaseUrl,
+        'platformOriginReceipt.apiBaseUrl',
+      ),
+      tenantUid: assertSafeIdentifier(
+        expectedScope.tenantUid,
+        'platformOriginReceipt.tenantUid',
+      ),
+      publicationId: assertSafeIdentifier(
+        expectedScope.publicationId,
+        'platformOriginReceipt.publicationId',
+        { backend: true },
+      ),
+      releaseId: assertSafeIdentifier(
+        expectedScope.releaseId,
+        'platformOriginReceipt.releaseId',
+      ),
+      artifactId: assertSafeIdentifier(
+        expectedScope.artifactId,
+        'platformOriginReceipt.artifactId',
+      ),
+      snapshotId: assertSafeIdentifier(
+        expectedScope.snapshotId,
+        'platformOriginReceipt.snapshotId',
+      ),
+      formsSha256: assertSha256(
+        expectedScope.formsSha256,
+        'platformOriginReceipt.formsSha256',
+      ),
+    }),
+  );
+}
+
+export function normalizePublicationInput(rawInput, options = {}) {
   if (!rawInput || typeof rawInput !== 'object' || Array.isArray(rawInput)) {
     throw new PublisherValidationError('input_invalid', 'Publication input must be an object.');
   }
@@ -223,8 +479,37 @@ export function normalizePublicationInput(rawInput) {
 
   const tenant = normalizeTenant(rawInput.tenant);
   const productRelease = normalizeRelease(rawInput.productRelease);
-  const publication = normalizePublication(rawInput.publication);
+  let publication = normalizePublication(rawInput.publication, {
+    tenant,
+    productRelease,
+  });
   const snapshot = normalizeSnapshot(rawInput.snapshot, publication);
+  if (publication.formMode === FormMode.PUBLIC_FORMS_LIVE) {
+    publication = {
+      ...publication,
+      platformOrigin: normalizePlatformOriginAuthority(
+        options.platformOriginAuthority,
+        options.platformOriginVerifier,
+        {
+          apiBaseUrl: publication.apiBaseUrl,
+          tenantUid: tenant.tenantUid,
+          publicationId: publication.publicationId,
+          releaseId: productRelease.releaseId,
+          artifactId: publication.artifactId,
+          snapshotId: snapshot.snapshotId,
+          formsSha256: canonicalDigest(snapshot.forms),
+        },
+      ),
+    };
+  } else if (
+    options.platformOriginAuthority ||
+    options.platformOriginVerifier
+  ) {
+    throw new PublisherValidationError(
+      'preview_origin_forbidden',
+      'PREVIEW_NO_POST cannot carry an API origin or platform-origin authority.',
+    );
+  }
   const attributionFiles = normalizeAttributionFiles(rawInput.attributionFiles ?? []);
   validateCrossReferences(snapshot, publication);
 
@@ -280,13 +565,24 @@ function normalizeTenant(tenant = {}) {
 }
 
 function normalizeRelease(release = {}) {
+  const licenseStatus =
+    release.licenseStatus ?? LEGAL_DISTRIBUTION_STATE;
+  if (!ACCEPTED_RELEASE_LICENSE_STATES.has(licenseStatus)) {
+    throw new PublisherValidationError(
+      'release_license_status_invalid',
+      'productRelease.licenseStatus must be an explicit closed legal-review disposition.',
+    );
+  }
   const normalized = {
     releaseId: assertSafeIdentifier(release.releaseId, 'productRelease.releaseId'),
     version: boundedText(release.version, 'productRelease.version', 64),
-    sourceCommit: assertSafeIdentifier(release.sourceCommit, 'productRelease.sourceCommit'),
+    sourceCommit: assertGitCommitSha(
+      release.sourceCommit,
+      'productRelease.sourceCommit',
+    ),
     lockfileSha256: assertSha256(release.lockfileSha256, 'productRelease.lockfileSha256'),
     packageVersions: normalizeStringMap(release.packageVersions ?? {}, 'productRelease.packageVersions'),
-    licenseStatus: boundedText(release.licenseStatus ?? 'reviewed', 'productRelease.licenseStatus', 80),
+    licenseStatus,
   };
   if (release.sourceRef !== undefined) {
     normalized.sourceRef = assertSafeRelativeReference(release.sourceRef, 'productRelease.sourceRef');
@@ -294,9 +590,21 @@ function normalizeRelease(release = {}) {
   return normalized;
 }
 
-function normalizePublication(publication = {}) {
+function normalizePublication(
+  publication = {},
+  { tenant, productRelease },
+) {
   const publicationMode = assertEnumValue(PublicationMode, publication.publicationMode, 'publication.publicationMode');
   const formMode = assertEnumValue(FormMode, publication.formMode, 'publication.formMode');
+  const publicationId = assertSafeIdentifier(
+    publication.publicationId,
+    'publication.publicationId',
+    { backend: true },
+  );
+  const artifactId = assertSafeIdentifier(
+    publication.artifactId,
+    'publication.artifactId',
+  );
   if (publicationMode === PublicationMode.PUBLIC_INDEXABLE_OWNER_APPROVAL_REQUIRED) {
     throw new PublisherValidationError(
       'indexing_execution_disabled',
@@ -305,10 +613,14 @@ function normalizePublication(publication = {}) {
   }
 
   let apiBaseUrl = null;
+  const platformOrigin = null;
   if (formMode === FormMode.PUBLIC_FORMS_LIVE) {
     apiBaseUrl = assertHttpsUrl(publication.apiBaseUrl, 'publication.apiBaseUrl');
   } else if (publication.apiBaseUrl) {
-    apiBaseUrl = assertHttpsUrl(publication.apiBaseUrl, 'publication.apiBaseUrl');
+    throw new PublisherValidationError(
+      'preview_origin_forbidden',
+      'PREVIEW_NO_POST cannot carry an API origin or platform-origin authority.',
+    );
   }
 
   const ageGate = normalizeAgeGate(publication.ageGate);
@@ -327,14 +639,353 @@ function normalizePublication(publication = {}) {
     : null;
 
   return {
-    publicationId: assertSafeIdentifier(publication.publicationId, 'publication.publicationId', { backend: true }),
-    artifactId: assertSafeIdentifier(publication.artifactId, 'publication.artifactId'),
+    publicationId,
+    artifactId,
     publicationMode,
     formMode,
     apiBaseUrl,
+    platformOrigin,
     ageGate,
     rollback,
   };
+}
+
+function normalizePlatformOriginAuthority(authority, verifier, context) {
+  if (!authority || typeof authority !== 'object' || Array.isArray(authority)) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_required',
+      'PUBLIC_FORMS_LIVE requires separate approved platform-origin authority.',
+    );
+  }
+  assertNoForbiddenData(authority, 'platform-origin authority');
+  const trustedKey = PLATFORM_ORIGIN_VERIFIERS.get(verifier);
+  if (!trustedKey) {
+    throw new PublisherValidationError(
+      'platform_origin_verifier_unconfigured',
+      'PUBLIC_FORMS_LIVE is held until a privileged immutable platform-origin verifier is configured.',
+    );
+  }
+  const allowedKeys = new Set([
+    'schemaVersion',
+    'authorityId',
+    'approvalState',
+    'action',
+    'origin',
+    'tenantUid',
+    'publicationId',
+    'releaseId',
+    'artifactId',
+    'snapshotId',
+    'formsSha256',
+    'issuedAt',
+    'expiresAt',
+    'revocationState',
+    'revocationListId',
+    'evidenceRef',
+    'keyId',
+    'integritySha256',
+    'signatureBase64',
+  ]);
+  if (
+    Object.keys(authority).length !== allowedKeys.size ||
+    Object.keys(authority).some((key) => !allowedKeys.has(key))
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_shape_invalid',
+      'Platform-origin authority fields are invalid.',
+    );
+  }
+  const {
+    signatureBase64,
+    ...signedBody
+  } = structuredClone(authority);
+  const { integritySha256, ...body } = signedBody;
+  assertSha256(
+    integritySha256,
+    'platformOriginAuthority.integritySha256',
+  );
+  if (canonicalDigest(body) !== integritySha256) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_integrity_invalid',
+      'Platform-origin authority integrity is invalid.',
+    );
+  }
+  if (body.keyId !== trustedKey.keyId) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_key_invalid',
+      'Platform-origin authority key does not match the privileged trust configuration.',
+    );
+  }
+  const signature = decodeCanonicalBase64(
+    signatureBase64,
+    'platformOriginAuthority.signatureBase64',
+  );
+  if (
+    !verifySignature(
+      null,
+      Buffer.from(stableStringify(signedBody), 'utf8'),
+      trustedKey.publicKey,
+      signature,
+    )
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_signature_invalid',
+      'Platform-origin authority signature is not valid under the privileged trust configuration.',
+    );
+  }
+  const origin = assertHttpsUrl(body.origin, 'platformOriginAuthority.origin');
+  const parsed = new URL(origin);
+  if (origin !== parsed.origin || context.apiBaseUrl !== parsed.origin) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_origin_invalid',
+      'Approved platform origin must be an exact HTTPS origin and match apiBaseUrl.',
+    );
+  }
+  if (
+    body.schemaVersion !== 'pumpkin.platform-origin-authority.v1' ||
+    body.approvalState !== 'APPROVED' ||
+    body.action !== 'USE_PUBLIC_FORM_PLATFORM_ORIGIN' ||
+    body.tenantUid !== context.tenantUid ||
+    body.publicationId !== context.publicationId ||
+    body.releaseId !== context.releaseId ||
+    body.artifactId !== context.artifactId ||
+    body.snapshotId !== context.snapshotId ||
+    body.formsSha256 !== context.formsSha256 ||
+    body.revocationState !== 'ACTIVE' ||
+    body.revocationListId !== trustedKey.revocationListId
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_scope_invalid',
+      'Platform-origin authority is not approved for this tenant/publication/release.',
+    );
+  }
+  const authorityId = assertSafeIdentifier(
+    body.authorityId,
+    'platformOriginAuthority.authorityId',
+  );
+  if (trustedKey.revokedAuthorityIds.has(authorityId)) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_revoked',
+      'Platform-origin authority is revoked by the privileged verifier configuration.',
+    );
+  }
+  const issuedAt = normalizeAuthorityTimestamp(
+    body.issuedAt,
+    'platformOriginAuthority.issuedAt',
+  );
+  const expiresAt = normalizeAuthorityTimestamp(
+    body.expiresAt,
+    'platformOriginAuthority.expiresAt',
+  );
+  const now = Date.now();
+  if (
+    issuedAt.milliseconds > now ||
+    expiresAt.milliseconds <= now ||
+    expiresAt.milliseconds <= issuedAt.milliseconds ||
+    expiresAt.milliseconds - issuedAt.milliseconds >
+      MAX_PLATFORM_ORIGIN_AUTHORITY_VALIDITY_MS
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_time_invalid',
+      'Platform-origin authority is not currently valid or exceeds the bounded validity window.',
+    );
+  }
+  return {
+    authorityId,
+    approvalState: 'APPROVED',
+    origin,
+    tenantUid: context.tenantUid,
+    publicationId: context.publicationId,
+    releaseId: context.releaseId,
+    artifactId: context.artifactId,
+    snapshotId: context.snapshotId,
+    formsSha256: assertSha256(
+      body.formsSha256,
+      'platformOriginAuthority.formsSha256',
+    ),
+    issuedAt: issuedAt.value,
+    expiresAt: expiresAt.value,
+    revocationState: 'ACTIVE',
+    revocationListId: trustedKey.revocationListId,
+    evidenceRef: assertSafeRelativeReference(
+      body.evidenceRef,
+      'platformOriginAuthority.evidenceRef',
+    ),
+    keyId: trustedKey.keyId,
+    trustedPublicKeySha256: trustedKey.publicKeySha256,
+    integritySha256,
+    signatureSha256: sha256(signature),
+    authorityReceipt: structuredClone(authority),
+  };
+}
+
+function normalizePlatformOriginVerifierConfiguration(configuration) {
+  if (
+    !configuration ||
+    typeof configuration !== 'object' ||
+    Array.isArray(configuration)
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_verifier_configuration_invalid',
+      'Privileged platform-origin verifier configuration must be an object.',
+    );
+  }
+  assertNoForbiddenData(
+    configuration,
+    'platform-origin verifier configuration',
+  );
+  const expectedKeys = new Set([
+    'schemaVersion',
+    'status',
+    'algorithm',
+    'keyId',
+    'publicKeyPem',
+    'publicKeySha256',
+    'revocationListId',
+    'revokedAuthorityIds',
+  ]);
+  if (
+    Object.keys(configuration).length !== expectedKeys.size ||
+    Object.keys(configuration).some((key) => !expectedKeys.has(key)) ||
+    configuration.schemaVersion !==
+      'pumpkin.platform-origin-verifier-config.v1' ||
+    configuration.status !== 'ACTIVE' ||
+    configuration.algorithm !== 'Ed25519' ||
+    !Array.isArray(configuration.revokedAuthorityIds)
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_verifier_configuration_invalid',
+      'Privileged platform-origin verifier configuration is invalid.',
+    );
+  }
+  const verifierConfigurationSha256 = canonicalDigest(configuration);
+  if (
+    typeof PLATFORM_ORIGIN_BOOT_VERIFIER_SHA256 !== 'string' ||
+    !/^[a-f0-9]{64}$/.test(PLATFORM_ORIGIN_BOOT_VERIFIER_SHA256)
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_boot_verifier_unconfigured',
+      'Platform-origin verification is held until the complete verifier and revocation snapshot is pinned before process startup.',
+    );
+  }
+  if (
+    verifierConfigurationSha256 !==
+    PLATFORM_ORIGIN_BOOT_VERIFIER_SHA256
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_boot_verifier_mismatch',
+      'Platform-origin verifier and revocation snapshot do not match the process-start trust anchor.',
+    );
+  }
+  let publicKey;
+  let publicKeyDer;
+  try {
+    publicKey = createPublicKey(configuration.publicKeyPem);
+    if (publicKey.asymmetricKeyType !== 'ed25519') throw new Error('wrong key type');
+    publicKeyDer = publicKey.export({ format: 'der', type: 'spki' });
+  } catch {
+    throw new PublisherValidationError(
+      'platform_origin_trust_key_invalid',
+      'Platform-origin trust must contain a valid Ed25519 public key.',
+    );
+  }
+  const publicKeySha256 = assertSha256(
+    configuration.publicKeySha256,
+    'platformOriginVerifier.publicKeySha256',
+  );
+  if (sha256(publicKeyDer) !== publicKeySha256) {
+    throw new PublisherValidationError(
+      'platform_origin_trust_key_hash_invalid',
+      'Platform-origin public key does not match its privileged SHA-256.',
+    );
+  }
+  if (
+    typeof PLATFORM_ORIGIN_BOOT_PUBLIC_KEY_SHA256 !== 'string' ||
+    !/^[a-f0-9]{64}$/.test(PLATFORM_ORIGIN_BOOT_PUBLIC_KEY_SHA256)
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_boot_trust_anchor_unconfigured',
+      'Platform-origin verification is held until a lowercase SHA-256 trust anchor is pinned before process startup.',
+    );
+  }
+  if (publicKeySha256 !== PLATFORM_ORIGIN_BOOT_PUBLIC_KEY_SHA256) {
+    throw new PublisherValidationError(
+      'platform_origin_boot_trust_anchor_mismatch',
+      'Platform-origin verifier key does not match the process-start trust anchor.',
+    );
+  }
+  const revokedAuthorityIds = new Set(
+    configuration.revokedAuthorityIds.map((authorityId) =>
+      assertSafeIdentifier(
+        authorityId,
+        'platformOriginVerifier.revokedAuthorityId',
+      ),
+    ),
+  );
+  if (revokedAuthorityIds.size !== configuration.revokedAuthorityIds.length) {
+    throw new PublisherValidationError(
+      'platform_origin_verifier_configuration_invalid',
+      'Privileged platform-origin verifier contains duplicate revoked authority IDs.',
+    );
+  }
+  return {
+    schemaVersion: configuration.schemaVersion,
+    status: 'ACTIVE',
+    algorithm: 'Ed25519',
+    keyId: assertSafeIdentifier(
+      configuration.keyId,
+      'platformOriginVerifier.keyId',
+    ),
+    publicKey,
+    publicKeySha256,
+    verifierConfigurationSha256,
+    revocationListId: assertSafeIdentifier(
+      configuration.revocationListId,
+      'platformOriginVerifier.revocationListId',
+    ),
+    revokedAuthorityIds,
+  };
+}
+
+function normalizeAuthorityTimestamp(value, label) {
+  if (typeof value !== 'string') {
+    throw new PublisherValidationError(
+      'platform_origin_authority_time_invalid',
+      `${label} must be a canonical UTC timestamp.`,
+    );
+  }
+  const milliseconds = Date.parse(value);
+  if (
+    !Number.isFinite(milliseconds) ||
+    new Date(milliseconds).toISOString() !== value
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_time_invalid',
+      `${label} must be a canonical UTC timestamp.`,
+    );
+  }
+  return { value, milliseconds };
+}
+
+function decodeCanonicalBase64(value, label) {
+  if (
+    typeof value !== 'string' ||
+    value.length === 0 ||
+    !/^[A-Za-z0-9+/]+={0,2}$/.test(value)
+  ) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_signature_invalid',
+      `${label} must be canonical base64.`,
+    );
+  }
+  const bytes = Buffer.from(value, 'base64');
+  if (bytes.toString('base64') !== value) {
+    throw new PublisherValidationError(
+      'platform_origin_authority_signature_invalid',
+      `${label} must be canonical base64.`,
+    );
+  }
+  return bytes;
 }
 
 function normalizeAgeGate(ageGate) {
@@ -401,8 +1052,167 @@ function normalizeThemes(themes) {
     if (seenPaths.has(outputPath)) throw new PublisherValidationError('theme_path_collision', `Theme output collision: ${outputPath}`);
     seenPaths.add(outputPath);
     const css = boundedText(theme.css, `snapshot.themes[${index}].css`, 1_000_000, { trim: false });
+    assertClosedResourceCss(css, themeId);
     return { themeId, outputPath, css, cssSha256: sha256(Buffer.from(css, 'utf8')) };
   });
+}
+
+const ALLOWED_CLOSED_RESOURCE_AT_RULES = new Set([
+  '-webkit-keyframes',
+  'charset',
+  'container',
+  'keyframes',
+  'layer',
+  'media',
+  'page',
+  'property',
+  'scope',
+  'starting-style',
+  'supports',
+]);
+const FORBIDDEN_RESOURCE_FUNCTIONS = new Set([
+  '-moz-element',
+  '-webkit-image-set',
+  'cross-fade',
+  'element',
+  'expression',
+  'image',
+  'image-set',
+  'paint',
+  'src',
+  'url',
+]);
+const FORBIDDEN_RESOURCE_PROPERTIES = new Set([
+  '-moz-binding',
+  'behavior',
+  'src',
+]);
+
+function assertClosedResourceCss(css, themeId) {
+  const reject = () => {
+    throw new PublisherValidationError(
+      'theme_external_dependency_forbidden',
+      `${themeId} contains a build-time directive or mutable resource-bearing CSS construct that cannot establish immutable fidelity.`,
+    );
+  };
+  const preflight = decodeCssEscapes(stripCssComments(css), reject);
+  if (
+    /@(?:apply|font-face|import|namespace|tailwind)\b/i.test(preflight) ||
+    /(?:^|[^a-z0-9_-])(?:-moz-element|-webkit-image-set|cross-fade|element|expression|image|image-set|paint|src|url)\s*\(/i.test(
+      preflight,
+    ) ||
+    /(?:https?|data|blob|file|ftp)\s*:|\/\//i.test(preflight)
+  ) {
+    reject();
+  }
+
+  let root;
+  try {
+    root = postcss.parse(css, { from: undefined });
+  } catch {
+    throw new PublisherValidationError(
+      'theme_css_invalid',
+      `${themeId} must contain valid browser CSS.`,
+    );
+  }
+  const inspectValue = (value) => {
+    const decodedValue = decodeCssEscapes(
+      stripCssComments(String(value)),
+      reject,
+    );
+    if (
+      /(?:https?|data|blob|file|ftp)\s*:|\/\//i.test(decodedValue)
+    ) {
+      reject();
+    }
+    let parsed;
+    try {
+      parsed = parseCssValue(decodedValue);
+    } catch {
+      reject();
+    }
+    parsed.walk((node) => {
+      if (
+        node.type === 'function' &&
+        FORBIDDEN_RESOURCE_FUNCTIONS.has(
+          decodeCssEscapes(node.value, reject).toLowerCase(),
+        )
+      ) {
+        reject();
+      }
+    });
+  };
+
+  root.walkAtRules((rule) => {
+    const name = decodeCssEscapes(rule.name, reject).toLowerCase();
+    if (!ALLOWED_CLOSED_RESOURCE_AT_RULES.has(name)) reject();
+    inspectValue(rule.params);
+  });
+  root.walkDecls((declaration) => {
+    const property = decodeCssEscapes(
+      declaration.prop,
+      reject,
+    ).toLowerCase();
+    if (FORBIDDEN_RESOURCE_PROPERTIES.has(property)) reject();
+    inspectValue(declaration.value);
+  });
+}
+
+function stripCssComments(value) {
+  let result = '';
+  for (let index = 0; index < value.length; index += 1) {
+    if (value[index] !== '/' || value[index + 1] !== '*') {
+      result += value[index];
+      continue;
+    }
+    const end = value.indexOf('*/', index + 2);
+    if (end === -1) return `${result}\0`;
+    index = end + 1;
+  }
+  return result;
+}
+
+function decodeCssEscapes(value, reject) {
+  let result = '';
+  for (let index = 0; index < value.length; index += 1) {
+    const character = value[index];
+    if (character === '\0') reject();
+    if (character !== '\\') {
+      result += character;
+      continue;
+    }
+    if (index + 1 >= value.length) reject();
+    const next = value[index + 1];
+    if (next === '\n' || next === '\r' || next === '\f') reject();
+    const remaining = value.slice(index + 1);
+    const hexadecimal = /^[0-9a-f]{1,6}/i.exec(remaining)?.[0] ?? null;
+    if (!hexadecimal) {
+      result += next;
+      index += 1;
+      continue;
+    }
+    const codePoint = Number.parseInt(hexadecimal, 16);
+    if (
+      codePoint === 0 ||
+      codePoint > 0x10ffff ||
+      (codePoint >= 0xd800 && codePoint <= 0xdfff)
+    ) {
+      reject();
+    }
+    result += String.fromCodePoint(codePoint);
+    index += hexadecimal.length;
+    if (/\s/.test(value[index + 1] ?? '')) {
+      if (
+        value[index + 1] === '\r' &&
+        value[index + 2] === '\n'
+      ) {
+        index += 2;
+      } else {
+        index += 1;
+      }
+    }
+  }
+  return result;
 }
 
 function normalizePages(pages, themeIds, formIds, mediaRefs) {
@@ -507,16 +1317,19 @@ function normalizeMedia(media) {
     const mediaId = assertSafeIdentifier(item.mediaId, `${label}.mediaId`);
     if (seenIds.has(mediaId)) throw new PublisherValidationError('media_id_collision', `Duplicate media ID: ${mediaId}`);
     seenIds.add(mediaId);
-    const digest = assertSha256(item.sha256, `${label}.sha256`);
     const mimeType = boundedText(item.mimeType, `${label}.mimeType`, 100);
-    if (!mimeType.startsWith('image/') && !mimeType.startsWith('font/') && mimeType !== 'application/pdf') {
+    const embeddedFormat = EMBEDDED_MEDIA_FORMATS[mimeType];
+    if (!embeddedFormat) {
       throw new PublisherValidationError('media_type_unsupported', `${label}.mimeType is not supported.`);
     }
 
     let outputPath = null;
     let contentBase64 = null;
     let publicUrl = null;
+    let digest = null;
+    let verificationState = null;
     if (item.contentBase64 !== undefined) {
+      digest = assertSha256(item.sha256, `${label}.sha256`);
       if (typeof item.contentBase64 !== 'string' || item.contentBase64.length === 0) {
         throw new PublisherValidationError('media_content_invalid', `${label}.contentBase64 is invalid.`);
       }
@@ -531,11 +1344,40 @@ function normalizeMedia(media) {
       if (!outputPath.startsWith('assets/media/')) {
         throw new PublisherValidationError('media_path_scope_invalid', `${label}.outputPath must be under assets/media/.`);
       }
+      const extension = outputPath
+        .slice(outputPath.lastIndexOf('.'))
+        .toLowerCase();
+      if (!embeddedFormat.extensions.includes(extension)) {
+        throw new PublisherValidationError(
+          'media_extension_mismatch',
+          `${label}.outputPath extension does not match its closed MIME contract.`,
+        );
+      }
+      if (!embeddedFormat.matches(content)) {
+        throw new PublisherValidationError(
+          'media_signature_mismatch',
+          `${label}.contentBase64 does not match the declared MIME magic bytes.`,
+        );
+      }
       if (seenPaths.has(outputPath)) throw new PublisherValidationError('media_path_collision', `Duplicate media output path: ${outputPath}`);
       seenPaths.add(outputPath);
       contentBase64 = item.contentBase64;
+      verificationState = 'EMBEDDED_SHA256_VERIFIED';
     } else if (item.publicUrl !== undefined) {
+      if (item.sha256 !== undefined) {
+        throw new PublisherValidationError(
+          'external_media_digest_forbidden',
+          `${label}.sha256 cannot imply verification for mutable external media.`,
+        );
+      }
+      if (item.referenceClassification !== 'MUTABLE_UNVERIFIED_REFERENCE') {
+        throw new PublisherValidationError(
+          'external_media_classification_required',
+          `${label} must explicitly declare MUTABLE_UNVERIFIED_REFERENCE.`,
+        );
+      }
       publicUrl = assertHttpsUrl(item.publicUrl, `${label}.publicUrl`);
+      verificationState = 'MUTABLE_UNVERIFIED_REFERENCE';
     } else {
       throw new PublisherValidationError('media_source_missing', `${label} requires contentBase64 or publicUrl.`);
     }
@@ -543,7 +1385,15 @@ function normalizeMedia(media) {
       throw new PublisherValidationError('canonical_media_hash_collision', `Duplicate packaged canonical media hash: ${digest}`);
     }
     if (contentBase64) seenHashes.add(digest);
-    return { mediaId, sha256: digest, mimeType, outputPath, contentBase64, publicUrl };
+    return {
+      mediaId,
+      sha256: digest,
+      mimeType,
+      outputPath,
+      contentBase64,
+      publicUrl,
+      verificationState,
+    };
   });
 }
 
@@ -553,6 +1403,12 @@ function normalizeMediaAliases(aliases, mediaById) {
   return aliases.map((item, index) => {
     const alias = assertSafeRelativeReference(item.alias, `snapshot.mediaAliases[${index}].alias`);
     if (seen.has(alias)) throw new PublisherValidationError('media_alias_collision', `Duplicate media alias: ${alias}`);
+    if (mediaById.has(alias)) {
+      throw new PublisherValidationError(
+        'media_alias_canonical_id_collision',
+        `Media alias ${alias} collides with a canonical media ID.`,
+      );
+    }
     seen.add(alias);
     const mediaId = assertSafeIdentifier(item.mediaId, `snapshot.mediaAliases[${index}].mediaId`);
     if (!mediaById.has(mediaId)) {
@@ -657,10 +1513,6 @@ function validateCrossReferences(snapshot, publication) {
   if (!pageRoutes.has('/')) {
     throw new PublisherValidationError('root_route_missing', 'A static publication must include the root route.');
   }
-  if (publication.formMode === FormMode.PREVIEW_NO_POST && snapshot.forms.length > 0 && publication.apiBaseUrl) {
-    // The URL remains out of public metadata; retaining it in the normalized source is harmless
-    // but explicit compatibility output records that transport was suppressed.
-  }
 }
 
 function buildCompatibilityReport(input) {
@@ -683,14 +1535,23 @@ function buildCompatibilityReport(input) {
   const externalMedia = input.snapshot.media.filter((item) => item.publicUrl).map((item) => item.mediaId);
   if (externalMedia.length > 0) {
     warnings.push({
-      code: 'external_media_reference',
+      code: 'mutable_unverified_external_media',
       mediaIds: externalMedia,
-      message: 'External HTTPS media remains hash-bound but is not embedded in the package.',
+      classification: 'MUTABLE_UNVERIFIED_REFERENCE',
+      message:
+        'External HTTPS media is mutable, unverified, not embedded, and cannot establish customer-fidelity completeness.',
     });
   }
   return {
     schemaVersion: 'pumpkin.tenant-publication-compatibility.v1',
-    status: 'compatible',
+    status:
+      externalMedia.length > 0
+        ? 'compatible_with_mutable_unverified_references'
+        : 'compatible',
+    fidelityStatus:
+      externalMedia.length > 0
+        ? 'INCOMPLETE_EXTERNAL_MEDIA_UNVERIFIED'
+        : 'PACKAGE_CONTENT_VERIFIED',
     hostingClass: HostingClass.STATIC_PUBLISHED_SITE,
     unknownBlocks: [],
     warnings,
@@ -716,6 +1577,33 @@ function buildPublicMetadata(input) {
     },
     ageGate: input.publication.ageGate,
     ...(live ? { apiBaseUrl: input.publication.apiBaseUrl } : {}),
+    ...(live
+      ? {
+          platformOriginAuthority: {
+            authorityId: input.publication.platformOrigin.authorityId,
+            integritySha256:
+              input.publication.platformOrigin.integritySha256,
+            tenantUid: input.publication.platformOrigin.tenantUid,
+            publicationId:
+              input.publication.platformOrigin.publicationId,
+            releaseId: input.publication.platformOrigin.releaseId,
+            artifactId: input.publication.platformOrigin.artifactId,
+            snapshotId: input.publication.platformOrigin.snapshotId,
+            formsSha256: input.publication.platformOrigin.formsSha256,
+            issuedAt: input.publication.platformOrigin.issuedAt,
+            expiresAt: input.publication.platformOrigin.expiresAt,
+            revocationState:
+              input.publication.platformOrigin.revocationState,
+            revocationListId:
+              input.publication.platformOrigin.revocationListId,
+            keyId: input.publication.platformOrigin.keyId,
+            trustedPublicKeySha256:
+              input.publication.platformOrigin.trustedPublicKeySha256,
+            signatureSha256:
+              input.publication.platformOrigin.signatureSha256,
+          },
+        }
+      : {}),
     publicFormMappings: Object.fromEntries(
       input.snapshot.forms.map((form) => [
         form.formId,
@@ -768,12 +1656,13 @@ function buildArtifactFiles(input, metadata, compatibility) {
   };
   const mediaInventory = {
     schemaVersion: 'pumpkin.media-inventory.v1',
-    canonical: input.snapshot.media.map(({ mediaId, sha256, mimeType, outputPath, publicUrl }) => ({
+    canonical: input.snapshot.media.map(({ mediaId, sha256, mimeType, outputPath, publicUrl, verificationState }) => ({
       mediaId,
       sha256,
       mimeType,
       outputPath,
       publicUrl,
+      verificationState,
     })),
     aliases: input.snapshot.mediaAliases,
   };
@@ -803,6 +1692,10 @@ function buildArtifactFiles(input, metadata, compatibility) {
     mediaCount: input.snapshot.media.length,
     mediaAliasCount: input.snapshot.mediaAliases.length,
     formCount: input.snapshot.forms.length,
+    externalMutableMediaCount: input.snapshot.media.filter(
+      (item) => item.verificationState === 'MUTABLE_UNVERIFIED_REFERENCE',
+    ).length,
+    fidelityStatus: compatibility.fidelityStatus,
     attributionFiles: input.attributionFiles.map(({ path, sha256 }) => ({ path, sha256 })),
     legalDistributionState: LEGAL_DISTRIBUTION_STATE,
     rollback: input.publication.rollback,
@@ -892,6 +1785,24 @@ function buildArtifactFiles(input, metadata, compatibility) {
     publicationId: input.publication.publicationId,
     releaseId: input.productRelease.releaseId,
     snapshotId: input.snapshot.snapshotId,
+    formMode: input.publication.formMode,
+    formsSha256: canonicalDigest(input.snapshot.forms),
+    publicFormApiOrigin:
+      input.publication.formMode === FormMode.PUBLIC_FORMS_LIVE
+        ? input.publication.platformOrigin.origin
+        : null,
+    platformOriginAuthorityReceipt:
+      input.publication.formMode === FormMode.PUBLIC_FORMS_LIVE
+        ? structuredClone(
+            input.publication.platformOrigin.authorityReceipt,
+          )
+        : null,
+    platformOriginAuthorityReceiptSha256:
+      input.publication.formMode === FormMode.PUBLIC_FORMS_LIVE
+        ? canonicalDigest(
+            input.publication.platformOrigin.authorityReceipt,
+          )
+        : null,
     attributionFiles: input.attributionFiles.map(({ path, sha256 }) => ({ path, sha256 })),
     legalDistributionState: LEGAL_DISTRIBUTION_STATE,
     deterministicInputSha256: canonicalDigest(input),
@@ -1014,7 +1925,14 @@ function publicFormPath(publicationId, formMappingId, operation) {
 }
 
 function isReservedRoute(route) {
-  return RESERVED_ROUTES.some((reserved) => route === reserved || route.startsWith(`${reserved}/`));
+  const foldedRoute = route.toLowerCase();
+  return RESERVED_ROUTES.some((reserved) => {
+    const foldedReserved = reserved.toLowerCase();
+    return (
+      foldedRoute === foldedReserved ||
+      foldedRoute.startsWith(`${foldedReserved}/`)
+    );
+  });
 }
 
 function safeFileSegment(value) {

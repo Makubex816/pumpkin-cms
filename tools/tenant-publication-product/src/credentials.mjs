@@ -27,9 +27,87 @@ export const CredentialReferenceState = Object.freeze({
 });
 
 const ENVIRONMENT_NAME = /^[A-Z][A-Z0-9_]{1,126}$/;
+const AUDITED_HELPER_CONTRACT_VERSION = 'pumpkin.dpapi-swa-audited-helper.v1';
+const AUDITED_HELPER_HANDOFF_VERSION = 'pumpkin.dpapi-swa-helper-handoff.v1';
+const AUTHORITATIVE_IDENTITY_VERSION = 'pumpkin.azure-swa-deployment-identity.v1';
+const AUDITED_HELPER_REFERENCE =
+  'tools/tenant-publication-product/helpers/invoke-dpapi-swa-deployment.ps1';
+const AUDITED_HELPER_INVOCATION_REFERENCE =
+  'helpers/invoke-dpapi-swa-deployment.ps1';
+const AUDITED_HELPER_WORKING_DIRECTORY = 'tools/tenant-publication-product';
+const AUDITED_HELPER_EXECUTABLE = 'powershell.exe';
+const AUDITED_DEPLOYMENT_ENVIRONMENT_VARIABLE = 'SWA_CLI_DEPLOYMENT_TOKEN';
+const AUDITED_HELPER_FIXED_ARGUMENTS = Object.freeze([
+  '-NoLogo',
+  '-NoProfile',
+  '-NonInteractive',
+  '-ExecutionPolicy',
+  'AllSigned',
+  '-File',
+  AUDITED_HELPER_INVOCATION_REFERENCE,
+]);
+const RAW_CREDENTIAL_REFERENCE_KEYS = Object.freeze([
+  'schemaVersion',
+  'credentialReferenceId',
+  'providerType',
+  'state',
+  'purpose',
+  'environmentVariableName',
+  'envelopeFormat',
+  'envelopeMetadataId',
+  'envelopeSha256',
+  'protectionScope',
+  'aclState',
+  'valueIncluded',
+]);
+const SEALED_CREDENTIAL_REFERENCE_KEYS = Object.freeze([
+  ...RAW_CREDENTIAL_REFERENCE_KEYS,
+  'portability',
+  'metadataOnly',
+  'rotationSupported',
+  'tokenResetSupported',
+  'referenceSha256',
+]);
+
+export const AuditedDpapiSwaHelperContract = immutable({
+  implementationStatus:
+    'DESIGN_HELD_TRUST_ANCHOR_UNCONFIGURED',
+  executionBuiltIn: false,
+  trustAnchorConfigured: false,
+  contractVersion: AUDITED_HELPER_CONTRACT_VERSION,
+  repositoryRelativePath: AUDITED_HELPER_REFERENCE,
+  invocationReference: AUDITED_HELPER_INVOCATION_REFERENCE,
+  executable: AUDITED_HELPER_EXECUTABLE,
+  workingDirectoryRef: AUDITED_HELPER_WORKING_DIRECTORY,
+  fixedArguments: AUDITED_HELPER_FIXED_ARGUMENTS,
+  handoffContractVersion: AUDITED_HELPER_HANDOFF_VERSION,
+  authoritativeIdentityContractVersion: AUTHORITATIVE_IDENTITY_VERSION,
+  handoffTransport: 'CANONICAL_JSON_STDIN',
+  credentialMaterialization:
+    'FUTURE_AUDITED_HELPER_INTERNAL_ONLY',
+  envelopeLocator:
+    'FUTURE_PROCESS_BOOT_PINNED_EXTERNAL_BASE_PLUS_LOGICAL_METADATA_ID',
+  envelopeLocatorConfigured: false,
+  repositoryRelativeEnvelopePathsAllowed: false,
+  callerSelectedEnvelopePathsAllowed: false,
+  helperOwnsDeployChildSpawn: true,
+  callerInjectedSpawnAllowed: false,
+  plaintextCrossesProviderBoundary: false,
+  rawOutputCapture: false,
+});
 
 export function normalizeCredentialReference(rawReference) {
   assertNoForbiddenData(rawReference, 'credential reference');
+  assertExactKeys(
+    rawReference,
+    RAW_CREDENTIAL_REFERENCE_KEYS,
+    'credential reference',
+  );
+  assertRequiredKeys(
+    rawReference,
+    RAW_CREDENTIAL_REFERENCE_KEYS,
+    'credential reference',
+  );
   if (rawReference?.schemaVersion !== ContractVersion.credentialReference) {
     throw new ContractError(
       'credential_reference_schema_invalid',
@@ -70,9 +148,12 @@ export function normalizeCredentialReference(rawReference) {
       providerType === CredentialProviderType.WINDOWS_DPAPI_CURRENT_USER
         ? exact(rawReference.envelopeFormat, 'PUMPKIN_DPAPI_ENVELOPE_V1', 'envelopeFormat')
         : null,
-    envelopeReference:
+    envelopeMetadataId:
       providerType === CredentialProviderType.WINDOWS_DPAPI_CURRENT_USER
-        ? assertSafeRelativeReference(rawReference.envelopeReference, 'envelopeReference')
+        ? assertSafeIdentifier(
+            rawReference.envelopeMetadataId,
+            'envelopeMetadataId',
+          )
         : null,
     envelopeSha256:
       providerType === CredentialProviderType.WINDOWS_DPAPI_CURRENT_USER
@@ -95,6 +176,17 @@ export function normalizeCredentialReference(rawReference) {
     rotationSupported: false,
     tokenResetSupported: false,
   };
+  if (
+    providerType === CredentialProviderType.WINDOWS_DPAPI_CURRENT_USER &&
+    (body.purpose !== 'azure-swa-deployment' ||
+      body.environmentVariableName !==
+        AUDITED_DEPLOYMENT_ENVIRONMENT_VARIABLE)
+  ) {
+    throw new ContractError(
+      'credential_metadata_invalid',
+      'The audited SWA helper accepts only the azure-swa-deployment purpose and SWA_CLI_DEPLOYMENT_TOKEN child variable.',
+    );
+  }
   return immutable({
     ...body,
     referenceSha256: canonicalDigest(body),
@@ -102,9 +194,22 @@ export function normalizeCredentialReference(rawReference) {
 }
 
 export function verifyCredentialReference(reference) {
-  const { referenceSha256, ...raw } = clone(reference ?? {});
+  assertNoForbiddenData(reference, 'sealed credential reference');
+  assertExactKeys(
+    reference,
+    SEALED_CREDENTIAL_REFERENCE_KEYS,
+    'sealed credential reference',
+  );
+  assertRequiredKeys(
+    reference,
+    SEALED_CREDENTIAL_REFERENCE_KEYS,
+    'sealed credential reference',
+  );
+  const raw = Object.fromEntries(
+    RAW_CREDENTIAL_REFERENCE_KEYS.map((key) => [key, clone(reference[key])]),
+  );
   const normalized = normalizeCredentialReference(raw);
-  if (normalized.referenceSha256 !== referenceSha256) {
+  if (canonicalDigest(normalized) !== canonicalDigest(reference)) {
     throw new ContractError('credential_reference_hash_mismatch', 'Credential reference hash does not match.');
   }
   return true;
@@ -119,6 +224,15 @@ export function buildChildEnvironmentContract(reference, rawCommand) {
     throw new ContractError('credential_reference_inactive', 'Only an active credential reference can be used.');
   }
   const command = normalizeCommand(rawCommand);
+  if (
+    command.handoff.credentialReferenceId !== reference.credentialReferenceId ||
+    command.handoff.environmentVariableName !== reference.environmentVariableName
+  ) {
+    throw new ContractError(
+      'credential_handoff_reference_mismatch',
+      'Audited helper handoff does not match the active credential reference.',
+    );
+  }
   const body = {
     schemaVersion: ContractVersion.childEnvironment,
     credentialReferenceId: reference.credentialReferenceId,
@@ -127,9 +241,25 @@ export function buildChildEnvironmentContract(reference, rawCommand) {
     executable: command.executable,
     arguments: command.arguments,
     workingDirectoryRef: command.workingDirectoryRef,
+    auditedHelperContractVersion: command.auditedHelper.contractVersion,
+    auditedHelperReference: command.auditedHelper.repositoryRelativePath,
+    auditedHelperSha256: command.auditedHelper.expectedSha256,
+    auditedHelperContractSha256: command.auditedHelper.contractSha256,
+    handoffContractVersion: command.handoff.schemaVersion,
+    operationAction: command.handoff.operationAction,
+    handoffSha256: command.handoffSha256,
+    expectedPackageSha256: command.handoff.packageSha256,
+    expectedManifestSha256: command.handoff.manifestSha256,
+    expectedStagedInventorySha256: command.handoff.stagedInventorySha256,
+    envelopeMetadataId: command.handoff.envelopeMetadataId,
+    envelopeSha256: command.handoff.envelopeSha256,
     inheritParentEnvironment: false,
-    injectAtSpawnOnly: true,
-    decryptInProviderOnly: true,
+    injectAtSpawnOnly: false,
+    decryptInProviderOnly: false,
+    decryptInAuditedHelperOnly: true,
+    helperOwnsDeployChildSpawn: true,
+    callerInjectedSpawnAllowed: false,
+    plaintextCrossesProviderBoundary: false,
     valueReturnedToCaller: false,
     valueOnCommandLine: false,
     valueLogged: false,
@@ -146,79 +276,90 @@ export function buildChildEnvironmentContract(reference, rawCommand) {
 
 export class CurrentUserDpapiCredentialProvider {
   #reference;
-  #decryptForChild;
 
-  constructor({ reference, decryptForChild }) {
+  constructor(options = {}) {
+    const {
+      reference,
+      auditedHelper,
+      repositoryRoot,
+      processRunner,
+      decryptForChild,
+    } = options;
     verifyCredentialReference(reference);
     if (reference.providerType !== CredentialProviderType.WINDOWS_DPAPI_CURRENT_USER) {
       throw new ContractError('credential_provider_type_invalid', 'Current DPAPI provider requires a DPAPI reference.');
     }
-    if (typeof decryptForChild !== 'function') {
+    if (decryptForChild !== undefined) {
       throw new ContractError(
-        'credential_decrypt_boundary_missing',
-        'A same-user, memory-only DPAPI decrypt boundary must be injected.',
+        'credential_plaintext_callback_forbidden',
+        'Plaintext-returning decrypt callbacks are forbidden; the audited helper must own decrypt and child spawn.',
+      );
+    }
+    if (
+      auditedHelper !== undefined ||
+      repositoryRoot !== undefined ||
+      processRunner !== undefined
+    ) {
+      throw new ContractError(
+        'credential_audited_helper_trust_anchor_unconfigured',
+        'No approved helper trust anchor is configured; caller-selected helper bytes, hashes, roots, and runners are forbidden.',
       );
     }
     this.#reference = immutable(reference);
-    this.#decryptForChild = decryptForChild;
   }
 
   describe() {
     return immutable({
       providerType: CredentialProviderType.WINDOWS_DPAPI_CURRENT_USER,
       credentialReferenceId: this.#reference.credentialReferenceId,
-      envelopeReference: this.#reference.envelopeReference,
+      envelopeMetadataId: this.#reference.envelopeMetadataId,
+      envelopeSha256: this.#reference.envelopeSha256,
+      envelopeLocator:
+        'PROCESS_BOOT_PINNED_EXTERNAL_BASE_NOT_CONFIGURED',
+      envelopeLocatorConfigured: false,
+      environmentVariableName: this.#reference.environmentVariableName,
       protectionScope: 'CurrentUser',
+      status: 'DESIGN_HELD_TRUST_ANCHOR_UNCONFIGURED',
       valuesReturned: false,
-      childEnvironmentOnly: true,
+      executionAvailable: false,
+      childEnvironmentOnly: false,
+      futureChildEnvironmentContractOnly: true,
+      auditedHelperReference:
+        AuditedDpapiSwaHelperContract.repositoryRelativePath,
+      helperTrustAnchorConfigured: false,
+      helperOwnsDeployChildSpawn: false,
+      callerInjectedSpawnAllowed: false,
+      plaintextCrossesProviderBoundary: false,
       rotationSupported: false,
       tokenResetSupported: false,
     });
   }
 
-  childEnvironmentContract(command) {
-    return buildChildEnvironmentContract(this.#reference, command);
+  auditedHelperContract() {
+    throw new ContractError(
+      'credential_audited_helper_trust_anchor_unconfigured',
+      'Deployment is held until reviewed helper bytes and a privileged trust anchor are configured.',
+    );
   }
 
-  async runChild(command, spawnChild) {
-    if (typeof spawnChild !== 'function') {
-      throw new ContractError('credential_spawn_boundary_missing', 'A child-process spawn boundary must be injected.');
-    }
-    const contract = this.childEnvironmentContract(command);
-    let material = await this.#decryptForChild(immutable({
-      credentialReferenceId: this.#reference.credentialReferenceId,
-      envelopeReference: this.#reference.envelopeReference,
-      envelopeSha256: this.#reference.envelopeSha256,
-      envelopeFormat: this.#reference.envelopeFormat,
-      protectionScope: this.#reference.protectionScope,
-      valueIncluded: false,
-    }));
-    if (typeof material === 'string') material = Buffer.from(material, 'utf8');
-    if (!Buffer.isBuffer(material) || material.length === 0 || material.length > 16_384) {
-      throw new ContractError('credential_material_invalid', 'DPAPI decrypt boundary returned invalid material.');
-    }
+  childEnvironmentContract() {
+    throw new ContractError(
+      'credential_audited_helper_trust_anchor_unconfigured',
+      'Deployment is held until reviewed helper bytes and a privileged trust anchor are configured.',
+    );
+  }
 
-    const value = material.toString('utf8');
-    if (!value || contract.arguments.some((argument) => argument.includes(value))) {
-      material.fill(0);
-      throw new ContractError('credential_command_line_forbidden', 'Credential material cannot appear on the command line.');
+  async runChild(_command, forbiddenPerCallSpawn) {
+    if (forbiddenPerCallSpawn !== undefined) {
+      throw new ContractError(
+        'credential_spawn_injection_forbidden',
+        'Per-call child-process callbacks are forbidden; execution is sealed at provider construction.',
+      );
     }
-    const childEnvironment = { [contract.environmentVariableName]: value };
-    try {
-      const rawResult = await spawnChild(immutable({
-        executable: contract.executable,
-        arguments: contract.arguments,
-        workingDirectoryRef: contract.workingDirectoryRef,
-        inheritParentEnvironment: false,
-        environmentVariableNames: [contract.environmentVariableName],
-        outputCapture: contract.outputCapture,
-      }), childEnvironment);
-      return sanitizeChildResult(rawResult);
-    } finally {
-      childEnvironment[contract.environmentVariableName] = '';
-      material.fill(0);
-      material = null;
-    }
+    throw new ContractError(
+      'credential_audited_helper_trust_anchor_unconfigured',
+      'Deployment is held; no helper process can start without a privileged trust anchor.',
+    );
   }
 
   rotate() {
@@ -233,7 +374,9 @@ export class ManagedSecretProviderDesign {
       status: 'DESIGN_ONLY_NOT_IMPLEMENTED',
       intendedPortability: 'MULTI_OPERATOR_OR_AUTOMATION',
       valuesReturned: false,
-      childEnvironmentOnly: true,
+      executionAvailable: false,
+      childEnvironmentOnly: false,
+      futureChildEnvironmentContractOnly: true,
       rotationSupported: false,
       tokenResetSupported: false,
     });
@@ -256,54 +399,418 @@ export class ManagedSecretProviderDesign {
   }
 }
 
-function normalizeCommand(rawCommand = {}) {
-  assertNoForbiddenData(rawCommand, 'child command');
-  const executable = assertSafeIdentifier(rawCommand.executable, 'child executable');
-  const argumentsList = rawCommand.arguments ?? [];
-  if (!Array.isArray(argumentsList) || argumentsList.length > 64) {
-    throw new ContractError('child_arguments_invalid', 'Child arguments must be a bounded array.');
-  }
-  const argumentsNormalized = argumentsList.map((argument, index) => {
-    const value = String(argument);
-    if (
-      value.length === 0 ||
-      value.length > 512 ||
-      /(?:^|[-_])(token|secret|password)(?:$|[=_-])/i.test(value) ||
-      value.includes('\0')
-    ) {
-      throw new ContractError('child_argument_unsafe', `Child argument ${index} is unsafe.`);
-    }
-    return value;
-  });
-  return {
-    executable,
-    arguments: argumentsNormalized,
-    workingDirectoryRef: assertSafeRelativeReference(
-      rawCommand.workingDirectoryRef,
-      'child workingDirectoryRef',
+function normalizeAuditedHelper(rawHelper = {}) {
+  assertExactKeys(
+    rawHelper,
+    [
+      'contractVersion',
+      'repositoryRelativePath',
+      'invocationReference',
+      'executable',
+      'workingDirectoryRef',
+      'expectedSha256',
+    ],
+    'audited helper',
+  );
+  const body = {
+    contractVersion: exact(
+      rawHelper.contractVersion ?? AUDITED_HELPER_CONTRACT_VERSION,
+      AUDITED_HELPER_CONTRACT_VERSION,
+      'audited helper contractVersion',
+    ),
+    repositoryRelativePath: exact(
+      rawHelper.repositoryRelativePath ?? AUDITED_HELPER_REFERENCE,
+      AUDITED_HELPER_REFERENCE,
+      'audited helper repositoryRelativePath',
+    ),
+    invocationReference: exact(
+      rawHelper.invocationReference ?? AUDITED_HELPER_INVOCATION_REFERENCE,
+      AUDITED_HELPER_INVOCATION_REFERENCE,
+      'audited helper invocationReference',
+    ),
+    executable: exact(
+      rawHelper.executable ?? AUDITED_HELPER_EXECUTABLE,
+      AUDITED_HELPER_EXECUTABLE,
+      'audited helper executable',
+    ),
+    workingDirectoryRef: exact(
+      rawHelper.workingDirectoryRef ?? AUDITED_HELPER_WORKING_DIRECTORY,
+      AUDITED_HELPER_WORKING_DIRECTORY,
+      'audited helper workingDirectoryRef',
+    ),
+    expectedSha256: assertSha256(
+      rawHelper.expectedSha256,
+      'audited helper expectedSha256',
     ),
   };
+  return immutable({
+    ...body,
+    contractSha256: canonicalDigest(body),
+  });
 }
 
-function sanitizeChildResult(rawResult = {}) {
-  const exitCode = Number(rawResult.exitCode);
-  if (!Number.isInteger(exitCode) || exitCode < 0 || exitCode > 255) {
-    throw new ContractError('child_result_invalid', 'Child result requires a bounded numeric exit code.');
+function normalizeCommand(rawCommand = {}) {
+  assertNoForbiddenData(rawCommand, 'child command');
+  assertExactKeys(
+    rawCommand,
+    [
+      'executable',
+      'arguments',
+      'workingDirectoryRef',
+      'auditedHelper',
+      'handoff',
+      'handoffSha256',
+    ],
+    'child command',
+  );
+  const auditedHelper = normalizeCommandAuditedHelper(rawCommand.auditedHelper);
+  const handoff = normalizeHelperHandoff(rawCommand.handoff);
+  if (handoff.expectedHelperSha256 !== auditedHelper.expectedSha256) {
+    throw new ContractError(
+      'credential_handoff_helper_hash_mismatch',
+      'Audited helper handoff is not bound to the configured helper SHA-256.',
+    );
   }
-  const result = {
-    exitCode,
-    signal: rawResult.signal ? assertSafeIdentifier(rawResult.signal, 'child signal') : null,
-    statusCode: rawResult.statusCode
-      ? assertSafeIdentifier(rawResult.statusCode, 'child statusCode')
-      : exitCode === 0
-        ? 'completed'
-        : 'failed',
-    stdoutCaptured: false,
-    stderrCaptured: false,
-    valuesIncluded: false,
+  const handoffSha256 = assertSha256(rawCommand.handoffSha256, 'child handoffSha256');
+  if (canonicalDigest(handoff) !== handoffSha256) {
+    throw new ContractError(
+      'credential_handoff_hash_mismatch',
+      'Audited helper handoff hash does not match its canonical body.',
+    );
+  }
+  const expectedArguments = [
+    ...AUDITED_HELPER_FIXED_ARGUMENTS,
+    '-ContractVersion',
+    AUDITED_HELPER_CONTRACT_VERSION,
+    '-HandoffSha256',
+    handoffSha256,
+  ];
+  if (
+    !Array.isArray(rawCommand.arguments) ||
+    rawCommand.arguments.length !== expectedArguments.length ||
+    rawCommand.arguments.some((value, index) => value !== expectedArguments[index])
+  ) {
+    throw new ContractError(
+      'credential_helper_arguments_invalid',
+      'Audited helper arguments must exactly match the fixed, value-free helper contract.',
+    );
+  }
+  return immutable({
+    executable: exact(
+      rawCommand.executable,
+      AUDITED_HELPER_EXECUTABLE,
+      'child executable',
+    ),
+    arguments: expectedArguments,
+    workingDirectoryRef: exact(
+      rawCommand.workingDirectoryRef,
+      AUDITED_HELPER_WORKING_DIRECTORY,
+      'child workingDirectoryRef',
+    ),
+    auditedHelper,
+    handoff,
+    handoffSha256,
+  });
+}
+
+function normalizeCommandAuditedHelper(rawHelper = {}) {
+  assertExactKeys(
+    rawHelper,
+    [
+      'contractVersion',
+      'repositoryRelativePath',
+      'invocationReference',
+      'executable',
+      'workingDirectoryRef',
+      'expectedSha256',
+      'contractSha256',
+    ],
+    'child audited helper',
+  );
+  const { contractSha256, ...rawBody } = rawHelper;
+  const normalized = normalizeAuditedHelper(rawBody);
+  if (normalized.contractSha256 !== contractSha256) {
+    throw new ContractError(
+      'credential_helper_contract_hash_mismatch',
+      'Audited helper contract hash does not match.',
+    );
+  }
+  return normalized;
+}
+
+function normalizeHelperHandoff(rawHandoff = {}) {
+  assertNoForbiddenData(rawHandoff, 'audited helper handoff');
+  assertExactKeys(
+    rawHandoff,
+    [
+      'schemaVersion',
+      'operationAction',
+      'operationId',
+      'tenantId',
+      'publicationId',
+      'releaseId',
+      'predecessorReleaseId',
+      'artifactId',
+      'resourceGroup',
+      'staticWebAppName',
+      'environment',
+      'artifactRootRef',
+      'packageRef',
+      'manifestRef',
+      'packageSha256',
+      'manifestSha256',
+      'stagedInventorySha256',
+      'credentialReferenceId',
+      'environmentVariableName',
+      'envelopeMetadataId',
+      'envelopeSha256',
+      'expectedHelperSha256',
+      'expectedDeploymentIdentity',
+    ],
+    'audited helper handoff',
+  );
+  const body = {
+    schemaVersion: exact(
+      rawHandoff.schemaVersion,
+      AUDITED_HELPER_HANDOFF_VERSION,
+      'helper handoff schemaVersion',
+    ),
+    operationAction: exactOneOf(
+      rawHandoff.operationAction,
+      ['deploy', 'rollback'],
+      'helper handoff operationAction',
+    ),
+    operationId: assertSafeIdentifier(rawHandoff.operationId, 'helper handoff operationId'),
+    tenantId: assertSafeIdentifier(rawHandoff.tenantId, 'helper handoff tenantId', {
+      backend: true,
+    }),
+    publicationId: assertSafeIdentifier(
+      rawHandoff.publicationId,
+      'helper handoff publicationId',
+      { backend: true },
+    ),
+    releaseId: assertSafeIdentifier(rawHandoff.releaseId, 'helper handoff releaseId'),
+    predecessorReleaseId:
+      rawHandoff.predecessorReleaseId === null
+        ? null
+        : assertSafeIdentifier(
+            rawHandoff.predecessorReleaseId,
+            'helper handoff predecessorReleaseId',
+          ),
+    artifactId: assertSafeIdentifier(rawHandoff.artifactId, 'helper handoff artifactId'),
+    resourceGroup: assertSafeIdentifier(
+      rawHandoff.resourceGroup,
+      'helper handoff resourceGroup',
+    ),
+    staticWebAppName: assertSafeIdentifier(
+      rawHandoff.staticWebAppName,
+      'helper handoff staticWebAppName',
+      { backend: true },
+    ),
+    environment: exact(rawHandoff.environment, 'production', 'helper handoff environment'),
+    artifactRootRef: assertSafeRelativeReference(
+      rawHandoff.artifactRootRef,
+      'helper handoff artifactRootRef',
+    ),
+    packageRef: assertSafeRelativeReference(rawHandoff.packageRef, 'helper handoff packageRef'),
+    manifestRef: assertSafeRelativeReference(
+      rawHandoff.manifestRef,
+      'helper handoff manifestRef',
+    ),
+    packageSha256: assertSha256(rawHandoff.packageSha256, 'helper handoff packageSha256'),
+    manifestSha256: assertSha256(
+      rawHandoff.manifestSha256,
+      'helper handoff manifestSha256',
+    ),
+    stagedInventorySha256: assertSha256(
+      rawHandoff.stagedInventorySha256,
+      'helper handoff stagedInventorySha256',
+    ),
+    credentialReferenceId: assertSafeIdentifier(
+      rawHandoff.credentialReferenceId,
+      'helper handoff credentialReferenceId',
+    ),
+    environmentVariableName: normalizeEnvironmentVariableName(
+      rawHandoff.environmentVariableName,
+    ),
+    envelopeMetadataId: assertSafeIdentifier(
+      rawHandoff.envelopeMetadataId,
+      'helper handoff envelopeMetadataId',
+    ),
+    envelopeSha256: assertSha256(
+      rawHandoff.envelopeSha256,
+      'helper handoff envelopeSha256',
+    ),
+    expectedHelperSha256: assertSha256(
+      rawHandoff.expectedHelperSha256,
+      'helper handoff expectedHelperSha256',
+    ),
   };
-  assertNoForbiddenData(result, 'sanitized child result');
-  return immutable(result);
+  if (
+    (body.operationAction === 'deploy' &&
+      body.predecessorReleaseId !== null) ||
+    (body.operationAction === 'rollback' &&
+      body.predecessorReleaseId !== body.releaseId)
+  ) {
+    throw new ContractError(
+      'credential_handoff_predecessor_release_mismatch',
+      'Rollback helper handoff must bind the exact predecessor release; deploy handoff cannot carry one.',
+    );
+  }
+  const expectedDeploymentIdentity = normalizeDeploymentIdentity(
+    rawHandoff.expectedDeploymentIdentity,
+  );
+  const derivedIdentity = deploymentIdentityFromHandoff(body);
+  if (canonicalDigest(expectedDeploymentIdentity) !== canonicalDigest(derivedIdentity)) {
+    throw new ContractError(
+      'credential_expected_identity_mismatch',
+      'Expected deployment identity is not derived from the exact helper handoff.',
+    );
+  }
+  return immutable({
+    ...body,
+    expectedDeploymentIdentity,
+  });
+}
+
+function deploymentIdentityFromHandoff(handoff) {
+  return immutable({
+    schemaVersion: AUTHORITATIVE_IDENTITY_VERSION,
+    provider: 'AZURE_STATIC_WEB_APPS',
+    authority: 'AUDITED_HELPER_POST_DEPLOY_READBACK',
+    authoritative: true,
+    tenantId: handoff.tenantId,
+    publicationId: handoff.publicationId,
+    releaseId: handoff.releaseId,
+    artifactId: handoff.artifactId,
+    resourceGroup: handoff.resourceGroup,
+    staticWebAppName: handoff.staticWebAppName,
+    environment: handoff.environment,
+    packageSha256: handoff.packageSha256,
+    manifestSha256: handoff.manifestSha256,
+    stagedInventorySha256: handoff.stagedInventorySha256,
+  });
+}
+
+function normalizeDeploymentIdentity(rawIdentity = {}) {
+  assertNoForbiddenData(rawIdentity, 'authoritative deployment identity');
+  assertExactKeys(
+    rawIdentity,
+    [
+      'schemaVersion',
+      'provider',
+      'authority',
+      'authoritative',
+      'tenantId',
+      'publicationId',
+      'releaseId',
+      'artifactId',
+      'resourceGroup',
+      'staticWebAppName',
+      'environment',
+      'packageSha256',
+      'manifestSha256',
+      'stagedInventorySha256',
+    ],
+    'authoritative deployment identity',
+  );
+  return immutable({
+    schemaVersion: exact(
+      rawIdentity.schemaVersion,
+      AUTHORITATIVE_IDENTITY_VERSION,
+      'deployment identity schemaVersion',
+    ),
+    provider: exact(
+      rawIdentity.provider,
+      'AZURE_STATIC_WEB_APPS',
+      'deployment identity provider',
+    ),
+    authority: exact(
+      rawIdentity.authority,
+      'AUDITED_HELPER_POST_DEPLOY_READBACK',
+      'deployment identity authority',
+    ),
+    authoritative: exact(
+      rawIdentity.authoritative,
+      true,
+      'deployment identity authoritative',
+    ),
+    tenantId: assertSafeIdentifier(rawIdentity.tenantId, 'deployment identity tenantId', {
+      backend: true,
+    }),
+    publicationId: assertSafeIdentifier(
+      rawIdentity.publicationId,
+      'deployment identity publicationId',
+      { backend: true },
+    ),
+    releaseId: assertSafeIdentifier(rawIdentity.releaseId, 'deployment identity releaseId'),
+    artifactId: assertSafeIdentifier(rawIdentity.artifactId, 'deployment identity artifactId'),
+    resourceGroup: assertSafeIdentifier(
+      rawIdentity.resourceGroup,
+      'deployment identity resourceGroup',
+    ),
+    staticWebAppName: assertSafeIdentifier(
+      rawIdentity.staticWebAppName,
+      'deployment identity staticWebAppName',
+      { backend: true },
+    ),
+    environment: exact(
+      rawIdentity.environment,
+      'production',
+      'deployment identity environment',
+    ),
+    packageSha256: assertSha256(
+      rawIdentity.packageSha256,
+      'deployment identity packageSha256',
+    ),
+    manifestSha256: assertSha256(
+      rawIdentity.manifestSha256,
+      'deployment identity manifestSha256',
+    ),
+    stagedInventorySha256: assertSha256(
+      rawIdentity.stagedInventorySha256,
+      'deployment identity stagedInventorySha256',
+    ),
+  });
+}
+
+function normalizeEnvironmentVariableName(value) {
+  const name = String(value ?? '');
+  if (!ENVIRONMENT_NAME.test(name)) {
+    throw new ContractError(
+      'credential_environment_name_invalid',
+      'Credential environment variable name must be a bounded uppercase identifier.',
+    );
+  }
+  return name;
+}
+
+function assertExactKeys(value, allowedKeys, label) {
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Buffer.isBuffer(value)) {
+    throw new ContractError('credential_contract_invalid', `${label} must be an object.`);
+  }
+  const allowed = new Set(allowedKeys);
+  const extras = Object.keys(value).filter((key) => !allowed.has(key));
+  if (extras.length > 0) {
+    throw new ContractError(
+      'credential_contract_field_forbidden',
+      `${label} contains unsupported fields.`,
+      { fields: extras.sort() },
+    );
+  }
+}
+
+function assertRequiredKeys(value, requiredKeys, label) {
+  const missing = requiredKeys.filter(
+    (key) => !Object.prototype.hasOwnProperty.call(value, key),
+  );
+  if (missing.length > 0) {
+    throw new ContractError(
+      'credential_contract_field_missing',
+      `${label} is missing required fields.`,
+      { fields: missing.sort() },
+    );
+  }
 }
 
 function enumMember(values, value, label) {
@@ -316,6 +823,16 @@ function enumMember(values, value, label) {
 function exact(value, expected, label) {
   if (value !== expected) {
     throw new ContractError('credential_metadata_invalid', `${label} must be ${expected}.`);
+  }
+  return value;
+}
+
+function exactOneOf(value, expectedValues, label) {
+  if (!expectedValues.includes(value)) {
+    throw new ContractError(
+      'credential_metadata_invalid',
+      `${label} must be one of the closed supported values.`,
+    );
   }
   return value;
 }

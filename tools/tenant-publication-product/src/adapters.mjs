@@ -12,6 +12,7 @@ import {
   immutable,
 } from './canonical.mjs';
 import {
+  assertGitCommitSha,
   assertNoForbiddenData,
   assertSafeIdentifier,
   assertSafeRelativeReference,
@@ -165,7 +166,13 @@ export function buildCandidateQualificationArtifacts(releaseContext, attribution
   );
 }
 
-export function adaptPub20Input(legacyInput, releaseContext, { attributionFiles = [] } = {}) {
+export function buildPub20CanonicalInput(
+  legacyInput,
+  releaseContext,
+  {
+    attributionFiles = [],
+  } = {},
+) {
   assertNoForbiddenData(legacyInput, 'PUB-20 legacy publisher input');
   const release = normalizeReleaseContext(releaseContext);
   if (!legacyInput || typeof legacyInput !== 'object' || !Array.isArray(legacyInput.routes)) {
@@ -257,7 +264,27 @@ export function adaptPub20Input(legacyInput, releaseContext, { attributionFiles 
     },
     attributionFiles,
   };
-  return publishTenantSnapshot(canonical).input;
+  return canonical;
+}
+
+export function adaptPub20Input(
+  legacyInput,
+  releaseContext,
+  {
+    attributionFiles = [],
+    platformOriginAuthority = null,
+    platformOriginVerifier = null,
+  } = {},
+) {
+  const canonical = buildPub20CanonicalInput(
+    legacyInput,
+    releaseContext,
+    { attributionFiles },
+  );
+  return publishTenantSnapshot(canonical, {
+    platformOriginAuthority,
+    platformOriginVerifier,
+  }).input;
 }
 
 export function createPublicationJobPlanForCandidate(candidatePlan) {
@@ -271,40 +298,67 @@ export function createPublicationJobPlanForCandidate(candidatePlan) {
   const artifactId =
     candidatePlan.artifactId ??
     deterministicId('metadata-artifact', { candidateKey: candidatePlan.candidateKey });
+  const tenantId = assertSafeIdentifier(
+    candidatePlan.tenantId,
+    'candidate tenantId',
+    { backend: true },
+  );
+  const publicationId =
+    candidatePlan.canonicalInput?.publication.publicationId ??
+    `${candidatePlan.tenantId}-metadata-publication`;
+  const releaseId =
+    candidatePlan.canonicalInput?.productRelease.releaseId ??
+    assertSafeIdentifier(
+      candidatePlan.releaseId ?? 'release-metadata-only',
+      'candidate releaseId',
+    );
+  const stepActions = {
+    'tenant-intake': 'verify',
+    'identity-provisioning': 'noop',
+    'content-import': holdAfterQualification ? 'hold' : 'verify',
+    'hosting-class-selection': 'verify',
+    'product-release-assignment': holdAfterQualification ? 'hold' : 'verify',
+    'artifact-build': holdAfterQualification ? 'hold' : 'verify',
+    'resource-plan': 'hold',
+    'publication-register': 'hold',
+    deployment: 'hold',
+    preflight: 'hold',
+    'form-proof': 'hold',
+    'domain-hold': 'hold',
+    acceptance: 'hold',
+    'indexing-hold': 'hold',
+    backup: 'hold',
+    'atlas-register': 'hold',
+  };
+  const approvalGates = {
+    deployment: 'owner-deployment-approval',
+    acceptance: 'owner-acceptance-approval',
+    'indexing-hold': 'owner-indexing-approval',
+  };
   return immutable({
-    tenantId: assertSafeIdentifier(candidatePlan.tenantId, 'candidate tenantId', { backend: true }),
-    publicationId:
-      candidatePlan.canonicalInput?.publication.publicationId ??
-      `${candidatePlan.tenantId}-metadata-publication`,
-    releaseId:
-      candidatePlan.canonicalInput?.productRelease.releaseId ??
-      assertSafeIdentifier(candidatePlan.releaseId ?? 'release-metadata-only', 'candidate releaseId'),
+    tenantId,
+    publicationId,
+    releaseId,
     artifactId,
     hostingClass: candidatePlan.hostingClass,
     dryRun: true,
-    stepActions: {
-      'tenant-intake': 'verify',
-      'identity-provisioning': 'noop',
-      'content-import': holdAfterQualification ? 'hold' : 'verify',
-      'hosting-class-selection': 'verify',
-      'product-release-assignment': holdAfterQualification ? 'hold' : 'verify',
-      'artifact-build': holdAfterQualification ? 'hold' : 'execute',
-      'resource-plan': 'hold',
-      'publication-register': 'hold',
-      deployment: 'hold',
-      preflight: 'hold',
-      'form-proof': 'hold',
-      'domain-hold': 'hold',
-      acceptance: 'hold',
-      'indexing-hold': 'hold',
-      backup: 'hold',
-      'atlas-register': 'hold',
-    },
-    approvalGates: {
-      deployment: 'owner-deployment-approval',
-      acceptance: 'owner-acceptance-approval',
-      'indexing-hold': 'owner-indexing-approval',
-    },
+    stepActions,
+    approvalGates,
+    holdRequirements: Object.fromEntries(
+      Object.entries(stepActions)
+        .filter(([, action]) => action === 'hold')
+        .map(([stepKey]) => [
+          stepKey,
+          {
+            approvalRef:
+              approvalGates[stepKey] ?? `owner-${stepKey}-approval`,
+            scope: { tenantId, publicationId, releaseId, stepKey },
+            action: 'release-hold',
+            onReleaseAction: 'verify',
+            maxValiditySeconds: 3600,
+          },
+        ]),
+    ),
     evidenceRefs: candidatePlan.sourceRefs.map((sourceRef) =>
       assertSafeRelativeReference(sourceRef, 'candidate sourceRef'),
     ),
@@ -381,7 +435,10 @@ function normalizeReleaseContext(releaseContext = {}) {
   return immutable({
     releaseId: assertSafeIdentifier(releaseContext.releaseId, 'releaseContext.releaseId'),
     version: String(releaseContext.version),
-    sourceCommit: assertSafeIdentifier(releaseContext.sourceCommit, 'releaseContext.sourceCommit'),
+    sourceCommit: assertGitCommitSha(
+      releaseContext.sourceCommit,
+      'releaseContext.sourceCommit',
+    ),
     lockfileSha256: assertSha256(releaseContext.lockfileSha256, 'releaseContext.lockfileSha256'),
     packageVersions: Object.fromEntries(
       Object.entries(releaseContext.packageVersions ?? {})

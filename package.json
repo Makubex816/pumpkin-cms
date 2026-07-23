@@ -8,6 +8,10 @@
     "packages/pumpkin-ts-models",
     "packages/pumpkin-block-views"
   ],
+  "dependencies": {
+    "postcss": "8.5.21",
+    "postcss-value-parser": "4.2.0"
+  },
   "scripts": {
     "workspace:inventory": "node tools/workspace/inventory.mjs",
     "build:packages": "npm run build --workspace pumpkin-ts-models && npm run build --workspace pumpkin-block-views",
