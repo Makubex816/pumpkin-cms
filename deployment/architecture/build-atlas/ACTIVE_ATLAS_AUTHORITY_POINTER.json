@@ -1,17 +1,17 @@
 {
-  "activeAtlasVersion": "3.7.0",
-  "pointerVersion": "3.7.0",
-  "atlasVersion": "3.7.0",
+  "activeAtlasVersion": "4.0.0",
+  "pointerVersion": "4.0.0",
+  "atlasVersion": "4.0.0",
   "locationClassification": "outside_repository_program_management_snapshot_source_tree",
-  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.7.0",
-  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.7.0.zip",
-  "packagePath": "program-management/build-atlas/releases/v3.7.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.7.0.zip",
-  "packageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
-  "manifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a",
-  "authorityEffectivePhase": "PUB-20-A03",
-  "updatedAt": "2026-07-23T04:10:39.166Z",
-  "updateTaskId": "PUB-20-A03",
-  "status": "complete_token_rotated_dpapi_protected_rollback_proven_pub20_closed_ready_for_pub30",
+  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v4.0.0",
+  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v4.0.0.zip",
+  "packagePath": "program-management/build-atlas/releases/v4.0.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v4.0.0.zip",
+  "packageSha256": "f1fa573e78cc97e5dcf521f02602f52ca1df35b78b9a73f546aac5f4f11a4e59",
+  "manifestSha256": "3d7ec1caa2f555638f29dc9e29f07b9da65f7be5f9607f0c93b73def080adef9",
+  "authorityEffectivePhase": "PUB-30-A01",
+  "updatedAt": "2026-07-23T10:01:40.926Z",
+  "updateTaskId": "PUB-30-A01",
+  "status": "blocked_dpapi_provider_or_deployment_security",
   "predecessors": [
     "Build Atlas v3.1.0 baseline snapshot",
     "UP-20-A02 frozen upstream evidence delta",
@@ -35,26 +35,36 @@
     "qualificationState": "CLEAN_ROOM_QUALIFIED_WITH_HOLDS_READY_FOR_INT10"
   },
   "authority": {
-    "taskId": "PUB-20-A03",
-    "resultPackage": "deployment/architecture/tenant-publication/pub-20-a03-token-security-reconciliation",
-    "repositoryHeadAtEntry": "55f8cb50727f9e22ca80561ff61edbaac2e15188",
-    "sourceCommit": "d505bac666490e6f032bcdefccdf80f6efdc666e",
-    "isolatedSourceProvenanceCommit": "d0d5c2696b43fe788bbb88923b74315305ef78eb",
-    "plannerReconciliationCommit": "42cd9c1868c9ba7f4a0513a2a13955f9c0928c31",
-    "a02BlockedCommit": "4a43f3e471d71d8ab49f46ff1e2a6ad23a54d5b8",
-    "publisherCorrectionCommit": "55f8cb50727f9e22ca80561ff61edbaac2e15188"
+    "taskId": "PUB-30-A01",
+    "resultPackage": "deployment/architecture/tenant-publication/pub-30-a01-static-publisher-onboarding-productization",
+    "repositoryHeadAtEntry": "aa8943ee29c99ae47fd57d7b60dfe160b6afa6e7",
+    "closeoutPreparationHead": "1a0ec72984b593113c431a65e18fe0080bc8623c",
+    "sourceCommits": [
+      "c176ec3fd49e6cae400d0d30626425087d6077b8",
+      "afb089ee40625c3651add122d396686c1f2b8d2e",
+      "e84befee994735b9979ef64ef1c78f75a5f28c48",
+      "7e6534a269d1f16a7fa34f7810246cdfb8ef89c1",
+      "4b5741c57421e98ae6a60080f835be42e26a8ed9",
+      "27058f39f0a7e60d92ea2785f55b955939c64dbc",
+      "a36778649f4c7d70236eae7f22d5a17aba2fa57a",
+      "0b5ae2c02a84e9c26400ac498af3b1630ad99cd8",
+      "973f0366027696083e433905d1e6d8da7fbe702e",
+      "dc02e8635160e19866cf56caf3beb2e1ba582807",
+      "aab6823bd265cf91e77868a6649dd984016837b9",
+      "1a0ec72984b593113c431a65e18fe0080bc8623c"
+    ]
   },
   "atlasPackage": {
-    "version": "3.7.0",
-    "path": "program-management/build-atlas/releases/v3.7.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.7.0.zip",
-    "sha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
+    "version": "4.0.0",
+    "path": "program-management/build-atlas/releases/v4.0.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v4.0.0.zip",
+    "sha256": "f1fa573e78cc97e5dcf521f02602f52ca1df35b78b9a73f546aac5f4f11a4e59",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/build-atlas/releases/v3.7.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.7.0.zip",
-    "comparisonPackageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
-    "manifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a"
+    "comparisonPackagePath": "program-management/build-atlas/releases/v4.0.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v4.0.0.zip",
+    "comparisonPackageSha256": "f1fa573e78cc97e5dcf521f02602f52ca1df35b78b9a73f546aac5f4f11a4e59",
+    "manifestSha256": "3d7ec1caa2f555638f29dc9e29f07b9da65f7be5f9607f0c93b73def080adef9"
   },
-  "atlasPackageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
-  "atlasManifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a",
+  "atlasPackageSha256": "f1fa573e78cc97e5dcf521f02602f52ca1df35b78b9a73f546aac5f4f11a4e59",
+  "atlasManifestSha256": "3d7ec1caa2f555638f29dc9e29f07b9da65f7be5f9607f0c93b73def080adef9",
   "supersededPackagingEvidence": {
     "path": "program-management/build-atlas/releases/superseded/up-30-a01-mislabeled-v3.2.0",
     "reason": "UP-30 successor package was initially mislabeled as v3.2.0 before closeout.",
@@ -83,13 +93,13 @@
     "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged."
   },
   "workingMemoryPackage": {
-    "version": "1.4.0",
-    "path": "program-management/working-memory/releases/v1.4.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.4.0.zip",
-    "sha256": "be361392de87bcaa2efda738264174389a20f255cc131a45b634210546bd6ba3",
+    "version": "1.5.0",
+    "path": "program-management/working-memory/releases/v1.5.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.5.0.zip",
+    "sha256": "5fb5e3d0ce544fc8f2401b6d1d232e9a58870000ca2efd14ee4b28557c3e6b29",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/working-memory/releases/v1.4.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.4.0.zip",
-    "comparisonPackageSha256": "be361392de87bcaa2efda738264174389a20f255cc131a45b634210546bd6ba3",
-    "manifestSha256": "755abc68784db39ce80e1f02d0c9f66936448a4363f7bfd840c0f53e533e186c"
+    "comparisonPackagePath": "program-management/working-memory/releases/v1.5.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.5.0.zip",
+    "comparisonPackageSha256": "5fb5e3d0ce544fc8f2401b6d1d232e9a58870000ca2efd14ee4b28557c3e6b29",
+    "manifestSha256": "6177894be93f6373d78861c7bd6a006de996021641f741e4fb2854ddea28c9d4"
   },
   "int10": {
     "status": "complete_local_foundation_with_dependency_or_legal_holds_ready_for_controlled_pilot",
@@ -202,5 +212,260 @@
     "retainedFormEntryId": "917cdc0c0b6115108514278e394e141ab13f6ed7be7e50d716bd0c7d5f728cbb",
     "retainedFormEntryCount": 1,
     "domainMutation": false
+  },
+  "predecessorAuthority": {
+    "taskId": "PUB-20-A03",
+    "resultPackage": "deployment/architecture/tenant-publication/pub-20-a03-token-security-reconciliation",
+    "sourceCommit": "d505bac666490e6f032bcdefccdf80f6efdc666e",
+    "closeoutCommit": null,
+    "atlasVersion": "3.7.0",
+    "packageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
+    "manifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a"
+  },
+  "pub30": {
+    "taskId": "PUB-30-A01",
+    "status": "blocked_dpapi_provider_or_deployment_security",
+    "classification": "universal_static_publisher_onboarding_productization_retained_synthetic_regression_no_customer_frontend_migration",
+    "summary": "PUB-30 completed repository-safe productization and deterministic two-clean-root proof, but all deployments and retained-synthetic mutation were stopped after a read-only diagnostic exposed protected API values to command trace. No affected value is included, and owner-authorized platform-secret rotation and parity recovery is required before PUB-40.",
+    "repository": {
+      "entryHead": "aa8943ee29c99ae47fd57d7b60dfe160b6afa6e7",
+      "closeoutPreparationHead": "1a0ec72984b593113c431a65e18fe0080bc8623c",
+      "sourceCommits": [
+        "c176ec3fd49e6cae400d0d30626425087d6077b8",
+        "afb089ee40625c3651add122d396686c1f2b8d2e",
+        "e84befee994735b9979ef64ef1c78f75a5f28c48",
+        "7e6534a269d1f16a7fa34f7810246cdfb8ef89c1",
+        "4b5741c57421e98ae6a60080f835be42e26a8ed9",
+        "27058f39f0a7e60d92ea2785f55b955939c64dbc",
+        "a36778649f4c7d70236eae7f22d5a17aba2fa57a",
+        "0b5ae2c02a84e9c26400ac498af3b1630ad99cd8",
+        "973f0366027696083e433905d1e6d8da7fbe702e",
+        "dc02e8635160e19866cf56caf3beb2e1ba582807",
+        "aab6823bd265cf91e77868a6649dd984016837b9",
+        "1a0ec72984b593113c431a65e18fe0080bc8623c"
+      ],
+      "resultPackage": "deployment/architecture/tenant-publication/pub-30-a01-static-publisher-onboarding-productization"
+    },
+    "approvalSha256": "4c6552221b00cd46948a7ca01f07f41b4828f87fdb66f14fc8880e31c90884e8",
+    "backup": {
+      "manifestSha256": "6647b23f3d63af719d3c7b9beaf2a788e37eb2b29a08756dd0128cb5e1eff5d0",
+      "checksumsSha256": "fc9c4a71e33c9bd06d7d683a516c754a61e94c9a25a217bdb456687d140c1e2e",
+      "activeAtlasSource": {
+        "path": "program-management/build-atlas/backups/pub-30-a01-active-atlas-20260723T084259Z",
+        "treeSha256": "d0d42d9f0f518ed0983fe12d15c2217185a7af1b48bd3740c9779188be1759c4"
+      },
+      "activeWorkingMemorySource": {
+        "path": "program-management/working-memory/backups/pub-30-a01-active-working-memory-20260723T084259Z",
+        "treeSha256": "b0c83e372876c4b84417853c653c56d7e054b7761397002e53994edc8e041117"
+      }
+    },
+    "productization": {
+      "dataContracts": {
+        "status": "ACCEPTED_LOCAL",
+        "sourceHead": "aab6823bd265cf91e77868a6649dd984016837b9",
+        "tenantIsolation": "FAIL_CLOSED"
+      },
+      "stateMachines": {
+        "status": "ACCEPTED_LOCAL",
+        "publicationStateCount": 11,
+        "jobStepCount": 16
+      },
+      "universalPublisher": {
+        "status": "ACCEPTED_LOCAL_DETERMINISTIC",
+        "validationTestCount": 46,
+        "networkCalls": 0,
+        "liveMutations": 0,
+        "candidateInventorySha256": "ed33ad67abab8a04b08e6f91b5d3689269b5d0041c702003864fae6137a92f74"
+      },
+      "releasePublicationRegistry": {
+        "status": "ACCEPTED_LOCAL_NOT_LIVE_REGISTERED",
+        "providerParity": "PASSED"
+      },
+      "swaDeploymentService": {
+        "status": "ACCEPTED_LOCAL_NOT_DEPLOYED",
+        "freeSkuOnly": true,
+        "deploymentAttempts": 0
+      },
+      "secretProvider": {
+        "status": "CURRENT_DPAPI_FIXTURE_VERIFIED_MANAGED_PROVIDER_HELD",
+        "operatingScope": "SINGLE_OPERATOR_SAME_WINDOWS_PROFILE",
+        "managedProviderState": "DESIGN_HELD_NON_EXECUTABLE"
+      },
+      "onboardingOrchestrator": {
+        "status": "ACCEPTED_LOCAL_NOT_LIVE_EXECUTED",
+        "stepCount": 16,
+        "resumeAndRollback": "PASSED"
+      },
+      "adminTenantAdminUi": {
+        "status": "ACCEPTED_LOCAL_NOT_DEPLOYED",
+        "featureGate": "FAIL_CLOSED",
+        "adminPackageSha256": "1a46dcc4f6d179538761cc5368c015197a6b2869bf6469e633b966beffcc6c7e"
+      },
+      "publicForms": {
+        "status": "ACCEPTED_LOCAL_LIVE_REGRESSION_HELD",
+        "mongoAndCosmosParity": "PASSED",
+        "ticketIssuanceCalls": 0,
+        "httpPosts": 0
+      }
+    },
+    "hostingClassifications": [
+      {
+        "tenantKey": "ice-rink-rentals",
+        "classification": "STATIC_READY_WITH_ADAPTATION"
+      },
+      {
+        "tenantKey": "party-pros-philadelphia",
+        "classification": "SHARED_COMPATIBILITY_REQUIRED"
+      },
+      {
+        "tenantKey": "strip-club-near-me-vegas",
+        "classification": "SHARED_COMPATIBILITY_REQUIRED"
+      },
+      {
+        "tenantKey": "airstrip",
+        "classification": "BLOCKED_BY_MISSING_EVIDENCE"
+      }
+    ],
+    "deployments": {
+      "api": {
+        "attemptCount": 0,
+        "correctedDeploymentCount": 0,
+        "packageSha256": "f616e5c0025e6d1022d7423b761d0df19c3d597e962c97f3fc94ce83d55c76e5"
+      },
+      "admin": {
+        "attemptCount": 0,
+        "correctedDeploymentCount": 0,
+        "packageSha256": "1a46dcc4f6d179538761cc5368c015197a6b2869bf6469e633b966beffcc6c7e"
+      },
+      "starter": {
+        "attemptCount": 0,
+        "correctedDeploymentCount": 0
+      },
+      "staticWebApp": {
+        "attemptCount": 0,
+        "correctedDeploymentCount": 0
+      }
+    },
+    "syntheticRegression": {
+      "attempted": false,
+      "mutationCount": 0,
+      "status": "HELD_PENDING_PLATFORM_SECRET_ROTATION_AUTHORITY"
+    },
+    "tenantReadiness": {
+      "status": "LOCAL_PLANNING_ONLY",
+      "candidateFileCount": 24,
+      "candidateInventorySha256": "ed33ad67abab8a04b08e6f91b5d3689269b5d0041c702003864fae6137a92f74",
+      "recommendedFirstPilot": "ice-rink-rentals",
+      "ownerSelectionMade": false
+    },
+    "onboarding": {
+      "status": "LOCAL_PLANS_ACCEPTED_LIVE_EXECUTION_HELD",
+      "genericPlanGenerated": true,
+      "customerPlanCount": 3,
+      "airstripExecution": false
+    },
+    "dependencies": {
+      "status": "LOCKED_RESTORE_AND_BUILD_PASSED_WITH_ADVISORY_HOLDS",
+      "rootAuditFindingCount": 5,
+      "adminAuditFindingCount": 14,
+      "automaticAuditFixApplied": false,
+      "mongoProviderFileCount": 134,
+      "cosmosProviderFileCount": 122
+    },
+    "licensing": {
+      "status": "HELD_OWNER_LEGAL_REVIEW",
+      "licenseSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "noticeSha256": "65c58dd61ab8360b28cfbe33c859c694bc8502c22d8d8b686dc44aeccc926c9b",
+      "distributionAuthorized": false
+    },
+    "customerSafety": {
+      "customerDeployments": 0,
+      "customerMutations": 0,
+      "domainMutations": 0,
+      "indexingChanges": 0,
+      "capacityChanges": 0,
+      "tokenRotations": 0,
+      "airstripRequests": 0,
+      "customerFormPosts": 0,
+      "externalEmails": 0
+    },
+    "ownerDecisions": [
+      "Authorize bounded platform-secret rotation, invalidation, secure handoff, parity recovery, and authoritative readback.",
+      "Resolve the LICENSE and package-manifest declaration conflict before distribution.",
+      "Select a first customer tenant only after security recovery and review the exact PUB-40 budget.",
+      "Decide whether SEC-20 should replace same-profile DPAPI for multi-operator operation."
+    ],
+    "holds": [
+      "API, Admin, starter, and retained synthetic Static Web App deployments are held.",
+      "Retained-synthetic productized live regression is held.",
+      "Customer deployment and mutation remain unauthorized.",
+      "Domain, DNS, TLS, indexing, capacity, paid infrastructure, payments, and Airstrip runtime remain held."
+    ],
+    "validation": [
+      "Final technical source and both isolated clean roots passed the accepted local matrix.",
+      "Candidate generation produced identical 24-file inventories across clean roots.",
+      "API and Admin deployment trees and ZIPs were deterministic and passed CRC and safety scans.",
+      "Mongo-enabled and Cosmos-only locked restore, build, and test matrices passed in both roots.",
+      "The result package contains exactly 22 tracked files and the three handoff prompts are tracked and standalone.",
+      "Deployment attempts, ticket issuance, public-form POSTs, customer mutations, and diagnostic mutations are all zero."
+    ],
+    "nextGate": {
+      "id": "OWNER_AUTHORIZED_PLATFORM_SECRET_ROTATION_AND_PARITY_RECOVERY",
+      "ownerAuthorizationRequired": true,
+      "before": "PUB-40"
+    },
+    "relationships": {
+      "parallel": [
+        "PERF-10"
+      ],
+      "retained": [
+        "IDM-40"
+      ],
+      "held": [
+        "DOM-20"
+      ],
+      "conditional": [
+        "SEC-20"
+      ]
+    },
+    "evidence": [
+      {
+        "label": "security-containment",
+        "sha256": "5c5a1c7be41a669b1f6ca0611d8e2acd06af4a923d6f9930a507cc8198c7370d"
+      },
+      {
+        "label": "owner-approval",
+        "sha256": "4c6552221b00cd46948a7ca01f07f41b4828f87fdb66f14fc8880e31c90884e8"
+      },
+      {
+        "label": "pre-productization-backup",
+        "sha256": "6647b23f3d63af719d3c7b9beaf2a788e37eb2b29a08756dd0128cb5e1eff5d0"
+      },
+      {
+        "label": "result-validation",
+        "sha256": "94cdc29de8103fdea5ecfc5e3c31423ab7345c28b11bec94b92c15879f545e46"
+      },
+      {
+        "label": "security-boundary",
+        "sha256": "9589848e2c3187e3e60f538fdd06e5b6e38a4332672ed54ffa763f116bffe7e2"
+      }
+    ],
+    "securityInterruption": {
+      "classification": "PROTECTED_API_VALUES_EMITTED_TO_COMMAND_TRACE",
+      "diagnosticMode": "READ_ONLY_API_SETTINGS_DIAGNOSTIC",
+      "protectedValuesExposedToCommandTrace": true,
+      "protectedValuesIncludedInFacts": false,
+      "protectedValuesIncludedInPackages": false,
+      "rawLogsIncludedInFacts": false,
+      "rawLogsIncludedInPackages": false,
+      "fileMutationCount": 0,
+      "commitCount": 0,
+      "liveMutationCount": 0,
+      "deploymentAttemptCount": 0,
+      "syntheticMutationCount": 0,
+      "deploymentsHeld": true,
+      "syntheticMutationHeld": true,
+      "ownerAuthorityRequired": "PLATFORM_SECRET_ROTATION_AND_PARITY_RECOVERY"
+    }
   }
 }
