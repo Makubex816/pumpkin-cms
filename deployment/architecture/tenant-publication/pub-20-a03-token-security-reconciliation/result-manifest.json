@@ -1,0 +1,224 @@
+{
+  "packageKind": "repo_safe_result_package",
+  "schemaVersion": "PUB-20-A03-result-v1",
+  "taskId": "PUB-20-A03",
+  "status": "complete_token_rotated_dpapi_protected_rollback_proven_pub20_closed_ready_for_pub30",
+  "generatedAtUtc": "2026-07-23T04:10:39.166Z",
+  "requiredFiles": [
+    "README.md",
+    "result-manifest.json",
+    "a02-blocked-carryforward.md",
+    "owner-acknowledgement-and-post-reconciliation.md",
+    "capacity-authorization.md",
+    "legacy-plaintext-token-assessment.md",
+    "azure-token-reset-and-invalidation-proof.md",
+    "dpapi-envelope-contract.md",
+    "dpapi-envelope-and-acl-proof.md",
+    "plaintext-removal-and-supersession.md",
+    "secure-token-use-proof.md",
+    "safe-no-post-artifact-proof.md",
+    "live-rollback-proof.md",
+    "a02-live-artifact-restoration.md",
+    "retained-formentry-and-isolation-readback.md",
+    "customer-platform-no-regression.md",
+    "atlas-working-memory-update.md",
+    "security-boundary-result.md",
+    "validation-summary.md",
+    "next-phase-prompt.md"
+  ],
+  "requiredFileCount": 20,
+  "expectedCommitScopeFileCount": 22,
+  "expectedCommitScope": [
+    "deployment/architecture/build-atlas/ACTIVE_ATLAS_AUTHORITY_POINTER.json",
+    "deployment/architecture/build-atlas/ACTIVE_ATLAS_AUTHORITY_POINTER.md",
+    "deployment/architecture/tenant-publication/pub-20-a03-token-security-reconciliation/* (20 exact result files)"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1558,
+      "sha256": "29d2d651035becb7e943b443a5d96bc45b4c526337385e51944e3c43ea7f056b"
+    },
+    {
+      "path": "a02-blocked-carryforward.md",
+      "bytes": 378,
+      "sha256": "965d0baa08494c78dafe90a5c0300313a30cd06f8cc33b68bdfd0a96deab9880"
+    },
+    {
+      "path": "owner-acknowledgement-and-post-reconciliation.md",
+      "bytes": 736,
+      "sha256": "0144927c89a2040f245617a5a8dc514f87beb46db2cfad861c0fdfa3f0e4edea"
+    },
+    {
+      "path": "capacity-authorization.md",
+      "bytes": 271,
+      "sha256": "525169e396b04baa75aba5ef8b812249b5f5a2ab2cf85b596a0f08c2ec8e1445"
+    },
+    {
+      "path": "legacy-plaintext-token-assessment.md",
+      "bytes": 319,
+      "sha256": "a4cf720701c39810f276b60f335b76d098b27db85c068a75328b872198da3869"
+    },
+    {
+      "path": "azure-token-reset-and-invalidation-proof.md",
+      "bytes": 700,
+      "sha256": "37f3cee547cae52715bb81bef1c5dc0fd77f5c452af03ffb2e953073766ba3f3"
+    },
+    {
+      "path": "dpapi-envelope-contract.md",
+      "bytes": 649,
+      "sha256": "557ef97a4c816b50d1e31b966f92d4e7f3ea026799360d8542ca3b926d73795c"
+    },
+    {
+      "path": "dpapi-envelope-and-acl-proof.md",
+      "bytes": 375,
+      "sha256": "0e3f71a27306beb8fe9d5aca13ca02d261086811cf51f5ec93d56de59a5199c9"
+    },
+    {
+      "path": "plaintext-removal-and-supersession.md",
+      "bytes": 373,
+      "sha256": "32e56b54e6e981f174d022e1628bcd50199eb34792b0ec0d5a99f022df24667d"
+    },
+    {
+      "path": "secure-token-use-proof.md",
+      "bytes": 416,
+      "sha256": "1d0ea5eb5dc13656ac9b05f3d22a627c20b6fe06ce07637e94798094b021ca57"
+    },
+    {
+      "path": "safe-no-post-artifact-proof.md",
+      "bytes": 616,
+      "sha256": "a3b5864c7ea51fb91b692c0428cba06fab0aa36de4272cdd32320b46e0ddff8d"
+    },
+    {
+      "path": "live-rollback-proof.md",
+      "bytes": 489,
+      "sha256": "0f368589a04ea784b1b36a1e9f17864363c95e10d1b7a1b961831989a9034ed3"
+    },
+    {
+      "path": "a02-live-artifact-restoration.md",
+      "bytes": 815,
+      "sha256": "1bdaba26fb2e2fb42d3f779f21a7a2424dcdde48c495872e55de449cadc29738"
+    },
+    {
+      "path": "retained-formentry-and-isolation-readback.md",
+      "bytes": 431,
+      "sha256": "36e6199a18ae21eb081985b066379f599dcad108282344afa588cc435cfb5d16"
+    },
+    {
+      "path": "customer-platform-no-regression.md",
+      "bytes": 821,
+      "sha256": "6aec342f6b9723d7b94f8ed9faf606a2d96f3a855b7127f3caced806effe3886"
+    },
+    {
+      "path": "atlas-working-memory-update.md",
+      "bytes": 732,
+      "sha256": "89d0c55502f2c678e6038a4603ac1b73b84e2ba5ed5c4284d30a5f36b469fafe"
+    },
+    {
+      "path": "security-boundary-result.md",
+      "bytes": 358,
+      "sha256": "9ffbf6125755857d80ea404f793559dda9d19733407c2467ee0911db11df16f2"
+    },
+    {
+      "path": "validation-summary.md",
+      "bytes": 1012,
+      "sha256": "b9c52c1aac23408e57fda3539176f80de88792fd35ae7f2c521cffc3034abae5"
+    },
+    {
+      "path": "next-phase-prompt.md",
+      "bytes": 978,
+      "sha256": "69b3107e38c7114ad4ba712d0e07011ce5ea4aec03943fa8ab89a1e53f94b762"
+    }
+  ],
+  "sourceCommits": {
+    "a02Blocked": "4a43f3e471d71d8ab49f46ff1e2a6ad23a54d5b8",
+    "publisherCorrection": "55f8cb50727f9e22ca80561ff61edbaac2e15188",
+    "repositoryHeadAtEntry": "55f8cb50727f9e22ca80561ff61edbaac2e15188"
+  },
+  "authorityPredecessor": {
+    "atlasVersion": "3.6.0",
+    "atlasPackageSha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
+    "workingMemoryVersion": "1.3.0",
+    "workingMemoryPackageSha256": "55cfa4a685fd5767ef3df5131ea28002af1f23d6e6b0fe4e07415a559aa2eb64"
+  },
+  "atlas": {
+    "version": "3.7.0",
+    "packageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
+    "manifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a",
+    "deterministic": true,
+    "extractedInventoriesIdentical": true
+  },
+  "workingMemory": {
+    "version": "1.4.0",
+    "packageSha256": "be361392de87bcaa2efda738264174389a20f255cc131a45b634210546bd6ba3",
+    "manifestSha256": "755abc68784db39ce80e1f02d0c9f66936448a4363f7bfd840c0f53e533e186c",
+    "deterministic": true,
+    "extractedInventoriesIdentical": true
+  },
+  "postAccounting": {
+    "logicalSyntheticSubmissions": 1,
+    "ticketPreflightPosts": 3,
+    "submissionPosts": 3,
+    "submissionStatuses": [
+      201,
+      200,
+      409
+    ],
+    "separateDenialPosts": 7,
+    "changedPayloadConflictWasLivePost": true,
+    "additionalLogicalSubmissionsA03": 0,
+    "additionalFormEntriesA03": 0
+  },
+  "tokenSecurity": {
+    "predecessorInvalidated": true,
+    "fingerprintsDiffer": true,
+    "dpapiCurrentUserProtected": true,
+    "aclRestricted": true,
+    "aclInheritanceRemoved": true,
+    "aclRuleCount": 2,
+    "a02MetadataStatus": "SUPERSEDED_PLAINTEXT_TOKEN_INVALIDATED",
+    "resetAttempts": 1,
+    "childEnvironmentOnly": true,
+    "environmentCleared": true,
+    "legacyPlaintextPresent": false,
+    "tokenValueRecorded": false
+  },
+  "safeNoPostArtifact": {
+    "packageSha256": "33122aab2b9f64567f2d1bf29d175c232f2b3c1715237fe5a49c04c75697e769",
+    "manifestSha256": "46bccba3f29081946d235fcb15b07a73f43703dfde4f41e648cffd27033b4517",
+    "deterministic": true,
+    "noPostCapability": true,
+    "robotsDisallowAll": true,
+    "noindexNoarchive": true,
+    "sitemapExcluded": true,
+    "formDisabled": true,
+    "supersededByRestoredA02LiveArtifact": true
+  },
+  "deployments": {
+    "swaDeploymentCount": 2,
+    "rollbackDeploymentOrdinal": 1,
+    "rollbackPublicationState": "draft",
+    "rollbackPublicationRevision": 3,
+    "restorationDeploymentOrdinal": 2,
+    "restorationPublicationState": "active",
+    "restorationPublicationRevision": 4,
+    "restorationAdminPostRequests": 2,
+    "publicFormPostRequests": 0
+  },
+  "finalLiveArtifact": {
+    "packageSha256": "227512fe26000e0fa933da51ec41a83e274cbb38b24bf15624de0b142271b4dd",
+    "manifestSha256": "80c9db24ab57d537e11eb86bfadb8d4e58f7cef87bf0c59978617c2224d98e54",
+    "exactRuntimeHashes": true,
+    "publicationActive": true,
+    "indexingEnabled": false
+  },
+  "retainedFormEntryId": "917cdc0c0b6115108514278e394e141ab13f6ed7be7e50d716bd0c7d5f728cbb",
+  "customerMutation": false,
+  "domainMutation": false,
+  "airstripRequested": false,
+  "indexingChanged": false,
+  "capacityChanged": false,
+  "containsSecrets": false,
+  "nextPrompt": "deployment/architecture/tenant-publication/pub-20-a03-token-security-reconciliation/next-phase-prompt.md",
+  "nextGate": "PUB-30"
+}

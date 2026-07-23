@@ -1,17 +1,17 @@
 {
-  "activeAtlasVersion": "3.6.0",
-  "pointerVersion": "3.6.0",
-  "atlasVersion": "3.6.0",
+  "activeAtlasVersion": "3.7.0",
+  "pointerVersion": "3.7.0",
+  "atlasVersion": "3.7.0",
   "locationClassification": "outside_repository_program_management_snapshot_source_tree",
-  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.6.0",
-  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.6.0.zip",
-  "packagePath": "program-management/build-atlas/releases/v3.6.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.6.0.zip",
-  "packageSha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
-  "manifestSha256": "a975934f3eefddc3acff5f923927fc892c2c27ee3124cf7d0c07471bf1e3667b",
-  "authorityEffectivePhase": "PUB-20-A02",
-  "updatedAt": "2026-07-23T03:29:03.394Z",
-  "updateTaskId": "PUB-20-A02",
-  "status": "blocked_pub20_a02_token_at_rest_security_contract_not_met",
+  "snapshotSourceTree": "program-management/build-atlas/snapshots/pumpkin-downstream-build-atlas-v3.7.0",
+  "packageFilename": "Pumpkin_Downstream_Build_Atlas_Snapshot_v3.7.0.zip",
+  "packagePath": "program-management/build-atlas/releases/v3.7.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.7.0.zip",
+  "packageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
+  "manifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a",
+  "authorityEffectivePhase": "PUB-20-A03",
+  "updatedAt": "2026-07-23T04:10:39.166Z",
+  "updateTaskId": "PUB-20-A03",
+  "status": "complete_token_rotated_dpapi_protected_rollback_proven_pub20_closed_ready_for_pub30",
   "predecessors": [
     "Build Atlas v3.1.0 baseline snapshot",
     "UP-20-A02 frozen upstream evidence delta",
@@ -35,24 +35,26 @@
     "qualificationState": "CLEAN_ROOM_QUALIFIED_WITH_HOLDS_READY_FOR_INT10"
   },
   "authority": {
-    "taskId": "PUB-20-A02",
-    "resultPackage": "deployment/architecture/tenant-publication/pub-20-a02-successor-artifact-public-form-contract",
-    "repositoryHeadAtEntry": "42cd9c1868c9ba7f4a0513a2a13955f9c0928c31",
+    "taskId": "PUB-20-A03",
+    "resultPackage": "deployment/architecture/tenant-publication/pub-20-a03-token-security-reconciliation",
+    "repositoryHeadAtEntry": "55f8cb50727f9e22ca80561ff61edbaac2e15188",
     "sourceCommit": "d505bac666490e6f032bcdefccdf80f6efdc666e",
     "isolatedSourceProvenanceCommit": "d0d5c2696b43fe788bbb88923b74315305ef78eb",
-    "plannerReconciliationCommit": "42cd9c1868c9ba7f4a0513a2a13955f9c0928c31"
+    "plannerReconciliationCommit": "42cd9c1868c9ba7f4a0513a2a13955f9c0928c31",
+    "a02BlockedCommit": "4a43f3e471d71d8ab49f46ff1e2a6ad23a54d5b8",
+    "publisherCorrectionCommit": "55f8cb50727f9e22ca80561ff61edbaac2e15188"
   },
   "atlasPackage": {
-    "version": "3.6.0",
-    "path": "program-management/build-atlas/releases/v3.6.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.6.0.zip",
-    "sha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
+    "version": "3.7.0",
+    "path": "program-management/build-atlas/releases/v3.7.0/run1/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.7.0.zip",
+    "sha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/build-atlas/releases/v3.6.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.6.0.zip",
-    "comparisonPackageSha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
-    "manifestSha256": "a975934f3eefddc3acff5f923927fc892c2c27ee3124cf7d0c07471bf1e3667b"
+    "comparisonPackagePath": "program-management/build-atlas/releases/v3.7.0/run2/Pumpkin_Downstream_Build_Atlas_Snapshot_v3.7.0.zip",
+    "comparisonPackageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
+    "manifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a"
   },
-  "atlasPackageSha256": "dea117fad213d23c5de1d6934684b4ed329a0e89218362ed7df2f51d1ab195c6",
-  "atlasManifestSha256": "a975934f3eefddc3acff5f923927fc892c2c27ee3124cf7d0c07471bf1e3667b",
+  "atlasPackageSha256": "ac127e7dfb2c7e471446947e70a12298b844eba741a476536b903280978b60ce",
+  "atlasManifestSha256": "cc0f7bcb307437ae9b2afd266d388c7a9a1b3719526e046f7d0094cd84a3284a",
   "supersededPackagingEvidence": {
     "path": "program-management/build-atlas/releases/superseded/up-30-a01-mislabeled-v3.2.0",
     "reason": "UP-30 successor package was initially mislabeled as v3.2.0 before closeout.",
@@ -81,13 +83,13 @@
     "correctionNote": "UP-30 initially generated a distinct successor package while retaining the predecessor version number 3.2.0. Before repository closeout, the successor was regenerated as 3.3.0. The UP-20 v3.2.0 baseline remained unchanged."
   },
   "workingMemoryPackage": {
-    "version": "1.3.0",
-    "path": "program-management/working-memory/releases/v1.3.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.3.0.zip",
-    "sha256": "55cfa4a685fd5767ef3df5131ea28002af1f23d6e6b0fe4e07415a559aa2eb64",
+    "version": "1.4.0",
+    "path": "program-management/working-memory/releases/v1.4.0/run1/PumpkinCMS_Chat_Working_Memory_Master_v1.4.0.zip",
+    "sha256": "be361392de87bcaa2efda738264174389a20f255cc131a45b634210546bd6ba3",
     "deterministicRebuild": true,
-    "comparisonPackagePath": "program-management/working-memory/releases/v1.3.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.3.0.zip",
-    "comparisonPackageSha256": "55cfa4a685fd5767ef3df5131ea28002af1f23d6e6b0fe4e07415a559aa2eb64",
-    "manifestSha256": "dd1366657b7383e3e8b517c37b4e1d43c700951b0ae802ae6b13d418d8fc9e2b"
+    "comparisonPackagePath": "program-management/working-memory/releases/v1.4.0/run2/PumpkinCMS_Chat_Working_Memory_Master_v1.4.0.zip",
+    "comparisonPackageSha256": "be361392de87bcaa2efda738264174389a20f255cc131a45b634210546bd6ba3",
+    "manifestSha256": "755abc68784db39ce80e1f02d0c9f66936448a4363f7bfd840c0f53e533e186c"
   },
   "int10": {
     "status": "complete_local_foundation_with_dependency_or_legal_holds_ready_for_controlled_pilot",
@@ -104,9 +106,22 @@
     "liveMutation": false
   },
   "pub20": {
-    "attempt": "PUB-20-A02",
-    "status": "blocked_pub20_a02_token_at_rest_security_contract_not_met",
+    "attempt": "PUB-20-A03",
+    "status": "complete_token_rotated_dpapi_protected_rollback_proven_pub20_closed_ready_for_pub30",
     "liveMutation": true,
+    "liveMutationScope": "cumulative_pub20_history_with_a03_limited_to_token_reset_two_swa_deployments_and_publication_hold_restore",
+    "resourceCreationAttempt": "PUB-20-A02",
+    "staticWebAppCreatedA03": false,
+    "syntheticTenantCreatedA03": false,
+    "formEntryCreationAttempt": "PUB-20-A02",
+    "formEntryCreatedA03": false,
+    "apiDeploymentAttempt": "PUB-20-A02",
+    "apiDeploymentsA03": 0,
+    "logicalSubmissionEvidenceAttempt": "PUB-20-A02",
+    "logicalSubmissionCountA03": 0,
+    "swaDeploymentsA03": 2,
+    "publicationStateWritesA03": 2,
+    "tokenResetA03": true,
     "staticWebAppCreated": true,
     "syntheticTenantCreated": true,
     "formEntryCreated": true,
@@ -133,6 +148,59 @@
     "airstripRequested": false,
     "indexingEnabled": false,
     "capacityChanged": false,
-    "nextGate": "PUB-20-A03 Security Reconciliation"
+    "nextGate": "PUB-30",
+    "predecessorAttempt": "PUB-20-A02",
+    "predecessorStatus": "blocked_pub20_a02_token_at_rest_security_contract_not_met",
+    "ownerAcknowledgementWithoutRetroactiveApproval": true,
+    "postAccounting": {
+      "logicalSyntheticSubmissions": 1,
+      "ticketPreflightPosts": 3,
+      "submissionPosts": 3,
+      "submissionStatuses": [
+        201,
+        200,
+        409
+      ],
+      "separateDenialPosts": 7,
+      "changedPayloadConflictWasLivePost": true,
+      "additionalLogicalSubmissionsA03": 0,
+      "additionalFormEntriesA03": 0
+    },
+    "tokenSecurity": {
+      "staticWebAppName": "swa-pumpkin-pub20-a02-pilot",
+      "resourceGroup": "rg-pumpkin-pub20-a02-eastus2",
+      "resourceId": "/subscriptions/ff887def-fd83-4a19-9298-13d4b1687873/resourceGroups/rg-pumpkin-pub20-a02-eastus2/providers/Microsoft.Web/staticSites/swa-pumpkin-pub20-a02-pilot",
+      "resetMethod": "az staticwebapp secrets reset-api-key",
+      "resetAtUtc": "2026-07-23T03:45:17.3984888Z",
+      "predecessorFingerprintSha256": "cfe5f5a0cb1f197eab7e5b352d0c5168703db0ca00a03da43d60ed90c81903ff",
+      "successorFingerprintSha256": "dcd1ce2b537463d16c41e458aeda09611ebf4d5b5da0c10423dcff62e812e0d4",
+      "predecessorInvalidated": true,
+      "envelopeReference": "secure-operator-handoff/platform-publication/pub-20-a03-token-security-reconciliation/dpapi-envelope-target.json",
+      "envelopeSha256": "b656a5b823784ca9b1084eabf602d7e930d3297019886030995b8c0fefa406c6",
+      "envelopeFormat": "PUMPKIN_DPAPI_ENVELOPE_V1",
+      "protectionProvider": "Windows DPAPI",
+      "scope": "CurrentUser",
+      "roundTripVerified": true,
+      "aclResult": "CURRENT_OPERATOR_AND_SYSTEM_ONLY",
+      "aclRuleCount": 2,
+      "legacyPlaintextPresent": false,
+      "tokenValueRecorded": false,
+      "portabilityHold": "DPAPI CurrentUser is limited to the same Windows user profile; cross-machine or multi-operator automation requires separate managed-secret-provider authority."
+    },
+    "rollback": {
+      "safeNoPostArtifactSha256": "33122aab2b9f64567f2d1bf29d175c232f2b3c1715237fe5a49c04c75697e769",
+      "safeNoPostManifestSha256": "46bccba3f29081946d235fcb15b07a73f43703dfde4f41e648cffd27033b4517",
+      "noPostRuntimeProven": true,
+      "publicPostRequests": 0
+    },
+    "finalArtifact": {
+      "packageSha256": "227512fe26000e0fa933da51ec41a83e274cbb38b24bf15624de0b142271b4dd",
+      "manifestSha256": "80c9db24ab57d537e11eb86bfadb8d4e58f7cef87bf0c59978617c2224d98e54",
+      "exactRuntimeHashes": true,
+      "publicationActive": true
+    },
+    "retainedFormEntryId": "917cdc0c0b6115108514278e394e141ab13f6ed7be7e50d716bd0c7d5f728cbb",
+    "retainedFormEntryCount": 1,
+    "domainMutation": false
   }
 }
