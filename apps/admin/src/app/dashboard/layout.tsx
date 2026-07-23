@@ -17,6 +17,7 @@ import {
   Palette,
   PenLine,
   Rocket,
+  Send,
   UploadCloud,
   ShieldCheck,
   Users,
@@ -68,6 +69,11 @@ const navigation: NavItem[] = [
     name: 'Publishing',
     href: '/dashboard/publishing',
     icon: <UploadCloud className="w-5 h-5" />,
+  },
+  {
+    name: 'Publications',
+    href: '/dashboard/publications',
+    icon: <Send className="w-5 h-5" />,
   },
   {
     name: 'Outbound Links',

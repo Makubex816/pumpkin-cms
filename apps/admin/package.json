@@ -16,7 +16,8 @@
     "test:v2-9-5": "node scripts/v2-9-5-audit-job-ledger-runtime-qa-check.mjs",
     "test:v2-9-7": "node scripts/v2-9-7-audit-job-ledger-contract-runtime-check.mjs",
     "test:v2-9-11": "node scripts/v2-9-11-audit-job-ledger-api-bridge-check.mjs",
-    "test:v2-11-4": "node scripts/v2-11-4-import-intake-readonly-check.mjs"
+    "test:v2-11-4": "node scripts/v2-11-4-import-intake-readonly-check.mjs",
+    "test:pub-30-a01": "node scripts/pub-30-a01-publication-ui-check.mjs"
   },
   "dependencies": {
     "@dagrejs/dagre": "^2.0.4",
