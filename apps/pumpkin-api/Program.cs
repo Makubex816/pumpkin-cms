@@ -3,6 +3,7 @@ using pumpkin_api.Services.DomainBindings;
 using pumpkin_api.Services.TenantRedirects;
 using pumpkin_api.Services.Identity;
 using pumpkin_api.Services.PublicForms;
+using pumpkin_api.Services.Publications;
 using pumpkin_api.Services.Readiness;
 using pumpkin_api.Managers;
 using pumpkin_net_models.Models;
@@ -275,6 +276,7 @@ builder.Services.AddImportExecutionProjectionReadOnlyFoundation();
 builder.Services.AddOperatorHandoffReadOnlyFoundation();
 builder.Services.AddDomainBindingFoundation();
 builder.Services.AddPublicFormFoundation(builder.Configuration);
+builder.Services.AddPublicationProduct(builder.Configuration);
 builder.Services.AddIdentityFoundation(builder.Configuration);
 builder.Services.AddDependencyReadiness();
 
@@ -1251,6 +1253,7 @@ app.MapOperatorHandoffReadOnlyEndpoints();
 app.MapDomainBindingEndpoints();
 app.MapTenantRedirectEndpoints();
 app.MapPublicFormEndpoints();
+app.MapPublicationProductEndpoints();
 
 // Admin: Get specific tenant
 app.MapGet("/api/admin/tenants/{tenantId}",

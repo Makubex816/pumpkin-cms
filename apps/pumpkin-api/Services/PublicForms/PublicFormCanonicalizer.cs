@@ -83,6 +83,11 @@ public sealed class PublicFormCanonicalizer
             IdempotencyKey = submissionId,
             PublicationId = publication.PublicationId,
             ReleaseId = publication.ReleaseId,
+            PublicationArtifactId = publication.ArtifactId,
+            ReleaseArtifactSha256 = publication.ArtifactSha256,
+            TicketVersion = publication.TicketVersion,
+            PublicationRevision = publication.Revision,
+            PublicationReplayProtectionVersion = publication.ReplayProtectionVersion,
             FormMappingId = mapping.FormMappingId,
             FieldContractVersion = mapping.FieldContractVersion,
             TenantId = publication.TenantId,
@@ -161,6 +166,11 @@ public sealed class PublicFormCanonicalizer
             writer.WriteString("tenantUid", entry.TenantUid);
             writer.WriteString("publicationId", entry.PublicationId);
             writer.WriteString("releaseId", entry.ReleaseId);
+            writer.WriteString("publicationArtifactId", entry.PublicationArtifactId);
+            writer.WriteString("releaseArtifactSha256", entry.ReleaseArtifactSha256);
+            writer.WriteNumber("ticketVersion", entry.TicketVersion);
+            writer.WriteNumber("publicationRevision", entry.PublicationRevision);
+            writer.WriteNumber("publicationReplayProtectionVersion", entry.PublicationReplayProtectionVersion);
             writer.WriteString("formMappingId", entry.FormMappingId);
             writer.WriteString("formDefinitionId", entry.FormId);
             writer.WriteString("submissionId", entry.SubmissionId);

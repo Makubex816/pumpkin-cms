@@ -54,11 +54,15 @@ public static class PublicFormPublicationTestRunner
         var tickets = new PublicFormTicketService(options, time);
         var claims = new PublicFormTicketClaims(
             "pub-test", "tenant-uid-test", "contact-form", "definition-1", "v1", "release-1",
-            "https://example.com", Guid.NewGuid().ToString("D"), Guid.NewGuid().ToString("D"), new string('a', 64));
+            "https://example.com", Guid.NewGuid().ToString("D"), Guid.NewGuid().ToString("D"), new string('a', 64),
+            2, 7, "artifact-1", new string('b', 64), 3);
         var issued = tickets.Issue(claims, 60);
         var valid = tickets.Validate(issued.Token);
         Assert(valid.Status == PublicFormTicketValidationStatus.Valid, "issued ticket validates");
         Assert(valid.Claims?.TenantUid == "tenant-uid-test", "ticket binds tenant UID");
+        Assert(valid.Claims is { TicketVersion: 2, PublicationRevision: 7, ReplayProtectionVersion: 3 } &&
+            valid.Claims.ArtifactId == "artifact-1" &&
+            valid.Claims.ArtifactSha256 == new string('b', 64), "ticket binds artifact, authority revision, and replay generation");
         var last = issued.Token[^1] == 'a' ? 'b' : 'a';
         var tampered = issued.Token[..^1] + last;
         Assert(tickets.Validate(tampered).Status != PublicFormTicketValidationStatus.Valid, "tampered ticket denied");
@@ -300,6 +304,7 @@ public static class PublicFormPublicationTestRunner
             TenantId = "tenant-a",
             TenantUid = "tenant-uid-a",
             ReleaseId = "release-1",
+            ArtifactId = "artifact-1",
             ArtifactSha256 = new string('a', 64),
             Status = "active",
             IndexingState = "disabled",
@@ -307,6 +312,10 @@ public static class PublicFormPublicationTestRunner
             AllowedHostnames = new() { "example.com" },
             FormMappings = new() { mapping },
             TicketKeyId = "test-key",
+            TicketIssuer = "pumpkin-public-forms",
+            TicketAudience = "pumpkin-public-form-submit",
+            SigningMetadataVersion = 1,
+            SigningMetadataUpdatedAtUtc = DateTimeOffset.UnixEpoch,
             TicketTtlSeconds = 60
         };
         var definition = new FormDefinition
@@ -348,6 +357,7 @@ public static class PublicFormPublicationTestRunner
         TenantId = source.TenantId,
         TenantUid = source.TenantUid,
         ReleaseId = source.ReleaseId,
+        ArtifactId = source.ArtifactId,
         ArtifactSha256 = source.ArtifactSha256,
         Status = source.Status,
         IndexingState = source.IndexingState,
@@ -355,7 +365,17 @@ public static class PublicFormPublicationTestRunner
         AllowedHostnames = source.AllowedHostnames.ToList(),
         FormMappings = source.FormMappings,
         TicketKeyId = source.TicketKeyId,
-        TicketTtlSeconds = source.TicketTtlSeconds
+        TicketIssuer = source.TicketIssuer,
+        TicketAudience = source.TicketAudience,
+        SigningMetadataVersion = source.SigningMetadataVersion,
+        SigningMetadataUpdatedAtUtc = source.SigningMetadataUpdatedAtUtc,
+        TicketTtlSeconds = source.TicketTtlSeconds,
+        TicketVersion = source.TicketVersion,
+        Revision = source.Revision,
+        ReplayProtectionVersion = source.ReplayProtectionVersion,
+        ProductRegistryEnabled = source.ProductRegistryEnabled,
+        CustomerExecutionEnabled = source.CustomerExecutionEnabled,
+        ProductReleases = source.ProductReleases
     };
 
     private static PublicFormOptions TestOptions() => new()

@@ -870,6 +870,25 @@ public class CosmosDataConnection : IDataConnection, IDisposable
         }
     }
 
+    public async Task<List<PublicPublication>> ListPublicPublicationsAsync(
+        string? tenantUid,
+        CancellationToken cancellationToken)
+    {
+        var query = string.IsNullOrWhiteSpace(tenantUid)
+            ? new QueryDefinition("SELECT * FROM c ORDER BY c.updatedAtUtc DESC")
+            : new QueryDefinition("SELECT * FROM c WHERE c.tenantUid = @tenantUid ORDER BY c.updatedAtUtc DESC")
+                .WithParameter("@tenantUid", tenantUid);
+        var results = new List<PublicPublication>();
+        using var iterator = _database.GetContainer("PublicPublication")
+            .GetItemQueryIterator<PublicPublication>(query);
+        while (iterator.HasMoreResults)
+        {
+            var page = await iterator.ReadNextAsync(cancellationToken);
+            results.AddRange(page);
+        }
+        return results;
+    }
+
     private async Task<FormDefinition?> GetFormDefinitionByTypeAdminAsync(string tenantId, string type)
     {
         var formDefinitionContainer = _database.GetContainer("FormDefinition");

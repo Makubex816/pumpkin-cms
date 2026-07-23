@@ -554,6 +554,19 @@ public class MongoDataConnection : IDataConnection, IDisposable
         return publication;
     }
 
+    public async Task<List<PublicPublication>> ListPublicPublicationsAsync(
+        string? tenantUid,
+        CancellationToken cancellationToken)
+    {
+        var collection = _database.GetCollection<PublicPublication>("PublicPublication");
+        var filter = string.IsNullOrWhiteSpace(tenantUid)
+            ? Builders<PublicPublication>.Filter.Empty
+            : Builders<PublicPublication>.Filter.Eq(item => item.TenantUid, tenantUid);
+        return await collection.Find(filter)
+            .SortByDescending(item => item.UpdatedAtUtc)
+            .ToListAsync(cancellationToken);
+    }
+
     private async Task<FormDefinition?> GetFormDefinitionByTypeAdminAsync(string tenantId, string type)
     {
         var collection = _database.GetCollection<FormDefinition>("FormDefinition");
@@ -2123,6 +2136,9 @@ public class MongoDataConnection : IDataConnection, IDisposable
         throw new NotSupportedException("MongoDB support is not enabled.");
 
     public Task<PublicPublication> UpdatePublicPublicationAsync(PublicPublication publication, long expectedRevision, CancellationToken cancellationToken) =>
+        throw new NotSupportedException("MongoDB support is not enabled.");
+
+    public Task<List<PublicPublication>> ListPublicPublicationsAsync(string? tenantUid, CancellationToken cancellationToken) =>
         throw new NotSupportedException("MongoDB support is not enabled.");
 
     public void Dispose()

@@ -67,7 +67,12 @@ public sealed class PublicFormSubmissionService
             origin,
             submissionId,
             correlationId,
-            identity), resolved.Value.Publication.TicketTtlSeconds);
+            identity,
+            resolved.Value.Publication.TicketVersion,
+            resolved.Value.Publication.Revision,
+            resolved.Value.Publication.ArtifactId,
+            resolved.Value.Publication.ArtifactSha256,
+            resolved.Value.Publication.ReplayProtectionVersion), resolved.Value.Publication.TicketTtlSeconds);
         return new(PublicFormOperationStatus.Ready, new PublicFormPreflightResponse
         {
             Ready = true,
@@ -142,8 +147,33 @@ public sealed class PublicFormSubmissionService
         var publication = await _database.GetPublicPublicationAsync(publicationId, cancellationToken);
         if (publication == null || !_publications.IsActive(publication) ||
             !string.Equals(publication.TicketKeyId, _options.TicketKeyId, StringComparison.Ordinal) ||
+            !string.Equals(publication.TicketIssuer, _options.TicketIssuer, StringComparison.Ordinal) ||
+            !string.Equals(publication.TicketAudience, _options.TicketAudience, StringComparison.Ordinal) ||
+            publication.SigningMetadataVersion < 1 ||
             !PublicOriginPolicy.IsAllowed(origin, publication.AllowedOrigins))
             return null;
+        if (publication.ProductRegistryEnabled)
+        {
+            if (!publication.CustomerExecutionEnabled ||
+                publication.TicketVersion < 2 ||
+                publication.ReplayProtectionVersion < 1 ||
+                publication.FormMode != PublicationProductModes.PublicFormsLive)
+                return null;
+            var release = publication.ProductReleases?.SingleOrDefault(item =>
+                item.Immutable &&
+                string.Equals(item.Status, PublicationProductStates.Accepted, StringComparison.Ordinal) &&
+                string.Equals(item.ReleaseId, publication.ReleaseId, StringComparison.Ordinal) &&
+                item.ReplayProtectionVersion == publication.ReplayProtectionVersion);
+            var artifact = publication.PublicationArtifacts?.SingleOrDefault(item =>
+                item.Immutable &&
+                item.Status is PublicationProductStates.Accepted or PublicationProductStates.Active &&
+                string.Equals(item.ArtifactId, publication.ArtifactId, StringComparison.Ordinal) &&
+                string.Equals(item.ReleaseId, publication.ReleaseId, StringComparison.Ordinal) &&
+                string.Equals(item.ArtifactSha256, publication.ArtifactSha256, StringComparison.Ordinal) &&
+                item.FormMode == PublicationProductModes.PublicFormsLive &&
+                item.IndexingMode is PublicationProductModes.HeldNoIndex or PublicationProductModes.PublicNoIndex);
+            if (release == null || artifact == null) return null;
+        }
         var tenant = await _database.GetTenantAsync(publication.TenantId).WaitAsync(cancellationToken);
         if (tenant == null || !string.Equals(tenant.TenantUid, publication.TenantUid, StringComparison.Ordinal) ||
             !string.Equals(tenant.Status, "active", StringComparison.OrdinalIgnoreCase) ||
@@ -177,6 +207,11 @@ public sealed class PublicFormSubmissionService
         string.Equals(claims.FormDefinitionId, entry.FormId, StringComparison.Ordinal) &&
         string.Equals(claims.FieldContractVersion, entry.FieldContractVersion, StringComparison.Ordinal) &&
         string.Equals(claims.ReleaseId, entry.ReleaseId, StringComparison.Ordinal) &&
+        string.Equals(claims.ArtifactId, entry.PublicationArtifactId, StringComparison.Ordinal) &&
+        string.Equals(claims.ArtifactSha256, entry.ReleaseArtifactSha256, StringComparison.Ordinal) &&
+        claims.TicketVersion == entry.TicketVersion &&
+        claims.PublicationRevision == entry.PublicationRevision &&
+        claims.ReplayProtectionVersion == entry.PublicationReplayProtectionVersion &&
         string.Equals(claims.Origin, origin, StringComparison.Ordinal) &&
         string.Equals(claims.SubmissionId, entry.SubmissionId, StringComparison.Ordinal) &&
         string.Equals(claims.CorrelationId, entry.CorrelationId, StringComparison.Ordinal) &&

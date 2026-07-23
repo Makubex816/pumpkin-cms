@@ -136,7 +136,12 @@ public sealed record PublicFormTicketClaims(
     string Origin,
     string SubmissionId,
     string CorrelationId,
-    string IdempotencyIdentity);
+    string IdempotencyIdentity,
+    int TicketVersion = 1,
+    long PublicationRevision = 0,
+    string ArtifactId = "",
+    string ArtifactSha256 = "",
+    long ReplayProtectionVersion = 1);
 
 public sealed record PublicFormIssuedTicket(string Token, DateTimeOffset ExpiresAtUtc);
 

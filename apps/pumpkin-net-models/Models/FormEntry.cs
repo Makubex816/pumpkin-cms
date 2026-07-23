@@ -25,6 +25,21 @@ public class FormEntry
     [JsonPropertyName("releaseId")]
     public string ReleaseId { get; set; } = string.Empty;
 
+    [JsonPropertyName("publicationArtifactId")]
+    public string PublicationArtifactId { get; set; } = string.Empty;
+
+    [JsonPropertyName("releaseArtifactSha256")]
+    public string ReleaseArtifactSha256 { get; set; } = string.Empty;
+
+    [JsonPropertyName("ticketVersion")]
+    public int TicketVersion { get; set; } = 1;
+
+    [JsonPropertyName("publicationRevision")]
+    public long PublicationRevision { get; set; }
+
+    [JsonPropertyName("publicationReplayProtectionVersion")]
+    public long PublicationReplayProtectionVersion { get; set; } = 1;
+
     [JsonPropertyName("formMappingId")]
     public string FormMappingId { get; set; } = string.Empty;
 

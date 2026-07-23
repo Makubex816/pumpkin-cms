@@ -133,6 +133,11 @@ public class DatabaseService : IDatabaseService, IDisposable
         return _dataConnection.UpdatePublicPublicationAsync(publication, expectedRevision, cancellationToken);
     }
 
+    public Task<List<PublicPublication>> ListPublicPublicationsAsync(string? tenantUid, CancellationToken cancellationToken)
+    {
+        return _dataConnection.ListPublicPublicationsAsync(tenantUid, cancellationToken);
+    }
+
     public Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId)
     {
         return _dataConnection.GetSitemapPagesAsync(apiKey, tenantId);

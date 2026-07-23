@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using pumpkin_api.Services.DomainBindings;
+using pumpkin_net_models.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -197,6 +198,8 @@ public static class PublicFormEndpoints
         if (errors.Count > 0) return Results.BadRequest(new { errorCode = "publication_invalid", errors });
         var expectedRevision = current.Revision;
         current.Status = "active";
+        current.IndexingMode = PublicationProductModes.HeldNoIndex;
+        current.FormMode = PublicationProductModes.PublicFormsLive;
         current.ActiveFromUtc ??= timeProvider.GetUtcNow();
         current.ActivatedAtUtc = timeProvider.GetUtcNow();
         current.ActivatedBy = DomainBindingAuthorization.GetActor(context.User);
@@ -226,6 +229,16 @@ public static class PublicFormEndpoints
         if (string.Equals(current.Status, "revoked", StringComparison.Ordinal)) return Results.Ok(current);
         var expectedRevision = current.Revision;
         current.Status = "revoked";
+        current.IndexingState = "disabled";
+        current.IndexingMode = PublicationProductModes.HeldNoIndex;
+        current.FormMode = PublicationProductModes.PreviewNoPost;
+        current.CustomerExecutionEnabled = false;
+        current.ReplayProtectionVersion = Math.Max(1, current.ReplayProtectionVersion) + 1;
+        current.FormMappings.ForEach(mapping =>
+        {
+            mapping.Active = false;
+            mapping.SubmitMode = "disabled-no-post";
+        });
         current.RevokedAtUtc = timeProvider.GetUtcNow();
         current.RevokedBy = DomainBindingAuthorization.GetActor(context.User);
         current.UpdatedAtUtc = timeProvider.GetUtcNow();

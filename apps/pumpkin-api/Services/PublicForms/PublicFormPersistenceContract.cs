@@ -9,6 +9,12 @@ public static class PublicFormPersistenceContract
         !string.IsNullOrWhiteSpace(entry.TenantUid) &&
         !string.IsNullOrWhiteSpace(entry.PublicationId) &&
         !string.IsNullOrWhiteSpace(entry.ReleaseId) &&
+        (entry.TicketVersion < 2 ||
+            PublicPublicationService.IsBoundedIdentifier(entry.PublicationArtifactId)) &&
+        IsLowerHexSha256(entry.ReleaseArtifactSha256) &&
+        entry.TicketVersion >= 1 &&
+        entry.PublicationRevision >= 1 &&
+        entry.PublicationReplayProtectionVersion >= 1 &&
         !string.IsNullOrWhiteSpace(entry.FormMappingId) &&
         !string.IsNullOrWhiteSpace(entry.FieldContractVersion) &&
         IsLowerHexSha256(entry.PublicIdempotencyIdentity) &&
@@ -30,6 +36,11 @@ public static class PublicFormPersistenceContract
         string.Equals(existing.TenantUid, candidate.TenantUid, StringComparison.Ordinal) &&
         string.Equals(existing.PublicationId, candidate.PublicationId, StringComparison.Ordinal) &&
         string.Equals(existing.ReleaseId, candidate.ReleaseId, StringComparison.Ordinal) &&
+        string.Equals(existing.PublicationArtifactId, candidate.PublicationArtifactId, StringComparison.Ordinal) &&
+        string.Equals(existing.ReleaseArtifactSha256, candidate.ReleaseArtifactSha256, StringComparison.Ordinal) &&
+        existing.TicketVersion == candidate.TicketVersion &&
+        existing.PublicationRevision == candidate.PublicationRevision &&
+        existing.PublicationReplayProtectionVersion == candidate.PublicationReplayProtectionVersion &&
         string.Equals(existing.FormMappingId, candidate.FormMappingId, StringComparison.Ordinal) &&
         string.Equals(existing.FieldContractVersion, candidate.FieldContractVersion, StringComparison.Ordinal) &&
         string.Equals(existing.FormId, candidate.FormId, StringComparison.Ordinal) &&

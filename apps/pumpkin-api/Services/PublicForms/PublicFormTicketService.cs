@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Globalization;
 using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -38,7 +39,12 @@ public sealed class PublicFormTicketService
             new Claim("org", ticketClaims.Origin),
             new Claim("sid", ticketClaims.SubmissionId),
             new Claim("cid", ticketClaims.CorrelationId),
-            new Claim("idi", ticketClaims.IdempotencyIdentity)
+            new Claim("idi", ticketClaims.IdempotencyIdentity),
+            new Claim("tv", ticketClaims.TicketVersion.ToString(CultureInfo.InvariantCulture)),
+            new Claim("prv", ticketClaims.PublicationRevision.ToString(CultureInfo.InvariantCulture)),
+            new Claim("aid", ticketClaims.ArtifactId),
+            new Claim("art", ticketClaims.ArtifactSha256),
+            new Claim("rpv", ticketClaims.ReplayProtectionVersion.ToString(CultureInfo.InvariantCulture))
         };
         var token = new JwtSecurityToken(
             issuer: _options.TicketIssuer,
@@ -91,15 +97,28 @@ public sealed class PublicFormTicketService
                 return new(PublicFormTicketValidationStatus.Invalid);
 
             string Read(string name) => principal.FindFirst(name)?.Value ?? string.Empty;
+            if (!int.TryParse(Read("tv"), NumberStyles.None, CultureInfo.InvariantCulture, out var ticketVersion) ||
+                !long.TryParse(Read("prv"), NumberStyles.None, CultureInfo.InvariantCulture, out var publicationRevision) ||
+                !long.TryParse(Read("rpv"), NumberStyles.None, CultureInfo.InvariantCulture, out var replayProtectionVersion))
+                return new(PublicFormTicketValidationStatus.Invalid);
             var claims = new PublicFormTicketClaims(
                 Read("pub"), Read("tuid"), Read("map"), Read("def"), Read("fcv"), Read("rel"), Read("org"),
-                Read("sid"), Read("cid"), Read("idi"));
+                Read("sid"), Read("cid"), Read("idi"), ticketVersion, publicationRevision, Read("aid"), Read("art"),
+                replayProtectionVersion);
             if (new[]
                 {
                     claims.PublicationId, claims.TenantUid, claims.FormMappingId, claims.FormDefinitionId, claims.FieldContractVersion,
                     claims.ReleaseId, claims.Origin, claims.SubmissionId, claims.CorrelationId,
-                    claims.IdempotencyIdentity
-                }.Any(string.IsNullOrWhiteSpace))
+                    claims.IdempotencyIdentity, claims.ArtifactSha256
+                }.Any(string.IsNullOrWhiteSpace) ||
+                claims.TicketVersion < 1 ||
+                claims.PublicationRevision < 1 ||
+                claims.ReplayProtectionVersion < 1 ||
+                (claims.TicketVersion >= 2 &&
+                    !PublicPublicationService.IsBoundedIdentifier(claims.ArtifactId)) ||
+                claims.ArtifactSha256.Length != 64 ||
+                claims.ArtifactSha256.Any(character =>
+                    character is not (>= '0' and <= '9') and not (>= 'a' and <= 'f')))
                 return new(PublicFormTicketValidationStatus.Invalid);
             return new(PublicFormTicketValidationStatus.Valid, claims);
         }

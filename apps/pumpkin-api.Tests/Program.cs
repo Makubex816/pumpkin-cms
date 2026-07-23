@@ -6,6 +6,12 @@ using pumpkin_api.Tests;
 using pumpkin_net_models.Models;
 using System.Text.Json;
 
+if (args.Contains("--pub-30-a01", StringComparer.OrdinalIgnoreCase))
+{
+    await PublicationProductTestRunner.RunAsync();
+    return;
+}
+
 if (args.Contains("--pub-20-a02", StringComparer.OrdinalIgnoreCase))
 {
     await PublicFormPublicationTestRunner.RunAsync();

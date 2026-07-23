@@ -32,6 +32,8 @@ public interface IDatabaseService
         Task.FromException<PublicPublication>(new NotSupportedException("Public publications are not supported by this test double."));
     Task<PublicPublication> UpdatePublicPublicationAsync(PublicPublication publication, long expectedRevision, CancellationToken cancellationToken) =>
         Task.FromException<PublicPublication>(new NotSupportedException("Public publications are not supported by this test double."));
+    Task<List<PublicPublication>> ListPublicPublicationsAsync(string? tenantUid, CancellationToken cancellationToken) =>
+        Task.FromException<List<PublicPublication>>(new NotSupportedException("Public publication inventory is not supported by this test double."));
     Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId);
     
     

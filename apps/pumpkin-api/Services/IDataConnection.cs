@@ -28,6 +28,7 @@ public interface IDataConnection
     Task<PublicPublication?> GetPublicPublicationAsync(string publicationId, CancellationToken cancellationToken);
     Task<PublicPublication> CreatePublicPublicationAsync(PublicPublication publication, CancellationToken cancellationToken);
     Task<PublicPublication> UpdatePublicPublicationAsync(PublicPublication publication, long expectedRevision, CancellationToken cancellationToken);
+    Task<List<PublicPublication>> ListPublicPublicationsAsync(string? tenantUid, CancellationToken cancellationToken);
     Task<List<SitemapEntry>> GetSitemapPagesAsync(string apiKey, string tenantId);
     
     

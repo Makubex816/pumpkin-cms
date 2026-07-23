@@ -67,6 +67,7 @@ public sealed partial class PublicPublicationService
             mapping.FormKey = mapping.FormKey.Trim();
             mapping.SiteKey = mapping.SiteKey.Trim();
             mapping.PageSlug = mapping.PageSlug.Trim();
+            mapping.EnabledForPublication = mapping.Active;
             if (!IdentifierPattern().IsMatch(mapping.FormMappingId) || !mappingIds.Add(mapping.FormMappingId))
                 errors.Add("form_mapping_id_invalid");
             if (!mapping.Active || !string.Equals(mapping.SubmitMode, "public-ticket", StringComparison.Ordinal))
@@ -114,6 +115,8 @@ public sealed partial class PublicPublicationService
             ArtifactSha256 = artifactSha,
             Status = "draft",
             IndexingState = "disabled",
+            IndexingMode = PublicationProductModes.HeldNoIndex,
+            FormMode = PublicationProductModes.PreviewNoPost,
             ActiveFromUtc = request.ActiveFromUtc,
             ActiveUntilUtc = request.ActiveUntilUtc,
             AllowedOrigins = origins,
@@ -121,6 +124,10 @@ public sealed partial class PublicPublicationService
                 .Distinct(StringComparer.Ordinal).OrderBy(value => value, StringComparer.Ordinal).ToList(),
             FormMappings = request.FormMappings,
             TicketKeyId = _options.TicketKeyId,
+            TicketIssuer = _options.TicketIssuer,
+            TicketAudience = _options.TicketAudience,
+            SigningMetadataVersion = 1,
+            SigningMetadataUpdatedAtUtc = now,
             TicketTtlSeconds = _options.BoundTicketTtl(request.TicketTtlSeconds),
             Revision = 1,
             CreatedAtUtc = now,
@@ -148,6 +155,7 @@ public sealed partial class PublicPublicationService
                 FormMappingId = mapping.FormMappingId,
                 FormDefinitionId = mapping.FormDefinitionId,
                 Active = mapping.Active,
+                EnabledForPublication = mapping.EnabledForPublication,
                 SubmitMode = mapping.SubmitMode,
                 FieldContractVersion = mapping.FieldContractVersion,
                 FormKey = mapping.FormKey,
@@ -161,6 +169,11 @@ public sealed partial class PublicPublicationService
             return errors.Concat(new[] { "tenant_uid_mismatch" }).Distinct(StringComparer.Ordinal).ToList();
         if (!string.Equals(publication.TicketKeyId, _options.TicketKeyId, StringComparison.Ordinal))
             return errors.Concat(new[] { "ticket_key_id_mismatch" }).Distinct(StringComparer.Ordinal).ToList();
+        if (!string.Equals(publication.TicketIssuer, _options.TicketIssuer, StringComparison.Ordinal) ||
+            !string.Equals(publication.TicketAudience, _options.TicketAudience, StringComparison.Ordinal))
+            return errors.Concat(new[] { "ticket_issuer_or_audience_mismatch" }).Distinct(StringComparer.Ordinal).ToList();
+        if (publication.SigningMetadataVersion < 1 || !publication.SigningMetadataUpdatedAtUtc.HasValue)
+            return errors.Concat(new[] { "signing_metadata_invalid" }).Distinct(StringComparer.Ordinal).ToList();
         if (!string.Equals(publication.IndexingState, "disabled", StringComparison.Ordinal))
             return errors.Concat(new[] { "indexing_state_must_be_disabled" }).Distinct(StringComparer.Ordinal).ToList();
         var expectedHosts = publication.AllowedOrigins.Select(origin => new Uri(origin).IdnHost.ToLowerInvariant())
@@ -175,6 +188,10 @@ public sealed partial class PublicPublicationService
         var now = _timeProvider.GetUtcNow();
         return string.Equals(publication.Status, "active", StringComparison.Ordinal) &&
             string.Equals(publication.IndexingState, "disabled", StringComparison.Ordinal) &&
+            (!publication.ProductRegistryEnabled ||
+                (publication.IndexingMode is
+                    PublicationProductModes.HeldNoIndex or PublicationProductModes.PublicNoIndex &&
+                 publication.FormMode == PublicationProductModes.PublicFormsLive)) &&
             (!publication.ActiveFromUtc.HasValue || publication.ActiveFromUtc <= now) &&
             (!publication.ActiveUntilUtc.HasValue || publication.ActiveUntilUtc > now) &&
             string.Equals(publication.Id, publication.PublicationId, StringComparison.Ordinal);
